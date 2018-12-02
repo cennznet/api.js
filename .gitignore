@@ -1,0 +1,7 @@
+.idea
+.rpt2_cache
+dist
+*.log
+node_modules
+.DS_Store
+packages/*/*.d.ts

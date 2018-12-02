@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017",
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "outDir": "dist",
+        "baseUrl": ".",
+        "types": ["node"],
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "lib": ["ES2017"],
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "declarationDir": "dist",
+        "sourceMap": true,
+        "inlineSources": true,
+        "paths": {
+            "*": ["node_modules/*"]
+        }
+    },
+    "typeRoots": ["./node_modules/@polkadot/ts", "./node_modules/@types"],
+    "include": ["src/**/*"]
+}

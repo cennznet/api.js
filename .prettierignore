@@ -1,0 +1,7 @@
+**/CHANGELOG.md
+**/node_modules/**
+**/.*/**
+packages/web/public/**
+**/dist/**
+*.d.ts
+**/.DS_Store

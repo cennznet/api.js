@@ -1,0 +1,76 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-microsoft-contrib"
+  ],
+  "jsRules": {},
+  "linterOptions": {
+    "exclude": [
+      "**/node_modules/**/*",
+      "**/test/**/*"
+    ]
+  },
+  "rules": {
+    "array-type": [
+      true,
+      "array-simple"
+    ],
+    "await-promise": [
+      true,
+      "Bluebird",
+      "AxiosPromise"
+    ],
+    "export-name": false,
+    "import-name": [
+      true,
+      {
+        "bignumberJs": "BigNumber",
+        "lodashClonedeepwith": "cloneDeepWith"
+      }
+    ],
+    "interface-name": false,
+    "match-default-export-name": false,
+    "mocha-no-side-effect-code": false,
+    "no-any": false,
+    "no-empty-interface": false,
+    "no-import-side-effect": [
+      true,
+      {
+        "ignore-module": "(\\.html|\\.css|/services)$"
+      }
+    ],
+    "no-relative-imports": false,
+    "no-unsafe-any": false,
+    "prefer-array-literal": [
+      true,
+      {
+        "allow-type-parameters": true
+      }
+    ],
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "strict-boolean-expressions": [
+      true,
+      "allow-undefined-union"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "singleline": "never"
+      }
+    ],
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "property-declaration",
+      "member-variable-declaration"
+    ]
+  },
+  "rulesDirectory": []
+}
