@@ -1,0 +1,46 @@
+{
+    "name": "@cennznet/api",
+    "version": "0.12.3",
+    "description": "cennznet's javascript client",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "author": "ian.he <ian.he@centrality.ai>",
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
+    "license": "Apache-2.0",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
+    },
+    "scripts": {
+        "test:unit": "node --inspect ./node_modules/.bin/jest -c ./jest.config.js spec",
+        "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
+    },
+    "dependencies": {
+        "@cennznet/types": "^0.12.3",
+        "@plugnet/api": "^0.77.101",
+        "@plugnet/extrinsics": "^0.77.101",
+        "@plugnet/rpc-core": "^0.77.101",
+        "@plugnet/rpc-provider": "^0.77.101",
+        "@plugnet/storage": "^0.77.101",
+        "@plugnet/types": "^0.77.101",
+        "eventemitter3": "^3.1.0"
+    },
+    "peerDependencies": {
+        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
+        "@cennznet/crml-generic-asset": ">= 0.7.2"
+    },
+    "devDependencies": {
+        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
+        "@cennznet/crml-generic-asset": ">= 0.7.2",
+        "@types/jest": "^23.3.5",
+        "jest": "24.1.0",
+        "rimraf": "^2.6.2",
+        "ts-mockito": "^2.3.1",
+        "typedoc": "^0.13.0",
+        "typedoc-plugin-markdown": "^1.1.19",
+        "typescript": "^3.4.5"
+    }
+}

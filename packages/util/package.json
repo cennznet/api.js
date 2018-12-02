@@ -1,0 +1,29 @@
+{
+    "name": "@cennznet/util",
+    "version": "0.12.3",
+    "description": "utils for cennznet sdk",
+    "author": "ian.he <ian.he@centrality.ai>",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/util",
+    "license": "Apache-2.0",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "dependencies": {
+        "@plugnet/keyring": "^0.76.2-beta.0",
+        "@plugnet/util": "^0.76.2-beta.0",
+        "@plugnet/util-crypto": "^0.76.2-beta.0"
+    },
+    "devDependencies": {
+        "@plugnet/types": "^0.77.101",
+        "typescript": "^3.4.5"
+    }
+}

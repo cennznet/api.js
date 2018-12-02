@@ -1,0 +1,68 @@
+// Copyright 2019 Centrality Investments Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
+ */
+import {Hash} from '@plugnet/types';
+import {ApiRx} from '../../src/ApiRx';
+import {Wallet, SimpleKeyring} from '@cennznet/wallet';
+import WsProvider from '@plugnet/rpc-provider/ws';
+import {combineLatest} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import process from 'process';
+
+const sender = {
+    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+    uri: '//cennznet-js-test',
+};
+const receiver = {
+    address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
+};
+const passphrase = 'passphrase';
+
+describe('e2e queries', () => {
+    let api: ApiRx;
+    let websocket: WsProvider;
+    beforeAll(async () => {
+        const endPoint = process.argv[process.argv.length - 1];
+        websocket = new WsProvider(endPoint);
+        api = await ApiRx.create({provider: websocket}).toPromise();
+        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+        simpleKeyring.addFromUri(sender.uri);
+        const wallet = new Wallet();
+        await wallet.createNewVault(passphrase);
+        await wallet.addKeyring(simpleKeyring);
+        api.setSigner(wallet);
+    });
+
+    afterAll(async () => {
+        (websocket as any).websocket.onclose = null;
+        (websocket as any).websocket.close();
+    });
+
+    describe('Query storage using at', () => {
+        it('queries correct balance', async done => {
+            const nextAssetId$ = api.rpc.chain
+                .getBlockHash()
+                .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));
+            combineLatest(api.query.genericAsset.nextAssetId(), nextAssetId$).subscribe(
+                ([nextAssetId, nextAssetIdAt]) => {
+                    expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
+                    done();
+                }
+            );
+        });
+    });
+});

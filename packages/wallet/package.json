@@ -1,0 +1,44 @@
+{
+    "name": "@cennznet/wallet",
+    "version": "0.12.3",
+    "description": "wallet implementation to use with cennznet",
+    "author": "ian.he <ian.he@centrality.ai>",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/wallet",
+    "license": "Apache-2.0",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
+    },
+    "scripts": {
+        "test": "jest --coverage -c ../../jest/jest.config.js",
+        "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
+        "test:watch": "jest --watch -c ../../jest/jest.config.js",
+        "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs  --includes compodoc --output ../../docs/wallet"
+    },
+    "dependencies": {
+        "@cennznet/util": "^0.12.3",
+        "bip39": "^2.5.0",
+        "hdkey": "^1.1.0",
+        "reflect-metadata": "^0.1.12",
+        "tweetnacl": "^1.0.0"
+    },
+    "devDependencies": {
+        "@cennznet/api": "^0.12.3",
+        "@cennznet/types": "^0.12.3",
+        "@types/jest": "^23.3.5",
+        "jest": "24.1.0",
+        "rimraf": "^2.6.2",
+        "rollup": "^0.66.6",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-json": "^3.1.0",
+        "rollup-plugin-node-resolve": "^3.0.0",
+        "rollup-plugin-sourcemaps": "^0.4.2",
+        "rollup-plugin-typescript2": "^0.17.1",
+        "typescript": "^3.4.5"
+    }
+}
