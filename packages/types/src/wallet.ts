@@ -8,7 +8,6 @@ export interface TxOpt {
     genesisHash?: Uint8Array;
 }
 
-
 export interface WalletInterface {
     sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void>;
 }

@@ -13,8 +13,8 @@ export type JsonRpcRequest = JsonRpcObject & {
 };
 
 export type JsonRpcResponseBase$Error = {
-    code: number,
-    message: string
+    code: number;
+    message: string;
 };
 
 type JsonRpcResponse$Single = {
@@ -28,7 +28,7 @@ type JsonRpcResponse$Subscription = {
         error?: JsonRpcResponseBase$Error;
         result: any;
         subscription: number;
-    }
+    };
 };
 
 export type JsonRpcResponseBase = JsonRpcResponse$Single & JsonRpcResponse$Subscription;
@@ -42,9 +42,9 @@ export type ProviderInterface$Emitted = 'connected' | 'disconnected';
 export type ProviderInterface$EmitCb = (value?: any) => any;
 
 export interface ProviderInterface {
-    isConnected (): boolean,
-    on (type: ProviderInterface$Emitted, sub: ProviderInterface$EmitCb): void,
-    send (method: string, params: Array<any>): Promise<any>,
-    subscribe (type: string, method: string, params: Array<any>, cb: ProviderInterface$Callback): Promise<number>,
-    unsubscribe (type: string, method: string, id: number): Promise<boolean>
+    isConnected(): boolean;
+    on(type: ProviderInterface$Emitted, sub: ProviderInterface$EmitCb): void;
+    send(method: string, params: Array<any>): Promise<any>;
+    subscribe(type: string, method: string, params: Array<any>, cb: ProviderInterface$Callback): Promise<number>;
+    unsubscribe(type: string, method: string, id: number): Promise<boolean>;
 }
