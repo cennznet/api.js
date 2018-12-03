@@ -1,6 +1,13 @@
 {
   "name": "root",
   "private": true,
+  "engines": {
+    "node": "^10.13.0",
+    "yarn": "^1.10.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@types/jest": "^23.3.3",
     "cz-lerna-changelog": "^2.0.0",
