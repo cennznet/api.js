@@ -16,4 +16,7 @@ RUN npx lerna bootstrap
 
 # copy source code
 COPY packages ./packages
+COPY jest ./jest
 
+# build
+RUN npx lerna run build

@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {KeyringPair} from '@polkadot/keyring/types';
-import {AnyNumber, AnyU8a} from '@polkadot/types/types';
 
-import {Extrinsic, ExtrinsicStatus, Hash} from '@polkadot/types/index';
+import {AnyNumber, AnyU8a} from '@polkadot/types/types';
+import {Extrinsic, ExtrinsicStatus, Hash} from '@polkadot/types';
 import {TxOpt} from 'cennznet-types';
 import {Api} from './Api';
 
@@ -31,8 +31,8 @@ export default class SubmittableExtrinsic extends Extrinsic {
                     throw new Error('Failed to fetch nonce for account: ' + txOpt.from);
                 }
             }
-            const genesisHash = txOpt.genesisHash || this._api.genesisHash;
-            await this._api.wallet.sign(this, {...txOpt, nonce, genesisHash});
+            const blockHash = txOpt.blockHash || this._api.genesisHash;
+            await this._api.wallet.sign(this, {...txOpt, nonce, blockHash});
         }
         if (statusCb) {
             return this._api.rpc.author.submitAndWatchExtrinsic(this, statusCb);

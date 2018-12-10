@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "> TODO: description",
   "author": "ian.he <ian.he@centrality.ai>",
-  "homepage": "https://bitbucket.org/centralitydev/un-connect#readme",
+  "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
   "license": "ISC",
   "main": "",
   "directories": {
@@ -13,12 +13,9 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "registry": "https://npm-proxy.fury.io/Rh43z_yWUvh855iguFjy/centralityexternals/"
-  },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/centralitydev/un-connect.git"
+    "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"

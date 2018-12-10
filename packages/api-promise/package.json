@@ -1,12 +1,12 @@
 {
     "name": "cennznet-api",
     "version": "0.1.0",
-    "description": "cennz javascript client",
+    "description": "cennznet's javascript client",
     "keywords": [
         "cennz"
     ],
     "author": "ian.he <ian.he@centrality.ai>",
-    "homepage": "https://bitbucket.org/centralitydev/un-connect#readme",
+    "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
     "license": "ISC",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -17,27 +17,27 @@
     "files": [
         "lib"
     ],
-    "publishConfig": {
-        "registry": "https://npm-proxy.fury.io/Rh43z_yWUvh855iguFjy/centralityexternals/"
-    },
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/centralitydev/un-connect.git"
+        "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
     },
     "scripts": {
         "build": "rimraf dist && rollup -c rollup.config.ts",
-        "test": "echo \"Error: run tests from root\" && exit 1"
+        "test:e2e": "jest -c ../../jest/jest.config.js --coverage",
+        "test:watch": "jest -c ../../jest/jest.config.js --watch"
     },
     "dependencies": {
-        "@polkadot/extrinsics": "^0.32.9",
-        "@polkadot/rpc-core": "^0.32.9",
-        "@polkadot/rpc-provider": "^0.32.9",
-        "@polkadot/storage": "^0.32.9",
+        "@polkadot/extrinsics": "0.32.9",
+        "@polkadot/rpc-core": "0.32.9",
+        "@polkadot/rpc-provider": "0.32.9",
+        "@polkadot/storage": "0.32.9",
         "cennznet-types": "^0.1.0",
         "cennznet-wallet": "^0.1.0",
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
+        "@polkadot/keyring": "0.32.9",
+        "@polkadot/types": "0.32.9",
         "@types/jest": "^23.3.5",
         "jest": "^23.6.0",
         "rimraf": "^2.6.2",

@@ -1,45 +1,44 @@
 {
-  "name": "cennznet-wallet",
-  "version": "0.1.0",
-  "description": "> TODO: description",
-  "author": "ian.he <ian.he@centrality.ai>",
-  "homepage": "https://bitbucket.org/centralitydev/un-connect#readme",
-  "license": "ISC",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "registry": "https://npm-proxy.fury.io/Rh43z_yWUvh855iguFjy/centralityexternals/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@bitbucket.org/centralitydev/un-connect.git"
-  },
-  "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.ts",
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
-  "dependencies": {
-    "@polkadot/keyring": "^0.33.3"
-  },
-  "devDependencies": {
-    "@polkadot/types": "^0.32.9",
-    "@types/jest": "^23.3.5",
-    "cennznet-types": "^0.1.0",
-    "jest": "^23.6.0",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.66.6",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.17.1",
-    "typescript": "^3.1.6"
-  }
+    "name": "cennznet-wallet",
+    "version": "0.1.0",
+    "description": "> TODO: description",
+    "author": "ian.he <ian.he@centrality.ai>",
+    "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
+    "license": "ISC",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
+    },
+    "scripts": {
+        "build": "rimraf dist && rollup -c rollup.config.ts",
+        "test": "jest --coverage -c ../../jest/jest.config.js",
+        "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
+        "test:watch": "jest --watch"
+    },
+    "dependencies": {
+        "@polkadot/keyring": "0.33.6"
+    },
+    "devDependencies": {
+        "@polkadot/types": "0.32.9",
+        "@types/jest": "^23.3.5",
+        "cennznet-types": "^0.1.0",
+        "jest": "^23.6.0",
+        "rimraf": "^2.6.2",
+        "rollup": "^0.66.6",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-json": "^3.1.0",
+        "rollup-plugin-node-resolve": "^3.0.0",
+        "rollup-plugin-sourcemaps": "^0.4.2",
+        "rollup-plugin-typescript2": "^0.17.1",
+        "typescript": "^3.1.6"
+    }
 }

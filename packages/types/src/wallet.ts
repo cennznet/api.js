@@ -5,7 +5,6 @@ export interface TxOpt {
     from: string;
     nonce?: AnyNumber;
     blockHash?: AnyU8a;
-    genesisHash?: Uint8Array;
 }
 
 export interface WalletInterface {
