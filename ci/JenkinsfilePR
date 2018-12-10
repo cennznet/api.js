@@ -1,0 +1,39 @@
+#!groovy
+pipeline {
+  agent {
+    label 'linux'
+  }
+
+  environment {
+    SERVICE_NAME = 'cennznet-js'
+    IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh './ci/pr/build.sh'
+      }
+    }
+    stage('Yarn Audit') {
+      steps {
+        sh './ci/pr/yarn-audit.sh'
+      }
+    }
+    stage('Lint') {
+      steps {
+        sh './ci/pr/lint.sh'
+      }
+    }
+    stage('Code Style Check') {
+      steps {
+        sh './ci/pr/prettier.sh'
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        sh './ci/pr/unit-test.sh'
+      }
+    }
+  }
+}
