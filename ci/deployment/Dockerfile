@@ -3,8 +3,6 @@ WORKDIR workdir/
 ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
-ARG GEMFURY_TOKEN
-ARG GEMFURY_EXTERNAL_TOKEN
 
 # add credentials on build
 RUN mkdir /root/.ssh/

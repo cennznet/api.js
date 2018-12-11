@@ -21,7 +21,6 @@ set -ex
 : "${GIT_NAME:?GIT_NAME environment variable is required}"
 : "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
 : "${GIT_BRANCH:?GIT_BRANCH environment variable is required}"
-: "${GEMFURY_TOKEN:?GEMFURY_TOKEN environment variable is required}"
 
 cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
@@ -30,5 +29,4 @@ docker build \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg GIT_BRANCH="$GIT_BRANCH" \
-  --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
   -f $DIR/Dockerfile .

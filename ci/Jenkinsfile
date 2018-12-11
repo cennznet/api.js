@@ -15,7 +15,6 @@ pipeline {
   stages {
     stage('Build') {
       environment {
-        GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
       steps {
