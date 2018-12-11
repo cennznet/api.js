@@ -4,8 +4,11 @@ ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
 
+
+
 # add credentials on build
 RUN mkdir /root/.ssh/
+COPY ./git-ssh-key ./git-ssh-key
 RUN mv ./git-ssh-key /root/.ssh/id_rsa
 RUN chmod 700 /root/.ssh/id_rsa
 RUN echo 'IdentityFile /root/.ssh/id_rsa' > ~/.ssh/config
