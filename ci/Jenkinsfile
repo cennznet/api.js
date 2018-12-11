@@ -1,0 +1,50 @@
+#!groovy
+pipeline {
+  agent {
+    label 'linux'
+  }
+
+  environment {
+    SERVICE_NAME = 'cennznet-js'
+    GIT_NAME = 'Jenkins'
+    GIT_EMAIL = 'jenkins@centrality.ai'
+    GIT_BRANCH = 'master'
+    IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh './ci/pr/build.sh'
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        sh './ci/pr/unit-test.sh'
+      }
+    }
+    stage('Generate Document') {
+      steps {
+        echo 'Generate Document'
+      }
+    }
+    stage('Confirm Publish') {
+      steps {
+        timeout(time:30, unit:'MINUTES') {
+          input "Confirm publish?"
+        }
+      }
+    }
+    stage('Publish to Gemfury') {
+      steps {
+        // sh './ci/deployment/publish.sh'
+        echo 'Publish to Gemfury'
+      }
+    }
+    stage('Publish to Readthedoc') {
+      steps {
+        echo 'Publish to Readthedoc'
+      }
+    }
+  }
+}
