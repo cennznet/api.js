@@ -17,8 +17,9 @@ RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # configure git
 RUN git --version
-COPY .git .git
-COPY .gitignore .gitignore
+COPY .git .git/
+COPY .gitignore .
+RUN ls -all
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
