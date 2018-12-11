@@ -32,5 +32,4 @@ docker build \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg GIT_BRANCH="$GIT_BRANCH" \
   --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
-  --build-arg GEMFURY_EXTERNAL_TOKEN="$GEMFURY_EXTERNAL_TOKEN" \
   -f $DIR/Dockerfile .
