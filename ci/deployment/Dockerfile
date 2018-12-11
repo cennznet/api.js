@@ -4,8 +4,6 @@ ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
 
-
-
 # add credentials on build
 RUN mkdir /root/.ssh/
 COPY ./git-ssh-key ./git-ssh-key
@@ -19,6 +17,8 @@ RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # configure git
 RUN git --version
+COPY .git .git
+COPY .gitignore .gitignore
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
