@@ -22,12 +22,17 @@ COPY .gitignore .gitignore
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
+# sync git
+RUN git checkout ${GIT_BRANCH}
+RUN git fetch
+RUN git reset --hard origin/${GIT_BRANCH}
+
+# install dependecies for packages
 COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
 
 RUN npm install -g yarn
 RUN yarn install -q
 
-# install dependecies for packages
 COPY ./packages/api-promise/package.json ./packages/api-promise/
 COPY ./packages/http-provider/package.json ./packages/http-provider/
 COPY ./packages/runtime-types/package.json ./packages/runtime-types/
