@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
 
+# dir holding this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-set -ex
 
 # prevent jenkins rebuild
 LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an');
@@ -12,6 +12,9 @@ if [ "$LAST_COMMIT_AUTHOR" = "$GIT_NAME" ]; then
   echo "Terminating build started by Jenkins Git push";
   exit 0;
 fi
+
+# set shell to verbose, instant exit mode
+set -ex
 
 # Required Environment variables. Set them by using the commands below
 : "${IMAGE_NAME:?IMAGE_NAME environment variable is required}"
