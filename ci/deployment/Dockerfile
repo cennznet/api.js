@@ -4,30 +4,6 @@ ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
 
-# add credentials on build
-RUN mkdir /root/.ssh/
-COPY ./git-ssh-key ./git-ssh-key
-RUN mv ./git-ssh-key /root/.ssh/id_rsa
-RUN chmod 700 /root/.ssh/id_rsa
-RUN echo 'IdentityFile /root/.ssh/id_rsa' > ~/.ssh/config
-
-# make sure your domain is accepted
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
-
-# configure git
-RUN git --version
-COPY .git .git/
-COPY .gitignore .
-RUN ls -all
-RUN git config user.name ${GIT_NAME}
-RUN git config user.email ${GIT_EMAIL}
-
-# sync git
-RUN git checkout ${GIT_BRANCH}
-RUN git fetch
-RUN git reset --hard origin/${GIT_BRANCH}
-
 # install dependecies for packages
 COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
 
@@ -43,6 +19,27 @@ RUN npx lerna bootstrap
 
 # copy complete project - required for git push
 COPY . .
+
+# add credentials on build
+RUN mkdir /root/.ssh/
+COPY ./git-ssh-key ./git-ssh-key
+RUN mv ./git-ssh-key /root/.ssh/id_rsa
+RUN chmod 700 /root/.ssh/id_rsa
+RUN echo 'IdentityFile /root/.ssh/id_rsa' > ~/.ssh/config
+
+# make sure your domain is accepted
+RUN touch /root/.ssh/known_hosts
+RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
+
+# configure git
+RUN git --version
+RUN git config user.name ${GIT_NAME}
+RUN git config user.email ${GIT_EMAIL}
+
+# sync git
+RUN git checkout ${GIT_BRANCH}
+RUN git fetch
+RUN git reset --hard origin/${GIT_BRANCH}
 
 # build package
 RUN npx lerna run build
