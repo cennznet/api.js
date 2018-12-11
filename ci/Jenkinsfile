@@ -15,7 +15,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh './ci/pr/build.sh'
+        sh './ci/deployment/build.sh'
       }
     }
     stage('Unit Test') {
@@ -37,8 +37,7 @@ pipeline {
     }
     stage('Publish to Gemfury') {
       steps {
-        // sh './ci/deployment/publish.sh'
-        echo 'Publish to Gemfury'
+        sh './ci/deployment/publish.sh'
       }
     }
     stage('Publish to Readthedoc') {
