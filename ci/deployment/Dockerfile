@@ -6,15 +6,6 @@ ARG GIT_BRANCH
 ARG GEMFURY_TOKEN
 ARG GEMFURY_EXTERNAL_TOKEN
 
-ENV npm_config_registry="https://npm-proxy.fury.io/$GEMFURY_EXTERNAL_TOKEN/centralityexternals/"
-# copy complete project - required for git push
-COPY . .
-
-# configure npm
-RUN npx npm@5.6 i -g npm@latest
-RUN npm -v
-RUN npm config set color false
-
 # add credentials on build
 RUN mkdir /root/.ssh/
 RUN mv ./git-ssh-key /root/.ssh/id_rsa
@@ -30,17 +21,24 @@ RUN git --version
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
-COPY lerna.json package.json package-lock.json ./
-COPY packages ./packages
+COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
 
-# install deps
-RUN npm install -q
+RUN npm install -g yarn
+RUN yarn install -q
 
-# install package deps
-RUN npx lerna bootstrap --scope=cennzx-sdk
+# install dependecies for packages
+COPY ./packages/api-promise/package.json ./packages/api-promise/
+COPY ./packages/http-provider/package.json ./packages/http-provider/
+COPY ./packages/runtime-types/package.json ./packages/runtime-types/
+COPY ./packages/types/package.json ./packages/types/
+COPY ./packages/wallet/package.json ./packages/wallet/
+RUN npx lerna bootstrap
+
+# copy complete project - required for git push
+COPY . .
 
 # build package
-RUN npx lerna run --scope=cennzx-sdk build
+RUN npx lerna run build
 
 RUN git status
 RUN git reset --hard
@@ -62,13 +60,13 @@ RUN npx lerna exec  --scope=cennzx-sdk \
     ";
 
 # pack packages for uploading
-RUN npx lerna exec --scope=cennzx-sdk -- "npm pack"
+RUN npx lerna exec -- "npm pack"
 
 
 # push all packages to Gemfury centrality external
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope=cennzx-sdk \
+  npx lerna exec \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_EXTERNAL_TOKEN}@push.fury.io/centralityexternals/\" && \
@@ -89,7 +87,7 @@ RUN \
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope=cennzx-sdk \
+  npx lerna exec \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
