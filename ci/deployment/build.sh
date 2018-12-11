@@ -22,7 +22,6 @@ set -ex
 : "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
 : "${GIT_BRANCH:?GIT_BRANCH environment variable is required}"
 : "${GEMFURY_TOKEN:?GEMFURY_TOKEN environment variable is required}"
-: "${GEMFURY_EXTERNAL_TOKEN:?GEMFURY_EXTERNAL_TOKEN environment variable is required}"
 
 cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
