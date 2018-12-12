@@ -39,6 +39,9 @@ pipeline {
       }
     }
     stage('Publish to Gemfury') {
+      environment {
+        GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
+      }
       steps {
         sh './ci/deployment/publish.sh'
       }
