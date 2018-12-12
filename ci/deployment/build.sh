@@ -29,4 +29,4 @@ docker build \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg GIT_BRANCH="$GIT_BRANCH" \
-  -f $DIR/Dockerfile .
+  -f $DIR/../pr/Dockerfile .

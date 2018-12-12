@@ -1,24 +1,11 @@
-FROM node:10.13.0
-WORKDIR workdir/
 ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
+ARG IMAGE_NAME
+ARG GEMFURY_TOKEN
 
-# install dependecies for packages
-COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
-
-RUN npm install -g yarn
-RUN yarn install -q
-
-COPY ./packages/api-promise/package.json ./packages/api-promise/
-COPY ./packages/http-provider/package.json ./packages/http-provider/
-COPY ./packages/runtime-types/package.json ./packages/runtime-types/
-COPY ./packages/types/package.json ./packages/types/
-COPY ./packages/wallet/package.json ./packages/wallet/
-RUN npx lerna bootstrap
-
-# copy complete project - required for git push
-COPY . .
+FROM ${IMAGE_NAME}
+WORKDIR workdir/
 
 # add credentials on build
 RUN mkdir /root/.ssh/
@@ -41,9 +28,6 @@ RUN git checkout ${GIT_BRANCH}
 RUN git fetch
 RUN git reset --hard origin/${GIT_BRANCH}
 
-# build package
-RUN npx lerna run build
-
 RUN git status
 RUN git reset --hard
 
@@ -51,7 +35,7 @@ RUN git reset --hard
 RUN npx lerna version --conventional-commits --yes --no-commit-hooks
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
-RUN npx lerna exec \
+RUN npx lerna exec  --scope=cennzx-sdk \
   --parallel \
   -- \
     "\
@@ -64,4 +48,26 @@ RUN npx lerna exec \
     ";
 
 # pack packages for uploading
-RUN npx lerna exec -- "npm pack"
+RUN npx lerna exec --scope=cennzx-sdk -- "npm pack"
+
+# push all packages to Gemfury centrality
+RUN \
+  echo 'Pushing packages \${workdir} to Gemfury' && \
+  npx lerna exec --scope=cennzx-sdk \
+    -- \
+      "\
+        PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
+        PACKAGE_NAME=\$(node -p \"try {require('./package.json').name} catch(e){'0.0.0'}\") && \
+        PACKAGE_VERSION=\$(node -p \"try {require('./package.json').version} catch(e){'0.0.0'}\") && \
+        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}-\${PACKAGE_VERSION}.tgz\" && \
+        if [ ! -f TAR_PATH ]; then continue; fi && \
+        echo \" - Pushing package: \$PACKAGE_NAME\" && \
+        ( \
+          RESPONSE=\$(curl -sS -F package=@\${TAR_PATH} \${PUSH_URL}) && \
+          echo \"\${RESPONSE}\" && \
+          case \"\${RESPONSE}\" in \
+            *\"... ok\"*) echo \" - Pushed package: \$PACKAGE_NAME\";; \
+            *        ) (echo \" - Failed to push package: \$PACKAGE_NAME\" && exit 1);; \
+          esac \
+        ); \
+      ";

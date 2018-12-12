@@ -9,7 +9,8 @@ pipeline {
     GIT_NAME = 'Jenkins'
     GIT_EMAIL = 'jenkins@centrality.ai'
     GIT_BRANCH = 'DK-5-Deployment-Pipeline'
-    IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
+    IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
+    PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
   }
 
   stages {
@@ -24,11 +25,6 @@ pipeline {
     stage('Unit Test') {
       steps {
         sh './ci/pr/unit-test.sh'
-      }
-    }
-    stage('Generate Document') {
-      steps {
-        echo 'Generate Document'
       }
     }
     stage('Confirm Publish') {
@@ -46,7 +42,7 @@ pipeline {
         sh './ci/deployment/publish.sh'
       }
     }
-    stage('Publish to Readthedoc') {
+    stage('Publish Document') {
       steps {
         echo 'Publish to Readthedoc'
       }
