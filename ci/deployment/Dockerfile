@@ -38,10 +38,12 @@ RUN git config user.email ${GIT_EMAIL}
 
 # sync git
 RUN git checkout ${GIT_BRANCH}
-RUN git tags
+RUN git tag
 RUN git fetch
 RUN git pull --tags
-RUN git tags
+RUN git tag
+RUN git pull --tag
+RUN git tag
 RUN git reset --hard origin/${GIT_BRANCH}
 
 # build package
