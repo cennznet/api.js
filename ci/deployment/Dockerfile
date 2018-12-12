@@ -18,7 +18,6 @@ COPY ./packages/wallet/package.json ./packages/wallet/
 RUN npx lerna bootstrap
 
 # copy complete project - required for git push
-RUN rm -rf .git
 COPY . .
 
 # add credentials on build
@@ -39,12 +38,7 @@ RUN git config user.email ${GIT_EMAIL}
 
 # sync git
 RUN git checkout ${GIT_BRANCH}
-RUN git tag
 RUN git fetch
-RUN git pull --tags
-RUN git tag
-RUN git pull --tag
-RUN git tag
 RUN git reset --hard origin/${GIT_BRANCH}
 
 # build package
