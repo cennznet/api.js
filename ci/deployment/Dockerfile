@@ -1,5 +1,4 @@
 FROM node:10.13.0
-
 WORKDIR workdir/
 ARG GIT_NAME
 ARG GIT_EMAIL
@@ -19,6 +18,7 @@ COPY ./packages/wallet/package.json ./packages/wallet/
 RUN npx lerna bootstrap
 
 # copy complete project - required for git push
+COPY . .
 COPY . .
 
 # add credentials on build
