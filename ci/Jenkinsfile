@@ -38,7 +38,6 @@ pipeline {
         }
       }
     }
-    
     stage('Publish to Gemfury') {
       environment {
         GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
