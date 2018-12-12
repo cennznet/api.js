@@ -36,6 +36,7 @@ RUN git --version
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
+
 # sync git
 RUN git checkout ${GIT_BRANCH}
 RUN git fetch
