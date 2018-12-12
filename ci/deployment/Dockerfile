@@ -18,7 +18,7 @@ COPY ./packages/wallet/package.json ./packages/wallet/
 RUN npx lerna bootstrap
 
 # copy complete project - required for git push
-COPY . .
+COPY lerna.json ./
 COPY . .
 
 # add credentials on build
