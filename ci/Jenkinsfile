@@ -18,12 +18,12 @@ pipeline {
       environment {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
+      when {
+        equals expected: true,
+        actual: true
+      }
       steps {
-        script {
-          if (false) {
-            sh './ci/deployment/build.sh'
-          }
-        }
+        sh './ci/deployment/build.sh'
       }
     }
     stage('Unit Test') {
