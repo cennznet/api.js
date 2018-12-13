@@ -11,7 +11,7 @@ pipeline {
     GIT_BRANCH = 'DK-5-Deployment-Pipeline'
     IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
     PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
-    LAST_COMMIT_AUTHOR = sh(script: "echo 'false'", returnStdout: true).trim()
+    LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
   }
 
   stages {
@@ -20,8 +20,8 @@ pipeline {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
       when {
-        equals expected: true,
-        actual: ${env.LAST_COMMIT_AUTHOR}
+        equals expected: env.GIT_NAME,
+        actual: env.LAST_COMMIT_AUTHOR
       }
       steps {
         sh './ci/deployment/build.sh'
@@ -29,8 +29,8 @@ pipeline {
     }
     stage('Unit Test') {
       when {
-        equals expected: true,
-        actual: false
+        equals expected: env.GIT_NAME,
+        actual: env.LAST_COMMIT_AUTHOR
       }
       steps {
         sh './ci/pr/unit-test.sh'
@@ -38,8 +38,8 @@ pipeline {
     }
     stage('Confirm Publish') {
       when {
-        equals expected: true,
-        actual: ${env.LAST_COMMIT_AUTHOR}
+        equals expected: env.GIT_NAME,
+        actual: env.LAST_COMMIT_AUTHOR
       }
       steps {
         timeout(time:30, unit:'MINUTES') {
@@ -52,8 +52,8 @@ pipeline {
         GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
       }
       when {
-        equals expected: true,
-        actual: ${env.LAST_COMMIT_AUTHOR}
+        equals expected: env.GIT_NAME,
+        actual: env.LAST_COMMIT_AUTHOR
       }
       steps {
         sh './ci/deployment/publish.sh'
@@ -61,8 +61,8 @@ pipeline {
     }
     stage('Publish Document') {
       when {
-        equals expected: true,
-        actual: ${env.LAST_COMMIT_AUTHOR}
+        equals expected: env.GIT_NAME,
+        actual: env.LAST_COMMIT_AUTHOR
       }
       steps {
         echo 'Publish to Readthedoc'
