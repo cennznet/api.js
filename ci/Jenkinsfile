@@ -21,6 +21,7 @@ pipeline {
         echo "${env.GIT_NAME}"
       }
     }
+    
     stage('Build') {
       environment {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
