@@ -13,47 +13,45 @@ pipeline {
     PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
   }
 
-  try {
-    stages {
-      stage('Build') {
-        environment {
-          SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
-        }
-        steps {
-          sh './ci/deployment/build.sh'
-        }
+  stages {
+    stage('Build') {
+      environment {
+        SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
-      stage('Unit Test') {
-        steps {
-          sh './ci/pr/unit-test.sh'
-        }
-      }
-      stage('Confirm Publish') {
-        steps {
-          timeout(time:30, unit:'MINUTES') {
-            input "Confirm publish?"
+      steps {
+        script {
+          if (true) {
+            currentBuild.result = 'SUCCESS'
+            return
           }
         }
+        sh './ci/deployment/build.sh'
       }
-      stage('Publish to Gemfury') {
-        environment {
-          GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
-        }
-        steps {
-          sh './ci/deployment/publish.sh'
-        }
+    }
+    stage('Unit Test') {
+      steps {
+        sh './ci/pr/unit-test.sh'
       }
-      stage('Publish Document') {
-        steps {
-          echo 'Publish to Readthedoc'
+    }
+    stage('Confirm Publish') {
+      steps {
+        timeout(time:30, unit:'MINUTES') {
+          input "Confirm publish?"
         }
       }
     }
-  } catch (e) {
-      if (true) {
-        currentBuild.result = 'SUCCESS'
-        return
+    stage('Publish to Gemfury') {
+      environment {
+        GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
       }
-      throw e
+      steps {
+        sh './ci/deployment/publish.sh'
+      }
+    }
+    stage('Publish Document') {
+      steps {
+        echo 'Publish to Readthedoc'
+      }
+    }
   }
 }
