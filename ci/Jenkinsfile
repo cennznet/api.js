@@ -34,7 +34,7 @@ pipeline {
     }
     stage('Unit Test') {
       when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
+        expression {env.GIT_NAME == env.LAST_COMMIT_AUTHOR}
       }
       steps {
         sh './ci/pr/unit-test.sh'
