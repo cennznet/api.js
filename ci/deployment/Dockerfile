@@ -1,11 +1,11 @@
+FROM ${IMAGE_NAME}
+WORKDIR workdir/
+
 ARG GIT_NAME
 ARG GIT_EMAIL
 ARG GIT_BRANCH
 ARG IMAGE_NAME
 ARG GEMFURY_TOKEN
-
-FROM ${IMAGE_NAME}
-WORKDIR workdir/
 
 # add credentials on build
 RUN mkdir /root/.ssh/
