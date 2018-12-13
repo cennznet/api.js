@@ -21,11 +21,9 @@ pipeline {
       steps {
         script {
           if (true) {
-            currentBuild.result = 'ABORTED'
-            error('Stopping early…')
+            sh './ci/deployment/build.sh'
           }
         }
-        sh './ci/deployment/build.sh'
       }
     }
     stage('Unit Test') {
@@ -54,4 +52,6 @@ pipeline {
       }
     }
   }
+
+  post
 }
