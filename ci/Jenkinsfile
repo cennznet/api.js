@@ -13,11 +13,11 @@ pipeline {
     PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
   }
 
+  script {
+    currentBuild.result = 'SUCCESS'
+      return 
+  }
   stages {
-    script {
-      currentBuild.result = 'SUCCESS'
-        return 
-    }
     stage('Build') {
       environment {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
