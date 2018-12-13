@@ -21,8 +21,8 @@ pipeline {
       steps {
         script {
           if (true) {
-            currentBuild.result = 'SUCCESS'
-            return
+            currentBuild.result = 'ABORTED'
+            error('Stopping early…')
           }
         }
         sh './ci/deployment/build.sh'
