@@ -35,7 +35,7 @@ RUN git reset --hard
 RUN npx lerna version --conventional-commits --yes --no-commit-hooks
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
-RUN npx lerna exec  --scope=cennzx-sdk \
+RUN npx lerna exec \
   --parallel \
   -- \
     "\
@@ -48,12 +48,12 @@ RUN npx lerna exec  --scope=cennzx-sdk \
     ";
 
 # pack packages for uploading
-RUN npx lerna exec --scope=cennzx-sdk -- "npm pack"
+RUN npx lerna exec -- "npm pack"
 
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope=cennzx-sdk \
+  npx lerna exec \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
