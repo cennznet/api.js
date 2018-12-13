@@ -14,9 +14,11 @@ pipeline {
   }
 
   stages {
-    stage('Build') {
+    script {
       currentBuild.result = 'SUCCESS'
         return 
+    }
+    stage('Build') {
       environment {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
