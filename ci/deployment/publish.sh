@@ -19,4 +19,4 @@ docker build \
   --build-arg GIT_BRANCH="$GIT_BRANCH" \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
-  -f $DIR/Dockerfile .
+  -f $DIR/ci/deployment/Dockerfile .
