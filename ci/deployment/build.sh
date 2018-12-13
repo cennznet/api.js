@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-currentBuild.result = 'SUCCESS'
-      return
-
 # dir holding this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
