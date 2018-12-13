@@ -20,7 +20,7 @@ pipeline {
       }
       when {
         equals expected: true,
-        actual: true
+        actual: false
       }
       steps {
         sh './ci/deployment/build.sh'
