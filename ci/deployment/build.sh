@@ -9,8 +9,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 : "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
 : "${GIT_BRANCH:?GIT_BRANCH environment variable is required}"
 
-GIT_NAME=${GIT_NAME} $DIR/../utils/prevent
-
 NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
 
 # prevent jenkins rebuild
