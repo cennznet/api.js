@@ -20,7 +20,7 @@ pipeline {
       }
       steps {
         script {
-          if (true) {
+          if (false) {
             sh './ci/deployment/build.sh'
           }
         }
