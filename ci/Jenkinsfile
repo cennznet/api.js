@@ -29,11 +29,19 @@ pipeline {
       }
     }
     stage('Unit Test') {
+      when {
+        equals expected: true,
+        actual: a
+      }
       steps {
         sh './ci/pr/unit-test.sh'
       }
     }
     stage('Confirm Publish') {
+      when {
+        equals expected: true,
+        actual: a
+      }
       steps {
         timeout(time:30, unit:'MINUTES') {
           input "Confirm publish?"
@@ -44,11 +52,19 @@ pipeline {
       environment {
         GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
       }
+      when {
+        equals expected: true,
+        actual: a
+      }
       steps {
         sh './ci/deployment/publish.sh'
       }
     }
     stage('Publish Document') {
+      when {
+        equals expected: true,
+        actual: a
+      }
       steps {
         echo 'Publish to Readthedoc'
       }
