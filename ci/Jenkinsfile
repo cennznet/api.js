@@ -26,8 +26,7 @@ pipeline {
         SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
       }
       when {
-        equals expected: env.GIT_NAME,
-        actual: env.LAST_COMMIT_AUTHOR
+        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
       steps {
         sh './ci/deployment/build.sh'
@@ -35,8 +34,7 @@ pipeline {
     }
     stage('Unit Test') {
       when {
-        equals expected: env.GIT_NAME,
-        actual: env.LAST_COMMIT_AUTHOR
+        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
       steps {
         sh './ci/pr/unit-test.sh'
@@ -44,8 +42,7 @@ pipeline {
     }
     stage('Confirm Publish') {
       when {
-        equals expected: env.GIT_NAME,
-        actual: env.LAST_COMMIT_AUTHOR
+        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
       steps {
         timeout(time:30, unit:'MINUTES') {
@@ -58,8 +55,7 @@ pipeline {
         GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
       }
       when {
-        equals expected: env.GIT_NAME,
-        actual: env.LAST_COMMIT_AUTHOR
+        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
       steps {
         sh './ci/deployment/publish.sh'
@@ -67,8 +63,7 @@ pipeline {
     }
     stage('Publish Document') {
       when {
-        equals expected: env.GIT_NAME,
-        actual: env.LAST_COMMIT_AUTHOR
+        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
       steps {
         echo 'Publish to Readthedoc'
