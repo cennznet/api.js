@@ -1,7 +1,7 @@
 **/CHANGELOG.md
 **/node_modules/**
 **/.*/**
-packages/web/public/**
+**/coverage/**
 **/dist/**
 *.d.ts
 **/.DS_Store

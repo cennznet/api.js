@@ -1,57 +1,116 @@
-import Keyring from '@polkadot/keyring';
 import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@polkadot/keyring/types';
 import Extrinsic from '@polkadot/types/Extrinsic';
-import {TxOpt, WalletInterface} from 'cennznet-types';
+import {TxOpt, Encryptor, ISigner, IKeyring, IWallet} from 'cennznet-types';
+import {WalletOption} from 'cennznet-types/wallet';
+import {persistBeforeReturn, requireUnlocked} from './decorators';
+import {SimpleKeyring} from './keyrings/SimpleKeyring';
+import naclEncryptor from './encryptors/naclEncryptor';
 
-const privateProps = new WeakMap<object, Keyring>();
+const privateKeyring = new WeakMap<object, IKeyring<any>>();
+const privatePasswd = new WeakMap<object, string>();
 
-export class Wallet implements WalletInterface {
-    constructor() {
-        privateProps.set(this, new Keyring());
+export class Wallet implements ISigner, IWallet {
+    private _vault: string;
+    private _encrytpor: Encryptor;
+
+    private _isLocked: boolean = true;
+
+    constructor(option: WalletOption = {}) {
+        this._vault = option.vault;
+        this._encrytpor = option.encryptor || naclEncryptor;
     }
 
+    @requireUnlocked
     public async sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void> {
-        const signerPair = privateProps.get(this).getPair(opt.from);
+        const signerPair = privateKeyring.get(this).getPair(opt.from);
 
         extrinsic.sign(signerPair, opt.nonce, opt.blockHash);
     }
 
+    async createNewVault(password: string): Promise<void> {
+        privatePasswd.set(this, password);
+        privateKeyring.set(this, new SimpleKeyring());
+        this._isLocked = false;
+        await this.persistAll();
+    }
+
+    @requireUnlocked
+    async persistAll(): Promise<void> {
+        const serialized = await privateKeyring.get(this).serialize();
+        this._vault = await this._encrytpor.encrypt(privatePasswd.get(this), serialized);
+    }
+
+    async lock(): Promise<void> {
+        privatePasswd.set(this, null);
+        privateKeyring.set(this, null);
+        this._isLocked = true;
+    }
+
+    async unlock(password?: string): Promise<void> {
+        if (!this.isLocked()) {
+            throw new Error('Wallet has already been unlocked.');
+        }
+        const serialized = await this._encrytpor.decrypt(password, this._vault);
+        const keyring = new SimpleKeyring();
+        await keyring.deserialize(serialized as any);
+        privateKeyring.set(this, keyring);
+        privatePasswd.set(this, password);
+        this._isLocked = false;
+    }
+
+    isLocked(): boolean {
+        return this._isLocked;
+    }
+
     //all KeyringInstance functions redirect to _keyring
-    addFromJson(pair: KeyringPair$Json, passphrase?: string): KeyringPair {
-        const keyPair = privateProps.get(this).addFromJson(pair);
+    @persistBeforeReturn
+    @requireUnlocked
+    async addFromJson(pair: KeyringPair$Json, passphrase?: string): Promise<KeyringPair> {
+        const keyPair = privateKeyring.get(this).addFromJson(pair);
         try {
             keyPair.decodePkcs8(passphrase);
         } catch (e) {
-            privateProps.get(this).removePair(pair.address);
+            privateKeyring.get(this).removePair(pair.address);
             throw e;
         }
+        await this.persistAll();
         return keyPair;
     }
 
-    addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): KeyringPair {
-        return privateProps.get(this).addFromMnemonic(mnemonic, meta);
+    @persistBeforeReturn
+    @requireUnlocked
+    async addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): Promise<KeyringPair> {
+        return privateKeyring.get(this).addFromMnemonic(mnemonic, meta);
     }
 
-    addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): KeyringPair {
-        return privateProps.get(this).addFromSeed(seed, meta);
+    @persistBeforeReturn
+    @requireUnlocked
+    async addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): Promise<KeyringPair> {
+        return privateKeyring.get(this).addFromSeed(seed, meta);
     }
 
-    addPair(pair: KeyringPair): KeyringPair {
+    @persistBeforeReturn
+    @requireUnlocked
+    async addPair(pair: KeyringPair): Promise<KeyringPair> {
         if (pair.isLocked()) {
             throw new Error('key pair is locked. unlock before add it into wallet');
         }
-        return privateProps.get(this).addPair(pair);
+        return privateKeyring.get(this).addPair(pair);
     }
 
+    @requireUnlocked
     getPair(address: string | Uint8Array): KeyringPair {
-        return privateProps.get(this).getPair(address);
+        return privateKeyring.get(this).getPair(address);
     }
 
+    @requireUnlocked
     getPairs(): Array<KeyringPair> {
-        return privateProps.get(this).getPairs();
+        return privateKeyring.get(this).getPairs();
     }
 
-    removePair(address: string | Uint8Array): void {
-        privateProps.get(this).removePair(address);
+    @persistBeforeReturn
+    @requireUnlocked
+    async removePair(address: string | Uint8Array): Promise<void> {
+        privateKeyring.get(this).removePair(address);
     }
 }

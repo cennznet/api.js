@@ -25,10 +25,12 @@
         "test:watch": "jest --watch"
     },
     "dependencies": {
-        "@polkadot/keyring": "0.33.6"
+        "@polkadot/keyring": "^0.33.13",
+        "reflect-metadata": "^0.1.12",
+        "tweetnacl": "^1.0.0"
     },
     "devDependencies": {
-        "@polkadot/types": "0.32.9",
+        "@polkadot/types": "^0.33.11",
         "@types/jest": "^23.3.5",
         "cennznet-types": "^0.1.0",
         "jest": "^23.6.0",

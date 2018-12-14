@@ -32,7 +32,7 @@ export default class SubmittableExtrinsic extends Extrinsic {
                 }
             }
             const blockHash = txOpt.blockHash || this._api.genesisHash;
-            await this._api.wallet.sign(this, {...txOpt, nonce, blockHash});
+            await this._api.signer.sign(this, {...txOpt, nonce, blockHash});
         }
         if (statusCb) {
             return this._api.rpc.author.submitAndWatchExtrinsic(this, statusCb);

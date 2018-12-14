@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import {WalletInterface} from 'cennznet-types';
+import {ISigner} from 'cennznet-types';
 import {ApiInterface$Events, SubmittableExtrinsics, QueryableStorage} from './types';
 
 import EventEmitter from 'eventemitter3';
@@ -37,7 +37,7 @@ export default abstract class ApiBase {
     protected _rpc: Rpc;
     protected _runtimeMetadata?: RuntimeMetadata;
     protected _runtimeVersion?: RuntimeVersion;
-    protected _wallet: WalletInterface;
+    protected _signer: ISigner;
 
     constructor(provider: ProviderInterface) {
         this._rpc = new Rpc(provider);
@@ -118,12 +118,12 @@ export default abstract class ApiBase {
         return this._rpc;
     }
 
-    get wallet(): WalletInterface {
-        return this._wallet;
+    get signer(): ISigner {
+        return this._signer;
     }
 
-    public setWallet(wallet: WalletInterface) {
-        this._wallet = wallet;
+    public setSigner(signer: ISigner) {
+        this._signer = signer;
     }
 
     /**

@@ -22,6 +22,6 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "devDependencies": {
-    "@polkadot/types": "0.32.9"
+    "@polkadot/types": "^0.33.11"
   }
 }
