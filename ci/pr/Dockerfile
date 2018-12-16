@@ -4,7 +4,7 @@ WORKDIR /workdir
 COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
 
 RUN npm install -g yarn
-RUN yarn install
+RUN yarn install -q
 
 # install dependecies for packages
 COPY ./packages/api-promise/package.json ./packages/api-promise/
@@ -15,8 +15,7 @@ COPY ./packages/wallet/package.json ./packages/wallet/
 RUN npx lerna bootstrap
 
 # copy source code
-COPY packages ./packages
-COPY jest ./jest
+COPY . .
 
 # build
 RUN npx lerna run build
