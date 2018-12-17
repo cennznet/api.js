@@ -1,11 +1,41 @@
-# `cennz-connect`
+# `cennznet-api`
 
-> TODO: description
+> The Cennznet JavaScript API library for browsers and Node.js.
+
+# Install
+```
+$> npm config set registry https://npm-proxy.fury.io/centrality/
+$> npm login
+$> npm i cennznet-api
+```
 
 ## Usage
 
 ```
-const cennzConnect = require('cennz-connect');
+# node --experimental-repl-await
+//initialize Api and connect to dev network
+const {Api} = require('cennznet-api')
+api = await Api.create('ws://cennznet-node-0.centrality.me:9944');
 
-// TODO: DEMONSTRATE API
+// initialize wallet and import an account
+const {Wallet} = require('cennznet-wallet')
+const {stringToU8a} = require('@polkadot/util')
+const andrea = {
+	address: '5EKGZwAuwvVpVaGWZJ3hYDqTSxQCDDUgeMv36M4qLq7wtWLH',
+	seed: stringToU8a('Andrea'.padEnd(32, ' '))
+}
+
+const bob = {
+	address: '5Gw3s7q4QLkSWwknsiPtjujPv3XM4Trxi5d4PgKMMk3gfGTE',
+	seed: stringToU8a('Bob'.padEnd(32, ' '))
+}
+
+wallet = new Wallet();
+wallet.createNewVault();
+wallet.addFromSeed(andrea.seed);
+
+// set wallet as signer of api
+api.setSigner(wallet)
+// do a transfer
+await api.tx.balances.transfer(bob.address, 12345).send({from: andrea.address})
 ```

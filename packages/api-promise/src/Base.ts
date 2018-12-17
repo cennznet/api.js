@@ -3,7 +3,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import {ISigner} from 'cennznet-types';
+import WsProvider from '@polkadot/rpc-provider/ws';
+import {TypeRegistry} from '@polkadot/types/codec/typeRegistry';
+import {Constructor} from '@polkadot/types/types';
+import {ApiOptions, ISigner} from 'cennznet-types';
 import {ApiInterface$Events, SubmittableExtrinsics, QueryableStorage} from './types';
 
 import EventEmitter from 'eventemitter3';
@@ -39,11 +42,15 @@ export default abstract class ApiBase {
     protected _runtimeVersion?: RuntimeVersion;
     protected _signer: ISigner;
 
-    constructor(provider: ProviderInterface) {
+    constructor(option: ApiOptions = {}) {
+        let provider = option.provider;
+        if (typeof provider === 'string') {
+            provider = new WsProvider(provider);
+        }
         this._rpc = new Rpc(provider);
         this._eventemitter = new EventEmitter();
 
-        this.init();
+        this.init(option);
     }
 
     /**
@@ -153,8 +160,9 @@ export default abstract class ApiBase {
         this._eventemitter.emit(type, ...args);
     }
 
-    private init(): void {
+    private init(option: ApiOptions): void {
         let isReady: boolean = false;
+        this.loadRuntimeTypes(option.additionalTypes);
 
         this.rpc._provider.on('disconnected', () => {
             this.emit('disconnected');
@@ -201,6 +209,11 @@ export default abstract class ApiBase {
 
             return false;
         }
+    }
+
+    private loadRuntimeTypes(additionalTypes: {[name: string]: Constructor} = {}): void {
+        const Types = require('cennznet-runtime-types');
+        TypeRegistry.defaultRegistry.register({...Types, ...additionalTypes});
     }
 
     protected decorateFunctionMeta(input: MetaDecoration, output: MetaDecoration): MetaDecoration {

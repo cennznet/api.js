@@ -1,6 +1,5 @@
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import WsProvider from '@polkadot/rpc-provider/ws';
 import {Storage} from '@polkadot/storage/types';
+import {ApiOptions} from 'cennznet-types';
 import ApiBase from './Base';
 import SubmittableExtrinsic from './SubmittableExtrinsic';
 import {
@@ -19,15 +18,12 @@ import {Extrinsics, ExtrinsicFunction} from '@polkadot/types/Method';
 export class Api extends ApiBase {
     private readonly _isReady: Promise<Api>;
 
-    static create(providerOrUrl?: ProviderInterface | string): Promise<Api> {
-        if (typeof providerOrUrl === 'string') {
-            return new Api(new WsProvider(providerOrUrl)).isReady;
-        }
-        return new Api(providerOrUrl).isReady;
+    static create(option?: ApiOptions): Promise<Api> {
+        return new Api(option).isReady;
     }
 
-    constructor(provider: ProviderInterface) {
-        super(provider);
+    constructor(option?: ApiOptions) {
+        super(option);
 
         this._isReady = new Promise(resolveReady => this.on('ready', () => resolveReady(this)));
     }

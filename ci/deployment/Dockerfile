@@ -36,7 +36,7 @@ RUN git reset --hard
 RUN npx lerna version ${RELEASE_TYPE} --yes --no-commit-hooks
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
-RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types} \
+RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types,cennznet-runtime-types} \
   --parallel \
   -- \
     "\
@@ -49,12 +49,12 @@ RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types} \
     ";
 
 # pack packages for uploading
-RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types} -- "npm pack"
+RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types,cennznet-runtime-types}} -- "npm pack"
 
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types} \
+  npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types,cennznet-runtime-types}} \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
