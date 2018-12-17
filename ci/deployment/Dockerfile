@@ -4,9 +4,8 @@ WORKDIR workdir/
 
 ARG GIT_NAME
 ARG GIT_EMAIL
-ARG GIT_BRANCH
 ARG GEMFURY_TOKEN
-ARG RELEASE_TYPE
+ARG RELEASE_SCOPE
 
 # add credentials on build
 RUN mkdir /root/.ssh/
@@ -24,16 +23,11 @@ RUN git --version
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
 
-# sync git
-RUN git checkout ${GIT_BRANCH}
-RUN git fetch
-RUN git reset --hard origin/${GIT_BRANCH}
-
 RUN git status
 RUN git reset --hard
 
 # Version packages and create versioned GIT commit
-RUN npx lerna version ${RELEASE_TYPE} --yes --no-commit-hooks
+RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
 RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-types,cennznet-runtime-types} \

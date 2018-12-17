@@ -8,7 +8,6 @@ pipeline {
     SERVICE_NAME = 'cennznet-js'
     GIT_NAME = 'Jenkins'
     GIT_EMAIL = 'jenkins@centrality.ai'
-    GIT_BRANCH = 'DK-5-Deployment-Pipeline'
     IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
     PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
     LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
@@ -51,22 +50,16 @@ pipeline {
       when {
         expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
       }
-      input {
-        id "releaseType"
-        message "Choose release type"
-        parameters { 
-          choice(
-            name: 'RELEASE_TYPE', 
-            choices: ['major', 'minor', 'patch'], 
-            description: ''
-          ) 
-        }
-      }
       environment {
         GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
-        RELEASE_TYPE="${RELEASE_TYPE}"
       }
       steps {
+        script {
+          timeout(time:30, unit:'MINUTES') {
+            env.RELEASE_SCOPE = input message: 'User input required',
+                            parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+          }
+        }
         sh './ci/deployment/publish.sh'
       }
     }
