@@ -1,6 +1,6 @@
 {
     "name": "cennznet-api",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "cennznet's javascript client",
     "keywords": [
         "cennz"
@@ -32,8 +32,8 @@
         "@polkadot/rpc-provider": "^0.33.11",
         "@polkadot/storage": "^0.33.11",
         "@polkadot/types": "^0.33.11",
-        "cennznet-types": "^0.0.0",
-        "cennznet-wallet": "^0.0.0",
+        "cennznet-types": "^0.0.1",
+        "cennznet-wallet": "^0.0.1",
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
