@@ -4,7 +4,6 @@ WORKDIR workdir/
 
 ARG GIT_NAME
 ARG GIT_EMAIL
-ARG GIT_BRANCH
 ARG GEMFURY_TOKEN
 ARG RELEASE_TYPE
 
@@ -23,11 +22,6 @@ RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 RUN git --version
 RUN git config user.name ${GIT_NAME}
 RUN git config user.email ${GIT_EMAIL}
-
-# sync git
-RUN git checkout ${GIT_BRANCH}
-RUN git fetch
-RUN git reset --hard origin/${GIT_BRANCH}
 
 RUN git status
 RUN git reset --hard
