@@ -1,6 +1,6 @@
 {
     "name": "cennznet-wallet",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "> TODO: description",
     "author": "ian.he <ian.he@centrality.ai>",
     "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
@@ -32,7 +32,7 @@
     "devDependencies": {
         "@polkadot/types": "^0.33.11",
         "@types/jest": "^23.3.5",
-        "cennznet-types": "^0.0.0",
+        "cennznet-types": "^0.1.0",
         "jest": "^23.6.0",
         "rimraf": "^2.6.2",
         "rollup": "^0.66.6",
