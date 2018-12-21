@@ -1,76 +1,93 @@
 #!groovy
 pipeline {
-  agent {
-    label 'linux'
-  }
-
-  environment {
-    SERVICE_NAME = 'cennznet-js'
-    GIT_NAME = 'Jenkins'
-    GIT_EMAIL = 'jenkins@centrality.ai'
-    IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
-    PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
-    LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
-  }
-
-  stages {
-    stage('Build') {
-      environment {
-        SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
-      }
-      when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
-      }
-      steps {
-        sh './ci/deployment/build.sh'
-      }
+    agent {
+        label 'linux'
     }
 
-    stage('Unit Test') {
-      when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
-      }
-      steps {
-        sh './ci/pr/unit-test.sh'
-      }
+    environment {
+        SERVICE_NAME = 'cennznet-js'
+        IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
+        GIT_NAME = 'Jenkins'
+        GIT_EMAIL = 'jenkins@centrality.ai'
+        PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
+        LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
     }
 
-    stage('Confirm Publish') {
-      when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
-      }
-      steps {
-        timeout(time:30, unit:'MINUTES') {
-          input "Confirm publish?"
+    stages {
+        stage('Build') {
+            environment {
+                SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
+            }
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                sh './ci/deployment/build.sh'
+            }
         }
-      }
+
+        stage('Unit Test') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                sh './ci/pr/unit-test.sh'
+            }
+        }
+
+        stage('Confirm Publish') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {
+                    input "Confirm publish?"
+                }
+            }
+        }
+
+        stage('Publish to Gemfury') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            environment {
+                GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
+            }
+            steps {
+                script {
+                    timeout(time: 30, unit: 'MINUTES') {
+                        env.RELEASE_SCOPE = input message: 'User input required',
+                                parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+                    }
+                }
+                sh './ci/deployment/publish.sh'
+            }
+        }
+
+
+        stage('Publish Docs') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            environment {
+                ENV = 'dev'
+                DISTRIBUTION_ID = 'E7FDFJLSKZ40L'
+                SUBDOMAIN = 'cennznet-js-docs'
+                AWS_ACCESS_KEY = credentials('TF_AWS_ACCESS_KEY')
+                AWS_SECRET_KEY = credentials('TF_AWS_SECRET_KEY')
+            }
+            steps {
+                sh './ci/deployment/make_docs.sh'
+                sh 'SCRIPT="deploy-website" ./centrality.deploy/static-website/static-website-apply.sh'
+                sh 'SCRIPT="cf-invalidate" ./centrality.deploy/aws/exec-awscli.sh'
+            }
+        }
     }
 
-    stage('Publish to Gemfury') {
-      when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
-      }
-      environment {
-        GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
-      }
-      steps {
-        script {
-          timeout(time:30, unit:'MINUTES') {
-            env.RELEASE_SCOPE = input message: 'User input required',
-                            parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
-          }
+    post {
+        always {
+            echo "pipeline post always"
+            sh 'bash /mnt/jenkins/script/cleanup.sh'
         }
-        sh './ci/deployment/publish.sh'
-      }
     }
-    
-    stage('Publish Document') {
-      when {
-        expression {env.GIT_NAME != env.LAST_COMMIT_AUTHOR}
-      }
-      steps {
-        echo 'Publish to Readthedoc'
-      }
-    }
-  }
 }

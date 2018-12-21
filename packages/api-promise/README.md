@@ -3,6 +3,7 @@
 > The Cennznet JavaScript API library for browsers and Node.js.
 
 # Install
+
 ```
 $> npm config set registry https://npm-proxy.fury.io/centrality/
 $> npm login
@@ -15,7 +16,9 @@ $> npm i cennznet-api
 # node --experimental-repl-await
 //initialize Api and connect to dev network
 const {Api} = require('cennznet-api')
-api = await Api.create('ws://cennznet-node-0.centrality.me:9944');
+api = await Api.create({
+    provider: 'ws://cennznet-node-0.centrality.me:9944'
+});
 
 // initialize wallet and import an account
 const {Wallet} = require('cennznet-wallet')
@@ -31,7 +34,7 @@ const bob = {
 }
 
 wallet = new Wallet();
-wallet.createNewVault();
+wallet.createNewVault('a passphrase);
 wallet.addFromSeed(andrea.seed);
 
 // set wallet as signer of api

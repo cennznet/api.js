@@ -24,7 +24,11 @@
     "scripts": {
         "build": "rimraf dist && rollup -c rollup.config.ts",
         "test:e2e": "jest -c ../../jest/jest.config.js --coverage",
-        "test:watch": "jest -c ../../jest/jest.config.js --watch"
+        "test:watch": "jest -c ../../jest/jest.config.js --watch",
+        "doc": "npm run doc:gen && npm run doc:copyChangeLog && npm run doc:copyReadme",
+        "doc:gen": "typedoc --tsconfig tsconfig.json",
+        "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/api-promise/CHANGELOG.md",
+        "doc:copyReadme": "ncp ./README.md ../../docs/api-promise/README.md"
     },
     "dependencies": {
         "@polkadot/extrinsics": "^0.33.11",
@@ -47,6 +51,9 @@
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-plugin-sourcemaps": "^0.4.2",
         "rollup-plugin-typescript2": "^0.17.1",
-        "typescript": "^3.1.6"
+        "typedoc": "^0.13.0",
+        "typedoc-plugin-markdown": "^1.1.19",
+        "typescript": "^3.1.6",
+        "ncp": "^2.0.0"
     }
 }

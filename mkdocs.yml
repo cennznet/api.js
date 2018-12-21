@@ -1,0 +1,16 @@
+use_directory_urls: false
+site_name: Cennznet-js
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+  - yaml
+  - rust
+nav:
+- Api Promise:
+  - 'Home': 'api-promise/README.md'
+  - 'Change Log': 'api-promise/CHANGELOG.md'
+- Wallet:
+  - 'Home': 'wallet/README.md'
+  - 'Change Log': 'wallet/CHANGELOG.md'
+

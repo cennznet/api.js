@@ -8,6 +8,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "make-docs": "./scripts/make_docs.sh"
+  },
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "cz-lerna-changelog": "^2.0.1",
