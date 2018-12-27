@@ -27,7 +27,7 @@ RUN git status
 RUN git reset --hard
 
 # Version packages and create versioned GIT commit
-RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks
+RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks --force-publish=*
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
 RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} \
