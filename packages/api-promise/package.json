@@ -1,6 +1,6 @@
 {
     "name": "cennznet-api",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "cennznet's javascript client",
     "keywords": [
         "cennz"
@@ -38,12 +38,13 @@
         "@polkadot/types": "^0.33.11",
         "cennznet-runtime-types": "^0.1.0",
         "cennznet-types": "^0.1.0",
-        "cennznet-wallet": "^0.1.0",
+        "cennznet-wallet": "^0.1.1",
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
         "@types/jest": "^23.3.5",
         "jest": "^23.6.0",
+        "ncp": "^2.0.0",
         "rimraf": "^2.6.2",
         "rollup": "^0.66.6",
         "rollup-plugin-commonjs": "^9.2.0",
@@ -53,7 +54,6 @@
         "rollup-plugin-typescript2": "^0.17.1",
         "typedoc": "^0.13.0",
         "typedoc-plugin-markdown": "^1.1.19",
-        "typescript": "^3.1.6",
-        "ncp": "^2.0.0"
+        "typescript": "^3.1.6"
     }
 }
