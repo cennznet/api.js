@@ -9,8 +9,5 @@ theme:
 nav:
 - Api Promise:
   - 'Home': 'api-promise/README.md'
-  - 'Change Log': 'api-promise/CHANGELOG.md'
 - Wallet:
   - 'Home': 'wallet/README.md'
-  - 'Change Log': 'wallet/CHANGELOG.md'
-

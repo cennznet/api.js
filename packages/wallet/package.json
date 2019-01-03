@@ -23,7 +23,7 @@
         "test": "jest --coverage -c ../../jest/jest.config.js",
         "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
         "test:watch": "jest --coverage -c ../../jest/jest.config.js --watch",
-        "doc": "npm run doc:gen && npm run doc:copyChangeLog && npm run doc:copyReadme",
+        "doc": "npm run doc:gen && npm run doc:copyReadme",
         "doc:gen": "typedoc --tsconfig tsconfig.json",
         "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/wallet/CHANGELOG.md",
         "doc:copyReadme": "ncp ./README.md ../../docs/wallet/README.md"

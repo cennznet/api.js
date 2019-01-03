@@ -25,7 +25,7 @@
         "build": "rimraf dist && rollup -c rollup.config.ts",
         "test:e2e": "jest -c ../../jest/jest.config.js --coverage",
         "test:watch": "jest -c ../../jest/jest.config.js --watch",
-        "doc": "npm run doc:gen && npm run doc:copyChangeLog && npm run doc:copyReadme",
+        "doc": "npm run doc:gen && npm run doc:copyReadme",
         "doc:gen": "typedoc --tsconfig tsconfig.json",
         "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/api-promise/CHANGELOG.md",
         "doc:copyReadme": "ncp ./README.md ../../docs/api-promise/README.md"
