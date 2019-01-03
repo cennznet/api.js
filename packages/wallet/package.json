@@ -22,7 +22,7 @@
         "build": "rimraf dist && rollup -c rollup.config.ts",
         "test": "jest --coverage -c ../../jest/jest.config.js",
         "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
-        "test:watch": "jest --watch",
+        "test:watch": "jest --coverage -c ../../jest/jest.config.js --watch",
         "doc": "npm run doc:gen && npm run doc:copyChangeLog && npm run doc:copyReadme",
         "doc:gen": "typedoc --tsconfig tsconfig.json",
         "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/wallet/CHANGELOG.md",
@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "@polkadot/keyring": "^0.33.13",
+        "hdkey": "^1.1.0",
         "reflect-metadata": "^0.1.12",
         "tweetnacl": "^1.0.0"
     },

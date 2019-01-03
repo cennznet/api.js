@@ -10,9 +10,7 @@
         "excludePrivate": true,
         "hideGenerator": true,
         "includeDeclarations": false,
-        "externalPattern": "../../**/node_modules/**",
         "module": "commonjs",
-        "stripInternal": true,
         "theme": "markdown",
         "mode": "file",
         "verbose": true
@@ -38,6 +36,6 @@
             "*": ["node_modules/*"]
         }
     },
-    "typeRoots": ["./node_modules/@polkadot/ts", "./node_modules/@types"],
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
 }

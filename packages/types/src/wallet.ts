@@ -1,6 +1,6 @@
 import {Extrinsic} from '@polkadot/types';
-import {KeyringInstance, KeyringPair} from '@polkadot/keyring/types';
-import {TxOpt} from './index';
+import {KeyringPair} from '@polkadot/keyring/types';
+import {Newable, TxOpt} from './index';
 
 export interface ISigner {
     sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void>;
@@ -17,12 +17,30 @@ export interface IWallet {
 export interface WalletOption {
     vault?: string;
     encryptor?: Encryptor;
+    keyringTypes?: KeyringType<any>[];
+    // defaultKeyring?: Newable<IKeyring<any>>;
 }
 
-export interface IKeyring<S> extends KeyringInstance {
+export interface IKeyring<S> {
     serialize(): Promise<S>;
 
-    deserialize(obj: S): Promise<KeyringPair[]>;
+    deserialize(obj: S): Promise<this>;
+
+    getPair(address: string): Promise<KeyringPair>;
+
+    getPairs(): Promise<KeyringPair[]>;
+
+    getAddresses(): Promise<string[]>;
+
+    removePair(address: string): Promise<void>;
+
+    addPair(): Promise<KeyringPair>;
+}
+
+export interface KeyringType<T> {
+    name: string;
+    generate(): Promise<IKeyring<T>>;
+    new (data?: T): IKeyring<T>;
 }
 
 export interface Encryptor {

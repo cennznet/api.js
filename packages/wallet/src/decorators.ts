@@ -1,7 +1,11 @@
+import {Newable} from 'cennznet-types';
 import 'reflect-metadata';
 
-type Newable = {new (...args: any[]): any};
-export function isTypePromise(type: Newable): boolean {
+/**
+ *
+ * @ignore
+ */
+export function isTypePromise(type: Newable<any>): boolean {
     try {
         const test = new type(() => ({}));
         return test.then && typeof test.then === 'function';
@@ -10,6 +14,10 @@ export function isTypePromise(type: Newable): boolean {
     }
 }
 
+/**
+ *
+ * @ignore
+ */
 export const requireUnlocked = (
     target: Object,
     propertyKey: string | symbol,
@@ -30,6 +38,10 @@ export const requireUnlocked = (
     };
 };
 
+/**
+ *
+ * @ignore
+ */
 export const persistBeforeReturn = (
     target: Object,
     propertyKey: string | symbol,
@@ -38,9 +50,40 @@ export const persistBeforeReturn = (
     const origin = descriptor.value;
     const retType = Reflect.getMetadata('design:returntype', target, propertyKey);
     if (!isTypePromise(retType)) {
-        throw new Error('decorated method must return Promise');
+        throw new Error('method decorated by @persistBeforeReturn must return Promise');
     }
     descriptor.value = <any>function(...args) {
-        return origin.apply(this, args).then(res => this.persistAll().then(() => res));
+        return origin.apply(this, args).then(res =>
+            this.syncAccountKeyringMap()
+                .then(() => this.persistAll())
+                .then(() => res)
+        );
+    };
+};
+
+const mutexLocks = new Map<Object, Promise<any>>();
+/**
+ *
+ * @ignore
+ */
+export const synchronized = (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<Function>
+) => {
+    const origin = descriptor.value;
+    const retType = Reflect.getMetadata('design:returntype', target, propertyKey);
+    if (!isTypePromise(retType)) {
+        throw new Error('method decorated by @synchronized must return Promise');
+    }
+    descriptor.value = <any>function(...args) {
+        let mutexLock = mutexLocks.get(this);
+        if (!mutexLock) {
+            mutexLock = origin.apply(this, args);
+        } else {
+            mutexLock = mutexLock.catch(() => {}).then(() => origin.apply(this, args));
+        }
+        mutexLocks.set(this, mutexLock);
+        return mutexLock;
     };
 };

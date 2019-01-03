@@ -21,3 +21,12 @@ export interface ApiOptions {
      */
     additionalTypes?: {[name: string]: Constructor};
 }
+
+export type Newable<T> = {
+    name: string;
+    new (...args: any[]): T;
+};
+
+export function staticImplements<T>() {
+    return (constructor: T) => {};
+}

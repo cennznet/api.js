@@ -1,4 +1,4 @@
-import {isTypePromise, persistBeforeReturn, requireUnlocked} from './decorators';
+import {isTypePromise, persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
 
 describe('decorators', () => {
     it('test if a Type is a Promise like type', () => {
@@ -15,13 +15,17 @@ describe('decorators', () => {
                         return 'abc';
                     }
                 }
-            }).toThrow('decorated method must return Promise');
+            }).toThrow('method decorated by @persistBeforeReturn must return Promise');
         });
-        it('call persistAll if success', async () => {
-            let called = false;
+        it('call syncAccountKeyringMap and persistAll if success', async () => {
+            let called = 0;
             class Mock {
                 persistAll(): Promise<void> {
-                    called = true;
+                    called += 1;
+                    return Promise.resolve();
+                }
+                syncAccountKeyringMap(): Promise<void> {
+                    called += 1;
                     return Promise.resolve();
                 }
                 @persistBeforeReturn
@@ -31,13 +35,17 @@ describe('decorators', () => {
             }
             const mock = new Mock();
             await mock.testFunc();
-            expect(called).toBeTruthy();
+            expect(called).toBe(2);
         });
         it('not call persistAll if decorated function failed', async () => {
-            let called = false;
+            let called = 0;
             class Mock {
                 persistAll(): Promise<void> {
-                    called = true;
+                    called += 1;
+                    return Promise.resolve();
+                }
+                syncAccountKeyringMap(): Promise<void> {
+                    called += 1;
                     return Promise.resolve();
                 }
                 @persistBeforeReturn
@@ -47,7 +55,7 @@ describe('decorators', () => {
             }
             const mock = new Mock();
             await mock.testFunc().catch(() => null);
-            expect(called).toBeFalsy();
+            expect(called).toBe(0);
         });
     });
 
@@ -114,6 +122,96 @@ describe('decorators', () => {
             }
             const mock = new Mock();
             await expect(mock.testFunc()).rejects.toMatch('expected');
+        });
+    });
+
+    describe('@synchronized', () => {
+        it('call methods inside class synchronously', async () => {
+            class Mock {
+                @synchronized
+                method1(): Promise<string> {
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve('method1'), 2000);
+                    });
+                }
+                @synchronized
+                method2(): Promise<string> {
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve('method2'), 1000);
+                    });
+                }
+                @synchronized
+                method3(): Promise<string> {
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve('method3'), 500);
+                    });
+                }
+            }
+            const mock = new Mock();
+            const retOrder = [];
+            await Promise.all([
+                mock.method1().then(res => retOrder.push(res)),
+                mock.method2().then(res => retOrder.push(res)),
+                mock.method3().then(res => retOrder.push(res)),
+            ]);
+            expect(retOrder).toEqual(['method1', 'method2', 'method3']);
+        });
+
+        it('works in the instance scope', async () => {
+            class Mock1 {
+                @synchronized
+                method(): Promise<string> {
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve('Mock1'), 2000);
+                    });
+                }
+            }
+            class Mock2 {
+                @synchronized
+                method(): Promise<string> {
+                    return new Promise(resolve => {
+                        setTimeout(() => resolve('Mock2'), 500);
+                    });
+                }
+            }
+            const mock1 = new Mock1();
+            const mock2 = new Mock2();
+            const retOrder = [];
+            await Promise.all([
+                mock1.method().then(res => retOrder.push(res)),
+                mock2.method().then(res => retOrder.push(res)),
+            ]);
+            expect(retOrder).toEqual(['Mock2', 'Mock1']);
+        });
+
+        it('success even if previous failed', async () => {
+            class Mock {
+                count = 0;
+                @synchronized
+                method(): Promise<string> {
+                    return new Promise((resolve, reject) => {
+                        if (this.count === 0) {
+                            this.count += 1;
+                            setTimeout(() => reject(new Error()), 1000);
+                        } else {
+                            setTimeout(() => resolve('mock'), 0);
+                        }
+                    });
+                }
+            }
+            const mock = new Mock();
+            [] = [await expect(mock.method()).rejects.toThrow(), await expect(mock.method()).resolves.toBe('mock')];
+        });
+
+        it('throw error if return is not a Promise', () => {
+            expect(() => {
+                class Mock {
+                    @synchronized
+                    testFunc() {
+                        return 'abc';
+                    }
+                }
+            }).toThrow('method decorated by @synchronized must return Promise');
         });
     });
 });

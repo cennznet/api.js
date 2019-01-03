@@ -21,7 +21,7 @@ api = await Api.create({
 });
 
 // initialize wallet and import an account
-const {Wallet} = require('cennznet-wallet')
+const {SimpleKeyring, Wallet} = require('cennznet-wallet')
 const {stringToU8a} = require('@polkadot/util')
 const andrea = {
 	address: '5EKGZwAuwvVpVaGWZJ3hYDqTSxQCDDUgeMv36M4qLq7wtWLH',
@@ -35,7 +35,9 @@ const bob = {
 
 wallet = new Wallet();
 wallet.createNewVault('a passphrase);
-wallet.addFromSeed(andrea.seed);
+const keyring = new SimpleKeyring();
+await keyring.addFromSeed(andrea.seed);
+await wallet.addKeyring(keyring);
 
 // set wallet as signer of api
 api.setSigner(wallet)
