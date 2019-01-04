@@ -34,7 +34,7 @@ const bob = {
 }
 
 wallet = new Wallet();
-wallet.createNewVault('a passphrase);
+await wallet.createNewVault('a passphrase');
 const keyring = new SimpleKeyring();
 await keyring.addFromSeed(andrea.seed);
 await wallet.addKeyring(keyring);
