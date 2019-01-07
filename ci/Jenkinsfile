@@ -11,6 +11,8 @@ pipeline {
         GIT_EMAIL = 'jenkins@centrality.ai'
         PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
         LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
+        AWS_ACCESS_KEY = credentials('TF_AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = credentials('TF_AWS_SECRET_KEY')
     }
 
     stages {
@@ -64,8 +66,17 @@ pipeline {
             }
         }
 
+        stage('Make docs') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                sh './ci/deployment/make_docs.sh'
+            }
+        }
 
-        stage('Publish Docs') {
+
+        stage('Publish Docs to Dev') {
             when {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
             }
@@ -73,11 +84,30 @@ pipeline {
                 ENV = 'dev'
                 DISTRIBUTION_ID = 'E7FDFJLSKZ40L'
                 SUBDOMAIN = 'cennznet-js-docs'
-                AWS_ACCESS_KEY = credentials('TF_AWS_ACCESS_KEY')
-                AWS_SECRET_KEY = credentials('TF_AWS_SECRET_KEY')
             }
             steps {
-                sh './ci/deployment/make_docs.sh'
+                sh 'SCRIPT="deploy-website" ./centrality.deploy/static-website/static-website-apply.sh'
+                sh 'SCRIPT="cf-invalidate" ./centrality.deploy/aws/exec-awscli.sh'
+            }
+        }
+
+        stage('Confirm Docs deploy') {
+            steps {
+                input "Confirm Docs deploy?"
+            }
+        }
+
+        stage('Publish Docs to Prod') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            environment {
+                ENV = 'prod'
+                DISTRIBUTION_ID = 'E85ZH5OCBXPL'
+                SUBDOMAIN = 'cennznet-js-docs'
+            }
+            steps {
+                sh './centrality.deploy/static-website/static-website-apply.sh' // copy artifacts to shared bucket
                 sh 'SCRIPT="deploy-website" ./centrality.deploy/static-website/static-website-apply.sh'
                 sh 'SCRIPT="cf-invalidate" ./centrality.deploy/aws/exec-awscli.sh'
             }
