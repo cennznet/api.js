@@ -27,8 +27,8 @@
         "test:watch": "jest -c ../../jest/jest.config.js --watch",
         "doc": "npm run doc:gen && npm run doc:copyReadme",
         "doc:gen": "typedoc --tsconfig tsconfig.json",
-        "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/api-promise/CHANGELOG.md",
-        "doc:copyReadme": "ncp ./README.md ../../docs/api-promise/README.md"
+        "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/api/CHANGELOG.md",
+        "doc:copyReadme": "ncp ./README.md ../../docs/api/README.md"
     },
     "dependencies": {
         "@polkadot/extrinsics": "^0.35.19",
