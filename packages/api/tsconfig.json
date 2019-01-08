@@ -1,8 +1,8 @@
 {
     "typedocOptions": {
-        "out": "../../docs/api-promise/typedocs",
+        "out": "../../docs/api/typedocs",
         "ignoreCompilerErrors": true,
-        "name": "api-promise",
+        "name": "api",
         "exclude": [],
         "excludeExternals": true,
         "excludeNotExported": true,
