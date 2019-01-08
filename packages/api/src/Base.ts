@@ -2,9 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {TypeRegistry} from '@polkadot/types/codec/typeRegistry';
+import {ModulesWithMethods} from '@polkadot/types/Method';
 import {Constructor} from '@polkadot/types/types';
 import {ApiOptions, ISigner} from 'cennznet-types';
 import {ApiInterface$Events, SubmittableExtrinsics, QueryableStorage} from './types';
@@ -14,10 +14,8 @@ import Rpc from '@polkadot/rpc-core/index';
 import extrinsicsFromMeta from '@polkadot/extrinsics/fromMetadata';
 import {Storage} from '@polkadot/storage/types';
 import storageFromMeta from '@polkadot/storage/fromMetadata';
-import {Hash, Method, RuntimeVersion} from '@polkadot/types/index';
+import {Hash, Method, RuntimeVersion, Metadata} from '@polkadot/types/index';
 import Event from '@polkadot/types/Event';
-import RuntimeMetadata from '@polkadot/types/Metadata';
-import {Extrinsics} from '@polkadot/types/Method';
 import {assert, isUndefined, logger} from '@polkadot/util';
 
 type MetaDecoration = {
@@ -38,7 +36,7 @@ export default abstract class ApiBase {
     protected _genesisHash?: Hash;
     protected _query?: QueryableStorage;
     protected _rpc: Rpc;
-    protected _runtimeMetadata?: RuntimeMetadata;
+    protected _runtimeMetadata?: Metadata;
     protected _runtimeVersion?: RuntimeVersion;
     protected _signer: ISigner;
 
@@ -63,12 +61,19 @@ export default abstract class ApiBase {
     }
 
     /**
+     * @description `true` when subscriptions are supported
+     */
+    get hasSubscriptions(): boolean {
+        return this._rpc._provider.hasSubscriptions;
+    }
+
+    /**
      * @description Yields the current attached runtime metadata. Generally this is only used to construct extrinsics & storage, but is useful for current runtime inspection.
      */
-    get runtimeMetadata(): RuntimeMetadata {
+    get runtimeMetadata(): Metadata {
         assert(!isUndefined(this._runtimeMetadata), INIT_ERROR);
 
-        return this._runtimeMetadata as RuntimeMetadata;
+        return this._runtimeMetadata as Metadata;
     }
 
     /**
@@ -115,7 +120,7 @@ export default abstract class ApiBase {
      *   });
      * ```
      */
-    get tx(): Extrinsics {
+    get tx(): SubmittableExtrinsics {
         assert(!isUndefined(this._extrinsics), INIT_ERROR);
 
         return this._extrinsics;
@@ -152,8 +157,33 @@ export default abstract class ApiBase {
      * });
      * ```
      */
-    on(type: ApiInterface$Events, handler: (...args: Array<any>) => any): void {
+    on(type: ApiInterface$Events, handler: (...args: Array<any>) => any): this {
         this._eventemitter.on(type, handler);
+        return this;
+    }
+
+    /**
+     * @description Attach an one-time eventemitter handler to listen to a specific event
+     *
+     * @param type The type of event to listen to. Available events are `connected`, `disconnected`, `ready` and `error`
+     * @param handler The callback to be called when the event fires. Depending on the event type, it could fire with additional arguments.
+     *
+     * @example
+     * <BR>
+     *
+     * ```javascript
+     * api.once('connected', () => {
+     *   console.log('API has been connected to the endpoint');
+     * });
+     *
+     * api.once('disconnected', () => {
+     *   console.log('API has been disconnected from the endpoint');
+     * });
+     * ```
+     */
+    once(type: ApiInterface$Events, handler: (...args: Array<any>) => any): this {
+        this._eventemitter.once(type, handler);
+        return this;
     }
 
     protected emit(type: ApiInterface$Events, ...args: Array<any>): void {
@@ -168,15 +198,12 @@ export default abstract class ApiBase {
             this.emit('disconnected');
         });
 
+        this.rpc._provider.on('error', error => {
+            this.emit('error', error);
+        });
+
         this.rpc._provider.on('connected', async () => {
             this.emit('connected');
-
-            // TODO When re-connected (i.e. disconnected and then connected), we want to do a couple of things
-            //   - refresh metadata as needed, decorating again
-            //   - need to refresh genesisHash, extrinsic resub only when it matches
-            if (isReady) {
-                return;
-            }
 
             const hasMeta = await this.loadMeta();
 
@@ -201,7 +228,7 @@ export default abstract class ApiBase {
             this._query = this.decorateStorage(storage);
 
             Event.injectMetadata(this.runtimeMetadata);
-            Method.injectExtrinsics(extrinsics);
+            Method.injectMethods(extrinsics);
 
             return true;
         } catch (error) {
@@ -229,6 +256,6 @@ export default abstract class ApiBase {
         return output;
     }
 
-    protected abstract decorateExtrinsics(extrinsics: Extrinsics): SubmittableExtrinsics;
+    protected abstract decorateExtrinsics(extrinsics: ModulesWithMethods): SubmittableExtrinsics;
     protected abstract decorateStorage(storage: Storage): QueryableStorage;
 }

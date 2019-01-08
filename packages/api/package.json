@@ -23,7 +23,7 @@
     },
     "scripts": {
         "build": "rimraf dist && rollup -c rollup.config.ts",
-        "test:e2e": "jest -c ../../jest/jest.config.js --coverage",
+        "test:e2e": "jest -c ../../jest/jest.config.js",
         "test:watch": "jest -c ../../jest/jest.config.js --watch",
         "doc": "npm run doc:gen && npm run doc:copyReadme",
         "doc:gen": "typedoc --tsconfig tsconfig.json",
@@ -31,11 +31,11 @@
         "doc:copyReadme": "ncp ./README.md ../../docs/api-promise/README.md"
     },
     "dependencies": {
-        "@polkadot/extrinsics": "^0.33.11",
-        "@polkadot/rpc-core": "^0.33.11",
-        "@polkadot/rpc-provider": "^0.33.11",
-        "@polkadot/storage": "^0.33.11",
-        "@polkadot/types": "^0.33.11",
+        "@polkadot/extrinsics": "^0.35.19",
+        "@polkadot/rpc-core": "^0.35.19",
+        "@polkadot/rpc-provider": "^0.35.19",
+        "@polkadot/storage": "^0.35.19",
+        "@polkadot/types": "^0.35.19",
         "cennznet-runtime-types": "^0.2.0",
         "cennznet-types": "^0.2.0",
         "cennznet-wallet": "^0.2.0",

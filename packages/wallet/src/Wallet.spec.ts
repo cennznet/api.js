@@ -25,7 +25,7 @@ describe('a wallet', () => {
     const walletPassphase = 'a test wallet passphase';
 
     beforeAll(() => {
-        Method.injectExtrinsics(extrinsics);
+        Method.injectMethods(extrinsics);
     });
 
     beforeEach(async () => {
@@ -165,9 +165,7 @@ describe('a wallet', () => {
             await keyring.addPair(alice);
             await wallet.addKeyring(keyring);
             await wallet.sign(testExtrinsic, {from: alice.address(), nonce: 0, blockHash: GENESIS_HASH});
-            expect(testExtrinsic.toHex()).toBe(
-                '0xd50181ffd172a74cda4c865912c32ba0a80a57ae69abae410e5ccb59dee84e2f4432db4f72d4cd88ce13b18d86f4d0381dfa4aed3c29c73e2b1b7f37009cdee04ce47c6ad60287820845ed650009825791b478af85900c21f2512a559a3771fa9fb6800d0000000000000000000200ea51b75b00000000'
-            );
+            expect(testExtrinsic.isSigned).toBeTruthy();
             const anotherAccountAddress = await wallet.addAccount();
             const testExtrinsic2 = new Extrinsic('0x010200ea51b75b00000000');
             await wallet.sign(testExtrinsic2, {from: anotherAccountAddress, nonce: 0, blockHash: GENESIS_HASH});

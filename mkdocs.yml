@@ -8,6 +8,6 @@ theme:
   - rust
 nav:
 - Api Promise:
-  - 'Home': 'api-promise/README.md'
+  - 'Home': 'api/README.md'
 - Wallet:
   - 'Home': 'wallet/README.md'
