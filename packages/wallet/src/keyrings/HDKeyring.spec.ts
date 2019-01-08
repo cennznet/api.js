@@ -24,12 +24,16 @@ describe('HDKeyring', () => {
     });
 
     it('throw error if not initialized', async () => {
-        const keyring = new HDKeyring();
+        const keyring = new HDKeyring(undefined);
         await expect(keyring.addPair()).rejects.toThrow('hd wallet not initialized');
     });
 
     it('recover from mnemonic', async () => {
-        const keyring = new HDKeyring();
-        await keyring.deserialize({mnemonic: 'urban tuna work fiber excuse gown adult grab winner rigid lamp appear'});
+        const keyring = new HDKeyring({
+            mnemonic: 'urban tuna work fiber excuse gown adult grab winner rigid lamp appear',
+        });
+        await expect(keyring.getAddresses()).resolves.toHaveLength(0);
+        const kp = await keyring.addPair();
+        expect(kp.address()).toBe('5DMoKb4xQBUgB8XRz3dPfkKkEYGrQ9UkUEYHrrucAfTqyBxm');
     });
 });

@@ -18,7 +18,23 @@ await wallet.createNewVault('a passphrase');
 
 ```
 const backup = await wallet.export('a passphrase');
-// {mnemonic, numberOfAccounts，hdPath}
+// [{mnemonic, numberOfAccounts，hdPath}]
+```
+
+### Reload your wallet
+```
+vault = wallet.vault;
+wallet2 = new Wallet({vault});
+//add keyringTypes: [HDKeyring, SimpleKeyring] if SimpleKeyring is used
+await wallet2.unlock(<same passphrase>)
+```
+
+### Restore wallet and reset password
+```
+mnemonic='ready whisper vapor penalty load gesture elite brick select light caution clever';
+hdKeyring=new HDKeyring({mnemonic});
+wallet = new Wallet();
+wallet.createNewVaultAndRestore('newpass', [hdKeyring]);
 ```
 
 ### Backup an account
@@ -39,9 +55,9 @@ const TEST_ACCOUNT = {
 const keyring = new SimpleKeyring();
 await keyring.addPair(alice);
 //or
-await keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
+keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
 //or
-await wallet.addFromMnemonic(TEST_ACCOUNT.mnemonic);
+wallet.addFromMnemonic(TEST_ACCOUNT.mnemonic);
 await wallet.addKeyring(keyring);
 ```
 

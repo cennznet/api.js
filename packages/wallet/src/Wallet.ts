@@ -41,12 +41,11 @@ function getKeyringByAddress(wallet: Wallet, accountKeyringMap: AccountKeyringMa
  * support multi-keyring and shipped with a HD Keyring as default keyring type.
  */
 export class Wallet implements ISigner, IWallet {
-    protected _vault: string;
     protected _encryptor: Encryptor;
     protected _keyringTypes: KeyringType<any>[];
     protected _accountKeyringMap: AccountKeyringMap;
-
     protected _isLocked: boolean = true;
+    public vault: string;
 
     /**
      * @return the constructor of default keyring
@@ -56,7 +55,7 @@ export class Wallet implements ISigner, IWallet {
     }
 
     constructor(option: WalletOption = {}) {
-        this._vault = option.vault;
+        this.vault = option.vault;
         this._encryptor = option.encryptor || naclEncryptor;
         this._keyringTypes = option.keyringTypes || [HDKeyring];
         this._accountKeyringMap = {};
@@ -91,6 +90,18 @@ export class Wallet implements ISigner, IWallet {
     }
 
     /**
+     * erase the current wallet instance and create a new one with given keyrings.
+     * @param passphrase for the new created wallet.
+     */
+    @synchronized
+    async createNewVaultAndRestore(passphrase: string, keyrings: IKeyring<any>[]): Promise<void> {
+        privatePasswd.set(this, passphrase);
+        privateKeyrings.set(this, keyrings);
+        this._isLocked = false;
+        await this.persistAll();
+    }
+
+    /**
      * erase in-memory keyrings data and forbid any operation which read/write keyrings
      */
     @synchronized
@@ -112,7 +123,7 @@ export class Wallet implements ISigner, IWallet {
         }
         const serialized: SerializedWallet = ((await this._encryptor.decrypt(
             passphrase,
-            this._vault
+            this.vault
         )) as unknown) as SerializedWallet;
         const krs = [];
         await Promise.all(
@@ -139,7 +150,7 @@ export class Wallet implements ISigner, IWallet {
     async export(passphrase: string): Promise<SerializedWallet> {
         const serialized: SerializedWallet = ((await this._encryptor.decrypt(
             passphrase,
-            this._vault
+            this.vault
         )) as unknown) as SerializedWallet;
         return serialized;
     }
@@ -155,7 +166,7 @@ export class Wallet implements ISigner, IWallet {
     @synchronized
     @requireUnlocked
     async exportAccount(address: string, passphrase: string): Promise<KeyringPair$Json> {
-        await this._encryptor.decrypt(passphrase, this._vault);
+        await this._encryptor.decrypt(passphrase, this.vault);
         const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, address).getPair(address);
         return signerPair.toJson();
     }
@@ -239,7 +250,7 @@ export class Wallet implements ISigner, IWallet {
         (await Promise.all(serializedPromiseArray)).forEach((data, index) => {
             serialized.push({name: krs[index].constructor.name, data});
         });
-        this._vault = await this._encryptor.encrypt(privatePasswd.get(this), serialized);
+        this.vault = await this._encryptor.encrypt(privatePasswd.get(this), serialized);
     }
 
     protected async syncAccountKeyringMap(): Promise<void> {

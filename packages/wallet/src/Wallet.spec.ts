@@ -34,6 +34,14 @@ describe('a wallet', () => {
         testExtrinsic = new Extrinsic('0x010200ea51b75b00000000');
     });
 
+    it('create and restore', async () => {
+        const newPassphrase = 'new passphrase';
+        const mnemonic = 'kite manual pizza regret forget edge jelly leaf draft arrest knock parade';
+        const keyring = new HDKeyring({mnemonic});
+        await wallet.createNewVaultAndRestore(newPassphrase, [keyring]);
+        await expect(wallet.addAccount()).resolves.toBe('5HDruG9uYPyF2aRfYXwUhoEk4eZ8oZLbYr6KiHKR6AbTMyMR');
+    });
+
     describe('accounts', () => {
         it('addKeyring(keyring)', async () => {
             const keyring = new SimpleKeyring();

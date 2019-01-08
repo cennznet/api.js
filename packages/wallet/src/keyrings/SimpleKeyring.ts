@@ -17,6 +17,12 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         return new SimpleKeyring();
     }
 
+    constructor(opt?: SerializedSimpleKeyring) {
+        if (opt) {
+            this._deserialize(opt);
+        }
+    }
+
     public async serialize(): Promise<SerializedSimpleKeyring> {
         return (await this.getPairs()).reduce((acc, pair) => {
             acc[pair.address()] = pair.toJson().encoded;
@@ -25,16 +31,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     }
 
     public async deserialize(data: SerializedSimpleKeyring): Promise<this> {
-        this._keyring = new Keyring();
-        await Promise.all(
-            Object.keys(data).map(address =>
-                this._keyring.addFromJson({address, encoded: data[address], encoding: null, meta: null})
-            )
-        ).then(keyPairs => {
-            for (const keyPair of keyPairs) {
-                keyPair.decodePkcs8();
-            }
-        });
+        this._deserialize(data);
         return this;
     }
 
@@ -65,7 +62,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         this._keyring.removePair(address);
     }
 
-    async addFromJson(pair: KeyringPair$Json, passphrase?: string): Promise<KeyringPair> {
+    addFromJson(pair: KeyringPair$Json, passphrase?: string): KeyringPair {
         const keyPair = this._keyring.addFromJson(pair);
         try {
             keyPair.decodePkcs8(passphrase);
@@ -76,11 +73,18 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         return keyPair;
     }
 
-    async addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): Promise<KeyringPair> {
+    addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): KeyringPair {
         return this._keyring.addFromMnemonic(mnemonic, meta);
     }
 
-    async addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): Promise<KeyringPair> {
+    addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): KeyringPair {
         return this._keyring.addFromSeed(seed, meta);
+    }
+
+    private _deserialize(data: SerializedSimpleKeyring): void {
+        this._keyring = new Keyring();
+        for (const address of Object.keys(data)) {
+            this.addFromJson({address, encoded: data[address], encoding: null, meta: null});
+        }
     }
 }

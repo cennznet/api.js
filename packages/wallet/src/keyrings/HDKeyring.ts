@@ -25,26 +25,23 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
 
     static async generate(): Promise<HDKeyring> {
         const mnemonic = generateMnemonic();
-        const keyring = new HDKeyring();
-        return keyring.deserialize({
+        const keyring = new HDKeyring({
             mnemonic,
             numberOfAccounts: 0,
             hdPath: DEFAULT_HD_PATH,
         });
+        return keyring;
     }
 
-    async deserialize(obj: SerializedHDKeyring): Promise<this> {
-        const {mnemonic, numberOfAccounts = 1, hdPath = DEFAULT_HD_PATH} = obj;
-        const hdKey = HDKey.fromMasterSeed(Buffer.from(mnemonicToSeed(mnemonic)));
-        this.hdPath = hdPath;
-        this.rootKey = hdKey.derive(hdPath);
-        privateMnemonic.set(this, mnemonic);
+    constructor(opt?: SerializedHDKeyring) {
         this.pairs = [];
-        const keyring = new Keyring();
-        for (let i = 0; i < numberOfAccounts; i++) {
-            const kp = keyring.addFromSeed(this.rootKey.deriveChild(i).privateKey);
-            this.pairs.push(kp);
+        if (opt) {
+            this._deserialize(opt);
         }
+    }
+
+    async deserialize(opt: SerializedHDKeyring): Promise<this> {
+        this._deserialize(opt);
         return this;
     }
 
@@ -84,5 +81,18 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
 
     async removePair(address: string): Promise<void> {
         return Promise.reject(new Error("HD Keyring doesn't support removePair"));
+    }
+
+    private _deserialize(opt: SerializedHDKeyring): void {
+        const {mnemonic, numberOfAccounts = 0, hdPath = DEFAULT_HD_PATH} = opt;
+        const hdKey = HDKey.fromMasterSeed(Buffer.from(mnemonicToSeed(mnemonic)));
+        this.hdPath = hdPath;
+        this.rootKey = hdKey.derive(hdPath);
+        privateMnemonic.set(this, mnemonic);
+        const keyring = new Keyring();
+        for (let i = 0; i < numberOfAccounts; i++) {
+            const kp = keyring.addFromSeed(this.rootKey.deriveChild(i).privateKey);
+            this.pairs.push(kp);
+        }
     }
 }

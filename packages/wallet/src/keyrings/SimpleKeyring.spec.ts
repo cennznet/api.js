@@ -13,7 +13,12 @@ const TEST_ACCOUNT = {
 
 describe('SimpleKeyring', () => {
     const alice = TESTING_PAIRS.alice;
-    const bob = TESTING_PAIRS.bob;
+    it('recover keyring', async () => {
+        const json = alice.toJson();
+        const kr = new SimpleKeyring({[alice.address()]: json.encoded});
+        await expect(kr.getAddresses()).resolves.toEqual(expect.arrayContaining([alice.address()]));
+    });
+
     describe('import account', () => {
         let keyring: SimpleKeyring;
         beforeEach(() => {
@@ -24,48 +29,48 @@ describe('SimpleKeyring', () => {
             it('with currect password', async () => {
                 const pwd = 'randompwd';
                 const json = alice.toJson(pwd);
-                const pair = await keyring.addFromJson(json, pwd);
+                const pair = keyring.addFromJson(json, pwd);
                 expect(pair.isLocked()).toEqual(false);
-                expect(() => keyring.getPair(alice.address())).not.toThrow();
+                await expect(keyring.getPair(alice.address())).resolves.not.toBeUndefined();
             });
             it('with wrong password', async () => {
                 const pwd = 'randompwd';
                 const wrongPwd = 'wrongpwd';
                 const json = alice.toJson(pwd);
-                await expect(keyring.addFromJson(json, wrongPwd)).rejects.toThrow();
+                expect(() => keyring.addFromJson(json, wrongPwd)).toThrow();
             });
             it('with empty password', async () => {
                 const json = alice.toJson();
-                const pair = await keyring.addFromJson(json);
+                const pair = keyring.addFromJson(json);
                 expect(pair.isLocked()).toEqual(false);
-                expect(() => keyring.getPair(alice.address())).not.toThrow();
+                await expect(keyring.getPair(alice.address())).resolves.not.toBeUndefined();
             });
             it('with wrong encoded data', async () => {
                 const json = alice.toJson();
                 json.encoded = json.encoded + '1';
-                await expect(keyring.addFromJson(json)).rejects.toThrow();
+                expect(() => keyring.addFromJson(json)).toThrow();
             });
         });
         it('from seed', async () => {
-            const pair = await keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
+            const pair = keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
             expect(pair.isLocked()).toEqual(false);
             expect(pair.address()).toEqual(TEST_ACCOUNT.address);
-            expect(keyring.getPair(TEST_ACCOUNT.address)).not.toBeUndefined();
+            await expect(keyring.getPair(TEST_ACCOUNT.address)).resolves.not.toBeUndefined();
         });
         it('from mnemonic', async () => {
-            const pair = await keyring.addFromMnemonic(TEST_ACCOUNT.mnemonic);
+            const pair = keyring.addFromMnemonic(TEST_ACCOUNT.mnemonic);
             expect(pair.isLocked()).toEqual(false);
             expect(pair.address()).toEqual(TEST_ACCOUNT.address);
-            expect(keyring.getPair(TEST_ACCOUNT.address)).not.toBeUndefined();
+            await expect(keyring.getPair(TEST_ACCOUNT.address)).resolves.not.toBeUndefined();
         });
         it('from key pair', async () => {
             const pair = await keyring.addPair(alice);
             expect(pair.isLocked()).toEqual(false);
             expect(pair.address()).toEqual(alice.address());
-            expect(keyring.getPair(alice.address())).not.toBeUndefined();
+            await expect(keyring.getPair(alice.address())).resolves.not.toBeUndefined();
         });
         it('from locked key pair', async () => {
-            const pair = await keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
+            const pair = keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
             pair.lock();
             await expect(keyring.addPair(pair)).rejects.toThrow();
         });
