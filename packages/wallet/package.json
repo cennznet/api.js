@@ -12,7 +12,7 @@
         "test": "__tests__"
     },
     "files": [
-        "lib"
+        "dist"
     ],
     "repository": {
         "type": "git",
@@ -29,13 +29,13 @@
         "doc:copyReadme": "ncp ./README.md ../../docs/wallet/README.md"
     },
     "dependencies": {
-        "@polkadot/keyring": "^0.33.27",
+        "@polkadot/keyring": "^0.33.33",
         "hdkey": "^1.1.0",
         "reflect-metadata": "^0.1.12",
         "tweetnacl": "^1.0.0"
     },
     "devDependencies": {
-        "@polkadot/types": "^0.35.19",
+        "@polkadot/types": "^0.39.7",
         "@types/jest": "^23.3.5",
         "cennznet-types": "^0.3.1",
         "jest": "^23.6.0",

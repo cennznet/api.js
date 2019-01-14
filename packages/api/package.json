@@ -15,7 +15,7 @@
         "test": "__tests__"
     },
     "files": [
-        "lib"
+        "dist"
     ],
     "repository": {
         "type": "git",
@@ -31,11 +31,11 @@
         "doc:copyReadme": "ncp ./README.md ../../docs/api/README.md"
     },
     "dependencies": {
-        "@polkadot/extrinsics": "^0.35.19",
-        "@polkadot/rpc-core": "^0.35.19",
-        "@polkadot/rpc-provider": "^0.35.19",
-        "@polkadot/storage": "^0.35.19",
-        "@polkadot/types": "^0.35.19",
+        "@polkadot/extrinsics": "^0.39.7",
+        "@polkadot/rpc-core": "^0.39.7",
+        "@polkadot/rpc-provider": "^0.39.7",
+        "@polkadot/storage": "^0.39.7",
+        "@polkadot/types": "^0.39.7",
         "cennznet-runtime-types": "^0.3.1",
         "cennznet-types": "^0.3.1",
         "cennznet-wallet": "^0.3.1",

@@ -24,7 +24,7 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "devDependencies": {
-        "@polkadot/rpc-provider": "^0.35.19",
-        "@polkadot/types": "^0.35.19"
+        "@polkadot/rpc-provider": "^0.39.7",
+        "@polkadot/types": "^0.39.7"
     }
 }
