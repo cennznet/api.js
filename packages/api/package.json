@@ -23,6 +23,8 @@
     },
     "scripts": {
         "build": "rimraf dist && rollup -c rollup.config.ts",
+        "test:unit": "jest --coverage -c ./jest.config.js spec",
+        "test:unitDebug": "node --inspect-brk ./node_modules/.bin/jest -c ./jest.config.js spec",
         "test:e2e": "jest -c ../../jest/jest.config.js",
         "test:watch": "jest -c ../../jest/jest.config.js --watch",
         "doc": "npm run doc:gen && npm run doc:copyReadme",
@@ -52,6 +54,7 @@
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-plugin-sourcemaps": "^0.4.2",
         "rollup-plugin-typescript2": "^0.17.1",
+        "ts-mockito": "^2.3.1",
         "typedoc": "^0.13.0",
         "typedoc-plugin-markdown": "^1.1.19",
         "typescript": "^3.1.6"

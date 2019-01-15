@@ -46,7 +46,7 @@ export default class SubmittableExtrinsic extends Extrinsic {
                 throw new Error('txOpt is required for signing extrinsic');
             }
             let nonce: AnyNumber = txOpt.nonce;
-            if (!nonce) {
+            if (nonce === undefined) {
                 try {
                     nonce = (await this._api.query.system.accountNonce(txOpt.from)).toString();
                 } catch (e) {
