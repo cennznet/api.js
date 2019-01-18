@@ -13,6 +13,7 @@ pipeline {
         LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
         AWS_ACCESS_KEY = credentials('TF_AWS_ACCESS_KEY')
         AWS_SECRET_KEY = credentials('TF_AWS_SECRET_KEY')
+        PACKAGE_NAMES = 'wallet api'
     }
 
     stages {
@@ -75,7 +76,6 @@ pipeline {
             }
         }
 
-
         stage('Publish Docs to Dev') {
             when {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
@@ -88,12 +88,6 @@ pipeline {
             steps {
                 sh 'SCRIPT="deploy-website" ./centrality.deploy/static-website/static-website-apply.sh'
                 sh 'SCRIPT="cf-invalidate" ./centrality.deploy/aws/exec-awscli.sh'
-            }
-        }
-
-        stage('Confirm Docs deploy') {
-            steps {
-                input "Confirm Docs deploy?"
             }
         }
 

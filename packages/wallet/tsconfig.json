@@ -1,20 +1,4 @@
 {
-    "typedocOptions": {
-        "out": "../../docs/wallet/typedocs",
-        "ignoreCompilerErrors": true,
-        "name": "Wallet",
-        "exclude": [],
-        "excludeExternals": true,
-        "excludeNotExported": true,
-        "excludeProtected": true,
-        "excludePrivate": true,
-        "hideGenerator": true,
-        "includeDeclarations": false,
-        "module": "commonjs",
-        "theme": "markdown",
-        "mode": "file",
-        "verbose": true
-    },
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2017",

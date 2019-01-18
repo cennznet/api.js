@@ -12,6 +12,7 @@
         "make-docs": "./scripts/make_docs.sh"
     },
     "devDependencies": {
+        "@compodoc/compodoc": "^1.1.7",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
@@ -21,8 +22,8 @@
         "prettier": "^1.13.5",
         "ts-jest": "^23.10.3",
         "tslint": "^5.11.0",
-        "tslint-microsoft-contrib": "^5.2.1",
-        "typedoc": "^0.12.0"
+        "tslint-microsoft-contrib": "^5.2.1"
+
     },
     "config": {
         "commitizen": {

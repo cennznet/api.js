@@ -27,10 +27,7 @@
         "test:unitDebug": "node --inspect-brk ./node_modules/.bin/jest -c ./jest.config.js spec",
         "test:e2e": "jest -c ../../jest/jest.config.js",
         "test:watch": "jest -c ../../jest/jest.config.js --watch",
-        "doc": "npm run doc:gen && npm run doc:copyReadme",
-        "doc:gen": "typedoc --tsconfig tsconfig.json",
-        "doc:copyChangeLog": "ncp ./CHANGELOG.md ../../docs/api/CHANGELOG.md",
-        "doc:copyReadme": "ncp ./README.md ../../docs/api/README.md"
+        "doc": "npx compodoc --tsconfig tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {
         "@polkadot/extrinsics": "^0.39.7",
@@ -46,7 +43,6 @@
     "devDependencies": {
         "@types/jest": "^23.3.5",
         "jest": "^23.6.0",
-        "ncp": "^2.0.0",
         "rimraf": "^2.6.2",
         "rollup": "^0.66.6",
         "rollup-plugin-commonjs": "^9.2.0",
