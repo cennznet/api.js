@@ -25,8 +25,7 @@
         "build": "rimraf dist && rollup -c rollup.config.ts",
         "test:unit": "jest --coverage -c ./jest.config.js spec",
         "test:unitDebug": "node --inspect-brk ./node_modules/.bin/jest -c ./jest.config.js spec",
-        "test:e2e": "jest -c ../../jest/jest.config.js",
-        "test:watch": "jest -c ../../jest/jest.config.js --watch",
+        "test:e2e": "jest --runInBand -c ./jest.config.js e2e",
         "doc": "npx compodoc --tsconfig tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {

@@ -22,5 +22,5 @@ module.exports = {
             statements: -10,
         },
     },
-    testEnvironment: '../../jest/env.js',
+    testEnvironment: '../../jest/env.js'
 };
