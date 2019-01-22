@@ -1,6 +1,6 @@
 {
     "name": "cennznet-api",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "description": "cennznet's javascript client",
     "keywords": [
         "cennz"
@@ -36,8 +36,8 @@
         "@polkadot/types": ">= 0.40.10 < 1"
     },
     "dependencies": {
-        "cennznet-runtime-types": "^0.5.0",
-        "cennznet-types": "^0.5.0",
+        "cennznet-runtime-types": "^0.5.1",
+        "cennznet-types": "^0.5.1",
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
@@ -47,7 +47,7 @@
         "@polkadot/storage": "^0.40.12",
         "@polkadot/types": "^0.40.12",
         "@types/jest": "^23.3.5",
-        "cennznet-wallet": "^0.5.0",
+        "cennznet-wallet": "^0.5.1",
         "jest": "^23.6.0",
         "rimraf": "^2.6.2",
         "rollup": "^0.66.6",
