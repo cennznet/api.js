@@ -4,6 +4,7 @@ import {TxOpt, Encryptor, ISigner, IKeyring, IWallet} from 'cennznet-types';
 import {KeyringType, WalletOption} from 'cennznet-types/wallet';
 import {persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
 import {HDKeyring} from './keyrings/HDKeyring';
+import {SimpleKeyring} from './keyrings/SimpleKeyring';
 import naclEncryptor from './encryptors/naclEncryptor';
 
 export type SerializedWallet = {name: string; data: any}[];
@@ -220,6 +221,7 @@ export class Wallet implements ISigner, IWallet {
     /**
      * add a keyring instance along with all key pairs in it.
      * addresses already exist in the wallet will be removed from the keyring before it's been added
+     * it will be cloned to lose reference to the original keyring
      * @param keyring
      * @requires wallet unlocked
      */
@@ -227,18 +229,24 @@ export class Wallet implements ISigner, IWallet {
     @requireUnlocked
     @persistBeforeReturn
     async addKeyring(keyring: IKeyring<any>): Promise<void> {
-        await this.checkDuplicate(await keyring.getAddresses());
         if (!this._keyringTypes.includes(keyring.constructor as any)) {
             this._keyringTypes.push(keyring.constructor as any);
         }
-        privateKeyrings.get(this).push(keyring);
+        const clonedKeying = await this.cloneKeying(keyring);
+        await this.checkDuplicate(await clonedKeying.getAddresses());
+        privateKeyrings.get(this).push(clonedKeying);
+    }
+
+    protected async cloneKeying(keyring: IKeyring<any>): Promise<IKeyring<any>> {
+        const KeyringTypeInstance = new (keyring.constructor as any)();
+        return await KeyringTypeInstance.deserialize(await keyring.serialize());
     }
 
     protected async checkDuplicate(addresses: string[]): Promise<void> {
         const existingAddresses = Object.keys(this._accountKeyringMap);
         for (const address of addresses) {
             if (existingAddresses.includes(address)) {
-                throw new Error('detect duplicate account, remove before call addKeyring()');
+                throw new Error('detected duplicate account, remove it before calling addKeyring()');
             }
         }
     }

@@ -88,46 +88,19 @@ describe('a wallet', () => {
             const keyring = new SimpleKeyring();
             await keyring.addFromSeed(hexToU8a(account1.seed));
             await wallet.addKeyring(keyring);
-            // call default keyring(hdkeyring)'s addAccount(), which will lead to a conflict with SimpleKeyring.
+            // call default keyring(hdkeyring)'s addAccount(), which will lead to a conflict with SimpleKeyring i.e:
+            // this will add the first account in wallet privateKeyrings (5DMoKb4xQBUgB8XRz3dPfkKkEYGrQ9UkUEYHrrucAfTqyBxm) as a hdkr,
+            // however this addresses is already added as a skr, trySolveConflicts must find the duplicate addresss and remove it from skr
             await wallet.addAccount();
             // account1 can not be removed from hdkeyring, so it will be removed from SimpleKeyring
-            await expect(keyring.getAddresses()).resolves.toHaveLength(0);
+
+            const keyrings = await wallet.export(null);
+            const SIMPLE_KEY_RING = 1;
+
+            expect(keyrings[SIMPLE_KEY_RING].data[account1.address]).toBeUndefined();
         });
 
         it('try resolve conflicts #2', async () => {
-            const account0 = {
-                address: '5DMoKb4xQBUgB8XRz3dPfkKkEYGrQ9UkUEYHrrucAfTqyBxm',
-            };
-            const account1 = {
-                address: '5GnGjKZcdmbQfYUyShSkDi1PE9HE93wj1J5zxHtZ4cYP43fh',
-                seed: '0x4175f9081d64c9eea1f1cf7dbdcd58069a0e8bf09e36facdd7e62c59f0c96124',
-            };
-            // keyring#0 is a SimpleKeyring with 1 account(account1)
-            const vault =
-                '0xbf44f9de75ae49c510ff145374d82352e9271c1e648d65c276e525cb95326f915b7e724758c955822435476061e0a5cad87075d693e60c61cc617b6f04949a99cfffa2b881048e5e03a6701480004614c14a037e2ab01a41b3776d6f1cc1a7578a0bc8eb5c5e9070181633b62b48430be4cf8ca9c4e8304c850029751f919f865b1e3dadf7a6e619cd57dd5c5c958c0c3ea928aa0d6993995cd725520a1df81526f6989d716f0a3fb07e48e4dbf73c59e6d849279a50198b50cf25046d24c663d4b6664a0040e91554aebfd1c8b1219533320c0cb8b90b99041eb3cf6e4a3165f5c01145d4579191aae066b7cf600493f783a2d89158f4bc415172d231b5f35940c9ff00ead6e924eed7c464934f105244a071367d53440745a1b066a7ecea37035c428d29bb08d25186e7ce86';
-            const wallet = new Wallet({vault, keyringTypes: [SimpleKeyring, HDKeyring]});
-            await wallet.unlock('test');
-            await expect(wallet.getAddresses()).resolves.toEqual(expect.arrayContaining([account1.address]));
-            // keyring#1 is a hdkeyring with 1 account(account0) and account1 is the next account
-            const keyring = new HDKeyring();
-            const mnemonic = 'urban tuna work fiber excuse gown adult grab winner rigid lamp appear';
-            await keyring.deserialize({
-                mnemonic,
-                numberOfAccounts: 1,
-                hdPath: "m/44'/392'/0'/0",
-            });
-            await wallet.addKeyring(keyring);
-            expect((wallet as any)._accountKeyringMap[account1.address]).toBe(0);
-            expect((wallet as any)._accountKeyringMap[account0.address]).toBe(1);
-            // call generate next account in hdkeyring, which will lead to a conflict with SimpleKeyring.
-            await keyring.addPair();
-            // call wallet's addAccount() so that wallet can detect the account conflict.
-            await wallet.addAccount();
-            // conflict solved by removing account1 from simple keyring
-            expect((wallet as any)._accountKeyringMap[account1.address]).toBe(1);
-        });
-
-        it('try resolve conflicts #3', async () => {
             const account0 = {
                 address: '5DMoKb4xQBUgB8XRz3dPfkKkEYGrQ9UkUEYHrrucAfTqyBxm',
             };
