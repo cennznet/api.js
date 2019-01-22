@@ -7,7 +7,7 @@
 ```
 $> npm config set registry https://npm-proxy.fury.io/centrality/
 $> npm login
-$> npm i cennznet-api
+$> npm i cennznet-api @polkadot/extrinsics @polkadot/rpc-core @polkadot/rpc-provider @polkadot/storage @polkadot/types
 ```
 
 ## Usage
