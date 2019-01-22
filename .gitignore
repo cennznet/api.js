@@ -5,7 +5,7 @@ dist
 node_modules
 .DS_Store
 coverage
-packages/*/*.d.ts
+packages/**/*.d.ts
 docs/
 .vscode
 .iml

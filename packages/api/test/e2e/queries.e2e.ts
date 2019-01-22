@@ -6,7 +6,6 @@ import {Wallet, SimpleKeyring} from 'cennznet-wallet';
 import {stringToU8a} from '@polkadot/util';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {Balance, Hash} from '@polkadot/types';
-import {SubmittableSendResult} from '../../src/types';
 
 const sender = {
     address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
@@ -40,8 +39,8 @@ describe('e2e queries', () => {
     describe('Query storage using at', () => {
         it('queries correct balance', async () => {
             const balance = await api.query.balances.freeBalance(sender.address);
-            const block = (await api.rpc.chain.getBlock() as any).toJSON();
-            const balanceQueryUsingAt = await api.query.balances.freeBalance.at(new Hash(block.block.header.parentHash), sender.address);
+            const blockHash = await api.rpc.chain.getBlockHash();
+            const balanceQueryUsingAt = await api.query.balances.freeBalance.at(blockHash, sender.address);
             expect(balance).toEqual(balanceQueryUsingAt);
         }) 
     })

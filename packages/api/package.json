@@ -25,21 +25,28 @@
         "build": "rimraf dist && rollup -c rollup.config.ts",
         "test:unit": "jest --coverage -c ./jest.config.js spec",
         "test:unitDebug": "node --inspect-brk ./node_modules/.bin/jest -c ./jest.config.js spec",
-        "test:e2e": "jest --runInBand -c ./jest.config.js e2e",
+        "test:e2e": "jest --silent --runInBand -c ./jest.config.js e2e",
         "doc": "npx compodoc --tsconfig tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
+    "peerDependencies": {
+        "@polkadot/extrinsics": ">= 0.40.10 < 1",
+        "@polkadot/rpc-core": ">= 0.40.10 < 1",
+        "@polkadot/rpc-provider": ">= 0.40.10 < 1",
+        "@polkadot/storage": ">= 0.40.10 < 1",
+        "@polkadot/types": ">= 0.40.10 < 1"
+    },
     "dependencies": {
-        "@polkadot/extrinsics": "^0.39.7",
-        "@polkadot/rpc-core": "^0.39.7",
-        "@polkadot/rpc-provider": "^0.39.7",
-        "@polkadot/storage": "^0.39.7",
-        "@polkadot/types": "^0.39.7",
         "cennznet-runtime-types": "^0.4.0",
         "cennznet-types": "^0.4.0",
         "cennznet-wallet": "^0.4.0",
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
+        "@polkadot/extrinsics": "^0.40.12",
+        "@polkadot/rpc-core": "^0.40.12",
+        "@polkadot/rpc-provider": "^0.40.12",
+        "@polkadot/storage": "^0.40.12",
+        "@polkadot/types": "^0.40.12",
         "@types/jest": "^23.3.5",
         "jest": "^23.6.0",
         "rimraf": "^2.6.2",
