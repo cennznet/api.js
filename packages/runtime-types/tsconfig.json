@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
+        "target": "es2017",
         "noImplicitAny": false,
         "moduleResolution": "node",
         "outDir": "dist",
         "baseUrl": ".",
         "types": ["node"],
-        "lib": ["es2015"],
+        "lib": ["es2017"],
         "experimentalDecorators": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
