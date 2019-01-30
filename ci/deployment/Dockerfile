@@ -48,6 +48,7 @@ RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet
 # pack packages for uploading
 RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} -- "npm pack"
 
+
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
