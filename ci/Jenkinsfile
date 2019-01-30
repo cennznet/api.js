@@ -55,6 +55,7 @@ pipeline {
             }
             environment {
                 GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
+                GEMFURY_EXTERNAL_TOKEN = credentials('GEMFURY_EXTERNAL_TOKEN')
             }
             steps {
                 script {
