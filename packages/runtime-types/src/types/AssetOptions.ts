@@ -4,10 +4,17 @@
 
 import Balance from '@polkadot/types/Balance';
 import Struct from '@polkadot/types/codec/Struct';
+import Hash from '@polkadot/types/Hash';
+
+const JSON_MAP = new Map([['totalSupply', 'total_supply']]);
 
 class AssetOptions extends Struct {
     constructor(value: any) {
-        super({total_supply: Balance}, value);
+        super({totalSupply: Balance}, value, JSON_MAP);
+    }
+
+    get totalSupply(): Hash {
+        return this.get('totalSupply') as Hash;
     }
 }
 
