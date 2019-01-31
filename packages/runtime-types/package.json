@@ -13,7 +13,8 @@
   },
   "files": [
     "dist",
-    "*.d.ts"
+    "*.d.ts",
+    "types"
   ],
   "repository": {
     "type": "git",
