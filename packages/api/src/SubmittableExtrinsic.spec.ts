@@ -76,7 +76,7 @@ describe('SubmittableExtrinsic', () => {
             const submitExtrinsic = jest.fn((...args) => result);
             const submitAndWatchExtrinsic = jest.fn((...args) => result);
             const sign = jest.fn();
-            const MockApi = jest.fn<Api>(() => {
+            const MockApi = jest.fn(() => {
                 return {
                     query: {
                         system: {
@@ -94,7 +94,7 @@ describe('SubmittableExtrinsic', () => {
                     },
                 };
             });
-            let apiMock: Api = new MockApi();
+            let apiMock: Api = (new MockApi() as unknown) as Api;
             let submittableExtrinsic: SubmittableExtrinsic = getSubmittableExtrinsicByApi(apiMock);
             // send
             const returned = await submittableExtrinsic.send(txOpt);
@@ -120,7 +120,7 @@ describe('SubmittableExtrinsic', () => {
             const submitExtrinsic = jest.fn((...args) => result);
             const submitAndWatchExtrinsic = jest.fn((...args) => result);
             const sign = jest.fn();
-            const MockApi = jest.fn<Api>(() => {
+            const MockApi = jest.fn(() => {
                 return {
                     query: {
                         system: {
@@ -139,7 +139,7 @@ describe('SubmittableExtrinsic', () => {
                     hasSubscriptions: true,
                 };
             });
-            let apiMock: Api = new MockApi();
+            let apiMock: Api = (new MockApi() as unknown) as Api;
             let submittableExtrinsic: SubmittableExtrinsic = getSubmittableExtrinsicByApi(apiMock);
             const statusCb = jest.fn();
             // send
@@ -155,8 +155,8 @@ describe('SubmittableExtrinsic', () => {
 
         it('returns error without txOpt when extrinsic is not signed', async () => {
             // mock
-            const MockApi = jest.fn<Api>();
-            let apiMock: Api = new MockApi();
+            const MockApi = jest.fn();
+            let apiMock: Api = (new MockApi() as unknown) as Api;
             let submittableExtrinsic: SubmittableExtrinsic = getSubmittableExtrinsicByApi(apiMock);
 
             await expect(submittableExtrinsic.send()).rejects.toThrow('txOpt is required for signing extrinsic');
@@ -171,7 +171,7 @@ describe('SubmittableExtrinsic', () => {
             const accountNonce = jest.fn(arg => {
                 throw new Error();
             });
-            const MockApi = jest.fn<Api>(() => {
+            const MockApi = jest.fn(() => {
                 return {
                     query: {
                         system: {
@@ -180,7 +180,7 @@ describe('SubmittableExtrinsic', () => {
                     },
                 };
             });
-            let apiMock: Api = new MockApi();
+            let apiMock: Api = (new MockApi() as unknown) as Api;
             let submittableExtrinsic: SubmittableExtrinsic = getSubmittableExtrinsicByApi(apiMock);
 
             await expect(submittableExtrinsic.send(txOpt)).rejects.toThrow('Failed to fetch nonce for account: from');
@@ -196,7 +196,7 @@ describe('SubmittableExtrinsic', () => {
             const at = jest.fn(arg => {
                 return allEvents;
             });
-            const MockApi = jest.fn<Api>(() => {
+            const MockApi = jest.fn(() => {
                 return {
                     rpc: {
                         chain: {
@@ -212,7 +212,7 @@ describe('SubmittableExtrinsic', () => {
                     },
                 };
             });
-            let apiMock: Api = new MockApi();
+            let apiMock: Api = (new MockApi() as unknown) as Api;
             let submittableExtrinsic: SubmittableExtrinsic = getSubmittableExtrinsicByApi(apiMock);
             const blockhash = new Hash('blockhash');
             const status: ExtrinsicStatus = new ExtrinsicStatus({
@@ -223,7 +223,7 @@ describe('SubmittableExtrinsic', () => {
                     extrinsics: [hexToU8a(submittableExtrinsic.toJSON())],
                 },
             });
-            const MockEvent = jest.fn<EventRecord>(value => {
+            const MockEvent = jest.fn(value => {
                 return {
                     phase: {
                         type: 'ApplyExtrinsic',
