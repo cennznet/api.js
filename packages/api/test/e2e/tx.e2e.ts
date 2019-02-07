@@ -8,6 +8,8 @@ import {SimpleKeyring, Wallet} from 'cennznet-wallet';
 import {Api} from '../../src/Api';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import { SubmittableSendResult } from '../../src/types';
+import Balance from '@polkadot/types/Balance';
+import {AssetId} from 'cennznet-runtime-types';
 
 const sender = {
     address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
@@ -24,7 +26,7 @@ describe('e2e transactions', () => {
     let websocket: WsProvider;
 
     beforeAll(async () => {
-        websocket = new WsProvider('ws://cennznet-node-0.centrality.me:9944');
+        websocket = new WsProvider('wss://cennznet-node-0.centrality.me:9944');
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromSeed(sender.seed);
@@ -41,27 +43,28 @@ describe('e2e transactions', () => {
 
     describe('Send()', () => {
         it('makes a tx with statusCb', async (done) => {
-            const transferAmount: number = 50;
-            const senderBalanceBefore = await api.query.balances.freeBalance(sender.address);
-            const receiverBalanceBefore = Number(await api.query.balances.freeBalance(receiver.address));
+            const totalSupply: Balance = new Balance(100);
+            const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
+            const reservedIdStart: number = 1000000;
             // transfer
-            await api.tx.balances.transfer(receiver.address, transferAmount).send({from: sender.address}, async (event: SubmittableSendResult) => {
+            await api.tx.genericAsset.create(totalSupply).send({from: sender.address}, async (event: SubmittableSendResult) => {
                 if (event.type === 'Finalised') {
-                    const senderBalanceAfter = await api.query.balances.freeBalance(sender.address);
-                    const receiverBalanceAfter = Number(await api.query.balances.freeBalance(receiver.address));
+                    const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
                     // expect
-                    expect(receiverBalanceAfter - receiverBalanceBefore).toEqual(transferAmount);
+                    expect(assetIdAfter.gt(assetIdBefore)).toBeTruthy();
+                    expect(Number(assetIdAfter.toString(10))).toBeGreaterThan(reservedIdStart);
+                    expect(Number(assetIdBefore.toString(10))).toBeGreaterThan(reservedIdStart);
                     done();
                 }
             });
         });
 
-        it('makes a proposal', async () => {
-            const hash = await api.tx.democracy
-                .propose(api.tx.consensus.setCode('0xdeadbeef'), 10000)
-                .send({from: sender.address});
+        // it('makes a proposal', async () => {
+        //     const hash = await api.tx.democracy
+        //         .propose(api.tx.consensus.setCode('0xdeadbeef'), 10000)
+        //         .send({from: sender.address});
     
-            expect(hash.toString()).not.toEqual('0x');
-        });
+        //     expect(hash.toString()).not.toEqual('0x');
+        // });
     });
 });

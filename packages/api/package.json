@@ -29,11 +29,11 @@
         "doc": "npx compodoc --tsconfig tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "peerDependencies": {
-        "@polkadot/extrinsics": ">= 0.40.10 < 1",
-        "@polkadot/rpc-core": ">= 0.40.10 < 1",
-        "@polkadot/rpc-provider": ">= 0.40.10 < 1",
-        "@polkadot/storage": ">= 0.40.10 < 1",
-        "@polkadot/types": ">= 0.40.10 < 1"
+        "@polkadot/extrinsics": ">= 0.42.2 < 1",
+        "@polkadot/rpc-core": ">= 0.42.2 < 1",
+        "@polkadot/rpc-provider": ">= 0.42.2 < 1",
+        "@polkadot/storage": ">= 0.42.2 < 1",
+        "@polkadot/types": ">= 0.42.2 < 1"
     },
     "dependencies": {
         "cennznet-runtime-types": "^0.5.8",
@@ -41,11 +41,11 @@
         "eventemitter3": "^3.1.0"
     },
     "devDependencies": {
-        "@polkadot/extrinsics": "^0.40.12",
-        "@polkadot/rpc-core": "^0.40.12",
-        "@polkadot/rpc-provider": "^0.40.12",
-        "@polkadot/storage": "^0.40.12",
-        "@polkadot/types": "^0.40.12",
+        "@polkadot/extrinsics": "^0.42.2",
+        "@polkadot/rpc-core": "^0.42.2",
+        "@polkadot/rpc-provider": "^0.42.2",
+        "@polkadot/storage": "^0.42.2",
+        "@polkadot/types": "^0.42.2",
         "@types/jest": "^23.3.5",
         "cennznet-wallet": "^0.5.8",
         "jest": "^23.6.0",

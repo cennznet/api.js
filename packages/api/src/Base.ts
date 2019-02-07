@@ -221,13 +221,13 @@ export default abstract class ApiBase {
             this._runtimeVersion = await this.rpc.chain.getRuntimeVersion();
             this._genesisHash = await this.rpc.chain.getBlockHash(0);
 
-            const extrinsics = extrinsicsFromMeta(this.runtimeMetadata);
-            const storage = storageFromMeta(this.runtimeMetadata);
+            const extrinsics = extrinsicsFromMeta(this.runtimeMetadata.asV0);
+            const storage = storageFromMeta(this.runtimeMetadata.asV0);
 
             this._extrinsics = this.decorateExtrinsics(extrinsics);
             this._query = this.decorateStorage(storage);
 
-            Event.injectMetadata(this.runtimeMetadata);
+            Event.injectMetadata(this.runtimeMetadata.asV0);
             Method.injectMethods(extrinsics);
 
             return true;

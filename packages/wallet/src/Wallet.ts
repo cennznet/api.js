@@ -75,7 +75,7 @@ export class Wallet implements ISigner, IWallet {
     public async sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void> {
         const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, opt.from).getPair(opt.from);
 
-        extrinsic.sign(signerPair, opt.nonce, opt.blockHash);
+        extrinsic.sign(signerPair, {blockHash: opt.blockHash, nonce: opt.nonce});
     }
 
     /**

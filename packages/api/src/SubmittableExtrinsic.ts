@@ -10,6 +10,7 @@ import {TxOpt} from 'cennznet-types';
 import {Api} from './Api';
 import {SubmittableSendResult} from './types';
 import filterEvents from './util/filterEvents';
+import {SignatureOptions} from '@polkadot/types/ExtrinsicSignature';
 
 export default class SubmittableExtrinsic extends Extrinsic {
     private _api: Api;
@@ -63,8 +64,8 @@ export default class SubmittableExtrinsic extends Extrinsic {
         return this._api.rpc.author.submitAndWatchExtrinsic(this, this.trackStatus(statusCb));
     }
 
-    public sign(signerPair: KeyringPair, nonce: AnyNumber, blockHash?: AnyU8a): SubmittableExtrinsic {
-        super.sign(signerPair, nonce, blockHash || this._api.genesisHash);
+    public sign(signerPair: KeyringPair, options: SignatureOptions): SubmittableExtrinsic {
+        super.sign(signerPair, options);
 
         return this;
     }

@@ -21,7 +21,7 @@ describe('e2e queries', () => {
     let api: Api;
     let websocket: WsProvider;
     beforeAll(async () => {
-        websocket = new WsProvider('ws://cennznet-node-0.centrality.me:9944');
+        websocket = new WsProvider('wss://cennznet-node-0.centrality.me:9944');
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromSeed(sender.seed);
@@ -38,33 +38,32 @@ describe('e2e queries', () => {
 
     describe('Query storage using at', () => {
         it('queries correct balance', async () => {
-            const balance = await api.query.balances.freeBalance(sender.address);
+            const nextAssetId = await api.query.genericAsset.nextAssetId();
             const blockHash = await api.rpc.chain.getBlockHash();
-            const balanceQueryUsingAt = await api.query.balances.freeBalance.at(blockHash, sender.address);
-            expect(balance).toEqual(balanceQueryUsingAt);
+            const nextAssetIdAt = await api.query.genericAsset.nextAssetId.at(blockHash);
+            expect(nextAssetId).toEqual(nextAssetIdAt);
         }) 
     })
     
     describe('Subscribe storage', () => {
         let subscribeNumber: number;
         afterAll(async () => {
-            await api.query.balance.freeBalance.unsubscribe(subscribeNumber);
+            await api.query.genericAsset.nextAssetId.unsubscribe(subscribeNumber);
         })
         it('emits events when storage changes', async (done) => {
-            const transferAmount: number = 50;
+            const totalSupply: Balance = new Balance(100);
             let count = 0;
-            let originalBalance: number;
-            subscribeNumber = await api.query.balances.freeBalance(receiver.address, (result: Balance) => {
+            const reservedIdStart: number = 1000000;
+            subscribeNumber = await api.query.genericAsset.nextAssetId((result: any) => {
                 if (count === 0) {
-                    originalBalance = Number(result.toString(10));
+                    expect(Number(result.toString(10))).toBeGreaterThanOrEqual(reservedIdStart)
                     count += 1;
                 } else {
-                    expect(Number(result.toString(10))).toEqual(originalBalance + transferAmount);
+                    expect(Number(result.toString(10))).toBeGreaterThanOrEqual(reservedIdStart)
                     done();
                 }
-            }); 
-            // transfer
-            await api.tx.balances.transfer(receiver.address, transferAmount).send({from: sender.address});
+            }) as unknown as number; 
+            await api.tx.genericAsset.create(totalSupply).send({from: sender.address});
         });
     })
 })
