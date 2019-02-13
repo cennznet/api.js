@@ -1,13 +1,16 @@
 import {KeyringPair$Json} from '@polkadot/keyring/types';
-import Extrinsic from '@polkadot/types/Extrinsic';
-import {TxOpt, Encryptor, ISigner, IKeyring, IWallet} from 'cennznet-types';
+import {Encryptor, IKeyring, IWallet} from 'cennznet-types';
 import {KeyringType, WalletOption} from 'cennznet-types/wallet';
 import {persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
 import {HDKeyring} from './keyrings/HDKeyring';
-import {SimpleKeyring} from './keyrings/SimpleKeyring';
 import naclEncryptor from './encryptors/naclEncryptor';
+import {Signer} from '@polkadot/api/types';
+import {SignatureOptions} from '@polkadot/types/ExtrinsicSignature';
+import Extrinsic from '@polkadot/types/Extrinsic';
 
 export type SerializedWallet = {name: string; data: any}[];
+
+let id = 0;
 
 const privateKeyrings = new WeakMap<object, IKeyring<any>[]>();
 const privatePasswd = new WeakMap<object, string>();
@@ -41,7 +44,7 @@ function getKeyringByAddress(wallet: Wallet, accountKeyringMap: AccountKeyringMa
  * a Wallet implementation which can be used as signer in cennznet-api
  * support multi-keyring and shipped with a HD Keyring as default keyring type.
  */
-export class Wallet implements ISigner, IWallet {
+export class Wallet implements Signer, IWallet {
     protected _encryptor: Encryptor;
     protected _keyringTypes: KeyringType<any>[];
     protected _accountKeyringMap: AccountKeyringMap;
@@ -72,10 +75,12 @@ export class Wallet implements ISigner, IWallet {
      */
     @synchronized
     @requireUnlocked
-    public async sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void> {
-        const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, opt.from).getPair(opt.from);
+    public async sign(extrinsic: Extrinsic, address: string, options: SignatureOptions): Promise<number> {
+        const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, address).getPair(address);
 
-        extrinsic.sign(signerPair, {blockHash: opt.blockHash, nonce: opt.nonce});
+        extrinsic.sign(signerPair, {blockHash: options.blockHash, nonce: options.nonce});
+
+        return ++id;
     }
 
     /**

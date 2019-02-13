@@ -7,7 +7,7 @@
 ```
 $> npm config set registry https://npm-proxy.fury.io/centrality/
 $> npm login
-$> npm i cennznet-api @polkadot/extrinsics @polkadot/rpc-core @polkadot/rpc-provider @polkadot/storage @polkadot/types
+$> npm i cennznet-api @polkadot/api @polkadot/extrinsics @polkadot/rpc-core @polkadot/rpc-provider @polkadot/storage @polkadot/types
 $> npm i cennznet-wallet
 ```
 
@@ -40,8 +40,8 @@ const keyring = new SimpleKeyring();
 await keyring.addFromSeed(andrea.seed);
 await wallet.addKeyring(keyring);
 
-// set wallet as signer of api
+// set wallet as signer of API
 api.setSigner(wallet)
 // do a transfer
-await api.tx.balances.transfer(bob.address, 12345).send({from: andrea.address})
+await api.tx.balances.transfer(bob.address, 12345).signAndSend(andrea.address);
 ```

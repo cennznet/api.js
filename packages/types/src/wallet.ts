@@ -1,10 +1,4 @@
-import {Extrinsic} from '@polkadot/types';
 import {KeyringPair} from '@polkadot/keyring/types';
-import {Newable, TxOpt} from './index';
-
-export interface ISigner {
-    sign(extrinsic: Extrinsic, opt: TxOpt): Promise<void>;
-}
 
 export interface IWallet {
     lock(): Promise<void>;

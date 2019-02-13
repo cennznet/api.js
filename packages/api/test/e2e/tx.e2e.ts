@@ -8,7 +8,6 @@ import {SimpleKeyring, Wallet} from 'cennznet-wallet';
 import {Api} from '../../src/Api';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import { SubmittableSendResult } from '../../src/types';
-import Balance from '@polkadot/types/Balance';
 import {AssetId} from 'cennznet-runtime-types';
 
 const sender = {
@@ -43,11 +42,11 @@ describe('e2e transactions', () => {
 
     describe('Send()', () => {
         it('makes a tx with statusCb', async (done) => {
-            const totalSupply: Balance = new Balance(100);
+            const totalSupply = 100;
             const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
             const reservedIdStart: number = 1000000;
             // transfer
-            await api.tx.genericAsset.create(totalSupply).send({from: sender.address}, async (event: SubmittableSendResult) => {
+            await api.tx.genericAsset.create({totalSupply}).signAndSend(sender.address, async (event: SubmittableSendResult) => {
                 if (event.type === 'Finalised') {
                     const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
                     // expect

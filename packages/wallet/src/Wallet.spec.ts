@@ -145,16 +145,16 @@ describe('a wallet', () => {
             const keyring = new SimpleKeyring();
             await keyring.addPair(alice);
             await wallet.addKeyring(keyring);
-            await wallet.sign(testExtrinsic, {from: alice.address(), nonce: 0, blockHash: GENESIS_HASH});
+            await wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH});
             expect(testExtrinsic.isSigned).toBeTruthy();
             const anotherAccountAddress = await wallet.addAccount();
             const testExtrinsic2 = new Extrinsic('0x010200ea51b75b00000000');
-            await wallet.sign(testExtrinsic2, {from: anotherAccountAddress, nonce: 0, blockHash: GENESIS_HASH});
+            await wallet.sign(testExtrinsic2, anotherAccountAddress, {nonce: 0, blockHash: GENESIS_HASH});
             expect(testExtrinsic2.isSigned).toBeTruthy();
         });
         it('the signer is not in the wallet', async () => {
             await expect(
-                wallet.sign(testExtrinsic, {from: bob.address(), nonce: 0, blockHash: GENESIS_HASH})
+                wallet.sign(testExtrinsic, bob.address(), {nonce: 0, blockHash: GENESIS_HASH})
             ).rejects.toThrow();
         });
     });
@@ -180,7 +180,7 @@ describe('a wallet', () => {
                 expect(wallet.isLocked()).toBeTruthy();
                 await expect(wallet.getAddresses()).rejects.toThrow();
                 await expect(
-                    wallet.sign(testExtrinsic, {from: alice.address(), nonce: 0, blockHash: GENESIS_HASH})
+                    wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})
                 ).rejects.toThrow();
             });
             it('can not unlock again', async () => {
@@ -196,8 +196,7 @@ describe('a wallet', () => {
                 await wallet.unlock(walletPassphase);
                 expect(wallet.isLocked()).not.toBeTruthy();
                 await expect(wallet.getAddresses()).resolves.toHaveLength(13);
-                await expect(wallet.sign(testExtrinsic, {from: alice.address(), nonce: 0, blockHash: GENESIS_HASH}))
-                    .resolves;
+                await expect(wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})).resolves;
             });
             it('can not add key pair', async () => {
                 const keyring = new SimpleKeyring();
@@ -212,7 +211,7 @@ describe('a wallet', () => {
             });
             it('can not sign tx', async () => {
                 await expect(
-                    wallet.sign(testExtrinsic, {from: alice.address(), nonce: 0, blockHash: GENESIS_HASH})
+                    wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})
                 ).rejects.toThrow('wallet is locked');
             });
         });

@@ -1,7 +1,8 @@
 import {AnyNumber, AnyU8a, Constructor} from '@polkadot/types/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
-export {Encryptor, IKeyring, ISigner, IWallet} from './wallet';
+export {Encryptor, IKeyring, IWallet} from './wallet';
 
 export interface TxOpt {
     from: string;
@@ -9,17 +10,13 @@ export interface TxOpt {
     blockHash?: AnyU8a;
 }
 
-export interface ApiOptions {
+export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
     /**
      * provider implement ProviderInterface or string url for WsProvider.
      * If not specified, it will default to connecting to the
      * localhost with the default port, i.e. `ws://127.0.0.1:9944`
      */
     provider?: ProviderInterface | string;
-    /**
-     * Additional types used by runtime modules. This is nessusary if the runtime modules uses non-buildin types.
-     */
-    additionalTypes?: {[name: string]: Constructor};
 }
 
 export type Newable<T> = {
