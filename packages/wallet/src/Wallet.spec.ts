@@ -42,6 +42,14 @@ describe('a wallet', () => {
         await expect(wallet.addAccount()).resolves.toBe('5HDruG9uYPyF2aRfYXwUhoEk4eZ8oZLbYr6KiHKR6AbTMyMR');
     });
 
+    it('create and restore#2', async () => {
+        const newPassphrase = 'new passphrase';
+        const mnemonic = 'kite manual pizza regret forget edge jelly leaf draft arrest knock parade';
+        const keyring = new HDKeyring({mnemonic, numberOfAccounts: 5});
+        await wallet.createNewVaultAndRestore(newPassphrase, [keyring]);
+        await expect(wallet.getAddresses()).resolves.toHaveLength(5);
+    });
+
     describe('accounts', () => {
         it('addKeyring(keyring)', async () => {
             const keyring = new SimpleKeyring();

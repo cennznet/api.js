@@ -104,6 +104,7 @@ export class Wallet implements Signer, IWallet {
         privatePasswd.set(this, passphrase);
         privateKeyrings.set(this, keyrings);
         this._isLocked = false;
+        await this.syncAccountKeyringMap();
         await this.persistAll();
     }
 
