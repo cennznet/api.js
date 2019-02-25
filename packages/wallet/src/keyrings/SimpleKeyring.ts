@@ -84,7 +84,12 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     private _deserialize(data: SerializedSimpleKeyring): void {
         this._keyring = new Keyring();
         for (const address of Object.keys(data)) {
-            this.addFromJson({address, encoded: data[address], encoding: null, meta: null});
+            this.addFromJson({
+                address,
+                encoded: data[address],
+                encoding: {type: null, version: null, content: null},
+                meta: null,
+            });
         }
     }
 }

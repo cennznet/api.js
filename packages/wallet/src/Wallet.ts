@@ -6,7 +6,7 @@ import {HDKeyring} from './keyrings/HDKeyring';
 import naclEncryptor from './encryptors/naclEncryptor';
 import {Signer} from '@polkadot/api/types';
 import {SignatureOptions} from '@polkadot/types/types';
-import Extrinsic from '@polkadot/types/Extrinsic';
+import Extrinsic from '@polkadot/types/type/Extrinsic';
 
 export type SerializedWallet = {name: string; data: any}[];
 

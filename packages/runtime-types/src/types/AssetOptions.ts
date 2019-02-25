@@ -2,9 +2,9 @@
  Custom `AssetOptions` type for generic asset module.
 */
 
-import Balance from '@polkadot/types/Balance';
+import Balance from '@polkadot/types/type/Balance';
 import Struct from '@polkadot/types/codec/Struct';
-import Hash from '@polkadot/types/Hash';
+import Hash from '@polkadot/types/type/Hash';
 
 const JSON_MAP = new Map([['totalSupply', 'total_supply']]);
 
