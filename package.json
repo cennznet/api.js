@@ -12,18 +12,17 @@
         "make-docs": "./scripts/make_docs.sh"
     },
     "devDependencies": {
-        "@compodoc/compodoc": "^1.1.7",
+        "@compodoc/compodoc": "^1.1.8",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
-        "jest": "23.6.0",
-        "jest-environment-node": "^23.4.0",
-        "lerna": "^3.6.0",
+        "jest": "24.1.0",
+        "jest-environment-node": "^24.0.0",
+        "lerna": "^3.11.0",
         "prettier": "^1.13.5",
-        "ts-jest": "^23.10.3",
+        "ts-jest": "^24.0.0",
         "tslint": "^5.11.0",
         "tslint-microsoft-contrib": "^5.2.1"
-
     },
     "config": {
         "commitizen": {
