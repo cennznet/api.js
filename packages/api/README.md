@@ -12,6 +12,9 @@ $> npm i cennznet-wallet
 ```
 
 ## Usage
+_RxJs api is ready_
+
+For Promise Api
 
 ```
 # node --experimental-repl-await
@@ -44,4 +47,15 @@ await wallet.addKeyring(keyring);
 api.setSigner(wallet)
 // do a transfer
 await api.tx.balances.transfer(bob.address, 12345).signAndSend(andrea.address);
+```
+For Rxjs Api
+
+```
+# node --experimental-repl-await
+//initialize Api and connect to dev network
+const {ApiRx} = require('cennznet-api')
+api = await ApiRx.create({
+    provider: 'ws://cennznet-node-0.centrality.me:9944'
+}).toPromise();
+
 ```
