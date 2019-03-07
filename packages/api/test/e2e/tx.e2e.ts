@@ -3,12 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {stringToU8a} from '@polkadot/util';
-import {SimpleKeyring, Wallet} from 'cennznet-wallet';
+import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {Api} from '../../src/Api';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import { SubmittableSendResult } from '../../src/types';
-import {AssetId} from 'cennznet-runtime-types';
+import {AssetId} from '@cennznet/runtime-types';
 
 const sender = {
     address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',

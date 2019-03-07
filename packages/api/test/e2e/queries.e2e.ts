@@ -2,11 +2,11 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Api} from '../../src/Api';
-import {Wallet, SimpleKeyring} from 'cennznet-wallet';
+import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {stringToU8a} from '@polkadot/util';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {Balance, Hash} from '@polkadot/types';
-import {AssetOptions} from 'cennznet-runtime-types';
+import {AssetOptions} from '@cennznet/runtime-types';
 
 const sender = {
     address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',

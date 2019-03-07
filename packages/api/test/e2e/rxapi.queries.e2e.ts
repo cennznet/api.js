@@ -3,7 +3,7 @@
  */
 import {Hash} from '@polkadot/types';
 import {ApiRx} from '../../src/ApiRx';
-import {Wallet, SimpleKeyring} from 'cennznet-wallet';
+import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {stringToU8a} from '@polkadot/util';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {combineLatest} from 'rxjs';

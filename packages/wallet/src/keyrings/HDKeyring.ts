@@ -2,7 +2,7 @@ import Keyring from '@polkadot/keyring';
 import {KeyringPair} from '@polkadot/keyring/types';
 import {mnemonicToSeed} from '@polkadot/util-crypto';
 import {generateMnemonic} from 'bip39';
-import {IKeyring} from 'cennznet-types';
+import {IKeyring} from '@cennznet/types';
 import HDKey from 'hdkey';
 const DEFAULT_HD_PATH = "m/44'/392'/0'/0";
 

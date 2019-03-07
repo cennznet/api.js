@@ -1,6 +1,6 @@
 import {KeyringPair$Json} from '@polkadot/keyring/types';
-import {Encryptor, IKeyring, IWallet} from 'cennznet-types';
-import {KeyringType, WalletOption} from 'cennznet-types/wallet';
+import {Encryptor, IKeyring, IWallet} from '@cennznet/types';
+import {KeyringType, WalletOption} from '@cennznet/types/wallet';
 import {persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
 import {HDKeyring} from './keyrings/HDKeyring';
 import naclEncryptor from './encryptors/naclEncryptor';

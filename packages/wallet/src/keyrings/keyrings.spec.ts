@@ -1,5 +1,5 @@
 import {KeyringPair} from '@polkadot/keyring/types';
-import {IKeyring, KeyringType} from 'cennznet-types/wallet';
+import {IKeyring, KeyringType} from '@cennznet/types/wallet';
 import {HDKeyring} from './HDKeyring';
 import {SimpleKeyring} from './SimpleKeyring';
 

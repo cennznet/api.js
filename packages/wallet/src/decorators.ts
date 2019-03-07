@@ -1,4 +1,4 @@
-import {Newable} from 'cennznet-types';
+import {Newable} from '@cennznet/types';
 import 'reflect-metadata';
 
 /**

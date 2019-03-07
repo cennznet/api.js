@@ -1,5 +1,5 @@
 import {KeyringPair} from '@polkadot/keyring/types';
-import {IKeyring} from 'cennznet-types';
+import {IKeyring} from '@cennznet/types';
 import {HDKeyring} from './HDKeyring';
 
 describe('HDKeyring', () => {

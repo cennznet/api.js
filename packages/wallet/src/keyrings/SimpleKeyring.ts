@@ -1,7 +1,7 @@
 import Keyring from '@polkadot/keyring';
 import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@polkadot/keyring/types';
 import {generateMnemonic} from 'bip39';
-import {IKeyring} from 'cennznet-types';
+import {IKeyring} from '@cennznet/types';
 
 interface SerializedSimpleKeyring {
     [address: string]: string;

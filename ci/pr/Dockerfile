@@ -8,7 +8,6 @@ RUN yarn install -q
 
 # install dependecies for packages
 COPY ./packages/api/package.json ./packages/api/
-COPY ./packages/http-provider/package.json ./packages/http-provider/
 COPY ./packages/runtime-types/package.json ./packages/runtime-types/
 COPY ./packages/types/package.json ./packages/types/
 COPY ./packages/wallet/package.json ./packages/wallet/

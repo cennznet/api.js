@@ -98,13 +98,6 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/runtime@^7.3.1":
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.1.tgz#574b03e8e8a9898eaf4a872a92ea20b7846f6f2a"
-  integrity sha512-7jGW8ppV0ant637pIqAcFfQDDH1orEPGJb8aXfUozuCU3QqX7rX4DA8iwrbPrR1hcH0FTTHz47yQnk+bl5xHQA==
-  dependencies:
-    regenerator-runtime "^0.12.0"
-
 "@babel/runtime@^7.3.4":
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
@@ -918,17 +911,6 @@
   dependencies:
     "@babel/runtime" "^7.3.4"
 
-"@polkadot/keyring@^0.34.23":
-  version "0.34.23"
-  resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.34.23.tgz#b489fc3e41576d23c62ab5a2b7436ae724e34e95"
-  integrity sha512-P+KlUjfSBNTEd2OWF+WRa49m4PKHax+kVp3uuaLKBGps5hK3mL2bDaSimstRHREuXCjM8BIDHYRYx9SqvtjeTg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    "@polkadot/util" "^0.34.23"
-    "@polkadot/util-crypto" "^0.34.23"
-    "@types/bs58" "^4.0.0"
-    bs58 "^4.0.1"
-
 "@polkadot/keyring@^0.35.1":
   version "0.35.4"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-0.35.4.tgz#c7a6eca79a53c0468fa2a32b4647e5866460f9de"
@@ -979,11 +961,6 @@
     memoizee "^0.4.14"
     rxjs "^6.4.0"
 
-"@polkadot/schnorrkel-js@^0.1.2-1":
-  version "0.1.2-1"
-  resolved "https://registry.yarnpkg.com/@polkadot/schnorrkel-js/-/schnorrkel-js-0.1.2-1.tgz#90e4e8bca54157513cf5192f4581491bcbf5c44e"
-  integrity sha512-Y6cJWOOJyQ6TPzWzfgPrZlWzcR89X2tOgLIrCXOyEE72+CFiBfyAQDqG2jBzxolEqqN/Fz0AUdxqPT45BzionQ==
-
 "@polkadot/schnorrkel-js@^0.1.2-3":
   version "0.1.2-3"
   resolved "https://registry.yarnpkg.com/@polkadot/schnorrkel-js/-/schnorrkel-js-0.1.2-3.tgz#9117ac5126b465a1cf53c2b6bb68a17efc7e0390"
@@ -1010,25 +987,6 @@
     "@polkadot/util" "^0.35.1"
     core-js "^2.6.5"
 
-"@polkadot/util-crypto@^0.34.23":
-  version "0.34.23"
-  resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.34.23.tgz#53762db211dfa3a93aac081793fe4ce33510af0c"
-  integrity sha512-sRQvuisf08L+aL9vmq27p9wHUZPVaiXwc5yKuL1DOfZ8LZjQ1oLHYEObCn9tP6IFo12xk6NzKei/VkHF4TIMlA==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    "@polkadot/schnorrkel-js" "^0.1.2-1"
-    "@polkadot/util" "^0.34.23"
-    "@types/bip39" "^2.4.2"
-    "@types/secp256k1" "^3.5.0"
-    "@types/webassembly-js-api" "^0.0.2"
-    "@types/xxhashjs" "^0.2.0"
-    bip39 "^2.5.0"
-    blakejs "^1.1.0"
-    js-sha3 "^0.8.0"
-    secp256k1 "^3.6.2"
-    tweetnacl "^1.0.1"
-    xxhashjs "^0.2.2"
-
 "@polkadot/util-crypto@^0.35.1", "@polkadot/util-crypto@^0.35.4":
   version "0.35.4"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-0.35.4.tgz#f63d9a0fb1527b506e391ec77e51edcbfb5597f5"
@@ -1048,24 +1006,6 @@
     secp256k1 "^3.6.2"
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
-
-"@polkadot/util@^0.34.23":
-  version "0.34.23"
-  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-0.34.23.tgz#83d920be7a817580f51365af9f2d6205538d204a"
-  integrity sha512-55+ZoEPTqzTI1PES8ztFJPLkmKVK/1dvzDhcJd+r1igRO6z+sss4Z446rWGn4gtxJZVkmczr3oQogG4y6qoSYg==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    "@types/bn.js" "^4.11.4"
-    "@types/camelcase" "^4.1.0"
-    "@types/deasync" "^0.1.0"
-    "@types/ip-regex" "^3.0.0"
-    bn.js "^4.11.8"
-    camelcase "^5.0.0"
-    chalk "^2.4.2"
-    core-js "^2.6.5"
-    deasync "^0.1.14"
-    ip-regex "^4.0.0"
-    moment "^2.24.0"
 
 "@polkadot/util@^0.35.1", "@polkadot/util@^0.35.4":
   version "0.35.4"
@@ -1813,11 +1753,6 @@ bindings@^1.2.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.3.1.tgz#21fc7c6d67c18516ec5aaa2815b145ff77b26ea5"
   integrity sha512-i47mqjF9UbjxJhxGf+pZ6kSxrnI3wBLlnGI2ArWJ4r0VrvDS7ZYXkprq/pLaBWYq4GM0r4zdHY+NNRqEMU7uew==
-
-bindings@~1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
-  integrity sha1-FK1hE4EtLTfXLme0ystLtyZQXxE=
 
 bip39@^2.5.0:
   version "2.5.0"
@@ -2697,14 +2632,6 @@ dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
-
-deasync@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.14.tgz#232ea2252b443948cad033d792eb3b24b0a3d828"
-  integrity sha512-wN8sIuEqIwyQh72AG7oY6YQODCxIp1eXzEZlZznBuwDF8Q03Tdy9QNp1BNZXeadXoklNrw+Ip1fch+KXo/+ASw==
-  dependencies:
-    bindings "~1.2.1"
-    node-addon-api "^1.6.0"
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
@@ -5850,11 +5777,6 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
-
-node-addon-api@^1.6.0:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.6.2.tgz#d8aad9781a5cfc4132cc2fecdbdd982534265217"
-  integrity sha512-479Bjw9nTE5DdBSZZWprFryHGjUaQC31y1wHo19We/k0BZlrmhqQitWoUL0cD8+scljCbIUL+E58oRDEakdGGA==
 
 node-fetch-npm@^2.0.2:
   version "2.0.2"

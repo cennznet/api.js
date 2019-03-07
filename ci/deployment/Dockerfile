@@ -31,7 +31,7 @@ RUN git reset --hard
 RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks --force-publish=*
 
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
-RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} \
+RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
   --parallel \
   -- \
     "\
@@ -44,19 +44,18 @@ RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet
     ";
 
 # pack packages for uploading
-RUN npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} -- "npm pack"
+RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} -- "npm pack"
 
 
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} \
+  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
-        PACKAGE_NAME=\$(node -p \"try {require('./package.json').name} catch(e){'0.0.0'}\") && \
-        PACKAGE_VERSION=\$(node -p \"try {require('./package.json').version} catch(e){'0.0.0'}\") && \
-        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}-\${PACKAGE_VERSION}.tgz\" && \
+        PACKAGE_NAME=\$(ls *.tgz) && \
+        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \
         if [ ! -f TAR_PATH ]; then continue; fi && \
         echo \" - Pushing package: \$PACKAGE_NAME\" && \
         ( \
@@ -72,13 +71,12 @@ RUN \
 # push all packages to Gemfury centrality external
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={cennznet-api,cennznet-types,cennznet-wallet,cennznet-runtime-types} \
+  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
     -- \
       "\
         PUSH_URL=\"https://${GEMFURY_EXTERNAL_TOKEN}@push.fury.io/centralityexternals/\" && \
-        PACKAGE_NAME=\$(node -p \"try {require('./package.json').name} catch(e){'0.0.0'}\") && \
-        PACKAGE_VERSION=\$(node -p \"try {require('./package.json').version} catch(e){'0.0.0'}\") && \
-        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}-\${PACKAGE_VERSION}.tgz\" && \
+        PACKAGE_NAME=\$(ls *.tgz) && \
+        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \
         if [ ! -f TAR_PATH ]; then continue; fi && \
         echo \" - Pushing package: \$PACKAGE_NAME\" && \
         ( \
