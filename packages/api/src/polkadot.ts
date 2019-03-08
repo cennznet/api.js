@@ -1,3 +1,3 @@
-export {ApiPromise, ApiRx, SubmittableExtrinsic, SubmittableResult} from '@polkadot/api';
+export {ApiPromise, ApiRx, SubmittableResult} from '@polkadot/api';
 
 export {WsProvider} from '@polkadot/rpc-provider';

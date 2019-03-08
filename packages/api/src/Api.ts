@@ -5,7 +5,7 @@ import WsProvider from '@polkadot/rpc-provider/ws';
 import {isFunction, isObject} from '@polkadot/util';
 import {ApiOptions} from './types';
 
-const Types = require('@cennznet/types/index.types');
+const Types = require('@cennznet/types');
 
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
