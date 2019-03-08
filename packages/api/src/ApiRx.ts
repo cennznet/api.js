@@ -6,7 +6,7 @@ import {isFunction, isObject} from '@polkadot/util';
 import {Observable} from 'rxjs';
 import {ApiOptions} from './types';
 
-const Types = require('@cennznet/types/index.types');
+const Types = require('@cennznet/types');
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
