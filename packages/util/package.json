@@ -1,5 +1,5 @@
 {
-    "name": "@cennznet/types",
+    "name": "@cennznet/util",
     "version": "0.7.8",
     "description": "> TODO: description",
     "author": "ian.he <ian.he@centrality.ai>",
@@ -15,10 +15,12 @@
         "build": "tsc",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
+    "dependencies": {
+        "@polkadot/keyring": "^0.35.1",
+        "@polkadot/util": "^0.35.1",
+        "@polkadot/util-crypto": "^0.35.1"
+    },
     "devDependencies": {
-        "@polkadot/api": "^0.46.5",
-        "@polkadot/rpc-provider": "^0.46.5",
-        "@polkadot/types": "^0.46.5",
         "typescript": "^3.1.6"
     }
 }

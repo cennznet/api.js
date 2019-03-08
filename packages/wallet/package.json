@@ -5,15 +5,8 @@
     "author": "ian.he <ian.he@centrality.ai>",
     "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
     "license": "ISC",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "directories": {
-        "lib": "lib",
-        "test": "__tests__"
-    },
-    "files": [
-        "dist"
-    ],
+    "main": "index.js",
+    "types": "index.d.ts",
     "repository": {
         "type": "git",
         "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
@@ -26,14 +19,15 @@
         "doc": "npx compodoc --tsconfig tsconfig.json --hideGenerator --theme readthedocs  --includes compodoc --output ../../docs/wallet"
     },
     "dependencies": {
-        "@polkadot/keyring": "^0.35.1",
+        "@cennznet/util": "^0.7.8",
+        "bip39": "^2.5.0",
         "hdkey": "^1.1.0",
         "reflect-metadata": "^0.1.12",
         "tweetnacl": "^1.0.0"
     },
     "devDependencies": {
+        "@cennznet/api": "^0.7.8",
         "@cennznet/types": "^0.7.8",
-        "@polkadot/types": "^0.46.4",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",
         "rimraf": "^2.6.2",

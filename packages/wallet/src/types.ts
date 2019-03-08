@@ -1,4 +1,4 @@
-import {KeyringPair} from '@polkadot/keyring/types';
+import {KeyringPair} from '@cennznet/util/types';
 
 export interface IWallet {
     lock(): Promise<void>;
@@ -12,7 +12,6 @@ export interface WalletOption {
     vault?: string;
     encryptor?: Encryptor;
     keyringTypes?: KeyringType<any>[];
-    // defaultKeyring?: Newable<IKeyring<any>>;
 }
 
 export interface IKeyring<S> {
@@ -33,8 +32,8 @@ export interface IKeyring<S> {
 
 export interface KeyringType<T> {
     name: string;
-    generate(): Promise<IKeyring<T>>;
     new (data?: T): IKeyring<T>;
+    generate(): Promise<IKeyring<T>>;
 }
 
 export interface Encryptor {

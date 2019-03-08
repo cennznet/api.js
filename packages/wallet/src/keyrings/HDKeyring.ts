@@ -1,9 +1,9 @@
-import Keyring from '@polkadot/keyring';
-import {KeyringPair} from '@polkadot/keyring/types';
-import {mnemonicToSeed} from '@polkadot/util-crypto';
+import {Keyring, mnemonicToSeed} from '@cennznet/util';
+import {KeyringPair} from '@cennznet/util/types';
 import {generateMnemonic} from 'bip39';
-import {IKeyring} from '@cennznet/types';
 import HDKey from 'hdkey';
+import {IKeyring} from '../types';
+
 const DEFAULT_HD_PATH = "m/44'/392'/0'/0";
 
 interface SerializedHDKeyring {
@@ -19,10 +19,6 @@ const privateMnemonic = new WeakMap<object, string>();
  * will use hd path "m/44'/392'/0'/0" (for CENNZ) by default
  */
 export class HDKeyring implements IKeyring<SerializedHDKeyring> {
-    private rootKey: HDKey;
-    private pairs: KeyringPair[];
-    private hdPath: string;
-
     static async generate(): Promise<HDKeyring> {
         const mnemonic = generateMnemonic();
         const keyring = new HDKeyring({
@@ -32,6 +28,9 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
         });
         return keyring;
     }
+    private rootKey: HDKey;
+    private pairs: KeyringPair[];
+    private hdPath: string;
 
     constructor(opt?: SerializedHDKeyring) {
         this.pairs = [];

@@ -1,10 +1,11 @@
-import {EventRecord, ExtrinsicStatus} from '@polkadot/types';
-// Copyright 2017-2018 @polkadot/api authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import {ProviderInterface} from '@polkadot/rpc-provider/types';
 
-export type SubmittableSendResult = {
-    events?: Array<EventRecord>;
-    status: ExtrinsicStatus;
-    type: string;
-};
+export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
+    /**
+     * provider implement ProviderInterface or string url for WsProvider.
+     * If not specified, it will default to connecting to the
+     * localhost with the default port, i.e. `ws://127.0.0.1:9944`
+     */
+    provider?: ProviderInterface | string;
+}

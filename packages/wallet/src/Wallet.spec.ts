@@ -1,8 +1,7 @@
+import {Extrinsic, Method} from '@cennznet/types/polkadot';
+import {hexToU8a, TestingPairs} from '@cennznet/util';
 import extrinsics from '@polkadot/extrinsics/static';
-import {Extrinsic, Method} from '@polkadot/types';
-import {hexToU8a} from '@polkadot/util';
 import {Wallet} from './';
-import TestingPairs from '@polkadot/keyring/testingPairs';
 import {HDKeyring} from './keyrings/HDKeyring';
 import {SimpleKeyring} from './keyrings/SimpleKeyring';
 

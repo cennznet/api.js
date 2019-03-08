@@ -9,10 +9,13 @@
         "packages/*"
     ],
     "scripts": {
+        "build": "polkadot-dev-build-ts",
+        "test:unit": "jest -c ./jest/jest.config.js --coverage spec",
         "make-docs": "./scripts/make_docs.sh"
     },
     "devDependencies": {
-        "@compodoc/compodoc": "^1.1.8",
+        "@compodoc/compodoc": "^1.1.9",
+        "@polkadot/dev": "^0.25.12",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
@@ -21,7 +24,7 @@
         "lerna": "^3.11.0",
         "prettier": "^1.13.5",
         "ts-jest": "^24.0.0",
-        "tslint": "^5.11.0",
+        "tslint": "^5.13.1",
         "tslint-microsoft-contrib": "^5.2.1"
     },
     "config": {

@@ -8,7 +8,7 @@ RUN yarn install -q
 
 # install dependecies for packages
 COPY ./packages/api/package.json ./packages/api/
-COPY ./packages/runtime-types/package.json ./packages/runtime-types/
+COPY ./packages/util/package.json ./packages/util/
 COPY ./packages/types/package.json ./packages/types/
 COPY ./packages/wallet/package.json ./packages/wallet/
 RUN npx lerna bootstrap
@@ -17,4 +17,5 @@ RUN npx lerna bootstrap
 COPY . .
 
 # build
-RUN npx lerna run build
+#RUN npx lerna run build
+RUN yarn build

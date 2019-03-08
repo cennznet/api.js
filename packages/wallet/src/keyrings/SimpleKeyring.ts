@@ -1,7 +1,7 @@
-import Keyring from '@polkadot/keyring';
-import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@polkadot/keyring/types';
+import {Keyring} from '@cennznet/util';
+import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@cennznet/util/types';
 import {generateMnemonic} from 'bip39';
-import {IKeyring} from '@cennznet/types';
+import {IKeyring} from '../types';
 
 interface SerializedSimpleKeyring {
     [address: string]: string;
@@ -11,11 +11,10 @@ interface SerializedSimpleKeyring {
  * a Simple Keyring implementation of ${IKeyring} can be used to manage individual key pairs
  */
 export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
-    private _keyring = new Keyring();
-
     static async generate(): Promise<SimpleKeyring> {
         return new SimpleKeyring();
     }
+    private _keyring = new Keyring();
 
     constructor(opt?: SerializedSimpleKeyring) {
         if (opt) {
@@ -23,14 +22,14 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         }
     }
 
-    public async serialize(): Promise<SerializedSimpleKeyring> {
+    async serialize(): Promise<SerializedSimpleKeyring> {
         return (await this.getPairs()).reduce((acc, pair) => {
             acc[pair.address()] = pair.toJson().encoded;
             return acc;
         }, {});
     }
 
-    public async deserialize(data: SerializedSimpleKeyring): Promise<this> {
+    async deserialize(data: SerializedSimpleKeyring): Promise<this> {
         this._deserialize(data);
         return this;
     }

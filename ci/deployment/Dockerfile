@@ -30,29 +30,31 @@ RUN git reset --hard
 # Version packages and create versioned GIT commit
 RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks --force-publish=*
 
+RUN npx lerna exec -- 'cpx package.json build/'
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
-RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
-  --parallel \
-  -- \
-    "\
-      HAS_PREPUBLISH_SCRIPT=\$(\
-        node -e \"console.log(require('./package.json').scripts.prepublishOnly && 1 || '')\"\
-      );\
-      if [ -n \"\$HAS_PREPUBLISH_SCRIPT\" ]; then\
-        npm run prepublishOnly --silent;\
-      fi\
-    ";
+#RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
+#  --parallel \
+#  -- \
+#    "\
+#      HAS_PREPUBLISH_SCRIPT=\$(\
+#        node -e \"console.log(require('./package.json').scripts.prepublishOnly && 1 || '')\"\
+#      );\
+#      if [ -n \"\$HAS_PREPUBLISH_SCRIPT\" ]; then\
+#        npm run prepublishOnly --silent;\
+#      fi\
+#    ";
 
 # pack packages for uploading
-RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} -- "npm pack"
+RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} -- "cd build && npm pack"
 
 
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
+  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
     -- \
       "\
+        cd build && \
         PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
         PACKAGE_NAME=\$(ls *.tgz) && \
         TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \
@@ -71,9 +73,10 @@ RUN \
 # push all packages to Gemfury centrality external
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/runtime-types} \
+  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
     -- \
       "\
+        cd build && \
         PUSH_URL=\"https://${GEMFURY_EXTERNAL_TOKEN}@push.fury.io/centralityexternals/\" && \
         PACKAGE_NAME=\$(ls *.tgz) && \
         TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \

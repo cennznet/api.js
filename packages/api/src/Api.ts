@@ -1,14 +1,14 @@
 import {ApiPromise} from '@polkadot/api';
-import {isObject, isFunction} from '@polkadot/util';
-import {ApiOptions} from '@cennznet/types';
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import {isFunction, isObject} from '@polkadot/util';
+import {ApiOptions} from './types';
 
-const Types = require('@cennznet/runtime-types');
+const Types = require('@cennznet/types/index.types');
 
 export class Api extends ApiPromise {
-    static create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
+    static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
         return new Api(options).isReady;
     }
 

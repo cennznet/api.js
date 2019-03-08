@@ -1,12 +1,10 @@
-import {KeyringPair$Json} from '@polkadot/keyring/types';
-import {Encryptor, IKeyring, IWallet} from '@cennznet/types';
-import {KeyringType, WalletOption} from '@cennznet/types/wallet';
+import {Signer} from '@cennznet/api/polkadot.types';
+import {IExtrinsic, SignatureOptions} from '@cennznet/types/polkadot.types';
+import {KeyringPair$Json} from '@cennznet/util/types';
 import {persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
-import {HDKeyring} from './keyrings/HDKeyring';
 import naclEncryptor from './encryptors/naclEncryptor';
-import {Signer} from '@polkadot/api/types';
-import {SignatureOptions} from '@polkadot/types/types';
-import Extrinsic from '@polkadot/types/type/Extrinsic';
+import {HDKeyring} from './keyrings/HDKeyring';
+import {Encryptor, IKeyring, IWallet, KeyringType, WalletOption} from './types';
 
 export type SerializedWallet = {name: string; data: any}[];
 
@@ -45,11 +43,11 @@ function getKeyringByAddress(wallet: Wallet, accountKeyringMap: AccountKeyringMa
  * support multi-keyring and shipped with a HD Keyring as default keyring type.
  */
 export class Wallet implements Signer, IWallet {
+    vault: string;
     protected _encryptor: Encryptor;
     protected _keyringTypes: KeyringType<any>[];
     protected _accountKeyringMap: AccountKeyringMap;
     protected _isLocked: boolean = true;
-    public vault: string;
 
     /**
      * @return the constructor of default keyring
@@ -75,7 +73,7 @@ export class Wallet implements Signer, IWallet {
      */
     @synchronized
     @requireUnlocked
-    public async sign(extrinsic: Extrinsic, address: string, options: SignatureOptions): Promise<number> {
+    async sign(extrinsic: IExtrinsic, address: string, options: SignatureOptions): Promise<number> {
         const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, address).getPair(address);
 
         extrinsic.sign(signerPair, {blockHash: options.blockHash, nonce: options.nonce});
@@ -134,7 +132,7 @@ export class Wallet implements Signer, IWallet {
         )) as unknown) as SerializedWallet;
         const krs = [];
         await Promise.all(
-            serialized.map((serialized, idx) => {
+            serialized.map(async (serialized, idx) => {
                 const KeyringType = this.getKeyringTypeByName(serialized.name);
                 const kr = new KeyringType();
                 krs[idx] = kr;
@@ -245,7 +243,7 @@ export class Wallet implements Signer, IWallet {
 
     protected async cloneKeying(keyring: IKeyring<any>): Promise<IKeyring<any>> {
         const KeyringTypeInstance = new (keyring.constructor as any)();
-        return await KeyringTypeInstance.deserialize(await keyring.serialize());
+        return KeyringTypeInstance.deserialize(await keyring.serialize());
     }
 
     protected async checkDuplicate(addresses: string[]): Promise<void> {
@@ -260,7 +258,7 @@ export class Wallet implements Signer, IWallet {
     protected async persistAll(): Promise<void> {
         const serialized: SerializedWallet = [];
         const krs = privateKeyrings.get(this);
-        const serializedPromiseArray = krs.map(kr => kr.serialize());
+        const serializedPromiseArray = krs.map(async kr => kr.serialize());
         (await Promise.all(serializedPromiseArray)).forEach((data, index) => {
             serialized.push({name: krs[index].constructor.name, data});
         });
@@ -269,7 +267,7 @@ export class Wallet implements Signer, IWallet {
 
     protected async syncAccountKeyringMap(): Promise<void> {
         const newMap: {[address: string]: number} = {};
-        const addressesArray = await Promise.all(privateKeyrings.get(this).map(kr => kr.getAddresses()));
+        const addressesArray = await Promise.all(privateKeyrings.get(this).map(async kr => kr.getAddresses()));
         for (const [idx, addresses] of addressesArray.entries()) {
             for (const address of addresses) {
                 if (newMap[address] !== undefined) {
@@ -288,22 +286,22 @@ export class Wallet implements Signer, IWallet {
         const kr2 = keyrings[krIdx2];
         try {
             await kr2.removePair(address);
-            console.info(
-                `conflicts solved for account ${address}, chose keyring ${krIdx1}, remove from keyring ${krIdx2}`
-            );
+            // console.info(
+            //     `conflicts solved for account ${address}, chose keyring ${krIdx1}, remove from keyring ${krIdx2}`
+            // );
             return krIdx1;
         } catch (e) {
             try {
                 await kr1.removePair(address);
-                console.info(
-                    `conflicts solved for account ${address}, chose keyring ${krIdx2}, remove from keyring ${krIdx1}`
-                );
+                // console.info(
+                //     `conflicts solved for account ${address}, chose keyring ${krIdx2}, remove from keyring ${krIdx1}`
+                // );
                 return krIdx2;
             } catch (e) {
-                console.info(
-                    `detect conflicts solved for account ${address}, chose keyring ${krIdx1}, ` +
-                        `fail to remove from keyring ${krIdx2}`
-                );
+                // console.info(
+                //     `detect conflicts solved for account ${address}, chose keyring ${krIdx1}, ` +
+                //         `fail to remove from keyring ${krIdx2}`
+                // );
                 return krIdx1;
             }
         }
@@ -316,56 +314,4 @@ export class Wallet implements Signer, IWallet {
         }
         return KeyringType;
     }
-
-    //all KeyringInstance functions redirect to _keyring
-    // @persistBeforeReturn
-    // @requireUnlocked
-    // async addFromJson(pair: KeyringPair$Json, passphrase?: string): Promise<KeyringPair> {
-    //     const keyPair = privateKeyring.get(this).addFromJson(pair);
-    //     try {
-    //         keyPair.decodePkcs8(passphrase);
-    //     } catch (e) {
-    //         privateKeyring.get(this).removePair(pair.address);
-    //         throw e;
-    //     }
-    //     await this.persistAll();
-    //     return keyPair;
-    // }
-
-    // @persistBeforeReturn
-    // @requireUnlocked
-    // async addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): Promise<KeyringPair> {
-    //     return privateKeyring.get(this).addFromMnemonic(mnemonic, meta);
-    // }
-
-    // @persistBeforeReturn
-    // @requireUnlocked
-    // async addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): Promise<KeyringPair> {
-    //     return privateKeyring.get(this).addFromSeed(seed, meta);
-    // }
-
-    // @persistBeforeReturn
-    // @requireUnlocked
-    // async addPair(pair: KeyringPair): Promise<KeyringPair> {
-    //     if (pair.isLocked()) {
-    //         throw new Error('key pair is locked. unlock before add it into wallet');
-    //     }
-    //     return privateKeyring.get(this).addPair(pair);
-    // }
-
-    // @requireUnlocked
-    // getPair(address: string | Uint8Array): KeyringPair {
-    //     return privateKeyring.get(this).getPair(address);
-    // }
-
-    // @requireUnlocked
-    // getPairs(): Array<KeyringPair> {
-    //     return privateKeyring.get(this).getPairs();
-    // }
-
-    // @persistBeforeReturn
-    // @requireUnlocked
-    // async removePair(address: string | Uint8Array): Promise<void> {
-    //     privateKeyring.get(this).removePair(address);
-    // }
 }

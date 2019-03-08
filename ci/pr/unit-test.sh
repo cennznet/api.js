@@ -7,4 +7,4 @@ set -ex
 docker run -t --rm \
        --entrypoint bash \
        $IMAGE_NAME \
-       -c "npx lerna run test:unit"
+       -c "yarn run test:unit -- --no-colors"

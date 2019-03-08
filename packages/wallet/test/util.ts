@@ -1,4 +1,4 @@
-import {stringToU8a} from '@polkadot/util';
+import {stringToU8a} from '@cennznet/util';
 
 function padSeed(seed: string): Uint8Array {
     return stringToU8a(seed.padEnd(32));

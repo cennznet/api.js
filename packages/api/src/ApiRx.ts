@@ -1,12 +1,12 @@
 import {ApiRx as ApiRxBase} from '@polkadot/api';
-import {isObject, isFunction} from '@polkadot/util';
-import {ApiOptions} from '@cennznet/types';
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import {isFunction, isObject} from '@polkadot/util';
 import {Observable} from 'rxjs';
+import {ApiOptions} from './types';
 
-const Types = require('@cennznet/runtime-types');
+const Types = require('@cennznet/types/index.types');
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {

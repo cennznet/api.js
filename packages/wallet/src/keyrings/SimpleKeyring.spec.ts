@@ -1,5 +1,4 @@
-import TestingPairs from '@polkadot/keyring/testingPairs';
-import {hexToU8a} from '@polkadot/util';
+import {hexToU8a, TestingPairs} from '@cennznet/util';
 import {SimpleKeyring} from './SimpleKeyring';
 
 const TESTING_PAIRS = TestingPairs();

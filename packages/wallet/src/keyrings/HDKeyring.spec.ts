@@ -1,6 +1,6 @@
-import {KeyringPair} from '@polkadot/keyring/types';
-import {IKeyring} from '@cennznet/types';
+import {KeyringPair} from '@cennznet/util/types';
 import {HDKeyring} from './HDKeyring';
+import {IKeyring} from '../types';
 
 describe('HDKeyring', () => {
     describe('happy path', () => {

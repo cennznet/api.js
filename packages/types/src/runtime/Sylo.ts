@@ -1,4 +1,4 @@
-import {Struct, EnumType, Null, Vector, Tuple, AccountId, H256, Bytes, u32 as U32, Text} from '@polkadot/types';
+import {AccountId, Bytes, EnumType, H256, Null, Struct, Text, Tuple, u32 as U32, Vector} from '@polkadot/types';
 import {u8aToHex} from '@polkadot/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
@@ -106,10 +106,11 @@ class WithdrawnPreKeyBundle extends Tuple.with([AccountId, U32, Bytes]) {
 
     toJSON() {
         const values = this.toArray();
+        const [accountId, deviceId, pkb] = values;
         return {
-            accountId: u8aToHex(values[0].toU8a(), -1, false),
-            deviceId: values[1].toJSON(),
-            pkb: values[2].toU8a(true),
+            accountId: u8aToHex(accountId.toU8a(), -1, false),
+            deviceId: deviceId.toJSON(),
+            pkb: pkb.toU8a(true),
         };
     }
 }

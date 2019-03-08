@@ -6,10 +6,33 @@
   "linterOptions": {
     "exclude": [
       "**/node_modules/**/*",
-      "**/test/**/*"
+      "**/test/**/*",
+      "*.spec.*"
     ]
   },
   "rules": {
+    "await-promise": true,
+    "arrow-return-shorthand": true,
+    "class-name": true,
+    "curly": [true, "ignore-same-line"],
+    "cyclomatic-complexity": true,
+    "member-access": [true, "no-public"],
+    "member-ordering": [true, {"order": "statics-first"}],
+    "no-console": true,
+    "no-duplicate-imports": true,
+    "no-magic-numbers": true,
+    "no-implicit-dependencies": false,
+    "no-parameter-reassignment": true,
+    "no-return-await": true,
+    "no-string-literal": true,
+    "no-unnecessary-initializer": true,
+    "ordered-imports": true,
+    "prefer-const": true,
+    "prefer-template": true,
+    "promise-function-async": true  ,
+    "switch-default": true,
+    "triple-equals": true,
+    "use-isnan": true
   },
   "rulesDirectory": []
 }

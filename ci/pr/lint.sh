@@ -7,4 +7,4 @@ set -ex
 docker run -t --rm \
        --entrypoint bash \
        $IMAGE_NAME \
-       -c "npx tslint -c tslint.json './packages/**/src/*.ts'"
+       -c "npx tslint -c tslint.json --project ."

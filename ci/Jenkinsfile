@@ -38,16 +38,36 @@ pipeline {
             }
         }
 
-        stage('Confirm Publish') {
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
-            steps {
+        stage('Yarn Audit') {
+          when {
+            expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+          }
+          steps {
+            script {
+              AUDIT_RES = sh (
+                script: './ci/pr/yarn-audit.sh',
+                returnStatus: true
+              ) == 0
+              if (!AUDIT_RES) {
                 timeout(time: 30, unit: 'MINUTES') {
-                    input "Confirm publish?"
+                  input "yarn audit fails. Confirm publish?"
                 }
+              }
+              env.AUDIT_PASS = AUDIT_RES == 0 ;
             }
+          }
         }
+
+        //stage('Confirm Publish') {
+        //    when {
+        //        expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR && !env.AUDIT_PASS}
+        //    }
+        //    steps {
+        //        timeout(time: 30, unit: 'MINUTES') {
+        //            input "yarn audit fails. Confirm publish?"
+        //        }
+        //    }
+        //}
 
         stage('Publish to Gemfury') {
             when {
