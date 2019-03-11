@@ -10,8 +10,8 @@ import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 const sender = {
-    address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
-    seed: stringToU8a(('cennznetjstest' as any).padEnd(32, ' ')),
+    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
+    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
 };
 const receiver = {
     address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',

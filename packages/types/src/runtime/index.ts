@@ -1,9 +1,5 @@
-export {default as AssetId} from './AssetId';
-export {default as Decimals} from './Decimals';
-export {default as AssetOptions} from './AssetOptions';
 export {default as Topic} from './Topic';
 export {default as Value} from './Value';
-export {default as Amount} from './Amount';
-export {default as PermissionOptions} from './PermissionOptions';
-export * from './CennzX';
-export * from './Sylo';
+export * from './ga';
+export * from './cennzX';
+export * from './sylo';

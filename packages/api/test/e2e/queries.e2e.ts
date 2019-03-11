@@ -5,12 +5,12 @@ import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {stringToU8a} from '@polkadot/util';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import {Balance, Hash} from '@polkadot/types';
+import {Hash} from '@polkadot/types';
 import {AssetOptions} from '@cennznet/types';
 
 const sender = {
-    address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
-    seed: stringToU8a(('cennznetjstest' as any).padEnd(32, ' ')),
+    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
+    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
 };
 const receiver = {
     address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
@@ -52,7 +52,7 @@ describe('e2e queries', () => {
             const totalSupply = 100;
             let count = 0;
             const reservedIdStart: number = 1000000;
-            unsubscribeFn = ((await api.query.genericAsset.nextAssetId((result: any) => {
+            unsubscribeFn = await api.query.genericAsset.nextAssetId((result: any) => {
                 if (count === 0) {
                     expect(result.toNumber()).toBeGreaterThanOrEqual(reservedIdStart);
                     count += 1;
@@ -61,8 +61,16 @@ describe('e2e queries', () => {
                     unsubscribeFn();
                     done();
                 }
-            })) as unknown) as number;
-            await api.tx.genericAsset.create(new AssetOptions({totalSupply})).signAndSend(sender.address);
-        });
+            });
+            const assetOptions = new AssetOptions({
+                initialIssuance: totalSupply,
+                permissions: {
+                    update: null,
+                    mint: null,
+                    burn: null,
+                },
+            });
+            await api.tx.genericAsset.create(assetOptions).signAndSend(sender.address);
+        }, 15000);
     });
 });

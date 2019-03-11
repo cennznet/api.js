@@ -8,11 +8,11 @@ import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {Api} from '../../src/Api';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import {AssetId} from '@cennznet/types';
+import {AssetId, AssetOptions} from '@cennznet/types';
 
 const sender = {
-    address: '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
-    seed: stringToU8a(('cennznetjstest' as any).padEnd(32, ' ')),
+    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
+    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
 };
 const receiver = {
     address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
@@ -45,9 +45,17 @@ describe('e2e transactions', () => {
             const totalSupply = 100;
             const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
             const reservedIdStart: number = 1000000;
+            const assetOptions = new AssetOptions({
+                initialIssuance: totalSupply,
+                permissions: {
+                    update: null,
+                    mint: null,
+                    burn: null,
+                },
+            });
             // transfer
             await api.tx.genericAsset
-                .create({totalSupply})
+                .create(assetOptions)
                 .signAndSend(sender.address, async (event: SubmittableResult) => {
                     if (event.type === 'Finalised') {
                         const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
@@ -59,13 +67,5 @@ describe('e2e transactions', () => {
                     }
                 });
         });
-
-        // it('makes a proposal', async () => {
-        //     const hash = await api.tx.democracy
-        //         .propose(api.tx.consensus.setCode('0xdeadbeef'), 10000)
-        //         .send({from: sender.address});
-
-        //     expect(hash.toString()).not.toEqual('0x');
-        // });
     });
 });
