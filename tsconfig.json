@@ -27,6 +27,5 @@
         }
     },
     "include": ["packages/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"],
-    "exclude_note": "remove **/*.spec.ts when #763 is merged in polkadot"
+    "exclude": ["node_modules"]
 }
