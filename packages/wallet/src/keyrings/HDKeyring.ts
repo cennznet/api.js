@@ -2,6 +2,7 @@ import {Keyring, mnemonicToSeed} from '@cennznet/util';
 import {KeyringPair} from '@cennznet/util/types';
 import {generateMnemonic} from 'bip39';
 import HDKey from 'hdkey';
+import {DEFAULT_KEYRING_TYPE} from '../constants';
 import {IKeyring} from '../types';
 
 const DEFAULT_HD_PATH = "m/44'/392'/0'/0";
@@ -56,7 +57,7 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
         if (!this.rootKey) {
             throw new Error('hd wallet not initialized');
         }
-        const keyring = new Keyring();
+        const keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
         const kp = keyring.addFromSeed(this.rootKey.deriveChild(this.pairs.length).privateKey);
         this.pairs.push(kp);
         return kp;
@@ -88,7 +89,7 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
         this.hdPath = hdPath;
         this.rootKey = hdKey.derive(hdPath);
         privateMnemonic.set(this, mnemonic);
-        const keyring = new Keyring();
+        const keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
         for (let i = 0; i < numberOfAccounts; i++) {
             const kp = keyring.addFromSeed(this.rootKey.deriveChild(i).privateKey);
             this.pairs.push(kp);

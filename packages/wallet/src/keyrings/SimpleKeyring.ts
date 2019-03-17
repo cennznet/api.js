@@ -1,6 +1,7 @@
 import {Keyring} from '@cennznet/util';
 import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@cennznet/util/types';
 import {generateMnemonic} from 'bip39';
+import {DEFAULT_KEYRING_TYPE} from '../constants';
 import {IKeyring} from '../types';
 
 interface SerializedSimpleKeyring {
@@ -14,7 +15,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     static async generate(): Promise<SimpleKeyring> {
         return new SimpleKeyring();
     }
-    private _keyring = new Keyring();
+    private _keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
 
     constructor(opt?: SerializedSimpleKeyring) {
         if (opt) {
@@ -81,7 +82,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     }
 
     private _deserialize(data: SerializedSimpleKeyring): void {
-        this._keyring = new Keyring();
+        this._keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
         for (const address of Object.keys(data)) {
             this.addFromJson({
                 address,
