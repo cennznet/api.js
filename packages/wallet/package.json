@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/wallet",
-    "version": "0.8.3",
+    "version": "0.9.0",
     "description": "> TODO: description",
     "author": "ian.he <ian.he@centrality.ai>",
     "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
@@ -19,15 +19,15 @@
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs  --includes compodoc --output ../../docs/wallet"
     },
     "dependencies": {
-        "@cennznet/util": "^0.8.3",
+        "@cennznet/util": "^0.9.0",
         "bip39": "^2.5.0",
         "hdkey": "^1.1.0",
         "reflect-metadata": "^0.1.12",
         "tweetnacl": "^1.0.0"
     },
     "devDependencies": {
-        "@cennznet/api": "^0.8.3",
-        "@cennznet/types": "^0.8.3",
+        "@cennznet/api": "^0.9.0",
+        "@cennznet/types": "^0.9.0",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",
         "rimraf": "^2.6.2",
