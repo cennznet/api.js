@@ -4,6 +4,7 @@ import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {isFunction, isObject} from '@polkadot/util';
 import {Observable} from 'rxjs';
+import * as derives from './derives';
 import {ApiOptions} from './types';
 
 const Types = require('@cennznet/types');
@@ -24,6 +25,7 @@ export class ApiRx extends ApiRxBase {
         }
 
         options.types = {...Types, ...options.types};
+        options.derives = {...derives, ...options.derives};
 
         super(options as ApiOptionsBase);
     }

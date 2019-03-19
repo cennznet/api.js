@@ -59,3 +59,12 @@ api = await ApiRx.create({
 }).toPromise();
 
 ```
+
+## Estimate Gas Fee (for Runtime Module Extrinsics)
+```
+const tx = api.tx.genericAsset.create({
+    initialIssuance: 100,
+});
+const sender = '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3';
+const fee = await api.derive.fees.estimateFee(tx, sender);
+```

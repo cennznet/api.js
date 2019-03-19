@@ -3,6 +3,7 @@ import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import WsProvider from '@polkadot/rpc-provider/ws';
 import {isFunction, isObject} from '@polkadot/util';
+import * as derives from './derives';
 import {ApiOptions} from './types';
 
 const Types = require('@cennznet/types');
@@ -23,6 +24,7 @@ export class Api extends ApiPromise {
         }
 
         options.types = {...Types, ...options.types};
+        options.derives = {...derives, ...options.derives};
 
         super(options as ApiOptionsBase);
     }

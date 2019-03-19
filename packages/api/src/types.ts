@@ -1,5 +1,7 @@
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
+import {AccountId, Address} from '@polkadot/types';
+import BN from 'bn.js';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
     /**
@@ -9,3 +11,5 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
      */
     provider?: ProviderInterface | string;
 }
+
+export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;

@@ -5,8 +5,9 @@ import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {stringToU8a} from '@polkadot/util';
 import WsProvider from '@polkadot/rpc-provider/ws';
-import {Hash} from '@polkadot/types';
+import {EventRecord, Hash, Vector} from '@polkadot/types';
 import {AssetOptions} from '@cennznet/types';
+import BN from 'bn.js';
 
 const sender = {
     address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
@@ -62,15 +63,28 @@ describe('e2e queries', () => {
                     done();
                 }
             });
-            const assetOptions = new AssetOptions({
-                initialIssuance: totalSupply,
-                permissions: {
-                    update: null,
-                    mint: null,
-                    burn: null,
-                },
-            });
-            await api.tx.genericAsset.create(assetOptions).signAndSend(sender.address);
+            await api.tx.genericAsset
+                .create({
+                    initialIssuance: 100,
+                })
+                .signAndSend(sender.address);
         }, 15000);
+    });
+
+    it('fee estimate', async done => {
+        const tx = api.tx.genericAsset.create({
+            initialIssuance: 100,
+        });
+        const fee = ((await api.derive.fees.estimateFee(tx, sender.address)) as unknown) as BN;
+        await tx.signAndSend(sender.address, async status => {
+            if (status.type === 'Finalised' && status.events !== undefined) {
+                const blockHash = status.status.asFinalised;
+                const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const gas = feeChargeEvent.event.data[1];
+                expect(gas.toString()).toEqual(fee.toString());
+                done();
+            }
+        });
     });
 });
