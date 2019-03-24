@@ -88,6 +88,7 @@ pipeline {
             }
         }
 
+/*
         stage('Make docs') {
             when {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
@@ -127,6 +128,7 @@ pipeline {
                 sh 'SCRIPT="cf-invalidate" ./centrality.deploy/aws/exec-awscli.sh'
             }
         }
+*/
     }
 
     post {

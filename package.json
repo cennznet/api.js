@@ -11,7 +11,8 @@
     "scripts": {
         "build": "polkadot-dev-build-ts",
         "test:unit": "jest -c ./jest/jest.config.js --coverage spec",
-        "make-docs": "./scripts/make_docs.sh"
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r1",
+        "make-docs": "typedoc --options typedoc.config.js ."
     },
     "devDependencies": {
         "@compodoc/compodoc": "^1.1.9",
@@ -25,7 +26,9 @@
         "prettier": "^1.13.5",
         "ts-jest": "^24.0.0",
         "tslint": "^5.13.1",
-        "tslint-microsoft-contrib": "^5.2.1"
+        "tslint-microsoft-contrib": "^5.2.1",
+        "typedoc": "^0.14.2",
+        "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
     },
     "config": {
         "commitizen": {

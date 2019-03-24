@@ -15,11 +15,6 @@ pipeline {
         sh './ci/pr/build.sh'
       }
     }
-//    stage('Yarn Audit') {
-//      steps {
-//        sh './ci/pr/yarn-audit.sh'
-//      }
-//    }
     stage('Lint') {
       steps {
         sh './ci/pr/lint.sh'

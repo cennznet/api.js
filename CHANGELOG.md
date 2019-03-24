@@ -1,3 +1,88 @@
+## [0.9.2](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.9.1...v0.9.2) (2019-03-19)
+
+
+### Features
+
+* add estimateFee and estimateFeeAt(blockHash) ([3edf690](https://bitbucket.org/centralitydev/cennznet-js/commits/3edf690)), closes [#58](https://bitbucket.org/centralitydev/cennznet-js/issue/58)
+
+
+
+## [0.9.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.9.0...v0.9.1) (2019-03-18)
+
+
+### Features
+
+* put generateStorageDoubleMapKey in @cennznet/util ([ee97b0e](https://bitbucket.org/centralitydev/cennznet-js/commits/ee97b0e))
+
+
+
+## [0.8.3](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.8.2...v0.8.3) (2019-03-11)
+
+
+### Bug Fixes
+
+* mkdocs ([d63dac6](https://bitbucket.org/centralitydev/cennznet-js/commits/d63dac6)), closes [#56](https://bitbucket.org/centralitydev/cennznet-js/issue/56)
+* new types for ga ([1238df1](https://bitbucket.org/centralitydev/cennznet-js/commits/1238df1)), closes [#55](https://bitbucket.org/centralitydev/cennznet-js/issue/55)
+
+
+
+## [0.8.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.8.0...v0.8.1) (2019-03-08)
+
+
+### Bug Fixes
+
+* type import from @cennznet/types ([302b6f9](https://bitbucket.org/centralitydev/cennznet-js/commits/302b6f9))
+* type re-export ([cb91490](https://bitbucket.org/centralitydev/cennznet-js/commits/cb91490))
+
+
+
+## [0.7.7](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.7.6...v0.7.7) (2019-03-05)
+
+
+### Features
+
+* add cennzx's type ([c8c351c](https://bitbucket.org/centralitydev/cennznet-js/commits/c8c351c)), closes [#49](https://bitbucket.org/centralitydev/cennznet-js/issue/49)
+
+
+
+## [0.7.6](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.7.5...v0.7.6) (2019-03-05)
+
+
+### Bug Fixes
+
+* a wrong import in Sylo's type ([89c4880](https://bitbucket.org/centralitydev/cennznet-js/commits/89c4880))
+
+
+
+## [0.7.5](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.7.4...v0.7.5) (2019-03-04)
+
+
+### Features
+
+* Add Sylo runtime types ([79af3d6](https://bitbucket.org/centralitydev/cennznet-js/commits/79af3d6)), closes [#48](https://bitbucket.org/centralitydev/cennznet-js/issue/48)
+* expose ApiRx in cennznet-api ([bb87a8c](https://bitbucket.org/centralitydev/cennznet-js/commits/bb87a8c)), closes [#47](https://bitbucket.org/centralitydev/cennznet-js/issue/47)
+
+
+
+## [0.7.3](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.7.2...v0.7.3) (2019-02-25)
+
+
+### Features
+
+* add runtime type `Amount` ([92edd99](https://bitbucket.org/centralitydev/cennznet-js/commits/92edd99)), closes [#45](https://bitbucket.org/centralitydev/cennznet-js/issue/45)
+
+
+
+## [0.7.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.6.0...v0.7.1) (2019-02-14)
+
+
+### Bug Fixes
+
+* _accountKeyringMap is empty after wallet restore ([3c77eb0](https://bitbucket.org/centralitydev/cennznet-js/commits/3c77eb0)), closes [#40](https://bitbucket.org/centralitydev/cennznet-js/issue/40) [#DK-74](https://bitbucket.org/centralitydev/cennznet-js/issue/DK-74)
+* update to polkadot v0.42.18 and fix compatibility ([9d87600](https://bitbucket.org/centralitydev/cennznet-js/commits/9d87600)), closes [#42](https://bitbucket.org/centralitydev/cennznet-js/issue/42)
+
+
+
 # 0.7.0 (2019-02-14)
 
 
