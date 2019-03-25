@@ -120,3 +120,7 @@ export class Response extends EnumType<DeviceIdResponse | PreKeyBundlesResponse>
         super([DeviceIdResponse, PreKeyBundlesResponse] as any, value, index);
     }
 }
+
+export class VaultKey extends Bytes {}
+
+export class VaultValue extends Bytes {}
