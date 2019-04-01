@@ -22,7 +22,7 @@
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {
-        "@cennznet/types": "^0.9.4",
+        "@cennznet/types_test": "^0.9.4",
         "@polkadot/api": "^0.48.0-beta.1",
         "@polkadot/extrinsics": "^0.48.0-beta.1",
         "@polkadot/rpc-core": "^0.48.0-beta.1",
