@@ -19,7 +19,7 @@ set -ex
 cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
 docker build \
-  -t "$PUBLISH_IMAGE_NAME" \
+  -t "$IMAGE_NAME" \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
