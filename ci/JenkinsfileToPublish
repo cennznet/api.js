@@ -65,14 +65,9 @@ pipeline {
             environment {
                 GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
                 GEMFURY_EXTERNAL_TOKEN = credentials('GEMFURY_EXTERNAL_TOKEN')
+                SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
             }
             steps {
-                /*script {
-                    timeout(time: 30, unit: 'MINUTES') {
-                        env.RELEASE_SCOPE = input message: 'User input required',
-                                parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
-                    }
-                }*/
                 sh './ci/deployment/buildToPublish.sh'
             }
         }
