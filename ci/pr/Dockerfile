@@ -1,7 +1,7 @@
 FROM node:10.13.0
 WORKDIR /workdir
 
-COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
+COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc CHANGELOG.md ./
 
 RUN npm install -g yarn
 RUN yarn install -q
