@@ -28,7 +28,6 @@ RUN git reset --hard
 # Version packages and create versioned GIT commit
 RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks --force-publish=*
 
-RUN npx lerna exec -- 'cpx package.json build/'
 # run prepublishOnly scripts if they exist, avoiding script-not-found errors
 #RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
 #  --parallel \
@@ -42,4 +41,4 @@ RUN npx lerna exec -- 'cpx package.json build/'
 #      fi\
 #    ";
 
-RUN conventional-changelog -p angular -i CHANGELOG.md -s -r1
+RUN conventional-changelog -p angular -i CHANGELOG.md -s -r1 && git add CHANGELOG.md && git commit CHANGELOG.md
