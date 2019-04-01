@@ -4,8 +4,6 @@ WORKDIR workdir/
 
 ARG GIT_NAME
 ARG GIT_EMAIL
-ARG GEMFURY_TOKEN
-ARG GEMFURY_EXTERNAL_TOKEN
 ARG RELEASE_SCOPE
 
 # add credentials on build
@@ -44,50 +42,4 @@ RUN npx lerna exec -- 'cpx package.json build/'
 #      fi\
 #    ";
 
-# pack packages for uploading
-RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} -- "cd build && npm pack"
-
-
-# push all packages to Gemfury centrality
-RUN \
-  echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
-    -- \
-      "\
-        cd build && \
-        PUSH_URL=\"https://${GEMFURY_TOKEN}@push.fury.io/centrality/\" && \
-        PACKAGE_NAME=\$(ls *.tgz) && \
-        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \
-        if [ ! -f TAR_PATH ]; then continue; fi && \
-        echo \" - Pushing package: \$PACKAGE_NAME\" && \
-        ( \
-          RESPONSE=\$(curl -sS -F package=@\${TAR_PATH} \${PUSH_URL}) && \
-          echo \"\${RESPONSE}\" && \
-          case \"\${RESPONSE}\" in \
-            *\"... ok\"*) echo \" - Pushed package: \$PACKAGE_NAME\";; \
-            *        ) (echo \" - Failed to push package: \$PACKAGE_NAME\" && exit 1);; \
-          esac \
-        ); \
-      ";
-
-# push all packages to Gemfury centrality external
-RUN \
-  echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
-    -- \
-      "\
-        cd build && \
-        PUSH_URL=\"https://${GEMFURY_EXTERNAL_TOKEN}@push.fury.io/centralityexternals/\" && \
-        PACKAGE_NAME=\$(ls *.tgz) && \
-        TAR_PATH=\"\$(pwd)/\${PACKAGE_NAME}\" && \
-        if [ ! -f TAR_PATH ]; then continue; fi && \
-        echo \" - Pushing package: \$PACKAGE_NAME\" && \
-        ( \
-          RESPONSE=\$(curl -sS -F package=@\${TAR_PATH} \${PUSH_URL}) && \
-          echo \"\${RESPONSE}\" && \
-          case \"\${RESPONSE}\" in \
-            *\"... ok\"*) echo \" - Pushed package: \$PACKAGE_NAME\";; \
-            *        ) (echo \" - Failed to push package: \$PACKAGE_NAME\" && exit 1);; \
-          esac \
-        ); \
-      ";
+RUN conventional-changelog -p angular -i CHANGELOG.md -s -r1

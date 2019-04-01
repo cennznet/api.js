@@ -28,3 +28,10 @@ docker build \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   -f $DIR/../pr/Dockerfile .
+
+
+docker build \
+  -t "$IMAGE_NAME" \
+  --build-arg GIT_NAME="$GIT_NAME" \
+  --build-arg GIT_EMAIL="$GIT_EMAIL" \
+  -f $DIR/../pr/DockerfileToPublish .
