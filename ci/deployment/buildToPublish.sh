@@ -21,4 +21,4 @@ docker build \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
   --build-arg GEMFURY_EXTERNAL_TOKEN="$GEMFURY_EXTERNAL_TOKEN" \
-  -f $DIR/ci/deployment/DockerfileToPublish .
+  -f $DIR/DockerfileToPublish .
