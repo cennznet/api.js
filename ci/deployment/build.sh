@@ -35,4 +35,4 @@ docker build \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
-  -f $DIR/ci/deployment/Dockerfile .
+  -f $DIR/Dockerfile .
