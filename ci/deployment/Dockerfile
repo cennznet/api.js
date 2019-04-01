@@ -40,5 +40,5 @@ RUN npx lerna version ${RELEASE_SCOPE} --yes --no-commit-hooks --force-publish=*
 #        npm run prepublishOnly --silent;\
 #      fi\
 #    ";
-
+RUN npm install -g conventional-changelog-cli
 RUN conventional-changelog -p angular -i CHANGELOG.md -s -r1 && git add CHANGELOG.md && git commit CHANGELOG.md
