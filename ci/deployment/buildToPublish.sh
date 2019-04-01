@@ -11,8 +11,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 : "${GIT_NAME:?GIT_NAME environment variable is required}"
 : "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
 
+NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
+
 # set shell to verbose, instant exit mode
 set -ex
+
+cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
 docker build \
   -t "$PUBLISH_IMAGE_NAME" \
