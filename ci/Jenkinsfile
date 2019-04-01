@@ -25,6 +25,12 @@ pipeline {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
             }
             steps {
+                script {
+                    timeout(time: 30, unit: 'MINUTES') {
+                        env.RELEASE_SCOPE = input message: 'User input required',
+                        parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+                    }
+                }
                 sh './ci/deployment/build.sh'
             }
         }
