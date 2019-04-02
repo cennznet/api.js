@@ -28,5 +28,6 @@ docker build \
   -t "$IMAGE_NAME" \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
+  --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
-  -f $DIR/Dockerfile .
+  -f $DIR/DockerfileToBumpVesion .
