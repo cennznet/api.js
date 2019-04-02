@@ -19,10 +19,10 @@ set -ex
 cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
 docker build \
-  -t "$IMAGE_NAME" \
+  -t "$PUBLISH_IMAGE_NAME" \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
-  --build-arg IMAGE_NAME="$IMAGE_NAME" \
+  --build-arg IMAGE_NAME="$PUBLISH_IMAGE_NAME" \
   --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
   --build-arg GEMFURY_EXTERNAL_TOKEN="$GEMFURY_EXTERNAL_TOKEN" \
   -f $DIR/DockerfileToPublish .
