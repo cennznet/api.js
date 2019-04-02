@@ -72,18 +72,14 @@ const PENDING_INVITE_JSON_MAP = new Map([['inviteKey', 'invite_key']]);
 
 export class PendingInvite extends Struct {
     constructor(value) {
-        super(
-            {inviteKey: H256, meta: Meta, roles: Vector.with(MemberRoles)},
-            value,
-            PENDING_INVITE_JSON_MAP
-        );
+        super({inviteKey: H256, meta: Meta, roles: Vector.with(MemberRoles)}, value, PENDING_INVITE_JSON_MAP);
     }
 
     toJSON() {
         return {
             invite_key: u8aToHex(this.get('inviteKey').toU8a(), -1, false),
             meta: this.get('meta').toJSON(),
-            roles: this.get('roles').toJSON()
+            roles: this.get('roles').toJSON(),
         };
     }
 }

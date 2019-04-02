@@ -40,5 +40,6 @@ module.exports = {
         '<rootDir>/packages/types/build',
         '<rootDir>/packages/util/build',
         '<rootDir>/packages/wallet/build',
-    ]
+    ],
+    setupTestFrameworkScriptFile: './jest/jest.setup.js'
 };
