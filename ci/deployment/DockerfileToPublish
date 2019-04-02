@@ -30,7 +30,7 @@ RUN git reset --hard
 RUN npx lerna exec -- 'cpx package.json build/'
 
 # pack packages for uploading
-RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} -- "cd build && npm pack"
+RUN npx lerna exec --scope={@cennznet/api_test,@cennznet/types_test,@cennznet/wallet_test,@cennznet/util_test} -- "cd build && npm pack"
 
 
 # push all packages to Gemfury centrality
