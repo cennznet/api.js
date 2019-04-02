@@ -30,4 +30,4 @@ docker build \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
-  -f $DIR/DockerfileToBumpVesion .
+  -f $DIR/DockerfileToBumpVersion .
