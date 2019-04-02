@@ -7,6 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 : "${IMAGE_NAME:?IMAGE_NAME environment variable is required}"
 : "${GIT_NAME:?GIT_NAME environment variable is required}"
 : "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
+: "${RELEASE_SCOPE:?RELEASE_SCOPE is required}"
 
 NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
 
@@ -27,4 +28,5 @@ docker build \
   -t "$IMAGE_NAME" \
   --build-arg GIT_NAME="$GIT_NAME" \
   --build-arg GIT_EMAIL="$GIT_EMAIL" \
-  -f $DIR/../pr/Dockerfile .
+  --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
+  -f $DIR/Dockerfile .

@@ -25,12 +25,6 @@ pipeline {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
             }
             steps {
-                script {
-                    timeout(time: 30, unit: 'MINUTES') {
-                        env.RELEASE_SCOPE = input message: 'User input required',
-                        parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
-                    }
-                }
                 sh './ci/deployment/build.sh'
             }
         }
@@ -62,6 +56,23 @@ pipeline {
               env.AUDIT_PASS = AUDIT_RES == 0 ;
             }
           }
+        }
+        stage('Bump version and commit change log') {
+           environment {
+              SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
+           }
+           when {
+             expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+           }
+           steps {
+              script {
+                  timeout(time: 30, unit: 'MINUTES') {
+                        env.RELEASE_SCOPE = input message: 'User input required',
+                        parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+                  }
+              }
+              sh './ci/deployment/bumpVersion.sh'
+           }
         }
     }
 }
