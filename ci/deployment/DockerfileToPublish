@@ -36,7 +36,7 @@ RUN npx lerna exec --scope={@cennznet/api_test,@cennznet/types_test,@cennznet/wa
 # push all packages to Gemfury centrality
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
+  npx lerna exec --scope={@cennznet/api_test,@cennznet/types_test,@cennznet/wallet_test,@cennznet/util_test} \
     -- \
       "\
         cd build && \
@@ -58,7 +58,7 @@ RUN \
 # push all packages to Gemfury centrality external
 RUN \
   echo 'Pushing packages \${workdir} to Gemfury' && \
-  npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} \
+  npx lerna exec --scope={@cennznet/api_test,@cennznet/types_test,@cennznet/wallet_test,@cennznet/util_test} \
     -- \
       "\
         cd build && \
