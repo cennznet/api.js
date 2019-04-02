@@ -17,47 +17,6 @@ pipeline {
     }
 
     stages {
-        /*stage('Build') {
-            environment {
-                SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
-            }
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
-            steps {
-                sh './ci/deployment/buildToPublish.sh'
-            }
-        }
-
-        stage('Unit Test') {
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
-            steps {
-                sh './ci/pr/unit-test.sh'
-            }
-        }
-
-        stage('Yarn Audit') {
-          when {
-            expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-          }
-          steps {
-            script {
-              AUDIT_RES = sh (
-                script: './ci/pr/yarn-audit.sh',
-                returnStatus: true
-              ) == 0
-              if (!AUDIT_RES) {
-                timeout(time: 30, unit: 'MINUTES') {
-                  input "yarn audit fails. Confirm publish?"
-                }
-              }
-              env.AUDIT_PASS = AUDIT_RES == 0 ;
-            }
-          }
-        }*/
-
         stage('Publish to Gemfury') {
             when {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }

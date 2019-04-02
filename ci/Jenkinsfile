@@ -64,11 +64,4 @@ pipeline {
           }
         }
     }
-
-    post {
-        always {
-            echo "pipeline post always"
-            sh 'bash /mnt/jenkins/script/cleanup.sh'
-        }
-    }
 }
