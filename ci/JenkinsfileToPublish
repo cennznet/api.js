@@ -18,9 +18,6 @@ pipeline {
 
     stages {
         stage('Publish to Gemfury') {
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
             environment {
                 GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
                 GEMFURY_EXTERNAL_TOKEN = credentials('GEMFURY_EXTERNAL_TOKEN')
