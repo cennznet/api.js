@@ -1,27 +1,28 @@
-# [0.9.5](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.9.4...v0.9.5) (2019-04-02)
+# 0.10.0 (2019-04-02)
 
 
 ### Dependency update
 
-* update polkadot from 0.48.0-beta.1 to 0.52.1 ([0e6aa40](https://bitbucket.org/centralitydev/cennznet-js/commits/0e6aa40))
-0.52.1
-Support queries to linked mapped storage (found in new staking interfaces)
-Add derive.staking.controllers to retrieve all active staking controllers
-Align types as per latest substrate master
-PeerInfo from system_peers does not have the index field anymore (dropped in substrate)
-Allow parsing of V3 metadata with DoubleMap support
-Check for single instances for api and types as they are loaded (assertSingletonPackage)
-0.51.1
-Support metadata V2 as per latest substrate master
-Update metadata with new types as per lastest substrate master
-0.50.1
-Lastest util-crypto (usage of WASM with JS fallbacks if not available)
-Update upstream @polkadot dependencies (for new crypto)
-0.49.1
-Fix large message signing on non-known nodes (default is now hashing, there has been enough time between upgrades)
-0.48.1
-Pull in new sr25519 capable keyring for dev nodes
-When using dev mode, it assumes that the node is the latest with derived sr25519 keys
+* update polkadot from 0.48.0-beta.1 to 0.52.1 ([07b04ff](https://bitbucket.org/centralitydev/cennznet-js/commits/0e6aa40))  
+  * **0.52.1**  
+Support queries to linked mapped storage (found in new staking interfaces)  
+Add derive.staking.controllers to retrieve all active staking controllers  
+Align types as per latest substrate master  
+PeerInfo from system_peers does not have the index field anymore (dropped in substrate)  
+Allow parsing of V3 metadata with DoubleMap support  
+Check for single instances for api and types as they are loaded (assertSingletonPackage)    
+  * **0.51.1**  
+Support metadata V2 as per latest substrate master  
+Update metadata with new types as per lastest substrate master    
+  * **0.50.1**  
+Lastest util-crypto (usage of WASM with JS fallbacks if not available)  
+Update upstream @polkadot dependencies (for new crypto)    
+  * **0.49.1**  
+Fix large message signing on non-known nodes (default is now hashing, there has been enough time between upgrades)    
+  * **0.48.1**  
+Pull in new sr25519 capable keyring for dev nodes  
+When using dev mode, it assumes that the node is the latest with derived sr25519 keys  
+
 
 
 ## [0.9.2](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.9.1...v0.9.2) (2019-03-19)

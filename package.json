@@ -29,10 +29,7 @@
         "tslint": "^5.13.1",
         "tslint-microsoft-contrib": "^5.2.1",
         "typedoc": "^0.14.2",
-        "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo",
-        "compare-func": "^1.3.1",
-        "github-url-from-git": "^1.4.0",
-        "q": "^1.4.1"
+        "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
     },
     "config": {
         "commitizen": {
