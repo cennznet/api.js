@@ -1,3 +1,5 @@
+import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
+import {SubmittableExtrinsic} from '@polkadot/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import {AccountId, Address} from '@polkadot/types';
@@ -13,3 +15,9 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
 }
 
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
+
+export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
+    extends SubmittableExtrinsic<CodecResult, SubscriptionResult> {
+    addDoughnut(doughnut: DoughnutValue): this;
+    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
+}
