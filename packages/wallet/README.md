@@ -57,7 +57,7 @@ await keyring.addPair(alice);
 //or
 keyring.addFromSeed(hexToU8a(TEST_ACCOUNT.seed));
 //or
-wallet.addFromMnemonic(TEST_ACCOUNT.mnemonic);
+keyring.addFromMnemonic(TEST_ACCOUNT.mnemonic);
 await wallet.addKeyring(keyring);
 ```
 

@@ -1,5 +1,8 @@
 FROM node:10.13.0
 WORKDIR /workdir
+ARG GEMFURY_TOKEN
+
+ENV npm_config_registry="https://npm-proxy.fury.io/${GEMFURY_TOKEN}/centrality/"
 
 COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
 

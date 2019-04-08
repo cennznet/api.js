@@ -11,6 +11,9 @@ pipeline {
 
   stages {
     stage('Build') {
+      environment {
+        GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
+      }
       steps {
         sh './ci/pr/build.sh'
       }

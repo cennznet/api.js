@@ -1,20 +1,11 @@
 module.exports = {
-    // globals: {
-    //     'ts-jest': {
-    //         tsConfig: 'tsconfig.json',
-    //     },
-    // },
     rootDir: process.cwd(),
     moduleFileExtensions: ['ts', 'js', 'node', 'json'],
-    // transform: {
-    //     '^.+\\.tsx?$': 'ts-jest',
-    // },
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
     },
     testMatch: ['/**/?(*.)+(spec|e2e).[jt]s?(x)'],
     testEnvironment: 'node',
-    // preset: 'ts-jest',
     collectCoverageFrom: [
         'packages/wallet/src/**/*.[jt]s?(x)',
         '!**/node_modules/**'

@@ -4,6 +4,6 @@
 
 import {logger} from '@polkadot/util';
 
-const l = logger('api/util');
+const l = logger('@cennznet/api');
 
 export default l;

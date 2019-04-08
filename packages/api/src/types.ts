@@ -1,8 +1,10 @@
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
+import {DeriveCustom} from '@polkadot/api-derive';
 import {SubmittableExtrinsic} from '@polkadot/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import {AccountId, Address} from '@polkadot/types';
+import {Constructor, RegistryTypes} from '@polkadot/types/types';
 import BN from 'bn.js';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
@@ -12,6 +14,7 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
      * localhost with the default port, i.e. `ws://127.0.0.1:9944`
      */
     provider?: ProviderInterface | string;
+    plugins?: IPlugin[];
 }
 
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
@@ -20,4 +23,12 @@ export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
     extends SubmittableExtrinsic<CodecResult, SubscriptionResult> {
     addDoughnut(doughnut: DoughnutValue): this;
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
+}
+
+export interface IPlugin {
+    injectName: string;
+    sdkClass: Constructor<any>;
+    sdkRxClass: Constructor<any>;
+    types?: RegistryTypes;
+    derives?: DeriveCustom;
 }
