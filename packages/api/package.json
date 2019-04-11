@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/api",
-    "version": "0.10.0",
+    "version": "0.10.1",
     "description": "cennznet's javascript client",
     "keywords": [
         "cennz"
@@ -19,7 +19,7 @@
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {
-        "@cennznet/types": "^0.10.0",
+        "@cennznet/types": "^0.10.1",
         "@polkadot/api": "^0.52.1",
         "@polkadot/extrinsics": "^0.52.1",
         "@polkadot/rpc-core": "^0.52.1",

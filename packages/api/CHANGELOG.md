@@ -1,3 +1,19 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+## [0.10.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.10.0...v0.10.1) (2019-04-11)
+
+
+### Features
+
+* load and inject crml plugins from @cennznet/crml-* ([43c88d3](https://bitbucket.org/centralitydev/cennznet-js/commits/43c88d3)), closes [#67](https://bitbucket.org/centralitydev/cennznet-js/issue/67)
+
+
+
+
+
 # 0.7.0 (2019-02-14)
 
 
@@ -133,6 +149,3 @@ await api.tx.runtimeName.methodName(arg).signAndSend(address, {blockHash, nonce}
 * setup developement pipeline ([06279cc](https://bitbucket.org/centralitydev/cennznet-js/commits/06279cc)), closes [#9](https://bitbucket.org/centralitydev/cennznet-js/issue/9)
 * setup jenkins pr pipeline; setup yarn audit, lint, prettier stages ([35ba99b](https://bitbucket.org/centralitydev/cennznet-js/commits/35ba99b)), closes [#6](https://bitbucket.org/centralitydev/cennznet-js/issue/6)
 * support cennznet runtime types ([2978e6e](https://bitbucket.org/centralitydev/cennznet-js/commits/2978e6e)), closes [#10](https://bitbucket.org/centralitydev/cennznet-js/issue/10)
-
-
-
