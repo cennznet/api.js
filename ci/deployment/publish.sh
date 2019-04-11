@@ -11,7 +11,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 : "${GEMFURY_EXTERNAL_TOKEN:?GEMFURY_EXTERNAL_TOKEN is required}"
 : "${GIT_NAME:?GIT_NAME is required}"
 : "${GIT_EMAIL:?GIT_EMAIL is required}"
-: "${RELEASE_SCOPE:?RELEASE_SCOPE is required}"
 
 
 docker build \
@@ -21,5 +20,4 @@ docker build \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
   --build-arg GEMFURY_EXTERNAL_TOKEN="$GEMFURY_EXTERNAL_TOKEN" \
-  --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
   -f $DIR/ci/deployment/Dockerfile .
