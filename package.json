@@ -16,6 +16,7 @@
         "make-docs": "typedoc --options typedoc.config.js ."
     },
     "devDependencies": {
+        "@cennznet/conventional-changelog-preset": "^0.1.1",
         "@compodoc/compodoc": "^1.1.9",
         "@polkadot/dev": "^0.27.1",
         "@types/jest": "^23.3.10",

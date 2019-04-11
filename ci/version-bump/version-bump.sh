@@ -4,7 +4,10 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Required Environment variables. Set them by using the commands below
-: "${GEMFURY_TOKEN:?GEMFURY_TOKEN environment variable is required}"
+: "${IMAGE_NAME:?IMAGE_NAME environment variable is required}"
+: "${GIT_NAME:?GIT_NAME environment variable is required}"
+: "${GIT_EMAIL:?GIT_EMAIL environment variable is required}"
+: "${RELEASE_SCOPE:?RELEASE_SCOPE is required}"
 
 NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
 
@@ -23,5 +26,8 @@ cp $NEW_SSH_RSA_FILE_PATH ./git-ssh-key
 
 docker build \
   -t "$IMAGE_NAME" \
-  --build-arg GEMFURY_TOKEN="$GEMFURY_TOKEN" \
-  -f $DIR/../pr/Dockerfile .
+  --build-arg GIT_NAME="$GIT_NAME" \
+  --build-arg GIT_EMAIL="$GIT_EMAIL" \
+  --build-arg IMAGE_NAME="$IMAGE_NAME" \
+  --build-arg RELEASE_SCOPE="$RELEASE_SCOPE" \
+  -f $DIR/Dockerfile .

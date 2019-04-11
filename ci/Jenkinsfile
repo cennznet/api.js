@@ -19,10 +19,7 @@ pipeline {
     stages {
         stage('Build') {
             environment {
-                SSH_RSA_FILE_PATH = credentials('jenkins-ssh-key')
-            }
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+                GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
             }
             steps {
                 sh './ci/deployment/build.sh'
@@ -30,22 +27,16 @@ pipeline {
         }
 
         stage('Unit Test') {
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
             steps {
-                sh './ci/pr/unit-test.sh'
+                sh './ci/utils/unit-test.sh'
             }
         }
 
         stage('Yarn Audit') {
-          when {
-            expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-          }
           steps {
             script {
               AUDIT_RES = sh (
-                script: './ci/pr/yarn-audit.sh',
+                script: './ci/utils/yarn-audit.sh',
                 returnStatus: true
               ) == 0
               if (!AUDIT_RES) {
@@ -58,21 +49,15 @@ pipeline {
           }
         }
 
-        //stage('Confirm Publish') {
-        //    when {
-        //        expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR && !env.AUDIT_PASS}
-        //    }
-        //    steps {
-        //        timeout(time: 30, unit: 'MINUTES') {
-        //            input "yarn audit fails. Confirm publish?"
-        //        }
-        //    }
-        //}
+        stage('Confirm Publish') {
+           steps {
+               timeout(time: 30, unit: 'MINUTES') {
+                   input "Confirm publish?"
+               }
+           }
+        }
 
         stage('Publish to Gemfury') {
-            when {
-                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
-            }
             environment {
                 GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
                 GEMFURY_EXTERNAL_TOKEN = credentials('GEMFURY_EXTERNAL_TOKEN')

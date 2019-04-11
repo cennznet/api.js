@@ -1,0 +1,94 @@
+#!groovy
+pipeline {
+    agent {
+        label 'linux'
+    }
+
+    environment {
+        SERVICE_NAME = 'cennznet-js-version-bump'
+        IMAGE_NAME = "centrality/${SERVICE_NAME}-build:1.0.${BUILD_NUMBER}"
+        GIT_NAME = 'Jenkins'
+        GIT_EMAIL = 'jenkins@centrality.ai'
+        PUBLISH_IMAGE_NAME = "centrality/${SERVICE_NAME}:1.0.${BUILD_NUMBER}"
+        LAST_COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%an'", returnStdout: true).trim()
+        AWS_ACCESS_KEY = credentials('TF_AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = credentials('TF_AWS_SECRET_KEY')
+        PACKAGE_NAMES = 'wallet api'
+    }
+
+    stages {
+        stage('Build') {
+            environment {
+                GEMFURY_TOKEN = credentials('GEMFURY_TOKEN')
+            }
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                sh './ci/deployment/build.sh'
+            }
+        }
+
+        stage('Unit Test') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                sh './ci/utils/unit-test.sh'
+            }
+        }
+
+        stage('Yarn Audit') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                script {
+                    AUDIT_RES = sh (
+                        script: './ci/utils/yarn-audit.sh',
+                        returnStatus: true
+                    ) == 0
+                    if (!AUDIT_RES) {
+                        timeout(time: 30, unit: 'MINUTES') {
+                        input "yarn audit fails. Confirm publish?"
+                        }
+                    }
+                    env.AUDIT_PASS = AUDIT_RES == 0 ;
+                }
+            }
+        }
+
+        stage('Confirm Version Bump') {
+           when {
+               expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR && !env.AUDIT_PASS}
+           }
+           steps {
+               timeout(time: 30, unit: 'MINUTES') {
+                   input "Confirm Version Bump?"
+               }
+           }
+        }
+
+        stage('Version Bump') {
+            when {
+                expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
+            }
+            steps {
+                script {
+                    timeout(time: 30, unit: 'MINUTES') {
+                            env.RELEASE_SCOPE = input message: 'User input required',
+                            parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')]
+                    }
+                }
+                sh './ci/version-bump/version-bump.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "pipeline post always"
+            sh 'bash /mnt/jenkins/script/cleanup.sh'
+        }
+    }
+}
