@@ -6,10 +6,10 @@ import FeeExchange, {OptionalFeeExchange} from '@cennznet/types/extrinsic/FeeExc
 import {KeyringPair} from '@polkadot/keyring/types';
 import {Address, Compact, Hash, Method, Option, Signature, Struct} from '@polkadot/types';
 import {AnyNumber, AnyU8a, ArgsDef, Codec, IExtrinsic, SignatureOptions} from '@polkadot/types/types';
-import {isHex, isU8a, u8aToHex, u8aToU8a} from '@polkadot/util';
+import {assert, isHex, isU8a, u8aToHex, u8aToU8a} from '@polkadot/util';
 
-import {assert, blake2AsU8a} from '@cennznet/util';
 import {FunctionMetadata} from '@polkadot/types/Metadata/v0/Modules';
+import {blake2AsU8a} from '@polkadot/util-crypto';
 import {Certificate, Doughnut, OptionalDoughnut} from './Doughnut';
 import ExtrinsicSignature, {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
 

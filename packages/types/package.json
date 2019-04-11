@@ -15,10 +15,13 @@
         "build": "tsc",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
+    "dependencies": {
+        "@polkadot/types": "^0.52.1",
+        "@polkadot/util": "^0.42.1"
+    },
     "devDependencies": {
         "@polkadot/api": "^0.52.1",
         "@polkadot/rpc-provider": "^0.52.1",
-        "@polkadot/types": "^0.52.1",
         "typescript": "^3.1.6"
     }
 }
