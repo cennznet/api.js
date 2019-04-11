@@ -8,6 +8,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 NEW_SSH_RSA_FILE_PATH=~/.ssh/id_rsa
 
+# prevent jenkins rebuild
+LAST_COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an');
+
+if [ "$LAST_COMMIT_AUTHOR" = "$GIT_NAME" ]; then
+  echo "Terminating build started by Jenkins Git push";
+  exit 0;
+fi
+
 # set shell to verbose, instant exit mode
 set -ex
 

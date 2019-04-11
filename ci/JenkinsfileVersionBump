@@ -25,7 +25,7 @@ pipeline {
                 expression { env.GIT_NAME != env.LAST_COMMIT_AUTHOR }
             }
             steps {
-                sh './ci/deployment/build.sh'
+                sh './ci/version-bump/build.sh'
             }
         }
 
