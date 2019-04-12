@@ -1,7 +1,7 @@
 import getPlugins from '@cennznet/api/plugins';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins} from '@cennznet/api/util/injectPlugin';
-import {GenericAsset} from '@cennznet/crml-generic-asset';
+import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import {ApiRx as ApiRxBase} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
@@ -28,7 +28,7 @@ export class ApiRx extends ApiRxBase {
     /**
      * Generic Asset CRML extention
      */
-    genericAsset?: GenericAsset;
+    genericAsset?: GenericAssetRx;
 
     protected _plugins: IPlugin[];
 
