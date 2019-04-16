@@ -9,16 +9,17 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "polkadot-dev-build-ts",
+        "build": "plugnet-dev-build-ts",
         "test:unit": "jest -c ./jest/jest.config.js --coverage spec",
-        "test:e2e": "jest --silent --runInBand -c ./jest/jest.config.js --coverage e2e",
-        "test:e2eDebug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -c ./jest/jest.config.js e2e",
+        "test:e2e": "jest --silent --runInBand -c ./jest/jest.config.js --coverage e2e -- wss://cennznet-node-0.centrality.me:9944",
+        "test:e2eDebug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -c ./jest/jest.config.js e2e -- wss://cennznet-node-0.centrality.me:9944",
+        "test:e2eLocal": "jest  --runInBand -c ./jest/jest.config.js --coverage e2e -- ws://127.0.0.1:9944",
         "make-docs": "typedoc --options typedoc.config.js ."
     },
     "devDependencies": {
         "@cennznet/conventional-changelog-preset": "^0.1.1",
         "@compodoc/compodoc": "^1.1.9",
-        "@polkadot/dev": "^0.27.1",
+        "@plugnet/dev": "^0.30.1",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",

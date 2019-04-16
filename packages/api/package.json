@@ -20,12 +20,12 @@
     },
     "dependencies": {
         "@cennznet/types": "^0.10.2",
-        "@polkadot/api": "^0.52.1",
-        "@polkadot/extrinsics": "^0.52.1",
-        "@polkadot/rpc-core": "^0.52.1",
-        "@polkadot/rpc-provider": "^0.52.1",
-        "@polkadot/storage": "^0.52.1",
-        "@polkadot/types": "^0.52.1",
+        "@plugnet/api": "^0.76.102",
+        "@plugnet/extrinsics": "^0.76.102",
+        "@plugnet/rpc-core": "^0.76.102",
+        "@plugnet/rpc-provider": "^0.76.102",
+        "@plugnet/storage": "^0.76.102",
+        "@plugnet/types": "^0.76.102",
         "eventemitter3": "^3.1.0",
         "plugin-discovery": "^1.2.0"
     },

@@ -1,9 +1,9 @@
-import testingPairs from '@polkadot/keyring/testingPairs';
+import testingPairs from '@plugnet/keyring/testingPairs';
 
 import {Api} from '../../src/Api';
 import {ICennznetExtrinsic} from '../../src/types';
 
-const keyring = testingPairs({type: 'ed25519'}, false);
+const keyring = testingPairs({type: 'sr25519'}, false);
 
 import {getTypeRegistry} from '@cennznet/types/polkadot';
 import BN from 'bn.js';
@@ -60,9 +60,9 @@ describe('sending test doughnut', () => {
             maxPayment: 50000,
         });
         tx.sign(keyring.dave, {nonce});
-        return tx.send(({events, status, type}) => {
-            console.log('Transaction status:', type);
-            if (type === 'Finalised') {
+        return tx.send(({events, status}) => {
+            console.log('Transaction status:', status.type);
+            if (status.isFinalized) {
                 console.log('Completed at block hash', status.value.toHex());
                 console.log('Events:');
 

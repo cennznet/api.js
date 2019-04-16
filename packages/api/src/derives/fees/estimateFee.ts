@@ -1,7 +1,7 @@
 import {ApiInterface$Rx} from '@cennznet/api/polkadot.types';
 import {AnyAddress} from '@cennznet/api/types';
-import {Address, Compact, getTypeRegistry, Index, Struct, U8} from '@polkadot/types';
-import {IExtrinsic, IHash} from '@polkadot/types/types';
+import {Address, Compact, getTypeRegistry, Index, Struct, U8} from '@plugnet/types';
+import {IExtrinsic, IHash} from '@plugnet/types/types';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';

@@ -2,12 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {SubmittableResult} from '@polkadot/api';
-import {stringToU8a} from '@polkadot/util';
+import {SubmittableResult} from '@plugnet/api';
+import {stringToU8a} from '@plugnet/util';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {Api} from '../../src/Api';
-import WsProvider from '@polkadot/rpc-provider/ws';
+import WsProvider from '@plugnet/rpc-provider/ws';
 import {AssetId, AssetOptions} from '@cennznet/types';
 
 const sender = {
@@ -56,8 +56,8 @@ describe('e2e transactions', () => {
             // transfer
             await api.tx.genericAsset
                 .create(assetOptions)
-                .signAndSend(sender.address, async (event: SubmittableResult) => {
-                    if (event.type === 'Finalised') {
+                .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+                    if (status.isFinalized) {
                         const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
                         // expect
                         expect(assetIdAfter.gt(assetIdBefore)).toBeTruthy();

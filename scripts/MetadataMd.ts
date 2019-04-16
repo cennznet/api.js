@@ -4,9 +4,9 @@
 
 import rpcdata from '@cennznet/types/Metadata/static';
 import {stringCamelCase, stringLowerFirst} from '@cennznet/util';
-import interfaces from '@polkadot/jsonrpc';
-import {Metadata, Method} from '@polkadot/types';
-import MetadataV0 from '@polkadot/types/Metadata/v0';
+import interfaces from '@plugnet/jsonrpc';
+import {Metadata, Method} from '@plugnet/types';
+import MetadataV0 from '@plugnet/types/Metadata/v0';
 import fs from 'fs';
 
 // import Method from '../primitive/Method';

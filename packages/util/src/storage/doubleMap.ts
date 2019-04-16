@@ -1,6 +1,6 @@
-import {Codec} from '@polkadot/types/types';
-import {stringToU8a, u8aToHex} from '@polkadot/util';
-import {xxhashAsHex} from '@polkadot/util-crypto';
+import {Codec} from '@plugnet/types/types';
+import {stringToU8a, u8aToHex} from '@plugnet/util';
+import {xxhashAsHex} from '@plugnet/util-crypto';
 
 /**
  * Generate the key of a double map storage

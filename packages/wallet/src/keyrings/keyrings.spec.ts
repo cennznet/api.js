@@ -1,3 +1,4 @@
+import {cryptoWaitReady} from '@cennznet/util';
 import {KeyringPair} from '@cennznet/util/types';
 import {IKeyring, KeyringType} from '../types';
 import {HDKeyring} from './HDKeyring';
@@ -5,6 +6,11 @@ import {SimpleKeyring} from './SimpleKeyring';
 
 describe('buildin keyrings', () => {
     const BUILDIN_KEYRINGS: KeyringType<any>[] = [HDKeyring, SimpleKeyring];
+
+    beforeAll(async () => {
+        await cryptoWaitReady();
+    });
+
     BUILDIN_KEYRINGS.forEach(KeyringType => {
         describe(KeyringType.name, () => {
             it('default constructor', () => {

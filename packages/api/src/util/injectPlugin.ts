@@ -1,6 +1,5 @@
 import {IPlugin} from '@cennznet/api/types';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {ApiType} from '@polkadot/api/types';
 import {Api} from '../Api';
 import {ApiRx} from '../ApiRx';
 import {ApiOptions} from '../types';

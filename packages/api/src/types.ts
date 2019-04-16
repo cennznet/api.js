@@ -1,10 +1,10 @@
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
-import {DeriveCustom} from '@polkadot/api-derive';
-import {SubmittableExtrinsic} from '@polkadot/api/SubmittableExtrinsic';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import {AccountId, Address} from '@polkadot/types';
-import {Constructor, RegistryTypes} from '@polkadot/types/types';
+import {DeriveCustom} from '@plugnet/api-derive';
+import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
+import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
+import {ProviderInterface} from '@plugnet/rpc-provider/types';
+import {AccountId, Address} from '@plugnet/types';
+import {Constructor, RegistryTypes} from '@plugnet/types/types';
 import BN from 'bn.js';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {

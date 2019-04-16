@@ -1,5 +1,5 @@
-import {AccountId, Bytes, EnumType, H256, Null, Struct, Text, Tuple, u32 as U32, Vector} from '@polkadot/types';
-import {u8aToHex} from '@polkadot/util';
+import {AccountId, Bytes, EnumType, H256, Null, Struct, Text, Tuple, u32 as U32, Vector} from '@plugnet/types';
+import {u8aToHex} from '@plugnet/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
 

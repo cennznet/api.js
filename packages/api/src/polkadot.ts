@@ -1,3 +1,3 @@
-export {ApiPromise, ApiRx, SubmittableResult} from '@polkadot/api';
+export {ApiPromise, ApiRx, SubmittableResult} from '@plugnet/api';
 
-export {WsProvider} from '@polkadot/rpc-provider';
+export {WsProvider} from '@plugnet/rpc-provider';

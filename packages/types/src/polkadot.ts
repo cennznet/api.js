@@ -1,1 +1,1 @@
-export * from '@polkadot/types';
+export * from '@plugnet/types';

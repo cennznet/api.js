@@ -1,10 +1,11 @@
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
-import {ApiPromise} from '@polkadot/api';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import WsProvider from '@polkadot/rpc-provider/ws';
-import {isFunction, isObject} from '@polkadot/util';
+import Alias from '@cennznet/types/alias';
+import {ApiPromise} from '@plugnet/api';
+import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
+import {ProviderInterface} from '@plugnet/rpc-provider/types';
+import WsProvider from '@plugnet/rpc-provider/ws';
+import {isFunction, isObject} from '@plugnet/util';
 import * as derives from './derives';
 import getPlugins from './plugins';
 import {ApiOptions, IPlugin} from './types';
@@ -45,7 +46,7 @@ export class Api extends ApiPromise {
             logger.error('plugin loading failed');
         }
 
-        options.types = {...Types, ...options.types};
+        options.types = {...Types, ...Alias, ...options.types};
         options.derives = mergeDeriveOptions(derives, options.derives);
 
         super(options as ApiOptionsBase);

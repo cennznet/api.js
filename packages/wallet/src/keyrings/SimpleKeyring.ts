@@ -1,12 +1,11 @@
 import {Keyring} from '@cennznet/util';
 import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@cennznet/util/types';
+import {KeypairType} from '@plugnet/util-crypto/types';
 import {generateMnemonic} from 'bip39';
 import {DEFAULT_KEYRING_TYPE} from '../constants';
 import {IKeyring} from '../types';
 
-interface SerializedSimpleKeyring {
-    [address: string]: string;
-}
+type SerializedSimpleKeyring = KeyringPair$Json[];
 
 /**
  * a Simple Keyring implementation of ${IKeyring} can be used to manage individual key pairs
@@ -24,10 +23,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     }
 
     async serialize(): Promise<SerializedSimpleKeyring> {
-        return (await this.getPairs()).reduce((acc, pair) => {
-            acc[pair.address()] = pair.toJson().encoded;
-            return acc;
-        }, {});
+        return (await this.getPairs()).map(pair => pair.toJson());
     }
 
     async deserialize(data: SerializedSimpleKeyring): Promise<this> {
@@ -62,8 +58,13 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         this._keyring.removePair(address);
     }
 
-    addFromJson(pair: KeyringPair$Json, passphrase?: string): KeyringPair {
-        const keyPair = this._keyring.addFromJson(pair);
+    addFromJson(pair: KeyringPair$Json, ignoreChecksum?: boolean, passphrase?: string): KeyringPair {
+        let keyPair: KeyringPair;
+        if (ignoreChecksum === undefined || ignoreChecksum === null) {
+            keyPair = this._keyring.addFromJson(pair);
+        } else {
+            keyPair = this._keyring.addFromJson(pair, ignoreChecksum);
+        }
         try {
             keyPair.decodePkcs8(passphrase);
         } catch (e) {
@@ -73,23 +74,22 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         return keyPair;
     }
 
-    addFromMnemonic(mnemonic: string, meta?: KeyringPair$Meta): KeyringPair {
-        return this._keyring.addFromMnemonic(mnemonic, meta);
+    addFromMnemonic(
+        mnemonic: string,
+        meta: KeyringPair$Meta = {},
+        type: KeypairType = DEFAULT_KEYRING_TYPE
+    ): KeyringPair {
+        return this._keyring.addFromMnemonic(mnemonic, meta, type);
     }
 
-    addFromSeed(seed: Uint8Array, meta?: KeyringPair$Meta): KeyringPair {
-        return this._keyring.addFromSeed(seed, meta);
+    addFromSeed(seed: Uint8Array, meta: KeyringPair$Meta = {}, type: KeypairType = DEFAULT_KEYRING_TYPE): KeyringPair {
+        return this._keyring.addFromSeed(seed, meta, type);
     }
 
     private _deserialize(data: SerializedSimpleKeyring): void {
         this._keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
-        for (const address of Object.keys(data)) {
-            this.addFromJson({
-                address,
-                encoded: data[address],
-                encoding: {type: null, version: null, content: null},
-                meta: null,
-            });
+        for (const json of data) {
+            this.addFromJson(json);
         }
     }
 }

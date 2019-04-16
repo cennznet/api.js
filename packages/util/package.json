@@ -12,16 +12,15 @@
         "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
     },
     "scripts": {
-        "build": "tsc",
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@polkadot/keyring": "^0.42.1",
-        "@polkadot/util": "^0.42.1",
-        "@polkadot/util-crypto": "^0.42.1"
+        "@plugnet/keyring": "^0.76.2-beta.0",
+        "@plugnet/util": "^0.76.2-beta.0",
+        "@plugnet/util-crypto": "^0.76.2-beta.0"
     },
     "devDependencies": {
-        "@polkadot/types": "^0.52.1",
+        "@plugnet/types": "^0.76.102",
         "typescript": "^3.1.6"
     }
 }

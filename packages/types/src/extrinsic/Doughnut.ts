@@ -1,4 +1,4 @@
-import {AccountId, Option, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@polkadot/types';
+import {AccountId, Option, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@plugnet/types';
 
 export class Certificate extends Struct {
     constructor(value?: any) {

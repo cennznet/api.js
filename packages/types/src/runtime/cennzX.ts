@@ -1,4 +1,4 @@
-import {Tuple, U128} from '@polkadot/types';
+import {Tuple, U128} from '@plugnet/types';
 import AssetId from './ga/AssetId';
 
 export class ExchangeKey extends Tuple.with([AssetId, AssetId]) {}

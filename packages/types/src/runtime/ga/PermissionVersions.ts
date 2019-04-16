@@ -1,4 +1,4 @@
-import {EnumType} from '@polkadot/types';
+import {EnumType} from '@plugnet/types';
 import PermissionsV1 from './PermissionsV1';
 
 export default class PermissionVersions extends EnumType<PermissionsV1> {

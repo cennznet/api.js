@@ -1,6 +1,6 @@
-export {default as Keyring} from '@polkadot/keyring';
-export {default as TestingPairs} from '@polkadot/keyring/testingPairs';
-export * from '@polkadot/util';
-export * from '@polkadot/util-crypto';
+export {default as Keyring} from '@plugnet/keyring';
+export {default as TestingPairs} from '@plugnet/keyring/testingPairs';
+export * from '@plugnet/util';
+export * from '@plugnet/util-crypto';
 
 export {generateStorageDoubleMapKey} from './storage/doubleMap';

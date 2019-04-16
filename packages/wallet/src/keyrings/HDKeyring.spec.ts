@@ -1,8 +1,13 @@
-import {KeyringPair} from '@cennznet/util/types';
+import {cryptoWaitReady} from '@cennznet/util';
 import {HDKeyring} from './HDKeyring';
 import {IKeyring} from '../types';
+import {KeyringPair} from '@cennznet/util/types';
 
 describe('HDKeyring', () => {
+    beforeAll(async () => {
+        await cryptoWaitReady();
+    });
+
     describe('happy path', () => {
         const times = 10;
         let keyring: IKeyring<any>;
@@ -34,6 +39,6 @@ describe('HDKeyring', () => {
         });
         await expect(keyring.getAddresses()).resolves.toHaveLength(0);
         const kp = await keyring.addPair();
-        expect(kp.address()).toBe('5DMoKb4xQBUgB8XRz3dPfkKkEYGrQ9UkUEYHrrucAfTqyBxm');
+        expect(kp.address()).toBe('5HTkvBrPpfrSZCoHE9qBMyNmV2JVJcKLNswwXvWdZjizCMHj');
     });
 });

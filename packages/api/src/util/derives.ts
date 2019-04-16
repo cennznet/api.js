@@ -1,4 +1,4 @@
-import {DeriveCustom} from '@polkadot/api-derive';
+import {DeriveCustom} from '@plugnet/api-derive';
 
 export function mergeDeriveOptions(deriveOrigin: DeriveCustom, deriveAppend: DeriveCustom = {}): DeriveCustom {
     const ret = {...deriveOrigin};

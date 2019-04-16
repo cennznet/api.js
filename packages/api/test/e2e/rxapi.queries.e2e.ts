@@ -1,11 +1,11 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Hash} from '@polkadot/types';
+import {Hash} from '@plugnet/types';
 import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import {stringToU8a} from '@polkadot/util';
-import WsProvider from '@polkadot/rpc-provider/ws';
+import {stringToU8a} from '@plugnet/util';
+import WsProvider from '@plugnet/rpc-provider/ws';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 

@@ -5,14 +5,14 @@
 /* tslint:disable no-magic-numbers */
 
 import FeeExchange, {OptionalFeeExchange} from '@cennznet/types/extrinsic/FeeExchange';
-import {KeyringPair} from '@polkadot/keyring/types';
-import {AnyNumber, AnyU8a} from '@polkadot/types/types';
+import {KeyringPair} from '@plugnet/keyring/types';
+import {AnyNumber, AnyU8a} from '@plugnet/types/types';
 
-import {blake2AsU8a} from '@polkadot/util-crypto';
+import {blake2AsU8a} from '@plugnet/util-crypto';
 
-import {ExtrinsicEra, Hash, Method, Option, RuntimeVersion, Struct} from '@polkadot/types';
-import Nonce from '@polkadot/types/type/NonceCompact';
-import {u8aConcat} from '@polkadot/util';
+import {ExtrinsicEra, Hash, Method, Option, RuntimeVersion, Struct} from '@plugnet/types';
+import Nonce from '@plugnet/types/type/NonceCompact';
+import {u8aConcat} from '@plugnet/util';
 import {Doughnut, OptionalDoughnut} from './Doughnut';
 
 type SignaturePayloadValue = {

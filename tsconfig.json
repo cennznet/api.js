@@ -4,7 +4,7 @@
         "target": "es2017",
         "noImplicitAny": false,
         "moduleResolution": "node",
-        "outDir": "dist",
+        "outDir": "build",
         "baseUrl": ".",
         "types": ["node", "jest"],
         "experimentalDecorators": true,
@@ -26,6 +26,6 @@
             "@cennznet/wallet": ["packages/wallet/src/index"]
         }
     },
-    "include": ["packages/**/*"],
+    "include": ["packages/**/*", "scripts/*.ts"],
     "exclude": ["**/node_modules/**"]
 }

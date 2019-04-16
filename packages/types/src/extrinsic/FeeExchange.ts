@@ -1,5 +1,4 @@
-import {AssetId} from '@cennznet/types';
-import {Compact, getTypeRegistry, Option, Struct} from '@polkadot/types';
+import {Compact, getTypeRegistry, Option, Struct} from '@plugnet/types';
 
 export default class FeeExchange extends Struct {
     constructor(value?: any) {

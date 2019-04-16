@@ -12,7 +12,6 @@
         "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
     },
     "scripts": {
-        "build": "rimraf dist && rollup -c rollup.config.ts",
         "test": "jest --coverage -c ../../jest/jest.config.js",
         "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
         "test:watch": "jest --watch -c ../../jest/jest.config.js",

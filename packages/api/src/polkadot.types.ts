@@ -1,2 +1,2 @@
-export * from '@polkadot/api/types';
-export {SubmittableExtrinsic} from '@polkadot/api/SubmittableExtrinsic';
+export * from '@plugnet/api/types';
+export {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';

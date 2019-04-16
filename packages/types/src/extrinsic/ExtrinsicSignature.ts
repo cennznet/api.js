@@ -2,11 +2,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {KeyringPair} from '@polkadot/keyring/types';
+import {KeyringPair} from '@plugnet/keyring/types';
 
-import {Address, ExtrinsicEra, RuntimeVersion, Signature, Struct, U8} from '@polkadot/types';
-import Nonce from '@polkadot/types/type/NonceCompact';
-import {AnyNumber, IExtrinsicSignature, SignatureOptions} from '@polkadot/types/types';
+import {Address, ExtrinsicEra, RuntimeVersion, Signature, Struct, U8} from '@plugnet/types';
+import Nonce from '@plugnet/types/type/NonceCompact';
+import {AnyNumber, IExtrinsicSignature, SignatureOptions} from '@plugnet/types/types';
 import SignaturePayload from './SignaturePayload';
 
 import Extrinsic from './Extrinsic';

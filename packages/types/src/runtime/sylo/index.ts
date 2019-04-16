@@ -1,0 +1,1 @@
+export {default as Ed25519Signature} from './Ed25519Signature';
