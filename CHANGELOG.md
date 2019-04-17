@@ -6,6 +6,30 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [0.11.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.10.2...v0.11.0) (2019-04-17)
 
 
+### Dependency update
+
+* update polkadotjs v0.52.1 to plugnetjs v0.76.102
+  * **0.76.102**  
+Adding support for DoubleMap in Metadata
+Caching improvements (duplicate queries, no duplicate subscriptions)
+Experimental contract API
+Update @polkadot/keyring to enable Alice's stash account on dev chains
+Update @polkadot/util-crypto with smaller footprint   
+  * **0.75.1**  
+Start journey to 1.0   
+  * **0.53.1**  
+Change spelling to US English as per substrate master (1.0-rc1). Breaking changes as a result:
+  For extrinsic status results, if you have checked the type returns, i.e. result.type === 'Finalised' now check on the status for result.status.isFinalized or result.status.isBroadcast, ... (the type property is now accessible only on result.status.type)
+  If using subscribeFinalisedHeads update this to subscribeFinalizedHeads (likewise getFinalisedHead should be updated to getFinalizedHead and derive.bestNumberFinalized)
+The underlying ss58 addess checksums have changed in the keyring along with the latest specs
+All examples have been updated with sr25519 addresses (with the new checksums)    
+  * **0.49.1**  
+Fix large message signing on non-known nodes (default is now hashing, there has been enough time between upgrades)    
+  * **0.48.1**  
+Pull in new sr25519 capable keyring for dev nodes  
+When using dev mode, it assumes that the node is the latest with derived sr25519 keys  
+
+
 ### Bug Fixes
 
 * ga type in ApiRx ([0ec0b38](https://bitbucket.org/centralitydev/cennznet-js/commits/0ec0b38)), closes [#72](https://bitbucket.org/centralitydev/cennznet-js/issue/72)
@@ -14,9 +38,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* adding add from uri ([b968af9](https://bitbucket.org/centralitydev/cennznet-js/commits/b968af9))
-* adding alias ([84497e9](https://bitbucket.org/centralitydev/cennznet-js/commits/84497e9))
+* [@cennznet/wallet]add addFromUri in SimpleKeyring([b968af9](https://bitbucket.org/centralitydev/cennznet-js/commits/b968af9))
+* [@cennznet/types]allow to add alias for type ([84497e9](https://bitbucket.org/centralitydev/cennznet-js/commits/84497e9))
 
+
+### BREAKING CHANGES
+
+* Using sr25519 as default keyring type instead of ed25519.
+* Using uri to generate toy keyPairs and test keyPairs now instead of using seed.
+* Change spelling to US English as per substrate master (1.0-rc1). Breaking changes as a result:
+  * After sending extrinsic, the signature of subscribe callback is changed. Now checking result status using `result.status.isFinalized` instead of `result.type === 'Finalised'`.
+  * If using subscribeFinalisedHeads update this to subscribeFinalizedHeads (likewise getFinalisedHead should be updated to getFinalizedHead and derive.bestNumberFinalized)
 
 
 
