@@ -86,6 +86,10 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         return this._keyring.addFromSeed(seed, meta, type);
     }
 
+    addFromUri(suri: string, meta: KeyringPair$Meta = {}, type: KeypairType = DEFAULT_KEYRING_TYPE): KeyringPair {
+        return this._keyring.addFromUri(suri, meta, type);
+    }
+
     private _deserialize(data: SerializedSimpleKeyring): void {
         this._keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
         for (const json of data) {
