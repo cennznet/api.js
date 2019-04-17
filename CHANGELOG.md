@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.10.2...v0.11.0) (2019-04-17)
+
+
+### Bug Fixes
+
+* ga type in ApiRx ([0ec0b38](https://bitbucket.org/centralitydev/cennznet-js/commits/0ec0b38)), closes [#72](https://bitbucket.org/centralitydev/cennznet-js/issue/72)
+* missing deps ([6248afe](https://bitbucket.org/centralitydev/cennznet-js/commits/6248afe)), closes [#71](https://bitbucket.org/centralitydev/cennznet-js/issue/71)
+
+
+### Features
+
+* adding add from uri ([b968af9](https://bitbucket.org/centralitydev/cennznet-js/commits/b968af9))
+* adding alias ([84497e9](https://bitbucket.org/centralitydev/cennznet-js/commits/84497e9))
+
+
+
+
+
 ## [0.10.2](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.10.1...v0.10.2) (2019-04-11)
 
 **Note:** Version bump only for package root
