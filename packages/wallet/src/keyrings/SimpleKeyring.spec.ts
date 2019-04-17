@@ -1,13 +1,18 @@
-import {cryptoWaitReady, hexToU8a, TestingPairs} from '@cennznet/util';
+import {cryptoWaitReady, hexToU8a, TestingPairs, u8aToHex} from '@cennznet/util';
 import {SimpleKeyring} from './SimpleKeyring';
+import {stringToU8a} from '@plugnet/util';
 
 const TESTING_PAIRS = TestingPairs();
 
 const TEST_ACCOUNT_SEED = {
     seed: '0x3cf2ec6ffd26587529ab06c82ba9b33110198085f5c6b8d882653d056bf9e0d3',
     address: '5Gj98ssm6wbq3WHgjuXmoMCrZQurBb85EwfwoHAmJr7W4iE6',
-    publicKey: '0x366010e706af618a6037731b07663d4b6f10eac201c7fdd5fb0bd4727742524d',
+    publicKey: '0xce415b82522c8342768e165fceb76167334a903804f14aee214cae8284766c61',
 };
+
+// const TEST_ACCOUNT_SEED = {
+//     seed: stringToU8a(('cennznetjstest2' as any).padEnd(32, ' '))
+// };
 
 const TEST_ACCOUNT_MNEMONIC = {
     addressSR: '5GRRiw6cCUJYHF2siie4smLvGcReyynk5Mxr7XYiR5rCthgf',

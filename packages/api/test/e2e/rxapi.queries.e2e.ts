@@ -4,18 +4,16 @@
 import {Hash} from '@plugnet/types';
 import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import {stringToU8a} from '@plugnet/util';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 const sender = {
-    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
-    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
+    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+    uri: '//cennznet-js-test',
 };
 const receiver = {
     address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
-    seed: stringToU8a(('cennznetjstest2' as any).padEnd(32, ' ')),
 };
 const passphrase = 'passphrase';
 
@@ -26,7 +24,7 @@ describe('e2e queries', () => {
         websocket = new WsProvider('wss://cennznet-node-0.centrality.me:9944');
         api = await ApiRx.create({provider: websocket}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromSeed(sender.seed);
+        simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);

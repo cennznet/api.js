@@ -3,8 +3,6 @@ import testingPairs from '@plugnet/keyring/testingPairs';
 import {Api} from '../../src/Api';
 import {ICennznetExtrinsic} from '../../src/types';
 
-const keyring = testingPairs({type: 'sr25519'}, false);
-
 import {getTypeRegistry} from '@cennznet/types/polkadot';
 import BN from 'bn.js';
 
@@ -32,16 +30,15 @@ typeRegistry.register({
     StakingLedger: 'u256',
 });
 
-describe('sending test doughnut', () => {
+describe.skip('sending test doughnut', () => {
     let api;
+    let keyring;
 
-    beforeEach(async done => {
+    beforeEach(async () => {
         if (!api) {
             api = await Api.create();
+            keyring = testingPairs({type: 'sr25519'});
         }
-
-        jest.setTimeout(30000);
-        done();
     });
 
     afterEach(() => {

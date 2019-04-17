@@ -11,12 +11,11 @@ import WsProvider from '@plugnet/rpc-provider/ws';
 import {AssetId, AssetOptions} from '@cennznet/types';
 
 const sender = {
-    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
-    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
+    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+    uri: '//cennznet-js-test',
 };
 const receiver = {
-    address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
-    seed: stringToU8a(('cennznetjstest2' as any).padEnd(32, ' ')),
+    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
 };
 const passphrase = 'passphrase';
 
@@ -28,7 +27,7 @@ describe('e2e transactions', () => {
         websocket = new WsProvider('wss://cennznet-node-0.centrality.me:9944');
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromSeed(sender.seed);
+        simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
@@ -41,7 +40,20 @@ describe('e2e transactions', () => {
     });
 
     describe('Send()', () => {
-        it('makes a tx with statusCb', async done => {
+        it('makes a tx', async done => {
+            // transfer
+            await api.tx.genericAsset
+                .transfer(16000, receiver.address, 1)
+                .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+                    if (status.isFinalized) {
+                        expect(events[0].event.method).toEqual('Transferred');
+                        expect(events[0].event.section).toEqual('genericAsset');
+                        done();
+                    }
+                });
+        });
+
+        it.skip('makes a tx with statusCb', async done => {
             const totalSupply = 100;
             const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
             const reservedIdStart: number = 1000000;

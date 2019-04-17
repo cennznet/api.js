@@ -11,9 +11,9 @@
     "scripts": {
         "build": "plugnet-dev-build-ts",
         "test:unit": "jest -c ./jest/jest.config.js --coverage spec",
-        "test:e2e": "jest --silent --runInBand -c ./jest/jest.config.js --coverage e2e -- wss://cennznet-node-0.centrality.me:9944",
-        "test:e2eDebug": "node --inspect-brk ./node_modules/.bin/jest --runInBand -c ./jest/jest.config.js e2e -- wss://cennznet-node-0.centrality.me:9944",
-        "test:e2eLocal": "jest  --runInBand -c ./jest/jest.config.js --coverage e2e -- ws://127.0.0.1:9944",
+        "test:e2e": "jest --silent --forceExit --runInBand -c ./jest/jest.config.js --coverage e2e -- wss://cennznet-node-0.centrality.me:9944",
+        "test:e2eDebug": "node --inspect-brk ./node_modules/.bin/jest --forceExit --runInBand -c ./jest/jest.config.js e2e -- wss://cennznet-node-0.centrality.me:9944",
+        "test:e2eLocal": "jest --forceExit --runInBand -c ./jest/jest.config.js --coverage e2e -- ws://127.0.0.1:9944",
         "make-docs": "typedoc --options typedoc.config.js ."
     },
     "devDependencies": {

@@ -11,12 +11,11 @@ import BN from 'bn.js';
 import process from 'process';
 
 const sender = {
-    address: '5H6dGC3TbdyKFagoCEXGaNtsovTtpYYtMTXnsbtVYcn2T1VY',
-    seed: stringToU8a(('cennznet-js-test' as any).padEnd(32, ' ')),
+    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+    uri: '//cennznet-js-test',
 };
 const receiver = {
-    address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
-    seed: stringToU8a(('cennznetjstest2' as any).padEnd(32, ' ')),
+    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y'
 };
 const passphrase = 'passphrase';
 
@@ -28,7 +27,8 @@ describe('e2e queries', () => {
         websocket = new WsProvider(endPoint);
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromSeed(sender.seed);
+        simpleKeyring.addFromUri(sender.uri);
+        const a = await simpleKeyring.getAddresses();
         const wallet = new Wallet();
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
@@ -51,10 +51,10 @@ describe('e2e queries', () => {
 
     describe('Subscribe storage', () => {
         let unsubscribeFn;
-        it('emits events when storage changes', async done => {
+        it.skip('emits events when storage changes', async done => {
             const totalSupply = 100;
             let count = 0;
-            const reservedIdStart: number = 1000000;
+            const reservedIdStart: number = 17000;
             unsubscribeFn = await api.query.genericAsset.nextAssetId((result: any) => {
                 if (count === 0) {
                     expect(result.toNumber()).toBeGreaterThanOrEqual(reservedIdStart);
@@ -66,14 +66,17 @@ describe('e2e queries', () => {
                 }
             });
             await api.tx.genericAsset
-                .create({
-                    initialIssuance: 100,
-                })
-                .signAndSend(sender.address);
+                .create(new AssetOptions({
+                    initialIssuance: 0,
+                    permissions: {
+                        update: null,
+                        mint: null,
+                        burn: null
+                    }})).signAndSend(sender.address);
         }, 15000);
     });
 
-    it('fee estimate', async done => {
+    it.skip('fee estimate', async done => {
         const tx = api.tx.genericAsset.create({
             initialIssuance: 100,
         });
