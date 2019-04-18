@@ -7,6 +7,7 @@ import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import process from 'process';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -21,7 +22,8 @@ describe('e2e queries', () => {
     let api: ApiRx;
     let websocket: WsProvider;
     beforeAll(async () => {
-        websocket = new WsProvider('wss://cennznet-node-0.centrality.me:9944');
+        const endPoint = process.argv[process.argv.length - 1];
+        websocket = new WsProvider(endPoint);
         api = await ApiRx.create({provider: websocket}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);

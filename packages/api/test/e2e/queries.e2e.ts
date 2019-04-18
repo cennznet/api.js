@@ -28,7 +28,6 @@ describe('e2e queries', () => {
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
-        const a = await simpleKeyring.getAddresses();
         const wallet = new Wallet();
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
