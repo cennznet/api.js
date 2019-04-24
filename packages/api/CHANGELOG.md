@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.11.0...v0.11.1) (2019-04-24)
+
+**Note:** Version bump only for package @cennznet/api
+
+
+
+
+
 # [0.11.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.10.2...v0.11.0) (2019-04-17)
 
 
