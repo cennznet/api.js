@@ -152,6 +152,7 @@ export default class ExtrinsicSignature extends Struct implements IExtrinsicSign
             doughnut: extrinsic.doughnut,
             feeExchange: extrinsic.feeExchange,
         });
+        signingPayload.extrinsicVersion = this.version;
         const signature = new Signature(signingPayload.sign(account, version as RuntimeVersion));
 
         return this.injectSignature(signature, signer, signingPayload.nonce, signingPayload.era);

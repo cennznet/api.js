@@ -6,14 +6,13 @@
 
 import FeeExchange, {OptionalFeeExchange} from '@cennznet/types/extrinsic/FeeExchange';
 import {KeyringPair} from '@plugnet/keyring/types';
-import {AnyNumber, AnyU8a} from '@plugnet/types/types';
-
-import {blake2AsU8a} from '@plugnet/util-crypto';
-
 import {ExtrinsicEra, Hash, Method, Option, RuntimeVersion, Struct} from '@plugnet/types';
 import Nonce from '@plugnet/types/type/NonceCompact';
-import {u8aConcat} from '@plugnet/util';
+import {AnyNumber, AnyU8a, Codec} from '@plugnet/types/types';
+import {blake2AsU8a} from '@plugnet/util-crypto';
+
 import {Doughnut, OptionalDoughnut} from './Doughnut';
+import {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
 
 type SignaturePayloadValue = {
     nonce?: AnyNumber;
@@ -37,6 +36,7 @@ type SignaturePayloadValue = {
  */
 export default class SignaturePayload extends Struct {
     protected _signature?: Uint8Array;
+    protected _extrinsicVersion: number = 0;
 
     constructor(value?: SignaturePayloadValue | Uint8Array) {
         super(
@@ -106,9 +106,23 @@ export default class SignaturePayload extends Struct {
         return this.get('feeExchange') as Option<FeeExchange>;
     }
 
-    toU8a(isBare?: boolean): Uint8Array {
-        const values = this.toArray();
-        return u8aConcat(...values.map(entry => entry.toU8a(true)));
+    get extrinsicVersion(): number {
+        return this._extrinsicVersion;
+    }
+
+    set extrinsicVersion(version: number) {
+        this._extrinsicVersion = version;
+    }
+
+    toArray(): Array<Codec> {
+        const arr: Codec[] = [this.nonce, this.method, this.era, this.blockHash];
+        if (checkDoughnut(this.extrinsicVersion)) {
+            arr.push(this.doughnut.unwrap());
+        }
+        if (checkFeeExchange(this.extrinsicVersion)) {
+            arr.push(this.feeExchange.unwrap());
+        }
+        return arr;
     }
 
     /**
@@ -122,7 +136,6 @@ export default class SignaturePayload extends Struct {
             (version.specName.eq('polkadot') && version.specVersion.ltn(107));
         const u8a = this.toU8a();
         const encoded = !isLegacy && u8a.length > 256 ? blake2AsU8a(u8a) : u8a;
-
         this._signature = signerPair.sign(encoded);
 
         return this._signature;
