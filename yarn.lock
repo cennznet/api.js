@@ -2015,29 +2015,29 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@plugnet/api-derive@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fapi-derive/%40plugnet%2Fapi-derive-0.76.102#cc8d1b8cacb8161ec4addb1077ae267b598cff1a"
-  integrity sha1-zI0bjKy4Fh7ErdsQd64me1mM/xo=
+"@plugnet/api-derive@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fapi-derive/%40plugnet%2Fapi-derive-0.77.101#9006676234bdd63dd5ef6c577bd374f7ad4e6426"
+  integrity sha1-kAZnYjS91j3V72xXe9N0961OZCY=
   dependencies:
     "@babel/runtime" "^7.4.3"
-    "@plugnet/api" "^0.76.102"
-    "@plugnet/types" "^0.76.102"
+    "@plugnet/api" "^0.77.101"
+    "@plugnet/types" "^0.77.101"
     "@types/memoizee" "^0.4.2"
     memoizee "^0.4.14"
 
-"@plugnet/api@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fapi/%40plugnet%2Fapi-0.76.102#34499e5295af81ba4d46fe770667e0dcb99af047"
-  integrity sha1-NEmeUpWvgbpNRv53Bmfg3Lma8Ec=
+"@plugnet/api@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fapi/%40plugnet%2Fapi-0.77.101#4679b7a749e2f53c0c880f43df95a57de913d419"
+  integrity sha1-Rnm3p0ni9TwMiA9D35WlfekT1Bk=
   dependencies:
     "@babel/runtime" "^7.4.3"
-    "@plugnet/api-derive" "^0.76.102"
-    "@plugnet/extrinsics" "^0.76.102"
-    "@plugnet/rpc-provider" "^0.76.102"
-    "@plugnet/rpc-rx" "^0.76.102"
-    "@plugnet/storage" "^0.76.102"
-    "@plugnet/types" "^0.76.102"
+    "@plugnet/api-derive" "^0.77.101"
+    "@plugnet/extrinsics" "^0.77.101"
+    "@plugnet/rpc-provider" "^0.77.101"
+    "@plugnet/rpc-rx" "^0.77.101"
+    "@plugnet/storage" "^0.77.101"
+    "@plugnet/types" "^0.77.101"
     "@plugnet/util-crypto" "^0.76.2-beta.0"
 
 "@plugnet/dev@^0.30.1":
@@ -2078,19 +2078,19 @@
     typescript "^3.4.1"
     vuepress "^1.0.0-alpha.46"
 
-"@plugnet/extrinsics@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fextrinsics/%40plugnet%2Fextrinsics-0.76.102#7065d46c08f5aeddfb2db5a389ee623b3ea0e899"
-  integrity sha1-cGXUbAj1rt37LbWjie5iOz6g6Jk=
+"@plugnet/extrinsics@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fextrinsics/%40plugnet%2Fextrinsics-0.77.101#9d3e1188131c73556abc19ede8ce85476aac65ca"
+  integrity sha1-nT4RiBMcc1VqvBnt6M6FR2qsZco=
   dependencies:
     "@babel/runtime" "^7.4.3"
-    "@plugnet/types" "^0.76.102"
+    "@plugnet/types" "^0.77.101"
     "@plugnet/util" "^0.76.2-beta.0"
 
-"@plugnet/jsonrpc@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fjsonrpc/%40plugnet%2Fjsonrpc-0.76.102#5f7606bf0e0c1b92d631e9f83a38ddc7ba812f42"
-  integrity sha1-X3YGvw4MG5LWMen4Ojjdx7qBL0I=
+"@plugnet/jsonrpc@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fjsonrpc/%40plugnet%2Fjsonrpc-0.77.101#e2241ea14edff848f7308644239c897ac631efd0"
+  integrity sha1-4iQeoU7f+Ej3MIZEI5yJesYx79A=
   dependencies:
     "@babel/runtime" "^7.4.3"
 
@@ -2105,25 +2105,25 @@
     "@types/bs58" "^4.0.0"
     bs58 "^4.0.1"
 
-"@plugnet/rpc-core@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-core/%40plugnet%2Frpc-core-0.76.102#77ee1903007d3a7971ee4da50586b4f504dd341e"
-  integrity sha1-d+4ZAwB9Onlx7k2lBYa09QTdNB4=
+"@plugnet/rpc-core@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-core/%40plugnet%2Frpc-core-0.77.101#2402fd856c384e8b820db8a8cd77d44400d2caba"
+  integrity sha1-JAL9hWw4TouCDbiozXfURADSyro=
   dependencies:
     "@babel/runtime" "^7.4.3"
-    "@plugnet/jsonrpc" "^0.76.102"
-    "@plugnet/rpc-provider" "^0.76.102"
-    "@plugnet/types" "^0.76.102"
+    "@plugnet/jsonrpc" "^0.77.101"
+    "@plugnet/rpc-provider" "^0.77.101"
+    "@plugnet/types" "^0.77.101"
     "@plugnet/util" "^0.76.2-beta.0"
 
-"@plugnet/rpc-provider@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-provider/%40plugnet%2Frpc-provider-0.76.102#9984782673c051fd9ef29eec571b9f68b7fb46d5"
-  integrity sha1-mYR4JnPAUf2e8p7sVxufaLf7RtU=
+"@plugnet/rpc-provider@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-provider/%40plugnet%2Frpc-provider-0.77.101#6aeaddb72403f912e1cb99a2912d4f5b2a2600c1"
+  integrity sha1-aurdtyQD+RLhy5mikS1PWyomAME=
   dependencies:
     "@babel/runtime" "^7.4.3"
     "@plugnet/keyring" "^0.76.2-beta.0"
-    "@plugnet/storage" "^0.76.102"
+    "@plugnet/storage" "^0.77.101"
     "@plugnet/util" "^0.76.2-beta.0"
     "@plugnet/util-crypto" "^0.76.2-beta.0"
     "@types/nock" "^9.3.1"
@@ -2131,34 +2131,34 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.28"
 
-"@plugnet/rpc-rx@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-rx/%40plugnet%2Frpc-rx-0.76.102#400323a0efbd667ace0a8ab82121f56f760958e3"
-  integrity sha1-QAMjoO+9ZnrOCoq4ISH1b3YJWOM=
+"@plugnet/rpc-rx@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Frpc-rx/%40plugnet%2Frpc-rx-0.77.101#28787f973fb9e386254483c7ae7ff38ca9a7c59f"
+  integrity sha1-KHh/lz+544YlRIPHrn/zjKmnxZ8=
   dependencies:
     "@babel/runtime" "^7.4.3"
-    "@plugnet/rpc-core" "^0.76.102"
-    "@plugnet/rpc-provider" "^0.76.102"
+    "@plugnet/rpc-core" "^0.77.101"
+    "@plugnet/rpc-provider" "^0.77.101"
     "@types/memoizee" "^0.4.2"
     "@types/rx" "^4.1.1"
     memoizee "^0.4.14"
     rxjs "^6.4.0"
 
-"@plugnet/storage@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fstorage/%40plugnet%2Fstorage-0.76.102#88fea29aafbd5dcabcda02d3bcb69e73bd35d164"
-  integrity sha1-iP6imq+9Xcq82gLTvLaec7010WQ=
+"@plugnet/storage@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fstorage/%40plugnet%2Fstorage-0.77.101#83ac67f44e108de75e5348e8c5eff6183130d834"
+  integrity sha1-g6xn9E4QjedeU0joxe/2GDEw2DQ=
   dependencies:
     "@babel/runtime" "^7.4.3"
     "@plugnet/keyring" "^0.76.2-beta.0"
-    "@plugnet/types" "^0.76.102"
+    "@plugnet/types" "^0.77.101"
     "@plugnet/util" "^0.76.2-beta.0"
     "@plugnet/util-crypto" "^0.76.2-beta.0"
 
-"@plugnet/types@^0.76.102":
-  version "0.76.102"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Ftypes/%40plugnet%2Ftypes-0.76.102#47fd74bdcd477a29e0b3fcc1113fbc49ea1e7ecb"
-  integrity sha1-R/10vc1Heings/zBET+8Seoefss=
+"@plugnet/types@^0.77.101":
+  version "0.77.101"
+  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Ftypes/%40plugnet%2Ftypes-0.77.101#c7059b63bfa8e65cd280299f4dac40a01b853fd9"
+  integrity sha1-xwWbY7+o5lzSgCmfTaxAoBuFP9k=
   dependencies:
     "@babel/runtime" "^7.4.3"
     "@plugnet/keyring" "^0.76.2-beta.0"

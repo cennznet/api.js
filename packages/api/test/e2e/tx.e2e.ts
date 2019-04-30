@@ -55,10 +55,10 @@ describe('e2e transactions', () => {
                 });
         });
 
-        it.skip('makes a tx with statusCb', async done => {
+        it('makes a tx with statusCb', async done => {
             const totalSupply = 100;
             const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
-            const reservedIdStart: number = 1000000;
+            const reservedIdStart: number = 17000;
             const assetOptions = new AssetOptions({
                 initialIssuance: totalSupply,
                 permissions: {

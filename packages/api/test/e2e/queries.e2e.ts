@@ -50,7 +50,7 @@ describe('e2e queries', () => {
 
     describe('Subscribe storage', () => {
         let unsubscribeFn;
-        it.skip('emits events when storage changes', async done => {
+        it('emits events when storage changes', async done => {
             const totalSupply = 100;
             let count = 0;
             const reservedIdStart: number = 17000;
@@ -75,18 +75,18 @@ describe('e2e queries', () => {
         }, 15000);
     });
 
-    it.skip('fee estimate', async done => {
+    it('fee estimate', async done => {
         const tx = api.tx.genericAsset.create({
             initialIssuance: 100,
         });
         const fee = ((await api.derive.fees.estimateFee(tx, sender.address)) as unknown) as BN;
         await tx.signAndSend(sender.address, async ({events, status}) => {
             if (status.isFinalized && events !== undefined) {
-                // const blockHash = status.status.asFinalised;
-                // const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
-                // const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                // const gas = feeChargeEvent.event.data[1];
-                // expect(gas.toString()).toEqual(fee.toString());
+                const blockHash = status.asFinalized;
+                const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const gas = feeChargeEvent.event.data[1];
+                expect(gas.toString()).toEqual(fee.toString());
                 done();
             }
         });
