@@ -8,8 +8,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Dependency update
 
-* upgrade to @plugnet/api 0.77.101 ([6e53046](https://bitbucket.org/centralitydev/cennznet-js/commits/6e53046))
-
+* upgrade to @plugnet/api v0.77.101(@polkadot/api v0.77.1) ([6e53046](https://bitbucket.org/centralitydev/cennznet-js/commits/6e53046))
+* **0.77.101**  
+Support Metadata v4, which introduces the use of a custom hasher to hash storage map keys.
+Add TresuryProposal (not the same as democracy, type aliassed)
 
 
 
