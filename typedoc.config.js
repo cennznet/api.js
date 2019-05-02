@@ -3,8 +3,6 @@ module.exports = {
   "out": "./api_docs",
   "mode": "modules",
   "exclude": [
-    "**/node_modules/!(@polkadot)/**",
-    "**/node_modules/@polkadot/!(api|types)/**",
     "**/node_modules/!(@plugnet)/**",
     "**/node_modules/@plugnet/!(api|types)/**",
     "**/packages/!(api|wallet)/**",
@@ -18,7 +16,6 @@ module.exports = {
   "external-modulemap": [
     ["@cennznet/api", ".*packages\/api\/.*", "packages/api/README.md"],
     ["@cennznet/wallet", ".*packages\/wallet\/.*", "packages/wallet/README.md"],
-    ["@polkadot", ".*\/@polkadot\/.*"],
     ["@plugnet", ".*\/@plugnet\/.*"],
   ],
   "excludePrivate": true,

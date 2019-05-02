@@ -7,7 +7,6 @@ node_modules
 .DS_Store
 coverage
 packages/**/*.d.ts
-docs/
 .vscode
 .iml
 api_docs
