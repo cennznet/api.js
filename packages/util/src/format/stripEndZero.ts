@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as Keyring} from '@plugnet/keyring';
-export {default as TestingPairs} from '@plugnet/keyring/testingPairs';
-export * from '@plugnet/util';
-export * from '@plugnet/util-crypto';
+import {assert, isUndefined} from '@plugnet/util';
 
-export {default as stripEndZero} from './format/stripEndZero';
-export {default as isSafeInteger} from './is/integer';
-export {default as toFixed} from './number/toFixed';
-export * from './unit';
+const STRIP_ZERO = /^(.*?)(0*)$/;
+
+/**
+ * trim all trailing zeros. return '' if only zero is passed in.
+ * @param value
+ */
+export function stripEndZero(value: string) {
+    assert(!isUndefined(value), 'must not be undefined');
+    return STRIP_ZERO.exec(value)[1];
+}
