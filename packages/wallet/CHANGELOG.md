@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://github.com/cennznet/api.js/compare/v0.12.0...v0.12.1) (2019-05-06)
+
+**Note:** Version bump only for package @cennznet/wallet
+
+
+
+
+
 # [0.12.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.11.2...v0.12.0) (2019-04-30)
 
 **Note:** Version bump only for package @cennznet/wallet

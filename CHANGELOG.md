@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.12.0...v0.12.1) (2019-05-06)
+
+
+### Bug Fixes
+
+* yarn audit ([f768cb2](https://bitbucket.org/centralitydev/cennznet-js/commits/f768cb2))
+
+
+### Features
+
+* @cennznet/util add parseUnits and formatUnits ([448413b](https://bitbucket.org/centralitydev/cennznet-js/commits/448413b)), closes [#73](https://bitbucket.org/centralitydev/cennznet-js/issue/73)
+
+
+
+
+
 # [0.12.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.11.2...v0.12.0) (2019-04-30)
 
 
