@@ -26,7 +26,7 @@ RUN git config user.email ${GIT_EMAIL}
 RUN git status
 RUN git reset --hard
 
-RUN npx lerna exec -- 'cpx package.json build/'
+RUN npx lerna exec -- 'cp package.json build/'
 
 # pack packages for uploading
 RUN npx lerna exec --scope={@cennznet/api,@cennznet/types,@cennznet/wallet,@cennznet/util} -- "cd build && npm pack"
