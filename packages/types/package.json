@@ -1,15 +1,18 @@
 {
     "name": "@cennznet/types",
     "version": "0.12.0",
-    "description": "> TODO: description",
+    "description": "additional types for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
-    "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
-    "license": "ISC",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/types",
+    "license": "Apache-2.0",
     "main": "index.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"
@@ -21,6 +24,6 @@
     "devDependencies": {
         "@plugnet/api": "^0.77.101",
         "@plugnet/rpc-provider": "^0.77.101",
-        "typescript": "^3.1.6"
+        "typescript": "^3.4.5"
     }
 }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
+import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
 import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
@@ -40,6 +41,10 @@ export class Api extends ApiPromise {
      * Generic Asset CRML extention
      */
     genericAsset?: GenericAsset;
+    /**
+     * Cennzx Spot CRML extention
+     */
+    cennzxSpot?: CennzxSpot;
 
     protected _plugins: IPlugin[];
 

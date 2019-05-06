@@ -31,8 +31,15 @@ export function injectOption(options: ApiOptions, plugins: IPlugin[] = []): void
 
 export function injectPlugins(api: Api | ApiRx, plugins: IPlugin[] = []): void {
     for (const plugin of plugins) {
-        Object.defineProperty(api, plugin.injectName, {
-            value: api.type === 'promise' ? new plugin.sdkClass(api) : new plugin.sdkRxClass(api),
-        });
+        if (plugin.sdkClass && plugin.injectName && api.type === 'promise') {
+            Object.defineProperty(api, plugin.injectName, {
+                value: new plugin.sdkClass(api),
+            });
+        }
+        if (plugin.sdkRxClass && plugin.injectName && api.type === 'rxjs') {
+            Object.defineProperty(api, plugin.injectName, {
+                value: new plugin.sdkRxClass(api),
+            });
+        }
     }
 }

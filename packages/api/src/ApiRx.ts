@@ -15,6 +15,7 @@
 import getPlugins from '@cennznet/api/plugins';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins} from '@cennznet/api/util/injectPlugin';
+import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
@@ -43,6 +44,10 @@ export class ApiRx extends ApiRxBase {
      * Generic Asset CRML extention
      */
     genericAsset?: GenericAssetRx;
+    /**
+     * Cennzx Spot CRML extention
+     */
+    cennzxSpot?: CennzxSpotRx;
 
     protected _plugins: IPlugin[];
 

@@ -39,7 +39,7 @@ describe('e2e transactions', () => {
     let websocket: WsProvider;
 
     beforeAll(async () => {
-        const endPoint = process.argv[process.argv.length - 1];
+        const endPoint = undefined;
         websocket = new WsProvider(endPoint);
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();

@@ -40,9 +40,9 @@ export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
 }
 
 export interface IPlugin {
-    injectName: string;
-    sdkClass: Constructor<any>;
-    sdkRxClass: Constructor<any>;
+    injectName?: string;
+    sdkClass?: Constructor<any>;
+    sdkRxClass?: Constructor<any>;
     types?: RegistryTypes;
     derives?: DeriveCustom;
 }

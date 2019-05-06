@@ -3,16 +3,16 @@
     "version": "0.12.0",
     "description": "cennznet's javascript client",
     "keywords": [
-        "cennz"
+        "CENNZNet"
     ],
     "author": "ian.he <ian.he@centrality.ai>",
-    "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
-    "license": "ISC",
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
+    "license": "Apache-2.0",
     "main": "index.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
         "test:unit": "node --inspect ./node_modules/.bin/jest -c ./jest.config.js spec",
@@ -30,16 +30,15 @@
         "plugin-discovery": "^1.2.0"
     },
     "devDependencies": {
+        "@cennznet/crml-generic-asset": ">= 0.7.2",
+        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",
         "rimraf": "^2.6.2",
         "ts-mockito": "^2.3.1",
         "typedoc": "^0.13.0",
         "typedoc-plugin-markdown": "^1.1.19",
-        "typescript": "^3.4.1"
-    },
-    "optionalDependencies": {
-        "@cennznet/crml-generic-asset": ">= 0.6.0"
+        "typescript": "^3.4.5"
     },
     "browser": {
         "./plugins.js": "./plugins.browser.js",

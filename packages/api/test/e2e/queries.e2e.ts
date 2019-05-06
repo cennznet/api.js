@@ -17,27 +17,26 @@
  */
 import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import {stringToU8a} from '@plugnet/util';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {EventRecord, Hash, Vector} from '@plugnet/types';
 import {AssetOptions} from '@cennznet/types';
 import BN from 'bn.js';
-import process from 'process';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
     uri: '//cennznet-js-test',
 };
 const receiver = {
-    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y'
+    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
 };
 const passphrase = 'passphrase';
 
 describe('e2e queries', () => {
     let api: Api;
     let websocket: WsProvider;
+
     beforeAll(async () => {
-        const endPoint = process.argv[process.argv.length - 1];
+        const endPoint = 'wss://cennznet-node-0.centrality.me:9944';
         websocket = new WsProvider(endPoint);
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
@@ -79,17 +78,21 @@ describe('e2e queries', () => {
                 }
             });
             await api.tx.genericAsset
-                .create(new AssetOptions({
-                    initialIssuance: 0,
-                    permissions: {
-                        update: null,
-                        mint: null,
-                        burn: null
-                    }})).signAndSend(sender.address);
+                .create(
+                    new AssetOptions({
+                        initialIssuance: 0,
+                        permissions: {
+                            update: null,
+                            mint: null,
+                            burn: null,
+                        },
+                    })
+                )
+                .signAndSend(sender.address);
         }, 15000);
     });
 
-    it('fee estimate', async done => {
+    it.skip('fee estimate', async done => {
         const tx = api.tx.genericAsset.create({
             initialIssuance: 100,
         });

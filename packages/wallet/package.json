@@ -1,15 +1,18 @@
 {
     "name": "@cennznet/wallet",
     "version": "0.12.0",
-    "description": "> TODO: description",
+    "description": "wallet implementation to use with cennznet",
     "author": "ian.he <ian.he@centrality.ai>",
-    "homepage": "https://bitbucket.org/centralitydev/cennznet-js#readme",
-    "license": "ISC",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/wallet",
+    "license": "Apache-2.0",
     "main": "index.js",
     "types": "index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@bitbucket.org/centralitydev/cennznet-js.git"
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
         "test": "jest --coverage -c ../../jest/jest.config.js",
@@ -36,6 +39,6 @@
         "rollup-plugin-node-resolve": "^3.0.0",
         "rollup-plugin-sourcemaps": "^0.4.2",
         "rollup-plugin-typescript2": "^0.17.1",
-        "typescript": "^3.1.6"
+        "typescript": "^3.4.5"
     }
 }

@@ -19,8 +19,7 @@
     },
     "devDependencies": {
         "@cennznet/conventional-changelog-preset": "^0.1.1",
-        "@compodoc/compodoc": "^1.1.9",
-        "@plugnet/dev": "^0.30.1",
+        "@plugnet/dev": "^0.30.3",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
