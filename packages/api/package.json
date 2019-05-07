@@ -26,8 +26,11 @@
         "@plugnet/rpc-provider": "^0.77.101",
         "@plugnet/storage": "^0.77.101",
         "@plugnet/types": "^0.77.101",
-        "eventemitter3": "^3.1.0",
-        "plugin-discovery": "^1.2.0"
+        "eventemitter3": "^3.1.0"
+    },
+    "peerDependencies": {
+        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
+        "@cennznet/crml-generic-asset": ">= 0.7.2"
     },
     "devDependencies": {
         "@cennznet/crml-cennzx-spot": ">= 0.5.2",
@@ -39,9 +42,5 @@
         "typedoc": "^0.13.0",
         "typedoc-plugin-markdown": "^1.1.19",
         "typescript": "^3.4.5"
-    },
-    "browser": {
-        "./plugins.js": "./plugins.browser.js",
-        "plugin-discovery": false
     }
 }

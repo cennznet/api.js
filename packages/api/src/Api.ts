@@ -24,16 +24,14 @@ import {isFunction, isObject} from '@plugnet/util';
 import * as derives from './derives';
 import getPlugins from './plugins';
 import {ApiOptions, IPlugin} from './types';
-import {injectOption, injectPlugins} from './util/injectPlugin';
+import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 import logger from './util/logging';
 
 const Types = require('@cennznet/types');
 
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
-        const api = (await new Api(options).isReady) as Api;
-        injectPlugins(api, api._plugins);
-        return api;
+        return new Api(options).isReady;
     }
 
     // TODO: add other crml namespaces
@@ -46,8 +44,6 @@ export class Api extends ApiPromise {
      */
     cennzxSpot?: CennzxSpot;
 
-    protected _plugins: IPlugin[];
-
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =
             isObject(provider) && isFunction((provider as ProviderInterface).send)
@@ -59,7 +55,7 @@ export class Api extends ApiPromise {
 
         let plugins: IPlugin[] = options.plugins || [];
         try {
-            plugins = Object.values(getPlugins()).concat(plugins);
+            plugins = mergePlugins(plugins, getPlugins());
             injectOption(options, plugins);
         } catch (e) {
             logger.error('plugin loading failed');
@@ -71,7 +67,7 @@ export class Api extends ApiPromise {
         super(options as ApiOptionsBase);
 
         if (plugins) {
-            this._plugins = plugins;
+            injectPlugins(this, plugins);
         }
     }
 }

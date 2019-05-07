@@ -39,7 +39,7 @@ describe('e2e transactions', () => {
     let websocket: WsProvider;
 
     beforeAll(async () => {
-        const endPoint = undefined;
+        const endPoint = 'wss://cennznet-node-0.centrality.me:9944';
         websocket = new WsProvider(endPoint);
         api = await Api.create({provider: websocket});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();

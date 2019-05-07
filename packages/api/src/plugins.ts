@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import {IPlugin} from '@cennznet/api/types';
-import {PluginDiscovery} from 'plugin-discovery';
+import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
+import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
 
-export default function getPlugins(): {[name: string]: IPlugin} {
-    const config = {discoverGlobal: false, prefix: '@cennznet/crml-', importNamed: 'Plugin'};
-    const plugins = PluginDiscovery.discoverSync(config);
-    return plugins;
+export default function getPlugins(): IPlugin[] {
+    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
 }

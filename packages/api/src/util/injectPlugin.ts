@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import getPlugins from '@cennznet/api/plugins';
 import {IPlugin} from '@cennznet/api/types';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
+import logger from '@plugnet/util';
 import {Api} from '../Api';
 import {ApiRx} from '../ApiRx';
 import {ApiOptions} from '../types';
@@ -42,4 +44,13 @@ export function injectPlugins(api: Api | ApiRx, plugins: IPlugin[] = []): void {
             });
         }
     }
+}
+
+export function mergePlugins(originPlugins: IPlugin[], incomePlugins: IPlugin[]) {
+    return incomePlugins.reduce((acc, plugin) => {
+        if (acc.findIndex(p => p.injectName === plugin.injectName) < 0) {
+            acc.push(plugin);
+        }
+        return acc;
+    }, originPlugins);
 }

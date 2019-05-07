@@ -14,7 +14,7 @@
 
 import getPlugins from '@cennznet/api/plugins';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {injectOption, injectPlugins} from '@cennznet/api/util/injectPlugin';
+import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
@@ -23,7 +23,6 @@ import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {isFunction, isObject} from '@plugnet/util';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
 import * as derives from './derives';
 import {ApiOptions, IPlugin} from './types';
 import logger from './util/logging';
@@ -32,11 +31,7 @@ const Types = require('@cennznet/types');
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
-        return (new ApiRx(options).isReady as Observable<ApiRx>).pipe(
-            tap(api => {
-                injectPlugins(api, api._plugins);
-            })
-        );
+        return new ApiRx(options).isReady;
     }
 
     // TODO: add other crml namespaces
@@ -49,8 +44,6 @@ export class ApiRx extends ApiRxBase {
      */
     cennzxSpot?: CennzxSpotRx;
 
-    protected _plugins: IPlugin[];
-
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =
             isObject(provider) && isFunction((provider as ProviderInterface).send)
@@ -61,7 +54,7 @@ export class ApiRx extends ApiRxBase {
         }
         let plugins: IPlugin[] = options.plugins || [];
         try {
-            plugins = Object.values(getPlugins()).concat(plugins);
+            plugins = mergePlugins(plugins, getPlugins());
             injectOption(options, plugins);
         } catch (e) {
             logger.error('plugin loading failed');
@@ -73,7 +66,7 @@ export class ApiRx extends ApiRxBase {
         super(options as ApiOptionsBase);
 
         if (plugins) {
-            this._plugins = plugins;
+            injectPlugins(this, plugins);
         }
     }
 }

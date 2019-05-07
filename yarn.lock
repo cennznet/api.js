@@ -5865,7 +5865,7 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@^3.0.0, extend@~3.0.2:
+extend@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
@@ -6682,13 +6682,6 @@ hogan.js@^3.0.2:
   dependencies:
     mkdirp "0.3.0"
     nopt "1.0.10"
-
-homefront@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/homefront/-/homefront-2.0.0.tgz#5bcfd3326a5c5bb348f609352b1134c20d3a7106"
-  integrity sha1-W8/TMmpcW7NI9gk1KxE0wg06cQY=
-  dependencies:
-    extend "^3.0.0"
 
 hosted-git-info@^2.1.4, hosted-git-info@^2.6.0:
   version "2.7.1"
@@ -10165,15 +10158,6 @@ please-upgrade-node@^3.1.1:
   dependencies:
     semver-compare "^1.0.0"
 
-plugin-discovery@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/plugin-discovery/-/plugin-discovery-1.2.0.tgz#79c9858cd09e796e1dc02dac1a93b0578b644568"
-  integrity sha512-XW635P9IXiPy5Ur5tVnrsPX0498BLrDVnrkcup4fRehPcXoPqfy6th3/IwWK4qhFH4HuVXWztgb1mcIPDZIVHA==
-  dependencies:
-    glob "^7.1.2"
-    homefront "^2.0.0"
-    shelljs "^0.8.1"
-
 pn@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/pn/-/pn-1.1.0.tgz#e2f4cef0e219f463c179ab37463e4e1ecdccbafb"
@@ -11936,7 +11920,7 @@ shelljs@0.7.0:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-shelljs@^0.8.1, shelljs@^0.8.2:
+shelljs@^0.8.2:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
   integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
