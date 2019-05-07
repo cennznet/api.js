@@ -31,11 +31,11 @@ const BIT_DOUGHNUT = 0b01000000;
 const BIT_FEE_EXCHANGE = 0b00100000;
 
 export function checkDoughnut(version: number): boolean {
-    return (version[0] & BIT_DOUGHNUT) > 0;
+    return (version & BIT_DOUGHNUT) > 0;
 }
 
 export function checkFeeExchange(version: number): boolean {
-    return (version[0] & BIT_FEE_EXCHANGE) > 0;
+    return (version & BIT_FEE_EXCHANGE) > 0;
 }
 /**
  * @name ExtrinsicSignature
