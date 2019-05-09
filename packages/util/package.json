@@ -23,7 +23,7 @@
         "@plugnet/util-crypto": "^0.76.2-beta.0"
     },
     "devDependencies": {
-        "@plugnet/types": "^0.77.101",
+        "@plugnet/types": "^0.77.102",
         "typescript": "^3.4.5"
     }
 }
