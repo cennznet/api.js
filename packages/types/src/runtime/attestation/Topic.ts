@@ -15,6 +15,49 @@
 /*
     Custom `Topic` type for Attestation module.
  */
-import {U256} from '@plugnet/types';
+import {H256} from '@plugnet/types';
+import {isHex, isString, stringToU8a, u8aToString} from '@plugnet/util';
 
-export default class AttestationTopic extends U256 {}
+function isAscii(str: string) {
+    return /^[\x20-\x7E]*$/.test(str);
+}
+
+const MAX_ALLOWED_LENGTH = 32;
+
+function validateTopic(topic: string) {
+    if (topic.length > MAX_ALLOWED_LENGTH) {
+        throw new Error('Topic cannot exceed 32 characters');
+    }
+    if (!isAscii(topic)) {
+        throw new Error(
+            'Topic must be an ASCII string with no characters that cannot be seen on a standard US keyboard'
+        );
+    }
+}
+
+function stripTrailingZero(value: Uint8Array) {
+    let endPos = value.length - 1;
+    for (let i = endPos; i > -1; i--) {
+        if (value[i] !== 0) {
+            endPos = i;
+            break;
+        }
+    }
+    return value.slice(0, endPos + 1);
+}
+
+export default class AttestationTopic extends H256 {
+    constructor(value: string | Uint8Array) {
+        if (isString(value) && !isHex(value)) {
+            validateTopic(value);
+            super(stringToU8a(value));
+        } else {
+            super(value);
+        }
+    }
+
+    toString(base?: number): string {
+        const u8a = this.toU8a();
+        return u8aToString(stripTrailingZero(u8a));
+    }
+}

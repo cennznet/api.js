@@ -15,6 +15,6 @@
 /*
     Custom `Value` type for Attestation module.
  */
-import {U256} from '@plugnet/types';
+import {H256} from '@plugnet/types';
 
-export default class AttestationValue extends U256 {}
+export default class AttestationValue extends H256 {}
