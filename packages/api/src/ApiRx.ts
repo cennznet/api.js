@@ -23,10 +23,10 @@ import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {isFunction, isObject} from '@plugnet/util';
 import {Observable} from 'rxjs';
+import staticMetadata from '../staticMetadata';
 import * as derives from './derives';
 import {ApiOptions, IPlugin} from './types';
 import logger from './util/logging';
-
 const Types = require('@cennznet/types');
 
 export class ApiRx extends ApiRxBase {
@@ -52,6 +52,7 @@ export class ApiRx extends ApiRxBase {
         if (typeof options.provider === 'string') {
             options.provider = new WsProvider(options.provider);
         }
+        options.metadata = Object.assign(staticMetadata, options.metadata);
         let plugins: IPlugin[] = options.plugins || [];
         try {
             plugins = mergePlugins(plugins, getPlugins());
