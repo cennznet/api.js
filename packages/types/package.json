@@ -18,12 +18,12 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@plugnet/types": "^0.77.102",
+        "@plugnet/types": "^0.78.100",
         "@plugnet/util": "^0.76.2-beta.0"
     },
     "devDependencies": {
-        "@plugnet/api": "^0.77.102",
-        "@plugnet/rpc-provider": "^0.77.102",
+        "@plugnet/api": "^0.78.100",
+        "@plugnet/rpc-provider": "^0.78.100",
         "typescript": "^3.4.5"
     }
 }

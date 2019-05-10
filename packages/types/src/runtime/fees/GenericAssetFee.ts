@@ -12,9 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './attestation';
-export * from './cennzX';
-export * from './ga';
-export * from './rewards';
-export * from './sylo';
-export * from './fees';
+import {Enum} from '@plugnet/types';
+
+/**
+ * @name GenericAssetFee
+ * @description
+ * Custom `GenericAssetFee` type for generic asset module.
+ */
+export default class GenericAssetFee extends Enum {
+    static Transfer = new GenericAssetFee(0);
+
+    constructor(index?: string | Uint8Array | number) {
+        super(['Transfer'], index);
+    }
+}

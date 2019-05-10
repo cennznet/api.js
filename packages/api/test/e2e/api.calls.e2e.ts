@@ -15,6 +15,7 @@
 import {Api} from '../../src/Api';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {Hash, Block, HeaderExtended, AccountId, EventRecord, Option, BlockNumber} from '@plugnet/types';
+import {Fee} from '@cennznet/types';
 
 describe('e2e api calls', () => {
     let api: Api;
@@ -39,18 +40,18 @@ describe('e2e api calls', () => {
 
     describe('Get transaction fee', () => {
         it('get correct baseFee', async () => {
-            const baseFee = await api.query.fees.transactionBaseFee.at(blockHash).then(r => Number(r.toString()));
-            expect(baseFee).toBeGreaterThanOrEqual(0);
+            const baseFee = await api.query.fees.feeRegistry(Fee.FeesFee.BaseFee);
+            expect(Number(baseFee.toString())).toBeGreaterThanOrEqual(0);
         });
 
         it('get correct byteFee', async () => {
-            const byteFee = await api.query.fees.transactionByteFee.at(blockHash).then(r => Number(r.toString()));
-            expect(byteFee).toBeGreaterThanOrEqual(0);
+            const byteFee = await api.query.fees.feeRegistry(Fee.FeesFee.BytesFee);
+            expect(Number(byteFee.toString())).toBeGreaterThanOrEqual(0);
         });
 
         it('get correct transferFee', async () => {
-            const transferFee = await api.query.genericAsset.transferFee.at(blockHash).then(r => Number(r.toString()));
-            expect(transferFee).toBeGreaterThanOrEqual(0);
+            const transferFee = await api.query.fees.feeRegistry(Fee.GenericAssetFee.TransferFee);
+            expect(Number(transferFee.toString())).toBeGreaterThanOrEqual(0);
         });
     });
 
