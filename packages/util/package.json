@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/util",
-    "version": "0.12.3",
+    "version": "0.13.0",
     "description": "utils for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [

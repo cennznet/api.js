@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.12.3...v0.13.0) (2019-05-10)
+
+
+### Bug Fixes
+
+* checkDoughnut and checkFeeExchange in ExtrinsicSignature.ts ([d3161a8](https://bitbucket.org/centralitydev/cennznet-js/commits/d3161a8)), closes [#88](https://bitbucket.org/centralitydev/cennznet-js/issue/88)
+
+
+### Dependency update
+
+* upgrade to @plugnet/api v0.78.100 ([3b50371](https://bitbucket.org/centralitydev/cennznet-js/commits/3b50371)), closes [#90](https://bitbucket.org/centralitydev/cennznet-js/issue/90)
+
+
+### Features
+
+* prebundle metadata ([3b481af](https://bitbucket.org/centralitydev/cennznet-js/commits/3b481af)), closes [#87](https://bitbucket.org/centralitydev/cennznet-js/issue/87)
+
+
+
+
+
 ## [0.12.3](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.12.2...v0.12.3) (2019-05-07)
 
 **Note:** Version bump only for package root
