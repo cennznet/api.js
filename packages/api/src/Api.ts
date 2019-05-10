@@ -21,7 +21,7 @@ import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {isFunction, isObject} from '@plugnet/util';
-import staticMetadata from '../staticMetadata';
+import staticMetadata from './staticMetadata';
 import * as derives from './derives';
 import getPlugins from './plugins';
 import {ApiOptions, IPlugin} from './types';
