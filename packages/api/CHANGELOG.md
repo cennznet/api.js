@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.1](https://github.com/cennznet/api.js/compare/v0.13.0...v0.13.1) (2019-05-10)
+
+
+### Bug Fixes
+
+* move staticMetadata under src/ ([dc07068](https://github.com/cennznet/api.js/commit/dc07068))
+
+
+
+
+
 # [0.13.0](https://github.com/cennznet/api.js/compare/v0.12.3...v0.13.0) (2019-05-10)
 
 
