@@ -23,7 +23,7 @@ import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {isFunction, isObject} from '@plugnet/util';
 import {Observable} from 'rxjs';
-import staticMetadata from '../staticMetadata';
+import staticMetadata from './staticMetadata';
 import * as derives from './derives';
 import {ApiOptions, IPlugin} from './types';
 import logger from './util/logging';

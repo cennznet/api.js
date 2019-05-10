@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import {Api} from '../../src/Api';
-import staticMetadata from '../../staticMetadata';
+import staticMetadata from '../../src/staticMetadata';
 import WsProvider from '@plugnet/rpc-provider/ws';
 import {Metadata} from '@plugnet/types';
 
 describe('e2e api create', () => {
-
     it('For Kauri environment - checking if static metadata is same as latest', async () => {
         const endPoint = 'wss://kauri.centrality.cloud/ws?apikey=d449e2d0-868a-4f38-b977-b99e1476b7f0';
         const websocket = new WsProvider(endPoint);
@@ -39,5 +37,4 @@ describe('e2e api create', () => {
         (websocket as any).websocket.onclose = null;
         (websocket as any).websocket.close();
     });
-
 });
