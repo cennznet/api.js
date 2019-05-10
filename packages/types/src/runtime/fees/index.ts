@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './attestation';
-export * from './cennzX';
-export * from './ga';
-export * from './rewards';
-export * from './sylo';
-export * from './fees';
+export {default as Fee} from './Fee';
+export {default as FeesFee} from './FeesFee';
+export {default as GenericAssetFee} from './GenericAssetFee';

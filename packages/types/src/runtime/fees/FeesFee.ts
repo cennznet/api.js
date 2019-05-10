@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './attestation';
-export * from './cennzX';
-export * from './ga';
-export * from './rewards';
-export * from './sylo';
-export * from './fees';
+import {Enum} from '@plugnet/types';
+
+/**
+ * @name FeesFee
+ * @description
+ * Custom `FeesFee` type for fees module.
+ */
+export default class FeesFee extends Enum {
+    static Base = new FeesFee(0);
+    static Bytes = new FeesFee(1);
+
+    constructor(index?: string | Uint8Array | number) {
+        super(['Base', 'Bytes'], index);
+    }
+}

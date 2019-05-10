@@ -12,9 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './attestation';
-export * from './cennzX';
-export * from './ga';
-export * from './rewards';
-export * from './sylo';
-export * from './fees';
+import Fee from './Fee';
+
+describe('Fee', () => {
+    it('starts with default value', () => {
+        expect(Fee.FeesFee.BaseFee.toU8a()).toEqual(new Uint8Array([1, 0]));
+    });
+
+    it('starts with default value', () => {
+        expect(Fee.FeesFee.BytesFee.toU8a()).toEqual(new Uint8Array([1, 1]));
+    });
+
+    it('starts with default value', () => {
+        expect(Fee.GenericAssetFee.TransferFee.toU8a()).toEqual(new Uint8Array([0, 0]));
+    });
+});
