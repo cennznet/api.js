@@ -17,6 +17,7 @@ import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
+import Alias from '@cennznet/types/alias';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
@@ -61,7 +62,7 @@ export class ApiRx extends ApiRxBase {
             logger.error('plugin loading failed');
         }
 
-        options.types = {...Types, ...options.types};
+        options.types = {...Types, ...options.types, ...Alias};
         options.derives = mergeDeriveOptions(derives, options.derives);
 
         super(options as ApiOptionsBase);

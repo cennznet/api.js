@@ -62,7 +62,7 @@ export class Api extends ApiPromise {
             logger.error('plugin loading failed');
         }
 
-        options.types = {...Types, ...Alias, ...options.types};
+        options.types = {...Types, ...options.types, ...Alias};
         options.derives = mergeDeriveOptions(derives, options.derives);
 
         super(options as ApiOptionsBase);
