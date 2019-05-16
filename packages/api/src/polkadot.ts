@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {ApiPromise, ApiRx, SubmittableResult} from '@plugnet/api';
+/**
+ * @deprecated
+ */
+export {SubmittableResult} from '@plugnet/api';
 
+/**
+ * @deprecated
+ */
 export {WsProvider} from '@plugnet/rpc-provider';
