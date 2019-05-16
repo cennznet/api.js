@@ -14,3 +14,6 @@
 
 export {Api} from './Api';
 export {ApiRx} from './ApiRx';
+
+export {SubmittableResult} from '@plugnet/api';
+export {WsProvider, HttpProvider} from '@plugnet/rpc-provider';
