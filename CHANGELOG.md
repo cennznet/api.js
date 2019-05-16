@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.2](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.1...v0.13.2) (2019-05-16)
+
+
+### Bug Fixes
+
+* move Alias after options.types to avoid missing types ([3d99922](https://bitbucket.org/centralitydev/cennznet-js/commits/3d99922))
+
+
+
+
+
 ## [0.13.1](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.0...v0.13.1) (2019-05-10)
 
 
