@@ -36,11 +36,12 @@
         "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
     },
     "resolutions": {
-        "js-yaml": "^3.13.1",
         "braces": "^2.3.2",
-        "tar": "^4.4.8",
+        "fstream": "^1.0.12",
         "handlebars": "^4.1.2",
-        "marked": "^0.6.2"
+        "js-yaml": "^3.13.1",
+        "marked": "^0.6.2",
+        "tar": "^4.4.8"
     },
     "config": {
         "commitizen": {
