@@ -18,9 +18,9 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@plugnet/keyring": "^0.76.2-beta.0",
-        "@plugnet/util": "^0.76.2-beta.0",
-        "@plugnet/util-crypto": "^0.76.2-beta.0"
+        "@plugnet/keyring": "^0.90.100",
+        "@plugnet/util": "^0.90.100",
+        "@plugnet/util-crypto": "^0.90.100"
     },
     "devDependencies": {
         "@plugnet/types": "^0.78.100",
