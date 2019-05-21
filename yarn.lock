@@ -2052,17 +2052,6 @@
   dependencies:
     "@babel/runtime" "^7.4.4"
 
-"@plugnet/keyring@^0.76.2-beta.0":
-  version "0.76.2-beta.0"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fkeyring/%40plugnet%2Fkeyring-0.76.2-beta.0#0eb3be0c6bd80e3be1295da28a631bf8a9ffdd40"
-  integrity sha1-DrO+DGvYDjvhKV2iimMb+Kn/3UA=
-  dependencies:
-    "@babel/runtime" "^7.4.3"
-    "@plugnet/util" "^0.76.2-beta.0"
-    "@plugnet/util-crypto" "^0.76.2-beta.0"
-    "@types/bs58" "^4.0.0"
-    bs58 "^4.0.1"
-
 "@plugnet/keyring@^0.90.100":
   version "0.90.100"
   resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fkeyring/%40plugnet%2Fkeyring-0.90.100#20e0357669585182a0368f845dfb0c75d7ae2aec"
@@ -2133,26 +2122,6 @@
     "@plugnet/keyring" "^0.90.100"
     "@plugnet/util" "^0.90.100"
 
-"@plugnet/util-crypto@^0.76.2-beta.0":
-  version "0.76.2-beta.0"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Futil-crypto/%40plugnet%2Futil-crypto-0.76.2-beta.0#c4fafe09b624c3d1b37fd1713c655fef5f3408fc"
-  integrity sha1-xPr+CbYkw9Gzf9FxPGVf7180CPw=
-  dependencies:
-    "@babel/runtime" "^7.4.3"
-    "@plugnet/util" "^0.76.2-beta.0"
-    "@plugnet/wasm-crypto" "^0.8.1"
-    "@types/bip39" "^2.4.2"
-    "@types/pbkdf2" "^3.0.0"
-    "@types/secp256k1" "^3.5.0"
-    "@types/webassembly-js-api" "^0.0.2"
-    "@types/xxhashjs" "^0.2.1"
-    bip39 "^2.5.0"
-    blakejs "^1.1.0"
-    js-sha3 "^0.8.0"
-    secp256k1 "^3.6.2"
-    tweetnacl "^1.0.1"
-    xxhashjs "^0.2.2"
-
 "@plugnet/util-crypto@^0.90.100":
   version "0.90.100"
   resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Futil-crypto/%40plugnet%2Futil-crypto-0.90.100#0a4467a819c008cfb6063c919695d1dfe52d24aa"
@@ -2202,11 +2171,6 @@
     chalk "^2.4.2"
     ip-regex "^4.1.0"
     moment "^2.24.0"
-
-"@plugnet/wasm-crypto@^0.8.1":
-  version "0.8.1"
-  resolved "https://npm-proxy.fury.io/w23zbsVzKQmWRLyFVix9/centrality/~/d/%40plugnet%2Fwasm-crypto/%40plugnet%2Fwasm-crypto-0.8.1#0a5cd03cfbb184d5ebe5f23dc28a27960e0284d4"
-  integrity sha1-ClzQPPuxhNXr5fI9woonlg4ChNQ=
 
 "@plugnet/wasm-crypto@^0.9.100":
   version "0.9.100"
@@ -6302,10 +6266,10 @@ fsevents@^1.2.3, fsevents@^1.2.7:
     nan "^2.9.2"
     node-pre-gyp "^0.10.0"
 
-fstream@^1.0.0:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/fstream/-/fstream-1.0.11.tgz#5c1fb1f117477114f0632a0eb4b71b3cb0fd3171"
-  integrity sha1-XB+x8RdHcRTwYyoOtLcbPLD9MXE=
+fstream@^1.0.0, fstream@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/fstream/-/fstream-1.0.12.tgz#4e8ba8ee2d48be4f7d0de505455548eae5932045"
+  integrity sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==
   dependencies:
     graceful-fs "^4.1.2"
     inherits "~2.0.0"
