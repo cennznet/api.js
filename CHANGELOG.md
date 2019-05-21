@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.3](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.2...v0.13.3) (2019-05-21)
+
+
+### Bug Fixes
+
+* fix fstream version per yarn audit ([9844e67](https://bitbucket.org/centralitydev/cennznet-js/commits/9844e67))
+
+
+### Features
+
+* export WsProvider, HttpProvider and SubmittableResult from @cennznet/api ([7e08d3c](https://bitbucket.org/centralitydev/cennznet-js/commits/7e08d3c))
+
+
+
+
+
 ## [0.13.2](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.1...v0.13.2) (2019-05-16)
 
 
