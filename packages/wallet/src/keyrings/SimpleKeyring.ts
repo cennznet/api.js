@@ -17,6 +17,7 @@ import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@cennznet/util/ty
 import {KeypairType} from '@plugnet/util-crypto/types';
 import {generateMnemonic} from 'bip39';
 import {DEFAULT_KEYRING_TYPE} from '../constants';
+import {waitForCryptoReady} from '../decorators';
 import {IKeyring} from '../types';
 
 type SerializedSimpleKeyring = KeyringPair$Json[];
@@ -25,6 +26,8 @@ type SerializedSimpleKeyring = KeyringPair$Json[];
  * a Simple Keyring implementation of ${IKeyring} can be used to manage individual key pairs
  */
 export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
+
+    @waitForCryptoReady
     static async generate(): Promise<SimpleKeyring> {
         return new SimpleKeyring();
     }
@@ -40,11 +43,13 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         return (await this.getPairs()).map(pair => pair.toJson());
     }
 
+    @waitForCryptoReady
     async deserialize(data: SerializedSimpleKeyring): Promise<this> {
         this._deserialize(data);
         return this;
     }
 
+    @waitForCryptoReady
     async addPair(pair?: KeyringPair): Promise<KeyringPair> {
         if (pair === undefined) {
             return this._keyring.addFromMnemonic(generateMnemonic());

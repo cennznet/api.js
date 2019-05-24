@@ -17,6 +17,7 @@ import {KeyringPair} from '@cennznet/util/types';
 import {generateMnemonic} from 'bip39';
 import HDKey from 'hdkey';
 import {DEFAULT_KEYRING_TYPE} from '../constants';
+import {waitForCryptoReady} from '../decorators';
 import {IKeyring} from '../types';
 
 const DEFAULT_HD_PATH = "m/44'/392'/0'/0";
@@ -34,6 +35,8 @@ const privateMnemonic = new WeakMap<object, string>();
  * will use hd path "m/44'/392'/0'/0" (for CENNZ) by default
  */
 export class HDKeyring implements IKeyring<SerializedHDKeyring> {
+
+    @waitForCryptoReady
     static async generate(): Promise<HDKeyring> {
         const mnemonic = generateMnemonic();
         const keyring = new HDKeyring({
@@ -54,6 +57,7 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
         }
     }
 
+    @waitForCryptoReady
     async deserialize(opt: SerializedHDKeyring): Promise<this> {
         this._deserialize(opt);
         return this;
@@ -67,6 +71,7 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
         };
     }
 
+    @waitForCryptoReady
     async addPair(): Promise<KeyringPair> {
         if (!this.rootKey) {
             throw new Error('hd wallet not initialized');

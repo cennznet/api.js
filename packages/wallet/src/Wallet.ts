@@ -15,7 +15,7 @@
 import {Signer} from '@cennznet/api/polkadot.types';
 import {IExtrinsic, SignatureOptions} from '@cennznet/types/polkadot.types';
 import {KeyringPair$Json} from '@cennznet/util/types';
-import {persistBeforeReturn, requireUnlocked, synchronized} from './decorators';
+import {persistBeforeReturn, requireUnlocked, synchronized, waitForCryptoReady} from './decorators';
 import naclEncryptor from './encryptors/naclEncryptor';
 import {HDKeyring} from './keyrings/HDKeyring';
 import {Encryptor, IKeyring, IWallet, KeyringType, WalletOption} from './types';
@@ -87,6 +87,7 @@ export class Wallet implements Signer, IWallet {
      */
     @synchronized
     @requireUnlocked
+    @waitForCryptoReady
     async sign(extrinsic: IExtrinsic, address: string, options: SignatureOptions): Promise<number> {
         const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, address).getPair(address);
 
@@ -100,6 +101,7 @@ export class Wallet implements Signer, IWallet {
      * @param passphrase for the new created wallet.
      */
     @synchronized
+    @waitForCryptoReady
     async createNewVault(passphrase: string): Promise<void> {
         privatePasswd.set(this, passphrase);
         privateKeyrings.set(this, [await this.defaultKeyringType.generate()]);
@@ -112,6 +114,7 @@ export class Wallet implements Signer, IWallet {
      * @param passphrase for the new created wallet.
      */
     @synchronized
+    @waitForCryptoReady
     async createNewVaultAndRestore(passphrase: string, keyrings: IKeyring<any>[]): Promise<void> {
         privatePasswd.set(this, passphrase);
         privateKeyrings.set(this, keyrings);
@@ -205,6 +208,7 @@ export class Wallet implements Signer, IWallet {
     @synchronized
     @requireUnlocked
     @persistBeforeReturn
+    @waitForCryptoReady
     async addAccount(): Promise<string> {
         const defaultKeyring = getDefaultKeyring(this);
         const kp = await defaultKeyring.addPair();

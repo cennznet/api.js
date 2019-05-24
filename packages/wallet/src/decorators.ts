@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {cryptoWaitReady} from '@plugnet/util-crypto';
+
 import 'reflect-metadata';
 
 // type Newable<T> = {
@@ -31,6 +33,22 @@ import 'reflect-metadata';
 //         return false;
 //     }
 // }
+
+/**
+ *
+ * @ignore
+ */
+export const waitForCryptoReady = (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<(...args) => Promise<any>>
+) => {
+    const origin = descriptor.value;
+    descriptor.value = async function(...args) {
+        await cryptoWaitReady();
+        return origin.apply(this, args);
+    };
+};
 
 /**
  *
