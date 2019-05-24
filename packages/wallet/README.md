@@ -7,7 +7,7 @@
 ### Create a Wallet with HD-Keyring
 
 ```
-import {Wallet} from '@cennznet/wallet';
+const {Wallet} = require('@cennznet/wallet');
 
 const wallet = new Wallet();
 await wallet.createNewVault('a passphrase');

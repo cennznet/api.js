@@ -8,7 +8,7 @@ The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 $> npm i --save @cennznet/api @cennznet/crml-generic-asset @cennznet/crml-cennzx-spot @cennznet/crml-attestation
 ```
 
-*DON'T put @plugnet/\* or @polkadot/\* in your package.json*
+**Do not put @plugnet/\* or @polkadot/\* in your package.json**
 
 # Usage
 ## Register an endpoint for your project
