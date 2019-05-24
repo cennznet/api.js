@@ -19,7 +19,7 @@
     },
     "dependencies": {
         "@plugnet/types": "^0.78.100",
-        "@plugnet/util": "^0.76.2-beta.0"
+        "@plugnet/util": "^0.90.100"
     },
     "devDependencies": {
         "@plugnet/api": "^0.78.100",
