@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.5](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.4...v0.13.5) (2019-05-24)
+
+
+### Bug Fixes
+
+* await crypto ready in wallet and keyring ([4171cb5](https://bitbucket.org/centralitydev/cennznet-js/commits/4171cb5)), closes [#96](https://bitbucket.org/centralitydev/cennznet-js/issue/96)
+
+
+
+
+
 ## [0.13.4](https://bitbucket.org/centralitydev/cennznet-js/compare/v0.13.3...v0.13.4) (2019-05-21)
 
 **Note:** Version bump only for package root

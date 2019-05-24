@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.5](https://github.com/cennznet/api.js/compare/v0.13.4...v0.13.5) (2019-05-24)
+
+
+### Bug Fixes
+
+* await crypto ready in wallet and keyring ([4171cb5](https://github.com/cennznet/api.js/commit/4171cb5)), closes [#96](https://github.com/cennznet/api.js/issues/96)
+
+
+
+
+
 ## [0.13.4](https://github.com/cennznet/api.js/compare/v0.13.3...v0.13.4) (2019-05-21)
 
 **Note:** Version bump only for package @cennznet/api
