@@ -35,7 +35,6 @@ const privateMnemonic = new WeakMap<object, string>();
  * will use hd path "m/44'/392'/0'/0" (for CENNZ) by default
  */
 export class HDKeyring implements IKeyring<SerializedHDKeyring> {
-
     @waitForCryptoReady
     static async generate(): Promise<HDKeyring> {
         const mnemonic = generateMnemonic();

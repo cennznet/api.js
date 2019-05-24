@@ -26,7 +26,6 @@ type SerializedSimpleKeyring = KeyringPair$Json[];
  * a Simple Keyring implementation of ${IKeyring} can be used to manage individual key pairs
  */
 export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
-
     @waitForCryptoReady
     static async generate(): Promise<SimpleKeyring> {
         return new SimpleKeyring();
