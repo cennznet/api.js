@@ -18,6 +18,7 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
+        "@cennznet/util": "^0.13.6",
         "@plugnet/types": "^0.78.100",
         "@plugnet/util": "^0.90.100"
     },
