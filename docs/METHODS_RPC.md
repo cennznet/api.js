@@ -9,109 +9,113 @@ _The following sections contain RPC methods that are Remote Calls available by d
 
 - **[system](#system)**
 
-
+ 
 ___
-
+ <a name=author></a>
+ 
 
 ### author
 
 _Authoring of network items_
 
 ▸ **pendingExtrinsics**(): `PendingExtrinsics`
-- **summary**: Returns all pending extrinsics, potentially grouped by sender
+- Returns all pending extrinsics, potentially grouped by sender
 
 ▸ **submitAndWatchExtrinsic**(extrinsic: `Extrinsic`): `ExtrinsicStatus`
-- **summary**: Subscribe and watch an extrinsic until unsubscribed
+- Subscribe and watch an extrinsic until unsubscribed
 
 ▸ **submitExtrinsic**(extrinsic: `Extrinsic`): `Hash`
-- **summary**: Submit a fully formatted extrinsic for block inclusion
-
+- Submit a fully formatted extrinsic for block inclusion
+ 
 ___
-
+ <a name=chain></a>
+ 
 
 ### chain
 
 _Retrieval of chain data_
 
 ▸ **getBlock**(hash?: `Hash`): `SignedBlock`
-- **summary**: Get header and body of a relay chain block
+- Get header and body of a relay chain block
 
 ▸ **getBlockHash**(blockNumber?: `BlockNumber`): `Hash`
-- **summary**: Get the block hash for a specific block
+- Get the block hash for a specific block
 
 ▸ **getFinalizedHead**(): `Hash`
-- **summary**: Get hash of the last finalised block in the canon chain
+- Get hash of the last finalised block in the canon chain
 
 ▸ **getHeader**(hash?: `Hash`): `Header`
-- **summary**: Retrieves the header for a specific block
+- Retrieves the header for a specific block
 
 ▸ **getRuntimeVersion**(hash?: `Hash`): `RuntimeVersion`
-- **summary**: Get the runtime version (alias of state_getRuntimeVersion)
+- Get the runtime version (alias of state_getRuntimeVersion)
 
 ▸ **subscribeFinalizedHeads**(): `Header`
-- **summary**: Retrieves the best finalized header via subscription
+- Retrieves the best finalized header via subscription
 
 ▸ **subscribeNewHead**(): `Header`
-- **summary**: Retrieves the best header via subscription
+- Retrieves the best header via subscription
 
 ▸ **subscribeRuntimeVersion**(): `RuntimeVersion`
-- **summary**: Retrieves the runtime version via subscription
-
+- Retrieves the runtime version via subscription
+ 
 ___
-
+ <a name=state></a>
+ 
 
 ### state
 
 _Query of state_
 
 ▸ **call**(method: `Text`, data: `Bytes`, block?: `Hash`): `Bytes`
-- **summary**: Perform a call to a builtin on the chain
+- Perform a call to a builtin on the chain
 
 ▸ **getMetadata**(block?: `Hash`): `Metadata`
-- **summary**: Returns the runtime metadata
+- Returns the runtime metadata
 
 ▸ **getRuntimeVersion**(hash?: `Hash`): `RuntimeVersion`
-- **summary**: Get the runtime version
+- Get the runtime version
 
 ▸ **getStorage**(key: `StorageKey`, block?: `Hash`): `StorageData`
-- **summary**: Retrieves the storage for a key
+- Retrieves the storage for a key
 
 ▸ **getStorageHash**(key: `StorageKey`, block?: `Hash`): `Hash`
-- **summary**: Retrieves the storage hash
+- Retrieves the storage hash
 
 ▸ **getStorageSize**(key: `StorageKey`, block?: `Hash`): `u64`
-- **summary**: Retrieves the storage size
+- Retrieves the storage size
 
 ▸ **queryStorage**(keys: `Vec<StorageKey>`, startBlock: `Hash`, block?: `Hash`): `Vec<StorageChangeSet>`
-- **summary**: Query historical storage entries (by key) starting from a start block
+- Query historical storage entries (by key) starting from a start block
 
 ▸ **subscribeStorage**(keys: `Vec<StorageKey>`): `StorageChangeSet`
-- **summary**: Subscribes to storage changes for the provided keys
-
+- Subscribes to storage changes for the provided keys
+ 
 ___
-
+ <a name=system></a>
+ 
 
 ### system
 
 _Methods to retrieve system info_
 
 ▸ **chain**(): `Text`
-- **summary**: Retrieves the chain
+- Retrieves the chain
 
 ▸ **health**(): `Health`
-- **summary**: Return health status of the node
+- Return health status of the node
 
 ▸ **name**(): `Text`
-- **summary**: Retrieves the node name
+- Retrieves the node name
 
 ▸ **networkState**(): `NetworkState`
-- **summary**: Returns current state of the network
+- Returns current state of the network
 
 ▸ **peers**(): `Vec<PeerInfo>`
-- **summary**: Returns the currently connected peers
+- Returns the currently connected peers
 
 ▸ **properties**(): `ChainProperties`
-- **summary**: Get a custom set of properties as a JSON object, defined in the chain spec
+- Get a custom set of properties as a JSON object, defined in the chain spec
 
 ▸ **version**(): `Text`
-- **summary**: Retrieves the version of the node
+- Retrieves the version of the node

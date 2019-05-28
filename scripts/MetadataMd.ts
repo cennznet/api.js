@@ -30,7 +30,8 @@ function sectionLink(sectionName: string) {
 }
 
 function generateSectionHeader(md: string, sectionName: string) {
-    return `${md}\n___\n${LINK_BACK_TO_TOP}\n\n### ${sectionName}\n`;
+    const alink = `<a name=${sectionName}></a>\n`;
+    return `${md} \n___\n ${alink} ${LINK_BACK_TO_TOP}\n\n### ${sectionName}\n`;
 }
 
 function addRpc() {
@@ -59,7 +60,7 @@ function addRpc() {
             const renderReturnType = `: ${type}`;
             const renderSignature = `${renderMethod}${renderReturnType}`;
             const renderSummary = `${
-                method && method.description ? `\n- **summary**: ${method.description}\n` : `\n\n`
+                method && method.description ? `\n- ${method.description}\n` : `\n\n`
             }`;
 
             return `${renderSignature}${renderSummary}`;
@@ -97,8 +98,7 @@ function addEvents(metadata: MetadataV0) {
             const args = func.arguments.map(type => '`' + type + '`').join(', ');
             const doc = func.documentation.reduce((md, doc) => `${md} ${doc}`, '');
             const renderSignature = `${md}\n▸ **${methodName}**(${args})`;
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
-
+            const renderSummary = `${doc ? `\n- ${doc}\n` : '\n'}`;
             return renderSignature + renderSummary;
         }, renderSection);
     }, '');
@@ -127,9 +127,9 @@ function addExtrinsics(metadata: MetadataV0) {
             const args = Method.filterOrigin(func)
                 .map(({name, type}) => `${name}: ` + '`' + type + '`')
                 .join(', ');
-            const doc = func.documentation.reduce((md, doc) => `${md} ${doc}`, '');
+            const doc = func.documentation.reduce((md, doc) => `${md} \n${doc}\n`, '');
             const renderSignature = `${md}\n▸ **${methodName}**(${args})`;
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
+            const renderSummary = `${doc ? `\n- ${doc}` : '\n'}`;
 
             return renderSignature + renderSummary;
         }, renderSection);
@@ -160,7 +160,7 @@ function addStorage(metadata: MetadataV0) {
             const doc = func.documentation.reduce((md, doc) => `${md} ${doc}`, '');
             const type = func.modifier.isOptional ? `Option<${func.type}>` : func.type;
             const renderSignature = `${md}\n▸ **${methodName}**(${arg}): ` + '`' + type + '`';
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
+            const renderSummary = `${doc ? `\n- ${doc}\n` : '\n'}`;
 
             return renderSignature + renderSummary;
         }, renderSection);
