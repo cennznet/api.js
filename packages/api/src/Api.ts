@@ -19,12 +19,13 @@ import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import WsProvider from '@plugnet/rpc-provider/ws';
 import {isFunction, isObject} from '@plugnet/util';
+
 import * as derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, IPlugin} from './types';
+import {getProvider} from './util/getProvider';
 import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 import logger from './util/logging';
 
@@ -51,7 +52,7 @@ export class Api extends ApiPromise {
                 ? ({provider} as ApiOptions)
                 : ({...provider} as ApiOptions);
         if (typeof options.provider === 'string') {
-            options.provider = new WsProvider(options.provider);
+            options.provider = getProvider(options.provider);
         }
         options.metadata = Object.assign(staticMetadata, options.metadata);
         let plugins: IPlugin[] = options.plugins || [];
