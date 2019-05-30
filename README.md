@@ -2,6 +2,8 @@
 
 > The Cennznet JavaScript API library for browsers and Node.js.
 
+> Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_Overview.md) for more.
+
 # Components
 
 | Name                                                       | Description                                                |
@@ -11,8 +13,10 @@
 | [@cennznet/util](packages/util/README.md)     | cennznet specific utility functions                         |
 | [@cennznet/types](packages/types/README.md)   | cennznet specific type definitions                                |
 
-# How to contribute
+# Cennznet runtime module libraries 
 
-1. add new runtime type
-    > add your Type definition into packages/types/src/types and export in index.ts (filename should be the same as type name),
-    > then create a PR.
+| Name                                                       | Description                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------------- |
+| [@cennznet/crml-generic-asset](https://github.com/cennznet/crml-generic-asset.js)   | A sdk providing additional features for generic asset runtime module            |
+| [@cennznet/crml-cennzx-spot](https://github.com/cennznet/crml-cennzx-spot.js)   | A sdk providing additional features for cennzx spot runtime module           |
+| [@cennznet/crml-attestation](https://github.com/cennznet/crml-attestation.js)   | A sdk providing additional features for Cennznet's Identity Service.          |
