@@ -37,18 +37,20 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[treasury](#treasury)**
 
-
+ 
 ___
-
+ <a name=attestation></a>
+ 
 
 ### attestation
 
 ▸ **ClaimRemoved**(`AccountId`, `AccountId`, `AttestationTopic`)
 
 ▸ **ClaimSet**(`AccountId`, `AccountId`, `AttestationTopic`, `AttestationValue`)
-
+ 
 ___
-
+ <a name=cennzxSpot></a>
+ 
 
 ### cennzxSpot
 
@@ -57,80 +59,85 @@ ___
 ▸ **AssetPurchase**(`AssetId`, `AssetId`, `AccountId`, `Balance`, `Balance`)
 
 ▸ **RemoveLiquidity**(`AccountId`, `Balance`, `AssetId`, `Balance`)
-
+ 
 ___
-
+ <a name=contract></a>
+ 
 
 ### contract
 
 ▸ **CodeStored**(`Hash`)
-- **summary**:   Code with the specified hash has been stored.
+-   Code with the specified hash has been stored.
 
 ▸ **Contract**(`AccountId`, `Bytes`)
-- **summary**:   An event from contract of account.
+-   An event from contract of account.
 
 ▸ **Dispatched**(`AccountId`, `bool`)
-- **summary**:   A call was dispatched from the given account. The bool signals whether it was  successful execution or not.
+-   A call was dispatched from the given account. The bool signals whether it was  successful execution or not.
 
 ▸ **Instantiated**(`AccountId`, `AccountId`)
-- **summary**:   Contract deployed by address at the specified address.
+-   Contract deployed by address at the specified address.
 
 ▸ **ScheduleUpdated**(`u32`)
-- **summary**:   Triggered when the current schedule is updated.
+-   Triggered when the current schedule is updated.
 
 ▸ **Transfer**(`AccountId`, `AccountId`, `Balance`)
-- **summary**:   Transfer happened `from` to `to` with given `value` as part of a `call` or `create`.
-
+-   Transfer happened `from` to `to` with given `value` as part of a `call` or `create`.
+ 
 ___
-
+ <a name=council></a>
+ 
 
 ### council
 
 ▸ **BadReaperSlashed**(`AccountId`)
-- **summary**:   slashed reaper
+-   slashed reaper
 
 ▸ **TallyFinalized**(`Vec<AccountId>`, `Vec<AccountId>`)
-- **summary**:   A tally (for approval votes of council seat(s)) has ended (with one or more new members).
+-   A tally (for approval votes of council seat(s)) has ended (with one or more new members).
 
 ▸ **TallyStarted**(`u32`)
-- **summary**:   A tally (for approval votes of council seat(s)) has started.
+-   A tally (for approval votes of council seat(s)) has started.
 
 ▸ **VoterReaped**(`AccountId`, `AccountId`)
-- **summary**:   reaped voter, reaper
-
+-   reaped voter, reaper
+ 
 ___
-
+ <a name=councilMotions></a>
+ 
 
 ### councilMotions
 
 ▸ **Approved**(`Hash`)
-- **summary**:   A motion was approved by the required threshold.
+-   A motion was approved by the required threshold.
 
 ▸ **Disapproved**(`Hash`)
-- **summary**:   A motion was not approved by the required threshold.
+-   A motion was not approved by the required threshold.
 
 ▸ **Executed**(`Hash`, `bool`)
-- **summary**:   A motion was executed; `bool` is true if returned without error.
+-   A motion was executed; `bool` is true if returned without error.
 
 ▸ **Proposed**(`AccountId`, `ProposalIndex`, `Hash`, `u32`)
-- **summary**:   A motion (given hash) has been proposed (by given account) with a threshold (given u32).
+-   A motion (given hash) has been proposed (by given account) with a threshold (given u32).
 
 ▸ **Voted**(`AccountId`, `Hash`, `bool`, `u32`, `u32`)
-- **summary**:   A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given as u32s respectively).
-
+-   A motion (given hash) has been voted on by given account, leaving  a tally (yes votes and no votes given as u32s respectively).
+ 
 ___
-
+ <a name=councilVoting></a>
+ 
 
 ### councilVoting
 
 ▸ **TallyCancelation**(`Hash`, `u32`, `u32`, `u32`)
-- **summary**:   A voting tally has happened for a referendum cancellation vote.  Last three are yes, no, abstain counts.
+-   A voting tally has happened for a referendum cancellation vote.  Last three are yes, no, abstain counts.
 
 ▸ **TallyReferendum**(`Hash`, `u32`, `u32`, `u32`)
-- **summary**:   A voting tally has happened for a referendum vote.  Last three are yes, no, abstain counts.
-
+-   A voting tally has happened for a referendum vote.  Last three are yes, no, abstain counts.
+ 
 ___
-
+ <a name=democracy></a>
+ 
 
 ### democracy
 
@@ -151,122 +158,133 @@ ___
 ▸ **Tabled**(`PropIndex`, `Balance`, `Vec<AccountId>`)
 
 ▸ **Undelegated**(`AccountId`)
-
+ 
 ___
-
+ <a name=fees></a>
+ 
 
 ### fees
 
 ▸ **Charged**(`u32`, `Amount`)
-- **summary**:   Fee charged (extrinsic_index, fee_amount)
-
+-   Fee charged (extrinsic_index, fee_amount)
+ 
 ___
-
+ <a name=genericAsset></a>
+ 
 
 ### genericAsset
 
 ▸ **Burned**(`AssetId`, `AccountId`, `Balance`)
 
 ▸ **Created**(`AssetId`, `AccountId`, `AssetOptions`)
-- **summary**:   Asset created (asset_id, creator, asset_options).
+-   Asset created (asset_id, creator, asset_options).
 
 ▸ **Minted**(`AssetId`, `AccountId`, `Balance`)
 
 ▸ **PermissionUpdated**(`AssetId`, `PermissionLatest`)
 
 ▸ **Transferred**(`AssetId`, `AccountId`, `AccountId`, `Balance`)
-- **summary**:   Asset transfer succeeded (asset_id, from, to, amount).
-
+-   Asset transfer succeeded (asset_id, from, to, amount).
+ 
 ___
-
+ <a name=grandpa></a>
+ 
 
 ### grandpa
 
 ▸ **NewAuthorities**(`Vec<(SessionKey,u64)>`)
-- **summary**:   New authority set has been applied.
-
+-   New authority set has been applied.
+ 
 ___
-
+ <a name=indices></a>
+ 
 
 ### indices
 
 ▸ **NewAccountIndex**(`AccountId`, `AccountIndex`)
-- **summary**:   A new account index was assigned.   This event is not triggered when an existing index is reassigned  to another `AccountId`.
-
+-   A new account index was assigned.   This event is not triggered when an existing index is reassigned  to another `AccountId`.
+ 
 ___
-
+ <a name=session></a>
+ 
 
 ### session
 
 ▸ **NewSession**(`BlockNumber`)
-- **summary**:   New session has happened. Note that the argument is the session index, not the block  number as the type might suggest.
-
+-   New session has happened. Note that the argument is the session index, not the block  number as the type might suggest.
+ 
 ___
-
+ <a name=staking></a>
+ 
 
 ### staking
 
 ▸ **OfflineSlash**(`AccountId`, `Balance`)
-- **summary**:   One validator (and its nominators) has been slashed by the given amount.
+-   One validator (and its nominators) has been slashed by the given amount.
 
 ▸ **OfflineWarning**(`AccountId`, `u32`)
-- **summary**:   One validator (and its nominators) has been given an offline-warning (it is still  within its grace). The accrued number of slashes is recorded, too.
+-   One validator (and its nominators) has been given an offline-warning (it is still  within its grace). The accrued number of slashes is recorded, too.
 
 ▸ **Reward**(`Balance`)
-- **summary**:   All validators have been rewarded by the given balance.
-
+-   All validators have been rewarded by the given balance.
+ 
 ___
-
+ <a name=sudo></a>
+ 
 
 ### sudo
 
 ▸ **KeyChanged**(`AccountId`)
-- **summary**:   The sudoer just switched identity; the old key is supplied.
+-   The sudoer just switched identity; the old key is supplied.
 
 ▸ **Sudid**(`bool`)
-- **summary**:   A sudo just took place.
-
+-   A sudo just took place.
+ 
 ___
-
+ <a name=syloDevice></a>
+ 
 
 ### syloDevice
 
 ▸ **DeviceAdded**(`AccountId`, `Hash`, `u32`)
-
+ 
 ___
-
+ <a name=syloE2Ee></a>
+ 
 
 ### syloE2Ee
 
 ▸ **DeviceAdded**(`AccountId`, `u32`)
-
+ 
 ___
-
+ <a name=system></a>
+ 
 
 ### system
 
 ▸ **ExtrinsicFailed**()
-- **summary**:   An extrinsic failed.
+-   An extrinsic failed.
 
 ▸ **ExtrinsicSuccess**()
-- **summary**:   An extrinsic completed successfully.
-
+-   An extrinsic completed successfully.
+ 
 ___
-
+ <a name=treasury></a>
+ 
 
 ### treasury
 
 ▸ **Awarded**(`ProposalIndex`, `Balance`, `AccountId`)
-- **summary**:   Some funds have been allocated.
+-   Some funds have been allocated.
 
 ▸ **Burnt**(`Balance`)
-- **summary**:   Some of our funds have been burnt.
+-   Some of our funds have been burnt.
 
 ▸ **Proposed**(`ProposalIndex`)
-- **summary**:   New proposal.
+-   New proposal.
 
 ▸ **Rollover**(`Balance`)
-- **summary**:   Spending has finished; this is the amount that rolls over until next spend.
+-   Spending has finished; this is the amount that rolls over until next spend.
 
 ▸ **Spending**(`Balance`)
-- **summary**:   We have ended a spend period and will now allocate funds.
+-   We have ended a spend period and will now allocate funds.

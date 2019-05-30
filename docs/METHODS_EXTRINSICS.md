@@ -41,9 +41,10 @@ _The following sections contain Extrinsics methods are part of the default Subst
 
 - **[treasury](#treasury)**
 
-
+ 
 ___
-
+ <a name=attestation></a>
+ 
 
 ### attestation
 
@@ -52,116 +53,266 @@ ___
 ▸ **setClaim**(holder: `AccountId`, topic: `AttestationTopic`, value: `AttestationValue`)
 
 ▸ **setSelfClaim**(topic: `AttestationTopic`, value: `AttestationValue`)
-
+ 
 ___
-
+ <a name=cennzxSpot></a>
+ 
 
 ### cennzxSpot
 
 ▸ **addLiquidity**(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<Balance>`, max_asset_amount: `Compact<Balance>`, core_amount: `Compact<Balance>`)
-- **summary**:   Deposit core asset and trade asset at current ratio to mint liquidity  Returns amount of liquidity minted.   `origin`  `asset_id` - The trade asset ID  `min_liquidity` - The minimum liquidity to add  `asset_amount` - Amount of trade asset to add  `core_amount` - Amount of core asset to add
+-  
+ Deposit core asset and trade asset at current ratio to mint liquidity
+ 
+ Returns amount of liquidity minted.
+ 
+
+ 
+ `origin`
+ 
+ `asset_id` - The trade asset ID
+ 
+ `min_liquidity` - The minimum liquidity to add
+ 
+ `asset_amount` - Amount of trade asset to add
+ 
+ `core_amount` - Amount of core asset to add
 
 ▸ **assetSwapInput**(recipient: `Option<AccountId>`, asset_sold: `Compact<AssetId>`, asset_bought: `Compact<AssetId>`, sell_amount: `Compact<Balance>`, min_asset_sale: `Compact<Balance>`)
-- **summary**:   Convert asset1 to asset2  Seller specifies exact input (asset 1) and minimum output (asset 2)  `recipient` - Account to receive asset_bought, defaults to origin if None  `asset_sold` - asset ID 1 to sell  `asset_bought` - asset ID 2 to buy  `sell_amount` - The amount of asset '1' to sell  `min_asset_sale` - Minimum trade asset '2' to receive from sale
+-  
+ Convert asset1 to asset2
+ 
+ Seller specifies exact input (asset 1) and minimum output (asset 2)
+ 
+ `recipient` - Account to receive asset_bought, defaults to origin if None
+ 
+ `asset_sold` - asset ID 1 to sell
+ 
+ `asset_bought` - asset ID 2 to buy
+ 
+ `sell_amount` - The amount of asset '1' to sell
+ 
+ `min_asset_sale` - Minimum trade asset '2' to receive from sale
 
 ▸ **assetSwapOutput**(recipient: `Option<AccountId>`, asset_sold: `Compact<AssetId>`, asset_bought: `Compact<AssetId>`, buy_amount: `Compact<Balance>`, max_asset_sale: `Compact<Balance>`)
-- **summary**:   Convert asset1 to asset2. User specifies maximum  input and exact output.   origin  `recipient` - Account to receive asset_bought, defaults to origin if None  `asset_sold` - asset ID 1 to sell  `asset_bought` - asset ID 2 to buy  `buy_amount` - The amount of asset '2' to purchase  `max_asset_sale` - Maximum trade asset '1' to sell
+-  
+ Convert asset1 to asset2. User specifies maximum
+ 
+ input and exact output.
+ 
+  origin
+ 
+ `recipient` - Account to receive asset_bought, defaults to origin if None
+ 
+ `asset_sold` - asset ID 1 to sell
+ 
+ `asset_bought` - asset ID 2 to buy
+ 
+ `buy_amount` - The amount of asset '2' to purchase
+ 
+ `max_asset_sale` - Maximum trade asset '1' to sell
 
 ▸ **removeLiquidity**(asset_id: `Compact<AssetId>`, liquidity_withdrawn: `Compact<Balance>`, min_asset_withdraw: `Compact<Balance>`, min_core_withdraw: `Compact<Balance>`)
-- **summary**:   Burn exchange assets to withdraw core asset and trade asset at current ratio   `asset_id` - The trade asset ID  `asset_amount` - Amount of exchange asset to burn  `min_asset_withdraw` - The minimum trade asset withdrawn  `min_core_withdraw` -  The minimum core asset withdrawn
+-  
+ Burn exchange assets to withdraw core asset and trade asset at current ratio
+ 
+
+ 
+ `asset_id` - The trade asset ID
+ 
+ `asset_amount` - Amount of exchange asset to burn
+ 
+ `min_asset_withdraw` - The minimum trade asset withdrawn
+ 
+ `min_core_withdraw` -  The minimum core asset withdrawn
 
 ▸ **setFeeRate**(new_fee_rate: `FeeRate`)
-- **summary**:   Set the spot exchange wide fee rate (root only)
-
+-  
+ Set the spot exchange wide fee rate (root only)
+ 
 ___
-
+ <a name=consensus></a>
+ 
 
 ### consensus
 
 ▸ **killStorage**(keys: `Vec<Key>`)
-- **summary**:   Kill some items from storage.
+-  
+ Kill some items from storage.
 
 ▸ **noteOffline**(offline: `InherentOfflineReport`)
-- **summary**:   Note that the previous block's validator missed its opportunity to propose a block.
+-  
+ Note that the previous block's validator missed its opportunity to propose a block.
 
 ▸ **remark**(_remark: `Bytes`)
-- **summary**:   Make some on-chain remark.
+-  
+ Make some on-chain remark.
 
 ▸ **reportMisbehavior**(_report: `Bytes`)
-- **summary**:   Report some misbehavior.
+-  
+ Report some misbehavior.
 
 ▸ **setCode**(new: `Bytes`)
-- **summary**:   Set the new code.
+-  
+ Set the new code.
 
 ▸ **setHeapPages**(pages: `u64`)
-- **summary**:   Set the number of pages in the WebAssembly environment's heap.
+-  
+ Set the number of pages in the WebAssembly environment's heap.
 
 ▸ **setStorage**(items: `Vec<KeyValue>`)
-- **summary**:   Set some items of storage.
-
+-  
+ Set some items of storage.
+ 
 ___
-
+ <a name=contract></a>
+ 
 
 ### contract
 
 ▸ **call**(dest: `Address`, value: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, data: `Bytes`)
-- **summary**:   Makes a call to an account, optionally transferring some balance.   * If the account is a smart-contract account, the associated code will be  executed and any value will be transferred.  * If the account is a regular account, any value will be transferred.  * If no account exists and the call value is not less than `existential_deposit`,  a regular account will be created and any value will be transferred.
+-  
+ Makes a call to an account, optionally transferring some balance.
+ 
+
+ 
+ * If the account is a smart-contract account, the associated code will be
+ 
+ executed and any value will be transferred.
+ 
+ * If the account is a regular account, any value will be transferred.
+ 
+ * If no account exists and the call value is not less than `existential_deposit`,
+ 
+ a regular account will be created and any value will be transferred.
 
 ▸ **create**(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`)
-- **summary**:   Creates a new contract from the `codehash` generated by `put_code`, optionally transferring some balance.   Creation is executed as follows:   - The destination address is computed based on the sender and hash of the code.  - The smart-contract account is created at the computed address.  - The `ctor_code` is executed in the context of the newly-created account. Buffer returned    after the execution is saved as the `code` of the account. That code will be invoked    upon any call received by this account.  - The contract is initialized.
+-  
+ Creates a new contract from the `codehash` generated by `put_code`, optionally transferring some balance.
+ 
+
+ 
+ Creation is executed as follows:
+ 
+
+ 
+ - The destination address is computed based on the sender and hash of the code.
+ 
+ - The smart-contract account is created at the computed address.
+ 
+ - The `ctor_code` is executed in the context of the newly-created account. Buffer returned
+ 
+   after the execution is saved as the `code` of the account. That code will be invoked
+ 
+   upon any call received by this account.
+ 
+ - The contract is initialized.
 
 ▸ **putCode**(gas_limit: `Compact<Gas>`, code: `Bytes`)
-- **summary**:   Stores the given binary Wasm code into the chain's storage and returns its `codehash`.  You can instantiate contracts only with stored code.
+-  
+ Stores the given binary Wasm code into the chain's storage and returns its `codehash`.
+ 
+ You can instantiate contracts only with stored code.
 
 ▸ **updateSchedule**(schedule: `Schedule`)
-- **summary**:   Updates the schedule for metering contracts.   The schedule must have a greater version than the stored schedule.
+-  
+ Updates the schedule for metering contracts.
+ 
 
+ 
+ The schedule must have a greater version than the stored schedule.
+ 
 ___
-
+ <a name=council></a>
+ 
 
 ### council
 
 ▸ **presentWinner**(candidate: `Address`, total: `Compact<BalanceOf>`, index: `Compact<VoteIndex>`)
-- **summary**:   Claim that `signed` is one of the top Self::carry_count() + current_vote().1 candidates.  Only works if the `block_number >= current_vote().0` and `< current_vote().0 + presentation_duration()``  `signed` should have at least
+-  
+ Claim that `signed` is one of the top Self::carry_count() + current_vote().1 candidates.
+ 
+ Only works if the `block_number >= current_vote().0` and `< current_vote().0 + presentation_duration()``
+ 
+ `signed` should have at least
 
 ▸ **proxySetApprovals**(votes: `Vec<bool>`, index: `Compact<VoteIndex>`)
-- **summary**:   Set candidate approvals from a proxy. Approval slots stay valid as long as candidates in those slots  are registered.
+-  
+ Set candidate approvals from a proxy. Approval slots stay valid as long as candidates in those slots
+ 
+ are registered.
 
 ▸ **reapInactiveVoter**(reporter_index: `Compact<u32>`, who: `Address`, who_index: `Compact<u32>`, assumed_vote_index: `Compact<VoteIndex>`)
-- **summary**:   Remove a voter. For it not to be a bond-consuming no-op, all approved candidate indices  must now be either unregistered or registered to a candidate that registered the slot after  the voter gave their last approval set.   May be called by anyone. Returns the voter deposit to `signed`.
+-  
+ Remove a voter. For it not to be a bond-consuming no-op, all approved candidate indices
+ 
+ must now be either unregistered or registered to a candidate that registered the slot after
+ 
+ the voter gave their last approval set.
+ 
+
+ 
+ May be called by anyone. Returns the voter deposit to `signed`.
 
 ▸ **removeMember**(who: `Address`)
-- **summary**:   Remove a particular member. A tally will happen instantly (if not already in a presentation  period) to fill the seat if removal means that the desired members are not met.  This is effective immediately.
+-  
+ Remove a particular member. A tally will happen instantly (if not already in a presentation
+ 
+ period) to fill the seat if removal means that the desired members are not met.
+ 
+ This is effective immediately.
 
 ▸ **retractVoter**(index: `Compact<u32>`)
-- **summary**:   Remove a voter. All votes are cancelled and the voter deposit is returned.
+-  
+ Remove a voter. All votes are cancelled and the voter deposit is returned.
 
 ▸ **setApprovals**(votes: `Vec<bool>`, index: `Compact<VoteIndex>`)
-- **summary**:   Set candidate approvals. Approval slots stay valid as long as candidates in those slots  are registered.
+-  
+ Set candidate approvals. Approval slots stay valid as long as candidates in those slots
+ 
+ are registered.
 
 ▸ **setDesiredSeats**(count: `Compact<u32>`)
-- **summary**:   Set the desired member count; if lower than the current count, then seats will not be up  election when they expire. If more, then a new vote will be started if one is not already  in progress.
+-  
+ Set the desired member count; if lower than the current count, then seats will not be up
+ 
+ election when they expire. If more, then a new vote will be started if one is not already
+ 
+ in progress.
 
 ▸ **setPresentationDuration**(count: `Compact<BlockNumber>`)
-- **summary**:   Set the presentation duration. If there is currently a vote being presented for, will  invoke `finalize_vote`.
+-  
+ Set the presentation duration. If there is currently a vote being presented for, will
+ 
+ invoke `finalize_vote`.
 
 ▸ **setTermDuration**(count: `Compact<BlockNumber>`)
-- **summary**:   Set the presentation duration. If there is current a vote being presented for, will  invoke `finalize_vote`.
+-  
+ Set the presentation duration. If there is current a vote being presented for, will
+ 
+ invoke `finalize_vote`.
 
 ▸ **submitCandidacy**(slot: `Compact<u32>`)
-- **summary**:   Submit oneself for candidacy.   Account must have enough transferrable funds in it to pay the bond.
+-  
+ Submit oneself for candidacy.
+ 
 
+ 
+ Account must have enough transferrable funds in it to pay the bond.
+ 
 ___
-
+ <a name=councilMotions></a>
+ 
 
 ### councilMotions
 
 ▸ **propose**(threshold: `Compact<u32>`, proposal: `Proposal`)
 
 ▸ **vote**(proposal: `Hash`, index: `Compact<ProposalIndex>`, approve: `bool`)
-
+ 
 ___
-
+ <a name=councilVoting></a>
+ 
 
 ### councilVoting
 
@@ -174,155 +325,312 @@ ___
 ▸ **veto**(proposal_hash: `Hash`)
 
 ▸ **vote**(proposal: `Hash`, approve: `bool`)
-
+ 
 ___
-
+ <a name=democracy></a>
+ 
 
 ### democracy
 
 ▸ **cancelQueued**(when: `Compact<BlockNumber>`, which: `Compact<u32>`)
-- **summary**:   Cancel a proposal queued for enactment.
+-  
+ Cancel a proposal queued for enactment.
 
 ▸ **cancelReferendum**(ref_index: `Compact<ReferendumIndex>`)
-- **summary**:   Remove a referendum.
+-  
+ Remove a referendum.
 
 ▸ **delegate**(to: `AccountId`, lock_periods: `LockPeriods`)
-- **summary**:   Delegate vote.
+-  
+ Delegate vote.
 
 ▸ **propose**(proposal: `Proposal`, value: `Compact<BalanceOf>`)
-- **summary**:   Propose a sensitive action to be taken.
+-  
+ Propose a sensitive action to be taken.
 
 ▸ **proxyVote**(ref_index: `Compact<ReferendumIndex>`, vote: `Vote`)
-- **summary**:   Vote in a referendum on behalf of a stash. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo.
+-  
+ Vote in a referendum on behalf of a stash. If `vote.is_aye()`, the vote is to enact the proposal;
+ 
+ otherwise it is a vote to keep the status quo.
 
 ▸ **removeProxy**(proxy: `AccountId`)
-- **summary**:   Clear the proxy. Called by the stash.
+-  
+ Clear the proxy. Called by the stash.
 
 ▸ **resignProxy**()
-- **summary**:   Clear the proxy. Called by the proxy.
+-  
+ Clear the proxy. Called by the proxy.
 
 ▸ **second**(proposal: `Compact<PropIndex>`)
-- **summary**:   Propose a sensitive action to be taken.
+-  
+ Propose a sensitive action to be taken.
 
 ▸ **setProxy**(proxy: `AccountId`)
-- **summary**:   Specify a proxy. Called by the stash.
+-  
+ Specify a proxy. Called by the stash.
 
 ▸ **startReferendum**(proposal: `Proposal`, threshold: `VoteThreshold`, delay: `BlockNumber`)
-- **summary**:   Start a referendum.
+-  
+ Start a referendum.
 
 ▸ **undelegate**()
-- **summary**:   Undelegate vote.
+-  
+ Undelegate vote.
 
 ▸ **vote**(ref_index: `Compact<ReferendumIndex>`, vote: `Vote`)
-- **summary**:   Vote in a referendum. If `vote.is_aye()`, the vote is to enact the proposal;  otherwise it is a vote to keep the status quo.
-
+-  
+ Vote in a referendum. If `vote.is_aye()`, the vote is to enact the proposal;
+ 
+ otherwise it is a vote to keep the status quo.
+ 
 ___
-
+ <a name=genericAsset></a>
+ 
 
 ### genericAsset
 
 ▸ **burn**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Balance`)
-- **summary**:   Burns an asset, decreases its amount.  The origin should have `burn` permissions.
+-  
+ Burns an asset, decreases its amount.
+ 
+ The origin should have `burn` permissions.
 
 ▸ **create**(options: `AssetOptions`)
 
 ▸ **createReserved**(asset_id: `AssetId`, options: `AssetOptions`)
-- **summary**:   Can be used to create reserved tokens.  Requires Root call
+-  
+ Can be used to create reserved tokens.
+ 
+ Requires Root call
 
 ▸ **mint**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Balance`)
-- **summary**:   Mints an asset, increases its amount.  The origin should have `mint` permissions.
+-  
+ Mints an asset, increases its amount.
+ 
+ The origin should have `mint` permissions.
 
 ▸ **transfer**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Compact<Balance>`)
-- **summary**:   Transfer some liquid free balance to another account.
+-  
+ Transfer some liquid free balance to another account.
 
 ▸ **updatePermission**(asset_id: `Compact<AssetId>`, new_permission: `PermissionLatest`)
-- **summary**:   Updates permission for a given asset_id and an account.  The origin (account_id) should have `update` permission.
-
+-  
+ Updates permission for a given asset_id and an account.
+ 
+ The origin (account_id) should have `update` permission.
+ 
 ___
-
+ <a name=grandpa></a>
+ 
 
 ### grandpa
 
 ▸ **reportMisbehavior**(_report: `Bytes`)
-- **summary**:   Report some misbehavior.
-
+-  
+ Report some misbehavior.
+ 
 ___
-
+ <a name=session></a>
+ 
 
 ### session
 
 ▸ **forceNewSession**(apply_rewards: `bool`)
-- **summary**:   Forces a new session.
+-  
+ Forces a new session.
 
 ▸ **setKey**(key: `SessionKey`)
-- **summary**:   Sets the session key of a validator (function caller) to `key`.  This doesn't take effect until the next session.
+-  
+ Sets the session key of a validator (function caller) to `key`.
+ 
+ This doesn't take effect until the next session.
 
 ▸ **setLength**(new: `Compact<BlockNumber>`)
-- **summary**:   Set a new session length. Won't kick in until the next session change (at current length).
-
+-  
+ Set a new session length. Won't kick in until the next session change (at current length).
+ 
 ___
-
+ <a name=staking></a>
+ 
 
 ### staking
 
 ▸ **bond**(controller: `Address`, value: `Compact<BalanceOf>`, payee: `RewardDestination`)
-- **summary**:   Take the origin account as a stash and lock up `value` of its balance. `controller` will be the  account that controls it.   The dispatch origin for this call must be _Signed_ by the stash account.
+-  
+ Take the origin account as a stash and lock up `value` of its balance. `controller` will be the
+ 
+ account that controls it.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the stash account.
 
 ▸ **bondExtra**(max_additional: `Compact<BalanceOf>`)
-- **summary**:   Add some extra amount that have appeared in the stash `free_balance` into the balance up for  staking.   Use this if there are additional funds in your stash account that you wish to bond.   The dispatch origin for this call must be _Signed_ by the stash, not the controller.
+-  
+ Add some extra amount that have appeared in the stash `free_balance` into the balance up for
+ 
+ staking.
+ 
+
+ 
+ Use this if there are additional funds in your stash account that you wish to bond.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the stash, not the controller.
 
 ▸ **chill**()
-- **summary**:   Declare no desire to either validate or nominate.   Effects will be felt at the beginning of the next era.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+-  
+ Declare no desire to either validate or nominate.
+ 
+
+ 
+ Effects will be felt at the beginning of the next era.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
 
 ▸ **forceNewEra**(apply_rewards: `bool`)
-- **summary**:   Force there to be a new era. This also forces a new session immediately after.  `apply_rewards` should be true for validators to get the session reward.
+-  
+ Force there to be a new era. This also forces a new session immediately after.
+ 
+ `apply_rewards` should be true for validators to get the session reward.
 
 ▸ **nominate**(targets: `Vec<Address>`)
-- **summary**:   Declare the desire to nominate `targets` for the origin controller.   Effects will be felt at the beginning of the next era.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+-  
+ Declare the desire to nominate `targets` for the origin controller.
+ 
+
+ 
+ Effects will be felt at the beginning of the next era.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
 
 ▸ **setBondingDuration**(new: `Compact<BlockNumber>`)
-- **summary**:   The length of the bonding duration in eras.
+-  
+ The length of the bonding duration in eras.
 
 ▸ **setController**(controller: `Address`)
-- **summary**:   (Re-)set the payment target for a controller.   Effects will be felt at the beginning of the next era.   The dispatch origin for this call must be _Signed_ by the stash, not the controller.
+-  
+ (Re-)set the payment target for a controller.
+ 
+
+ 
+ Effects will be felt at the beginning of the next era.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the stash, not the controller.
 
 ▸ **setInvulnerables**(validators: `Vec<AccountId>`)
-- **summary**:   Set the validators who cannot be slashed (if any).
+-  
+ Set the validators who cannot be slashed (if any).
 
 ▸ **setOfflineSlashGrace**(new: `Compact<u32>`)
-- **summary**:   Set the offline slash grace period.
+-  
+ Set the offline slash grace period.
 
 ▸ **setPayee**(payee: `RewardDestination`)
-- **summary**:   (Re-)set the payment target for a controller.   Effects will be felt at the beginning of the next era.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+-  
+ (Re-)set the payment target for a controller.
+ 
+
+ 
+ Effects will be felt at the beginning of the next era.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
 
 ▸ **setSessionsPerEra**(new: `Compact<BlockNumber>`)
-- **summary**:   Set the number of sessions in an era.
+-  
+ Set the number of sessions in an era.
 
 ▸ **setValidatorCount**(new: `Compact<u32>`)
-- **summary**:   The ideal number of validators.
+-  
+ The ideal number of validators.
 
 ▸ **unbond**(value: `Compact<BalanceOf>`)
-- **summary**:   Schedule a portion of the stash to be unlocked ready for transfer out after the bond  period ends. If this leaves an amount actively bonded less than  T::Currency::existential_deposit(), then it is increased to the full amount.   Once the unlock period is done, you can call `withdraw_unbonded` to actually move  the funds out of management ready for transfer.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.   See also [`Call::withdraw_unbonded`].
+-  
+ Schedule a portion of the stash to be unlocked ready for transfer out after the bond
+ 
+ period ends. If this leaves an amount actively bonded less than
+ 
+ T::Currency::existential_deposit(), then it is increased to the full amount.
+ 
+
+ 
+ Once the unlock period is done, you can call `withdraw_unbonded` to actually move
+ 
+ the funds out of management ready for transfer.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+ 
+
+ 
+ See also [`Call::withdraw_unbonded`].
 
 ▸ **validate**(prefs: `ValidatorPrefs`)
-- **summary**:   Declare the desire to validate for the origin controller.   Effects will be felt at the beginning of the next era.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+-  
+ Declare the desire to validate for the origin controller.
+ 
+
+ 
+ Effects will be felt at the beginning of the next era.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
 
 ▸ **withdrawUnbonded**()
-- **summary**:   Remove any unlocked chunks from the `unlocking` queue from our management.   This essentially frees up that balance to be used by the stash account to do  whatever it wants.   The dispatch origin for this call must be _Signed_ by the controller, not the stash.   See also [`Call::unbond`].
+-  
+ Remove any unlocked chunks from the `unlocking` queue from our management.
+ 
 
+ 
+ This essentially frees up that balance to be used by the stash account to do
+ 
+ whatever it wants.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+ 
+
+ 
+ See also [`Call::unbond`].
+ 
 ___
-
+ <a name=sudo></a>
+ 
 
 ### sudo
 
 ▸ **setKey**(new: `Address`)
-- **summary**:   Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo key.   The dispatch origin for this call must be _Signed_.
+-  
+ Authenticates the current sudo key and sets the given AccountId (`new`) as the new sudo key.
+ 
+
+ 
+ The dispatch origin for this call must be _Signed_.
 
 ▸ **sudo**(proposal: `Proposal`)
-- **summary**:   Authenticates the sudo key and dispatches a function call with `Root` origin.   The dispatch origin for this call must be _Signed_.
+-  
+ Authenticates the sudo key and dispatches a function call with `Root` origin.
+ 
 
+ 
+ The dispatch origin for this call must be _Signed_.
+ 
 ___
-
+ <a name=syloE2Ee></a>
+ 
 
 ### syloE2Ee
 
@@ -331,9 +639,10 @@ ___
 ▸ **replenishPkbs**(device_id: `u32`, pkbs: `Vec<PreKeyBundle>`)
 
 ▸ **withdrawPkbs**(request_id: `Hash`, wanted_pkbs: `Vec<(AccountId,DeviceId)>`)
-
+ 
 ___
-
+ <a name=syloGroups></a>
+ 
 
 ### syloGroups
 
@@ -350,56 +659,87 @@ ___
 ▸ **updateMember**(group_id: `Hash`, meta: `Meta`)
 
 ▸ **upsertGroupMeta**(group_id: `Hash`, meta: `Meta`)
-
+ 
 ___
-
+ <a name=syloInbox></a>
+ 
 
 ### syloInbox
 
 ▸ **addValue**(peer_id: `AccountId`, value: `Bytes`)
 
 ▸ **deleteValues**(value_ids: `Vec<u32>`)
-
+ 
 ___
-
+ <a name=syloResponse></a>
+ 
 
 ### syloResponse
 
 ▸ **removeResponse**(request_id: `Hash`)
-
+ 
 ___
-
+ <a name=syloVault></a>
+ 
 
 ### syloVault
 
 ▸ **deleteValues**(keys: `Vec<VaultKey>`)
 
 ▸ **upsertValue**(key: `VaultKey`, value: `VaultValue`)
-
+ 
 ___
-
+ <a name=timestamp></a>
+ 
 
 ### timestamp
 
 ▸ **set**(now: `Compact<Moment>`)
-- **summary**:   Set the current time.   This call should be invoked exactly once per block. It will panic at the finalization phase,  if this call hasn't been invoked by that time.   The timestamp should be greater than the previous one by the amount specified by `minimum_period`.   The dispatch origin for this call must be `Inherent`.
+-  
+ Set the current time.
+ 
 
+ 
+ This call should be invoked exactly once per block. It will panic at the finalization phase,
+ 
+ if this call hasn't been invoked by that time.
+ 
+
+ 
+ The timestamp should be greater than the previous one by the amount specified by `minimum_period`.
+ 
+
+ 
+ The dispatch origin for this call must be `Inherent`.
+ 
 ___
-
+ <a name=treasury></a>
+ 
 
 ### treasury
 
 ▸ **approveProposal**(proposal_id: `Compact<ProposalIndex>`)
-- **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary  and the original deposit will be returned.
+-  
+ Approve a proposal. At a later time, the proposal will be allocated to the beneficiary
+ 
+ and the original deposit will be returned.
 
 ▸ **configure**(proposal_bond: `Compact<Permill>`, proposal_bond_minimum: `Compact<BalanceOf>`, spend_period: `Compact<BlockNumber>`, burn: `Compact<Permill>`)
-- **summary**:   (Re-)configure this module.
+-  
+ (Re-)configure this module.
 
 ▸ **proposeSpend**(value: `Compact<BalanceOf>`, beneficiary: `Address`)
-- **summary**:   Put forward a suggestion for spending. A deposit proportional to the value  is reserved and slashed if the proposal is rejected. It is returned once the  proposal is awarded.
+-  
+ Put forward a suggestion for spending. A deposit proportional to the value
+ 
+ is reserved and slashed if the proposal is rejected. It is returned once the
+ 
+ proposal is awarded.
 
 ▸ **rejectProposal**(proposal_id: `Compact<ProposalIndex>`)
-- **summary**:   Reject a proposed spend. The original deposit will be slashed.
+-  
+ Reject a proposed spend. The original deposit will be slashed.
 
 ▸ **setPot**(new_pot: `Compact<BalanceOf>`)
-- **summary**:   Set the balance of funds available to spend.
+-  
+ Set the balance of funds available to spend.
