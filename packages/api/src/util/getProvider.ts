@@ -16,13 +16,13 @@ import {assert} from '@cennznet/util';
 import {HttpProvider, WsProvider} from '@plugnet/rpc-provider';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 
-const REGEX = /^(wss?|https?|WSS?|HTTPS?):\/\//;
+const REGEX = /^(wss?|https?):\/\//;
 
 export function getProvider(providerString: string): ProviderInterface {
     const providerStringLowerCase = providerString.toLowerCase();
 
     const group = REGEX.exec(providerStringLowerCase);
-    assert(group !== null, `Missing protocol: ${providerString}`);
+    assert(group, `Missing protocol: ${providerString}`);
 
     const protocol = group[1];
 
