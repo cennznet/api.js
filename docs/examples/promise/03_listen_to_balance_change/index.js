@@ -1,13 +1,13 @@
 // @ts-check
 // Import the API
-const { ApiPromise } = require('@polkadot/api');
+const { Api } = require('@cennznet/api');
 
 // Known account we want to use (available on dev chain, with funds)
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 async function main () {
   // Create an await for the API
-  const api = await ApiPromise.create();
+  const api = await Api.create();
 
   // Retrieve the initial balance. Since the call has no callback, it is simply a promise
   // that resolves to the current on-chain value

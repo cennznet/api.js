@@ -1,10 +1,10 @@
 // @ts-check
 // Import the API
-const { ApiPromise } = require('@polkadot/api');
+const { Api } = require('@cennznet/api');
 
 async function main () {
   // Create our API with a default connection to the local node
-  const api = await ApiPromise.create();
+  const api = await Api.create();
 
   // subscribe to system events via storage
   api.query.system.events((events) => {
