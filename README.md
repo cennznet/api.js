@@ -2,7 +2,7 @@
 
 > The Cennznet JavaScript API library for browsers and Node.js.
 
-> Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_Overview.md) for more.
+Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_Overview.md) for more.
 
 # Components
 
