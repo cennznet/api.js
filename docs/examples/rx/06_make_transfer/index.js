@@ -1,6 +1,6 @@
 // Import the API, Keyring and some utility functions
-const { ApiRx } = require('@polkadot/api');
-const { Keyring } = require('@polkadot/keyring');
+const { ApiRx } = require('@cennznet/api');
+const { Keyring } = require('@cennznet/util');
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 

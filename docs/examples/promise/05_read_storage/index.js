@@ -1,13 +1,13 @@
 // @ts-check
 // Import the API
-const { ApiPromise } = require('@polkadot/api');
+const { Api } = require('@cennznet/api');
 
 // Our address for Alice on the dev chain
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 async function main () {
   // Create our API with a default connection to the local node
-  const api = await ApiPromise.create();
+  const api = await Api.create();
 
   // Make our basic chain state/storage queries, all in one go
   const [accountNonce, blockPeriod, validators] = await Promise.all([

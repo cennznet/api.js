@@ -1,12 +1,12 @@
 // @ts-check
 // Import the API & Provider and some utility functions
-const { ApiPromise } = require('@polkadot/api');
+const { Api } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
+const testKeyring = require('@plugnet/keyring/testing');
 
 // utility function for random values
-const { randomAsU8a } = require('@polkadot/util-crypto');
+const { randomAsU8a } = require('@cennznet/util');
 
 // some constants we are using in this sample
 const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
@@ -14,7 +14,7 @@ const AMOUNT = 10000;
 
 async function main () {
   // Create the API and wait until ready
-  const api = await ApiPromise.create();
+  const api = await Api.create();
 
   // create an instance of our testing keyring
   // If you're using ES6 module imports instead of require, just change this line to:

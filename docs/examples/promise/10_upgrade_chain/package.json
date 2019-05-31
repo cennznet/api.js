@@ -10,7 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@polkadot/api": "^0.53.1"
+    "@cennznet/api": "^0.13.6"
   },
   "devDependencies": {
     "rimraf": "^2.6.2"

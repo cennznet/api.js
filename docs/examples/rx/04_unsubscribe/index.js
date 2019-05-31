@@ -1,5 +1,5 @@
 // Import the API
-const { ApiRx } = require('@polkadot/api');
+const { ApiRx } = require('@cennznet/api');
 const { switchMap } = require('rxjs/operators');
 
 async function main () {

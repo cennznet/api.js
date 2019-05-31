@@ -1,9 +1,9 @@
 // @ts-check
 // Import the API & Provider and some utility functions
-const { ApiPromise, WsProvider } = require('@polkadot/api');
+const { Api, WsProvider } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
+const testKeyring = require('@plugnet/keyring/testing');
 
 const fs = require('fs');
 
@@ -12,7 +12,7 @@ async function main () {
   const provider = new WsProvider('ws://127.0.0.1:9944');
 
   // Create the API and wait until ready (optional provider passed through)
-  const api = await ApiPromise.create(provider);
+  const api = await Api.create(provider);
 
   // retrieve the upgrade key from the chain state
   const adminId = await api.query.sudo.key();
