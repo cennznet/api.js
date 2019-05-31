@@ -1,7 +1,7 @@
 // Import the API & Provider and some utility functions
 const { ApiRx, WsProvider } = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@cennznet/keyring/testing');
+const testKeyring = require('@plugnet/keyring/testing');
 const fs = require('fs');
 
 async function main () {
