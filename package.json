@@ -18,7 +18,6 @@
         "metadata-docs": "node ./scripts/MetadataMdWrapper.js"
     },
     "devDependencies": {
-        "@cennznet/conventional-changelog-preset": "^0.1.1",
         "@plugnet/dev": "^0.30.4",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
