@@ -20,12 +20,12 @@
     },
     "dependencies": {
         "@cennznet/types": "^0.13.6",
-        "@plugnet/api": "^0.78.100",
-        "@plugnet/extrinsics": "^0.78.100",
-        "@plugnet/rpc-core": "^0.78.100",
-        "@plugnet/rpc-provider": "^0.78.100",
-        "@plugnet/storage": "^0.78.100",
-        "@plugnet/types": "^0.78.100",
+        "@plugnet/api": "^0.78.103",
+        "@plugnet/extrinsics": "^0.78.103",
+        "@plugnet/rpc-core": "^0.78.103",
+        "@plugnet/rpc-provider": "^0.78.103",
+        "@plugnet/storage": "^0.78.103",
+        "@plugnet/types": "^0.78.103",
         "eventemitter3": "^3.1.0"
     },
     "peerDependencies": {
