@@ -28,12 +28,34 @@ import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
+import {getTimeout} from './util/getTimeout';
 import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 import logger from './util/logging';
 
+export const DEFAULT_TIMEOUT = 10000;
+
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
-        return (new Api(options).isReady as unknown) as Promise<Api>;
+        const api = await new Api(options);
+        return withTimeout(
+            new Promise((resolve, reject) => {
+                const rejectError = err => {
+                    // Disconnect provider if API initialization fails
+                    api.disconnect();
+
+                    reject(new Error('Connection fail'));
+                };
+
+                api.isReady.then(res => {
+                    //  Remove error listener if API initialization success.
+                    (api as any)._eventemitter.removeListener('error', rejectError);
+                    resolve((res as unknown) as Api);
+                }, reject);
+
+                api.once('error', rejectError);
+            }),
+            getTimeout(options)
+        );
     }
 
     // @ts-ignore
@@ -62,6 +84,7 @@ export class Api extends ApiPromise {
             isObject(provider) && isFunction((provider as ProviderInterface).send)
                 ? ({provider} as ApiOptions)
                 : ({...provider} as ApiOptions);
+
         if (typeof options.provider === 'string') {
             options.provider = getProvider(options.provider);
         }
@@ -83,4 +106,19 @@ export class Api extends ApiPromise {
             injectPlugins(this, plugins);
         }
     }
+}
+
+function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
+    if (timeoutMs === 0) {
+        return promise;
+    }
+
+    return Promise.race<Api>([
+        promise,
+        new Promise<Api>((_, reject) => {
+            setTimeout(() => {
+                reject(new Error(`Timed out in ${timeoutMs} ms.`));
+            }, timeoutMs);
+        }),
+    ]);
 }

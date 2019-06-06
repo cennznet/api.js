@@ -24,17 +24,36 @@ import {RxResult} from '@plugnet/api/rx/types';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
-import {Observable} from 'rxjs';
+import {fromEvent, Observable, race, throwError} from 'rxjs';
+import {switchMap, timeout} from 'rxjs/operators';
 
+import {DEFAULT_TIMEOUT} from './Api';
 import * as derives from './derives';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
+import {getTimeout} from './util/getTimeout';
 import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
-        return (new ApiRx(options).isReady as unknown) as Observable<ApiRx>;
+        const apiRx = new ApiRx(options);
+
+        const timeoutMs = getTimeout(options);
+
+        const rejectError = fromEvent((apiRx as any)._eventemitter, 'error').pipe(
+            switchMap(err => {
+                // Disconnect provider if API initialization fails
+                apiRx.disconnect();
+
+                return throwError(new Error('Connection fail'));
+            })
+        );
+        const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
+
+        return timeoutMs === 0
+            ? race(api$, rejectError)
+            : race(api$.pipe(timeout(timeoutMs === undefined ? DEFAULT_TIMEOUT : timeoutMs)), rejectError);
     }
 
     // @ts-ignore

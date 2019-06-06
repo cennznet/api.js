@@ -14,7 +14,7 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import {Metadata} from '@plugnet/types';
+import {Metadata, Hash} from '@plugnet/types';
 
 describe('e2e api create', () => {
     let api: Api;
@@ -25,7 +25,25 @@ describe('e2e api create', () => {
         expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(meta).toJSON());
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         api.disconnect();
+    });
+
+    it('should create an Api instance with the timeout option', async () => {
+        const endPoint = 'wss://rimu.unfrastructure.io/public/ws';
+        api = await Api.create({provider: endPoint, timeout: 1000000000});
+        const hash = (await api.rpc.chain.getBlockHash()) as Hash;
+
+        expect(hash).toBeDefined();
+    });
+
+    it('should get rejected if the connection fails', async () => {
+        const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
+        await expect(Api.create({provider: incorrectEndPoint})).rejects.toBeDefined();
+    });
+
+    it('should get rejected if it is not resolved in a specific period of time', async () => {
+        const endPoint = 'wss://rimu.unfrastructure.io/public/ws';
+        await expect(Api.create({provider: endPoint, timeout: 1})).rejects.toBeDefined();
     });
 });
