@@ -17,7 +17,6 @@
  */
 import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import WsProvider from '@plugnet/rpc-provider/ws';
 import {EventRecord, Hash, Vector} from '@plugnet/types';
 import {AssetOptions} from '@cennznet/types';
 import BN from 'bn.js';
@@ -33,12 +32,9 @@ const passphrase = 'passphrase';
 
 describe('e2e queries', () => {
     let api: Api;
-    let websocket: WsProvider;
 
     beforeAll(async () => {
-        const endPoint = 'wss://cennznet-node-0.centrality.me:9944';
-        websocket = new WsProvider(endPoint);
-        api = await Api.create({provider: websocket});
+        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -48,8 +44,7 @@ describe('e2e queries', () => {
     });
 
     afterAll(async () => {
-        (websocket as any).websocket.onclose = null;
-        (websocket as any).websocket.close();
+        api.disconnect();
     });
 
     describe('Query storage using at', () => {

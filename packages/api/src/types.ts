@@ -18,7 +18,8 @@ import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {AccountId, Address} from '@plugnet/types';
-import {Constructor, RegistryTypes} from '@plugnet/types/types';
+import {MethodFunction} from '@plugnet/types/primitive/Method';
+import {CodecArg, Constructor, RegistryTypes} from '@plugnet/types/types';
 import BN from 'bn.js';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
@@ -45,4 +46,17 @@ export interface IPlugin {
     sdkRxClass?: Constructor<any>;
     types?: RegistryTypes;
     derives?: DeriveCustom;
+}
+
+// override types in @plugnet/api to return ICennznetExtrinsic
+export interface SubmittableExtrinsicFunction<CodecResult, SubscriptionResult>
+    extends Pick<MethodFunction, 'callIndex' | 'meta' | 'method' | 'section' | 'toJSON'> {
+    (...params: Array<CodecArg>): ICennznetExtrinsic<CodecResult, SubscriptionResult>;
+}
+
+export interface SubmittableModuleExtrinsics<CodecResult, SubscriptionResult> {
+    [index: string]: SubmittableExtrinsicFunction<CodecResult, SubscriptionResult>;
+}
+export interface SubmittableExtrinsics<CodecResult, SubscriptionResult> {
+    [index: string]: SubmittableModuleExtrinsics<CodecResult, SubscriptionResult>;
 }

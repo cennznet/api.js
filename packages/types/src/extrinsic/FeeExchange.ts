@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Compact, getTypeRegistry, Option, Struct} from '@plugnet/types';
+import {Balance, Compact, getTypeRegistry, Struct} from '@plugnet/types';
+import AssetId from '../runtime/ga/AssetId';
 
 export default class FeeExchange extends Struct {
     constructor(value?: any) {
@@ -21,6 +22,12 @@ export default class FeeExchange extends Struct {
         const Balance = typeRegistry.getOrThrow('Balance') as any;
         super({assetId: Compact.with(AssetId), maxPayment: Compact.with(Balance)}, value);
     }
-}
 
-export class OptionalFeeExchange extends Option.with(FeeExchange) {}
+    get assetId(): AssetId {
+        return this.get('assetId') as AssetId;
+    }
+
+    get maxPayment(): Balance {
+        return this.get('maxPayment') as AssetId;
+    }
+}

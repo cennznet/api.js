@@ -13,24 +13,19 @@
 // limitations under the License.
 
 import {Api} from '../../src/Api';
-import WsProvider from '@plugnet/rpc-provider/ws';
 import {Hash, Block, HeaderExtended, AccountId, EventRecord, Option, BlockNumber} from '@plugnet/types';
 import {Fee} from '@cennznet/types';
 
 describe('e2e api calls', () => {
     let api: Api;
-    let websocket: WsProvider;
     let blockHash: Hash;
     beforeAll(async () => {
-        const endPoint = 'wss://cennznet-node-0.centrality.me:9944';
-        websocket = new WsProvider(endPoint);
-        api = await Api.create({provider: websocket});
+        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
         blockHash = (await api.rpc.chain.getBlockHash()) as Hash;
     });
 
     afterAll(async () => {
-        (websocket as any).websocket.onclose = null;
-        (websocket as any).websocket.close();
+        api.disconnect();
     });
 
     it('get correct block', async () => {

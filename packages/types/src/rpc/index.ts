@@ -12,8 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './runtime';
-export * from './extrinsic';
-
-// override Block to use our own Extrinsic Impl
-export * from './rpc';
+export {default as Block} from './Block';
+export {default as SignedBlock} from './SignedBlock';

@@ -13,16 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import FeeExchange, {OptionalFeeExchange} from '@cennznet/types/extrinsic/FeeExchange';
+import {assert, blake2AsU8a} from '@cennznet/util';
 import {KeyringPair} from '@plugnet/keyring/types';
-import {Address, Compact, Hash, Method, Option, Signature, Struct} from '@plugnet/types';
+import {Address, Compact, Hash, Method, Signature, Struct} from '@plugnet/types';
+import {FunctionMetadata} from '@plugnet/types/Metadata/v0/Modules';
 import {AnyNumber, AnyU8a, ArgsDef, Codec, IExtrinsic, SignatureOptions} from '@plugnet/types/types';
 import {isHex, isU8a, u8aToHex, u8aToU8a} from '@plugnet/util';
-
-import {assert, blake2AsU8a} from '@cennznet/util';
-import {FunctionMetadata} from '@plugnet/types/Metadata/v0/Modules';
-import {Certificate, Doughnut, OptionalDoughnut} from './Doughnut';
+import {Certificate, Doughnut} from './Doughnut';
 import ExtrinsicSignature, {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
+import FeeExchange from './FeeExchange';
 
 type ExtrinsicValue = {
     method?: Method;
@@ -60,7 +59,7 @@ export default class Extrinsic extends Struct implements IExtrinsic {
     }
 
     static decodeExtrinsic(
-        value: ExtrinsicValue | AnyU8a | Method
+        value: ExtrinsicValue | AnyU8a | Method = new Uint8Array()
     ): [any, ExtrinsicValue | Array<number> | Uint8Array] {
         const defaultDef = {
             signature: ExtrinsicSignature,
@@ -85,10 +84,10 @@ export default class Extrinsic extends Struct implements IExtrinsic {
             const [version] = arr;
             const definition: any = {...defaultDef};
             if (checkDoughnut(version)) {
-                definition.doughnut = OptionalDoughnut;
+                definition.doughnut = Doughnut;
             }
             if (checkFeeExchange(version)) {
-                definition.feeExchange = OptionalFeeExchange;
+                definition.feeExchange = FeeExchange;
             }
             return [definition, arr];
         } else if (value instanceof Method) {
@@ -102,10 +101,10 @@ export default class Extrinsic extends Struct implements IExtrinsic {
 
         const definition: any = {...defaultDef};
         if (value.doughnut) {
-            definition.doughnut = OptionalDoughnut;
+            definition.doughnut = Doughnut;
         }
         if (value.feeExchange) {
-            definition.feeExchange = OptionalFeeExchange;
+            definition.feeExchange = FeeExchange;
         }
         return [definition, value];
     }
@@ -196,18 +195,23 @@ export default class Extrinsic extends Struct implements IExtrinsic {
         return this.get('signature') as ExtrinsicSignature;
     }
 
-    get doughnut(): Option<Doughnut> {
-        return (this.get('doughnut') || new OptionalDoughnut()) as Option<Doughnut>;
+    get doughnut(): Doughnut | undefined {
+        return this.get('doughnut') as Doughnut;
     }
 
-    get feeExchange(): Option<FeeExchange> {
-        return (this.get('feeExchange') || new OptionalFeeExchange()) as Option<FeeExchange>;
+    get feeExchange(): FeeExchange | undefined {
+        return this.get('feeExchange') as FeeExchange;
     }
 
     /**
      * @description Add an [[ExtrinsicSignature]] to the extrinsic (already generated)
      */
-    addSignature(signer: Address | Uint8Array, signature: Uint8Array, nonce: AnyNumber, era?: Uint8Array): Extrinsic {
+    addSignature(
+        signer: Address | Uint8Array | string,
+        signature: Uint8Array,
+        nonce: AnyNumber,
+        era?: Uint8Array
+    ): Extrinsic {
         this.signature.addSignature(signer, signature, nonce, era);
 
         return this;
@@ -218,7 +222,7 @@ export default class Extrinsic extends Struct implements IExtrinsic {
      */
     addDoughnut(doughnut: DoughnutValue): Extrinsic {
         assert(doughnut, 'doughnut is empty');
-        this.set('doughnut', new OptionalDoughnut(doughnut));
+        this.set('doughnut', new Doughnut(doughnut));
         this.signature.withDoughnut();
         return this;
     }
@@ -228,7 +232,7 @@ export default class Extrinsic extends Struct implements IExtrinsic {
      */
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): Extrinsic {
         assert(feeExchangeOpt, 'feeExchangeOpt is empty');
-        this.set('feeExchange', new OptionalFeeExchange(feeExchangeOpt));
+        this.set('feeExchange', new FeeExchange(feeExchangeOpt));
         this.signature.withFeeExchange();
         return this;
     }
@@ -256,6 +260,14 @@ export default class Extrinsic extends Struct implements IExtrinsic {
         return this.toHex();
     }
 
+    /**
+     * @description Returns the base runtime type name for this instance
+     */
+    toRawType(): string {
+        // We are treating this in the same way we do a primitive, this is known
+        return 'Extrinsic';
+    }
+
     toPlain(): any {
         return super.toJSON();
     }
@@ -263,17 +275,17 @@ export default class Extrinsic extends Struct implements IExtrinsic {
     toArray(): Array<Codec> {
         const arr: Codec[] = [this.signature];
         arr.push(this.method);
-        if (this.doughnut.isSome) {
-            arr.push(this.doughnut.unwrap());
+        if (this.doughnut) {
+            arr.push(this.doughnut);
         }
-        if (this.feeExchange.isSome) {
-            arr.push(this.feeExchange.unwrap());
+        if (this.feeExchange) {
+            arr.push(this.feeExchange);
         }
         return arr;
     }
 
     /**
-     * @description Encodes the value as a Uint8Array as per the parity-codec specifications
+     * @description Encodes the value as a Uint8Array as per the SCALE specifications
      * @param isBare true when the value has none of the type-specific prefixes (internal)
      */
     toU8a(isBare?: boolean): Uint8Array {
