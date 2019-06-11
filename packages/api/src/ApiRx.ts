@@ -33,18 +33,26 @@ const Types = require('@cennznet/types');
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
-        return new ApiRx(options).isReady;
+        return new ApiRx(options).isReady as Observable<ApiRx>;
     }
 
     // TODO: add other crml namespaces
+
     /**
      * Generic Asset CRML extention
      */
-    genericAsset?: GenericAssetRx;
+    get genericAsset(): GenericAssetRx {
+        // `injectPlugins` will override this getter.
+        throw new Error('Generic Asset plugin has not been injected.');
+    }
+
     /**
      * Cennzx Spot CRML extention
      */
-    cennzxSpot?: CennzxSpotRx;
+    get cennzxSpot(): CennzxSpotRx {
+        // `injectPlugins` will override this getter.
+        throw new Error('Cennzx Spot plugin has not been injected.');
+    }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =
