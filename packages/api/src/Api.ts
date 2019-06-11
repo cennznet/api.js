@@ -33,18 +33,43 @@ const Types = require('@cennznet/types');
 
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
-        return new Api(options).isReady;
+        return new Api(options).isReady as Promise<Api>;
     }
 
     // TODO: add other crml namespaces
+    
+    private _genericAsset?: GenericAsset;
+    private _cennzxSpot?: CennzxSpot;
+
     /**
      * Generic Asset CRML extention
      */
-    genericAsset?: GenericAsset;
+    get genericAsset(): GenericAsset {
+        if (!this._genericAsset) {
+            throw new Error('Generic Asset plugin has not been injected.');
+        }
+
+        return this._genericAsset;
+    }
+
+    set genericAsset(value: GenericAsset) {
+        this._genericAsset = value;
+    }
+
     /**
      * Cennzx Spot CRML extention
      */
-    cennzxSpot?: CennzxSpot;
+    get cennzxSpot(): CennzxSpot {
+        if (!this._cennzxSpot) {
+            throw new Error('Cennzx Spot plugin has not been injected.');
+        }
+
+        return this._cennzxSpot;
+    }
+
+    set cennzxSpot(value: CennzxSpot) {
+        this._cennzxSpot = value;
+    }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =
