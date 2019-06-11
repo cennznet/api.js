@@ -37,38 +37,21 @@ export class Api extends ApiPromise {
     }
 
     // TODO: add other crml namespaces
-    
-    private _genericAsset?: GenericAsset;
-    private _cennzxSpot?: CennzxSpot;
 
     /**
      * Generic Asset CRML extention
      */
     get genericAsset(): GenericAsset {
-        if (!this._genericAsset) {
-            throw new Error('Generic Asset plugin has not been injected.');
-        }
-
-        return this._genericAsset;
-    }
-
-    set genericAsset(value: GenericAsset) {
-        this._genericAsset = value;
+        // `injectPlugins` will override this getter.
+        throw new Error('Generic Asset plugin has not been injected.');
     }
 
     /**
      * Cennzx Spot CRML extention
      */
     get cennzxSpot(): CennzxSpot {
-        if (!this._cennzxSpot) {
-            throw new Error('Cennzx Spot plugin has not been injected.');
-        }
-
-        return this._cennzxSpot;
-    }
-
-    set cennzxSpot(value: CennzxSpot) {
-        this._cennzxSpot = value;
+        // `injectPlugins` will override this getter.
+        throw new Error('Cennzx Spot plugin has not been injected.');
     }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {

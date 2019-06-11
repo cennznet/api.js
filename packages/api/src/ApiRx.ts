@@ -37,38 +37,21 @@ export class ApiRx extends ApiRxBase {
     }
 
     // TODO: add other crml namespaces
-    
-    private _genericAsset?: GenericAssetRx;
-    private _cennzxSpot?: CennzxSpotRx;
 
     /**
      * Generic Asset CRML extention
      */
     get genericAsset(): GenericAssetRx {
-        if (!this._genericAsset) {
-            throw new Error('Generic Asset plugin has not been injected.');
-        }
-
-        return this._genericAsset;
-    }
-
-    set genericAsset(value: GenericAssetRx) {
-        this._genericAsset = value;
+        // `injectPlugins` will override this getter.
+        throw new Error('Generic Asset plugin has not been injected.');
     }
 
     /**
      * Cennzx Spot CRML extention
      */
     get cennzxSpot(): CennzxSpotRx {
-        if (!this._cennzxSpot) {
-            throw new Error('Cennzx Spot plugin has not been injected.');
-        }
-
-        return this._cennzxSpot;
-    }
-
-    set cennzxSpot(value: CennzxSpotRx) {
-        this._cennzxSpot = value;
+        // `injectPlugins` will override this getter.
+        throw new Error('Cennzx Spot plugin has not been injected.');
     }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {
