@@ -15,8 +15,10 @@
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
+import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
+import {CodecResult, SubscriptionResult} from '@plugnet/api/promise/types';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
@@ -24,17 +26,18 @@ import {isFunction, isObject} from '@plugnet/util';
 import * as derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, IPlugin} from './types';
+import {ApiOptions, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
 import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 import logger from './util/logging';
 
-const Types = require('@cennznet/types');
-
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
-        return new Api(options).isReady as Promise<Api>;
+        return (new Api(options).isReady as unknown) as Promise<Api>;
     }
+
+    // @ts-ignore
+    get tx(): SubmittableExtrinsics<CodecResult, SubscriptionResult>;
 
     // TODO: add other crml namespaces
 

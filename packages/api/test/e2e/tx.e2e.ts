@@ -17,13 +17,10 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {SubmittableResult} from '@plugnet/api';
-import {stringToU8a} from '@plugnet/util';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {Api} from '../../src/Api';
-import WsProvider from '@plugnet/rpc-provider/ws';
 import {AssetId, AssetOptions} from '@cennznet/types';
-import process from 'process';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -36,12 +33,9 @@ const passphrase = 'passphrase';
 
 describe('e2e transactions', () => {
     let api;
-    let websocket: WsProvider;
 
     beforeAll(async () => {
-        const endPoint = 'wss://cennznet-node-0.centrality.me:9944';
-        websocket = new WsProvider(endPoint);
-        api = await Api.create({provider: websocket});
+        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -51,8 +45,7 @@ describe('e2e transactions', () => {
     });
 
     afterAll(async () => {
-        (websocket as any).websocket.onclose = null;
-        (websocket as any).websocket.close();
+        api.disconnect();
     });
 
     describe('Send()', () => {

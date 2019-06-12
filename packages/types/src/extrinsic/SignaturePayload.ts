@@ -15,14 +15,14 @@
 
 /* tslint:disable no-magic-numbers */
 
-import FeeExchange, {OptionalFeeExchange} from '@cennznet/types/extrinsic/FeeExchange';
+import FeeExchange from '@cennznet/types/extrinsic/FeeExchange';
 import {KeyringPair} from '@plugnet/keyring/types';
-import {ExtrinsicEra, Hash, Method, Option, RuntimeVersion, Struct} from '@plugnet/types';
+import {ExtrinsicEra, Hash, Method, RuntimeVersion, Struct} from '@plugnet/types';
 import Nonce from '@plugnet/types/type/NonceCompact';
 import {AnyNumber, AnyU8a, Codec} from '@plugnet/types/types';
 import {blake2AsU8a} from '@plugnet/util-crypto';
 
-import {Doughnut, OptionalDoughnut} from './Doughnut';
+import {Doughnut} from './Doughnut';
 import {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
 
 type SignaturePayloadValue = {
@@ -30,8 +30,8 @@ type SignaturePayloadValue = {
     method?: Method;
     era?: AnyU8a | ExtrinsicEra;
     blockHash?: AnyU8a;
-    doughnut?: Option<Doughnut>;
-    feeExchange?: Option<FeeExchange>;
+    doughnut?: Doughnut;
+    feeExchange?: FeeExchange;
 };
 
 /**
@@ -56,8 +56,8 @@ export default class SignaturePayload extends Struct {
                 method: Method,
                 era: ExtrinsicEra,
                 blockHash: Hash,
-                doughnut: OptionalDoughnut,
-                feeExchange: OptionalFeeExchange,
+                doughnut: Doughnut,
+                feeExchange: FeeExchange,
             },
             value
         );
@@ -109,12 +109,12 @@ export default class SignaturePayload extends Struct {
         return this._signature as Uint8Array;
     }
 
-    get doughnut(): Option<Doughnut> {
-        return this.get('doughnut') as Option<Doughnut>;
+    get doughnut(): Doughnut {
+        return this.get('doughnut') as Doughnut;
     }
 
-    get feeExchange(): Option<FeeExchange> {
-        return this.get('feeExchange') as Option<FeeExchange>;
+    get feeExchange(): FeeExchange {
+        return this.get('feeExchange') as FeeExchange;
     }
 
     get extrinsicVersion(): number {
@@ -128,10 +128,10 @@ export default class SignaturePayload extends Struct {
     toArray(): Array<Codec> {
         const arr: Codec[] = [this.nonce, this.method, this.era, this.blockHash];
         if (checkDoughnut(this.extrinsicVersion)) {
-            arr.push(this.doughnut.unwrap());
+            arr.push(this.doughnut);
         }
         if (checkFeeExchange(this.extrinsicVersion)) {
-            arr.push(this.feeExchange.unwrap());
+            arr.push(this.feeExchange);
         }
         return arr;
     }

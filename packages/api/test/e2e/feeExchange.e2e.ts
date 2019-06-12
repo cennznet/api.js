@@ -15,42 +15,14 @@
 import testingPairs from '@plugnet/keyring/testingPairs';
 
 import {Api} from '../../src/Api';
-import {ICennznetExtrinsic} from '../../src/types';
 
-import {getTypeRegistry} from '@cennznet/types/polkadot';
-import BN from 'bn.js';
-
-const typeRegistry = getTypeRegistry();
-
-typeRegistry.register({
-    AssetId: 'u32',
-    AssetOptions: {total_supply: 'Balance'},
-    Group: 'u256',
-    Meta: 'u256',
-    PKB: 'u256',
-    Response: 'u256',
-    Topic: 'u256',
-    Value: 'u256',
-    Amount: 'u256',
-    AcceptPayload: 'u256',
-    DeviceId: 'u256',
-    ExchangeKey: 'u256',
-    Invite: 'u256',
-    PermissionOptions: 'u256',
-    PreKeyBundle: 'u256',
-    BalanceLock: 'u256',
-    Exposure: 'u256',
-    RewardDestination: 'u256',
-    StakingLedger: 'u256',
-});
-
-describe.skip('sending test doughnut', () => {
-    let api;
+describe('feeExchange for CennznetExtrinsic', () => {
+    let api: Api;
     let keyring;
 
     beforeEach(async () => {
         if (!api) {
-            api = await Api.create();
+            api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
             keyring = testingPairs({type: 'sr25519'});
         }
     });
@@ -60,18 +32,15 @@ describe.skip('sending test doughnut', () => {
     });
 
     it('makes a transfer (sign, then send)', async done => {
-        const nonce = await api.query.system.accountNonce(keyring.dave.address());
+        const tradeAssetId = 17008;
+        const trader = keyring.bob;
 
-        const tx = api.tx.genericAsset.transfer(16000, keyring.bob.address(), 10000) as ICennznetExtrinsic<
-            Promise<BN>,
-            {}
-        >;
+        const tx = api.tx.genericAsset.transfer(16000, trader.address(), 10000);
         tx.addFeeExchangeOpt({
-            assetId: 16000,
-            maxPayment: 50000,
+            assetId: tradeAssetId,
+            maxPayment: '50000000000000000',
         });
-        tx.sign(keyring.dave, {nonce});
-        return tx.send(({events, status}) => {
+        return tx.signAndSend(trader, ({events, status}) => {
             console.log('Transaction status:', status.type);
             if (status.isFinalized) {
                 console.log('Completed at block hash', status.value.toHex());

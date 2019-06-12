@@ -17,24 +17,28 @@ import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
+import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
+import {RxResult} from '@plugnet/api/rx/types';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
-
 import {Observable} from 'rxjs';
+
 import * as derives from './derives';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, IPlugin} from './types';
+import {ApiOptions, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
 import logger from './util/logging';
-const Types = require('@cennznet/types');
 
 export class ApiRx extends ApiRxBase {
     static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
-        return new ApiRx(options).isReady as Observable<ApiRx>;
+        return (new ApiRx(options).isReady as unknown) as Observable<ApiRx>;
     }
+
+    // @ts-ignore
+    get tx(): SubmittableExtrinsics<RxResult, RxResult>;
 
     // TODO: add other crml namespaces
 

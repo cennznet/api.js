@@ -18,10 +18,8 @@
 import {Hash} from '@plugnet/types';
 import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import WsProvider from '@plugnet/rpc-provider/ws';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import process from 'process';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -34,11 +32,8 @@ const passphrase = 'passphrase';
 
 describe('e2e queries', () => {
     let api: ApiRx;
-    let websocket: WsProvider;
     beforeAll(async () => {
-        const endPoint = process.argv[process.argv.length - 1];
-        websocket = new WsProvider(endPoint);
-        api = await ApiRx.create({provider: websocket}).toPromise();
+        api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -48,8 +43,7 @@ describe('e2e queries', () => {
     });
 
     afterAll(async () => {
-        (websocket as any).websocket.onclose = null;
-        (websocket as any).websocket.close();
+        api.disconnect();
     });
 
     describe('Query storage using at', () => {

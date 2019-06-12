@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AccountId, Option, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@plugnet/types';
+import {AccountId, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@plugnet/types';
 
 export class Certificate extends Struct {
     constructor(value?: any) {
@@ -41,5 +41,3 @@ export class Doughnut extends Struct {
         );
     }
 }
-
-export class OptionalDoughnut extends Option.with(Doughnut) {}
