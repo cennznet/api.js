@@ -15,11 +15,11 @@
 
 import {assert, blake2AsU8a} from '@cennznet/util';
 import {KeyringPair} from '@plugnet/keyring/types';
-import {Address, Compact, Hash, Method, Signature, Struct} from '@plugnet/types';
+import {Address, Compact, Hash, Method, Struct} from '@plugnet/types';
 import {FunctionMetadata} from '@plugnet/types/Metadata/v0/Modules';
 import {AnyNumber, AnyU8a, ArgsDef, Codec, IExtrinsic, SignatureOptions} from '@plugnet/types/types';
 import {isHex, isU8a, u8aToHex, u8aToU8a} from '@plugnet/util';
-import {Certificate, Doughnut} from './Doughnut';
+import {Doughnut} from './Doughnut';
 import ExtrinsicSignature, {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
 import FeeExchange from './FeeExchange';
 
@@ -33,11 +33,6 @@ type ExtrinsicValue = {
 export type FeeExchangeValue = {
     assetId: AnyNumber;
     maxPayment: AnyNumber;
-};
-
-export type DoughnutValue = {
-    certificate: Certificate;
-    signature: Signature;
 };
 
 // tslint:disable member-ordering no-magic-numbers
@@ -218,11 +213,12 @@ export default class Extrinsic extends Struct implements IExtrinsic {
     }
 
     /**
-     * @description append doughnut to Extrinsic
+     * @description Sign and attach a doughnut to the Extrinsic
+     * @param doughnut An unsigned Doughnut
      */
-    addDoughnut(doughnut: DoughnutValue): Extrinsic {
+    addDoughnut(doughnut: Doughnut): Extrinsic {
         assert(doughnut, 'doughnut is empty');
-        this.set('doughnut', new Doughnut(doughnut));
+        this.set('doughnut', doughnut);
         this.signature.withDoughnut();
         return this;
     }

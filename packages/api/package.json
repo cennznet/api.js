@@ -41,6 +41,7 @@
         "ts-mockito": "^2.3.1",
         "typedoc": "^0.13.0",
         "typedoc-plugin-markdown": "^1.1.19",
-        "typescript": "^3.4.5"
+        "typescript": "^3.4.5",
+        "cennznut.js": "github:cennznet/cennznut.js#v1.0.0"
     }
 }

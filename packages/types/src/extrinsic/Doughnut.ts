@@ -12,32 +12,73 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AccountId, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@plugnet/types';
+import {u8aToHex} from '@plugnet/util';
 
-export class Certificate extends Struct {
-    constructor(value?: any) {
-        super(
-            {
-                expires: U64,
-                version: U32,
-                holder: AccountId,
-                notBefore: U64,
-                permissions: Vector.with(Tuple.with([Text, Text])),
-                issuer: AccountId,
-            },
-            value
-        );
+/**
+ * An encoded, signed v0 Doughnut certificate
+ *
+ * Doughnut has its own binary codec. We hide this behind the parity codec interface
+ * to support integration as an extrinsic data/field.
+ *
+ **/
+export class Doughnut extends Uint8Array {
+    /**
+     * @description The length of the value when encoded as a Uint8Array
+     */
+    get isEmpty(): boolean {
+        return this.encodedLength == 0;
     }
-}
 
-export class Doughnut extends Struct {
-    constructor(value?: any) {
-        super(
-            {
-                certificate: Certificate,
-                signature: Signature,
-            },
-            value
-        );
+    /**
+     * @description Decode a Doughnut from a Uint8Array
+     * @param encoded A doughnut in v0 binary format, fails otherwise
+     */
+    decode(encoded: Uint8Array): Doughnut | undefined {
+        return encoded as Doughnut;
+    }
+
+    /**
+     * @description The length of the value when encoded as a Uint8Array
+     */
+    get encodedLength(): number {
+        return this.length;
+    }
+
+    /**
+     * @description Returns a hex string representation of the value
+     */
+    toHex(): string {
+        return u8aToHex(this);
+    }
+
+    /**
+     * @description Encodes the value as a Uint8Array as per the parity-codec specifications
+     * @param isBare true when the value has none of the type-specific prefixes (internal)
+     */
+    toU8a(isBare?: boolean): Uint8Array {
+        return this as Uint8Array;
+    }
+
+    /**
+     * @description Converts the Object to JSON, typically used for RPC transfers
+     */
+    toJSON(): any {
+        return this.values();
+    }
+
+    /**
+     * @description Returns the string representation of the value
+     */
+    toString(): string {
+        return this.toHex();
+    }
+
+    /**
+     * @description Compares the value of the input to see if there is a match
+     */
+    eq(other?: any): boolean {
+        // TODO: This is just to satisfy the interface.
+        // Expecting feedback on correct implementation in PR review
+        return Object.is(this, other);
     }
 }

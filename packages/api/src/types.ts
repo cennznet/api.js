@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
+import {Doughnut} from '@cennznet/types/extrinsic/Doughnut';
+import {FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
 import {DeriveCustom} from '@plugnet/api-derive';
 import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
@@ -36,7 +37,7 @@ export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array |
 
 export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
     extends SubmittableExtrinsic<CodecResult, SubscriptionResult> {
-    addDoughnut(doughnut: DoughnutValue): this;
+    addDoughnut(doughnut: Doughnut): this;
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
 }
 
