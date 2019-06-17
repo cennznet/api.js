@@ -8,28 +8,8 @@ cache:
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin::$(yarn global bin):$(yarn global dir):$PATH
-
-  - pwd
-  - ls -a
-  - git status
-
-  - git init
-
-  - pwd
-  - ls -a
-  - git status
-
   - yarn add @plugnet/dev@latest -W
-  
-  - pwd
-  - ls -a
-  - git status
-
   - git reset --hard
-  
-  - pwd
-  - ls
-  - git status
 script:
   - yarn plugnet-dev-travis-build
 branches:
