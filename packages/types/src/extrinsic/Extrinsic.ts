@@ -16,7 +16,7 @@
 import {assert, blake2AsU8a} from '@cennznet/util';
 import {KeyringPair} from '@plugnet/keyring/types';
 import {Address, Compact, Hash, Method, Signature, Struct} from '@plugnet/types';
-import {FunctionMetadata} from '@plugnet/types/Metadata/v0/Modules';
+import {FunctionMetadata} from '@plugnet/types/Metadata/v5/Calls';
 import {AnyNumber, AnyU8a, ArgsDef, Codec, IExtrinsic, SignatureOptions} from '@plugnet/types/types';
 import {isHex, isU8a, u8aToHex, u8aToU8a} from '@plugnet/util';
 import {Certificate, Doughnut} from './Doughnut';

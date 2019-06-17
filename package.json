@@ -18,7 +18,7 @@
         "metadata-docs": "node ./scripts/MetadataMdWrapper.js"
     },
     "devDependencies": {
-        "@plugnet/dev": "^0.30.4",
+        "@plugnet/dev": "^0.30.5",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",

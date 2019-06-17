@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Api} from '../../src/Api';
-import {Hash, Block, HeaderExtended, AccountId, EventRecord, Option, BlockNumber} from '@plugnet/types';
+import {Hash, Block, AccountId, EventRecord, Option, BlockNumber} from '@plugnet/types';
+import {HeaderExtended} from '@plugnet/api-derive';
 import {Fee} from '@cennznet/types';
+
+import {Api} from '../../src/Api';
 
 describe('e2e api calls', () => {
     let api: Api;

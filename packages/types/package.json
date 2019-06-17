@@ -19,12 +19,12 @@
     },
     "dependencies": {
         "@cennznet/util": "^0.13.7",
-        "@plugnet/types": "^0.78.103",
-        "@plugnet/util": "^0.90.100"
+        "@plugnet/types": "^0.81.100",
+        "@plugnet/util": "^0.93.100"
     },
     "devDependencies": {
-        "@plugnet/api": "^0.78.103",
-        "@plugnet/rpc-provider": "^0.78.103",
+        "@plugnet/api": "^0.81.100",
+        "@plugnet/rpc-provider": "^0.81.100",
         "typescript": "^3.4.5"
     }
 }

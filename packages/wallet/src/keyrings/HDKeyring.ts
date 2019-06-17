@@ -82,11 +82,11 @@ export class HDKeyring implements IKeyring<SerializedHDKeyring> {
     }
 
     async getAddresses(): Promise<string[]> {
-        return this.pairs.map(kp => kp.address());
+        return this.pairs.map(kp => kp.address);
     }
 
     async getPair(address: string): Promise<KeyringPair> {
-        const pair = this.pairs.find(kp => kp.address() === address);
+        const pair = this.pairs.find(kp => kp.address === address);
         if (!pair) {
             throw new Error(`Unable to retrieve keypair ${address}`);
         }

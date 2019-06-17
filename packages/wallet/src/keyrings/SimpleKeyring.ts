@@ -53,7 +53,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
         if (pair === undefined) {
             return this._keyring.addFromMnemonic(generateMnemonic());
         } else {
-            if (pair.isLocked()) {
+            if (pair.isLocked) {
                 throw new Error('key pair is locked. unlock before add it into wallet');
             }
             return this._keyring.addPair(pair);
@@ -61,7 +61,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     }
 
     async getAddresses(): Promise<string[]> {
-        return this._keyring.getPairs().map(kp => kp.address());
+        return this._keyring.getPairs().map(kp => kp.address);
     }
 
     async getPair(address: string): Promise<KeyringPair> {

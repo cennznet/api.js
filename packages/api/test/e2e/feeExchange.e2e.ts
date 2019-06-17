@@ -35,7 +35,7 @@ describe('feeExchange for CennznetExtrinsic', () => {
         const tradeAssetId = 17008;
         const trader = keyring.bob;
 
-        const tx = api.tx.genericAsset.transfer(16000, trader.address(), 10000);
+        const tx = api.tx.genericAsset.transfer(16000, trader.address, 10000);
         tx.addFeeExchangeOpt({
             assetId: tradeAssetId,
             maxPayment: '50000000000000000',
