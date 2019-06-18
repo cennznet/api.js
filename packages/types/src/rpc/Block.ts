@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 // tslint:disable no-magic-numbers
-import {HeaderValue} from '@plugnet/types/type/Header';
+import {HeaderValue} from '@plugnet/types/rpc/Header';
 import {blake2AsU8a} from '@plugnet/util-crypto';
 import Extrinsics from '../extrinsic/Extrinsics';
 import {Hash, Header, Struct} from '../polkadot';

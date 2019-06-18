@@ -15,7 +15,7 @@
 import {EnumType} from '@plugnet/types';
 import PermissionsV1 from './PermissionsV1';
 
-export default class PermissionVersions extends EnumType<PermissionsV1> {
+export default class PermissionVersions extends EnumType {
     constructor(values: any) {
         super({PermissionsV1}, values);
     }
