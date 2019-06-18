@@ -6,11 +6,11 @@ import Extrinsic from './Extrinsic';
 import * as types from '../index';
 
 const typeRegistry = getDefaultRegistry();
-typeRegistry.register(types);
+typeRegistry.register(types as any);
 
 describe('CennznetExtrinsic', () => {
     const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[1]]);
-    Method.injectMethods(fromMetadata(metadata.asV0));
+    Method.injectMethods(fromMetadata(metadata));
     typeRegistry;
 
     it('decode extrinsic with feeExchange', () => {
