@@ -54,8 +54,8 @@ class MemberRole extends Null {
     }
 }
 
-export class MemberRoles extends EnumType<AdminRole | MemberRole> {
-    constructor(value?: any, index?: number | EnumType<AdminRole | MemberRole>) {
+export class MemberRoles extends EnumType {
+    constructor(value?: any, index?: number | EnumType) {
         super([AdminRole, MemberRole] as any, value, index);
     }
 
@@ -130,7 +130,7 @@ class WithdrawnPreKeyBundle extends Tuple.with([AccountId, U32, Bytes]) {
     }
 }
 class PreKeyBundlesResponse extends Vector.with(WithdrawnPreKeyBundle) {}
-export class Response extends EnumType<DeviceIdResponse | PreKeyBundlesResponse> {
+export class Response extends EnumType {
     constructor(value, index) {
         super([DeviceIdResponse, PreKeyBundlesResponse] as any, value, index);
     }

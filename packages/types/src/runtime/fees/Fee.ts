@@ -24,7 +24,7 @@ const feesFeeIndex = 1;
  * @description
  * Custom `Fee` type
  */
-export default class Fee extends EnumType<GenericAssetFee | FeesFee> {
+export default class Fee extends EnumType {
     static GenericAssetFee = {
         TransferFee: new Fee(GenericAssetFee.Transfer, genericAssetFeeIndex),
     };

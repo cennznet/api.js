@@ -37,12 +37,48 @@ export function checkDoughnut(version: number): boolean {
 export function checkFeeExchange(version: number): boolean {
     return (version & BIT_FEE_EXCHANGE) > 0;
 }
+
 /**
  * @name ExtrinsicSignature
  * @description
  * A container for the [[Signature]] associated with a specific [[Extrinsic]]
  */
 export default class ExtrinsicSignature extends Struct implements IExtrinsicSignature {
+    // Signature Information.
+    //   1 byte version: BIT_VERSION | (isSigned ? BIT_SIGNED : BIT_UNSIGNED)
+    //   1/3/5/9/33 bytes: The signing account identity, in Address format
+    //   64 bytes: The sr25519/ed25519 signature of the Signing Payload
+    //   1-8 bytes: The Compact<Nonce> of the signing account
+    //   1/2 bytes: The Transaction Era
+    constructor(value?: Uint8Array) {
+        super(
+            {
+                version: U8,
+                signer: Address,
+                signature: Signature,
+                nonce: Nonce,
+                era: ExtrinsicEra,
+            },
+            ExtrinsicSignature.decodeExtrinsicSignature(value)
+        );
+    }
+
+    // tslint:disable-next-line
+    static decodeExtrinsicSignature(value?: Uint8Array): object | Uint8Array {
+        if (!value) {
+            return {
+                // we always explicitly set the unsigned version
+                version: BIT_VERSION | BIT_UNSIGNED,
+            };
+        }
+
+        const version = value[0];
+
+        // only decode the full Uint8Array if we have the signed indicator,
+        // alternatively only return the version (default for others)
+        return (version & BIT_SIGNED) === BIT_SIGNED ? value : {version};
+    }
+
     /**
      * @description The length of the value when encoded as a Uint8Array
      */
@@ -96,39 +132,6 @@ export default class ExtrinsicSignature extends Struct implements IExtrinsicSign
         return (this.get('version') as U8).toNumber();
     }
 
-    static decodeExtrinsicSignature(value?: Uint8Array): object | Uint8Array {
-        if (!value) {
-            return {
-                // we always explicitly set the unsigned version
-                version: BIT_VERSION | BIT_UNSIGNED,
-            };
-        }
-
-        const version = value[0];
-
-        // only decode the full Uint8Array if we have the signed indicator,
-        // alternatively only return the version (default for others)
-        return (version & BIT_SIGNED) === BIT_SIGNED ? value : {version};
-    }
-    // Signature Information.
-    //   1 byte version: BIT_VERSION | (isSigned ? BIT_SIGNED : BIT_UNSIGNED)
-    //   1/3/5/9/33 bytes: The signing account identity, in Address format
-    //   64 bytes: The Ed25519 signature of the Signing Payload
-    //   8 bytes: The Transaction Index of the signing account
-    //   1/2 bytes: The Transaction Era
-    constructor(value?: Uint8Array) {
-        super(
-            {
-                version: U8,
-                signer: Address,
-                signature: Signature,
-                nonce: Nonce,
-                era: ExtrinsicEra,
-            },
-            ExtrinsicSignature.decodeExtrinsicSignature(value)
-        );
-    }
-
     /**
      * @description Adds a raw signature
      */
@@ -154,7 +157,7 @@ export default class ExtrinsicSignature extends Struct implements IExtrinsicSign
         account: KeyringPair,
         {blockHash, era, nonce, version}: SignatureOptions
     ): ExtrinsicSignature {
-        const signer = new Address(account.publicKey());
+        const signer = new Address(account.publicKey);
         const signingPayload = new SignaturePayload({
             nonce,
             method: extrinsic.method,

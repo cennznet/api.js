@@ -15,17 +15,17 @@
         "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
-        "test:unit": "node --inspect ./node_modules/.bin/jest -c ./jest.config.js spec",
+        "test": "echo \"Error: run tests from root\" && exit 1",
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {
         "@cennznet/types": "^0.13.7",
-        "@plugnet/api": "^0.78.103",
-        "@plugnet/extrinsics": "^0.78.103",
-        "@plugnet/rpc-core": "^0.78.103",
-        "@plugnet/rpc-provider": "^0.78.103",
-        "@plugnet/storage": "^0.78.103",
-        "@plugnet/types": "^0.78.103",
+        "@plugnet/api": "^0.81.100",
+        "@plugnet/extrinsics": "^0.81.100",
+        "@plugnet/rpc-core": "^0.81.100",
+        "@plugnet/rpc-provider": "^0.81.100",
+        "@plugnet/storage": "^0.81.100",
+        "@plugnet/types": "^0.81.100",
         "eventemitter3": "^3.1.0"
     },
     "peerDependencies": {
@@ -40,7 +40,6 @@
         "rimraf": "^2.6.2",
         "ts-mockito": "^2.3.1",
         "typedoc": "^0.13.0",
-        "typedoc-plugin-markdown": "^1.1.19",
-        "typescript": "^3.4.5"
+        "typedoc-plugin-markdown": "^1.1.19"
     }
 }
