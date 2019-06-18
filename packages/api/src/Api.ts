@@ -108,7 +108,7 @@ export class Api extends ApiPromise {
     }
 }
 
-function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
+async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
     if (timeoutMs === 0) {
         return promise;
     }
