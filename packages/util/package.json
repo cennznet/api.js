@@ -18,12 +18,11 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@plugnet/keyring": "^0.90.100",
-        "@plugnet/util": "^0.90.100",
-        "@plugnet/util-crypto": "^0.90.100"
+        "@plugnet/util": "^0.93.100",
+        "@plugnet/util-crypto": "^0.93.100"
     },
     "devDependencies": {
-        "@plugnet/types": "^0.78.103",
-        "typescript": "^3.4.5"
+        "@plugnet/keyring": "^0.93.100",
+        "@plugnet/types": "^0.81.100"
     }
 }

@@ -38,7 +38,7 @@ describe('HDKeyring', () => {
 
         it('removePair(address) not support', async () => {
             const kp = keyPairs[0];
-            await expect(keyring.removePair(kp.address())).rejects.toThrow("doesn't support removePair");
+            await expect(keyring.removePair(kp.address)).rejects.toThrow("doesn't support removePair");
         });
     });
 
@@ -53,6 +53,6 @@ describe('HDKeyring', () => {
         });
         await expect(keyring.getAddresses()).resolves.toHaveLength(0);
         const kp = await keyring.addPair();
-        expect(kp.address()).toBe('5HTkvBrPpfrSZCoHE9qBMyNmV2JVJcKLNswwXvWdZjizCMHj');
+        expect(kp.address).toBe('5HTkvBrPpfrSZCoHE9qBMyNmV2JVJcKLNswwXvWdZjizCMHj');
     });
 });

@@ -44,6 +44,8 @@ type SignaturePayloadValue = {
  *   2+ bytes: The Function Descriptor as provided in the transaction itself.
  *   2 bytes: The Transaction Era as provided in the transaction itself.
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
+ *   variable bytes: An optional permission document decided by version
+ *   variable bytes: An optional CENNZX operation decided by version
  */
 export default class SignaturePayload extends Struct {
     protected _signature?: Uint8Array;

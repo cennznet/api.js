@@ -212,7 +212,7 @@ export class Wallet implements Signer, IWallet {
     async addAccount(): Promise<string> {
         const defaultKeyring = getDefaultKeyring(this);
         const kp = await defaultKeyring.addPair();
-        return kp.address();
+        return kp.address;
     }
 
     /**

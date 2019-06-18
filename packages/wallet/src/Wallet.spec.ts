@@ -69,7 +69,7 @@ describe('a wallet', () => {
             const keyring = new SimpleKeyring();
             await keyring.addPair(alice);
             await wallet.addKeyring(keyring);
-            await expect(wallet.getAddresses()).resolves.toEqual(expect.arrayContaining([alice.address()]));
+            await expect(wallet.getAddresses()).resolves.toEqual(expect.arrayContaining([alice.address]));
         });
 
         it('remove removeAccount', async () => {
@@ -78,8 +78,8 @@ describe('a wallet', () => {
             await keyring.addPair(alice);
             await keyring.addPair(bob);
             await wallet.addKeyring(keyring);
-            await wallet.removeAccount(alice.address());
-            await expect(wallet.getAddresses()).resolves.toEqual(expect.not.arrayContaining([alice.address()]));
+            await wallet.removeAccount(alice.address);
+            await expect(wallet.getAddresses()).resolves.toEqual(expect.not.arrayContaining([alice.address]));
         });
 
         it('throw error when trying to add keyring with duplicate accounts', async () => {
@@ -88,7 +88,7 @@ describe('a wallet', () => {
             [] = [await keyring.addPair(alice), await keyring2.addPair(alice)];
             await wallet.addKeyring(keyring);
             await expect(wallet.addKeyring(keyring2)).rejects.toThrow();
-            await wallet.removeAccount(alice.address());
+            await wallet.removeAccount(alice.address);
             await wallet.addKeyring(keyring2);
         });
 
@@ -169,7 +169,7 @@ describe('a wallet', () => {
             const keyring = new SimpleKeyring();
             await keyring.addPair(alice);
             await wallet.addKeyring(keyring);
-            await wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH});
+            await wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH});
             expect(testExtrinsic.isSigned).toBeTruthy();
             const anotherAccountAddress = await wallet.addAccount();
             const testExtrinsic2 = new Extrinsic('0x010200ea51b75b00000000');
@@ -178,7 +178,7 @@ describe('a wallet', () => {
         });
         it('the signer is not in the wallet', async () => {
             await expect(
-                wallet.sign(testExtrinsic, bob.address(), {nonce: 0, blockHash: GENESIS_HASH})
+                wallet.sign(testExtrinsic, bob.address, {nonce: 0, blockHash: GENESIS_HASH})
             ).rejects.toThrow();
         });
     });
@@ -204,7 +204,7 @@ describe('a wallet', () => {
                 expect(wallet.isLocked()).toBeTruthy();
                 await expect(wallet.getAddresses()).rejects.toThrow();
                 await expect(
-                    wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})
+                    wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH})
                 ).rejects.toThrow();
             });
             it('can not unlock again', async () => {
@@ -220,7 +220,7 @@ describe('a wallet', () => {
                 await wallet.unlock(walletPassphase);
                 expect(wallet.isLocked()).not.toBeTruthy();
                 await expect(wallet.getAddresses()).resolves.toHaveLength(13);
-                await expect(wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})).resolves;
+                await expect(wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH})).resolves;
             });
             it('can not add key pair', async () => {
                 const keyring = new SimpleKeyring();
@@ -231,11 +231,11 @@ describe('a wallet', () => {
                 await expect(wallet.getAddresses()).rejects.toThrow('wallet is locked');
             });
             it('can not remove key pair', async () => {
-                await expect(wallet.removeAccount(alice.address())).rejects.toThrow('wallet is locked');
+                await expect(wallet.removeAccount(alice.address)).rejects.toThrow('wallet is locked');
             });
             it('can not sign tx', async () => {
                 await expect(
-                    wallet.sign(testExtrinsic, alice.address(), {nonce: 0, blockHash: GENESIS_HASH})
+                    wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH})
                 ).rejects.toThrow('wallet is locked');
             });
         });
