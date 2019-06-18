@@ -12,6 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
   * `publicKey` use the `publicKey` getter, i.e. `console.log(pair.publicKey)`
 * `Move decodeAddress`, `encodeAddress` & `setAddressPrefix` functions into `@plugnet/util-crypto` from `@plugnet/keyring`. External interfaces should not be affected at this point since it is also (still) exported and exposed on keyring
 
+
+### Dependency update
+* upgrade @plugnet/api from v0.78.100 to v0.81.100
+* upgrade @plugnet/common from v0.90.100 to v0.93.100
+* upgrade @plugnet/wasm-crypto to v0.11.100
+
+
 ### Bug Fixes
 
 * CennznetExtrinsic encoding issue ([#16](https://github.com/cennznet/api.js/issues/16)) ([e81b641](https://github.com/cennznet/api.js/commit/e81b641)), closes [#17](https://github.com/cennznet/api.js/issues/17)
