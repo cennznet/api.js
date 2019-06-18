@@ -53,7 +53,7 @@ export class ApiRx extends ApiRxBase {
 
         return timeoutMs === 0
             ? race(api$, rejectError)
-            : race(api$.pipe(timeout(timeoutMs === undefined ? DEFAULT_TIMEOUT : timeoutMs)), rejectError);
+            : race(api$.pipe(timeout(timeoutMs || DEFAULT_TIMEOUT)), rejectError);
     }
 
     // @ts-ignore
