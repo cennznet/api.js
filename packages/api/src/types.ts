@@ -30,6 +30,11 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
      */
     provider?: ProviderInterface | string;
     plugins?: IPlugin[];
+    /**
+     * timeout for Api.create
+     * default 10000 ms, 0 indicates no limit
+     */
+    timeout?: number;
 }
 
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
