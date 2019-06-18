@@ -36,7 +36,7 @@ export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
     static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
-        const api = await new Api(options);
+        const api = new Api(options);
         return withTimeout(
             new Promise((resolve, reject) => {
                 const rejectError = err => {
