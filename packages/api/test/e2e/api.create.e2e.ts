@@ -26,7 +26,9 @@ describe('e2e api create', () => {
     });
 
     afterEach(async () => {
-        api.disconnect();
+        try {
+            api.disconnect();
+        } catch (e) {}
     });
 
     it('should create an Api instance with the timeout option', async () => {
