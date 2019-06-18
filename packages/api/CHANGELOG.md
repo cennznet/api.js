@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
+
+### Breaking(comes with @plugnet/keyring v0.93.100)
+* External pair interface for keyring has been changed. Instead of
+  * `getMeta` use the `meta` getter, i.e. `console.log(pair.meta.name)`
+  * `address` use the `address` getter, i.e. `console.log(pair.address)`
+  * `publicKey` use the `publicKey` getter, i.e. `console.log(pair.publicKey)`
+* `Move decodeAddress`, `encodeAddress` & `setAddressPrefix` functions into `@plugnet/util-crypto` from `@plugnet/keyring`. External interfaces should not be affected at this point since it is also (still) exported and exposed on keyring
+
+### Bug Fixes
+
+* CennznetExtrinsic encoding issue ([#16](https://github.com/cennznet/api.js/issues/16)) ([e81b641](https://github.com/cennznet/api.js/commit/e81b641)), closes [#17](https://github.com/cennznet/api.js/issues/17)
+
+
+### Features
+
+* handle protocol of provider url ([#10](https://github.com/cennznet/api.js/issues/10)) ([37b4d61](https://github.com/cennznet/api.js/commit/37b4d61))
+* Plugin Injection interface improvement([#14](https://github.com/cennznet/api.js/issues/14)) ([a95f6d4](https://github.com/cennznet/api.js/commit/a95f6d4))
+* reject if the connection fail, add timeout ([#13](https://github.com/cennznet/api.js/issues/13)) ([9d743df](https://github.com/cennznet/api.js/commit/9d743df))
+
+
+
+
+
 ## [0.13.5](https://github.com/cennznet/api.js/compare/v0.13.4...v0.13.5) (2019-05-24)
 
 
