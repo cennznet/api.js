@@ -15,7 +15,7 @@
         "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
-        "test:unit": "node --inspect ./node_modules/.bin/jest -c ./jest.config.js spec",
+        "test": "echo \"Error: run tests from root\" && exit 1",
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {

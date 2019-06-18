@@ -199,9 +199,9 @@ describe('a wallet', () => {
         describe('when wallet is unlocked', () => {
             it('can lock', async () => {
                 await expect(wallet.getAddresses()).resolves.toHaveLength(13);
-                expect(wallet.isLocked).not.toBeTruthy();
+                expect(wallet.isLocked()).not.toBeTruthy();
                 await wallet.lock();
-                expect(wallet.isLocked).toBeTruthy();
+                expect(wallet.isLocked()).toBeTruthy();
                 await expect(wallet.getAddresses()).rejects.toThrow();
                 await expect(
                     wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH})
@@ -214,11 +214,11 @@ describe('a wallet', () => {
         describe('when wallet is locked', () => {
             beforeEach(async () => {
                 await wallet.lock();
-                expect(wallet.isLocked).toBeTruthy();
+                expect(wallet.isLocked()).toBeTruthy();
             });
             it('can unlock', async () => {
                 await wallet.unlock(walletPassphase);
-                expect(wallet.isLocked).not.toBeTruthy();
+                expect(wallet.isLocked()).not.toBeTruthy();
                 await expect(wallet.getAddresses()).resolves.toHaveLength(13);
                 await expect(wallet.sign(testExtrinsic, alice.address, {nonce: 0, blockHash: GENESIS_HASH})).resolves;
             });

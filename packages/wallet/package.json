@@ -15,7 +15,7 @@
         "url": "git+ssh://git@github.com/cennznet/api.js.git"
     },
     "scripts": {
-        "test": "jest --coverage -c ../../jest/jest.config.js",
+        "test": "echo \"Error: run tests from root\" && exit 1",
         "test:unit": "jest --coverage -c ../../jest/jest.config.js spec",
         "test:watch": "jest --watch -c ../../jest/jest.config.js",
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs  --includes compodoc --output ../../docs/wallet"
