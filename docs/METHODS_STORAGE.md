@@ -1,6 +1,6 @@
 ## Storage
 
-_The following sections contain Storage methods are part of the default Substrate runtime._
+_The following sections contain Storage methods are part of the default CENNZNet runtime._
 - **[attestation](#attestation)**
 
 - **[cennzxSpot](#cennzxSpot)**
@@ -49,8 +49,6 @@ _The following sections contain Storage methods are part of the default Substrat
 
 - **[timestamp](#timestamp)**
 
-- **[treasury](#treasury)**
-
 - **[substrate](#substrate)**
 
  
@@ -78,7 +76,7 @@ ___
 ▸ **defaultFeeRate**(): `FeeRate`
 -   Default Trading fee rate
 
-▸ **liquidityBalance**(): `T::Balance`
+▸ **liquidityBalance**(): `DoubleMap<Balance>`
 -   Asset balance of each user in each exchange pool.  Key: `(core_asset_id, trade_asset_id), account_id`
 
 ▸ **totalSupply**(`ExchangeKey`): `Balance`
@@ -101,23 +99,20 @@ ___
 ▸ **accountCounter**(): `u64`
 -   The subtrie counter.
 
-▸ **accountInfoOf**(`AccountId`): `Option<AccountInfo>`
--   The code associated with a given account.
-
 ▸ **blockGasLimit**(): `Gas`
 -   The maximum amount of gas that could be expended per block.
 
 ▸ **callBaseFee**(): `Gas`
 -   The base fee charged for calling into a contract.
 
-▸ **codeHashOf**(`AccountId`): `Option<CodeHash>`
--   The code associated with a given account.
-
 ▸ **codeStorage**(`CodeHash`): `Option<PrefabWasmModule>`
 -   A mapping between an original code hash and instrumented wasm code, ready for execution.
 
 ▸ **contractFee**(): `BalanceOf`
 -   The fee required to create a contract instance.
+
+▸ **contractInfoOf**(`AccountId`): `Option<ContractInfo>`
+-   The code associated with a given account.
 
 ▸ **createBaseFee**(): `Gas`
 -   The base fee charged for creating a contract.
@@ -139,6 +134,24 @@ ___
 
 ▸ **pristineCode**(`CodeHash`): `Option<Bytes>`
 -   A mapping from an original code hash to the original code, untouched by instrumentation.
+
+▸ **rentByteFee**(): `BalanceOf`
+-   Price of a byte of storage per one block interval. Should be greater than 0.
+
+▸ **rentDepositOffset**(): `BalanceOf`
+-   The amount of funds a contract should deposit in order to offset  the cost of one byte.   Let's suppose the deposit is 1,000 BU (balance units)/byte and the rent is 1 BU/byte/day,  then a contract with 1,000,000 BU that uses 1,000 bytes of storage would pay no rent.  But if the balance reduced to 500,000 BU and the storage stayed the same at 1,000,  then it would pay 500 BU/day.
+
+▸ **signedClaimHandicap**(): `BlockNumber`
+-   Number of block delay an extrinsic claim surcharge has.   When claim surchage is called by an extrinsic the rent is checked  for current_block - delay
+
+▸ **storageSizeOffset**(): `u64`
+-   Size of a contract at the time of creation. This is a simple way to ensure  that empty contracts eventually gets deleted.
+
+▸ **surchargeReward**(): `BalanceOf`
+-   Reward that is received by the party whose touch has led  to removal of a contract.
+
+▸ **tombstoneDeposit**(): `BalanceOf`
+-   The minimum amount required to generate a tombstone.
 
 ▸ **transactionBaseFee**(): `BalanceOf`
 -   The fee to be paid for making a transaction; the base.
@@ -187,11 +200,11 @@ ___
 ▸ **nextFinalize**(): `Option<(BlockNumber,u32,Vec<AccountId>)>`
 -   The accounts holding the seats that will become free on the next tally.
 
-▸ **presentSlashPerVoter**(): `BalanceOf`
--   The punishment, per voter, if you provide an invalid presentation.
-
 ▸ **presentationDuration**(): `BlockNumber`
 -   How long to give each top candidate to present themselves after the vote ends.
+
+▸ **presentSlashPerVoter**(): `BalanceOf`
+-   The punishment, per voter, if you provide an invalid presentation.
 
 ▸ **registerInfoOf**(`AccountId`): `Option<(VoteIndex,u32)>`
 -   The vote index and list slot that the candidate `who` was registered or `None` if they are not  currently registered.
@@ -247,9 +260,9 @@ ___
 
 ▸ **proposalOf**(`Hash`): `Option<Proposal>`
 
-▸ **proposalVoters**(`Hash`): `Vec<AccountId>`
-
 ▸ **proposals**(): `Vec<(BlockNumber,Hash)>`
+
+▸ **proposalVoters**(`Hash`): `Vec<AccountId>`
 
 ▸ **vetoedProposal**(`Hash`): `Option<(BlockNumber,Vec<AccountId>)>`
 
@@ -318,11 +331,8 @@ ___
 ▸ **currentTransactionFee**(`u32`): `AssetOf`
 -   The `extrinsic_index => accumulated_fees` map, containing records to  track the overall charged fees for each transaction.   All records should be removed at finalise stage.
 
-▸ **transactionBaseFee**(): `AssetOf`
--   The fee to be paid for making a transaction; the base.
-
-▸ **transactionByteFee**(): `AssetOf`
--   The fee to be paid for making a transaction; the per-byte portion.
+▸ **feeRegistry**(`Fee`): `AssetOf`
+-   The central register of extrinsic fees. It maps fee types to  their associated cost.
  
 ___
  <a name=genericAsset></a>
@@ -332,7 +342,7 @@ ___
 
 ▸ **createAssetStakes**(): `Balance`
 
-▸ **freeBalance**(): `T::Balance`
+▸ **freeBalance**(): `DoubleMap<Balance>`
 -   The free balance of a given asset under an account.
 
 ▸ **locks**(`AccountId`): `Vec<BalanceLock>`
@@ -344,7 +354,7 @@ ___
 ▸ **permissions**(`AssetId`): `PermissionVersions`
 -   PermissionOptions for a given asset.
 
-▸ **reservedBalance**(): `T::Balance`
+▸ **reservedBalance**(): `DoubleMap<Balance>`
 -   The reserved balance of a given asset under an account.
 
 ▸ **spendingAssetId**(): `AssetId`
@@ -355,8 +365,6 @@ ___
 
 ▸ **totalIssuance**(`AssetId`): `Balance`
 -   Total issuance of a given asset.
-
-▸ **transferFee**(): `Balance`
  
 ___
  <a name=grandpaFinality></a>
@@ -388,6 +396,9 @@ ___
 
 ▸ **blockReward**(): `AmountOf`
 -   A fixed amount of currency minted and issued every block.
+
+▸ **feeRewardMultiplier**(): `Permill`
+-   A multiplier applied on transaction fees to calculate total validator rewards.
 
 ▸ **sessionTransactionFee**(): `AmountOf`
 -   Accumulated transaction fees in the current session.
@@ -603,8 +614,8 @@ ___
 ▸ **parentHash**(): `Hash`
 -   Hash of the previous block.
 
-▸ **randomSeed**(): `Hash`
--   Random seed of the current block.
+▸ **randomMaterial**(): `(i8,Vec<Hash>)`
+-   Series of block headers from the last 81 blocks that acts as random seed material. This is arranged as a  ring buffer with the `i8` prefix being the index into the `Vec` of the oldest hash.
  
 ___
  <a name=timestamp></a>
@@ -623,36 +634,6 @@ ___
 
 ▸ **now**(): `Moment`
 -   Current time for the current block.
- 
-___
- <a name=treasury></a>
- 
-
-### treasury
-
-▸ **approvals**(): `Vec<ProposalIndex>`
--   Proposal indices that have been approved but not yet awarded.
-
-▸ **burn**(): `Permill`
--   Percentage of spare funds (if any) that are burnt per spend period.
-
-▸ **pot**(): `BalanceOf`
--   Total funds available to this module for spending.
-
-▸ **proposalBond**(): `Permill`
--   Proportion of funds that should be bonded in order to place a proposal. An accepted  proposal gets these back. A rejected proposal doesn't.
-
-▸ **proposalBondMinimum**(): `BalanceOf`
--   Minimum amount of funds that should be placed in a deposit for making a proposal.
-
-▸ **proposalCount**(): `ProposalIndex`
--   Number of proposals that have been made.
-
-▸ **proposals**(`ProposalIndex`): `Option<TreasuryProposal>`
--   Proposals that have been made.
-
-▸ **spendPeriod**(): `BlockNumber`
--   Period between successive spends.
 
 ---
 

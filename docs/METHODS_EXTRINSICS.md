@@ -1,6 +1,6 @@
 ## Extrinsics
 
-_The following sections contain Extrinsics methods are part of the default Substrate runtime._
+_The following sections contain Extrinsics methods are part of the default CENNZNet runtime._
 - **[attestation](#attestation)**
 
 - **[cennzxSpot](#cennzxSpot)**
@@ -17,9 +17,13 @@ _The following sections contain Extrinsics methods are part of the default Subst
 
 - **[democracy](#democracy)**
 
+- **[fees](#fees)**
+
 - **[genericAsset](#genericAsset)**
 
-- **[grandpa](#grandpa)**
+- **[grandpaFinality](#grandpaFinality)**
+
+- **[rewards](#rewards)**
 
 - **[session](#session)**
 
@@ -38,8 +42,6 @@ _The following sections contain Extrinsics methods are part of the default Subst
 - **[syloVault](#syloVault)**
 
 - **[timestamp](#timestamp)**
-
-- **[treasury](#treasury)**
 
  
 ___
@@ -185,6 +187,18 @@ ___
  * If no account exists and the call value is not less than `existential_deposit`,
  
  a regular account will be created and any value will be transferred.
+
+▸ **claimSurcharge**(dest: `AccountId`, aux_sender: `Option<AccountId>`)
+-  
+ Allows block producers to claim a small reward for evicting a contract. If a block producer
+ 
+ fails to do so, a regular users will be allowed to claim the reward.
+ 
+
+ 
+ If contract is not evicted as a result of this call, no actions are taken and
+ 
+ the sender is not eligible for the reward.
 
 ▸ **create**(endowment: `Compact<BalanceOf>`, gas_limit: `Compact<Gas>`, code_hash: `CodeHash`, data: `Bytes`)
 -  
@@ -385,6 +399,16 @@ ___
  otherwise it is a vote to keep the status quo.
  
 ___
+ <a name=fees></a>
+ 
+
+### fees
+
+▸ **setFee**(fee: `Fee`, new_amount: `AssetOf`)
+-  
+ Set a new associated cost for the given fee type
+ 
+___
  <a name=genericAsset></a>
  
 
@@ -392,11 +416,13 @@ ___
 
 ▸ **burn**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Balance`)
 -  
- Burns an asset, decreases its amount.
+ Burns an asset, decreases its total issuance.
  
- The origin should have `burn` permissions.
+ The origin must have `burn` permissions.
 
 ▸ **create**(options: `AssetOptions`)
+-  
+ Create a new kind of asset.
 
 ▸ **createReserved**(asset_id: `AssetId`, options: `AssetOptions`)
 -  
@@ -406,9 +432,9 @@ ___
 
 ▸ **mint**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Balance`)
 -  
- Mints an asset, increases its amount.
+ Mints an asset, increases its total issuance.
  
- The origin should have `mint` permissions.
+ The origin must have `mint` permissions.
 
 ▸ **transfer**(asset_id: `Compact<AssetId>`, to: `AccountId`, amount: `Compact<Balance>`)
 -  
@@ -418,17 +444,33 @@ ___
 -  
  Updates permission for a given asset_id and an account.
  
- The origin (account_id) should have `update` permission.
+ The origin must have `update` permission.
  
 ___
- <a name=grandpa></a>
+ <a name=grandpaFinality></a>
  
 
-### grandpa
+### grandpaFinality
 
 ▸ **reportMisbehavior**(_report: `Bytes`)
 -  
  Report some misbehavior.
+ 
+___
+ <a name=rewards></a>
+ 
+
+### rewards
+
+▸ **setParameters**(s: `Compact<AmountOf>`, k: `Compact<AmountOf>`, qmax: `Compact<AmountOf>`, cost: `Compact<AmountOf>`)
+-  
+ Calculate and then set `BlockReward` and `FeeRewardMultiplier`.
+ 
+
+ 
+ `s` is storage / CPU ratio; k is empty_block / CCC ratio; `qmax` is target transaction count in a block;
+ 
+ `cost` is the estimated average spending tokens cost per transaction.
  
 ___
  <a name=session></a>
@@ -711,35 +753,3 @@ ___
 
  
  The dispatch origin for this call must be `Inherent`.
- 
-___
- <a name=treasury></a>
- 
-
-### treasury
-
-▸ **approveProposal**(proposal_id: `Compact<ProposalIndex>`)
--  
- Approve a proposal. At a later time, the proposal will be allocated to the beneficiary
- 
- and the original deposit will be returned.
-
-▸ **configure**(proposal_bond: `Compact<Permill>`, proposal_bond_minimum: `Compact<BalanceOf>`, spend_period: `Compact<BlockNumber>`, burn: `Compact<Permill>`)
--  
- (Re-)configure this module.
-
-▸ **proposeSpend**(value: `Compact<BalanceOf>`, beneficiary: `Address`)
--  
- Put forward a suggestion for spending. A deposit proportional to the value
- 
- is reserved and slashed if the proposal is rejected. It is returned once the
- 
- proposal is awarded.
-
-▸ **rejectProposal**(proposal_id: `Compact<ProposalIndex>`)
--  
- Reject a proposed spend. The original deposit will be slashed.
-
-▸ **setPot**(new_pot: `Compact<BalanceOf>`)
--  
- Set the balance of funds available to spend.

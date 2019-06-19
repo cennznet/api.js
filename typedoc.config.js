@@ -5,11 +5,11 @@ module.exports = {
   "exclude": [
     "**/node_modules/!(@plugnet|@cennznet)/**",
     "**/node_modules/@cennznet/*/node_modules/**",
-    "**/node_modules/@cennznet/(api|wallet|types|util)/**",
+    // "**/node_modules/@cennznet/(api|wallet|types|util)/**",
     "**/node_modules/@plugnet/**/json.d.ts",
     "**/node_modules/@plugnet/dev/**/*",
     // "**/node_modules/@plugnet/!(api|types)/**",
-    "**/packages/!(api|wallet|types|util)/**",
+    "**/packages/**",
     "scripts/*",
     "*.spec.*",
     "**/test/**",

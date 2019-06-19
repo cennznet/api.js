@@ -1,6 +1,6 @@
 ## JSON-RPC
 
-_The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit. The RPCs are provided by Substrate itself._
+_The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit. The RPCs are provided by CENNZNet itself._
 - **[author](#author)**
 
 - **[chain](#chain)**
@@ -42,7 +42,7 @@ _Retrieval of chain data_
 - Get the block hash for a specific block
 
 ▸ **getFinalizedHead**(): `Hash`
-- Get hash of the last finalised block in the canon chain
+- Get hash of the last finalized block in the canon chain
 
 ▸ **getHeader**(hash?: `Hash`): `Header`
 - Retrieves the header for a specific block

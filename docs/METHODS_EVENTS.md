@@ -1,6 +1,6 @@
 ## Events
 
-Events are emitted for certain operations on the runtime. The following sections describe the events that are part of the default Substrate runtime.
+Events are emitted for certain operations on the runtime. The following sections describe the events that are part of the default CENNZNet runtime.
 - **[attestation](#attestation)**
 
 - **[cennzxSpot](#cennzxSpot)**
@@ -34,8 +34,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[syloE2Ee](#syloE2Ee)**
 
 - **[system](#system)**
-
-- **[treasury](#treasury)**
 
  
 ___
@@ -267,24 +265,3 @@ ___
 
 ▸ **ExtrinsicSuccess**()
 -   An extrinsic completed successfully.
- 
-___
- <a name=treasury></a>
- 
-
-### treasury
-
-▸ **Awarded**(`ProposalIndex`, `Balance`, `AccountId`)
--   Some funds have been allocated.
-
-▸ **Burnt**(`Balance`)
--   Some of our funds have been burnt.
-
-▸ **Proposed**(`ProposalIndex`)
--   New proposal.
-
-▸ **Rollover**(`Balance`)
--   Spending has finished; this is the amount that rolls over until next spend.
-
-▸ **Spending**(`Balance`)
--   We have ended a spend period and will now allocate funds.
