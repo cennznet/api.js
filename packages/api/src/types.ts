@@ -17,10 +17,11 @@ import {DeriveCustom} from '@plugnet/api-derive';
 import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {AccountId, Address} from '@plugnet/types';
+import {AccountId, Address, AssetOf} from '@plugnet/types';
 import {MethodFunction} from '@plugnet/types/primitive/Method';
 import {CodecArg, Constructor, RegistryTypes} from '@plugnet/types/types';
 import BN from 'bn.js';
+import {Observable} from 'rxjs';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
     /**
@@ -43,6 +44,7 @@ export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
     extends SubmittableExtrinsic<CodecResult, SubscriptionResult> {
     addDoughnut(doughnut: DoughnutValue): this;
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
+    fee(sender: AnyAddress): CodecResult extends Promise<any> ? Promise<AssetOf> : Observable<AssetOf>;
 }
 
 export interface IPlugin {

@@ -86,21 +86,4 @@ describe('e2e queries', () => {
                 .signAndSend(sender.address);
         }, 15000);
     });
-
-    it.skip('fee estimate', async done => {
-        const tx = api.tx.genericAsset.create({
-            initialIssuance: 100,
-        });
-        const fee = ((await api.derive.fees.estimateFee(tx, sender.address)) as unknown) as BN;
-        await tx.signAndSend(sender.address, async ({events, status}) => {
-            if (status.isFinalized && events !== undefined) {
-                const blockHash = status.asFinalized;
-                const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
-                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
-                expect(gas.toString()).toEqual(fee.toString());
-                done();
-            }
-        });
-    });
 });
