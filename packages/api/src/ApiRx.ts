@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import getPlugins from '@cennznet/api/plugins';
+import {decorateExtrinsics} from '@cennznet/api/util/customDecorators';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
@@ -25,7 +26,7 @@ import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
-import {switchMap, timeout} from 'rxjs/operators';
+import {switchMap, tap, timeout} from 'rxjs/operators';
 
 import {DEFAULT_TIMEOUT} from './Api';
 import * as derives from './derives';
@@ -49,7 +50,9 @@ export class ApiRx extends ApiRxBase {
                 return throwError(new Error('Connection fail'));
             })
         );
-        const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
+        const api$ = ((apiRx.isReady as unknown) as Observable<ApiRx>).pipe(
+            tap(api => api.decorateCennznetExtrinsics())
+        );
 
         return timeoutMs === 0
             ? race(api$, rejectError)
@@ -102,5 +105,9 @@ export class ApiRx extends ApiRxBase {
         if (plugins) {
             injectPlugins(this, plugins);
         }
+    }
+
+    decorateCennznetExtrinsics(): void {
+        decorateExtrinsics(this);
     }
 }

@@ -12,4 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {estimateFee, estimateFeeAt} from './estimateFee';
+export {estimateFee} from './estimateFee';

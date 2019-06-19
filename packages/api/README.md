@@ -53,6 +53,14 @@ api.setSigner(wallet);
 ```
 [Wallet Docs](https://cennznetdocs.com/api/latest/wallet/Overview.md)
 
+# CennznetExtrinsic
+All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
+* `addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): CennznetExtrinsic` so transaction fee will be paid in specified Asset instead of `CentraPay`
+* `addDoughnut(doughnut: DoughnutValue): CennznetExtrinsic` to embed an permission proof
+* `fee(sender: AnyAddress): Promise<AssetOf> (or Observable<AssetOf> for ApiRx)`: estimate the transaction fee this extrinsic will cost  
+
+[see more](https://cennznetdocs.com/api/latest/api/interfaces/_cennznet_api.icennznetextrinsic.md)
+
 # Dynamic vs CRML SDK
 > CRML stand for CENNZNet Runtime Module
 
