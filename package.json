@@ -9,7 +9,7 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "plugnet-dev-build-ts",
+        "build": "plugnet-dev-build-ts && scripts/adjust.sh",
         "test": "jest -c ./jest/jest.config.js --coverage spec",
         "test:e2e": "jest --forceExit --runInBand -c ./jest/jest.config.js e2e",
         "make-docs": "rm -rf api_docs && typedoc --options typedoc.config.js .",
