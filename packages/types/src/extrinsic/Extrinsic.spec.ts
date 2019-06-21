@@ -9,7 +9,7 @@ const typeRegistry = getDefaultRegistry();
 typeRegistry.register(types as any);
 
 describe('CennznetExtrinsic', () => {
-    const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[1]]);
+    const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[0]]);
     Method.injectMethods(fromMetadata(metadata));
     typeRegistry;
 
