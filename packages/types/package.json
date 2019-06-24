@@ -20,7 +20,7 @@
     "dependencies": {
         "@cennznet/util": "^0.14.1-beta.1",
         "@plugnet/types": "^0.81.100",
-        "@plugnet/util": "^0.93.100"
+        "@plugnet/util": "^0.93.101"
     },
     "devDependencies": {
         "@plugnet/api": "^0.81.100",

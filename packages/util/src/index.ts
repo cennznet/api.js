@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as Keyring} from '@plugnet/keyring';
-export {default as TestingPairs} from '@plugnet/keyring/testingPairs';
 export * from '@plugnet/util';
 export * from '@plugnet/util-crypto';
 
