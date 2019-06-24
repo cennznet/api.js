@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Keyring} from '@cennznet/util';
 import {KeyringPair, KeyringPair$Json, KeyringPair$Meta} from '@cennznet/util/types';
+import {Keyring} from '@plugnet/keyring';
 import {KeypairType} from '@plugnet/util-crypto/types';
 import {generateMnemonic} from 'bip39';
 import {DEFAULT_KEYRING_TYPE} from '../constants';
@@ -30,6 +30,7 @@ export class SimpleKeyring implements IKeyring<SerializedSimpleKeyring> {
     static async generate(): Promise<SimpleKeyring> {
         return new SimpleKeyring();
     }
+
     private _keyring = new Keyring({type: DEFAULT_KEYRING_TYPE});
 
     constructor(opt?: SerializedSimpleKeyring) {

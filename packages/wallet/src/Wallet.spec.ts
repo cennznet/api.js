@@ -13,8 +13,9 @@
 // limitations under the License.
 
 import {Extrinsic, Method} from '@cennznet/types/polkadot';
-import {hexToU8a, TestingPairs, cryptoWaitReady} from '@cennznet/util';
+import {hexToU8a, cryptoWaitReady} from '@cennznet/util';
 import extrinsics from '@plugnet/extrinsics/static';
+import TestingPairs from '@plugnet/keyring/testingPairs';
 import {Wallet} from './';
 import {HDKeyring} from './keyrings/HDKeyring';
 import {SimpleKeyring} from './keyrings/SimpleKeyring';

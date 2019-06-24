@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {cryptoWaitReady, hexToU8a, TestingPairs, u8aToHex} from '@cennznet/util';
+import {cryptoWaitReady, hexToU8a} from '@cennznet/util';
+import TestingPairs from '@plugnet/keyring/testingPairs';
 import {SimpleKeyring} from './SimpleKeyring';
 import {stringToU8a} from '@plugnet/util';
 

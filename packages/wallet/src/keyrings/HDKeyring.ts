@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Keyring, mnemonicToSeed} from '@cennznet/util';
+import {mnemonicToSeed} from '@cennznet/util';
 import {KeyringPair} from '@cennznet/util/types';
+import {Keyring} from '@plugnet/keyring';
 import {generateMnemonic} from 'bip39';
 import HDKey from 'hdkey';
 import {DEFAULT_KEYRING_TYPE} from '../constants';
