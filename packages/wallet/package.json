@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@cennznet/util": "^0.14.1-beta.1",
-        "@plugnet/keyring": "^0.93.100",
+        "@plugnet/keyring": "^0.93.101",
         "bip39": "^2.5.0",
         "hdkey": "^1.1.0",
         "reflect-metadata": "^0.1.12",
