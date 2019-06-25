@@ -26,7 +26,7 @@ import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
-import {switchMap, tap, timeout} from 'rxjs/operators';
+import {switchMap, timeout} from 'rxjs/operators';
 
 import {DEFAULT_TIMEOUT} from './Api';
 import * as derives from './derives';
@@ -50,9 +50,8 @@ export class ApiRx extends ApiRxBase {
                 return throwError(new Error('Connection fail'));
             })
         );
-        const api$ = ((apiRx.isReady as unknown) as Observable<ApiRx>).pipe(
-            tap(api => api.decorateCennznetExtrinsics())
-        );
+        const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
+        api$.subscribe(api => api.decorateCennznetExtrinsics());
 
         return timeoutMs === 0
             ? race(api$, rejectError)
