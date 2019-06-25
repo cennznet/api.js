@@ -208,7 +208,7 @@ export default class Extrinsic extends Struct implements IExtrinsic {
      */
     addSignature(
         signer: Address | Uint8Array | string,
-        signature: Uint8Array,
+        signature: Uint8Array | string,
         nonce: AnyNumber,
         era?: Uint8Array
     ): Extrinsic {
