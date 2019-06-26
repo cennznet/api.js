@@ -91,7 +91,7 @@ export class Wallet implements Signer, IWallet {
     async sign(extrinsic: IExtrinsic, address: string, options: SignatureOptions): Promise<number> {
         const signerPair = await getKeyringByAddress(this, this._accountKeyringMap, address).getPair(address);
 
-        extrinsic.sign(signerPair, {blockHash: options.blockHash, nonce: options.nonce});
+        extrinsic.sign(signerPair, options);
 
         return ++id;
     }
