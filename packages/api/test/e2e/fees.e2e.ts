@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import {ApiRx, SubmittableResult} from '@cennznet/api';
+import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import testingPairs from '@plugnet/keyring/testingPairs';
 import {EventRecord, Vector} from '@plugnet/types';
-import BN from 'bn.js';
-import {SimpleKeyring, Wallet} from '../../../wallet/src';
 
 import {Api} from '../../src/Api';
 

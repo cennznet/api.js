@@ -804,6 +804,18 @@
   resolved "https://registry.yarnpkg.com/@cennznet/crml-generic-asset/-/crml-generic-asset-0.9.0.tgz#88cde96edba40ec6b10213b09b4482eac3bf8ed2"
   integrity sha512-y0TvY5o+t/h52bVgR3zT5JOX5oa0+tC5pGOXkTA5Bo1BnSaeAmlItb0jMJbZg8zrb4iS+HPD6yIUyuudgdTDdw==
 
+"@cennznet/wallet@^0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@cennznet/wallet/-/wallet-0.14.1.tgz#8233295e317d6b947d3a15987a6fbd9a5482a193"
+  integrity sha512-K6u4iImVvZOeuYqnYTDe7uX/WqjzpIa5A9fTxpI76G0WvIDJLVaGwVy649uB3RFuDrgrd5YkWsXnNuTJBYbmOQ==
+  dependencies:
+    "@cennznet/util" "^0.14.1"
+    "@plugnet/keyring" "^0.93.101"
+    bip39 "^2.5.0"
+    hdkey "^1.1.0"
+    reflect-metadata "^0.1.12"
+    tweetnacl "^1.0.1"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"

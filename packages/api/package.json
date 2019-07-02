@@ -35,6 +35,7 @@
     "devDependencies": {
         "@cennznet/crml-cennzx-spot": ">= 0.5.2",
         "@cennznet/crml-generic-asset": ">= 0.7.2",
+        "@cennznet/wallet": "^0.14.1",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",
         "rimraf": "^2.6.2",
