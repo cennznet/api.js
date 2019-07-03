@@ -29,12 +29,12 @@
         "eventemitter3": "^3.1.0"
     },
     "peerDependencies": {
-        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
-        "@cennznet/crml-generic-asset": ">= 0.7.2"
+        "@cennznet/crml-cennzx-spot": ">= 0.6.0",
+        "@cennznet/crml-generic-asset": ">= 0.9.1"
     },
     "devDependencies": {
-        "@cennznet/crml-cennzx-spot": ">= 0.5.2",
-        "@cennznet/crml-generic-asset": ">= 0.7.2",
+        "@cennznet/crml-cennzx-spot": ">= 0.6.0",
+        "@cennznet/crml-generic-asset": ">= 0.9.1",
         "@cennznet/wallet": "^0.14.1",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",
