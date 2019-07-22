@@ -56,7 +56,7 @@ api.setSigner(wallet);
 # CennznetExtrinsic
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
 * `addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): CennznetExtrinsic` so transaction fee will be paid in specified Asset instead of `CentraPay`
-* `addDoughnut(doughnut: DoughnutValue): CennznetExtrinsic` to embed an permission proof
+* `addDoughnut(doughnut: DoughnutValue): CennznetExtrinsic` to embed a doughnut permission proof
 * `fee(sender: AnyAddress): Promise<AssetOf> (or Observable<AssetOf> for ApiRx)`: estimate the transaction fee this extrinsic will cost  
 
 [see more](https://cennznetdocs.com/api/latest/api/interfaces/_cennznet_api.icennznetextrinsic.md)

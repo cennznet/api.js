@@ -12,32 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AccountId, Signature, Struct, Text, Tuple, U32, U64, Vector} from '@plugnet/types';
+import {Bytes, Compact, U8a} from '@plugnet/types';
+import {AnyU8a} from '@plugnet/types/types';
 
-export class Certificate extends Struct {
-    constructor(value?: any) {
-        super(
-            {
-                expires: U64,
-                version: U32,
-                holder: AccountId,
-                notBefore: U64,
-                permissions: Vector.with(Tuple.with([Text, Text])),
-                issuer: AccountId,
-            },
-            value
-        );
+/**
+ * An encoded, signed v0 Doughnut certificate
+ **/
+export class Doughnut extends U8a {
+    get encodedLength(): number {
+        return this.toU8a().length;
     }
-}
 
-export class Doughnut extends Struct {
-    constructor(value?: any) {
-        super(
-            {
-                certificate: Certificate,
-                signature: Signature,
-            },
-            value
-        );
+    constructor(value?: AnyU8a) {
+        // This function is used as both a constructor and a decoder
+        // Doughnut has its own codec but it must be length prefixed to support the SCALE codec used by the extrinsic
+
+        // Failure to decode indicates a call as a constructor
+        const decoded = new Bytes(value);
+        if (decoded.length > 0) {
+            super(decoded);
+        } else {
+            super(value);
+        }
+    }
+
+    toU8a(isBare?: boolean): Uint8Array {
+        // Encode the doughnut with length prefix to support SCALE codec
+        return isBare ? (this as Uint8Array) : Compact.addLengthPrefix(this);
     }
 }

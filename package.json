@@ -17,7 +17,7 @@
         "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
     },
     "devDependencies": {
-        "@plugnet/dev": "^0.30.5",
+        "@plugnet/dev": "^0.30.7",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",

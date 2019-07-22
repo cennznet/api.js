@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
+import {FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
 import {DeriveCustom} from '@plugnet/api-derive';
 import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {AccountId, Address, AssetOf} from '@plugnet/types';
 import {MethodFunction} from '@plugnet/types/primitive/Method';
-import {CodecArg, Constructor, RegistryTypes} from '@plugnet/types/types';
+import {AnyU8a, CodecArg, Constructor, RegistryTypes} from '@plugnet/types/types';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
 
@@ -37,6 +37,8 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
      */
     timeout?: number;
 }
+
+export type DoughnutValue = AnyU8a;
 
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
 

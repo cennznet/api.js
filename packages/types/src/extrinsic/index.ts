@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {Doughnut, Certificate} from './Doughnut';
+export {Doughnut} from './Doughnut';
 export {default as Extrinsic} from './Extrinsic';
 export {default as ExtrinsicSignature} from './ExtrinsicSignature';
 export {default as FeeExchange} from './FeeExchange';
