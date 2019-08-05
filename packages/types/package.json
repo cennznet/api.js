@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "0.15.0",
+    "version": "0.15.1",
     "description": "additional types for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [
