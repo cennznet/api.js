@@ -14,7 +14,7 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import {Metadata, Hash} from '@plugnet/types';
+import {Metadata} from '@plugnet/types';
 
 describe('e2e api create', () => {
     let api: Api;
@@ -34,7 +34,7 @@ describe('e2e api create', () => {
     it('should create an Api instance with the timeout option', async () => {
         const endPoint = 'wss://rimu.unfrastructure.io/public/ws';
         api = await Api.create({provider: endPoint, timeout: 1000000000});
-        const hash = (await api.rpc.chain.getBlockHash()) as Hash;
+        const hash = await api.rpc.chain.getBlockHash();
 
         expect(hash).toBeDefined();
     });

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AccountId, Bytes, EnumType, H256, Null, Struct, Text, Tuple, u32 as U32, Vector} from '@plugnet/types';
+import {ClassOf, Enum, Struct, Text, Tuple, Vec} from '@plugnet/types';
 import {u8aToHex} from '@plugnet/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
@@ -20,7 +20,12 @@ const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
 export class Group extends Struct {
     constructor(value) {
         super(
-            {groupId: H256, members: Vector.with(Member), invites: Vector.with(PendingInvite), meta: Meta},
+            {
+                groupId: 'H256',
+                members: Vec.with(Member),
+                invites: Vec.with(PendingInvite),
+                meta: Meta,
+            },
             value,
             GROUP_JSON_MAP
         );
@@ -31,7 +36,7 @@ const MEMBER_JSON_MAP = new Map([['userId', 'user_id']]);
 
 export class Member extends Struct {
     constructor(value) {
-        super({userId: AccountId, roles: Vector.with(MemberRoles), meta: Meta}, value, MEMBER_JSON_MAP);
+        super({userId: 'AccountId', roles: Vec.with(MemberRoles), meta: Meta}, value, MEMBER_JSON_MAP);
     }
 
     toJSON() {
@@ -43,39 +48,22 @@ export class Member extends Struct {
     }
 }
 
-class AdminRole extends Null {
-    toString() {
-        return 'Admin';
-    }
-}
-class MemberRole extends Null {
-    toString() {
-        return 'Member';
-    }
-}
+export class MemberRoles extends Enum.with(['AdminRole', 'MemberRole']) {}
 
-export class MemberRoles extends EnumType {
-    constructor(value?: any, index?: number | EnumType) {
-        super([AdminRole, MemberRole] as any, value, index);
-    }
-
-    toJSON() {
-        return this.value.toString();
-    }
-}
-
-export class Meta extends Vector.with(Tuple.with([Text, Text])) {
-    constructor(values) {
-        super(values);
-    }
-}
+export class Meta extends Vec.with(Tuple.with([Text, Text])) {}
 
 const INVITE_JSON_MAP = new Map([['peerId', 'peer_id'], ['inviteData', 'invite_data'], ['inviteKey', 'invite_key']]);
 
 export class Invite extends Struct {
     constructor(value) {
         super(
-            {peerId: AccountId, inviteData: Bytes, inviteKey: H256, meta: Meta, roles: Vector.with(MemberRoles)},
+            {
+                peerId: 'AccountId',
+                inviteData: 'Bytes',
+                inviteKey: 'H256',
+                meta: Meta,
+                roles: Vec.with(MemberRoles),
+            },
             value,
             INVITE_JSON_MAP
         );
@@ -86,7 +74,7 @@ const PENDING_INVITE_JSON_MAP = new Map([['inviteKey', 'invite_key']]);
 
 export class PendingInvite extends Struct {
     constructor(value) {
-        super({inviteKey: H256, meta: Meta, roles: Vector.with(MemberRoles)}, value, PENDING_INVITE_JSON_MAP);
+        super({inviteKey: 'H256', meta: Meta, roles: Vec.with(MemberRoles)}, value, PENDING_INVITE_JSON_MAP);
     }
 
     toJSON() {
@@ -100,13 +88,13 @@ export class PendingInvite extends Struct {
 
 export class AcceptPayload extends Struct {
     constructor(value) {
-        super({account_id: AccountId}, value);
+        super({account_id: 'AccountId'}, value);
     }
 }
 
-export class DeviceId extends U32 {}
+export class DeviceId extends ClassOf('u32') {}
 
-export class PreKeyBundle extends Bytes {
+export class PreKeyBundle extends ClassOf('Bytes') {
     constructor(values) {
         super(values);
     }
@@ -114,7 +102,7 @@ export class PreKeyBundle extends Bytes {
 
 // Response enum constructors
 class DeviceIdResponse extends DeviceId {}
-class WithdrawnPreKeyBundle extends Tuple.with([AccountId, U32, Bytes]) {
+class WithdrawnPreKeyBundle extends Tuple.with(['AccountId', 'u32', 'Bytes']) {
     constructor(values) {
         super(values);
     }
@@ -122,20 +110,13 @@ class WithdrawnPreKeyBundle extends Tuple.with([AccountId, U32, Bytes]) {
     toJSON() {
         const values = this.toArray();
         const [accountId, deviceId, pkb] = values;
-        return {
-            accountId: u8aToHex(accountId.toU8a(), -1, false),
-            deviceId: deviceId.toJSON(),
-            pkb: pkb.toU8a(true),
-        };
+        return [u8aToHex(accountId.toU8a(), -1, false), deviceId.toJSON(), u8aToHex(pkb.toU8a(true))];
     }
 }
-class PreKeyBundlesResponse extends Vector.with(WithdrawnPreKeyBundle) {}
-export class Response extends EnumType {
-    constructor(value, index) {
-        super([DeviceIdResponse, PreKeyBundlesResponse] as any, value, index);
-    }
-}
+class PreKeyBundlesResponse extends Vec.with(WithdrawnPreKeyBundle) {}
 
-export class VaultKey extends Bytes {}
+export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse}) {}
 
-export class VaultValue extends Bytes {}
+export class VaultKey extends ClassOf('Bytes') {}
+
+export class VaultValue extends ClassOf('Bytes') {}

@@ -19,11 +19,7 @@ import {Enum} from '@plugnet/types';
  * @description
  * Custom `FeesFee` type for fees module.
  */
-export default class FeesFee extends Enum {
+export default class FeesFee extends Enum.with(['Base', 'Bytes']) {
     static Base = new FeesFee(0);
     static Bytes = new FeesFee(1);
-
-    constructor(index?: string | Uint8Array | number) {
-        super(['Base', 'Bytes'], index);
-    }
 }

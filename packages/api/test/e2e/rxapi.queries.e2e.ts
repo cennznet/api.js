@@ -15,7 +15,7 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Hash} from '@plugnet/types';
+import {Hash} from '@plugnet/types/interfaces';
 import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {combineLatest} from 'rxjs';

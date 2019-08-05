@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Balance} from '@plugnet/types';
+import {ClassOf} from '@plugnet/types';
 
-export default class AmountOf extends Balance {}
+export default class AmountOf extends ClassOf('Balance') {}

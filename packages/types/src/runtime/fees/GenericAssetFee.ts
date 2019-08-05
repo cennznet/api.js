@@ -19,10 +19,6 @@ import {Enum} from '@plugnet/types';
  * @description
  * Custom `GenericAssetFee` type for generic asset module.
  */
-export default class GenericAssetFee extends Enum {
+export default class GenericAssetFee extends Enum.with(['Transfer']) {
     static Transfer = new GenericAssetFee(0);
-
-    constructor(index?: string | Uint8Array | number) {
-        super(['Transfer'], index);
-    }
 }

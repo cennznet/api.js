@@ -14,6 +14,3 @@
 
 export * from './runtime';
 export * from './extrinsic';
-
-// override Block to use our own Extrinsic Impl
-export * from './rpc';

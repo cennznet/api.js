@@ -16,12 +16,13 @@
  Custom `AssetOptions` type for generic asset module.
 */
 
-import {Balance, Compact, Struct} from '@plugnet/types';
-import {PermissionLatest} from './';
+import {Struct} from '@plugnet/types';
+import {Balance} from '@plugnet/types/interfaces';
+import PermissionLatest from './PermissionsV1';
 
 export default class AssetOptions extends Struct {
     constructor(value: any) {
-        super({initialIssuance: Compact.with(Balance), permissions: PermissionLatest}, value);
+        super({initialIssuance: 'Compact<Balance>', permissions: PermissionLatest}, value);
     }
 
     get initialIssuance(): Balance {

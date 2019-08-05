@@ -12,11 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Tuple, U128} from '@plugnet/types';
-import AssetId from './ga/AssetId';
-
-export class ExchangeKey extends Tuple.with([AssetId, AssetId]) {}
-
-export class FeeRate extends U128 {
-    static readonly SCALE_FACTOR = 1000000;
-}
+export {default as ExchangeKey} from './ExchangeKey';
+export {default as FeeRate} from './FeeRate';

@@ -12,5 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as Block} from './Block';
-export {default as SignedBlock} from './SignedBlock';
+import {HDKeyring as BaseHdKeyring} from '@plugnet/wallet';
+import {IKeyring} from '@plugnet/wallet/types';
+
+interface SerializedHDKeyring {
+    mnemonic: string;
+    numberOfAccounts?: number;
+    hdPath?: string;
+    keyringType?: string;
+}
+
+/**
+ * a HD Keyring implementation of ${IKeyring}
+ * will use hd path "m/44'/392'/0'/0" (for CENNZ) by default
+ */
+export class HDKeyring extends BaseHdKeyring implements IKeyring<SerializedHDKeyring> {
+    static DEFAULT_HD_PATH = "m/44'/392'/0'/0";
+}

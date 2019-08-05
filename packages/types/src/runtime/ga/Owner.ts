@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AccountId, Option} from '@plugnet/types';
+import {ClassOf} from '@plugnet/types';
 
-export default class Owner extends Option.with(AccountId) {}
+export default class Owner extends ClassOf('Option<AccountId>') {}

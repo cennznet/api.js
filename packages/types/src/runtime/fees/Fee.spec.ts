@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {getTypeRegistry} from '@plugnet/types';
+import * as feeTypes from './';
 import Fee from './Fee';
+
+const registry = getTypeRegistry();
+registry.register(feeTypes);
 
 describe('Fee', () => {
     it('starts with default value', () => {

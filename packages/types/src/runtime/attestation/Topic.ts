@@ -15,7 +15,7 @@
 /*
     Custom `Topic` type for Attestation module.
  */
-import {H256} from '@plugnet/types';
+import {ClassOf} from '@plugnet/types';
 import {isHex, isString, stringToU8a, u8aToString} from '@plugnet/util';
 
 function isAscii(str: string) {
@@ -46,7 +46,7 @@ function stripTrailingZero(value: Uint8Array) {
     return value.slice(0, endPos + 1);
 }
 
-export default class AttestationTopic extends H256 {
+export default class AttestationTopic extends ClassOf('H256') {
     constructor(value: string | Uint8Array) {
         if (isString(value) && !isHex(value)) {
             validateTopic(value);
