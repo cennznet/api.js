@@ -19,7 +19,6 @@ import {Address, Compact, Hash, Method, Struct} from '@plugnet/types';
 import {FunctionMetadata} from '@plugnet/types/Metadata/v5/Calls';
 import {AnyNumber, AnyU8a, ArgsDef, Codec, IExtrinsic, SignatureOptions} from '@plugnet/types/types';
 import {isHex, isU8a, u8aToHex, u8aToU8a} from '@plugnet/util';
-import {DoughnutValue} from '../../../api/src/types';
 import {Doughnut} from './Doughnut';
 import ExtrinsicSignature, {checkDoughnut, checkFeeExchange} from './ExtrinsicSignature';
 import FeeExchange from './FeeExchange';
@@ -30,6 +29,8 @@ type ExtrinsicValue = {
     doughnut?: Doughnut;
     feeExchange?: FeeExchange;
 };
+
+export type DoughnutValue = AnyU8a;
 
 export type FeeExchangeValue = {
     assetId: AnyNumber;
