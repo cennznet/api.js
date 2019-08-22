@@ -25,6 +25,7 @@
     "devDependencies": {
         "@plugnet/api": "^0.81.100",
         "@plugnet/rpc-provider": "^0.81.100",
+        "@plugnet/keyring": "^0.93.101",
         "typescript": "^3.4.5"
     }
 }
