@@ -17,11 +17,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {AssetId, AssetOptions} from '@cennznet/types';
-import SignerPayload from '@cennznet/types/extrinsic/SignerPayload';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {SubmittableResult} from '@plugnet/api';
-import {createType} from '@plugnet/types';
-import {hexToU8a} from '@plugnet/util';
 
 import {Api} from '../../src/Api';
 
@@ -82,7 +79,7 @@ describe('e2e transactions', () => {
 
         it('makes a tx with statusCb', async done => {
             const totalSupply = 100;
-            const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
+            const assetIdBefore = await api.query.genericAsset.nextAssetId() as AssetId;
             const reservedIdStart: number = 17000;
             const assetOptions = new AssetOptions({
                 initialIssuance: totalSupply,
@@ -97,11 +94,11 @@ describe('e2e transactions', () => {
                 .create(assetOptions)
                 .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
                     if (status.isFinalized) {
-                        const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
+                        const assetIdAfter = await api.query.genericAsset.nextAssetId() as AssetId;
                         // expect
                         expect(assetIdAfter.gt(assetIdBefore)).toBeTruthy();
-                        expect(Number(assetIdAfter.toString(10))).toBeGreaterThan(reservedIdStart);
-                        expect(Number(assetIdBefore.toString(10))).toBeGreaterThan(reservedIdStart);
+                        expect(Number(assetIdAfter.toString())).toBeGreaterThan(reservedIdStart);
+                        expect(Number(assetIdBefore.toString())).toBeGreaterThan(reservedIdStart);
                         done();
                     }
                 });
