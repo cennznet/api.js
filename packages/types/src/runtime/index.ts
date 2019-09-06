@@ -13,7 +13,7 @@
 // limitations under the License.
 
 export * from './attestation';
-export * from './cennzX';
+export * from './cennzx';
 export * from './ga';
 export * from './rewards';
 export * from './sylo';
