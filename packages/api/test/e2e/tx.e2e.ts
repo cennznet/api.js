@@ -16,11 +16,11 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {SubmittableResult} from '@plugnet/api';
+import {AssetId, AssetOptions} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
+import {SubmittableResult} from '@plugnet/api';
 
 import {Api} from '../../src/Api';
-import {AssetId, AssetOptions} from '@cennznet/types';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -32,7 +32,7 @@ const receiver = {
 const passphrase = 'passphrase';
 
 describe('e2e transactions', () => {
-    let api;
+    let api: Api;
 
     beforeAll(async () => {
         api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
@@ -49,6 +49,21 @@ describe('e2e transactions', () => {
     });
 
     describe('Send()', () => {
+
+        it('makes a tx using immortal era', async done => {
+            // const opt = {era: '0x00', blockHash: api.genesisHash};
+            // transfer
+            await api.tx.genericAsset
+                .transfer(16000, receiver.address, 1)
+                .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+                    if (status.isFinalized) {
+                        expect(events[0].event.method).toEqual('Transferred');
+                        expect(events[0].event.section).toEqual('genericAsset');
+                        done();
+                    }
+                });
+        }, 10000000);
+
         it('makes a tx', async done => {
             // transfer
             await api.tx.genericAsset
@@ -64,7 +79,7 @@ describe('e2e transactions', () => {
 
         it('makes a tx with statusCb', async done => {
             const totalSupply = 100;
-            const assetIdBefore: AssetId = await api.query.genericAsset.nextAssetId();
+            const assetIdBefore = await api.query.genericAsset.nextAssetId() as AssetId;
             const reservedIdStart: number = 17000;
             const assetOptions = new AssetOptions({
                 initialIssuance: totalSupply,
@@ -79,14 +94,46 @@ describe('e2e transactions', () => {
                 .create(assetOptions)
                 .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
                     if (status.isFinalized) {
-                        const assetIdAfter: AssetId = await api.query.genericAsset.nextAssetId();
+                        const assetIdAfter = await api.query.genericAsset.nextAssetId() as AssetId;
                         // expect
                         expect(assetIdAfter.gt(assetIdBefore)).toBeTruthy();
-                        expect(Number(assetIdAfter.toString(10))).toBeGreaterThan(reservedIdStart);
-                        expect(Number(assetIdBefore.toString(10))).toBeGreaterThan(reservedIdStart);
+                        expect(Number(assetIdAfter.toString())).toBeGreaterThan(reservedIdStart);
+                        expect(Number(assetIdBefore.toString())).toBeGreaterThan(reservedIdStart);
                         done();
                     }
                 });
+        });
+
+        describe('feeExchange extrinsic', () => {
+
+            it('makes a transfer (sign, then send)', async done => {
+
+                const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
+                tx.addFeeExchangeOpt({
+                    assetId: '16000',
+                    maxPayment: '50000000000000000',
+                });
+                const txOpt = {
+                    feeExchange: {
+                        assetId: '16000',
+                        maxPayment: '50000000000000000',
+                    },
+                };
+                return tx.signAndSend(sender.address, txOpt, ({events, status}) => {
+                    console.log('Transaction status:', status.type);
+                    if (status.isFinalized) {
+                        console.log('Completed at block hash', status.value.toHex());
+                        console.log('Events:');
+
+                        events.forEach(({phase, event: {data, method, section}}) => {
+                            console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+                        });
+
+                        done();
+                    }
+                });
+                done();
+            });
         });
     });
 });

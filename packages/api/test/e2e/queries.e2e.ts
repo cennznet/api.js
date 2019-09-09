@@ -17,9 +17,8 @@
  */
 import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import {EventRecord, Hash, Vector} from '@plugnet/types';
+import {Hash} from '@plugnet/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
-import BN from 'bn.js';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',

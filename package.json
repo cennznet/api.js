@@ -17,7 +17,7 @@
         "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
     },
     "devDependencies": {
-        "@plugnet/dev": "^0.30.7",
+        "@plugnet/dev": "^0.30.8",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
@@ -25,6 +25,7 @@
         "jest-environment-node": "^24.0.0",
         "lerna": "^3.13.1",
         "prettier": "^1.13.5",
+        "pretty-quick": "^1.11.1",
         "ts-jest": "^24.0.0",
         "ts-node": "^8.0.3",
         "tsconfig-paths": "^3.8.0",
@@ -48,7 +49,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "prettier --write 'packages/**/src/**/*'"
+            "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx tslint -c tslint.json --project ."
         }
     }
 }

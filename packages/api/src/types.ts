@@ -12,14 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/Extrinsic';
+import {DecoratedCennznetDerive} from '@cennznet/api/derives';
+import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {DeriveCustom} from '@plugnet/api-derive';
-import {SubmittableExtrinsic} from '@plugnet/api/SubmittableExtrinsic';
-import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
+import ApiBase from '@plugnet/api/base';
+import {
+    ApiOptions as ApiOptionsBase,
+    SignerOptions as SignerOptionsBase,
+    SubmitableResultResult,
+    SubmitableResultSubscription,
+    SubmittableExtrinsic as SubmittableExtrinsicBase,
+    SubmittableResultImpl,
+} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {AccountId, Address, AssetOf} from '@plugnet/types';
-import {MethodFunction} from '@plugnet/types/primitive/Method';
-import {CodecArg, Constructor, RegistryTypes} from '@plugnet/types/types';
+import {AccountId, Address, AssetOf} from '@plugnet/types/interfaces';
+import {
+    Callback,
+    CallFunction,
+    CodecArg,
+    Constructor,
+    IKeyringPair,
+    RegistryTypes,
+    SignatureOptions,
+} from '@plugnet/types/types';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
 
@@ -40,13 +55,6 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
 
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
 
-export interface ICennznetExtrinsic<CodecResult, SubscriptionResult>
-    extends SubmittableExtrinsic<CodecResult, SubscriptionResult> {
-    addDoughnut(doughnut: DoughnutValue): this;
-    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
-    fee(sender: AnyAddress): CodecResult extends Promise<any> ? Promise<AssetOf> : Observable<AssetOf>;
-}
-
 export interface IPlugin {
     injectName?: string;
     sdkClass?: Constructor<any>;
@@ -55,15 +63,53 @@ export interface IPlugin {
     derives?: DeriveCustom;
 }
 
-// override types in @plugnet/api to return ICennznetExtrinsic
-export interface SubmittableExtrinsicFunction<CodecResult, SubscriptionResult>
-    extends Pick<MethodFunction, 'callIndex' | 'meta' | 'method' | 'section' | 'toJSON'> {
-    (...params: Array<CodecArg>): ICennznetExtrinsic<CodecResult, SubscriptionResult>;
+export interface SignerOptions extends SignerOptionsBase {
+    doughnut?: DoughnutValue;
+    feeExchange?: FeeExchangeValue;
 }
 
-export interface SubmittableModuleExtrinsics<CodecResult, SubscriptionResult> {
-    [index: string]: SubmittableExtrinsicFunction<CodecResult, SubscriptionResult>;
+export interface SubmittableExtrinsic<ApiType> extends SubmittableExtrinsicBase<ApiType> {
+    send(): SubmitableResultResult<ApiType>;
+
+    send(statusCb: Callback<SubmittableResultImpl>): SubmitableResultSubscription<ApiType>;
+
+    sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
+
+    signAndSend(
+        account: IKeyringPair | string | AccountId | Address,
+        options?: Partial<SignerOptions>
+    ): SubmitableResultResult<ApiType>;
+
+    signAndSend(
+        account: IKeyringPair | string | AccountId | Address,
+        statusCb: Callback<SubmittableResultImpl>
+    ): SubmitableResultSubscription<ApiType>;
+
+    signAndSend(
+        account: IKeyringPair | string | AccountId | Address,
+        options: Partial<SignerOptions>,
+        statusCb?: Callback<SubmittableResultImpl>
+    ): SubmitableResultSubscription<ApiType>;
+
+    addDoughnut(doughnut: DoughnutValue): SubmittableExtrinsic<ApiType>;
+
+    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): SubmittableExtrinsic<ApiType>;
+
+    fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
 }
-export interface SubmittableExtrinsics<CodecResult, SubscriptionResult> {
-    [index: string]: SubmittableModuleExtrinsics<CodecResult, SubscriptionResult>;
+
+export interface SubmittableExtrinsicFunction<ApiType> extends CallFunction {
+    (...params: CodecArg[]): SubmittableExtrinsic<ApiType>;
 }
+
+export interface SubmittableModuleExtrinsics<ApiType> {
+    [index: string]: SubmittableExtrinsicFunction<ApiType>;
+}
+
+export interface SubmittableExtrinsics<ApiType> {
+    (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
+
+    [index: string]: SubmittableModuleExtrinsics<ApiType>;
+}
+
+export type Derives<ApiType> = ReturnType<ApiBase<ApiType>['decorateDerive']> & DecoratedCennznetDerive<ApiType>;

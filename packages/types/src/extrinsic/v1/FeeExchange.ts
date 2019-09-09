@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Balance, Compact, getTypeRegistry, Struct} from '@plugnet/types';
-import AssetId from '../runtime/ga/AssetId';
+import {Struct} from '@plugnet/types';
+import {Balance} from '@plugnet/types/interfaces';
+import AssetId from '../../runtime/ga/AssetId';
 
 export default class FeeExchange extends Struct {
     constructor(value?: any) {
-        const typeRegistry = getTypeRegistry();
-        const AssetId = typeRegistry.getOrThrow('AssetId') as any;
-        const Balance = typeRegistry.getOrThrow('Balance') as any;
-        super({assetId: Compact.with(AssetId), maxPayment: Compact.with(Balance)}, value);
+        super({assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
     }
 
     get assetId(): AssetId {
@@ -29,5 +27,9 @@ export default class FeeExchange extends Struct {
 
     get maxPayment(): Balance {
         return this.get('maxPayment') as AssetId;
+    }
+
+    toJSON(): {assetId: number; maxPayment: string} {
+        return {assetId: this.assetId.toNumber(), maxPayment: this.maxPayment.toString()};
     }
 }

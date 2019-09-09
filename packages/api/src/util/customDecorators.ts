@@ -12,8 +12,8 @@ export function decorateExtrinsics(api: Api | ApiRx) {
 
 function decorateExtrinsic(
     api: Api | ApiRx,
-    method: SubmittableExtrinsicFunction<any, any>
-): SubmittableExtrinsicFunction<any, any> {
+    method: SubmittableExtrinsicFunction<any>
+): SubmittableExtrinsicFunction<any> {
     const newMethod = (...params: Array<CodecArg>) => {
         const extrinsic = method(...params);
         Object.defineProperty(extrinsic, 'fee', {

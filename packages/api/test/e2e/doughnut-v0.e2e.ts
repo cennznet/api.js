@@ -55,13 +55,15 @@ async function makeDoughnut(
   );
 }
 
-describe('Doughnut for CennznetExtrinsic', () => {
+describe.skip('Doughnut for CennznetExtrinsic', () => {
   let aliceKeyPair = {
     secretKey: hexToU8a('0x98319d4ff8a9508c4bb0cf0b5a78d760a0b2082c02775e6e82370816fedfff48925a225d97aa00682d6a59b95b18780c10d7032336e88f3442b42361f4a66011'),
     publicKey: hexToU8a('0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d')
   };
   let api: Api;
-  let keyring;
+  let keyring: {
+    [index: string]: KeyringPair;
+  };
 
   beforeAll(async () => {
     api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
@@ -83,13 +85,15 @@ describe('Doughnut for CennznetExtrinsic', () => {
     const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
     tx.addDoughnut(doughnut);
 
-    await tx.signAndSend(keyring.bob, async ({events, status}) => {
+    const opt = {doughnut};
+
+    await tx.signAndSend(keyring.bob, opt, async ({events, status}) => {
       if (status.isFinalized) {
         const transfer = events.find(
           event => (
             event.event.data.method === 'Transferred' &&
             event.event.data.section === 'genericAsset' &&
-            event.event.data[1] == keyring.alice.address // transferred from alice's account
+            event.event.data[1].toString() === keyring.alice.address // transferred from alice's account
           )
         );
         if (transfer != undefined) {

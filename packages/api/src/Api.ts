@@ -12,22 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
-import {GenericAsset} from '@cennznet/crml-generic-asset';
 import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
-import {CodecResult, SubscriptionResult} from '@plugnet/api/promise/types';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {isFunction, isObject} from '@plugnet/util';
 
-import * as derives from './derives';
+import derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, IPlugin, SubmittableExtrinsics} from './types';
+import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
 import {decorateExtrinsics} from './util/customDecorators';
+import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
 import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
@@ -60,26 +57,31 @@ export class Api extends ApiPromise {
         );
     }
 
-    // @ts-ignore
-    get tx(): SubmittableExtrinsics<CodecResult, SubscriptionResult>;
+    get tx(): SubmittableExtrinsics<'promise'> {
+        return super.tx as SubmittableExtrinsics<'promise'>;
+    }
+
+    get derive(): Derives<'promise'> {
+        return super.derive as Derives<'promise'>;
+    }
 
     // TODO: add other crml namespaces
 
-    /**
-     * Generic Asset CRML extention
-     */
-    get genericAsset(): GenericAsset {
-        // `injectPlugins` will override this getter.
-        throw new Error('Generic Asset plugin has not been injected.');
-    }
-
-    /**
-     * Cennzx Spot CRML extention
-     */
-    get cennzxSpot(): CennzxSpot {
-        // `injectPlugins` will override this getter.
-        throw new Error('Cennzx Spot plugin has not been injected.');
-    }
+    // /**
+    //  * Generic Asset CRML extention
+    //  */
+    // get genericAsset(): GenericAsset {
+    //     // `injectPlugins` will override this getter.
+    //     throw new Error('Generic Asset plugin has not been injected.');
+    // }
+    //
+    // /**
+    //  * Cennzx Spot CRML extention
+    //  */
+    // get cennzxSpot(): CennzxSpot {
+    //     // `injectPlugins` will override this getter.
+    //     throw new Error('Cennzx Spot plugin has not been injected.');
+    // }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =

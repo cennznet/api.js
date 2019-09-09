@@ -12,6 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as Fee} from './Fee';
 export {default as FeesFee} from './FeesFee';
 export {default as GenericAssetFee} from './GenericAssetFee';
+export {default as Fee} from './Fee';

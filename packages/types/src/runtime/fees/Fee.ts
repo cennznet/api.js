@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {EnumType, U8a} from '@plugnet/types';
+import {Enum} from '@plugnet/types';
+
 import FeesFee from './FeesFee';
 import GenericAssetFee from './GenericAssetFee';
 
@@ -24,16 +25,12 @@ const feesFeeIndex = 1;
  * @description
  * Custom `Fee` type
  */
-export default class Fee extends EnumType {
+export default class Fee extends Enum.with({GenericAssetFee, FeesFee}) {
     static GenericAssetFee = {
-        TransferFee: new Fee(GenericAssetFee.Transfer, genericAssetFeeIndex),
+        TransferFee: new Fee(0, genericAssetFeeIndex),
     };
     static FeesFee = {
-        BaseFee: new Fee(FeesFee.Base, feesFeeIndex),
-        BytesFee: new Fee(FeesFee.Bytes, feesFeeIndex),
+        BaseFee: new Fee(0, feesFeeIndex),
+        BytesFee: new Fee(1, feesFeeIndex),
     };
-
-    constructor(values?: any, index?: number) {
-        super({GenericAssetFee, FeesFee}, values, index);
-    }
 }

@@ -18,7 +18,7 @@ import {AnyU8a} from '@plugnet/types/types';
 /**
  * An encoded, signed v0 Doughnut certificate
  **/
-export class Doughnut extends U8a {
+export default class Doughnut extends U8a {
     get encodedLength(): number {
         return this.toU8a().length;
     }

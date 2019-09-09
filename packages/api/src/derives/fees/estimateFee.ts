@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterface$Rx} from '@cennznet/api/polkadot.types';
+import {ApiInterfaceRx} from '@cennznet/api/polkadot.types';
 import {Fee} from '@cennznet/types';
 import {drr} from '@plugnet/api-derive/util/drr';
-import {Address, Compact, createType, Index, Struct, U8} from '@plugnet/types';
+import {createType} from '@plugnet/types';
+import {Address, Index} from '@plugnet/types/interfaces';
 import {IExtrinsic} from '@plugnet/types/types';
 import BN from 'bn.js';
 import {combineLatest, Observable, of} from 'rxjs';
@@ -28,7 +29,7 @@ const FEE_MAP = {
     },
 };
 
-export function estimateFee(api: ApiInterface$Rx) {
+export function estimateFee(api: ApiInterfaceRx) {
     return (extrinsic: IExtrinsic, sender: Address): Observable<BN> => {
         const methodFeeEntry = (FEE_MAP[extrinsic.method.sectionName] || {})[extrinsic.method.methodName];
         const methodFee$ = methodFeeEntry ? api.query.fees.feeRegistry(methodFeeEntry) : of(new BN(0));
@@ -40,35 +41,35 @@ export function estimateFee(api: ApiInterface$Rx) {
         ]).pipe(
             first(),
             map(([baseFee, byteFee, methodFee, nonce]) =>
-                calcFee(baseFee as any, byteFee as any, methodFee, nonce as any, new Address(sender), extrinsic)
+                calcFee(
+                    baseFee as any,
+                    byteFee as any,
+                    methodFee,
+                    nonce as any,
+                    createType('Address', sender),
+                    extrinsic
+                )
             ),
             drr()
         );
     };
 }
 
-// export function estimateFeeAt(api: ApiInterface$Rx) {
-//     return (hash: IHash, extrinsic: IExtrinsic, sender: AnyAddress): Observable<BN> =>
-//         combineLatest([
-//             api.query.fees.transactionBaseFee.at(hash),
-//             api.query.fees.transactionByteFee.at(hash),
-//             api.query.system.accountNonce.at(hash, sender),
-//         ]).pipe(
-//             map(([baseFee, byteFee, nonce]) =>
-//                 calcFee(baseFee as any, byteFee as any, nonce as any, new Address(sender), extrinsic)
-//             )
-//         );
-// }
-
 const SIGNED_VERSION = 129;
 function calcFee(baseFee: BN, byteFee: BN, methodFee, nonce: Index, sender: Address, extrinsic: IExtrinsic) {
     const clone = createType('Extrinsic', extrinsic.toU8a(), true) as IExtrinsic;
-    const signature = (clone.signature as unknown) as Struct;
-    signature.set('signer', sender);
-    signature.set('nonce', new (Compact.with(Index))(nonce));
-    signature.set('version', new U8(SIGNED_VERSION));
-    return ((byteFee as unknown) as BN)
-        .muln(clone.encodedLength)
-        .add((baseFee as unknown) as BN)
-        .add(methodFee);
+    if (clone.version === 1) {
+        const signature = (clone as any).raw.get('signature');
+        signature.set('signer', sender);
+        signature.set('nonce', createType('Compact<Index>', nonce));
+        signature.set('version', createType('u8', SIGNED_VERSION));
+        // to avoid isEmpty check
+        signature.set('signature', createType('Signature', [1]));
+        return byteFee
+            .muln(clone.encodedLength)
+            .add(baseFee)
+            .add(methodFee);
+    }
+    //FIXME: to support Extrinsic v2
+    throw new Error('Extrinsic v2 fee estimation is not supported');
 }

@@ -12,5 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as feesDerives from './fees';
-export const fees = feesDerives;
+import {ApiInterfaceRx, MethodResult} from '@plugnet/api/types';
+import {AnyFunction} from '@plugnet/types/types';
+import {Observable} from 'rxjs';
+import * as fees from './fees';
+
+export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
+
+export const derive = {fees};
+
+export type DecoratedCennznetDerive<
+    ApiType,
+    AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
+> = {
+    [SectionName in keyof AllSections]: {
+        [MethodName in keyof AllSections[SectionName]]: ReturnType<
+            AllSections[SectionName][MethodName]
+        > extends AnyFunction
+            ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
+            : never;
+    };
+};
+
+export default derive;

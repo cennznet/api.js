@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {EnumType} from '@plugnet/types';
+import {Enum} from '@plugnet/types';
 import PermissionsV1 from './PermissionsV1';
 
-export default class PermissionVersions extends EnumType {
-    constructor(values: any) {
-        super({PermissionsV1}, values);
-    }
-}
+export default class PermissionVersions extends Enum.with({PermissionsV1}) {}

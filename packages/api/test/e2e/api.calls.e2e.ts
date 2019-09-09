@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Hash, Block, AccountId, EventRecord, Option, BlockNumber} from '@plugnet/types';
+import {Option} from '@plugnet/types';
+import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@plugnet/types/interfaces';
 import {HeaderExtended} from '@plugnet/api-derive';
-import {Fee} from '@cennznet/types';
+import {AssetId, Fee} from '@cennznet/types';
 
 import {Api} from '../../src/Api';
 
@@ -32,23 +33,23 @@ describe('e2e api calls', () => {
 
     it('get correct block', async () => {
         const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
-        expect(block.header.hash).toEqual(blockHash);
+        expect(block.header.hash.toString()).toEqual(blockHash.toString());
     });
 
     describe('Get transaction fee', () => {
         it('get correct baseFee', async () => {
-            const baseFee = await api.query.fees.feeRegistry(Fee.FeesFee.BaseFee);
-            expect(Number(baseFee.toString())).toBeGreaterThanOrEqual(0);
+            const baseFee = await api.query.fees.feeRegistry(Fee.FeesFee.BaseFee) as Balance;
+            expect(baseFee.gtn(0)).toBeTruthy();
         });
 
         it('get correct byteFee', async () => {
-            const byteFee = await api.query.fees.feeRegistry(Fee.FeesFee.BytesFee);
-            expect(Number(byteFee.toString())).toBeGreaterThanOrEqual(0);
+            const byteFee = await api.query.fees.feeRegistry(Fee.FeesFee.BytesFee) as Balance;
+            expect(byteFee.gtn(0)).toBeTruthy();
         });
 
         it('get correct transferFee', async () => {
-            const transferFee = await api.query.fees.feeRegistry(Fee.GenericAssetFee.TransferFee);
-            expect(Number(transferFee.toString())).toBeGreaterThanOrEqual(0);
+            const transferFee = await api.query.fees.feeRegistry(Fee.GenericAssetFee.TransferFee) as Balance;
+            expect(transferFee.gtn(0)).toBeTruthy();
         });
     });
 
@@ -110,17 +111,15 @@ describe('e2e api calls', () => {
 
     describe('Get core asset id', () => {
         it('get correct spending asset id', async () => {
-            const spendingAssetId: number = await api.query.genericAsset.spendingAssetId
-                .at(blockHash)
-                .then(r => Number(r.toString()));
-            expect(spendingAssetId).toBeGreaterThanOrEqual(0);
+            const spendingAssetId = await api.query.genericAsset.spendingAssetId
+                .at(blockHash) as AssetId;
+            expect(spendingAssetId.gtn(0)).toBeTruthy();
         });
 
         it('get correct staking asset id', async () => {
-            const stakingAssetId: number = await api.query.genericAsset.stakingAssetId
-                .at(blockHash)
-                .then(r => Number(r.toString()));
-            expect(stakingAssetId).toBeGreaterThanOrEqual(0);
+            const stakingAssetId = await api.query.genericAsset.stakingAssetId
+                .at(blockHash) as AssetId;
+            expect(stakingAssetId.gtn(0)).toBeTruthy();
         });
     });
 });

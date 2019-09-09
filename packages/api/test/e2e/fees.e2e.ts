@@ -15,7 +15,8 @@
 import {ApiRx, SubmittableResult} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import testingPairs from '@plugnet/keyring/testingPairs';
-import {EventRecord, Vector} from '@plugnet/types';
+import {Vec} from '@plugnet/types';
+import {EventRecord} from '@plugnet/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -48,7 +49,7 @@ describe('fees in cennznet', () => {
             await tx.signAndSend(sender.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
+                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
                     const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
                     const gas = feeChargeEvent.event.data[1];
                     expect(gas.toString()).toEqual(fee.toString());
@@ -63,7 +64,7 @@ describe('fees in cennznet', () => {
             await tx.signAndSend(sender.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vector<EventRecord>;
+                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
                     const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
                     const gas = feeChargeEvent.event.data[1];
                     expect(gas.toString()).toEqual(fee.toString());
@@ -73,36 +74,36 @@ describe('fees in cennznet', () => {
         });
     });
 
-    describe('feeExchange for CennznetExtrinsic', () => {
-        afterEach(() => {
-            jest.setTimeout(5000);
-        });
-
-        it('makes a transfer (sign, then send)', async done => {
-            const tradeAssetId = 17008;
-            const trader = keyring.bob;
-
-            const tx = api.tx.genericAsset.transfer(16000, trader.address, 10000);
-            tx.addFeeExchangeOpt({
-                assetId: tradeAssetId,
-                maxPayment: '50000000000000000',
-            });
-            return tx.signAndSend(trader, ({events, status}) => {
-                console.log('Transaction status:', status.type);
-                if (status.isFinalized) {
-                    console.log('Completed at block hash', status.value.toHex());
-                    console.log('Events:');
-
-                    events.forEach(({phase, event: {data, method, section}}) => {
-                        console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-                    });
-
-                    done();
-                }
-            });
-            done();
-        });
-    });
+    // describe('feeExchange for CennznetExtrinsic', () => {
+    //     afterEach(() => {
+    //         jest.setTimeout(5000);
+    //     });
+    //
+    //     it('makes a transfer (sign, then send)', async done => {
+    //         const tradeAssetId = 17008;
+    //         const trader = keyring.bob;
+    //
+    //         const tx = api.tx.genericAsset.transfer(16000, trader.address, 10000);
+    //         tx.addFeeExchangeOpt({
+    //             assetId: tradeAssetId,
+    //             maxPayment: '50000000000000000',
+    //         });
+    //         return tx.signAndSend(trader, ({events, status}) => {
+    //             console.log('Transaction status:', status.type);
+    //             if (status.isFinalized) {
+    //                 console.log('Completed at block hash', status.value.toHex());
+    //                 console.log('Events:');
+    //
+    //                 events.forEach(({phase, event: {data, method, section}}) => {
+    //                     console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+    //                 });
+    //
+    //                 done();
+    //             }
+    //         });
+    //         done();
+    //     });
+    // });
 });
 
 describe('fees in cennznet (Rxjs)', () => {
@@ -130,7 +131,7 @@ describe('fees in cennznet (Rxjs)', () => {
             tx.signAndSend(sender.address).subscribe(async ({events, status}: SubmittableResult) => {
                 if (status.isFinalized && events !== undefined) {
                     const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vector<
+                    const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<
                         EventRecord
                     >;
                     const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
