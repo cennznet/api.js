@@ -12,12 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * @deprecated
- */
-export {SubmittableResult} from '@plugnet/api';
-
-/**
- * @deprecated
- */
-export {WsProvider} from '@plugnet/rpc-provider';
+export * from '@plugnet/types/interfaces';

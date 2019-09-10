@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/cennznet/crml-cennzx-spot.js) (2019-09-10)
+* Upgrade to `@plugnet/api@0.90.x`
+
+
+### Breaking Change
+* Api.create() doesn't accept provider, pass {provider: ..} instead
+* `@cennznet/crml-*` are direct dependencies, not peer dependencies any more
+* WsProvider is no longer exported. pass url string to provider directly.
+* SubmittableResult is no longer exported from `@cennznet/api/polkadot`, use it from ``@cennznet/api` instead.
+* Doughnut and and FeeExchangeOption need to be passed as part of SignerOptions as well  
+
 # [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 
 ### Breaking(comes with @plugnet/keyring v0.93.100)

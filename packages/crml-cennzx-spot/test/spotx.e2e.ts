@@ -17,7 +17,6 @@
  */
 import {Api} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import {SubmittableResult} from '@cennznet/api/polkadot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
 import BN from 'bn.js';
 import {CennzxSpot} from '../src/CennzxSpot';
@@ -61,8 +60,8 @@ describe('SpotX APIs', () => {
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
         api.setSigner(wallet);
-        cennzxSpot = await CennzxSpot.create(api);
-        ga = cennzxSpot.ga;
+        cennzxSpot = api.cennzxSpot;
+        ga = api.genericAsset;
     });
 
     afterAll(async () => {
@@ -79,7 +78,7 @@ describe('SpotX APIs', () => {
 
             const initialIssuance = 100000000;
             const permissions = {mint: address};
-            await ga.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}: SubmittableResult) => {
+            await ga.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
                     if (status.isFinalized) {
                         let assetCreated = false;
                         let assetId;
@@ -101,7 +100,7 @@ describe('SpotX APIs', () => {
                         expect((await ga.getFreeBalance(coreAssetId, address)).gtn(coreAmount)).toBeTruthy();
                         await cennzxSpot
                                 .addLiquidity(assetId, minLiquidity, investmentAmount, coreAmount)
-                                .signAndSend(address, async ({events, status}: SubmittableResult) => {
+                                .signAndSend(address, async ({events, status}) => {
                                     if (status.isFinalized) {
                                         let liquidityCreated = false;
                                         for (const {event} of events) {
@@ -140,7 +139,7 @@ describe('SpotX APIs', () => {
             const minLiquidity = 1;
             await cennzxSpot
                 .addLiquidity(tradeAssetA, minLiquidity, investmentAmount, coreAmount)
-                .signAndSend(address, async ({events, status}: SubmittableResult) => {
+                .signAndSend(address, async ({events, status}) => {
                     if (status.isFinalized) {
                         let liquidityCreated = false;
                         for (const {event} of events) {
@@ -177,7 +176,7 @@ describe('SpotX APIs', () => {
             const minLiquidity = 1;
             await cennzxSpot
                 .addLiquidity(tradeAssetB, minLiquidity, investmentAmount, coreAmount)
-                .signAndSend(address, async ({events, status}: SubmittableResult) => {
+                .signAndSend(address, async ({events, status}) => {
                     if (status.isFinalized) {
                         let liquidityCreated = false;
                         for (const {event} of events) {
@@ -209,7 +208,7 @@ describe('SpotX APIs', () => {
             const {coreAmount, assetAmount} = await cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
             await cennzxSpot
                 .removeLiquidity(tradeAssetA, removeLiquidity, 1, 1)
-                .signAndSend(investor.address, async ({events, status}: SubmittableResult) => {
+                .signAndSend(investor.address, async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         let isRemoved = false;
                         for (const {event} of events) {
@@ -237,7 +236,7 @@ describe('SpotX APIs', () => {
         const buffer = 1000;
         await cennzxSpot
             .assetSwapOutput(tradeAssetA, coreAssetId, amountBought, expectedCorePrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -259,7 +258,7 @@ describe('SpotX APIs', () => {
         const buffer = 1000;
         await cennzxSpot
             .assetSwapOutput(coreAssetId, tradeAssetA, amountBought, expectedAssetPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -282,7 +281,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetSwapInput(coreAssetId, tradeAssetA, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -306,7 +305,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetTransferInput(recipient.address, coreAssetId, tradeAssetA, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -329,7 +328,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetSwapInput(tradeAssetA, coreAssetId, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -353,7 +352,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetTransferInput(recipient.address, tradeAssetA, coreAssetId, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -376,7 +375,7 @@ describe('SpotX APIs', () => {
         const buffer = 100;
         await cennzxSpot
             .assetTransferOutput(recipient.address, tradeAssetA, coreAssetId, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -399,7 +398,7 @@ describe('SpotX APIs', () => {
         const buffer = 100;
         await cennzxSpot
             .assetTransferOutput(recipient.address, coreAssetId, tradeAssetA, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -423,7 +422,7 @@ describe('SpotX APIs', () => {
         const buffer = 100;
         await cennzxSpot
             .assetSwapOutput(tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -446,7 +445,7 @@ describe('SpotX APIs', () => {
         const buffer = 100;
         await cennzxSpot
             .assetTransferOutput(recipient.address, tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -469,7 +468,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetSwapInput(tradeAssetA, tradeAssetB, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -493,7 +492,7 @@ describe('SpotX APIs', () => {
         const minReceive = 1;
         await cennzxSpot
             .assetTransferInput(recipient.address, tradeAssetA, tradeAssetB, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}: SubmittableResult) => {
+            .signAndSend(trader.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {

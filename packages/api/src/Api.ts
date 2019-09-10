@@ -35,7 +35,7 @@ import logger from './util/logging';
 export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
-    static async create(options: ApiOptions | ProviderInterface = {}): Promise<Api> {
+    static async create(options: ApiOptions = {}): Promise<Api> {
         const api = new Api(options);
         return withTimeout(
             new Promise((resolve, reject) => {
@@ -67,8 +67,6 @@ export class Api extends ApiPromise {
         return super.derive as Derives<'promise'>;
     }
 
-    // TODO: add other crml namespaces
-
     /**
      * Generic Asset CRML extention
      */
@@ -85,11 +83,8 @@ export class Api extends ApiPromise {
         throw new Error('Cennzx Spot plugin has not been injected.');
     }
 
-    constructor(provider: ApiOptions | ProviderInterface = {}) {
-        const options =
-            isObject(provider) && isFunction((provider as ProviderInterface).send)
-                ? ({provider} as ApiOptions)
-                : ({...provider} as ApiOptions);
+    constructor(_options: ApiOptions = {}) {
+        const options = {..._options};
 
         if (typeof options.provider === 'string') {
             options.provider = getProvider(options.provider);

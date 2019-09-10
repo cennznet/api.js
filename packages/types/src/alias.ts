@@ -13,11 +13,6 @@
 // limitations under the License.
 
 export default {
-    // 'T::AccountId': 'AccountId',
-    // // TODO: should not throw error
-    // 'ExchangeKey<T>': 'ExchangeKey',
-    // 'T::AssetId': 'AssetId',
-    // 'T::Balance': 'Balance',
     AssetOf: 'u128',
     'ed25519::Signature': 'H512',
 };

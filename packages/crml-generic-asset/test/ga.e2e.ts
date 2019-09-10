@@ -16,7 +16,6 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Api} from '@cennznet/api';
-import {SubmittableResult} from '@cennznet/api/polkadot';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {GenericAsset} from '../src/GenericAsset';
@@ -50,7 +49,7 @@ describe('Generic asset APIs', () => {
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
         api.setSigner(wallet);
-        ga = await GenericAsset.create(api);
+        ga = api.genericAsset;
     });
 
     afterAll(async () => {
@@ -64,7 +63,7 @@ describe('Generic asset APIs', () => {
                 const assetOptions = {
                     initialIssuance: totalAmount,
                 };
-                await ga.create(assetOptions).signAndSend(assetOwner.address, ({events, status}: SubmittableResult) => {
+                await ga.create(assetOptions).signAndSend(assetOwner.address, ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         for (let i = 0; i < events.length; i += 1) {
                             const event = events[i];
@@ -180,7 +179,7 @@ describe('Generic asset APIs', () => {
             expect(balanceBefore).toBeDefined;
             await ga
                 .transfer(testAsset.id, receiver.address, transferAmount)
-                .signAndSend(assetOwner.address, ({events, status}: SubmittableResult) => {
+                .signAndSend(assetOwner.address, ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         ga.getFreeBalance(testAsset.id, assetOwner.address).then((balanceAfter: Balance) => {
                             expect(balanceBefore.sub(balanceAfter).toString()).toEqual(transferAmount.toString());
@@ -196,7 +195,7 @@ describe('Generic asset APIs', () => {
             expect(balanceBefore).toBeDefined;
             const tx = ga.transfer(transferAsset, receiver.address, transferAmount);
 
-            await tx.signAndSend(assetOwner.address, ({events, status}: SubmittableResult) => {
+            await tx.signAndSend(assetOwner.address, ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     ga.getFreeBalance(transferAsset, assetOwner.address).then((balanceAfter: Balance) => {
                         expect(balanceBefore.sub(balanceAfter).toString()).toEqual(transferAmount.toString());

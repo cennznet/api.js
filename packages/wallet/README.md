@@ -1,6 +1,6 @@
 # `cennznet-wallet`
 
-> a wallet implement to use with cennznet-js
+**a wallet and a payload signer for cennznet**
 
 ## Usage
 
@@ -73,6 +73,11 @@ await wallet.unlock(passphrase);
 
 ```
 const address = await wallet.addAccount();
+```
+
+## assigned as @cennznet/api's payload signer
+```
+api.setSigner(wallet);
 ```
 
 check API Document for more details.

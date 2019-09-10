@@ -16,7 +16,6 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {ApiRx} from '@cennznet/api';
-import {SubmittableResult} from '@cennznet/api/polkadot';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
@@ -52,7 +51,7 @@ describe('Generic asset Rx APIs', () => {
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
         api.setSigner(wallet);
-        ga = await GenericAssetRx.create(api).toPromise();
+        ga = api.genericAsset;
     });
 
     afterAll(async () => {
@@ -68,7 +67,7 @@ describe('Generic asset Rx APIs', () => {
                 };
                 ga.create(assetOptions).signAndSend(assetOwner.address)
                     .pipe(
-                        filter(({events, status}: SubmittableResult) => {
+                        filter(({events, status}) => {
                             let isCreated = false;
                             if (status.isFinalized && events !== undefined) {
                                 for (let i = 0; i < events.length; i += 1) {
@@ -80,7 +79,7 @@ describe('Generic asset Rx APIs', () => {
                             }
                             return isCreated;
                         }),
-                        switchMap(({events, status}: SubmittableResult) => {
+                        switchMap(({events, status}) => {
                             let event;
                             for (let i = 0; i < events.length; i += 1) {
                                 if (events[i].event.method === 'Created') {
@@ -196,7 +195,7 @@ describe('Generic asset Rx APIs', () => {
             const balanceBefore = await ga.getFreeBalance(testAsset.id, assetOwner.address).pipe(first()).toPromise() as Balance;
             expect(balanceBefore).toBeDefined();
             ga.transfer(testAsset.id, receiver.address, transferAmount).signAndSend(assetOwner.address)
-                .subscribe(async ({events, status}: SubmittableResult) => {
+                .subscribe(async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         const balanceAfter = await ga.getFreeBalance(testAsset.id, assetOwner.address).pipe(first()).toPromise() as Balance;
                         expect((balanceBefore.sub(balanceAfter)).toString()).toEqual(transferAmount.toString());
@@ -211,7 +210,7 @@ describe('Generic asset Rx APIs', () => {
             expect(balanceBefore).toBeDefined();
             const tx = ga.transfer(transferAsset, receiver.address, transferAmount);
 
-            tx.signAndSend(assetOwner.address).subscribe(async ({events, status}: SubmittableResult) => {
+            tx.signAndSend(assetOwner.address).subscribe(async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     const balanceAfter = await ga.getFreeBalance(transferAsset, assetOwner.address).pipe(first()).toPromise() as Balance;
                     expect((balanceBefore.sub(balanceAfter)).toString(10)).toEqual(transferAmount.toString());

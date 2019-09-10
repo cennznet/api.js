@@ -36,7 +36,7 @@ import {getTimeout} from './util/getTimeout';
 import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
-    static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
+    static create(options: ApiOptions = {}): Observable<ApiRx> {
         const apiRx = new ApiRx(options);
 
         const timeoutMs = getTimeout(options);
@@ -81,11 +81,8 @@ export class ApiRx extends ApiRxBase {
         throw new Error('Cennzx Spot plugin has not been injected.');
     }
 
-    constructor(provider: ApiOptions | ProviderInterface = {}) {
-        const options =
-            isObject(provider) && isFunction((provider as ProviderInterface).send)
-                ? ({provider} as ApiOptions)
-                : ({...provider} as ApiOptions);
+    constructor(_options: ApiOptions = {}) {
+        const options = {..._options};
         if (typeof options.provider === 'string') {
             options.provider = getProvider(options.provider);
         }
