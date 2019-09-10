@@ -17,6 +17,6 @@ Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_
 
 | Name                                                       | Description                                                |
 | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| [@cennznet/crml-generic-asset](https://github.com/cennznet/crml-generic-asset.js)   | A sdk providing additional features for generic asset runtime module            |
-| [@cennznet/crml-cennzx-spot](https://github.com/cennznet/crml-cennzx-spot.js)   | A sdk providing additional features for cennzx spot runtime module           |
+| [@cennznet/crml-generic-asset](packages/crml-generic-asset/README.md)   | A sdk providing additional features for generic asset runtime module            |
+| [@cennznet/crml-cennzx-spot](packages/crml-cennzx-spot/README.md)   | A sdk providing additional features for cennzx spot runtime module           |
 | [@cennznet/crml-attestation](https://github.com/cennznet/crml-attestation.js)   | A sdk providing additional features for Cennznet's Identity Service.          |

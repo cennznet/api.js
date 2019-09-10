@@ -3,9 +3,8 @@
 The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 
 # Install
-`@cennznet/crml-*` are peer dependencies to `@cennznet/api`, they need to be installed together.
 ```
-$> npm i --save @cennznet/api @cennznet/crml-generic-asset @cennznet/crml-cennzx-spot @cennznet/crml-attestation
+$> npm i --save @cennznet/api
 ```
 
 **Do not put @plugnet/\* or @polkadot/\* in your package.json**
@@ -15,30 +14,28 @@ $> npm i --save @cennznet/api @cennznet/crml-generic-asset @cennznet/crml-cennzx
 [https://unfrastructure.io/](https://unfrastructure.io/)
 
 ## Connect to Rimu TestNet
-`<Static>` [create(options?: ApiOptions | ProviderInterface)](https://cennznetdocs.com/api/latest/api/classes/_cennznet_api.api.md#create)
+`<Static>` [create(options?: ApiOptions)](https://cennznetdocs.com/api/latest/api/classes/_cennznet_api.api.md#create)
 
 ```
-//initialize Api and connect to dev network
+// initialize Api and connect to dev network
+// register your own endpoint at https://www.unfrastructure.io
 const {Api} = require('@cennznet/api')
 api = await Api.create({
-    provider: 'wss://rimu.unfrastructure.io/ws?apikey=***'
+    provider: 'wss://rimu.unfrastructure.io/public/ws'
 });
 // For Rxjs
 const {ApiRx} = require('@cennznet/api')
 api = await ApiRx.create({
-    provider: 'wss://rimu.unfrastructure.io/ws?apikey=***'
+    provider: 'wss://rimu.unfrastructure.io/public/ws'
 }).toPromise();
 ```
 
-if provider is a string url, sdk will chose Provider Class based on url protocol. Or you can initialize the provider Instance yourself.
-```
-const {WsProvicer, HttpProvider} = require('@cennznet/api');
-```
+We suggest passing provider as a string url, sdk will chose Provider Class based on url protocol. Or you can initialize the provider Instance yourself.
 
 ## Use SingleSource Extension as Signer
-```
-api.setSigner(window.SingleSource.signer);
-```
+[check here](https://github.com/cennznet/singlesource-extension)
+
+
 ## Use `@cennznet/wallet` as Signer
 
 `npm i --save @cennznet/wallet`
@@ -57,7 +54,16 @@ api.setSigner(wallet);
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
 * `addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): CennznetExtrinsic` so transaction fee will be paid in specified Asset instead of `CentraPay`
 * `addDoughnut(doughnut: DoughnutValue): CennznetExtrinsic` to embed a doughnut permission proof
-* `fee(sender: AnyAddress): Promise<AssetOf> (or Observable<AssetOf> for ApiRx)`: estimate the transaction fee this extrinsic will cost  
+* `fee(sender: AnyAddress): Promise<AssetOf> (or Observable<AssetOf> for ApiRx)`: estimate the transaction fee this extrinsic will cost
+
+To use doughnut or feeExchange, apart from attaching them to extrinsic, now it is also required to pass them as part of SignerOption
+```
+const tx = api.tx.genericAsset.transfer(16000, 'some address', 1000000);
+tx.addDoughnut(doughnut);
+tx.addFeeExchangeOpt(feeExchangeOpt);
+
+tx.signAndSend('sender address', {doughnut, feeExchangeOpt}, callbackFn);
+```
 
 [see more](https://cennznetdocs.com/api/latest/api/interfaces/_cennznet_api.icennznetextrinsic.md)
 
@@ -71,7 +77,7 @@ After connecting to CENNZNet, api will dynamically create queries and transactio
 * `api.derive.<section>.<method>` provides access to build-in complex state queries which are combination of several basic state queries.
 * `api.tx.<section>.<method>` provides the ability to create a transaction, like chain state, this list is populated from a runtime query 
 
-With CRML sdks installed, they will inject themselves in api. `api.genericAsset`, `api.cennzxSpot` and `api.attestation`.
+We also provide another approach for convenience, `api.genericAsset`, `api.cennzxSpot` and `api.attestation`.
 Queries, derive queries and tx methods are provided in under these namespaces.
 
 |  | Dynamic | CRML |

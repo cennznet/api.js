@@ -12,7 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export default {
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-};
+import {defaultAssets} from '../constants';
+import {IAsset} from '../types';
+
+export function findAssetById(assetId: number): IAsset | undefined {
+    return defaultAssets.find(asset => asset.id === assetId);
+}
+
+export function findAssetBySymbol(symbol: string): IAsset | undefined {
+    return defaultAssets.find(asset => asset.symbol === symbol);
+}
+
+export function reserveAssets(): IAsset[] {
+    return defaultAssets;
+}

@@ -12,12 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * @deprecated
- */
-export {SubmittableResult} from '@plugnet/api';
+import {IPlugin} from '@cennznet/api/types';
+// import * as derives from './derives';
+import {GenericAsset} from './GenericAsset';
+import {GenericAssetRx} from './GenericAssetRx';
+import EnhancedAssetId from './registry/EnhancedAssetId';
 
-/**
- * @deprecated
- */
-export {WsProvider} from '@plugnet/rpc-provider';
+export default {
+    injectName: 'genericAsset',
+    sdkClass: GenericAsset,
+    sdkRxClass: GenericAssetRx,
+    types: {
+        AssetId: EnhancedAssetId,
+    },
+    derives: {
+        // genericAsset: derives,
+    },
+} as IPlugin;

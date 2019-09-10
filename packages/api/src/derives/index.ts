@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
+import * as genericAsset from '@cennznet/crml-generic-asset/derives';
 import {ApiInterfaceRx, MethodResult} from '@plugnet/api/types';
 import {AnyFunction} from '@plugnet/types/types';
 import {Observable} from 'rxjs';
@@ -19,7 +21,7 @@ import * as fees from './fees';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = {fees};
+export const derive = {cennzxSpot, fees, genericAsset};
 
 export type DecoratedCennznetDerive<
     ApiType,

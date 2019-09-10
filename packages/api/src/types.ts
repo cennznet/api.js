@@ -23,12 +23,16 @@ import {
     SubmitableResultSubscription,
     SubmittableExtrinsic as SubmittableExtrinsicBase,
     SubmittableResultImpl,
+    UnsubscribePromise,
 } from '@plugnet/api/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {AccountId, Address, AssetOf} from '@plugnet/types/interfaces';
+import {u64} from '@plugnet/types';
+import {AccountId, Address, AssetOf, Hash} from '@plugnet/types/interfaces';
+import {StorageEntry} from '@plugnet/types/primitive/StorageKey';
 import {
     Callback,
     CallFunction,
+    Codec,
     CodecArg,
     Constructor,
     IKeyringPair,
@@ -113,3 +117,35 @@ export interface SubmittableExtrinsics<ApiType> {
 }
 
 export type Derives<ApiType> = ReturnType<ApiBase<ApiType>['decorateDerive']> & DecoratedCennznetDerive<ApiType>;
+
+interface StorageEntryBase<C, H, U> {
+    at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;
+    creator: StorageEntry;
+    hash: (arg1?: CodecArg, arg2?: CodecArg) => H;
+    key: (arg1?: CodecArg, arg2?: CodecArg) => string;
+    size: (arg1?: CodecArg, arg2?: CodecArg) => U;
+}
+
+export interface StorageEntryObservable<T extends Codec>
+    extends StorageEntryBase<Observable<T>, Observable<Hash>, Observable<u64>> {
+    (arg1?: CodecArg, arg2?: CodecArg): Observable<T>;
+    multi: (args: (CodecArg[] | CodecArg)[]) => Observable<T[]>;
+}
+export interface StorageEntryPromiseOverloads<T extends Codec> {
+    (arg1?: CodecArg, arg2?: CodecArg): Promise<T>;
+    (callback: Callback<T>): UnsubscribePromise;
+    (arg: CodecArg, callback: Callback<T>): UnsubscribePromise;
+    (arg1: CodecArg, arg2: CodecArg, callback: Callback<T>): UnsubscribePromise;
+}
+export interface StorageEntryPromiseMulti<T extends Codec> {
+    (args: (CodecArg[] | CodecArg)[]): Promise<T[]>;
+    (args: (CodecArg[] | CodecArg)[], callback: Callback<T[]>): UnsubscribePromise;
+}
+export interface StorageEntryPromise<T extends Codec>
+    extends StorageEntryBase<Promise<T>, Promise<Hash>, Promise<u64>>,
+        StorageEntryPromiseOverloads<T> {
+    multi: StorageEntryPromiseMulti<T>;
+}
+export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType extends 'rxjs'
+    ? StorageEntryObservable<T>
+    : StorageEntryPromise<T>;

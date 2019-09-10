@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export default {
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-};
+import {isBn, isNumber, isObject, isU8a} from '@cennznet/util';
+
+export function isAssetObj(value: any): boolean {
+    return isObject(value) && !isU8a(value) && !isBn(value) && isNumber(value.id);
+}
+
+export function isStringNumber(str: string): boolean {
+    return !isNaN(Number(str));
+}

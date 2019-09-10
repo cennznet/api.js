@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export default {
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-};
+export {CennzxSpot} from './CennzxSpot';
+export {CennzxSpotRx} from './CennzxSpotRx';
+
+export {default as Plugin} from './plugin';

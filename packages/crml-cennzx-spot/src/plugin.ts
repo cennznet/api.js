@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {CennzxSpot} from './CennzxSpot';
+import {CennzxSpotRx} from './CennzxSpotRx';
+// import * as derives from './derives';
+
 export default {
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
+    injectName: 'cennzxSpot',
+    sdkClass: CennzxSpot,
+    sdkRxClass: CennzxSpotRx,
+    types: {},
+    derives: {
+        // cennzxSpot: derives,
+    },
 };

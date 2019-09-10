@@ -16,6 +16,8 @@ import getPlugins from '@cennznet/api/plugins';
 import {decorateExtrinsics} from '@cennznet/api/util/customDecorators';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
+import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
+import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
@@ -34,7 +36,7 @@ import {getTimeout} from './util/getTimeout';
 import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
-    static create(options: ApiOptions | ProviderInterface = {}): Observable<ApiRx> {
+    static create(options: ApiOptions = {}): Observable<ApiRx> {
         const apiRx = new ApiRx(options);
 
         const timeoutMs = getTimeout(options);
@@ -63,29 +65,24 @@ export class ApiRx extends ApiRxBase {
         return super.derive as Derives<'rxjs'>;
     }
 
-    // TODO: add other crml namespaces
+    /**
+     * Generic Asset CRML extention
+     */
+    get genericAsset(): GenericAssetRx {
+        // `injectPlugins` will override this getter.
+        throw new Error('Generic Asset plugin has not been injected.');
+    }
 
-    // /**
-    //  * Generic Asset CRML extention
-    //  */
-    // get genericAsset(): GenericAssetRx {
-    //     // `injectPlugins` will override this getter.
-    //     throw new Error('Generic Asset plugin has not been injected.');
-    // }
-    //
-    // /**
-    //  * Cennzx Spot CRML extention
-    //  */
-    // get cennzxSpot(): CennzxSpotRx {
-    //     // `injectPlugins` will override this getter.
-    //     throw new Error('Cennzx Spot plugin has not been injected.');
-    // }
+    /**
+     * Cennzx Spot CRML extention
+     */
+    get cennzxSpot(): CennzxSpotRx {
+        // `injectPlugins` will override this getter.
+        throw new Error('Cennzx Spot plugin has not been injected.');
+    }
 
-    constructor(provider: ApiOptions | ProviderInterface = {}) {
-        const options =
-            isObject(provider) && isFunction((provider as ProviderInterface).send)
-                ? ({provider} as ApiOptions)
-                : ({...provider} as ApiOptions);
+    constructor(_options: ApiOptions = {}) {
+        const options = {..._options};
         if (typeof options.provider === 'string') {
             options.provider = getProvider(options.provider);
         }

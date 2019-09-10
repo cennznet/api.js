@@ -18,6 +18,10 @@
         "paths": {
             "@cennznet/api/*": ["packages/api/src/*"],
             "@cennznet/api": ["packages/api/src/index"],
+            "@cennznet/crml-cennzx-spot/*": ["packages/crml-cennzx-spot/src/*"],
+            "@cennznet/crml-cennzx-spot": ["packages/crml-cennzx-spot/src/index"],
+            "@cennznet/crml-generic-asset/*": ["packages/crml-generic-asset/src/*"],
+            "@cennznet/crml-generic-asset": ["packages/crml-generic-asset/src/index"],
             "@cennznet/types/*": ["packages/types/src/*"],
             "@cennznet/types": ["packages/types/src/index"],
             "@cennznet/util/*": ["packages/util/src/*"],

@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export default {
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-};
+export const PERMILL_BASE = 1000000;
+export const ROUND_UP = 1;
+export const MAX_U128 = '340282366920938463463374607431768211455';
