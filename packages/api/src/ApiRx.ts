@@ -22,8 +22,6 @@ import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiRx as ApiRxBase} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
-import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {isFunction, isObject} from '@plugnet/util';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
 import {switchMap, timeout} from 'rxjs/operators';
 
