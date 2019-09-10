@@ -109,7 +109,7 @@ describe('Generic asset Rx APIs', () => {
 
                 const permissions = {mint: address};
 
-                const assetId: number = await new Promise((resolve, reject) => {
+                const assetId = await new Promise<number>((resolve, reject) => {
                     ga.create({initialIssuance, permissions}).signAndSend(address).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
@@ -154,7 +154,7 @@ describe('Generic asset Rx APIs', () => {
 
                 const permissions = {burn: address};
 
-                const assetId: number = await new Promise((resolve, reject) => {
+                const assetId = await new Promise<number>((resolve, reject) => {
                     ga.create({initialIssuance, permissions}).signAndSend(address).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
