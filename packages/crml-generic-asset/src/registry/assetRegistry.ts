@@ -12,10 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
+import {defaultAssets} from '../constants';
+import {IAsset} from '../types';
 
-export default function getPlugins(): IPlugin[] {
-    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
+export function findAssetById(assetId: number): IAsset | undefined {
+    return defaultAssets.find(asset => asset.id === assetId);
+}
+
+export function findAssetBySymbol(symbol: string): IAsset | undefined {
+    return defaultAssets.find(asset => asset.symbol === symbol);
+}
+
+export function reserveAssets(): IAsset[] {
+    return defaultAssets;
 }

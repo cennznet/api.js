@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
+import {isBn, isNumber, isObject, isU8a} from '@cennznet/util';
 
-export default function getPlugins(): IPlugin[] {
-    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
+export function isAssetObj(value: any): boolean {
+    return isObject(value) && !isU8a(value) && !isBn(value) && isNumber(value.id);
+}
+
+export function isStringNumber(str: string): boolean {
+    return !isNaN(Number(str));
 }

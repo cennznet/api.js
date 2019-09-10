@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
+import {GenericAsset} from '@cennznet/crml-generic-asset';
 import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
@@ -67,21 +69,21 @@ export class Api extends ApiPromise {
 
     // TODO: add other crml namespaces
 
-    // /**
-    //  * Generic Asset CRML extention
-    //  */
-    // get genericAsset(): GenericAsset {
-    //     // `injectPlugins` will override this getter.
-    //     throw new Error('Generic Asset plugin has not been injected.');
-    // }
-    //
-    // /**
-    //  * Cennzx Spot CRML extention
-    //  */
-    // get cennzxSpot(): CennzxSpot {
-    //     // `injectPlugins` will override this getter.
-    //     throw new Error('Cennzx Spot plugin has not been injected.');
-    // }
+    /**
+     * Generic Asset CRML extention
+     */
+    get genericAsset(): GenericAsset {
+        // `injectPlugins` will override this getter.
+        throw new Error('Generic Asset plugin has not been injected.');
+    }
+
+    /**
+     * Cennzx Spot CRML extention
+     */
+    get cennzxSpot(): CennzxSpot {
+        // `injectPlugins` will override this getter.
+        throw new Error('Cennzx Spot plugin has not been injected.');
+    }
 
     constructor(provider: ApiOptions | ProviderInterface = {}) {
         const options =

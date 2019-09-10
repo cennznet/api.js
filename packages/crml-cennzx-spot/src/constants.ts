@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
-
-export default function getPlugins(): IPlugin[] {
-    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
-}
+export const PERMILL_BASE = 1000000;
+export const ROUND_UP = 1;
+export const MAX_U128 = '340282366920938463463374607431768211455';

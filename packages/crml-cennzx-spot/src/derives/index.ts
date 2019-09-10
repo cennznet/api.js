@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
-
-export default function getPlugins(): IPlugin[] {
-    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
-}
+export {outputPrice, outputPriceAt} from './outputPrice';
+export {inputPrice, inputPriceAt} from './inputPrice';
+export {liquidityBalance, liquidityBalanceAt} from './liquidityBalance';
+export {totalLiquidity, totalLiquidityAt} from './totalLiquidity';
+export {exchangeAddress} from './exchangeAddress';
+export {poolAssetBalance, poolCoreAssetBalance, poolAssetBalanceAt, poolCoreAssetBalanceAt} from './poolBalance';
+export {liquidityPrice, liquidityPriceAt} from './liquidityPrice';
+export {assetToWithdraw, assetToWithdrawAt} from './assetWithdrawn';

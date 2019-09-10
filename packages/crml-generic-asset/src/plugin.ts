@@ -13,9 +13,19 @@
 // limitations under the License.
 
 import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
+// import * as derives from './derives';
+import {GenericAsset} from './GenericAsset';
+import {GenericAssetRx} from './GenericAssetRx';
+import EnhancedAssetId from './registry/EnhancedAssetId';
 
-export default function getPlugins(): IPlugin[] {
-    return [(CrmlGenericAsset as unknown) as IPlugin, (CrmlCennzx as unknown) as IPlugin];
-}
+export default {
+    injectName: 'genericAsset',
+    sdkClass: GenericAsset,
+    sdkRxClass: GenericAssetRx,
+    types: {
+        AssetId: EnhancedAssetId,
+    },
+    derives: {
+        // genericAsset: derives,
+    },
+} as IPlugin;
