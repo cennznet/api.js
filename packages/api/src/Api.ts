@@ -18,8 +18,6 @@ import * as Types from '@cennznet/types';
 import Alias from '@cennznet/types/alias';
 import {ApiPromise} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
-import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {isFunction, isObject} from '@plugnet/util';
 
 import derives from './derives';
 import getPlugins from './plugins';
