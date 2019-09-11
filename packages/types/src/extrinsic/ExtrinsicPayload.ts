@@ -9,7 +9,7 @@ import Base from '@plugnet/types/codec/Base';
 import {Balance, Hash, Index} from '@plugnet/types/interfaces/runtime';
 import {IExtrinsicEra, IKeyringPair} from '@plugnet/types/types';
 
-import {u8aToHex} from '@polkadot/util';
+import {u8aToHex} from '@plugnet/util';
 
 import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
 import {ExtrinsicPayloadValue} from './types';
