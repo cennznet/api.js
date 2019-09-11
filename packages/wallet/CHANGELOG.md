@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/cennznet/api.js/compare/v0.15.1...v0.20.3) (2019-09-10)
+* Upgrade to implement new Payload Signer interface
+* move raw signer implementation to `@plugnet/wallet`
+* `@cennznet/wallet` now depends on `@plugnet/wallet`
+
+
+### Breaking Change
+* add signPayload()
+* add signRaw()
+* remove wallet.sign(), use signPayload() or signRaw() accordingly
+
+
 # [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 
 **Note:** Version bump only for package @cennznet/wallet
