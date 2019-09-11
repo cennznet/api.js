@@ -14,12 +14,10 @@
 
 import {ApiRx} from '@cennznet/api';
 import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
-import {AnyAssetId} from '@cennznet/crml-generic-asset/types';
 import {AssetId} from '@cennznet/types';
-import {AnyNumber} from '@cennznet/types/polkadot.types';
+import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
 import {
-    AnyAddress,
     QueryableGetAssetWithdrawnRx,
     QueryableGetLiquidityBalancePriceRx,
     QueryableGetLiquidityBalanceRx,

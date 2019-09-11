@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
 import {drr} from '@plugnet/api-derive/util/drr';
 import {ApiInterfaceRx} from '@plugnet/api/types';
 import {Balance, Hash} from '@plugnet/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AnyAddress, AnyAssetId} from '../types';
 
 export function totalBalance(api: ApiInterfaceRx) {
     return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {

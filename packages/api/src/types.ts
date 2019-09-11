@@ -14,6 +14,7 @@
 
 import {DecoratedCennznetDerive} from '@cennznet/api/derives';
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
+import {AnyAddress} from '@cennznet/types/types';
 import {DeriveCustom} from '@plugnet/api-derive';
 import ApiBase from '@plugnet/api/base';
 import {
@@ -35,12 +36,14 @@ import {
     Codec,
     CodecArg,
     Constructor,
+    IExtrinsic as IExtrinsicBase,
     IKeyringPair,
     RegistryTypes,
     SignatureOptions,
 } from '@plugnet/types/types';
-import BN from 'bn.js';
 import {Observable} from 'rxjs';
+
+export * from '@plugnet/api/types';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
     /**
@@ -57,8 +60,6 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
     timeout?: number;
 }
 
-export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
-
 export interface IPlugin {
     injectName?: string;
     sdkClass?: Constructor<any>;
@@ -72,7 +73,13 @@ export interface SignerOptions extends SignerOptionsBase {
     feeExchange?: FeeExchangeValue;
 }
 
-export interface SubmittableExtrinsic<ApiType> extends SubmittableExtrinsicBase<ApiType> {
+export interface IExtrinsic extends IExtrinsicBase {
+    addDoughnut(doughnut: DoughnutValue): this;
+
+    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
+}
+
+export interface SubmittableExtrinsic<ApiType> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {
     send(): SubmitableResultResult<ApiType>;
 
     send(statusCb: Callback<SubmittableResultImpl>): SubmitableResultSubscription<ApiType>;
@@ -94,10 +101,6 @@ export interface SubmittableExtrinsic<ApiType> extends SubmittableExtrinsicBase<
         options: Partial<SignerOptions>,
         statusCb?: Callback<SubmittableResultImpl>
     ): SubmitableResultSubscription<ApiType>;
-
-    addDoughnut(doughnut: DoughnutValue): SubmittableExtrinsic<ApiType>;
-
-    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): SubmittableExtrinsic<ApiType>;
 
     fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
 }
@@ -129,23 +132,32 @@ interface StorageEntryBase<C, H, U> {
 export interface StorageEntryObservable<T extends Codec>
     extends StorageEntryBase<Observable<T>, Observable<Hash>, Observable<u64>> {
     (arg1?: CodecArg, arg2?: CodecArg): Observable<T>;
+
     multi: (args: (CodecArg[] | CodecArg)[]) => Observable<T[]>;
 }
+
 export interface StorageEntryPromiseOverloads<T extends Codec> {
     (arg1?: CodecArg, arg2?: CodecArg): Promise<T>;
+
     (callback: Callback<T>): UnsubscribePromise;
+
     (arg: CodecArg, callback: Callback<T>): UnsubscribePromise;
+
     (arg1: CodecArg, arg2: CodecArg, callback: Callback<T>): UnsubscribePromise;
 }
+
 export interface StorageEntryPromiseMulti<T extends Codec> {
     (args: (CodecArg[] | CodecArg)[]): Promise<T[]>;
+
     (args: (CodecArg[] | CodecArg)[], callback: Callback<T[]>): UnsubscribePromise;
 }
+
 export interface StorageEntryPromise<T extends Codec>
     extends StorageEntryBase<Promise<T>, Promise<Hash>, Promise<u64>>,
         StorageEntryPromiseOverloads<T> {
     multi: StorageEntryPromiseMulti<T>;
 }
+
 export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType extends 'rxjs'
     ? StorageEntryObservable<T>
     : StorageEntryPromise<T>;

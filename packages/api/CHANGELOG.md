@@ -12,7 +12,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * `@cennznet/crml-*` are direct dependencies, not peer dependencies any more
 * WsProvider is no longer exported. pass url string to provider directly.
 * SubmittableResult is no longer exported from `@cennznet/api/polkadot`, use it from ``@cennznet/api` instead.
-* Doughnut and and FeeExchangeOption need to be passed as part of SignerOptions as well  
+* Doughnut and and FeeExchangeOption need to be passed as part of SignerOptions as well
+* AnyAddress and AnyAssetId are moved to `@cennznet/types/types`
+* `@cennznet/types/polkadot.types` are moved to `@cennznet/types/types`
+* `@cennznet/types/polkadot` are moved to `@cennznet/types`
+* `@cennznet/api/polkadot.types` are moved to `@cennznet/api/types`
+* The rest breaking changes please check https://github.com/polkadot-js/api/blob/master/UPGRADING.md
+  
 
 # [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 

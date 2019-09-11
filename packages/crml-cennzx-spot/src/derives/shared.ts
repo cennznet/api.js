@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/polkadot.types';
+import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
 import {drr} from '@plugnet/api-derive/util/drr';
 import {Hash, Permill} from '@plugnet/types/interfaces';
