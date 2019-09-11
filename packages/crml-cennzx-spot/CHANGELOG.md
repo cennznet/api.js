@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.20.0](https://github.com/cennznet/crml-cennzx-spot.js) (2019-09-10)
+# [0.20.0](https://github.com/cennznet/api.js/compare/v0.15.1...v0.20.3) (2019-09-10)
 * Upgrade to `@plugnet/api@0.90.x`
 
 
