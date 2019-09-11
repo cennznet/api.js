@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "0.20.2",
+    "version": "0.20.3",
     "description": "additional types for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [
@@ -18,7 +18,7 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@cennznet/util": "^0.20.2",
+        "@cennznet/util": "^0.20.3",
         "@plugnet/types": "^0.90.104",
         "@plugnet/util": "^1.1.100",
         "memoizee": "^0.4.14"
