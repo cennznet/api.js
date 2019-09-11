@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import {ApiRx} from '@cennznet/api';
-import {SubmittableExtrinsic} from '@cennznet/api/polkadot.types';
-import {QueryableStorageEntry} from '@cennznet/api/types';
+import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
-import {AnyNumber} from '@cennznet/types/polkadot.types';
+import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
 import {Balance} from '@plugnet/types/interfaces';
-import {AnyAddress, AnyAssetId, CodecArgObject, IAssetOptions, QueryableGetBalanceRx} from './types';
+import {AssetOptionsValue, QueryableGetBalanceRx} from './types';
 
 export class GenericAssetRx {
     private _api: ApiRx;
@@ -40,8 +39,8 @@ export class GenericAssetRx {
      * Create an asset
      * @param options Initialization options of an asset
      */
-    create(options: IAssetOptions): SubmittableExtrinsic<'rxjs'> {
-        return this.api.tx.genericAsset.create((options as unknown) as CodecArgObject);
+    create(options: AssetOptionsValue): SubmittableExtrinsic<'rxjs'> {
+        return this.api.tx.genericAsset.create(options);
     }
 
     /**

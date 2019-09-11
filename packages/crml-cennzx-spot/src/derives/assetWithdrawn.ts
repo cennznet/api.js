@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/polkadot.types';
-import {AnyAssetId} from '@cennznet/crml-generic-asset/types';
-import {AnyNumber} from '@cennznet/types/polkadot.types';
+import {ApiInterfaceRx} from '@cennznet/api/types';
+import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {Hash} from '@plugnet/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';

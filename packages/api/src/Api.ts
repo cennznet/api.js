@@ -14,8 +14,7 @@
 
 import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
-import * as Types from '@cennznet/types';
-import Alias from '@cennznet/types/alias';
+import Types from '@cennznet/types/injects';
 import {ApiPromise} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 
@@ -96,7 +95,7 @@ export class Api extends ApiPromise {
             logger.error('plugin loading failed');
         }
 
-        options.types = {...Types, ...options.types, ...Alias};
+        options.types = {...Types, ...options.types};
         options.derives = mergeDeriveOptions(derives, options.derives);
 
         super(options as ApiOptionsBase);

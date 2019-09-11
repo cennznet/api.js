@@ -12,14 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyNumber, CodecArg, IHash} from '@cennznet/types/polkadot.types';
-import {AccountId} from '@plugnet/types/interfaces';
+import {AnyAddress, AnyNumber, CodecArg, IHash} from '@cennznet/types/types';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
-
-export type AnyAddress = AccountId | Uint8Array | Array<number> | string;
-
-export type AnyAssetId = AnyNumber;
 
 export interface CodecArgObject {
     [index: string]: CodecArg;
@@ -42,7 +37,7 @@ export interface IAsset {
     type: AssetType;
 }
 
-export interface IAssetOptions {
+export interface AssetOptionsValue extends CodecArgObject {
     initialIssuance: AnyNumber;
     permissions?: {
         update?: AnyAddress;

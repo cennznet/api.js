@@ -15,10 +15,10 @@
 import {Api} from '@cennznet/api';
 import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
-import {AnyNumber} from '@cennznet/types/polkadot.types';
+import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
 import {Balance} from '@plugnet/types/interfaces';
-import {AnyAddress, AnyAssetId, CodecArgObject, IAssetOptions, QueryableGetBalance} from './types';
+import {AssetOptionsValue, QueryableGetBalance} from './types';
 
 export class GenericAsset {
     private _api: Api;
@@ -39,8 +39,8 @@ export class GenericAsset {
      * Create an asset
      * @param options Initialization options of an asset
      */
-    create(options: IAssetOptions): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.genericAsset.create((options as unknown) as CodecArgObject);
+    create(options: AssetOptionsValue): SubmittableExtrinsic<'promise'> {
+        return this.api.tx.genericAsset.create(options);
     }
 
     /**

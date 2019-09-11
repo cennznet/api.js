@@ -11,11 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import {ApiInterfaceRx} from '@cennznet/api/polkadot.types';
-import EnhancedAssetId from '@cennznet/crml-generic-asset/registry/EnhancedAssetId';
-import {AnyAssetId} from '@cennznet/crml-generic-asset/types';
-import {AnyNumber} from '@cennznet/types/polkadot.types';
+
+import {ApiInterfaceRx} from '@cennznet/api/types';
+import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {drr} from '@plugnet/api-derive/util/drr';
+import {createType} from '@plugnet/types';
 import {Hash} from '@plugnet/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
@@ -28,9 +28,9 @@ export function outputPrice(api: ApiInterfaceRx) {
     return (assetA: AnyAssetId, assetB: AnyAssetId, amountBought: AnyNumber): Observable<BN> => {
         return coreAssetId(api)().pipe(
             switchMap(coreAssetId => {
-                if (new EnhancedAssetId(assetA).eq(coreAssetId)) {
+                if (createType('AssetId', assetA).eq(coreAssetId)) {
                     return coreToAssetOutputPrice(assetB, assetA, amountBought, api);
-                } else if (new EnhancedAssetId(assetB).eq(coreAssetId)) {
+                } else if (createType('AssetId', assetB).eq(coreAssetId)) {
                     return assetToCoreOutputPrice(assetA, assetB, amountBought, api);
                 } else {
                     return assetToAssetOutputPrice(assetA, assetB, coreAssetId, amountBought, api);
@@ -44,10 +44,10 @@ export function outputPrice(api: ApiInterfaceRx) {
 export function outputPriceAt(api: ApiInterfaceRx) {
     return (hash: Hash, assetA: AnyAssetId, assetB: AnyAssetId, amountBought: AnyNumber): Observable<BN> => {
         return coreAssetIdAt(api)(hash).pipe(
-            switchMap((coreAssetId: EnhancedAssetId) => {
-                if (new EnhancedAssetId(assetA).eq(coreAssetId)) {
+            switchMap(coreAssetId => {
+                if (createType('AssetId', assetA).eq(coreAssetId)) {
                     return coreToAssetOutputPriceAt(hash, assetB, assetA, amountBought, api);
-                } else if (new EnhancedAssetId(assetB).eq(coreAssetId)) {
+                } else if (createType('AssetId', assetB).eq(coreAssetId)) {
                     return assetToCoreOutputPriceAt(hash, assetA, assetB, amountBought, api);
                 } else {
                     return assetToAssetOutputPriceAt(hash, assetA, assetB, coreAssetId, amountBought, api);
@@ -181,7 +181,7 @@ function assetToAssetOutputPriceAt(
     hash: Hash,
     assetA: AnyAssetId,
     assetB: AnyAssetId,
-    coreAssetId: EnhancedAssetId,
+    coreAssetId: AnyAssetId,
     amountBought: AnyNumber,
     api: ApiInterfaceRx
 ) {

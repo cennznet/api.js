@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import getPlugins from '@cennznet/api/plugins';
 import {IPlugin} from '@cennznet/api/types';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import logger from '@plugnet/util';
 import {Api} from '../Api';
 import {ApiRx} from '../ApiRx';
 import {ApiOptions} from '../types';

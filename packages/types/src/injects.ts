@@ -12,4 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from '@plugnet/types/types';
+import * as extrinsicTypes from './extrinsic';
+import * as runtimeTypes from './runtime';
+
+export default {
+    ...runtimeTypes,
+    ...extrinsicTypes,
+    AssetOf: 'u128',
+    'ed25519::Signature': 'H512',
+};

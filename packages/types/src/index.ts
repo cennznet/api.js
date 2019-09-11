@@ -12,5 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './runtime';
+export * from '@plugnet/types';
+
 export * from './extrinsic';
+export * from './runtime';
