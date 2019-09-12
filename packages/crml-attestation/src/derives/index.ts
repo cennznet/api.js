@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlAttestation} from '@cennznet/crml-attestation';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
-
-export default function getPlugins(): IPlugin[] {
-    return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
-}
+export {getClaim} from './getClaim';
+export {getClaims} from './getClaims';
+export {claims} from './claims';
