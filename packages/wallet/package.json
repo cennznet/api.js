@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/wallet",
-    "version": "0.20.3",
+    "version": "0.20.4",
     "description": "wallet implementation to use with cennznet",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [

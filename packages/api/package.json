@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/api",
-    "version": "0.20.3",
+    "version": "0.20.4",
     "description": "cennznet's javascript client",
     "keywords": [
         "CENNZNet"
@@ -19,9 +19,9 @@
         "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
     },
     "dependencies": {
-        "@cennznet/crml-cennzx-spot": "^0.20.3",
-        "@cennznet/crml-generic-asset": "^0.20.3",
-        "@cennznet/types": "^0.20.3",
+        "@cennznet/crml-cennzx-spot": "^0.20.4",
+        "@cennznet/crml-generic-asset": "^0.20.4",
+        "@cennznet/types": "^0.20.4",
         "@plugnet/api": "^0.90.104",
         "@plugnet/api-metadata": "^0.90.104",
         "@plugnet/rpc-core": "^0.90.104",
@@ -31,7 +31,7 @@
     },
     "devDependencies": {
         "@cennznet/cennznut": "^1.0.0",
-        "@cennznet/wallet": "^0.20.3",
+        "@cennznet/wallet": "^0.20.4",
         "@plugnet/doughnut-maker": "^2.0.0",
         "@types/jest": "^23.3.5",
         "jest": "24.1.0",

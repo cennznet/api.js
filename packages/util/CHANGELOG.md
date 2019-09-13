@@ -3,9 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
+# [0.14.4](https://github.com/cennznet/api.js/compare/v0.14.0...v0.14.4) (2019-06-18)
 
-**Note:** Version bump only for package @cennznet/util
+### Bug Fixes
+* fix ExtrinsicSignature#sign() when no doughnut and feeExchange set (#46)
+* fix import from polkadot
+
+
+# [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 
 ### Features
 * `decodeAddress`, `encodeAddress` & `setAddressPrefix` functions are exposed from `@cennznet/util` now
