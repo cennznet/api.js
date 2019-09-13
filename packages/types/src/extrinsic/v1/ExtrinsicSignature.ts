@@ -153,15 +153,20 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
         {blockHash, era, genesisHash, nonce}: SignatureOptions
     ): IExtrinsicSignature {
         const signer = createType('Address', account.publicKey);
-        const payload = new ExtrinsicPayloadV1({
+        const payloadValue: ExtrinsicPayloadValueV1 = {
             blockHash,
             era: era || IMMORTAL_ERA,
             genesisHash,
             method: method.toHex(),
             nonce,
-            doughnut: this.doughnut,
-            feeExchange: this.feeExchange,
-        });
+        };
+        if (this.doughnut) {
+            payloadValue.doughnut = this.doughnut;
+        }
+        if (this.feeExchange) {
+            payloadValue.feeExchange = this.feeExchange;
+        }
+        const payload = new ExtrinsicPayloadV1(payloadValue);
         const signature = createType('Signature', payload.sign(account));
 
         return this.injectSignature(signer, signature, payload);
