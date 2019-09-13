@@ -16,6 +16,7 @@ import getPlugins from '@cennznet/api/plugins';
 import {decorateExtrinsics} from '@cennznet/api/util/customDecorators';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
+import {AttestationRx} from '@cennznet/crml-attestation';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
@@ -60,6 +61,14 @@ export class ApiRx extends ApiRxBase {
 
     get derive(): Derives<'rxjs'> {
         return super.derive as Derives<'rxjs'>;
+    }
+
+    /**
+     * Attestation CRML extention
+     */
+    get attestation(): AttestationRx {
+        // `injectPlugins` will override this getter.
+        throw new Error('Attestation plugin has not been injected.');
     }
 
     /**

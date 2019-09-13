@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlAttestation} from '@cennznet/crml-attestation';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
+import {ApiInterfaceRx} from '@cennznet/api/types';
+import {AttestationValue} from '@cennznet/types';
+import {drr} from '@plugnet/api-derive/util/drr';
+import {Observable} from 'rxjs';
 
-export default function getPlugins(): IPlugin[] {
-    return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
+export function getClaim(api: ApiInterfaceRx) {
+    return (holder: string, issuer: string, topic: string): Observable<AttestationValue> =>
+        api.query.attestation.values<AttestationValue>([holder, issuer, topic]).pipe(drr());
 }

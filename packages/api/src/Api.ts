@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Attestation} from '@cennznet/crml-attestation';
 import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
@@ -62,6 +63,14 @@ export class Api extends ApiPromise {
 
     get derive(): Derives<'promise'> {
         return super.derive as Derives<'promise'>;
+    }
+
+    /**
+     * Attestation CRML extention
+     */
+    get attestation(): Attestation {
+        // `injectPlugins` will override this getter.
+        throw new Error('Attestation plugin has not been injected.');
     }
 
     /**

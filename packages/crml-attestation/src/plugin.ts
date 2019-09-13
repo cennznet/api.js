@@ -13,10 +13,13 @@
 // limitations under the License.
 
 import {IPlugin} from '@cennznet/api/types';
-import {Plugin as CrmlAttestation} from '@cennznet/crml-attestation';
-import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
-import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
+import {Attestation} from './Attestation';
+import {AttestationRx} from './AttestationRx';
 
-export default function getPlugins(): IPlugin[] {
-    return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
-}
+export default {
+    injectName: 'attestation',
+    sdkClass: Attestation,
+    sdkRxClass: AttestationRx,
+    types: {},
+    derives: {},
+} as IPlugin;
