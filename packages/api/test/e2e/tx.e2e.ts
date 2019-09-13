@@ -19,6 +19,7 @@
 import {AssetId, AssetOptions} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {SubmittableResult} from '@plugnet/api';
+import {Index} from '@plugnet/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -63,6 +64,22 @@ describe('e2e transactions', () => {
                     }
                 });
         }, 10000000);
+
+        it('makes a tx via send', async done => {
+            const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+            const senderKeypair = simpleKeyring.addFromUri(sender.uri);
+            const nonce = await api.query.system.accountNonce<Index>(senderKeypair.address);
+            // transfer
+            const tx = api.tx.genericAsset
+                .transfer(16000, receiver.address, 1).sign(senderKeypair, {nonce});
+            await tx.send(async ({events, status}: SubmittableResult) => {
+                    if (status.isFinalized) {
+                        expect(events[0].event.method).toEqual('Transferred');
+                        expect(events[0].event.section).toEqual('genericAsset');
+                        done();
+                    }
+                });
+        });
 
         it('makes a tx', async done => {
             // transfer
