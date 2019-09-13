@@ -7,7 +7,7 @@ A sdk providing additional features for Cennznet's Identity Service.
 ### Install
 
 ```
-$> npm i --save @cennznet/crml-attestation @cennznet/api @cennznet/crml-generic-asset @cennznet/crml-cennzx-spot 
+$> npm i --save @cennznet/api 
 ```
 
 ### Basic Setup 
@@ -18,7 +18,6 @@ First create a file and name it `index.js` and write the following two lines in:
 
 ```javascript
 const {Api} = require('@cennznet/api')
-const {Attestation} = require('@cennznet/crml-attestation')
 ```
 
 This loads up a version of the Attestation SDK that we will be using to call the code. This will be the foundation of your attestation requests.
@@ -29,7 +28,6 @@ In order to send claims, we have to create a wallet, to do so we need to import 
 
 ```javascript
 const {SimpleKeyring, Wallet} = require('@cennznet/wallet')
-const { stringToU8a } = require('@cennznet/util')
 const simpleKeyring = new SimpleKeyring();
 const wallet = new Wallet();
 ```
@@ -42,7 +40,7 @@ Now that you've created that, let's create an object called "issuer" in your cod
 ```javascript
 const issuer = {
   address: '<your address here>',
-  seed: stringToU8a(('<your seed here>' as any).padEnd(32, ' ')),
+  uri: '//test-account',
 };
 ```
 
@@ -50,7 +48,7 @@ const issuer = {
 Substrate accepts a Uint-8 Array as the signing mechanism, and we have a string so we must convert it to a Uint-8 Array. If your seed is less than 32 characters long, use String.prototype.padEnd to pad it with blank lines so that it can become 32 characters long and is consistent with the seed.
 
 ### Funding the issuer account 
-In order to issue a claim to someone, we need to have some money, so navigate to the [CENNZnet Faucet](https://cennznet-faucet-ui.centrality.me) and transfer some money to your public address. 
+In order to issue a claim to someone, we need to have some money, so navigate to the [CENNZnet Faucet](https://cennznet.js.org/faucet-ui/) and transfer some money to your public address. 
      
 ![Cennznet Faucet](https://puu.sh/CSN2t/71b9886848.png)
 
@@ -64,7 +62,7 @@ You should now create an object similar to this:
 ```
 const holder = {
   address: '<your new holder address here>',
-  seed: stringToU8a(('<your new holder seed here>' as any).padEnd(32, ' ')),
+  uri: '//test-holder-account',
 };
 ```
 
@@ -80,7 +78,7 @@ async function main () {
     await wallet.createNewVault(passphrase);
     await wallet.addKeyring(simpleKeyring);
     api.setSigner(wallet);
-    const attestation = new Attestation(api);
+    const {attestation} = api;
 }
 main()
 ```
@@ -90,9 +88,9 @@ This spins up a version of our attestation api inside the main function, we will
 To create a claim add the following lines inside the main function
 
 ```javascript
-const topic = 'test'
-const value = '1234'
-const claim = await attestation.setClaim(
+const topic = 'test';
+const value = Uint8Array.from(...); // 256 bytes of raw data
+const claim = attestation.setClaim(
     holder.address,
     topic,
     value,
@@ -100,18 +98,11 @@ const claim = await attestation.setClaim(
 
 await claim.signAndSend(issuer.address, async ({result, event}) => {
     if (result.isFinalized && events !== undefined) {
-      const { data } = events[0].event.toJSON();
+      const { data } = events[0].event;
       console.log(data)
     }
 });
 ```
-Topics should be ASCII strings that don't have any non typeable characters and be at most 32 characters and Values should be strings of a max of 64 character length.
+Topics should be ASCII strings that don't have any non typeable characters and be at most 32 characters and Values should be 256 bytes of data.
 
 If you've done everything properly, then you should get a response object of something similar to this:
-```javascript
-[ '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
-  '5FPCjwLUkeg48EDYcW5i4b45HLzmCn4aUbx5rsCsdtPbTsKT',
-  1952805748,
-  825373492 ]
-```
-
