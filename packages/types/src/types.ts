@@ -7,3 +7,15 @@ export * from '@plugnet/types/types';
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
 
 export type AnyAssetId = AnyNumber;
+
+export {
+    ExtrinsicExtraValue,
+    ExtrinsicOptions,
+    ExtrinsicPayloadOptions,
+    ExtrinsicPayloadValue,
+    ExtrinsicSignatureOptions,
+    DoughnutValue,
+    FeeExchangeValue,
+    IExtrinsicImpl,
+    SignatureOptions,
+} from './extrinsic/types';

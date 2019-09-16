@@ -8,18 +8,10 @@ import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {ClassOf, Compact} from '@plugnet/types';
 import Base from '@plugnet/types/codec/Base';
 import {Address, Balance, Call, FunctionMetadataV7, Index} from '@plugnet/types/interfaces';
-import {
-    AnyU8a,
-    ArgsDef,
-    Codec,
-    IExtrinsic,
-    IExtrinsicEra,
-    IHash,
-    IKeyringPair,
-    SignatureOptions,
-} from '@plugnet/types/types';
+import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair} from '@plugnet/types/types';
 import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@plugnet/util';
 import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
+import {SignatureOptions} from './types';
 import Doughnut from './v1/Doughnut';
 import ExtrinsicV1, {ExtrinsicValueV1} from './v1/Extrinsic';
 import {ExtrinsicPayloadValueV1} from './v1/ExtrinsicPayload';

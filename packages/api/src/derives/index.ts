@@ -15,8 +15,8 @@
 import * as attestation from '@cennznet/crml-attestation/derives';
 import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
 import * as genericAsset from '@cennznet/crml-generic-asset/derives';
+import {AnyFunction} from '@cennznet/types/types';
 import {ApiInterfaceRx, MethodResult} from '@plugnet/api/types';
-import {AnyFunction} from '@plugnet/types/types';
 import {Observable} from 'rxjs';
 import * as fees from './fees';
 

@@ -73,12 +73,12 @@ describe('e2e transactions', () => {
             const tx = api.tx.genericAsset
                 .transfer(16000, receiver.address, 1).sign(senderKeypair, {nonce});
             await tx.send(async ({events, status}: SubmittableResult) => {
-                    if (status.isFinalized) {
-                        expect(events[0].event.method).toEqual('Transferred');
-                        expect(events[0].event.section).toEqual('genericAsset');
-                        done();
-                    }
-                });
+                if (status.isFinalized) {
+                    expect(events[0].event.method).toEqual('Transferred');
+                    expect(events[0].event.section).toEqual('genericAsset');
+                    done();
+                }
+            });
         });
 
         it('makes a tx', async done => {
@@ -123,7 +123,32 @@ describe('e2e transactions', () => {
 
         describe('feeExchange extrinsic', () => {
 
-            it('makes a transfer (sign, then send)', async done => {
+            it('use keypair to sign', async done => {
+                const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+                const senderKeypair = simpleKeyring.addFromUri(sender.uri);
+
+                const feeExchange = {
+                    assetId: '16000',
+                    maxPayment: '50000000000000000',
+                };
+                return api.tx.genericAsset.transfer(16000, receiver.address, 10000)
+                    .addFeeExchangeOpt(feeExchange)
+                    .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
+                        console.log('Transaction status:', status.type);
+                        if (status.isFinalized) {
+                            console.log('Completed at block hash', status.value.toHex());
+                            console.log('Events:');
+
+                            events.forEach(({phase, event: {data, method, section}}) => {
+                                console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+                            });
+
+                            done();
+                        }
+                    });
+            });
+
+            it('use signer', async done => {
 
                 const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
                 tx.addFeeExchangeOpt({
@@ -149,7 +174,6 @@ describe('e2e transactions', () => {
                         done();
                     }
                 });
-                done();
             });
         });
     });
