@@ -8,10 +8,10 @@ async function main () {
   const subscription = new ApiRx().isReady
     .pipe(
       switchMap((api) =>
-        api.rpc.chain.subscribeNewHead()
+        api.rpc.chain.subscribeNewHeads()
       ))
     .subscribe((header) => {
-      console.log(`Chain is at block: #${header.blockNumber}`);
+      console.log(`Chain is at block: #${header.number}`);
     });
 
   // In this example we're calling the Overvables unsubscribe() //

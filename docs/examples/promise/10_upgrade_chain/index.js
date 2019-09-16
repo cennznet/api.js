@@ -1,6 +1,8 @@
-// @ts-check
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-var-requires */
 // Import the API & Provider and some utility functions
-const { Api, WsProvider } = require('@cennznet/api');
+const { Api } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const testKeyring = require('@plugnet/keyring/testing');
@@ -9,10 +11,10 @@ const fs = require('fs');
 
 async function main () {
   // Initialise the provider to connect to the local node
-  const provider = new WsProvider('ws://127.0.0.1:9944');
+  const provider = 'ws://127.0.0.1:9944';
 
   // Create the API and wait until ready (optional provider passed through)
-  const api = await Api.create(provider);
+  const api = await Api.create({ provider });
 
   // retrieve the upgrade key from the chain state
   const adminId = await api.query.sudo.key();
@@ -31,23 +33,23 @@ async function main () {
 
   // preform the actual chain upgrade via the sudo module
   api.tx.sudo
-    .sudo(proposal)
-    .signAndSend(adminPair, ({ events = [], status }) => {
-      console.log('Proposal status:', status.type);
+      .sudo(proposal)
+      .signAndSend(adminPair, ({ events = [], status }) => {
+        console.log('Proposal status:', status.type);
 
-      if (status.isFinalized) {
-        console.error('You have just upgraded your chain');
+        if (status.isFinalized) {
+          console.error('You have just upgraded your chain');
 
-        console.log('Completed at block hash', status.asFinalized.toHex());
-        console.log('Events:');
+          console.log('Completed at block hash', status.asFinalized.toHex());
+          console.log('Events:');
 
-        events.forEach(({ phase, event: { data, method, section } }) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-        });
+          events.forEach(({ phase, event: { data, method, section } }) => {
+            console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          });
 
-        process.exit(0);
-      }
-    });
+          process.exit(0);
+        }
+      });
 }
 
 main().catch((error) => {

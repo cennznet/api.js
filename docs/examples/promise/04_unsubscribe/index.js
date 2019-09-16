@@ -8,8 +8,8 @@ async function main () {
   const api = await Api.create();
 
   // Subscribe to chain updates and log the current block  number on update.
-  const unsubscribe = await api.rpc.chain.subscribeNewHead((header) => {
-    console.log(`Chain is at block: #${header.blockNumber}`);
+  const unsubscribe = await api.rpc.chain.subscribeNewHeads((header) => {
+    console.log(`Chain is at block: #${header.number}`);
   });
 
   // In this example we're calling the unsubscribe() function that is being

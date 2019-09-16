@@ -5,19 +5,22 @@ const { Api } = require('@cennznet/api');
 // Known account we want to use (available on dev chain, with funds)
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
+// Asset Id for CENNZ in Rimu
+const CENNZ = 16000;
+
 async function main () {
   // Create an await for the API
   const api = await Api.create();
 
   // Retrieve the initial balance. Since the call has no callback, it is simply a promise
   // that resolves to the current on-chain value
-  let previous = await api.query.balances.freeBalance(Alice);
+  let previous = await api.query.genericAsset.freeBalance(CENNZ, Alice);
 
   console.log(`${Alice} has a balance of ${previous}`);
   console.log(`You may leave this example running and start example 06 or transfer any value to ${Alice}`);
 
   // Here we subscribe to any balance changes and update the on-screen value
-  api.query.balances.freeBalance(Alice, (current) => {
+  api.query.genericAsset.freeBalance(CENNZ, Alice, (current) => {
     // Calculate the delta
     const change = current.sub(previous);
 

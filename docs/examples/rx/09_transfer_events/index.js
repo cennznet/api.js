@@ -11,6 +11,10 @@ const { randomAsU8a } = require('@cennznet/util');
 const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 const AMOUNT = 10000;
 
+// Asset Id for CENNZ in Rimu
+const CENNZ = 16000;
+
+
 async function main () {
   // Create our API with a connection to the node
   const api = await ApiRx.create().toPromise();
@@ -24,15 +28,15 @@ async function main () {
   const alicePair = keyring.getPair(ALICE);
 
   // create a new random recipient
-  const recipient = keyring.addFromSeed(randomAsU8a(32)).address();
+  const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
 
-  console.log('Sending', AMOUNT, 'from', alicePair.address(), 'to', recipient);
+  console.log('Sending', AMOUNT, 'from', alicePair.address, 'to', recipient);
 
   // get the nonce for the admin key
   //  Create a extrinsic, transferring 12345 units to Bob.
-  api.tx.balances
+  api.tx.genericAsset
     // Do the transfer
-    .transfer(recipient, AMOUNT)
+    .transfer(CENNZ, recipient, AMOUNT)
     // Sign and send it
     .signAndSend(alicePair)
     // And subscribe to the actual status
@@ -48,6 +52,7 @@ async function main () {
         events.forEach(({ phase, event: { data, method, section } }) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
         });
+        process.exit(0);
       }
     });
 }

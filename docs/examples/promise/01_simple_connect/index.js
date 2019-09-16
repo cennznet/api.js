@@ -4,7 +4,7 @@ const { Api } = require('@cennznet/api');
 
 async function main () {
   // Initialise the provider to connect to the local node
-  const provider = 'wss://cennznet-node-0.centrality.cloud:9944';
+  const provider = 'wss://rimu.unfrastructure.io/public/ws';
 
   // Create the API and wait until ready
   const api = await Api.create({provider});
