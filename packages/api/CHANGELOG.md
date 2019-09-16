@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.6](https://github.com/cennznet/api.js/compare/v20.3...v0.20.6) (2019-09-10)
+### Feature
+* migrate crml-attestation into monorepo
+
+### Bug Fixes
+* fix ExtrinsicSignature#sign() when feeExchange is set (#47)
+* fix ExtrinsicSignature#sign() when no doughnut and feeExchange set (#46)
+
+
 # [0.20.0](https://github.com/cennznet/api.js/compare/v0.15.1...v0.20.3) (2019-09-10)
 * Upgrade to `@plugnet/api@0.90.x`
 

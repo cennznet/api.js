@@ -1,6 +1,6 @@
 {
   "name": "@cennznet/crml-generic-asset",
-  "version": "0.20.5",
+  "version": "0.20.6",
   "description": "the javascript sdk for cennznet runtime module: Generic Asset. also a plugin of @cennznet/api",
   "author": "Alex Wang <alex.wang@centrality.ai>",
   "maintainers": [
@@ -16,12 +16,12 @@
   },
   "scripts": {},
   "dependencies": {
-    "@cennznet/api": "^0.20.5",
-    "@cennznet/types": "^0.20.5",
-    "@cennznet/util": "^0.20.5"
+    "@cennznet/api": "^0.20.6",
+    "@cennznet/types": "^0.20.6",
+    "@cennznet/util": "^0.20.6"
   },
   "devDependencies": {
-    "@cennznet/wallet": "^0.20.5",
+    "@cennznet/wallet": "^0.20.6",
     "@types/jest": "^24.0.15",
     "jest": "24.8.0"
   }
