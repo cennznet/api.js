@@ -1,6 +1,6 @@
 import {Api, ApiRx} from '@cennznet/api';
 import {SubmittableExtrinsicFunction} from '@cennznet/api/types';
-import {CodecArg} from '@plugnet/types/types';
+import {CodecArg} from '@cennznet/types/types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
     for (const sectionName of Object.keys(api.tx)) {

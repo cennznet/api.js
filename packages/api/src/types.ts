@@ -14,7 +14,18 @@
 
 import {DecoratedCennznetDerive} from '@cennznet/api/derives';
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
-import {AnyAddress} from '@cennznet/types/types';
+import {
+    AnyAddress,
+    Callback,
+    CallFunction,
+    Codec,
+    CodecArg,
+    Constructor,
+    IExtrinsic as IExtrinsicBase,
+    IKeyringPair,
+    RegistryTypes,
+    SignatureOptions,
+} from '@cennznet/types/types';
 import {DeriveCustom} from '@plugnet/api-derive';
 import ApiBase from '@plugnet/api/base';
 import {
@@ -30,17 +41,6 @@ import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {u64} from '@plugnet/types';
 import {AccountId, Address, AssetOf, Hash} from '@plugnet/types/interfaces';
 import {StorageEntry} from '@plugnet/types/primitive/StorageKey';
-import {
-    Callback,
-    CallFunction,
-    Codec,
-    CodecArg,
-    Constructor,
-    IExtrinsic as IExtrinsicBase,
-    IKeyringPair,
-    RegistryTypes,
-    SignatureOptions,
-} from '@plugnet/types/types';
 import {Observable} from 'rxjs';
 
 export * from '@plugnet/api/types';
@@ -74,6 +74,8 @@ export interface SignerOptions extends SignerOptionsBase {
 }
 
 export interface IExtrinsic extends IExtrinsicBase {
+    sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
+
     addDoughnut(doughnut: DoughnutValue): this;
 
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;

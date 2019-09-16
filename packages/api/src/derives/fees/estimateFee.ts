@@ -14,10 +14,10 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {Fee} from '@cennznet/types';
+import {IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@plugnet/api-derive/util/drr';
 import {createType} from '@plugnet/types';
 import {Address, Index} from '@plugnet/types/interfaces';
-import {IExtrinsic} from '@plugnet/types/types';
 import BN from 'bn.js';
 import {combineLatest, Observable, of} from 'rxjs';
 import {first, map} from 'rxjs/operators';

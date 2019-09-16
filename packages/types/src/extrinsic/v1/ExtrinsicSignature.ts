@@ -15,13 +15,11 @@
 // tslint:disable member-ordering no-magic-numbers
 import {Compact, createType, Struct} from '@plugnet/types';
 import {Address, Balance, Call, ExtrinsicEra, Index, Signature} from '@plugnet/types/interfaces/runtime';
-import {IExtrinsicSignature, IKeyringPair, SignatureOptions} from '@plugnet/types/types';
+import {IExtrinsicSignature, IKeyringPair} from '@plugnet/types/types';
 
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
-import {ExtrinsicSignatureOptions} from '../types';
-import Doughnut from './Doughnut';
+import {ExtrinsicSignatureOptions, SignatureOptions} from '../types';
 import ExtrinsicPayloadV1, {ExtrinsicPayloadValueV1} from './ExtrinsicPayload';
-import FeeExchange from './FeeExchange';
 
 /**
  * @name ExtrinsicSignature
@@ -29,18 +27,12 @@ import FeeExchange from './FeeExchange';
  * A container for the [[Signature]] associated with a specific [[Extrinsic]]
  */
 export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSignature {
-    protected doughnut: Doughnut;
-    protected feeExchange: FeeExchange;
-
     // Signature Information.
     //   1/3/5/9/33 bytes: The signing account identity, in Address format
     //   64 bytes: The sr25519/ed25519 signature of the Signing Payload
     //   1-8 bytes: The Compact<Nonce> of the signing account
     //   1/2 bytes: The Transaction Era
-    constructor(
-        value?: ExtrinsicSignatureV1 | Uint8Array,
-        {isSigned, doughnut, feeExchange}: ExtrinsicSignatureOptions = {}
-    ) {
+    constructor(value?: ExtrinsicSignatureV1 | Uint8Array, {isSigned}: ExtrinsicSignatureOptions = {}) {
         super(
             {
                 signer: 'Address',
@@ -50,8 +42,6 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
             },
             ExtrinsicSignatureV1.decodeExtrinsicSignature(value, isSigned)
         );
-        this.doughnut = doughnut;
-        this.feeExchange = feeExchange;
     }
 
     static decodeExtrinsicSignature(
@@ -140,7 +130,7 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
         return this.injectSignature(
             createType('Address', signer),
             createType('Signature', signature),
-            new ExtrinsicPayloadV1(payload, {useDoughnut: !!this.doughnut, useFeeExchange: !!this.feeExchange})
+            new ExtrinsicPayloadV1(payload)
         );
     }
 
@@ -150,7 +140,7 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
     sign(
         method: Call,
         account: IKeyringPair,
-        {blockHash, era, genesisHash, nonce}: SignatureOptions
+        {blockHash, era, genesisHash, nonce, doughnut, feeExchange}: SignatureOptions
     ): IExtrinsicSignature {
         const signer = createType('Address', account.publicKey);
         const payloadValue: ExtrinsicPayloadValueV1 = {
@@ -160,11 +150,11 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
             method: method.toHex(),
             nonce,
         };
-        if (this.doughnut) {
-            payloadValue.doughnut = this.doughnut;
+        if (doughnut) {
+            payloadValue.doughnut = doughnut;
         }
-        if (this.feeExchange) {
-            payloadValue.feeExchange = this.feeExchange;
+        if (feeExchange) {
+            payloadValue.feeExchange = feeExchange;
         }
         const payload = new ExtrinsicPayloadV1(payloadValue);
         const signature = createType('Signature', payload.sign(account));
