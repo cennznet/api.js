@@ -51,7 +51,7 @@ async function main() {
     // create a new random recipient
     const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
 
-    let [poolAssetBalance, poolCoreAssetBalance] = await queryPoolBalance(api);
+    const [poolAssetBalance, poolCoreAssetBalance] = await queryPoolBalance(api);
 
     if (poolCoreAssetBalance.ltn(MIN_REQUIRED_POOL_BALANCE)) {
         console.log('Pool core asset balance is lower than min requirement, adding some');
@@ -72,7 +72,7 @@ async function main() {
                     }
                 });
         }));
-        [poolAssetBalance, poolCoreAssetBalance] = await queryPoolBalance(api);
+        await queryPoolBalance(api);
     }
 
     const feeExchangeOpt = {assetId: FEE_ASSET_ID, maxPayment: '1000000000000'};
@@ -80,7 +80,7 @@ async function main() {
     api.tx.genericAsset
         .transfer(CENNZ, recipient, AMOUNT)
         .addFeeExchangeOpt(feeExchangeOpt)
-        .signAndSend(alicePair, {nonce, feeExchange: feeExchangeOpt})
+        .sign(alicePair, {nonce, feeExchange: feeExchangeOpt})
         .send(({events = [], status}) => {
             console.log('Transaction status:', status.type);
 
