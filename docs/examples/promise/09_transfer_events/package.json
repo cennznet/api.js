@@ -10,7 +10,8 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@cennznet/api": "^0.13.6"
+    "@cennznet/api": "*",
+    "@cennznet/wallet": "*"
   },
   "devDependencies": {
     "rimraf": "^2.6.2"

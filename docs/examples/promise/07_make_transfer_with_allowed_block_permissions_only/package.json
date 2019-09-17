@@ -1,0 +1,19 @@
+{
+  "name": "07_make_transfer_with_allowed_block_permissions_only",
+  "version": "0.1.0",
+  "description": "Example showing how to make a transfer with allowed block permissions",
+  "main": "index.js",
+  "author": "Jesse",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@plugnet/api": "*",
+    "@plugnet/keyring": "*"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.2"
+  }
+}

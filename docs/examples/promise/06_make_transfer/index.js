@@ -1,9 +1,12 @@
 // @ts-check
 // Import the API, Keyring and some utility functions
 const { Api } = require('@cennznet/api');
-const { Keyring } = require('@cennznet/util');
+const { Keyring } = require('@cennznet/wallet');
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
+
+// Asset Id for CENNZ in Rimu
+const CENNZ = 16000;
 
 async function main () {
   // Instantiate the API
@@ -16,7 +19,7 @@ async function main () {
   const alice = keyring.addFromUri('//Alice');
 
   // Create a extrinsic, transferring 12345 units to Bob
-  const transfer = api.tx.balances.transfer(BOB, 12345);
+  const transfer = api.tx.genericAsset.transfer(CENNZ, BOB, 12345);
 
   // Sign and send the transaction using our account
   const hash = await transfer.signAndSend(alice);

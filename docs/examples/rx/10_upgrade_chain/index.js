@@ -1,18 +1,19 @@
 // Import the API & Provider and some utility functions
-const { ApiRx, WsProvider } = require('@cennznet/api');
+const { ApiRx } = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const testKeyring = require('@plugnet/keyring/testing');
 const fs = require('fs');
+const { first } = require('rxjs/operators');
 
 async function main () {
   // Initialise the provider to connect to the local node
-  const provider = new WsProvider('ws://127.0.0.1:9944');
+  const provider = 'ws://127.0.0.1:9944';
 
   // Create the API and wait until ready (optional provider passed through)
-  const api = await ApiRx.create(provider).toPromise();
+  const api = await ApiRx.create({provider}).toPromise();
 
   // retrieve the upgrade key from the chain state
-  const adminId = await api.query.sudo.key().toPromise();
+  const adminId = await api.query.sudo.key().pipe(first()).toPromise();
 
   // find the actual keypair in the keyring (if this is an changed value, the key
   // needs to be added to the keyring before - this assumes we have defaults, i.e.

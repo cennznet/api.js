@@ -5,13 +5,16 @@ const { pairwise, startWith } = require('rxjs/operators');
 // Known account we want to use (available on dev chain, with funds)
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
+// Asset Id for CENNZ in Rimu
+const CENNZ = 16000;
+
 async function main () {
   // Create an await for the API
   const api = await ApiRx.create().toPromise();
 
   // Here we subscribe to any balance changes and update the on-screen value.
   // We're using RxJs pairwise() operator to get the previous and current values as an array.
-  api.query.balances.freeBalance(Alice)
+  api.query.genericAsset.freeBalance(CENNZ, Alice)
     .pipe(
       // since pairwise only starts emitting values on the second emission, we prepend an
       // initial value with the startWith() operator to be able to also receive the first value

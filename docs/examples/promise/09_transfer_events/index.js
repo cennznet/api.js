@@ -12,6 +12,9 @@ const { randomAsU8a } = require('@cennznet/util');
 const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 const AMOUNT = 10000;
 
+// Asset Id for CENNZ in Rimu
+const CENNZ = 16000;
+
 async function main () {
   // Create the API and wait until ready
   const api = await Api.create();
@@ -28,13 +31,13 @@ async function main () {
   const alicePair = keyring.getPair(ALICE);
 
   // create a new random recipient
-  const recipient = keyring.addFromSeed(randomAsU8a(32)).address();
+  const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
 
-  console.log('Sending', AMOUNT, 'from', alicePair.address(), 'to', recipient, 'with nonce', nonce.toString());
+  console.log('Sending', AMOUNT, 'from', alicePair.address, 'to', recipient, 'with nonce', nonce.toString());
 
   // Do the transfer and track the actual status
-  api.tx.balances
-    .transfer(recipient, AMOUNT)
+  api.tx.genericAsset
+    .transfer(CENNZ, recipient, AMOUNT)
     .sign(alicePair, { nonce })
     .send(({ events = [], status }) => {
       console.log('Transaction status:', status.type);
