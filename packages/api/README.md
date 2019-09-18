@@ -30,7 +30,7 @@ api = await ApiRx.create({
 }).toPromise();
 ```
 
-We suggest passing provider as a string url, sdk will chose Provider Class based on url protocol. Or you can initialize the provider Instance yourself.
+We suggest passing provider as a string url, sdk will chose Provider Class based on url protocol.
 
 ## Use SingleSource Extension as Signer
 [check here](https://github.com/cennznet/singlesource-extension)
