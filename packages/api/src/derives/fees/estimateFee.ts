@@ -14,6 +14,7 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {Fee} from '@cennznet/types';
+import {UNMASK_VERSION} from '@cennznet/types/extrinsic/constants';
 import {IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@plugnet/api-derive/util/drr';
 import {createType} from '@plugnet/types';
@@ -58,7 +59,7 @@ export function estimateFee(api: ApiInterfaceRx) {
 const SIGNED_VERSION = 129;
 function calcFee(baseFee: BN, byteFee: BN, methodFee, nonce: Index, sender: Address, extrinsic: IExtrinsic) {
     const clone = createType('Extrinsic', extrinsic.toU8a(), true) as IExtrinsic;
-    if (clone.version === 1) {
+    if ((clone.version & UNMASK_VERSION) === 1) {
         const signature = (clone as any).raw.get('signature');
         signature.set('signer', sender);
         signature.set('nonce', createType('Compact<Index>', nonce));
