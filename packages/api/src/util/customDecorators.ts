@@ -1,11 +1,12 @@
 import {Api, ApiRx} from '@cennznet/api';
 import createSubmittable from '@cennznet/api/submittable/createSubmittable';
 import {SubmittableExtrinsic} from '@cennznet/api/submittable/types';
+import {SubmittableExtrinsicFunction} from '@cennznet/api/types';
 import {CodecArg} from '@cennznet/types/types';
 import {CodecArg as Arg} from '@plugnet/types/types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
-    const creator = createSubmittable(api.type, api as ApiRx, decorateMethod);
+    const creator = createSubmittable(api.type, api as ApiRx, null);
     for (const sectionName of Object.keys(api.tx)) {
         for (const methodName of Object.keys(api.tx[sectionName])) {
             api.tx[sectionName][methodName] = decorateExtrinsic(api, api.tx[sectionName][methodName], creator);
