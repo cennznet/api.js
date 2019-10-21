@@ -1,24 +1,13 @@
 import {Api, ApiRx} from '@cennznet/api';
 import createSubmittable from '@cennznet/api/submittable/createSubmittable';
-import Submittable from '@cennznet/api/submittable/Submittable';
 import {SubmittableExtrinsic} from '@cennznet/api/submittable/types';
-import {SubmittableExtrinsicFunction, SubmittableExtrinsics, SubmittableModuleExtrinsics} from '@cennznet/api/types';
-import Types from '@cennznet/types/injects';
 import {CodecArg} from '@cennznet/types/types';
-import extrinsics from '@plugnet/api-metadata/extrinsics';
-import extrinsicsFromMeta from '@plugnet/api-metadata/extrinsics/fromMetadata';
-import Decorate from '@plugnet/api/base/Decorate';
-import {ApiInterfaceRx} from '@plugnet/api/types';
-// import {ApiInterfaceRx} from '@plugnet/api/types';
-// import {ModulesWithCalls} from '@plugnet/types/types';
 import {CodecArg as Arg} from '@plugnet/types/types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
-    //let out;
-    const creator = createSubmittable(this._type, this._rx as ApiInterfaceRx, decorateMethod);
+    const creator = createSubmittable(api.type, api as ApiRx, decorateMethod);
     for (const sectionName of Object.keys(api.tx)) {
         for (const methodName of Object.keys(api.tx[sectionName])) {
-            const mtd = api.tx[sectionName][methodName];
             api.tx[sectionName][methodName] = decorateExtrinsic(api, api.tx[sectionName][methodName], creator);
         }
     }

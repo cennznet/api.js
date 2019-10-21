@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {AccountId, Address, ExtrinsicStatus, EventRecord, Hash} from '@plugnet/types/interfaces';
+import {AccountId, Address, EventRecord, ExtrinsicStatus, Hash} from '@plugnet/types/interfaces';
 import {
     AnyNumber,
     AnyU8a,
