@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//import ApiBase from '@cennznet/api/base1';
 import {DecoratedCennznetDerive} from '@cennznet/api/derives';
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {
@@ -31,12 +32,25 @@ import ApiBase from '@plugnet/api/base';
 import {
     ApiOptions as ApiOptionsBase,
     SignerOptions as SignerOptionsBase,
+    // SubmitableResultResult,
+    // SubmitableResultSubscription,
+    // SubmittableExtrinsic as SubmittableExtrinsicBase,
+    // SubmittableResultImpl,
+    UnsubscribePromise,
+} from '@plugnet/api/types';
+// import {
+//     SubmitableResultResult,
+//     SubmitableResultSubscription,
+//     SubmittableExtrinsic as SubmittableExtrinsicBase,
+//     SubmittableResultImpl,
+// } from 'submittable/types';
+
+import {
     SubmitableResultResult,
     SubmitableResultSubscription,
     SubmittableExtrinsic as SubmittableExtrinsicBase,
     SubmittableResultImpl,
-    UnsubscribePromise,
-} from '@plugnet/api/types';
+} from '@cennznet/api/submittable/types';
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
 import {u64} from '@plugnet/types';
 import {AccountId, Address, AssetOf, Hash} from '@plugnet/types/interfaces';
