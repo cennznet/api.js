@@ -6,18 +6,16 @@ import {CodecArg} from '@cennznet/types/types';
 import {CodecArg as Arg} from '@plugnet/types/types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
-    const creator = createSubmittable(api.type, api as ApiRx, null);
     for (const sectionName of Object.keys(api.tx)) {
         for (const methodName of Object.keys(api.tx[sectionName])) {
-            api.tx[sectionName][methodName] = decorateExtrinsic(api, api.tx[sectionName][methodName], creator);
+            api.tx[sectionName][methodName] = decorateExtrinsic(api, api.tx[sectionName][methodName]);
         }
     }
 }
 
 function decorateExtrinsic(
     api: Api | ApiRx,
-    method: SubmittableExtrinsicFunction<any>,
-    creator: any
+    method: SubmittableExtrinsicFunction<any>
 ): SubmittableExtrinsicFunction<any> {
     const newMethod = (...params: Array<CodecArg>) => {
         const extrinsic = method(...params);
@@ -26,8 +24,33 @@ function decorateExtrinsic(
         });
         return extrinsic;
     };
+    return (api as any).decorateFunctionMeta(method, newMethod);
+}
+
+export function decorateExtrinsicsSubmittables(api: Api | ApiRx) {
+    for (const sectionName of Object.keys(api.tx)) {
+        for (const methodName of Object.keys(api.tx[sectionName])) {
+            // console.log('Method:', api.tx[sectionName][methodName]);
+            const creator = createSubmittable(
+                api.type,
+                (api as any)._rx,
+                (api as any).decorateMethod(api.tx[sectionName][methodName])
+            );
+            api.tx[sectionName][methodName] = decorateExtrinsicsSubmittable(
+                api,
+                api.tx[sectionName][methodName],
+                creator
+            );
+        }
+    }
+}
+
+function decorateExtrinsicsSubmittable(
+    api: Api | ApiRx,
+    method: SubmittableExtrinsicFunction<any>,
+    creator: any
+): SubmittableExtrinsicFunction<any> {
     const decorated = (...params: Arg[]): SubmittableExtrinsic<any> => creator(method(...params));
-    (api as any).decorateFunctionMeta(method, newMethod);
     return (api as any).decorateFunctionMeta(method, decorated);
 }
 

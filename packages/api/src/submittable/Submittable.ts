@@ -151,14 +151,14 @@ export default class Submittable<ApiType> extends _Extrinsic implements Submitta
         statusCb?: Callback<SubmittableResultImpl>
     ): [Partial<SignerOptions>, Callback<SubmittableResultImpl>?] {
         let options: Partial<SignerOptions> = {};
-
+        let statusCbNew;
         if (isFunction(optionsOrStatus)) {
-            statusCb = optionsOrStatus;
+            statusCbNew = optionsOrStatus;
         } else {
             options = {...optionsOrStatus};
         }
 
-        return [options, statusCb];
+        return [options, statusCbNew];
     }
 
     private async _signViaSigner(
