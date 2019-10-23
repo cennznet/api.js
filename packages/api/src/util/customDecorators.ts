@@ -1,9 +1,9 @@
-import {Api, ApiRx} from '@cennznet/api';
-import createSubmittable from '@cennznet/api/submittable/createSubmittable';
-import {SubmittableExtrinsic} from '@cennznet/api/submittable/types';
-import {SubmittableExtrinsicFunction} from '@cennznet/api/types';
 import {CodecArg} from '@cennznet/types/types';
-import {CodecArg as Arg} from '@plugnet/types/types';
+import {Call} from '@plugnet/types/interfaces';
+import {Api, ApiRx} from '../../src';
+import createSubmittable from '../submittable/createSubmittable';
+import {SubmittableExtrinsic} from '../submittable/types';
+import {SubmittableExtrinsicFunction} from '../types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
     const creator = createSubmittable(api.type, (api as any)._rx, (api as any).decorateMethod);
@@ -17,7 +17,7 @@ export function decorateExtrinsics(api: Api | ApiRx) {
 function decorateExtrinsic(
     api: Api | ApiRx,
     method: SubmittableExtrinsicFunction<any>,
-    creator: any
+    creator: (value: Call | Uint8Array | string) => SubmittableExtrinsic<any>
 ): SubmittableExtrinsicFunction<any> {
     const newMethod = (...params: Array<CodecArg>) => {
         const extrinsic = creator(method(...params));
