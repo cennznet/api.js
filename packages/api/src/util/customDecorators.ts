@@ -6,9 +6,15 @@ import {CodecArg} from '@cennznet/types/types';
 import {CodecArg as Arg} from '@plugnet/types/types';
 
 export function decorateExtrinsics(api: Api | ApiRx) {
+    const creator = createSubmittable(api.type, (api as any)._rx, (api as any).decorateMethod);
     for (const sectionName of Object.keys(api.tx)) {
         for (const methodName of Object.keys(api.tx[sectionName])) {
             api.tx[sectionName][methodName] = decorateExtrinsic(api, api.tx[sectionName][methodName]);
+            api.tx[sectionName][methodName] = decorateExtrinsicsSubmittable(
+                api,
+                api.tx[sectionName][methodName],
+                creator
+            );
         }
     }
 }
@@ -25,19 +31,6 @@ function decorateExtrinsic(
         return extrinsic;
     };
     return (api as any).decorateFunctionMeta(method, newMethod);
-}
-
-export function decorateExtrinsicsSubmittables(api: Api | ApiRx) {
-    const creator = createSubmittable(api.type, (api as any)._rx, (api as any).decorateMethod);
-    for (const sectionName of Object.keys(api.tx)) {
-        for (const methodName of Object.keys(api.tx[sectionName])) {
-            api.tx[sectionName][methodName] = decorateExtrinsicsSubmittable(
-                api,
-                api.tx[sectionName][methodName],
-                creator
-            );
-        }
-    }
 }
 
 function decorateExtrinsicsSubmittable(

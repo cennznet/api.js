@@ -6,7 +6,7 @@ import {EventRecord, SignedBlock} from '@plugnet/types/interfaces';
 
 import {U8a} from '@plugnet/types';
 
-import l from './logging';
+import l from '../../util/logging';
 
 export default function filterEvents(
     extHash: U8a,

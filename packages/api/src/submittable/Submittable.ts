@@ -32,8 +32,8 @@ import {first, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
 //import ApiBase from '../base1';
 import ApiBase from '@plugnet/api/base';
-import {filterEvents, isKeyringPair} from '../util';
 import SubmittableResult from './Result';
+import {filterEvents, isKeyringPair} from './util';
 
 interface SubmittableOptions<ApiType> {
     api: ApiInterfaceRx;

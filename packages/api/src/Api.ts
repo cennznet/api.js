@@ -116,7 +116,6 @@ export class Api extends ApiPromise {
 
     decorateCennznetExtrinsics(): void {
         decorateExtrinsics(this);
-        decorateExtrinsicsSubmittables(this);
     }
 }
 
