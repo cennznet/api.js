@@ -11,10 +11,7 @@ import l from './logging';
 export default function filterEvents(
     extHash: U8a,
     {block: {extrinsics, header}}: SignedBlock,
-    allEvents: EventRecord[],
-    section?: string,
-    name?: string,
-    data?: Uint8Array
+    allEvents: EventRecord[]
 ): EventRecord[] | undefined {
     // extrinsics to hashes
     const myHash = extHash.toHex();
@@ -29,20 +26,10 @@ export default function filterEvents(
         return;
     }
 
-    // console.log('Inside filter events...********');
-    const a = allEvents.filter(
-        ({phase}): boolean =>
-            // only ApplyExtrinsic has the extrinsic index
-            phase.isApplyExtrinsic &&
-            phase.asApplyExtrinsic.eqn(index) &&
-            (section === 'fees' && name === 'Charged' && data[0] === index)
-    );
-    // console.log('Filtered events', a);
     return allEvents.filter(
-        ({phase}): boolean =>
+        ({phase, event}): boolean =>
             // only ApplyExtrinsic has the extrinsic index
-            phase.isApplyExtrinsic &&
-            phase.asApplyExtrinsic.eqn(index) &&
-            (section === 'fees' && name === 'Charged' && data[0] === index)
+            (phase.isApplyExtrinsic && phase.asApplyExtrinsic.eqn(index)) ||
+            (event.method === 'Charged' && event.section === 'fees' && event.data[0].eq(index))
     );
 }

@@ -60,6 +60,8 @@ describe('e2e transactions', () => {
                     if (status.isFinalized) {
                         expect(events[0].event.method).toEqual('Transferred');
                         expect(events[0].event.section).toEqual('genericAsset');
+                        expect(events[2].event.section).toEqual('fees');
+                        expect(events[2].event.method).toEqual('Charged');
                         done();
                     }
                 });
@@ -74,10 +76,10 @@ describe('e2e transactions', () => {
                 .transfer(16000, receiver.address, 1).sign(senderKeypair, {nonce});
             await tx.send(async ({events, status}: SubmittableResult) => {
                 if (status.isFinalized) {
-                    console.log('*******');
-                    console.log(events);
-                   // expect(events[0].event.method).toEqual('Transferred');
-                   // expect(events[0].event.section).toEqual('genericAsset');
+                    expect(events[0].event.method).toEqual('Transferred');
+                    expect(events[0].event.section).toEqual('genericAsset');
+                    expect(events[2].event.section).toEqual('fees');
+                    expect(events[2].event.method).toEqual('Charged');
                     done();
                 }
             });
@@ -91,6 +93,8 @@ describe('e2e transactions', () => {
                     if (status.isFinalized) {
                         expect(events[0].event.method).toEqual('Transferred');
                         expect(events[0].event.section).toEqual('genericAsset');
+                        expect(events[2].event.section).toEqual('fees');
+                        expect(events[2].event.method).toEqual('Charged');
                         done();
                     }
                 });

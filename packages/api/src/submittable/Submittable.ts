@@ -267,14 +267,7 @@ export default class Submittable<ApiType> extends _Extrinsic implements Submitta
             map(
                 ([signedBlock, allEvents]): SubmittableResultImpl =>
                     new SubmittableResult({
-                        events: filterEvents(
-                            this.hash,
-                            signedBlock,
-                            allEvents,
-                            this.method.methodName,
-                            this.method.sectionName,
-                            this.data
-                        ),
+                        events: filterEvents(this.hash, signedBlock, allEvents),
                         status,
                     })
             )
