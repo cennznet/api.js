@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//import ApiBase from '@cennznet/api/base1';
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {
     AnyAddress,
