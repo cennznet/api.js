@@ -20,7 +20,7 @@ function decorateExtrinsic(
     creator: (value: Call | Uint8Array | string) => SubmittableExtrinsic<any>
 ): SubmittableExtrinsicFunction<any> {
     const newMethod = (...params: Array<CodecArg>) => {
-        const extrinsic = creator(method(...params));
+        const extrinsic = creator(method(...params) as any);
         Object.defineProperty(extrinsic, 'fee', {
             value: sender => api.derive.fees.estimateFee(extrinsic, sender),
         });
