@@ -23,7 +23,7 @@ import derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
-import {decorateExtrinsics, decorateExtrinsicsSubmittables} from './util/customDecorators';
+import {decorateExtrinsics} from './util/customDecorators';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
