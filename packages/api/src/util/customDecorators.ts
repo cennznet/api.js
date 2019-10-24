@@ -14,7 +14,8 @@
 
 import {CodecArg} from '@cennznet/types/types';
 import {Call} from '@plugnet/types/interfaces';
-import {Api, ApiRx} from '..';
+import {Api} from '../Api';
+import {ApiRx} from '../ApiRx';
 import createSubmittable from '../submittable/createSubmittable';
 import {SubmittableExtrinsic} from '../submittable/types';
 import {SubmittableExtrinsicFunction} from '../types';
