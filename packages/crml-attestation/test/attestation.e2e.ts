@@ -211,23 +211,23 @@ describe('Attestation APIs', () => {
 
         describe('Get Mutiple Claims Claim', () => {
             it('should get a claim with a specific issuer and holder', async done => {
-                const {claims} = await attestation.getClaims(
+                const claims = await attestation.getClaimList(
                     holder.address,
                     [issuer.address, issuer2.address],
                     [topic, topic2]
                 );
 
-                expect(claims[topic][issuer.address].toHex()).toEqual(attestationValue.toHex());
-                expect(claims[topic][issuer.address].toU8a()).toEqual(attestationValue.toU8a());
+                expect(claims[0].value.toHex()).toEqual(attestationValue.toHex());
+                expect(claims[0].value.toU8a()).toEqual(attestationValue.toU8a());
 
-                expect(claims[topic][issuer2.address].toHex()).toEqual(attestationValue.toHex());
-                expect(claims[topic][issuer2.address].toU8a()).toEqual(attestationValue.toU8a());
+                expect(claims[1].value.toHex()).toEqual(attestationValue2.toHex());
+                expect(claims[1].value.toU8a()).toEqual(attestationValue2.toU8a());
 
-                expect(claims[topic2][issuer.address].toHex()).toEqual(attestationValue2.toHex());
-                expect(claims[topic2][issuer.address].toU8a()).toEqual(attestationValue2.toU8a());
+                expect(claims[2].value.toHex()).toEqual(attestationValue.toHex());
+                expect(claims[2].value.toU8a()).toEqual(attestationValue.toU8a());
 
-                expect(claims[topic2][issuer2.address].toHex()).toEqual(attestationValue2.toHex());
-                expect(claims[topic2][issuer2.address].toU8a()).toEqual(attestationValue2.toU8a());
+                expect(claims[3].value.toHex()).toEqual(attestationValue2.toHex());
+                expect(claims[3].value.toU8a()).toEqual(attestationValue2.toU8a());
 
                 done();
             });
@@ -280,6 +280,24 @@ describe('Attestation APIs', () => {
         });
         //
         describe('Remove Claims', () => {
+            it('should create a claim', async done => {
+                await attestation.setClaim(holder.address, topic, attestationValue.toHex()).signAndSend(issuer.address, async ({events, status}) => {
+                    if (status.isFinalized && events !== undefined) {
+                        for (const {event: {method, data}} of events) {
+                            if (method === 'ClaimSet') {
+                                expect(data[0].toString()).toBe(holder.address);
+                                // Expect issuers to match
+                                expect(data[1].toString()).toBe(issuer.address);
+                                // expect topic to match
+                                expect(data[2].toString()).toEqual(topic);
+                                expect(data[3].toHex()).toBe(attestationValue.toHex());
+                                done();
+                            }
+                        }
+                    }
+                });
+            });
+
             it('should remove a claim', async done => {
                 // Expect holders to match
                 await attestation.removeClaim(holder.address, topic)
