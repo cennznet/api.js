@@ -133,29 +133,8 @@ describe('Attestation APIs', () => {
 
     describe('Create Multiple Claims', () => {
         it('should create a claim with issuer 1 and topic 1', async done => {
-            const claim = attestation.setClaim(holder.address, topic, attestationValue.toHex());
-
-            await claim.signAndSend(issuer.address, async ({events, status}) => {
-                if (status.isFinalized && events !== undefined) {
-                    for (const {event: {method, data}} of events) {
-                        if (method === 'ClaimSet') {
-                            expect(data[0].toString()).toBe(holder.address);
-                            // Expect issuers to match
-                            expect(data[1].toString()).toBe(issuer.address);
-                            // expect topic to match
-                            expect(data[2].toString()).toEqual(topic);
-                            expect(data[3].toHex()).toBe(attestationValue.toHex());
-                            done();
-                        }
-                    }
-                }
-            });
-        });
-
-            it('should create a claim with issuer 1 and topic 2', async done => {
-                const claim = attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
-
-                await claim.signAndSend(issuer.address, async ({events, status}) => {
+            await attestation.setClaim(holder.address, topic, attestationValue.toHex())
+                .signAndSend(issuer.address, async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         for (const {event: {method, data}} of events) {
                             if (method === 'ClaimSet') {
@@ -163,52 +142,70 @@ describe('Attestation APIs', () => {
                                 // Expect issuers to match
                                 expect(data[1].toString()).toBe(issuer.address);
                                 // expect topic to match
-                                expect(data[2].toString()).toEqual(topic2);
-                                expect(data[3].toHex()).toBe(attestationValue2.toHex());
+                                expect(data[2].toString()).toEqual(topic);
+                                expect(data[3].toHex()).toBe(attestationValue.toHex());
                                 done();
                             }
                         }
                     }
                 });
+        });
+
+            it('should create a claim with issuer 1 and topic 2', async done => {
+                await attestation.setClaim(holder.address, topic2, attestationValue2.toHex())
+                    .signAndSend(issuer.address, async ({events, status}) => {
+                        if (status.isFinalized && events !== undefined) {
+                            for (const {event: {method, data}} of events) {
+                                if (method === 'ClaimSet') {
+                                    expect(data[0].toString()).toBe(holder.address);
+                                    // Expect issuers to match
+                                    expect(data[1].toString()).toBe(issuer.address);
+                                    // expect topic to match
+                                    expect(data[2].toString()).toEqual(topic2);
+                                    expect(data[3].toHex()).toBe(attestationValue2.toHex());
+                                    done();
+                                }
+                            }
+                        }
+                    });
             });
 
             it('should create a claim with issuer 2 and topic 1', async done => {
-                const claim = attestation.setClaim(holder.address, topic, attestationValue.toHex());
-                await claim.signAndSend(issuer2.address, async ({events, status}) => {
-                    if (status.isFinalized && events !== undefined) {
-                        for (const {event: {method, data}} of events) {
-                            if (method === 'ClaimSet') {
-                                expect(data[0].toString()).toBe(holder.address);
-                                // Expect issuers to match
-                                expect(data[1].toString()).toBe(issuer2.address);
-                                // expect topic to match
-                                expect(data[2].toString()).toEqual(topic);
-                                expect(data[3].toString()).toBe(attestationValue.toHex());
-                                done();
+                await attestation.setClaim(holder.address, topic, attestationValue.toHex())
+                    .signAndSend(issuer2.address, async ({events, status}) => {
+                        if (status.isFinalized && events !== undefined) {
+                            for (const {event: {method, data}} of events) {
+                                if (method === 'ClaimSet') {
+                                    expect(data[0].toString()).toBe(holder.address);
+                                    // Expect issuers to match
+                                    expect(data[1].toString()).toBe(issuer2.address);
+                                    // expect topic to match
+                                    expect(data[2].toString()).toEqual(topic);
+                                    expect(data[3].toString()).toBe(attestationValue.toHex());
+                                    done();
+                                }
                             }
                         }
-                    }
-                });
+                    });
             });
 
             it('should create a claim with issuer 2 and topic 2', async done => {
-                const claim = attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
-
-                await claim.signAndSend(issuer2.address, async ({events, status}) => {
-                    if (status.isFinalized && events !== undefined) {
-                        for (const {event: {method, data}} of events) {
-                            if (method === 'ClaimSet') {
-                                expect(data[0].toString()).toBe(holder.address);
-                                // Expect issuers to match
-                                expect(data[1].toString()).toBe(issuer2.address);
-                                // expect topic to match
-                                expect(data[2].toString().toString()).toEqual(topic2);
-                                expect(data[3].toString()).toBe(attestationValue2.toHex());
-                                done();
+                await attestation.setClaim(holder.address, topic2, attestationValue2.toHex())
+                    .signAndSend(issuer2.address, async ({events, status}) => {
+                        if (status.isFinalized && events !== undefined) {
+                            for (const {event: {method, data}} of events) {
+                                if (method === 'ClaimSet') {
+                                    expect(data[0].toString()).toBe(holder.address);
+                                    // Expect issuers to match
+                                    expect(data[1].toString()).toBe(issuer2.address);
+                                    // expect topic to match
+                                    expect(data[2].toString().toString()).toEqual(topic2);
+                                    expect(data[3].toString()).toBe(attestationValue2.toHex());
+                                    done();
+                                }
                             }
                         }
-                    }
-                });
+                    });
             });
         });
 
@@ -284,23 +281,22 @@ describe('Attestation APIs', () => {
         //
         describe('Remove Claims', () => {
             it('should remove a claim', async done => {
-                const claim = attestation.removeClaim(holder.address, topic);
-
                 // Expect holders to match
-                await claim.signAndSend(issuer.address, async ({events, status}) => {
-                    if (status.isFinalized && events !== undefined) {
-                        for (const {event: {method, data}} of events) {
-                            if (method === 'ClaimRemoved') {
-                                expect(data[0].toString()).toBe(holder.address);
-                                // Expect issuers to match
-                                expect(data[1].toString()).toBe(issuer.address);
-                                // expect topic to match
-                                expect(data[2].toString()).toEqual(topic);
-                                done();
+                await attestation.removeClaim(holder.address, topic)
+                    .signAndSend(issuer.address, async ({events, status}) => {
+                        if (status.isFinalized && events !== undefined) {
+                            for (const {event: {method, data}} of events) {
+                                if (method === 'ClaimRemoved') {
+                                    expect(data[0].toString()).toBe(holder.address);
+                                    // Expect issuers to match
+                                    expect(data[1].toString()).toBe(issuer.address);
+                                    // expect topic to match
+                                    expect(data[2].toString()).toEqual(topic);
+                                    done();
+                                }
                             }
                         }
-                    }
-                });
+                    });
             });
+        });
     });
-});
