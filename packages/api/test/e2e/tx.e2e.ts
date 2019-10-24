@@ -60,6 +60,8 @@ describe('e2e transactions', () => {
                     if (status.isFinalized) {
                         expect(events[0].event.method).toEqual('Transferred');
                         expect(events[0].event.section).toEqual('genericAsset');
+                        expect(events[2].event.section).toEqual('fees');
+                        expect(events[2].event.method).toEqual('Charged');
                         done();
                     }
                 });
@@ -76,6 +78,8 @@ describe('e2e transactions', () => {
                 if (status.isFinalized) {
                     expect(events[0].event.method).toEqual('Transferred');
                     expect(events[0].event.section).toEqual('genericAsset');
+                    expect(events[2].event.section).toEqual('fees');
+                    expect(events[2].event.method).toEqual('Charged');
                     done();
                 }
             });
@@ -89,6 +93,8 @@ describe('e2e transactions', () => {
                     if (status.isFinalized) {
                         expect(events[0].event.method).toEqual('Transferred');
                         expect(events[0].event.section).toEqual('genericAsset');
+                        expect(events[2].event.section).toEqual('fees');
+                        expect(events[2].event.method).toEqual('Charged');
                         done();
                     }
                 });
