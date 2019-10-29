@@ -16,7 +16,7 @@ import {ApiRx, SubmittableResult} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import testingPairs from '@plugnet/keyring/testingPairs';
 import {Vec} from '@plugnet/types';
-import {EventRecord} from '@plugnet/types/interfaces';
+import {EventRecord, ExtrinsicStatus} from '@plugnet/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -24,6 +24,18 @@ const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
     uri: '//cennznet-js-test',
 };
+
+function testFee(status: ExtrinsicStatus, events: EventRecord[], fee, done) {
+    if (status.isFinalized && events !== undefined) {
+        for (let i = 0; i < events.length; i++) {
+            if (events[i].event.method === 'Charged' && events[i].event.section === 'fees') {
+                const gas = events[i].event.data[1];
+                expect(gas.toString()).toEqual(fee.toString());
+                done();
+            }
+        }
+    }
+}
 
 describe('fees in cennznet', () => {
     let api: Api;
@@ -47,14 +59,7 @@ describe('fees in cennznet', () => {
             });
             const fee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
-                if (status.isFinalized && events !== undefined) {
-                    const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                    const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                    const gas = feeChargeEvent.event.data[1];
-                    expect(gas.toString()).toEqual(fee.toString());
-                    done();
-                }
+                testFee(status, events, fee, done);
             });
         });
 
@@ -62,14 +67,7 @@ describe('fees in cennznet', () => {
             const tx = api.tx.genericAsset.transfer(16000, sender.address, 1000000);
             const fee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
-                if (status.isFinalized && events !== undefined) {
-                    const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                    const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                    const gas = feeChargeEvent.event.data[1];
-                    expect(gas.toString()).toEqual(fee.toString());
-                    done();
-                }
+                testFee(status, events, fee, done);
             });
         });
     });
@@ -81,6 +79,7 @@ describe('fees in cennznet (Rxjs)', () => {
 
     beforeAll(async () => {
         api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
+
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -96,18 +95,8 @@ describe('fees in cennznet (Rxjs)', () => {
                 initialIssuance: 100,
             });
             const fee = await tx.fee(sender.address).toPromise();
-            console.log('fee', fee.toString());
             tx.signAndSend(sender.address).subscribe(async ({events, status}: SubmittableResult) => {
-                if (status.isFinalized && events !== undefined) {
-                    const blockHash = status.asFinalized;
-                    const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<
-                        EventRecord
-                    >;
-                    const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                    const gas = feeChargeEvent.event.data[1];
-                    expect(gas.toString()).toEqual(fee.toString());
-                    done();
-                }
+                testFee(status, events, fee, done);
             });
         });
     });
