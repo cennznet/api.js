@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.20.7]() (2019-10-30)
+# [0.20.7]() (2019-10-30)
 ### Feature
 * Feed fee events in signAndSend callback ([50ee5a3]()), closes [#5]()
 * Fix/improved few e2e tests
