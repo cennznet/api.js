@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.20.7]() (2019-10-30)
+### Feature
+* Feed fee events in signAndSend callback ([50ee5a3]()), closes [#5]()
+* Fix/improved few e2e tests
+
+
 # [0.20.6](https://github.com/cennznet/api.js/compare/v20.3...v0.20.6) (2019-09-10)
 ### Feature
 * migrate crml-attestation into monorepo
