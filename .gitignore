@@ -10,3 +10,4 @@ packages/**/*.d.ts
 .vscode
 .iml
 api_docs
+.tmp
