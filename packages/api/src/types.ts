@@ -27,7 +27,15 @@ import {
 } from '@cennznet/types/types';
 import {DeriveCustom} from '@plugnet/api-derive';
 import ApiBase from '@plugnet/api/base';
-import {ApiOptions as ApiOptionsBase, SignerOptions as SignerOptionsBase, UnsubscribePromise} from '@plugnet/api/types';
+import {
+    ApiOptions as ApiOptionsBase,
+    SignerOptions as SignerOptionsBase,
+    SubmitableResultResult,
+    SubmitableResultSubscription,
+    SubmittableExtrinsic as SubmittableExtrinsicBase,
+    SubmittableResultImpl,
+    UnsubscribePromise,
+} from '@plugnet/api/types';
 import {DecoratedCennznetDerive} from './derives';
 
 import {ProviderInterface} from '@plugnet/rpc-provider/types';
@@ -35,12 +43,6 @@ import {u64} from '@plugnet/types';
 import {AccountId, Address, AssetOf, Hash} from '@plugnet/types/interfaces';
 import {StorageEntry} from '@plugnet/types/primitive/StorageKey';
 import {Observable} from 'rxjs';
-import {
-    SubmitableResultResult,
-    SubmitableResultSubscription,
-    SubmittableExtrinsic as SubmittableExtrinsicBase,
-    SubmittableResultImpl,
-} from './submittable/types';
 
 export * from '@plugnet/api/types';
 

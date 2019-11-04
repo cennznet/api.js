@@ -25,18 +25,6 @@ const sender = {
     uri: '//cennznet-js-test',
 };
 
-function testFee(status: ExtrinsicStatus, events: EventRecord[], fee, done) {
-    if (status.isFinalized && events !== undefined) {
-        for (let i = 0; i < events.length; i++) {
-            if (events[i].event.method === 'Charged' && events[i].event.section === 'fees') {
-                const gas = events[i].event.data[1];
-                expect(gas.toString()).toEqual(fee.toString());
-                done();
-            }
-        }
-    }
-}
-
 describe('fees in cennznet', () => {
     let api: Api;
     let keyring;
@@ -59,15 +47,38 @@ describe('fees in cennznet', () => {
             });
             const fee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
-                testFee(status, events, fee, done);
+              if (status.isFinalized && events !== undefined) {
+                  const blockHash = status.asFinalized;
+                  const eventList = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
+                  let gas;
+                  for (const {event} of eventList) {
+                    if (event.method === 'Charged') {
+                      gas = event.data[1];
+                    }
+                  }
+                  expect(gas.toString()).toEqual(fee.toString());
+                  done();
+              }
             });
         });
 
         it('fee estimate Transfer', async done => {
             const tx = api.tx.genericAsset.transfer(16000, sender.address, 1000000);
             const fee = await tx.fee(sender.address);
+            console.log('fee', fee.toString());
             await tx.signAndSend(sender.address, async ({events, status}) => {
-                testFee(status, events, fee, done);
+              if (status.isFinalized && events !== undefined) {
+                const blockHash = status.asFinalized;
+                const eventList = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
+                let gas;
+                for (const {event} of eventList) {
+                  if (event.method === 'Charged') {
+                    gas = event.data[1];
+                  }
+                }
+                expect(gas.toString()).toEqual(fee.toString());
+                done();
+              }
             });
         });
     });
@@ -95,8 +106,20 @@ describe('fees in cennznet (Rxjs)', () => {
                 initialIssuance: 100,
             });
             const fee = await tx.fee(sender.address).toPromise();
+            console.log('fee', fee.toString());
             tx.signAndSend(sender.address).subscribe(async ({events, status}: SubmittableResult) => {
-                testFee(status, events, fee, done);
+              if (status.isFinalized && events !== undefined) {
+                const blockHash = status.asFinalized;
+                const eventList = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<EventRecord>;
+                let gas;
+                for (const {event} of eventList) {
+                  if (event.method === 'Charged') {
+                    gas = event.data[1];
+                  }
+                }
+                expect(gas.toString()).toEqual(fee.toString());
+                done();
+              }
             });
         });
     });
