@@ -25,9 +25,39 @@ jobs:
           command: yarn test --coverage
       - store_test_results:
           path: coverage
+  integration-tests:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run:
+          name: Run integration tests
+          command: echo "TODO - implement integration tests"
+  end-to-end-tests:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run:
+          name: Run E2E tests
+          command: echo "TODO - implement E2E tests"
 
 workflows:
   version: 2
-  pull-request-build:
+  develop-branch-build:
     jobs:
       - build
+      - integration-tests:
+          filters:
+            branches:
+              only: develop
+  releases-and-master-branch-build:
+    jobs:
+      - build
+      - end-to-end-tests:
+          filters:
+            branches:
+              only:
+                - /^release*/
+                - master
+
