@@ -10,13 +10,13 @@ jobs:
             - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
             - yarn-packages-v1-{{ .Branch }}-
             - yarn-packages-v1-
+      - run:
+          name: Install Dependencies
+          command: yarn
       - save_cache:
           paths:
             - ~/.tmp/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn
       - run:
           name: Run lint
           command: yarn lint
@@ -25,9 +25,6 @@ jobs:
           command: yarn test --coverage
       - store_test_results:
           path: coverage
-
-workflows:
-  version: 2
-  pull-request-build:
-    jobs:
-      - build
+      - run:
+          name: Run integration tests
+          command: echo "TODO - implement integration tests"
