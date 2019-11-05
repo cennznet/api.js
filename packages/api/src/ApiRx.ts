@@ -11,7 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import getPlugins from '@cennznet/api/plugins';
+import {decorateExtrinsics} from '@cennznet/api/util/customDecorators';
+import {mergeDeriveOptions} from '@cennznet/api/util/derives';
+import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {AttestationRx} from '@cennznet/crml-attestation';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
@@ -20,10 +23,6 @@ import {ApiRx as ApiRxBase} from '@plugnet/api';
 import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
 import {switchMap, timeout} from 'rxjs/operators';
-import getPlugins from './plugins';
-import {decorateExtrinsics} from './util/customDecorators';
-import {mergeDeriveOptions} from './util/derives';
-import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 
 import {DEFAULT_TIMEOUT} from './Api';
 import derives from './derives';
