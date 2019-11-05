@@ -19,12 +19,13 @@
     },
     "dependencies": {
         "@cennznet/util": "^0.20.7",
-        "@plugnet/types": "^0.90.104",
-        "@plugnet/util": "^1.1.100",
+        "typescript": "^2.9.2",
+        "@polkadot/types": "^0.96.1",
+        "@polkadot/util": "^1.6.1",
         "memoizee": "^0.4.14"
     },
     "devDependencies": {
-        "@plugnet/api": "^0.90.104",
-        "@plugnet/rpc-provider": "^0.90.104"
+        "@polkadot/api": "^0.96.1",
+        "@polkadot/rpc-provider": "^0.96.1"
     }
 }

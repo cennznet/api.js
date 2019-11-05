@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '@plugnet/types/injector';
-import {createTypeUnsafe, getTypeRegistry} from '@plugnet/types';
+import '@polkadot/types/injector';
+import {createTypeUnsafe, getTypeRegistry} from '@polkadot/types';
 
 import * as gaTypes from './';
 import AssetOptions from './AssetOptions';

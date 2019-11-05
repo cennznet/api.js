@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf, Enum, Struct, Text, Tuple, Vec} from '@plugnet/types';
-import {u8aToHex} from '@plugnet/util';
+import {ClassOf, Enum, Struct, Text, Tuple, Vec} from '@polkadot/types';
+import {u8aToHex} from '@polkadot/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
 
@@ -52,7 +52,11 @@ export class MemberRoles extends Enum.with(['AdminRole', 'MemberRole']) {}
 
 export class Meta extends Vec.with(Tuple.with([Text, Text])) {}
 
-const INVITE_JSON_MAP = new Map([['peerId', 'peer_id'], ['inviteData', 'invite_data'], ['inviteKey', 'invite_key']]);
+const INVITE_JSON_MAP = new Map([
+    ['peerId', 'peer_id'],
+    ['inviteData', 'invite_data'],
+    ['inviteKey', 'invite_key'],
+]);
 
 export class Invite extends Struct {
     constructor(value) {

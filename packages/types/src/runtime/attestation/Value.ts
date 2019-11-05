@@ -15,6 +15,6 @@
 /*
     Custom `Value` type for Attestation module.
  */
-import {ClassOf} from '@plugnet/types';
+import {ClassOf} from '@polkadot/types';
 
 export default class AttestationValue extends ClassOf('H256') {}

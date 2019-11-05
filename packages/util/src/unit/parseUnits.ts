@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {assert, isNumber} from '@plugnet/util';
+import {assert, isNumber} from '@polkadot/util';
 import BN from 'bn.js';
 import {stripEndZero} from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';

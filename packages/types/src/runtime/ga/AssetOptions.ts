@@ -16,8 +16,8 @@
  Custom `AssetOptions` type for generic asset module.
 */
 
-import {Struct} from '@plugnet/types';
-import {Balance} from '@plugnet/types/interfaces';
+import {Struct} from '@polkadot/types';
+import {Balance} from '@polkadot/types/interfaces';
 import PermissionLatest from './PermissionsV1';
 
 export default class AssetOptions extends Struct {

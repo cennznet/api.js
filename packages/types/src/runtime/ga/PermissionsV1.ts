@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Struct} from '@plugnet/types';
+import {Struct} from '@polkadot/types';
 import Owner from './Owner';
 
 /**

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Bytes, Compact, U8a} from '@plugnet/types';
-import {AnyU8a} from '@plugnet/types/types';
+import {Bytes, Compact, U8a} from '@polkadot/types';
+import {AnyU8a} from '@polkadot/types/types';
 
 /**
  * An encoded, signed v0 Doughnut certificate

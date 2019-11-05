@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createTypeUnsafe, getTypeRegistry} from '@plugnet/types';
+import {createTypeUnsafe, getTypeRegistry} from '@polkadot/types';
 
 import * as cennzxTypes from './';
 import ExchangeKey from './ExchangeKey';

@@ -1,3 +1,3 @@
 module.exports = {
-  extends: '@plugnet/dev/config/babel'
+  extends: '@polkadot/dev/config/babel'
 };

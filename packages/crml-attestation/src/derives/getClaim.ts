@@ -14,10 +14,12 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AttestationValue} from '@cennznet/types';
-import {drr} from '@plugnet/api-derive/util/drr';
+import {drr} from '@polkadot/api-derive/util/drr';
 import {Observable} from 'rxjs';
 
 export function getClaim(api: ApiInterfaceRx) {
     return (holder: string, issuer: string, topic: string): Observable<AttestationValue> =>
-        api.query.attestation.values<AttestationValue>([holder, issuer, topic]).pipe(drr());
+        api.query.attestation
+            .values<AttestationValue>([holder, issuer, topic])
+            .pipe(drr());
 }

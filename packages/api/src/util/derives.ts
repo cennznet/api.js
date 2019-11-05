@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DeriveCustom} from '@plugnet/api-derive';
+import {DeriveCustom} from '@polkadot/api-derive';
 
 export function mergeDeriveOptions(deriveOrigin: DeriveCustom, deriveAppend: DeriveCustom = {}): DeriveCustom {
     const ret = {...deriveOrigin};

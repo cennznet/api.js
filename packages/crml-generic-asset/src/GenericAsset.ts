@@ -17,7 +17,7 @@ import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
 import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
-import {Balance} from '@plugnet/types/interfaces';
+import {Balance} from '@polkadot/types/interfaces';
 import {AssetOptionsValue, QueryableGetBalance} from './types';
 
 export class GenericAsset {

@@ -33,5 +33,8 @@
         }
     },
     "include": ["packages/**/*", "scripts/*.ts"],
-    "exclude": ["**/node_modules/**"]
+    "exclude": ["**/node_modules/**"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
 }

@@ -15,8 +15,8 @@
 /*
     Custom `Topic` type for Attestation module.
  */
-import {ClassOf} from '@plugnet/types';
-import {isHex, isString, stringToU8a, u8aToString} from '@plugnet/util';
+import {ClassOf} from '@polkadot/types';
+import {isHex, isString, stringToU8a, u8aToString} from '@polkadot/util';
 
 function isAscii(str: string) {
     return /^[\x20-\x7E]*$/.test(str);

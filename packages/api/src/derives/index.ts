@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {ApiTypes} from '@cennznet/api/types';
 import * as attestation from '@cennznet/crml-attestation/derives';
 import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
 import * as genericAsset from '@cennznet/crml-generic-asset/derives';
 import {AnyFunction} from '@cennznet/types/types';
-import {ApiInterfaceRx, MethodResult} from '@plugnet/api/types';
+import {ApiInterfaceRx, MethodResult} from '@polkadot/api/types';
 import {Observable} from 'rxjs';
 import * as fees from './fees';
 
@@ -25,7 +26,7 @@ export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable
 export const derive = {attestation, cennzxSpot, fees, genericAsset};
 
 export type DecoratedCennznetDerive<
-    ApiType,
+    ApiType extends ApiTypes,
     AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
 > = {
     [SectionName in keyof AllSections]: {

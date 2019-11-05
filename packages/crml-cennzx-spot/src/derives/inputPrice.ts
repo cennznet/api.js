@@ -14,9 +14,9 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
-import {drr} from '@plugnet/api-derive/util/drr';
-import {createType} from '@plugnet/types';
-import {Hash} from '@plugnet/types/interfaces';
+import {drr} from '@polkadot/api-derive/util/drr';
+import {createType} from '@polkadot/types';
+import {Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';

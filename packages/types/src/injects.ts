@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//import {Balance} from '@polkadot/types/interfaces';
 import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
 
@@ -20,4 +21,5 @@ export default {
     ...extrinsicTypes,
     AssetOf: 'u128',
     'ed25519::Signature': 'H512',
+    RewardBalance: 'Balance',
 };

@@ -16,8 +16,8 @@ import {Attestation} from '@cennznet/crml-attestation';
 import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
-import {ApiPromise} from '@plugnet/api';
-import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
+import {ApiPromise} from '@polkadot/api';
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
 import derives from './derives';
 import getPlugins from './plugins';

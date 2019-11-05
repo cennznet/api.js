@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import {assert} from '@cennznet/util';
-import {HttpProvider, WsProvider} from '@plugnet/rpc-provider';
-import {ProviderInterface} from '@plugnet/rpc-provider/types';
+import {HttpProvider, WsProvider} from '@polkadot/rpc-provider';
+import {ProviderInterface} from '@polkadot/rpc-provider/types';
 
 const REGEX = /^(wss?|https?):\/\//;
 

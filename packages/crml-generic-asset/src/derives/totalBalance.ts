@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@plugnet/api-derive/util/drr';
-import {ApiInterfaceRx} from '@plugnet/api/types';
-import {Balance, Hash} from '@plugnet/types/interfaces';
+import {drr} from '@polkadot/api-derive/util/drr';
+import {ApiInterfaceRx} from '@polkadot/api/types';
+import {Balance, Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';

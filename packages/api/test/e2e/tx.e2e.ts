@@ -18,8 +18,8 @@
 
 import {AssetId, AssetOptions} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import {SubmittableResult} from '@plugnet/api';
-import {Index} from '@plugnet/types/interfaces';
+import {SubmittableResult} from '@polkadot/api';
+import {Index} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
 

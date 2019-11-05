@@ -21,7 +21,7 @@ import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 
 import {GenericAssetRx} from '../src/GenericAssetRx';
-import { Balance, Hash } from '@plugnet/types/interfaces';
+import { Balance, Hash } from '@polkadot/types/interfaces';
 
 const assetOwner = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',

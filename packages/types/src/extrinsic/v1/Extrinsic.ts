@@ -14,10 +14,10 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {createType, Struct} from '@plugnet/types';
-import {Address, Call} from '@plugnet/types/interfaces';
-import {IKeyringPair, SignatureOptions} from '@plugnet/types/types';
-import {isU8a} from '@plugnet/util';
+import {createType, Struct} from '@polkadot/types';
+import {Address, Call} from '@polkadot/types/interfaces';
+import {IKeyringPair, SignatureOptions} from '@polkadot/types/types';
+import {isU8a} from '@polkadot/util';
 
 import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE} from '../constants';
 import {DoughnutValue, ExtrinsicOptions, FeeExchangeValue, IExtrinsicImpl} from '../types';

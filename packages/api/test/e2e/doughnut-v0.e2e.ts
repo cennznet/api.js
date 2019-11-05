@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import testingPairs from '@plugnet/keyring/testingPairs';
-import { hexToU8a, assert } from '@plugnet/util'
+import testingPairs from '@polkadot/keyring/testingPairs';
+import { hexToU8a, assert } from '@polkadot/util'
 import { encode as encodeCennznut } from '@cennznet/cennznut';
 import { generate as encodeDoughnut } from '@plugnet/doughnut-maker';
 

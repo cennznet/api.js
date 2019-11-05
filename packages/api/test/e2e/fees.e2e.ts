@@ -14,9 +14,9 @@
 
 import {ApiRx, SubmittableResult} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import testingPairs from '@plugnet/keyring/testingPairs';
-import {Vec} from '@plugnet/types';
-import {EventRecord} from '@plugnet/types/interfaces';
+import testingPairs from '@polkadot/keyring/testingPairs';
+import {Vec} from '@polkadot/types';
+import {EventRecord} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -50,12 +50,8 @@ describe('fees in cennznet', () => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const gas = feeChargeEvent.event.data[1];
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }
@@ -69,12 +65,8 @@ describe('fees in cennznet', () => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const gas = feeChargeEvent.event.data[1];
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }
@@ -111,12 +103,8 @@ describe('fees in cennznet (Rxjs)', () => {
                 const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<
                   EventRecord
                   >;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const gas = feeChargeEvent.event.data[1];
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }

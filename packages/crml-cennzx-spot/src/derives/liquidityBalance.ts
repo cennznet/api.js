@@ -14,8 +14,8 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@plugnet/api-derive/util/drr';
-import {Balance, Hash} from '@plugnet/types/interfaces';
+import {drr} from '@polkadot/api-derive/util/drr';
+import {Balance, Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';

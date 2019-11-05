@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Struct} from '@plugnet/types';
-import {Balance} from '@plugnet/types/interfaces';
+import {Struct} from '@polkadot/types';
+import {Balance} from '@polkadot/types/interfaces';
 import AssetId from '../../runtime/ga/AssetId';
 
 export default class FeeExchange extends Struct {

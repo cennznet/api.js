@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {isFunction, isObject} from '@plugnet/util';
+import {ProviderInterface} from '@polkadot/rpc-provider/types';
+import {isFunction, isObject} from '@polkadot/util';
 import {ApiOptions} from '../types';
 
 export function getTimeout(options: ApiOptions | ProviderInterface = {}): number {

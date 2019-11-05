@@ -19,8 +19,8 @@ import {AttestationRx} from '@cennznet/crml-attestation';
 import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
 import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
-import {ApiRx as ApiRxBase} from '@plugnet/api';
-import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
+import {ApiRx as ApiRxBase} from '@polkadot/api';
+import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
 import {switchMap, timeout} from 'rxjs/operators';
 

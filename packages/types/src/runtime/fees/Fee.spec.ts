@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {getTypeRegistry} from '@plugnet/types';
+import {getTypeRegistry} from '@polkadot/types';
 import * as feeTypes from './';
 import Fee from './Fee';
 

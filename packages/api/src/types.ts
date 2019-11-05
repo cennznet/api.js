@@ -26,25 +26,26 @@ import {
     RegistryTypes,
     SignatureOptions,
 } from '@cennznet/types/types';
-import {DeriveCustom} from '@plugnet/api-derive';
-import ApiBase from '@plugnet/api/base';
+import {DeriveCustom} from '@polkadot/api-derive';
+import ApiBase from '@polkadot/api/base';
 import {
     ApiOptions as ApiOptionsBase,
     SignerOptions as SignerOptionsBase,
-    SubmitableResultResult,
-    SubmitableResultSubscription,
     SubmittableExtrinsic as SubmittableExtrinsicBase,
     SubmittableResultImpl,
+    SubmittableResultResult,
+    SubmittableResultSubscription,
     UnsubscribePromise,
-} from '@plugnet/api/types';
+} from '@polkadot/api/types';
 
-import {ProviderInterface} from '@plugnet/rpc-provider/types';
-import {u64} from '@plugnet/types';
-import {AccountId, Address, AssetOf, Hash} from '@plugnet/types/interfaces';
-import {StorageEntry} from '@plugnet/types/primitive/StorageKey';
+import {ProviderInterface} from '@polkadot/rpc-provider/types';
+import {u64} from '@polkadot/types';
+import {AccountId, Address, AssetOf, Hash} from '@polkadot/types/interfaces';
+import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
 import {Observable} from 'rxjs';
 
-export * from '@plugnet/api/types';
+export * from '@polkadot/api/types';
+export type ApiTypes = 'promise' | 'rxjs';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
     /**
@@ -82,47 +83,48 @@ export interface IExtrinsic extends IExtrinsicBase {
     addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
 }
 
-export interface SubmittableExtrinsic<ApiType> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {
-    send(): SubmitableResultResult<ApiType>;
+export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {
+    send(): SubmittableResultResult<ApiType>;
 
-    send(statusCb: Callback<SubmittableResultImpl>): SubmitableResultSubscription<ApiType>;
+    send(statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
 
     sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
 
     signAndSend(
         account: IKeyringPair | string | AccountId | Address,
         options?: Partial<SignerOptions>
-    ): SubmitableResultResult<ApiType>;
+    ): SubmittableResultResult<ApiType>;
 
     signAndSend(
         account: IKeyringPair | string | AccountId | Address,
         statusCb: Callback<SubmittableResultImpl>
-    ): SubmitableResultSubscription<ApiType>;
+    ): SubmittableResultSubscription<ApiType>;
 
     signAndSend(
         account: IKeyringPair | string | AccountId | Address,
         options: Partial<SignerOptions>,
         statusCb?: Callback<SubmittableResultImpl>
-    ): SubmitableResultSubscription<ApiType>;
+    ): SubmittableResultSubscription<ApiType>;
 
     fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
 }
 
-export interface SubmittableExtrinsicFunction<ApiType> extends CallFunction {
+export interface SubmittableExtrinsicFunction<ApiType extends ApiTypes> extends CallFunction {
     (...params: CodecArg[]): SubmittableExtrinsic<ApiType>;
 }
 
-export interface SubmittableModuleExtrinsics<ApiType> {
+export interface SubmittableModuleExtrinsics<ApiType extends ApiTypes> {
     [index: string]: SubmittableExtrinsicFunction<ApiType>;
 }
 
-export interface SubmittableExtrinsics<ApiType> {
+export interface SubmittableExtrinsics<ApiType extends ApiTypes> {
     (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
 
     [index: string]: SubmittableModuleExtrinsics<ApiType>;
 }
 
-export type Derives<ApiType> = ReturnType<ApiBase<ApiType>['decorateDerive']> & DecoratedCennznetDerive<ApiType>;
+export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['decorateDerive']> &
+    DecoratedCennznetDerive<ApiType>;
 
 interface StorageEntryBase<C, H, U> {
     at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;
