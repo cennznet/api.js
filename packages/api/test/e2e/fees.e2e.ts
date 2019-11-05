@@ -50,8 +50,12 @@ describe('fees in cennznet', () => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
+                let gas;
+                for (const {event} of events) {
+                  if (event.method === 'Charged') {
+                    gas = event.data[1];
+                  }
+                }
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }
@@ -65,8 +69,12 @@ describe('fees in cennznet', () => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
+                let gas;
+                for (const {event} of events) {
+                  if (event.method === 'Charged') {
+                    gas = event.data[1];
+                  }
+                }
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }
@@ -103,8 +111,12 @@ describe('fees in cennznet (Rxjs)', () => {
                 const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<
                   EventRecord
                   >;
-                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
+                let gas;
+                for (const {event} of events) {
+                  if (event.method === 'Charged') {
+                    gas = event.data[1];
+                  }
+                }
                 expect(gas.toString()).toEqual(fee.toString());
                 done();
               }
