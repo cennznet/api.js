@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//import {Balance} from '@polkadot/types/interfaces';
 import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
 

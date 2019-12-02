@@ -19,18 +19,20 @@ import {Vec} from '@polkadot/types';
 import {EventRecord} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
+import {Networks} from '../../constants';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
     uri: '//cennznet-js-test',
 };
+const config = {...Networks['RIMU']};
 
 describe('fees in cennznet', () => {
     let api: Api;
     let keyring;
 
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: config.defaultEndpoint});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -45,14 +47,14 @@ describe('fees in cennznet', () => {
             const tx = api.tx.genericAsset.create({
                 initialIssuance: 100,
             });
-            const fee = await tx.fee(sender.address);
+            const calculatedFee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
                 const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
-                expect(gas.toString()).toEqual(fee.toString());
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });
@@ -60,14 +62,14 @@ describe('fees in cennznet', () => {
 
         it('fee estimate Transfer', async done => {
             const tx = api.tx.genericAsset.transfer(16000, sender.address, 1000000);
-            const fee = await tx.fee(sender.address);
+            const calculatedFee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
                 const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
-                expect(gas.toString()).toEqual(fee.toString());
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });
@@ -80,7 +82,7 @@ describe('fees in cennznet (Rxjs)', () => {
     let keyring;
 
     beforeAll(async () => {
-        api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
+        api = await ApiRx.create({provider: config.defaultEndpoint}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -95,8 +97,7 @@ describe('fees in cennznet (Rxjs)', () => {
             const tx = api.tx.genericAsset.create({
                 initialIssuance: 100,
             });
-            const fee = await tx.fee(sender.address).toPromise();
-            console.log('fee', fee.toString());
+            const calculatedFee = await tx.fee(sender.address).toPromise();
             tx.signAndSend(sender.address).subscribe(async ({events, status}: SubmittableResult) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
@@ -104,8 +105,8 @@ describe('fees in cennznet (Rxjs)', () => {
                   EventRecord
                   >;
                 const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
-                const gas = feeChargeEvent.event.data[1];
-                expect(gas.toString()).toEqual(fee.toString());
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });

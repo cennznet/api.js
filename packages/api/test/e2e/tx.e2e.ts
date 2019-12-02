@@ -22,6 +22,7 @@ import {SubmittableResult} from '@polkadot/api';
 import {Index} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
+import {Networks} from '../../constants';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -36,7 +37,9 @@ describe('e2e transactions', () => {
     let api: Api;
 
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        // api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        const config = {...Networks['RIMU']};
+        api = await Api.create({provider: config.defaultEndpoint});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();

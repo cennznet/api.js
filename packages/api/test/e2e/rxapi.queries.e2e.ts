@@ -20,6 +20,7 @@ import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
+import {Networks} from '../../constants';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -33,7 +34,8 @@ const passphrase = 'passphrase';
 describe('e2e queries', () => {
     let api: ApiRx;
     beforeAll(async () => {
-        api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
+        const config = {...Networks['RIMU']};
+        api = await ApiRx.create({provider: config.defaultEndpoint}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
