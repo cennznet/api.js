@@ -37,7 +37,6 @@ describe('e2e transactions', () => {
     let api: Api;
 
     beforeAll(async () => {
-        // api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
         const config = {...Networks['RIMU']};
         api = await Api.create({provider: config.defaultEndpoint});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
