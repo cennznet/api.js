@@ -34,7 +34,7 @@ const passphrase = 'passphrase';
 describe('e2e queries', () => {
     let api: ApiRx;
     beforeAll(async () => {
-        const config = {...Networks['RIMU']};
+        const config = {...Networks['CUSTOM']};
         api = await ApiRx.create({provider: config.defaultEndpoint}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);

@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import {ApiRx} from '../../src/ApiRx';
+import {Networks} from '../../constants';
 
 describe('e2e rx api create', () => {
+  const config = {...Networks['CUSTOM']};
     it('should create an Api instance with the timeout option', async (done) => {
-        const endPoint = 'wss://rimu.centrality.cloud/ws?apikey=d449e2d0-868a-4f38-b977-b99e1476b7f0'
-        const api = await ApiRx.create({provider: endPoint}).toPromise();
+        const api = await ApiRx.create({provider: config.defaultEndpoint}).toPromise();
 
         api.rpc.chain.getBlockHash().subscribe(hash => {
             expect(hash).toBeDefined();
@@ -27,7 +28,7 @@ describe('e2e rx api create', () => {
 
     it('should create Api without timeout if timeout is 0', async (done) => {
         const endPoint = 'wss://rimu.centrality.cloud/ws?apikey=d449e2d0-868a-4f38-b977-b99e1476b7f0'
-        const api = await ApiRx.create({provider: endPoint, timeout: 0}).toPromise();
+        const api = await ApiRx.create({provider: config.defaultEndpoint, timeout: 0}).toPromise();
 
         api.rpc.chain.getBlockHash().subscribe(hash => {
             expect(hash).toBeDefined();

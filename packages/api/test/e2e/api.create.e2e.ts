@@ -20,7 +20,7 @@ import {Networks} from '../../constants';
 describe('e2e api create', () => {
     let api: Api;
     it('For Rimu environment - checking if static metadata is same as latest', async () => {
-        const config = {...Networks['RIMU']};
+        const config = {...Networks['CUSTOM']};
         api = await Api.create({provider: config.defaultEndpoint});
         const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
         expect(meta).toBeDefined();

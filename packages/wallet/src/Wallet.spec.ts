@@ -38,6 +38,21 @@ const TEST_SIG_OPTS_V1 = {
     runtimeVersion: {} as any, //runtimeVersion is not used in v1
 };
 
+const TEST_SIG_OPTS_V2 = {
+    nonce: 0,
+    blockHash: GENESIS_HASH,
+    genesisHash: GENESIS_HASH,
+    runtimeVersion: {} as any, //runtimeVersion is not used in v1
+};
+// blockHash: AnyU8a;
+// doughnut: Option<Doughnut>;
+// era: AnyU8a | IExtrinsicEra;
+// genesisHash: AnyU8a;
+// method: AnyU8a | IMethod;
+// nonce: AnyNumber;
+// specVersion: AnyNumber;
+// tip: AnyNumber;
+
 describe('a wallet', () => {
     let wallet: Wallet;
     let testExtrinsic: IExtrinsic;

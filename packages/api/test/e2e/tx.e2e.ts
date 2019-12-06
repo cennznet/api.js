@@ -24,12 +24,18 @@ import {Index} from '@polkadot/types/interfaces';
 import {Api} from '../../src/Api';
 import {Networks} from '../../constants';
 
+// const sender_on_rimu = {
+//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+//     uri: '//cennznet-js-test',
+// };
+
 const sender = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+  uri: '//Alice',
 };
+
 const receiver = {
-    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
+    address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const passphrase = 'passphrase';
 
@@ -37,8 +43,7 @@ describe('e2e transactions', () => {
     let api: Api;
 
     beforeAll(async () => {
-        // api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
-        const config = {...Networks['RIMU']};
+        const config = {...Networks['CUSTOM']};
         api = await Api.create({provider: config.defaultEndpoint});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
@@ -86,8 +91,9 @@ describe('e2e transactions', () => {
 
         it('makes a tx', async done => {
             // transfer
+            const balanceBefore = await api.query.genericAsset.freeBalance(16000, receiver.address);
             await api.tx.genericAsset
-                .transfer(16000, receiver.address, 1)
+                .transfer(16000, receiver.address, 10000)
                 .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
                     if (status.isFinalized) {
                         expect(events[0].event.method).toEqual('Transferred');
@@ -135,7 +141,7 @@ describe('e2e transactions', () => {
                     maxPayment: '50000000000000000',
                 };
                 return api.tx.genericAsset.transfer(16000, receiver.address, 10000)
-                    .addFeeExchangeOpt(feeExchange)
+                    //.addFeeExchangeOpt(feeExchange)
                     .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
                         console.log('Transaction status:', status.type);
                         if (status.isFinalized) {
@@ -154,10 +160,10 @@ describe('e2e transactions', () => {
             it('use signer', async done => {
 
                 const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
-                tx.addFeeExchangeOpt({
-                    assetId: '16000',
-                    maxPayment: '50000000000000000',
-                });
+                // tx.addFeeExchangeOpt({
+                //     assetId: '16000',
+                //     maxPayment: '50000000000000000',
+                // });
                 const txOpt = {
                     feeExchange: {
                         assetId: '16000',

@@ -18,12 +18,14 @@ import {HeaderExtended} from '@polkadot/api-derive';
 import {AssetId, Fee} from '@cennznet/types';
 
 import {Api} from '../../src/Api';
+import {Networks} from '../../constants';
 
 describe('e2e api calls', () => {
     let api: Api;
     let blockHash: Hash;
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        const config = {...Networks['CUSTOM']};
+        api = await Api.create({provider: config.defaultEndpoint});
         blockHash = (await api.rpc.chain.getBlockHash()) as Hash;
     });
 

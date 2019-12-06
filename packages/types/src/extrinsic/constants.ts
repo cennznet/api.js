@@ -6,11 +6,11 @@ export const BIT_SIGNED = 0b10000000;
 export const BIT_UNSIGNED = 0;
 export const BIT_DOUGHNUT = 0b01000000;
 export const BIT_FEE_EXCHANGE = 0b00100000;
-export const UNMASK_VERSION = 0b00011111;
+export const UNMASK_VERSION = 0b01111111;
 
 export const EMPTY_U8A = new Uint8Array();
 
-export const LATEST_VERSION = 3;
+export const LATEST_VERSION = 4;
 
 // TODO We really want to swap this to V3, however all the test data is setup
 // for V1, so this will take some time to convert... "some" time :)

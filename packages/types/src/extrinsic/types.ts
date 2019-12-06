@@ -12,16 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Option from '@polkadot/types/codec/Option';
+import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
 import {
     AnyNumber,
     AnyU8a,
     IExtrinsicEra,
     IExtrinsicImpl as IExtrinsicImplBase,
     IMethod,
+    RuntimeVersionInterface,
     SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
-import Doughnut from './v1/Doughnut';
 import FeeExchange from './v1/FeeExchange';
+//import Doughnut from './v1/Doughnut';
+import Doughnut from './v2/Doughnut';
 
 export interface ExtrinsicOptions {
     isSigned?: boolean;
@@ -33,6 +37,17 @@ export interface ExtrinsicSignatureOptions {
     isSigned?: boolean;
     doughnut?: Doughnut;
     feeExchange?: FeeExchange;
+}
+
+export interface ExtrinsicV2SignatureOptions {
+    blockHash?: AnyU8a;
+    era?: IExtrinsicEra;
+    doughnut?: Option<Doughnut>;
+    genesisHash?: AnyU8a;
+    nonce?: AnyNumber;
+    runtimeVersion?: RuntimeVersionInterface;
+    tip?: AnyNumber;
+    feeExchange?: any;
 }
 
 export interface ExtrinsicPayloadOptions {
@@ -73,4 +88,16 @@ export interface IExtrinsicImpl extends IExtrinsicImplBase {
 export interface SignatureOptions extends SignatureOptionsBase {
     doughnut?: AnyU8a | Doughnut;
     feeExchange?: FeeExchangeValue | FeeExchange;
+}
+
+export type CennznetInterfaceTypes = keyof InterfaceRegistry;
+
+// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with cennznet types
+declare module '@polkadot/types/interfaceRegistry' {
+    interface InterfaceRegistry {
+        // Add types that only cennznet knows about.
+        // TS will merge them into the polkadot provided [[InterfaceRegistry]]
+        Doughnut: Doughnut;
+        'Option<Doughnut>': Option<Doughnut>;
+    }
 }

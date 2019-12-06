@@ -78,9 +78,9 @@ export interface SignerOptions extends SignerOptionsBase {
 export interface IExtrinsic extends IExtrinsicBase {
     sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 
-    addDoughnut(doughnut: DoughnutValue): this;
+    // addDoughnut(doughnut: DoughnutValue): this;
 
-    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
+    // addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): this;
 }
 
 export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {

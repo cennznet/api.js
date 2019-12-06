@@ -21,10 +21,16 @@ import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 import {Networks} from '../../constants';
 
+// const sender_for_rimu = {
+//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+//     uri: '//cennznet-js-test',
+// };
+
 const sender = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+    address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+    uri: '//Alice',
 };
+
 const receiver = {
     address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
 };
@@ -39,6 +45,7 @@ describe('e2e queries', () => {
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
+        console.log('Wallet:',wallet);
         await wallet.createNewVault(passphrase);
         await wallet.addKeyring(simpleKeyring);
         api.setSigner(wallet);
@@ -61,8 +68,10 @@ describe('e2e queries', () => {
 
     describe('Query storage using at', () => {
         it('queries correct balance', async () => {
+          console.log('**********');
             const nextAssetId = await api.query.genericAsset.nextAssetId();
             const blockHash: Hash = (await api.rpc.chain.getBlockHash()) as Hash;
+          console.log('*********&&&&&&&*');
             const nextAssetIdAt = await api.query.genericAsset.nextAssetId.at(blockHash);
             expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
         });
@@ -74,6 +83,10 @@ describe('e2e queries', () => {
             const totalSupply = 100;
             let count = 0;
             const reservedIdStart: number = 17000;
+            console.log('DDDDDDD');
+            console.log('**********');
+            console.log('WWWW*');
+            console.log('hgjhgbj*');
             unsubscribeFn = await api.query.genericAsset.nextAssetId((result: any) => {
                 if (count === 0) {
                     expect(result.toNumber()).toBeGreaterThanOrEqual(reservedIdStart);
