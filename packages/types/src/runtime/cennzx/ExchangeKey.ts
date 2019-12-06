@@ -1,4 +1,4 @@
-import {Tuple} from '@plugnet/types';
+import {Tuple} from '@polkadot/types';
 
 import {AssetId} from '../ga';
 

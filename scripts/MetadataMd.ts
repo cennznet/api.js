@@ -7,11 +7,11 @@ import '@plugnet/types/injector';
 import fs from 'fs';
 import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
 
-import interfaces from '@plugnet/jsonrpc';
-import Call from '@plugnet/types/primitive/Generic/Call';
-import Metadata from '@plugnet/types/Metadata';
-import rpcdata from '@plugnet/types/Metadata/static';
-import MetadataV7, {ModuleMetadataV7} from '@plugnet/types/Metadata/v7';
+import interfaces from '@polkadot/jsonrpc';
+import Call from '@polkadot/types/primitive/Generic/Call';
+import Metadata from '@polkadot/types/Metadata';
+import rpcdata from '@polkadot/types/Metadata/static';
+import MetadataV7, {ModuleMetadataV7} from '@polkadot/types/Metadata/v7';
 
 const ANCHOR_TOP = '';
 const LINK_BACK_TO_TOP = '';

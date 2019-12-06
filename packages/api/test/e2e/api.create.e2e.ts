@@ -14,12 +14,12 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import {Metadata} from '@plugnet/types';
+import {Metadata} from '@polkadot/types';
 
 describe('e2e api create', () => {
     let api: Api;
     it('For Rimu environment - checking if static metadata is same as latest', async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
         expect(meta).toBeDefined();
         expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(meta).toJSON());
@@ -32,8 +32,7 @@ describe('e2e api create', () => {
     });
 
     it('should create an Api instance with the timeout option', async () => {
-        const endPoint = 'wss://rimu.unfrastructure.io/public/ws';
-        api = await Api.create({provider: endPoint, timeout: 1000000000});
+        api = await Api.create({provider: 'ws://localhost:9944', timeout: 1000000000});
         const hash = await api.rpc.chain.getBlockHash();
 
         expect(hash).toBeDefined();
@@ -45,7 +44,6 @@ describe('e2e api create', () => {
     });
 
     it('should get rejected if it is not resolved in a specific period of time', async () => {
-        const endPoint = 'wss://rimu.unfrastructure.io/public/ws';
-        await expect(Api.create({provider: endPoint, timeout: 1})).rejects.toBeDefined();
+        await expect(Api.create({provider: 'ws://localhost:9944', timeout: 1})).rejects.toBeDefined();
     });
 });

@@ -13,19 +13,18 @@
 // limitations under the License.
 
 import staticMetadata from '@cennznet/api/staticMetadata';
-import fromMetadata from '@plugnet/api-metadata/extrinsics/fromMetadata';
-import {getTypeRegistry, Metadata} from '@plugnet/types';
-import {hexToU8a} from '@plugnet/util';
+import {getTypeRegistry, Metadata} from '@polkadot/types';
+import {hexToU8a} from '@polkadot/util';
 import Extrinsic from '../Extrinsic';
 import * as types from '../index';
-import Call from '@plugnet/types/primitive/Generic/Call';
+import Call from '@polkadot/types/primitive/Generic/Call';
 
 const typeRegistry = getTypeRegistry();
 typeRegistry.register(types as any);
 
 describe('CennznetExtrinsic', () => {
     const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[0]]);
-    Call.injectMethods(fromMetadata(metadata));
+    Call.injectMetadata(metadata);
 
     it('decode extrinsic with feeExchange', () => {
         const hexValue =

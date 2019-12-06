@@ -9,7 +9,7 @@
         "packages/*"
     ],
     "scripts": {
-        "build": "plugnet-dev-build-ts",
+        "build": "polkadot-dev-build-ts",
         "test": "jest -c ./jest/jest.config.js spec",
         "test:e2e": "jest --forceExit --runInBand -c ./jest/jest.config.js e2e",
         "make-docs": "rm -rf api_docs && typedoc --options typedoc.config.js .",
@@ -17,7 +17,9 @@
         "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
     },
     "devDependencies": {
-        "@plugnet/dev": "^0.30.8",
+        "@babel/core": "^7.7.4",
+        "@polkadot/dev": "^0.31.1",
+        "@polkadot/ts": "^0.1.86",
         "@types/jest": "^23.3.10",
         "cz-lerna-changelog": "^2.0.2",
         "husky": "^1.1.1",
@@ -35,6 +37,8 @@
         "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
     },
     "resolutions": {
+        "babel-core": "^7.0.0-bridge.0",
+        "typescript": "^3.7.2",
         "braces": "^2.3.2",
         "fstream": "^1.0.12",
         "handlebars": "^4.1.2",

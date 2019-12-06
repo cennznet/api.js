@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createType} from '@plugnet/types';
-import Call from '@plugnet/types/primitive/Generic/Call';
-import {IExtrinsic, SignerPayloadJSON} from '@plugnet/types/types';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
-import extrinsics from '@plugnet/api-metadata/extrinsics/static';
-import TestingPairs from '@plugnet/keyring/testingPairs';
+import {createType, Metadata} from '@polkadot/types';
+import Call from '@polkadot/types/primitive/Generic/Call';
+import {IExtrinsic, SignerPayloadJSON} from '@polkadot/types/types';
+import {cryptoWaitReady} from '@polkadot/util-crypto';
+import TestingPairs from '@polkadot/keyring/testingPairs';
 import {Wallet} from './';
 import {SimpleKeyring} from '@plugnet/wallet';
-
+import staticMetadata from '@cennznet/api/staticMetadata';
 const TESTING_PAIRS = TestingPairs();
 
 const TEST_ACCOUNT = {
@@ -47,7 +46,8 @@ describe('a wallet', () => {
     const walletPassphase = 'a test wallet passphase';
 
     beforeAll(async () => {
-        Call.injectMethods(extrinsics);
+        const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[0]]);
+        Call.injectMetadata(metadata);
         await cryptoWaitReady();
     });
 

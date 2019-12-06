@@ -14,9 +14,9 @@
 
 import {ApiRx, SubmittableResult} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import testingPairs from '@plugnet/keyring/testingPairs';
-import {Vec} from '@plugnet/types';
-import {EventRecord} from '@plugnet/types/interfaces';
+import testingPairs from '@polkadot/keyring/testingPairs';
+import {Vec} from '@polkadot/types';
+import {EventRecord} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -30,7 +30,7 @@ describe('fees in cennznet', () => {
     let keyring;
 
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -45,18 +45,14 @@ describe('fees in cennznet', () => {
             const tx = api.tx.genericAsset.create({
                 initialIssuance: 100,
             });
-            const fee = await tx.fee(sender.address);
+            const calculatedFee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
-                expect(gas.toString()).toEqual(fee.toString());
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });
@@ -64,18 +60,14 @@ describe('fees in cennznet', () => {
 
         it('fee estimate Transfer', async done => {
             const tx = api.tx.genericAsset.transfer(16000, sender.address, 1000000);
-            const fee = await tx.fee(sender.address);
+            const calculatedFee = await tx.fee(sender.address);
             await tx.signAndSend(sender.address, async ({events, status}) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash)) as unknown) as Vec<EventRecord>;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
-                expect(gas.toString()).toEqual(fee.toString());
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });
@@ -88,7 +80,7 @@ describe('fees in cennznet (Rxjs)', () => {
     let keyring;
 
     beforeAll(async () => {
-        api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
+        api = await ApiRx.create({provider: 'ws://localhost:9944'}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -103,21 +95,16 @@ describe('fees in cennznet (Rxjs)', () => {
             const tx = api.tx.genericAsset.create({
                 initialIssuance: 100,
             });
-            const fee = await tx.fee(sender.address).toPromise();
-            console.log('fee', fee.toString());
+            const calculatedFee = await tx.fee(sender.address).toPromise();
             tx.signAndSend(sender.address).subscribe(async ({events, status}: SubmittableResult) => {
               if (status.isFinalized && events !== undefined) {
                 const blockHash = status.asFinalized;
                 const events = ((await api.query.system.events.at(blockHash).toPromise()) as unknown) as Vec<
                   EventRecord
                   >;
-                let gas;
-                for (const {event} of events) {
-                  if (event.method === 'Charged') {
-                    gas = event.data[1];
-                  }
-                }
-                expect(gas.toString()).toEqual(fee.toString());
+                const feeChargeEvent = events.find(event => event.event.data.method === 'Charged');
+                const realFee = feeChargeEvent.event.data[1];
+                expect(realFee.toString()).toEqual(calculatedFee.toString());
                 done();
               }
             });

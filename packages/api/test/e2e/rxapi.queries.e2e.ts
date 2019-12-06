@@ -15,7 +15,7 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Hash} from '@plugnet/types/interfaces';
+import {Hash} from '@polkadot/types/interfaces';
 import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {combineLatest} from 'rxjs';
@@ -33,7 +33,7 @@ const passphrase = 'passphrase';
 describe('e2e queries', () => {
     let api: ApiRx;
     beforeAll(async () => {
-        api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
+        api = await ApiRx.create({provider: 'ws://localhost:9944'}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();

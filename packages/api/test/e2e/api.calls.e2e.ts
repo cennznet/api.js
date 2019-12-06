@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Option} from '@plugnet/types';
-import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@plugnet/types/interfaces';
-import {HeaderExtended} from '@plugnet/api-derive';
+import {Option} from '@polkadot/types';
+import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@polkadot/types/interfaces';
+import {HeaderExtended} from '@polkadot/api-derive';
 import {AssetId, Fee} from '@cennznet/types';
 
 import {Api} from '../../src/Api';

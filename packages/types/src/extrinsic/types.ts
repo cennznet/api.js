@@ -19,7 +19,7 @@ import {
     IExtrinsicImpl as IExtrinsicImplBase,
     IMethod,
     SignatureOptions as SignatureOptionsBase,
-} from '@plugnet/types/types';
+} from '@polkadot/types/types';
 import Doughnut from './v1/Doughnut';
 import FeeExchange from './v1/FeeExchange';
 

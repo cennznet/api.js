@@ -14,8 +14,8 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@plugnet/api-derive/util/drr';
-import {Hash} from '@plugnet/types/interfaces';
+import {drr} from '@polkadot/api-derive/util/drr';
+import {Hash} from '@polkadot/types/interfaces';
 import {combineLatest, Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {exchangeAddress} from './exchangeAddress';

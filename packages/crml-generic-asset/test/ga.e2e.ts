@@ -19,7 +19,7 @@ import {Api} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {GenericAsset} from '../src/GenericAsset';
-import { Hash, Balance } from '@plugnet/types/interfaces';
+import { Hash, Balance } from '@polkadot/types/interfaces';
 
 const assetOwner = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',

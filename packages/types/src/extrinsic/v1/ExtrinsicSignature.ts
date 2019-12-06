@@ -13,9 +13,9 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import {Compact, createType, Struct} from '@plugnet/types';
-import {Address, Balance, Call, ExtrinsicEra, Index, Signature} from '@plugnet/types/interfaces/runtime';
-import {IExtrinsicSignature, IKeyringPair} from '@plugnet/types/types';
+import {Compact, createType, Struct} from '@polkadot/types';
+import {Address, Balance, Call, ExtrinsicEra, Index, Signature} from '@polkadot/types/interfaces/runtime';
+import {IExtrinsicSignature, IKeyringPair} from '@polkadot/types/types';
 
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
 import {ExtrinsicSignatureOptions, SignatureOptions} from '../types';

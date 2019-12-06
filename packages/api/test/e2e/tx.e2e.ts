@@ -18,8 +18,8 @@
 
 import {AssetId, AssetOptions} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import {SubmittableResult} from '@plugnet/api';
-import {Index} from '@plugnet/types/interfaces';
+import {SubmittableResult} from '@polkadot/api';
+import {Index} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
 
@@ -36,7 +36,7 @@ describe('e2e transactions', () => {
     let api: Api;
 
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();

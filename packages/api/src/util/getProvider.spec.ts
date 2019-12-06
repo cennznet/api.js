@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {HttpProvider, WsProvider} from '@plugnet/rpc-provider';
+import {HttpProvider, WsProvider} from '@polkadot/rpc-provider';
 
 import {getProvider} from './getProvider';
 
-jest.mock('@plugnet/rpc-provider');
+jest.mock('@polkadot/rpc-provider');
 
 describe('getProvider()', () => {
     it('will create a ws provider if the string is a valid url and start with ws or wss', () => {

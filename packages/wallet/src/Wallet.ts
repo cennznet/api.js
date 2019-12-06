@@ -13,12 +13,12 @@
 // limitations under the License.
 
 import {SignerPayloadJSON} from '@cennznet/types/extrinsic/SignerPayload';
-import {Signer, SignerResult} from '@plugnet/api/types';
-import {createType} from '@plugnet/types';
-import {u8aToHex} from '@plugnet/util';
 import {Wallet as Base} from '@plugnet/wallet';
 import {requireUnlocked, waitForCryptoReady} from '@plugnet/wallet/decorators';
 import {IWallet, WalletOption} from '@plugnet/wallet/types';
+import {Signer, SignerResult} from '@polkadot/api/types';
+import {createType} from '@polkadot/types';
+import {u8aToHex} from '@polkadot/util';
 import {HDKeyring} from './keyrings/HDKeyring';
 
 /**

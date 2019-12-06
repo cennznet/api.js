@@ -20,4 +20,5 @@ export default {
     ...extrinsicTypes,
     AssetOf: 'u128',
     'ed25519::Signature': 'H512',
+    RewardBalance: 'Balance',
 };

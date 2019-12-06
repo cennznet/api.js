@@ -17,7 +17,7 @@
  */
 import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
-import {Hash} from '@plugnet/types/interfaces';
+import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 
 const sender = {
@@ -33,7 +33,7 @@ describe('e2e queries', () => {
     let api: Api;
 
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -45,6 +45,17 @@ describe('e2e queries', () => {
     afterAll(async () => {
         api.disconnect();
     });
+  describe('Query storage', () => {
+      it('makes the runtime, rpc, state & extrinsics available', (): void => {
+        expect(api.genesisHash).toBeDefined();
+        expect(api.runtimeMetadata).toBeDefined();
+        expect(api.runtimeVersion).toBeDefined();
+        expect(api.rpc).toBeDefined();
+        expect(api.query).toBeDefined();
+        expect(api.tx).toBeDefined();
+        expect(api.derive).toBeDefined();
+      });
+  });
 
     describe('Query storage using at', () => {
         it('queries correct balance', async () => {
