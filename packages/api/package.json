@@ -28,7 +28,6 @@
         "@polkadot/rpc-core": "^0.96.1",
         "@polkadot/rpc-provider": "^0.96.1",
         "@polkadot/types": "^0.96.1",
-        "@plugnet/wasm-crypto": "^0.14.100",
         "eventemitter3": "^4.0.0"
     },
     "devDependencies": {
