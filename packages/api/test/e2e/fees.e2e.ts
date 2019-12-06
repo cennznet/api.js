@@ -19,20 +19,18 @@ import {Vec} from '@polkadot/types';
 import {EventRecord} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
-import {Networks} from '../../constants';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
     uri: '//cennznet-js-test',
 };
-const config = {...Networks['RIMU']};
 
 describe('fees in cennznet', () => {
     let api: Api;
     let keyring;
 
     beforeAll(async () => {
-        api = await Api.create({provider: config.defaultEndpoint});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
@@ -82,7 +80,7 @@ describe('fees in cennznet (Rxjs)', () => {
     let keyring;
 
     beforeAll(async () => {
-        api = await ApiRx.create({provider: config.defaultEndpoint}).toPromise();
+        api = await ApiRx.create({provider: 'ws://localhost:9944'}).toPromise();
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();

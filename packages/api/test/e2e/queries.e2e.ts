@@ -19,7 +19,6 @@ import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
-import {Networks} from '../../constants';
 
 const sender = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -34,8 +33,7 @@ describe('e2e queries', () => {
     let api: Api;
 
     beforeAll(async () => {
-        const config = {...Networks['CUSTOM']};
-        api = await Api.create({provider: config.defaultEndpoint});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);
         const wallet = new Wallet();
