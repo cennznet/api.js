@@ -1891,6 +1891,11 @@
   resolved "https://registry.yarnpkg.com/@plugnet/wasm-crypto/-/wasm-crypto-0.13.100.tgz#759e30c532bf2dceea396ddcfa9d47c93819a72d"
   integrity sha512-m1yuRRFWTDfOR1DNk+Abxe9qH0nvQPrECpG3eK1AdEquHRKEkuoapzG6CjH2bmtK2ibYSbxjKrP0NZKOc16urQ==
 
+"@plugnet/wasm-crypto@^0.14.100":
+  version "0.14.100"
+  resolved "https://registry.yarnpkg.com/@plugnet/wasm-crypto/-/wasm-crypto-0.14.100.tgz#4bd9cbe004735689e96965406091925db15ef7e3"
+  integrity sha512-7PSuJNl9fCgp8Uo6l900KfUN5K3vbZSi2NLzNKQXV5BEOtQ/92FLG5O5wm0RHzjdl+R9g2rnYI4X3J9QlUkJvA==
+
 "@polkadot/api-derive@^0.96.1":
   version "0.96.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api-derive/-/api-derive-0.96.1.tgz#dc49db7293b585c4bde5e334c134127821a0ebed"

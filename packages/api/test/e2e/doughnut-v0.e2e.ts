@@ -83,7 +83,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
     );
 
     const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx.addDoughnut(doughnut);
 
     const opt = {doughnut};
 
@@ -112,7 +111,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
       { "cennznet": makeCennznut("generic-asset", "transfer") }
     );
     const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx.addDoughnut(doughnut);
 
     await expect(tx.signAndSend(keyring.charlie, () => { })).rejects.toThrow("1010: Invalid Transaction (0)");
   });
@@ -125,7 +123,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
     );
 
     const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx.addDoughnut(doughnut);
 
     await tx.signAndSend(keyring.bob, async ({events, status}) => {
       if (status.isFinalized) {
@@ -148,7 +145,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
     );
 
     const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx.addDoughnut(doughnut);
 
     await tx.signAndSend(keyring.bob, async ({events, status}) => {
       if (status.isFinalized) {
@@ -171,7 +167,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
     );
 
     let tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx = tx.addDoughnut(doughnut);
     let signed = tx.sign(keyring.bob, {});
 
     let original_extrinsic = tx as unknown as Extrinsic;
@@ -192,11 +187,6 @@ describe.skip('Doughnut for CennznetExtrinsic', () => {
     );
 
     let tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
-    tx = tx.addFeeExchangeOpt({
-      assetId: 17000,
-      maxPayment: '12345',
-    });
-    tx = tx.addDoughnut(doughnut);
     let signed = tx.sign(keyring.alice, {});
 
     let original_extrinsic = signed as unknown as Extrinsic;

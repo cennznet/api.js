@@ -51,7 +51,7 @@ export interface SignerPayloadJSON extends SignerPayloadJSONBase {
 
 // We explicitly cast the type here to get the actual TypeScript exports right
 // We can ignore the properties, added via Struct.with
-const _Payload: Constructor<SignerPayloadType> = Struct.with({
+export const _Payload: Constructor<SignerPayloadType> = Struct.with({
     address: 'Address',
     blockHash: 'Hash',
     blockNumber: 'BlockNumber',

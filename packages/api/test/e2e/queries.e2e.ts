@@ -20,9 +20,14 @@ import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 
+// const sender_for_rimu = {
+//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+//     uri: '//cennznet-js-test',
+// };
+
 const sender = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+    address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+    uri: '//Alice',
 };
 const receiver = {
     address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',

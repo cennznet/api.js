@@ -23,7 +23,7 @@ describe('e2e api calls', () => {
     let api: Api;
     let blockHash: Hash;
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+        api = await Api.create({provider: 'ws://localhost:9944'});
         blockHash = (await api.rpc.chain.getBlockHash()) as Hash;
     });
 
@@ -36,22 +36,6 @@ describe('e2e api calls', () => {
         expect(block.header.hash.toString()).toEqual(blockHash.toString());
     });
 
-    describe('Get transaction fee', () => {
-        it('get correct baseFee', async () => {
-            const baseFee = await api.query.fees.feeRegistry(Fee.FeesFee.BaseFee) as Balance;
-            expect(baseFee.gtn(0)).toBeTruthy();
-        });
-
-        it('get correct byteFee', async () => {
-            const byteFee = await api.query.fees.feeRegistry(Fee.FeesFee.BytesFee) as Balance;
-            expect(byteFee.gtn(0)).toBeTruthy();
-        });
-
-        it('get correct transferFee', async () => {
-            const transferFee = await api.query.fees.feeRegistry(Fee.GenericAssetFee.TransferFee) as Balance;
-            expect(transferFee.gtn(0)).toBeTruthy();
-        });
-    });
 
     it('get correct validators', async () => {
         const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
@@ -73,39 +57,20 @@ describe('e2e api calls', () => {
     });
 
     describe('Get session info', () => {
-        it('get correct session length', async () => {
-            const sessionLength: number = await api.query.session.sessionLength
-                .at(blockHash)
-                .then((r: any) => r.toNumber());
-            expect(sessionLength).toBeGreaterThan(0);
-        });
+        it('get correct session information (length, last length, era, current index, session per era', async () => {
 
-        it('get correct last length change', async () => {
-            const lastLengthChange: number = await api.query.session.lastLengthChange
-                .at(blockHash)
-                .then((r: Option<BlockNumber>) => Number(r.unwrapOr(0)));
-            expect(lastLengthChange).toBeGreaterThanOrEqual(0);
-        });
-
-        it('get correct current index', async () => {
-            const currentIndex: number = await api.query.session.currentIndex
-                .at(blockHash)
-                .then((r: any) => r.toNumber());
-            expect(currentIndex).toBeGreaterThanOrEqual(0);
-        });
-
-        it('get correct last era length change', async () => {
-            const lastEraLengthChange: number = await api.query.staking.lastEraLengthChange
-                .at(blockHash)
-                .then((r: any) => r.toNumber());
-            expect(lastEraLengthChange).toBeGreaterThanOrEqual(0);
-        });
-
-        it('get correct sessions per era', async () => {
-            const sessionsPerEra: number = await api.query.staking.sessionsPerEra
-                .at(blockHash)
-                .then((r: any) => r.toNumber());
-            expect(sessionsPerEra).toBeGreaterThan(0);
+          const currentSession = await api.derive.session.info();
+          expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.isEpoch).toBe(true);
+          expect(currentSession.lastEraLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.lastLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
+          expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
         });
     });
 

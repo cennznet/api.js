@@ -18,7 +18,7 @@ import {Metadata} from '@polkadot/types';
 
 describe('e2e api create', () => {
     let api: Api;
-    it('For Rimu environment - checking if static metadata is same as latest', async () => {
+    it('For local environment - checking if static metadata is same as latest', async () => {
         api = await Api.create({provider: 'ws://localhost:9944'});
         const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
         expect(meta).toBeDefined();

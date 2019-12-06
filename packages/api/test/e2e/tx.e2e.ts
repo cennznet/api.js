@@ -23,12 +23,17 @@ import {Index} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
 
+// const sender_on_rimu = {
+//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+//     uri: '//cennznet-js-test',
+// };
+
 const sender = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+  uri: '//Alice',
 };
 const receiver = {
-    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
+    address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const passphrase = 'passphrase';
 
@@ -132,7 +137,6 @@ describe('e2e transactions', () => {
                     maxPayment: '50000000000000000',
                 };
                 return api.tx.genericAsset.transfer(16000, receiver.address, 10000)
-                    .addFeeExchangeOpt(feeExchange)
                     .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
                         console.log('Transaction status:', status.type);
                         if (status.isFinalized) {
@@ -151,10 +155,6 @@ describe('e2e transactions', () => {
             it('use signer', async done => {
 
                 const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
-                tx.addFeeExchangeOpt({
-                    assetId: '16000',
-                    maxPayment: '50000000000000000',
-                });
                 const txOpt = {
                     feeExchange: {
                         assetId: '16000',

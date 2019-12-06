@@ -6,7 +6,7 @@ export const BIT_SIGNED = 0b10000000;
 export const BIT_UNSIGNED = 0;
 export const BIT_DOUGHNUT = 0b01000000;
 export const BIT_FEE_EXCHANGE = 0b00100000;
-export const UNMASK_VERSION = 0b00011111;
+export const UNMASK_VERSION = 0b01111111;
 
 export const EMPTY_U8A = new Uint8Array();
 

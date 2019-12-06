@@ -14,13 +14,14 @@ import {u8aToHex} from '@polkadot/util';
 import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
 import {ExtrinsicPayloadValue} from './types';
 import ExtrinsicPayloadV1 from './v1/ExtrinsicPayload';
+import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './v2/ExtrinsicPayload';
 
 interface ExtrinsicPayloadOptions {
     version?: number;
 }
 
 // all our known types that can be returned
-type ExtrinsicPayloadVx = ExtrinsicPayloadV1;
+type ExtrinsicPayloadVx = ExtrinsicPayloadV1 | ExtrinsicPayloadV2;
 
 /**
  * @name ExtrinsicPayload
@@ -37,7 +38,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
     }
 
     static decodeExtrinsicPayload(
-        value: ExtrinsicPayload | ExtrinsicPayloadValue | Uint8Array | string | undefined,
+        value: ExtrinsicPayload | ExtrinsicPayloadValue | ExtrinsicPayloadValueV2 | Uint8Array | string | undefined,
         version: number = DEFAULT_VERSION
     ): ExtrinsicPayloadVx {
         if (value instanceof ExtrinsicPayload) {
@@ -50,7 +51,9 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
 
         switch (type) {
             case 1:
-                return new ExtrinsicPayloadV1(value, {useDoughnut, useFeeExchange});
+                return new ExtrinsicPayloadV1(value as ExtrinsicPayloadValue, {useDoughnut, useFeeExchange});
+            case 3:
+                return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
             default:
                 throw new Error(`Unsupported extrinsic version ${type}`);
         }
@@ -75,8 +78,8 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      */
     get genesisHash(): Hash {
         // NOTE only v3
-        throw new Error('genesisHash only supported at v3');
-        // return (this.raw as ExtrinsicPayloadV3).genesisHash || createType('Hash');
+        // throw new Error('genesisHash only supported at v3');
+        return (this.raw as ExtrinsicPayloadV2).genesisHash;
     }
 
     /**
@@ -98,8 +101,8 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      */
     get specVersion(): u32 {
         // NOTE only v3
-        throw new Error('specVersion only supported at v3');
-        // return (this.raw as ExtrinsicPayloadV3).specVersion || createType('u32');
+        // throw new Error('specVersion only supported at v3');
+        return (this.raw as ExtrinsicPayloadV2).specVersion;
     }
 
     /**
@@ -107,8 +110,8 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      */
     get tip(): Compact<Balance> {
         // NOTE from v2
-        throw new Error('tip only supported at v2');
-        // return (this.raw as ExtrinsicPayloadV2).tip || createType('Compact<Balance>');
+        // throw new Error('tip only supported at v2');
+        return (this.raw as ExtrinsicPayloadV2).tip;
     }
 
     /**
