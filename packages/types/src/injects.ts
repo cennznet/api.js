@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import Option from '@polkadot/types/codec/Option';
+import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
-import Doughnut from './extrinsic/v2/Doughnut';
 import * as runtimeTypes from './runtime';
 
 // Monkey patch [[Option]] to encode `None` as a `0` byte

@@ -4,7 +4,6 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-// import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
 import {ClassOf, Compact} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
@@ -153,7 +152,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
     }
 
     /**
-     * @description The [[FunctionMetadataV7]] that describes the extrinsic
+     * @description The [[FunctionMetadataLatest]] that describes the extrinsic
      */
     get meta(): FunctionMetadataLatest {
         return this.method.meta;

@@ -19,6 +19,7 @@ import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
+import {cryptoWaitReady} from '@plugnet/util-crypto';
 
 // const sender_for_rimu = {
 //     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -38,6 +39,7 @@ describe('e2e queries', () => {
     let api: Api;
 
     beforeAll(async () => {
+        await cryptoWaitReady();
         api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);

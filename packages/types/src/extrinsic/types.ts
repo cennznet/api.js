@@ -23,8 +23,7 @@ import {
     RuntimeVersionInterface,
     SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
-import FeeExchange from './v1/FeeExchange';
-import Doughnut from './v2/Doughnut';
+import Doughnut from '../Doughnut';
 
 export interface ExtrinsicOptions {
     isSigned?: boolean;
@@ -35,7 +34,7 @@ export interface ExtrinsicOptions {
 export interface ExtrinsicSignatureOptions {
     isSigned?: boolean;
     doughnut?: Doughnut;
-    feeExchange?: FeeExchange;
+    feeExchange?: any;
 }
 
 export interface ExtrinsicV2SignatureOptions {
@@ -69,7 +68,7 @@ export interface ExtrinsicPayloadValue {
     specVersion: AnyNumber;
     tip: AnyNumber;
     doughnut?: AnyU8a | Doughnut;
-    feeExchange?: FeeExchangeValue | FeeExchange;
+    feeExchange?: FeeExchangeValue;
 }
 
 export type DoughnutValue = AnyU8a;
@@ -86,7 +85,7 @@ export interface IExtrinsicImpl extends IExtrinsicImplBase {
 
 export interface SignatureOptions extends SignatureOptionsBase {
     doughnut?: AnyU8a | Doughnut;
-    feeExchange?: FeeExchangeValue | FeeExchange;
+    feeExchange?: FeeExchangeValue;
 }
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;

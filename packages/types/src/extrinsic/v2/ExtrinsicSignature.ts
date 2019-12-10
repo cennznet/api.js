@@ -17,11 +17,11 @@ import {Compact, createType, Struct} from '@polkadot/types';
 import {Address, Balance, Call, ExtrinsicEra, Index, Signature} from '@polkadot/types/interfaces/runtime';
 import {IExtrinsicSignature, IKeyringPair} from '@polkadot/types/types';
 
-import Doughnut from '@cennznet/types/extrinsic/v2/Doughnut';
 import Option from '@polkadot/types/codec/Option';
 import {ExtrinsicSignatureOptions} from '@polkadot/types/primitive/Extrinsic/types';
+import Doughnut from '../../Doughnut';
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
-import {ExtrinsicV2SignatureOptions, SignatureOptions} from '../types';
+import {ExtrinsicV2SignatureOptions} from '../types';
 import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 
 /**
@@ -116,7 +116,6 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
 
     private injectSignature(
         signer: Address,
-        // signature: MultiSignature,
         signature: Signature,
         {doughnut, era, nonce, tip}: ExtrinsicPayloadV2
     ): IExtrinsicSignature {

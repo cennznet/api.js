@@ -18,23 +18,9 @@ import {Balance, ExtrinsicEra, Hash, Index} from '@polkadot/types/interfaces/run
 import {sign} from '@polkadot/types/primitive/Extrinsic/util';
 import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot/types/types';
 
-// import Doughnut from '@cennznet/types/extrinsic/v2/Doughnut';
 import Option from '@polkadot/types/codec/Option';
-import {CennznetInterfaceTypes, ExtrinsicPayloadOptions, FeeExchangeValue} from '../types';
-import Doughnut from './Doughnut';
-// import FeeExchange from './FeeExchange';
-
-// export interface ExtrinsicPayloadValueV2 {
-//   method: string,
-//   doughnut: 'Option<Doughnut>',
-//   era: 'ExtrinsicEra',
-//   nonce: 'Compact<Index>',
-//   tip: 'Compact<Balance>',
-//   specVersion: 'u32',
-//   genesisHash: 'Hash',
-//   blockHash: 'Hash',
-//     // feeExchange?: FeeExchangeValue | FeeExchange;
-// }
+import Doughnut from '../../Doughnut';
+import {CennznetInterfaceTypes} from '../types';
 
 export interface ExtrinsicPayloadValueV2 {
     blockHash: AnyU8a;
@@ -49,7 +35,7 @@ export interface ExtrinsicPayloadValueV2 {
 }
 
 // The base of an extrinsic payload
-export const BasePayloadV1: Record<string, CennznetInterfaceTypes> = {
+export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
     method: 'Bytes',
     doughnut: 'Option<Doughnut>',
     era: 'ExtrinsicEra',
@@ -59,9 +45,9 @@ export const BasePayloadV1: Record<string, CennznetInterfaceTypes> = {
 
 // These fields are signed here as part of the extrinsic signature but are NOT encoded in
 // the final extrinsic payload itself.
-// The Plug node will populate these fields from on-chain data and check the signature compares
+// The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
-export const PayloadImplicitAddonsV1: Record<string, CennznetInterfaceTypes> = {
+export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
     // prml_doughnut::Option<PlugDoughnut<Doughnut, Runtime>>
     // system::CheckVersion<Runtime>
     specVersion: 'u32',
@@ -77,12 +63,12 @@ export const PayloadImplicitAddonsV1: Record<string, CennznetInterfaceTypes> = {
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
-export const FullPayloadV1: Record<string, CennznetInterfaceTypes> = {
-    ...BasePayloadV1,
-    ...PayloadImplicitAddonsV1,
+export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
+    ...BasePayloadV2,
+    ...PayloadImplicitAddonsV2,
 };
 /**
- * @name ExtrinsicPayloadV1
+ * @name ExtrinsicPayloadV2
  * @description
  * A signing payload for an [[Extrinsic]]. For the final encoding, it is variable length based
  * on the contents included
@@ -94,7 +80,7 @@ export const FullPayloadV1: Record<string, CennznetInterfaceTypes> = {
  */
 export default class ExtrinsicPayloadV2 extends Struct {
     constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
-        super(FullPayloadV1, value);
+        super(FullPayloadV2, value);
     }
 
     /**

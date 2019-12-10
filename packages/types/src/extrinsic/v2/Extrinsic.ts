@@ -19,7 +19,6 @@ import {Address, Call} from '@polkadot/types/interfaces/runtime';
 import {IExtrinsicImpl, IKeyringPair, SignatureOptions} from '@polkadot/types/types';
 import {isU8a} from '@polkadot/util';
 
-// import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE} from '../constants';
 import {ExtrinsicOptions} from '../types';
 import {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 import ExtrinsicSignatureV2 from './ExtrinsicSignature';
@@ -34,7 +33,7 @@ const TRANSACTION_VERSION = 3;
 /**
  * @name ExtrinsicV2
  * @description
- * The first generation of compact extrinsics
+ * The second generation of compact extrinsics
  */
 export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
     constructor(value?: Uint8Array | ExtrinsicValueV2 | Call, {isSigned}: Partial<ExtrinsicOptions> = {}) {
@@ -49,7 +48,6 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
 
     static decodeExtrinsic(value?: Call | Uint8Array | ExtrinsicValueV2, isSigned: boolean = false): ExtrinsicValueV2 {
         if (!value) {
-            // return [typeDefs, {}];
             return {};
         } else if (value instanceof ExtrinsicV2) {
             return value;
@@ -84,7 +82,7 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
     }
 
     /**
-     * @description The [[ExtrinsicSignatureV1]]
+     * @description The [[ExtrinsicSignatureV2]]
      */
     get signature(): ExtrinsicSignatureV2 {
         return this.get('signature') as ExtrinsicSignatureV2;
@@ -98,7 +96,7 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
     }
 
     /**
-     * @description Add an [[ExtrinsicSignatureV1]] to the extrinsic (already generated)
+     * @description Add an [[ExtrinsicSignatureV2]] to the extrinsic (already generated)
      */
     addSignature(
         signer: Address | Uint8Array | string,
