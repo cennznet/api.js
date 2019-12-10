@@ -86,8 +86,6 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      * @description The specVersion as a [[u32]] for this payload
      */
     get specVersion(): u32 {
-        // NOTE only v3
-        // throw new Error('specVersion only supported at v3');
         return (this.raw as ExtrinsicPayloadV2).specVersion;
     }
 
@@ -95,8 +93,6 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      * @description The [[Balance]]
      */
     get tip(): Compact<Balance> {
-        // NOTE from v2
-        // throw new Error('tip only supported at v2');
         return (this.raw as ExtrinsicPayloadV2).tip;
     }
 

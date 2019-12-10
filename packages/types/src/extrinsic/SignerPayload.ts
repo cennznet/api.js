@@ -37,15 +37,10 @@ export interface SignerPayloadType extends Struct {
     tip: Compact<Balance>;
     version: u8;
     doughnut: Option<Doughnut>;
-    //    feeExchange: Option<FeeExchange>;
 }
 
 export interface SignerPayloadJSON extends SignerPayloadJSONBase {
     doughnut?: string;
-    // feeExchange?: {
-    //     assetId: number;
-    //     maxPayment: string;
-    // };
 }
 
 // We explicitly cast the type here to get the actual TypeScript exports right
@@ -62,7 +57,6 @@ export const _Payload: Constructor<SignerPayloadType> = Struct.with({
     tip: 'Compact<Balance>',
     version: 'u8',
     doughnut: Option.with(Doughnut),
-    // feeExchange: Option.with(FeeExchange),
 }) as any;
 
 export default class SignerPayload extends _Payload implements ISignerPayload {
@@ -98,9 +92,6 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
         if (doughnut.isSome) {
             ret.doughnut = doughnut.unwrap().toHex();
         }
-        // if (feeExchange.isSome) {
-        //     ret.feeExchange = feeExchange.unwrap().toJSON();
-        // }
         return ret;
     }
 
