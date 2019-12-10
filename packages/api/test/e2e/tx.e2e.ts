@@ -22,6 +22,7 @@ import {SubmittableResult} from '@polkadot/api';
 import {Index} from '@polkadot/types/interfaces';
 
 import {Api} from '../../src/Api';
+import {cryptoWaitReady} from '@plugnet/util-crypto';
 
 // const sender_on_rimu = {
 //     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -41,6 +42,7 @@ describe('e2e transactions', () => {
     let api: Api;
 
     beforeAll(async () => {
+        await cryptoWaitReady();
         api = await Api.create({provider: 'ws://localhost:9944'});
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(sender.uri);

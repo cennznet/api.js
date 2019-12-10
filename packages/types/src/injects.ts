@@ -38,5 +38,5 @@ export default {
     RewardBalance: 'Balance',
     Doughnut: Doughnut,
     // The patched [[Option]] type
-    // Option: Option,
+    Option: Option,
 };

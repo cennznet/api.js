@@ -11,9 +11,8 @@ import {IExtrinsicEra, IKeyringPair} from '@polkadot/types/types';
 
 import {u8aToHex} from '@polkadot/util';
 
-import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
+import {DEFAULT_VERSION} from './constants';
 import {ExtrinsicPayloadValue} from './types';
-import ExtrinsicPayloadV1 from './v1/ExtrinsicPayload';
 import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './v2/ExtrinsicPayload';
 
 interface ExtrinsicPayloadOptions {
@@ -21,7 +20,7 @@ interface ExtrinsicPayloadOptions {
 }
 
 // all our known types that can be returned
-type ExtrinsicPayloadVx = ExtrinsicPayloadV1 | ExtrinsicPayloadV2;
+type ExtrinsicPayloadVx = ExtrinsicPayloadV2;
 
 /**
  * @name ExtrinsicPayload
@@ -45,18 +44,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
             return value.raw;
         }
 
-        const type = version & UNMASK_VERSION;
-        const useDoughnut = (version & BIT_DOUGHNUT) > 0 || !!(value as ExtrinsicPayloadValue).doughnut;
-        const useFeeExchange = (version & BIT_FEE_EXCHANGE) > 0 || !!(value as ExtrinsicPayloadValue).feeExchange;
-
-        switch (type) {
-            case 1:
-                return new ExtrinsicPayloadV1(value as ExtrinsicPayloadValue, {useDoughnut, useFeeExchange});
-            case 3:
-                return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
-            default:
-                throw new Error(`Unsupported extrinsic version ${type}`);
-        }
+        return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
     }
 
     /**

@@ -8,22 +8,17 @@
 import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
 import {ClassOf, Compact} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Address, Balance, Call, FunctionMetadataV7, Index} from '@polkadot/types/interfaces';
+import {Address, Balance, Call, Index} from '@polkadot/types/interfaces';
 import {FunctionMetadataLatest} from '@polkadot/types/interfaces/metadata';
-import {EcdsaSignature, Ed25519Signature, Sr25519Signature} from '@polkadot/types/interfaces/runtime';
 import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair} from '@polkadot/types/types';
 import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/util';
-import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
+import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION} from './constants';
 import {SignatureOptions} from './types';
-import Doughnut from './v1/Doughnut';
-import ExtrinsicV1, {ExtrinsicValueV1} from './v1/Extrinsic';
-import {ExtrinsicPayloadValueV1} from './v1/ExtrinsicPayload';
-import FeeExchange from './v1/FeeExchange';
 import ExtrinsicV2, {ExtrinsicValueV2} from './v2/Extrinsic';
 
-export type ExtrinsicImpl = ExtrinsicV1 | ExtrinsicV2;
-export type ExtrinsicValue = ExtrinsicValueV1 | ExtrinsicValueV2;
-export type ExtrinsicPayloadValue = ExtrinsicPayloadValueV1 | ExtrinsicPayloadValueV2;
+export type ExtrinsicImpl = ExtrinsicV2;
+export type ExtrinsicValue = ExtrinsicValueV2;
+export type ExtrinsicPayloadValue = ExtrinsicPayloadValueV2;
 
 export interface ExtrinsicOptions {
     version?: number;
@@ -52,26 +47,13 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
         }
 
         const isSigned = (version & BIT_SIGNED) === BIT_SIGNED;
-        // const extrinsicVer = version & UNMASK_VERSION;
-        // return createTypeUnsafe(`ExtrinsicV${extrinsicVer}`, [value, {isSigned}]);
-        const type = version & UNMASK_VERSION;
-        const useDoughnut = (version & BIT_DOUGHNUT) > 0;
-        const useFeeExchange = (version & BIT_FEE_EXCHANGE) > 0;
-
-        switch (type) {
-            case 1:
-                return new ExtrinsicV1(value, {isSigned, useDoughnut, useFeeExchange});
-            case 3:
-                return new ExtrinsicV2(value, {isSigned});
-            default:
-                throw new Error(`Unsupported extrinsic version ${type}`);
-        }
+        return new ExtrinsicV2(value, {isSigned});
     }
 
     static decodeExtrinsic(
         value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
         version: number = DEFAULT_VERSION
-    ): ExtrinsicV1 | ExtrinsicV2 {
+    ): ExtrinsicV2 {
         if (Array.isArray(value) || isHex(value)) {
             // Instead of the block below, it should simply be:
             // return Extrinsic.decodeExtrinsic(hexToU8a(value as string));
@@ -104,7 +86,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
         return Extrinsic.newFromValue(value, version);
     }
 
-    private static decodeU8a(value: Uint8Array): ExtrinsicV1 | ExtrinsicV2 {
+    private static decodeU8a(value: Uint8Array): ExtrinsicV2 {
         return Extrinsic.newFromValue(value.subarray(1), value[0]);
     }
     /**
@@ -226,14 +208,6 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
         return this.type | (this.isSigned ? BIT_SIGNED : BIT_UNSIGNED);
     }
 
-    get doughnut(): Doughnut | undefined {
-        return this.raw.get('doughnut') as Doughnut;
-    }
-
-    get feeExchange(): FeeExchange | undefined {
-        return this.raw.get('feeExchange') as FeeExchange;
-    }
-
     /**
      * @description Add an [[ExtrinsicSignature]] to the extrinsic (already generated)
      */
@@ -242,12 +216,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
         signature: Uint8Array | string,
         payload: ExtrinsicPayloadValue | Uint8Array | string
     ): Extrinsic {
-        // FIXME Support for current extensions where 2 values are being passed in here, i.e.
-        //   addSignature(signer, signature, nonce, era);
-        // The above signature should be changed to the correct format in the next cycle, i.e.
-        //   payload: ExtrinsicPayloadValue | Uint8Array | string
-
-        (this.raw as ExtrinsicImpl).addSignature(signer, signature, payload);
+        (this.raw as ExtrinsicV2).addSignature(signer, signature, payload as ExtrinsicPayloadValueV2);
 
         return this;
     }

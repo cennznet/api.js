@@ -22,7 +22,7 @@
         "@polkadot/util-crypto": "^1.6.1"
     },
     "devDependencies": {
-        "@plugnet/keyring": "^1.1.100",
+        "@polkadot/keyring": "^1.6.1",
         "@polkadot/types": "^0.96.1"
     }
 }
