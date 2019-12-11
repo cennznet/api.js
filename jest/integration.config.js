@@ -1,4 +1,5 @@
 module.exports = {
+  rootDir: '../',
   collectCoverageFrom: ['packages/**/*.js', '!src/**/*.test.js', '!src/**/*.spec.js', '!src/**/*.e2e.js'],
   cacheDirectory: '<rootDir>/jest_cache',
   // testRegex: '__tests__/.*\\.test\\.js$',
@@ -8,7 +9,7 @@ module.exports = {
     '^.+\\.(js|jsx)$': 'babel-jest',
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  testMatch: ['/**/?(*.)+(test|spec|e2e).[jt]s?(x)'],
+  testMatch: ['/**/?(*.)+(test).[jt]s?(x)'],
   // testEnvironment: 'node',
   // testEnvironment: './jest/env.js',
   moduleNameMapper: {
@@ -29,5 +30,5 @@ module.exports = {
     '<rootDir>/packages/util/build',
     '<rootDir>/packages/wallet/build',
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest/jestSetup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest/jest.setup.js'],
 };

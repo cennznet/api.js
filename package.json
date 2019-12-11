@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "build": "polkadot-dev-build-ts",
-    "test": "jest spec --coverage",
-    "test:integration": "TEST_TYPE=integration NODE_ENV=development jest e2e --bail --coverage",
-    "test:e2e": "TEST_TYPE=e2e NODE_ENV=development jest e2e --bail --coverage",
+    "test": "jest -c ./jest/unit.config.js --coverage",
+    "test:integration": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail --coverage",
+    "test:e2e": "TEST_TYPE=e2e NODE_ENV=development jest -c ./jest/integration.config.js --bail --coverage",
     "make-docs": "rm -rf api_docs && typedoc --options typedoc.config.js .",
     "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
     "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
