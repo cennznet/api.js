@@ -11,80 +11,77 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-import {Option} from '@polkadot/types';
 import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@polkadot/types/interfaces';
 import {HeaderExtended} from '@polkadot/api-derive';
 import {AssetId, Fee} from '@cennznet/types';
-
-import {Api} from '../../src/Api';
+import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e api calls', () => {
-    let api: Api;
-    let blockHash: Hash;
-    beforeAll(async () => {
-        api = await Api.create({provider: 'ws://localhost:9944'});
-        blockHash = (await api.rpc.chain.getBlockHash()) as Hash;
+  let api;
+  let blockHash: Hash;
+  beforeAll(async () => {
+    api = await initApiPromise();
+    blockHash = await api.rpc.chain.getBlockHash();
+  });
+
+  afterAll(async done => {
+    if (api) {
+      return await api.disconnect();
+    }
+    api = null;
+    done();
+  });
+
+  it('get correct block', async () => {
+    const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
+    expect(block.header.hash.toString()).toEqual(blockHash.toString());
+  });
+
+  it('get correct validators', async () => {
+    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
+    expect(validators.length).toBeGreaterThan(0);
+  });
+
+  it('expect author is in validators', async () => {
+    const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
+    const header = block.header;
+    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
+    const extHeader = new HeaderExtended(header, validators);
+    const author: AccountId = extHeader.author;
+    expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
+  });
+
+  it('expect at least one event', async () => {
+    const events: EventRecord[] = (await api.query.system.events.at(blockHash)) as any;
+    expect(events.length).toBeGreaterThan(0);
+  });
+
+  describe('Get session info', () => {
+    it('get correct session information (length, last length, era, current index, session per era', async () => {
+      const currentSession = await api.derive.session.info();
+      expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.isEpoch).toBe(true);
+      expect(currentSession.lastEraLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.lastLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  describe('Get core asset id', () => {
+    it('get correct spending asset id', async () => {
+      const spendingAssetId = (await api.query.genericAsset.spendingAssetId.at(blockHash)) as AssetId;
+      expect(spendingAssetId.gtn(0)).toBeTruthy();
     });
 
-    afterAll(async () => {
-        api.disconnect();
+    it('get correct staking asset id', async () => {
+      const stakingAssetId = (await api.query.genericAsset.stakingAssetId.at(blockHash)) as AssetId;
+      expect(stakingAssetId.gtn(0)).toBeTruthy();
     });
-
-    it('get correct block', async () => {
-        const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
-        expect(block.header.hash.toString()).toEqual(blockHash.toString());
-    });
-
-
-    it('get correct validators', async () => {
-        const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-        expect(validators.length).toBeGreaterThan(0);
-    });
-
-    it('expect author is in validators', async () => {
-        const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
-        const header = block.header;
-        const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-        const extHeader = new HeaderExtended(header, validators);
-        const author: AccountId = extHeader.author;
-        expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
-    });
-
-    it('expect at least one event', async () => {
-        const events: EventRecord[] = (await api.query.system.events.at(blockHash)) as any;
-        expect(events.length).toBeGreaterThan(0);
-    });
-
-    describe('Get session info', () => {
-        it('get correct session information (length, last length, era, current index, session per era', async () => {
-
-          const currentSession = await api.derive.session.info();
-          expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.isEpoch).toBe(true);
-          expect(currentSession.lastEraLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.lastLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
-          expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
-        });
-    });
-
-    describe('Get core asset id', () => {
-        it('get correct spending asset id', async () => {
-            const spendingAssetId = await api.query.genericAsset.spendingAssetId
-                .at(blockHash) as AssetId;
-            expect(spendingAssetId.gtn(0)).toBeTruthy();
-        });
-
-        it('get correct staking asset id', async () => {
-            const stakingAssetId = await api.query.genericAsset.stakingAssetId
-                .at(blockHash) as AssetId;
-            expect(stakingAssetId.gtn(0)).toBeTruthy();
-        });
-    });
+  });
 });

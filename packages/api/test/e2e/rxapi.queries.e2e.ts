@@ -15,50 +15,57 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
+import {WsProvider} from '@polkadot/api';
 import {Hash} from '@polkadot/types/interfaces';
-import {ApiRx} from '../../src/ApiRx';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
+import initApiRx from '../../../../jest/initApiRx';
+import config from '../../../../config';
+import {ApiRx} from '../../src/ApiRx';
+import Types from '../../../types/src/injects';
 
 const sender = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+  address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
+  uri: '//cennznet-js-test',
 };
 const receiver = {
-    address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
+  address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
 };
 const passphrase = 'passphrase';
 
 describe('e2e queries', () => {
-    let api: ApiRx;
-    beforeAll(async () => {
-        await cryptoWaitReady();
-        api = await ApiRx.create({provider: 'ws://localhost:9944'}).toPromise();
-        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromUri(sender.uri);
-        const wallet = new Wallet();
-        await wallet.createNewVault(passphrase);
-        await wallet.addKeyring(simpleKeyring);
-        api.setSigner(wallet);
-    });
+  let apiRx;
+  let api;
 
-    afterAll(async () => {
-        api.disconnect();
-    });
+  beforeAll(async () => {
+    apiRx = await initApiRx();
+    api = await apiRx.toPromise();
 
-    describe('Query storage using at', () => {
-        it('queries correct balance', async done => {
-            const nextAssetId$ = api.rpc.chain
-                .getBlockHash()
-                .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));
-            combineLatest([api.query.genericAsset.nextAssetId(), nextAssetId$]).subscribe(
-                ([nextAssetId, nextAssetIdAt]) => {
-                    expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
-                    done();
-                }
-            );
-        });
+    await cryptoWaitReady();
+    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+    simpleKeyring.addFromUri(sender.uri);
+    const wallet = new Wallet();
+    await wallet.createNewVault(passphrase);
+    await wallet.addKeyring(simpleKeyring);
+    api.setSigner(wallet);
+  });
+
+  afterAll(async done => {
+    api = null;
+    done();
+  });
+
+  describe('Query storage using at', () => {
+    it('queries correct balance', async done => {
+      const nextAssetId$ = api.rpc.chain
+        .getBlockHash()
+        .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));
+      combineLatest([api.query.genericAsset.nextAssetId(), nextAssetId$]).subscribe(([nextAssetId, nextAssetIdAt]) => {
+        expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
+        done();
+      });
     });
+  });
 });
