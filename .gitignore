@@ -11,3 +11,5 @@ packages/**/*.d.ts
 .iml
 api_docs
 .tmp
+tmp
+jest_cache

@@ -1,0 +1,31 @@
+FROM node:13
+
+ENV PROJECT_DIR=/app
+
+WORKDIR $PROJECT_DIR
+RUN echo $PWD
+COPY package.json $PROJECT_DIR
+COPY yarn.lock $PROJECT_DIR
+COPY . $PROJECT_DIR
+
+RUN apt-get update && apt-get install -y \
+  apt-utils \
+  automake \
+  netcat \
+  curl \
+  && yarn \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV MEDIA_DIR=/media \
+  NODE_ENV=test \
+  APP_PORT=3000
+
+RUN ls -l
+
+VOLUME $MEDIA_DIR
+EXPOSE $APP_PORT
+
+HEALTHCHECK CMD curl --fail ws://node_alice:$APP_PORT || exit 1
+
+RUN chmod +x ./scripts/*
+ENTRYPOINT ["./scripts/entrypoint.sh"]

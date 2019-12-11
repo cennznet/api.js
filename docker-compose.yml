@@ -1,20 +1,19 @@
 version: '3'
 services:
-  node-0:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
+  node_alice:
+    image: cennznet/cennznet:rc1
     volumes:
-      - './target/node_0:/mnt/node'
+      - './tmp/node_alice:/mnt/node'
       - './genesis/:/mnt/genesis:ro'
+    networks:
+      testnet:
+        aliases:
+          - node_alice
     command:
-      # - --base-path=/tmp/Andrea
-      - --chain=rimu
+      - --chain=dev
       - --base-path=/mnt/node
-      - --key=//Andrea
-      - --name=‼️${HOSTNAME:-localhost}-0
+      - --alice
       - --node-key=0000000000000000000000000000000000000000000000000000000000000001
-      - --node-key-type=secp256k1
-      - --bootnodes=/dns4/node-1/tcp/30333/p2p/QmTBkfxmXshXdjGD24JvnexC7G6TenPLSpdSPbM4Y9hELM
-      - --bootnodes=/dns4/node-2/tcp/30333/p2p/QmSJ3jN6xa6dNGSvbNmGDdpdW16hB3rZb1PKsfK7ChVhef
       - --validator
       - --ws-external
       - --rpc-external
@@ -22,72 +21,58 @@ services:
     ports:
       - '9933:9933'
       - '9944:9944'
+      - '30333:30333'
+  node_bob:
+    image: cennznet/cennznet:rc1
+    volumes:
+      - './tmp/node_bob:/mnt/node'
+      - './genesis/:/mnt/genesis:ro'
+    networks:
+      testnet:
+        aliases:
+          - node_bob
+    command:
+      - --chain=dev
+      - --base-path=/mnt/node
+      - --bob
+      - --validator
+      - --ws-external
+      - --rpc-external
+      - --telemetry-url=ws://telemetry.polkadot.io:1024
+    ports:
+      - '9934:9933'
+      - '9945:9944'
       - '30334:30333'
-  node-1:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_1:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
-    command:
-      # - --base-path=/tmp/Brooke
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Brooke
-      - --name=❤️${HOSTNAME:-localhost}-1
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000002
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-2/tcp/30333/p2p/QmSJ3jN6xa6dNGSvbNmGDdpdW16hB3rZb1PKsfK7ChVhef
-      - --bootnodes=/dns4/node-3/tcp/30333/p2p/QmSxbF9wtM1krfwMLyxkDR9Tqn4Go2mWezfBTjNWg4RAEa
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
+  polkadot-ui:
+    image: centrifugeio/polkadot-ui # TODO: replace with cennznet-ui once its ready
+    networks:
+      testnet:
+        aliases:
+          - polkadot_ui
     ports:
-      - '30335:30333'
-  node-2:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_2:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
-    command:
-      # - --base-path=/tmp/Courtney
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Courtney
-      - --name=☺️${HOSTNAME:-localhost}-2
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000003
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-3/tcp/30333/p2p/QmSxbF9wtM1krfwMLyxkDR9Tqn4Go2mWezfBTjNWg4RAEa
-      - --bootnodes=/dns4/node-0/tcp/30333/p2p/Qme8GBwAdp4SskxYiKeMo9yuX5PnQZBXvfNrVhQzJLTE2v
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
+      - '3000:80'
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile.integration
     ports:
-      - '30336:30333'
-  node-3:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
+      - '8080:8080'
+    networks:
+      testnet:
+        aliases:
+          - e2e
     volumes:
-      - './target/node_3:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
-    command:
-      # - --base-path=/tmp/Drew
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Drew
-      - --name=☺️${HOSTNAME:-localhost}-3
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000004
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-0/tcp/30333/p2p/Qme8GBwAdp4SskxYiKeMo9yuX5PnQZBXvfNrVhQzJLTE2v
-      - --bootnodes=/dns4/node-1/tcp/30333/p2p/QmTBkfxmXshXdjGD24JvnexC7G6TenPLSpdSPbM4Y9hELM
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
-    ports:
-      - '30337:30333'
+      - './tmp/e2e:/mnt/app'
+      - './tmp/media:/mnt/media'
+    # command: ['wait_for_it.sh', 'node_alice:9944', '--', 'npm', 'run', 'test']
+    # command: ['npm', 'run', 'test']
+    command: ['npm', 'start']
 volumes:
-  node_0:
-  node_1:
-  node_2:
-  node_3:
+  node_alice:
+  node_bob:
+  polkadot-ui:
+  e2e:
+networks:
+  testnet:
+    external:
+      name: standalone
