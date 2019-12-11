@@ -1,44 +1,44 @@
 {
-    "name": "@cennznet/api",
-    "version": "0.20.7-dev.1",
-    "description": "cennznet's javascript client",
-    "keywords": [
-        "CENNZNet"
-    ],
-    "author": "ian.he <ian.he@centrality.ai>",
-    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
-    "license": "Apache-2.0",
-    "main": "index.js",
-    "types": "index.d.ts",
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/cennznet/api.js.git"
-    },
-    "scripts": {
-        "test": "echo \"Error: run tests from root\" && exit 1",
-        "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
-    },
-    "dependencies": {
-        "@cennznet/crml-attestation": "^0.20.7",
-        "@cennznet/crml-cennzx-spot": "^0.20.7",
-        "@cennznet/crml-generic-asset": "^0.20.7",
-        "@cennznet/types": "^0.20.7",
-        "@polkadot/api": "^0.96.1",
-        "@polkadot/api-metadata": "0.96.1",
-        "@polkadot/rpc-core": "^0.96.1",
-        "@polkadot/rpc-provider": "^0.96.1",
-        "@polkadot/types": "^0.96.1",
-        "eventemitter3": "^4.0.0"
-    },
-    "devDependencies": {
-        "@cennznet/cennznut": "^1.0.0",
-        "@cennznet/wallet": "^0.20.7",
-        "@plugnet/doughnut-maker": "^2.0.0",
-        "@types/jest": "^23.3.5",
-        "jest": "24.1.0",
-        "rimraf": "^2.6.2",
-        "ts-mockito": "^2.3.1",
-        "typedoc": "^0.13.0",
-        "typedoc-plugin-markdown": "^1.1.19"
-    }
+  "name": "@cennznet/api",
+  "version": "0.20.7-dev.1",
+  "description": "cennznet's javascript client",
+  "keywords": [
+    "CENNZNet"
+  ],
+  "author": "ian.he <ian.he@centrality.ai>",
+  "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/cennznet/api.js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
+  },
+  "dependencies": {
+    "@cennznet/crml-attestation": "^0.20.7",
+    "@cennznet/crml-cennzx-spot": "^0.20.7",
+    "@cennznet/crml-generic-asset": "^0.20.7",
+    "@cennznet/types": "^0.20.7",
+    "@polkadot/api": "^0.96.1",
+    "@polkadot/api-metadata": "0.96.1",
+    "@polkadot/rpc-core": "^0.96.1",
+    "@polkadot/rpc-provider": "^0.96.1",
+    "@polkadot/types": "^0.96.1",
+    "eventemitter3": "^4.0.0"
+  },
+  "devDependencies": {
+    "@cennznet/cennznut": "^1.0.0",
+    "@cennznet/wallet": "^0.20.7",
+    "@plugnet/doughnut-maker": "^2.0.0",
+    "@types/jest": "^23.3.5",
+    "jest": "24.1.0",
+    "rimraf": "^2.6.2",
+    "ts-mockito": "^2.3.1",
+    "typedoc": "^0.13.0",
+    "typedoc-plugin-markdown": "^1.1.19"
+  }
 }

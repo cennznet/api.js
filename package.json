@@ -1,59 +1,64 @@
 {
-    "name": "root",
-    "private": true,
-    "engines": {
-        "node": ">=10.13.0",
-        "yarn": "^1.12.3"
-    },
-    "workspaces": [
-        "packages/*"
-    ],
-    "scripts": {
-        "build": "polkadot-dev-build-ts",
-        "test": "jest -c ./jest/jest.config.js spec",
-        "test:e2e": "jest --forceExit --runInBand -c ./jest/jest.config.js e2e",
-        "make-docs": "rm -rf api_docs && typedoc --options typedoc.config.js .",
-        "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
-        "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.7.4",
-        "@polkadot/dev": "^0.31.1",
-        "@polkadot/ts": "^0.1.86",
-        "@types/jest": "^23.3.10",
-        "cz-lerna-changelog": "^2.0.2",
-        "husky": "^1.1.1",
-        "jest": "24.1.0",
-        "jest-environment-node": "^24.0.0",
-        "lerna": "^3.13.1",
-        "prettier": "^1.13.5",
-        "pretty-quick": "^1.11.1",
-        "ts-jest": "^24.0.0",
-        "ts-node": "^8.0.3",
-        "tsconfig-paths": "^3.8.0",
-        "tslint": "^5.14.0",
-        "tslint-microsoft-contrib": "^5.2.1",
-        "typedoc": "^0.14.2",
-        "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
-    },
-    "resolutions": {
-        "babel-core": "^7.0.0-bridge.0",
-        "typescript": "^3.7.2",
-        "braces": "^2.3.2",
-        "fstream": "^1.0.12",
-        "handlebars": "^4.1.2",
-        "js-yaml": "^3.13.1",
-        "marked": "^0.6.2",
-        "tar": "^4.4.8"
-    },
-    "config": {
-        "commitizen": {
-            "path": "./node_modules/cz-lerna-changelog"
-        }
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx tslint -c tslint.json --project ."
-        }
+  "name": "root",
+  "private": true,
+  "engines": {
+    "node": ">=10.13.0",
+    "yarn": "^1.12.3"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "polkadot-dev-build-ts",
+    "test": "jest -c ./jest/unit.config.js --coverage",
+    "test:integration": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
+    "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
+    "make-docs": "rm -rf api_docs && typedoc --options typedoc.config.js .",
+    "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
+    "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/runtime-corejs3": "^7.7.6",
+    "@polkadot/dev": "^0.31.1",
+    "@polkadot/ts": "^0.1.86",
+    "@types/jest": "^23.3.10",
+    "babel-jest": "^24.9.0",
+    "core-js": "^3.4.8",
+    "cz-lerna-changelog": "^2.0.2",
+    "husky": "^1.1.1",
+    "jest": "24.1.0",
+    "jest-environment-node": "^24.0.0",
+    "lerna": "^3.13.1",
+    "prettier": "^1.13.5",
+    "pretty-quick": "^1.11.1",
+    "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.3",
+    "tsconfig-paths": "^3.8.0",
+    "tslint": "^5.14.0",
+    "tslint-microsoft-contrib": "^5.2.1",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
+  },
+  "resolutions": {
+    "babel-core": "^7.0.0-bridge.0",
+    "typescript": "^3.7.2",
+    "braces": "^2.3.2",
+    "fstream": "^1.0.12",
+    "handlebars": "^4.1.2",
+    "js-yaml": "^3.13.1",
+    "marked": "^0.6.2",
+    "tar": "^4.4.8"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx tslint -c tslint.json --project ."
+    }
+  }
 }

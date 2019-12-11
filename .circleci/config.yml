@@ -17,14 +17,18 @@ jobs:
           paths:
             - ~/.tmp/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run:
-          name: Run lint
-          command: yarn lint
+      # - run:
+      #     name: Run lint
+      #     command: yarn lint
       - run:
           name: Run unit tests
           command: yarn test --coverage
       - store_test_results:
           path: coverage
       - run:
+          name: Install Docker Compose
+          command: ./scripts/circleci/install_docker_compose.sh
+      - setup_remote_docker
+      - run:
           name: Run integration tests
-          command: echo "TODO - implement integration tests"
+          command: ./scripts/circleci/run_automation_test.sh -t integration
