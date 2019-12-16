@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/api",
-    "version": "0.20.7",
+    "version": "0.20.7-dev.1",
     "description": "cennznet's javascript client",
     "keywords": [
         "CENNZNet"
