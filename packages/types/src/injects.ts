@@ -17,17 +17,22 @@ import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
 
 // Monkey patch [[Option]] to encode `None` as a `0` byte
-// Remove when https://github.com/polkadot-js/api/issues/1542 is sorted upstream
 Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
-    // Hack to always encode `0` for None (ignores `isBare`)
-    if (this.isNone) return new Uint8Array([0]);
-    if (this.isSome && isBare) {
-        return this.unwrap().toU8a(isBare);
-    } else {
-        const buf = new Uint8Array([1]);
-        buf.set(this.unwrap().toU8a(isBare), 1);
-        return buf;
+    if (this.isNone) {
+        return new Uint8Array([0]);
     }
+    if (isBare) {
+        return this.raw.toU8a(true);
+    }
+
+    const u8a = new Uint8Array(this.encodedLength);
+
+    if (this.isSome) {
+        u8a.set([1]);
+        u8a.set(this.raw.toU8a(), 1);
+    }
+
+    return u8a;
 };
 
 export default {

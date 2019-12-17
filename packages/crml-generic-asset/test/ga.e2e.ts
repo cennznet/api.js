@@ -20,13 +20,14 @@ import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import {GenericAsset} from '../src/GenericAsset';
 import { Hash, Balance } from '@polkadot/types/interfaces';
+import {cryptoWaitReady} from '@plugnet/util-crypto';
 
 const assetOwner = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
+  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+  uri: '//Alice',
 };
 const receiver = {
-    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
+  address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const testAsset = {
     id: 16000,
@@ -36,12 +37,13 @@ const testAsset = {
 
 const passphrase = 'passphrase';
 
-const url = 'wss://rimu.unfrastructure.io/public/ws';
+const url = 'ws://localhost:9944';
 
 describe('Generic asset APIs', () => {
     let api: Api;
     let ga: GenericAsset;
     beforeAll(async () => {
+        await cryptoWaitReady();
         api = await Api.create({provider: url});
         const simpleKeyring = new SimpleKeyring();
         simpleKeyring.addFromUri(assetOwner.uri);
