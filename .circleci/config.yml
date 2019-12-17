@@ -27,4 +27,7 @@ jobs:
           path: coverage
       - run:
           name: Run integration tests
-          command: echo "TODO - implement integration tests"
+          command: |
+            docker run -d -p 9944:9944 cennznet/cennznet:rc1 --dev --ws-external
+            yarn test:e2e
+
