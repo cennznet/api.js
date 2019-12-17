@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Run integration tests
           command: |
-            docker run -p 0.0.0.0:9944:9944 cennznet/cennznet:rc1 --dev --ws-external
+            docker run -d -p 0.0.0.0:9944:9944 cennznet/cennznet:rc1 --dev --ws-external
             # start-up delay
             sleep 10
             yarn test:e2e
