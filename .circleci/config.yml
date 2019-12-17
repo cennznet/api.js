@@ -25,6 +25,7 @@ jobs:
           command: yarn test --coverage
       - store_test_results:
           path: coverage
+      - setup_remote_docker
       - run:
           name: Run integration tests
           command: |
