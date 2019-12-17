@@ -4,24 +4,22 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
+import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
 import {ClassOf, Compact} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Address, Balance, Call, FunctionMetadataV7, Index} from '@polkadot/types/interfaces';
+import {Address, Balance, Call, Index} from '@polkadot/types/interfaces';
+import {FunctionMetadataLatest} from '@polkadot/types/interfaces/metadata';
 import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair} from '@polkadot/types/types';
 import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/util';
-import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
+import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION} from './constants';
 import {SignatureOptions} from './types';
-import Doughnut from './v1/Doughnut';
-import ExtrinsicV1, {ExtrinsicValueV1} from './v1/Extrinsic';
-import {ExtrinsicPayloadValueV1} from './v1/ExtrinsicPayload';
-import FeeExchange from './v1/FeeExchange';
+import ExtrinsicV2, {ExtrinsicValueV2} from './v2/Extrinsic';
 
-type ExtrinsicImpl = ExtrinsicV1;
-type ExtrinsicValue = ExtrinsicValueV1;
-type ExtrinsicPayloadValue = ExtrinsicPayloadValueV1;
+export type ExtrinsicImpl = ExtrinsicV2;
+export type ExtrinsicValue = ExtrinsicValueV2;
+export type ExtrinsicPayloadValue = ExtrinsicPayloadValueV2;
 
-interface ExtrinsicOptions {
+export interface ExtrinsicOptions {
     version?: number;
 }
 
@@ -37,35 +35,24 @@ interface ExtrinsicOptions {
  * - signed, to create a transaction
  * - left as is, to create an inherent
  */
-export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
+export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic {
     constructor(value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined, {version}: ExtrinsicOptions = {}) {
         super(Extrinsic.decodeExtrinsic(value, version));
     }
 
-    private static newFromValue(value: any, version: number): ExtrinsicV1 {
+    private static newFromValue(value: any, version: number): ExtrinsicImpl {
         if (value instanceof Extrinsic || value.constructor.name === 'Submittable') {
             return value.raw;
         }
 
         const isSigned = (version & BIT_SIGNED) === BIT_SIGNED;
-        // const extrinsicVer = version & UNMASK_VERSION;
-        // return createTypeUnsafe(`ExtrinsicV${extrinsicVer}`, [value, {isSigned}]);
-        const type = version & UNMASK_VERSION;
-        const useDoughnut = (version & BIT_DOUGHNUT) > 0;
-        const useFeeExchange = (version & BIT_FEE_EXCHANGE) > 0;
-
-        switch (type) {
-            case 1:
-                return new ExtrinsicV1(value, {isSigned, useDoughnut, useFeeExchange});
-            default:
-                throw new Error(`Unsupported extrinsic version ${type}`);
-        }
+        return new ExtrinsicV2(value, {isSigned});
     }
 
     static decodeExtrinsic(
         value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
         version: number = DEFAULT_VERSION
-    ): ExtrinsicV1 {
+    ): ExtrinsicV2 {
         if (Array.isArray(value) || isHex(value)) {
             // Instead of the block below, it should simply be:
             // return Extrinsic.decodeExtrinsic(hexToU8a(value as string));
@@ -98,7 +85,7 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
         return Extrinsic.newFromValue(value, version);
     }
 
-    private static decodeU8a(value: Uint8Array): ExtrinsicV1 {
+    private static decodeU8a(value: Uint8Array): ExtrinsicV2 {
         return Extrinsic.newFromValue(value.subarray(1), value[0]);
     }
     /**
@@ -133,7 +120,7 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
      * @description The era for this extrinsic
      */
     get era(): IExtrinsicEra {
-        return this.raw.signature.era;
+        return (this.raw as ExtrinsicImpl).signature.era;
     }
 
     /**
@@ -154,7 +141,7 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
      * @description `true` id the extrinsic is signed
      */
     get isSigned(): boolean {
-        return this.raw.signature.isSigned;
+        return (this.raw as ExtrinsicImpl).signature.isSigned;
     }
 
     /**
@@ -165,9 +152,9 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
     }
 
     /**
-     * @description The [[FunctionMetadataV7]] that describes the extrinsic
+     * @description The [[FunctionMetadataLatest]] that describes the extrinsic
      */
-    get meta(): FunctionMetadataV7 {
+    get meta(): FunctionMetadataLatest {
         return this.method.meta;
     }
 
@@ -175,14 +162,14 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
      * @description The [[Call]] this extrinsic wraps
      */
     get method(): Call {
-        return this.raw.method;
+        return (this.raw as ExtrinsicImpl).method;
     }
 
     /**
      * @description The nonce for this extrinsic
      */
     get nonce(): Compact<Index> {
-        return this.raw.signature.nonce;
+        return (this.raw as ExtrinsicImpl).signature.nonce;
     }
 
     /**
@@ -196,21 +183,21 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
      * @description The [[Address]] that signed
      */
     get signer(): Address {
-        return this.raw.signature.signer;
+        return (this.raw as ExtrinsicImpl).signature.signer;
     }
 
     /**
      * @description Forwards compat
      */
     get tip(): Compact<Balance> {
-        return this.raw.signature.tip;
+        return (this.raw as ExtrinsicImpl).signature.tip;
     }
 
     /**
      * @description Returns the raw transaction version (not flagged with signing information)
      */
     get type(): number {
-        return this.raw.version;
+        return (this.raw as ExtrinsicImpl).version;
     }
 
     /**
@@ -220,41 +207,15 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
         return this.type | (this.isSigned ? BIT_SIGNED : BIT_UNSIGNED);
     }
 
-    get doughnut(): Doughnut | undefined {
-        return this.raw.get('doughnut') as Doughnut;
-    }
-
-    get feeExchange(): FeeExchange | undefined {
-        return this.raw.get('feeExchange') as FeeExchange;
-    }
-
     /**
      * @description Add an [[ExtrinsicSignature]] to the extrinsic (already generated)
      */
     addSignature(
         signer: Address | Uint8Array | string,
         signature: Uint8Array | string,
-        ...args: [ExtrinsicPayloadValue | Uint8Array | string]
+        payload: ExtrinsicPayloadValue | Uint8Array | string
     ): Extrinsic {
-        // FIXME Support for current extensions where 2 values are being passed in here, i.e.
-        //   addSignature(signer, signature, nonce, era);
-        // The above signature should be changed to the correct format in the next cycle, i.e.
-        //   payload: ExtrinsicPayloadValue | Uint8Array | string
-        let payload = args[0];
-
-        // @ts-ignore
-        if (args.length === 2) {
-            payload = {
-                blockHash: new Uint8Array(),
-                // @ts-ignore
-                era: args[1] as string,
-                genesisHash: new Uint8Array(),
-                method: this.method.toHex(),
-                nonce: args[0] as string,
-            };
-        }
-
-        this.raw.addSignature(signer, signature, payload);
+        (this.raw as ExtrinsicV2).addSignature(signer, signature, payload as ExtrinsicPayloadValueV2);
 
         return this;
     }
@@ -263,19 +224,7 @@ export default class Extrinsic extends Base<ExtrinsicV1> implements IExtrinsic {
      * @description Sign the extrinsic with a specific keypair
      */
     sign(account: IKeyringPair, options: SignatureOptions): Extrinsic {
-        this.raw.sign(account, options);
-
-        return this;
-    }
-
-    addDoughnut(doughnut: DoughnutValue): Extrinsic {
-        this.raw.addDoughnut(doughnut);
-
-        return this;
-    }
-
-    addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): Extrinsic {
-        this.raw.addFeeExchangeOpt(feeExchangeOpt);
+        (this.raw as ExtrinsicImpl).sign(account, options);
 
         return this;
     }

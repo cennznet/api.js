@@ -11,16 +11,16 @@ import {IExtrinsicEra, IKeyringPair} from '@polkadot/types/types';
 
 import {u8aToHex} from '@polkadot/util';
 
-import {BIT_DOUGHNUT, BIT_FEE_EXCHANGE, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
+import {DEFAULT_VERSION} from './constants';
 import {ExtrinsicPayloadValue} from './types';
-import ExtrinsicPayloadV1 from './v1/ExtrinsicPayload';
+import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './v2/ExtrinsicPayload';
 
 interface ExtrinsicPayloadOptions {
     version?: number;
 }
 
 // all our known types that can be returned
-type ExtrinsicPayloadVx = ExtrinsicPayloadV1;
+type ExtrinsicPayloadVx = ExtrinsicPayloadV2;
 
 /**
  * @name ExtrinsicPayload
@@ -37,23 +37,14 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
     }
 
     static decodeExtrinsicPayload(
-        value: ExtrinsicPayload | ExtrinsicPayloadValue | Uint8Array | string | undefined,
+        value: ExtrinsicPayload | ExtrinsicPayloadValue | ExtrinsicPayloadValueV2 | Uint8Array | string | undefined,
         version: number = DEFAULT_VERSION
     ): ExtrinsicPayloadVx {
         if (value instanceof ExtrinsicPayload) {
             return value.raw;
         }
 
-        const type = version & UNMASK_VERSION;
-        const useDoughnut = (version & BIT_DOUGHNUT) > 0 || !!(value as ExtrinsicPayloadValue).doughnut;
-        const useFeeExchange = (version & BIT_FEE_EXCHANGE) > 0 || !!(value as ExtrinsicPayloadValue).feeExchange;
-
-        switch (type) {
-            case 1:
-                return new ExtrinsicPayloadV1(value, {useDoughnut, useFeeExchange});
-            default:
-                throw new Error(`Unsupported extrinsic version ${type}`);
-        }
+        return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
     }
 
     /**
@@ -74,9 +65,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      * @description The genesis block [[Hash]] the signature applies to
      */
     get genesisHash(): Hash {
-        // NOTE only v3
-        throw new Error('genesisHash only supported at v3');
-        // return (this.raw as ExtrinsicPayloadV3).genesisHash || createType('Hash');
+        return (this.raw as ExtrinsicPayloadV2).genesisHash;
     }
 
     /**
@@ -97,18 +86,14 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
      * @description The specVersion as a [[u32]] for this payload
      */
     get specVersion(): u32 {
-        // NOTE only v3
-        throw new Error('specVersion only supported at v3');
-        // return (this.raw as ExtrinsicPayloadV3).specVersion || createType('u32');
+        return (this.raw as ExtrinsicPayloadV2).specVersion;
     }
 
     /**
      * @description The [[Balance]]
      */
     get tip(): Compact<Balance> {
-        // NOTE from v2
-        throw new Error('tip only supported at v2');
-        // return (this.raw as ExtrinsicPayloadV2).tip || createType('Compact<Balance>');
+        return (this.raw as ExtrinsicPayloadV2).tip;
     }
 
     /**
@@ -127,7 +112,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
         // This is extensible, so we could quite readily extend to send back extra
         // information, such as for instance the payload, i.e. `payload: this.toHex()`
         // For the case here we sign via the extrinsic, we ignore the return, so generally
-        // thisis applicable for external signing
+        // this is applicable for external signing
         return {
             signature: u8aToHex(signature),
         };

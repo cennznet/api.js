@@ -17,43 +17,43 @@ import {Compact, createType, Struct} from '@polkadot/types';
 import {Address, Balance, Call, ExtrinsicEra, Index, Signature} from '@polkadot/types/interfaces/runtime';
 import {IExtrinsicSignature, IKeyringPair} from '@polkadot/types/types';
 
+import Option from '@polkadot/types/codec/Option';
+import {ExtrinsicSignatureOptions} from '@polkadot/types/primitive/Extrinsic/types';
+import Doughnut from '../../Doughnut';
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
-import {ExtrinsicSignatureOptions, SignatureOptions} from '../types';
-import ExtrinsicPayloadV1, {ExtrinsicPayloadValueV1} from './ExtrinsicPayload';
+import {ExtrinsicV2SignatureOptions} from '../types';
+import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 
 /**
  * @name ExtrinsicSignature
  * @description
  * A container for the [[Signature]] associated with a specific [[Extrinsic]]
  */
-export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSignature {
-    // Signature Information.
-    //   1/3/5/9/33 bytes: The signing account identity, in Address format
-    //   64 bytes: The sr25519/ed25519 signature of the Signing Payload
-    //   1-8 bytes: The Compact<Nonce> of the signing account
-    //   1/2 bytes: The Transaction Era
-    constructor(value?: ExtrinsicSignatureV1 | Uint8Array, {isSigned}: ExtrinsicSignatureOptions = {}) {
+
+export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSignature {
+    constructor(value?: ExtrinsicSignatureV2 | Uint8Array | undefined, {isSigned}: ExtrinsicSignatureOptions = {}) {
         super(
             {
                 signer: 'Address',
                 signature: 'Signature',
-                nonce: 'Compact<Index>',
+                doughnut: 'Option<Doughnut>',
                 era: 'ExtrinsicEra',
+                nonce: 'Compact<Index>',
+                tip: 'Compact<Balance>',
             },
-            ExtrinsicSignatureV1.decodeExtrinsicSignature(value, isSigned)
+            ExtrinsicSignatureV2.decodeExtrinsicSignature(value, isSigned)
         );
     }
 
     static decodeExtrinsicSignature(
-        value: ExtrinsicSignatureV1 | Uint8Array | undefined,
+        value: ExtrinsicSignatureV2 | Uint8Array | undefined,
         isSigned: boolean = false
-    ): ExtrinsicSignatureV1 | Uint8Array {
+    ): ExtrinsicSignatureV2 | Uint8Array {
         if (!value) {
             return EMPTY_U8A;
-        } else if (value instanceof ExtrinsicSignatureV1) {
+        } else if (value instanceof ExtrinsicSignatureV2) {
             return value;
         }
-
         return isSigned ? value : EMPTY_U8A;
     }
 
@@ -86,8 +86,16 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
     }
 
     /**
+     * @description The [[Doughnut]]
+     */
+    get doughnut(): Option<Doughnut> {
+        return this.get('doughnut') as Option<Doughnut>;
+    }
+
+    /**
      * @description The actuall [[Signature]] hash
      */
+    //  get signature(): EcdsaSignature | Ed25519Signature | Sr25519Signature {
     get signature(): Signature {
         return this.get('signature') as Signature;
     }
@@ -103,18 +111,20 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
      * @description Forwards compat
      */
     get tip(): Compact<Balance> {
-        return createType('Compact<Balance>', 0);
+        return this.get('tip') as Compact<Balance>;
     }
 
     private injectSignature(
         signer: Address,
         signature: Signature,
-        {era, nonce}: ExtrinsicPayloadV1
+        {doughnut, era, nonce, tip}: ExtrinsicPayloadV2
     ): IExtrinsicSignature {
+        this.set('doughnut', doughnut);
         this.set('era', era);
         this.set('nonce', nonce);
         this.set('signer', signer);
         this.set('signature', signature);
+        this.set('tip', tip);
 
         return this;
     }
@@ -125,12 +135,12 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
     addSignature(
         signer: Address | Uint8Array | string,
         signature: Uint8Array | string,
-        payload: ExtrinsicPayloadValueV1 | Uint8Array | string
+        payload: ExtrinsicPayloadValueV2 | Uint8Array | string
     ): IExtrinsicSignature {
         return this.injectSignature(
             createType('Address', signer),
             createType('Signature', signature),
-            new ExtrinsicPayloadV1(payload)
+            new ExtrinsicPayloadV2(payload)
         );
     }
 
@@ -140,25 +150,30 @@ export default class ExtrinsicSignatureV1 extends Struct implements IExtrinsicSi
     sign(
         method: Call,
         account: IKeyringPair,
-        {blockHash, era, genesisHash, nonce, doughnut, feeExchange}: SignatureOptions
+        {
+            blockHash,
+            era,
+            genesisHash,
+            nonce,
+            doughnut,
+            feeExchange,
+            runtimeVersion: {specVersion},
+            tip,
+        }: ExtrinsicV2SignatureOptions
     ): IExtrinsicSignature {
         const signer = createType('Address', account.publicKey);
-        const payloadValue: ExtrinsicPayloadValueV1 = {
+        const payloadValue: ExtrinsicPayloadValueV2 = {
             blockHash,
+            doughnut: doughnut || createType('Option<Doughnut>'),
             era: era || IMMORTAL_ERA,
             genesisHash,
             method: method.toHex(),
             nonce,
+            tip: tip || 0,
+            specVersion,
         };
-        if (doughnut) {
-            payloadValue.doughnut = doughnut;
-        }
-        if (feeExchange) {
-            payloadValue.feeExchange = feeExchange;
-        }
-        const payload = new ExtrinsicPayloadV1(payloadValue);
+        const payload = new ExtrinsicPayloadV2(payloadValue);
         const signature = createType('Signature', payload.sign(account));
-
         return this.injectSignature(signer, signature, payload);
     }
 

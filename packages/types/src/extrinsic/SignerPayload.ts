@@ -22,9 +22,8 @@ import {
 } from '@polkadot/types/types';
 import {u8aToHex} from '@polkadot/util';
 
+import Doughnut from '../Doughnut';
 import ExtrinsicPayload from './ExtrinsicPayload';
-import Doughnut from './v1/Doughnut';
-import FeeExchange from './v1/FeeExchange';
 
 export interface SignerPayloadType extends Struct {
     address: Address;
@@ -38,20 +37,15 @@ export interface SignerPayloadType extends Struct {
     tip: Compact<Balance>;
     version: u8;
     doughnut: Option<Doughnut>;
-    feeExchange: Option<FeeExchange>;
 }
 
 export interface SignerPayloadJSON extends SignerPayloadJSONBase {
     doughnut?: string;
-    feeExchange?: {
-        assetId: number;
-        maxPayment: string;
-    };
 }
 
 // We explicitly cast the type here to get the actual TypeScript exports right
 // We can ignore the properties, added via Struct.with
-const _Payload: Constructor<SignerPayloadType> = Struct.with({
+export const _Payload: Constructor<SignerPayloadType> = Struct.with({
     address: 'Address',
     blockHash: 'Hash',
     blockNumber: 'BlockNumber',
@@ -63,7 +57,6 @@ const _Payload: Constructor<SignerPayloadType> = Struct.with({
     tip: 'Compact<Balance>',
     version: 'u8',
     doughnut: Option.with(Doughnut),
-    feeExchange: Option.with(FeeExchange),
 }) as any;
 
 export default class SignerPayload extends _Payload implements ISignerPayload {
@@ -83,7 +76,6 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
             tip,
             version,
             doughnut,
-            feeExchange,
         } = this;
         const ret: SignerPayloadJSON = {
             address: address.toString(),
@@ -99,9 +91,6 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
         };
         if (doughnut.isSome) {
             ret.doughnut = doughnut.unwrap().toHex();
-        }
-        if (feeExchange.isSome) {
-            ret.feeExchange = feeExchange.unwrap().toJSON();
         }
         return ret;
     }
