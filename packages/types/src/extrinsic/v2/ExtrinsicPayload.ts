@@ -20,27 +20,29 @@ import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot
 
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from '../../Doughnut';
+import ChargeTransactionPayment from '../../runtime/transaction-payment';
 import {CennznetInterfaceTypes} from '../types';
 
 export interface ExtrinsicPayloadValueV2 {
-    blockHash: AnyU8a;
-    doughnut: Option<Doughnut>;
-    era: AnyU8a | IExtrinsicEra;
-    genesisHash: AnyU8a;
-    method: AnyU8a | IMethod;
-    nonce: AnyNumber;
-    specVersion: AnyNumber;
-    tip: AnyNumber;
-    // feeExchange?: FeeExchangeValue | FeeExchange;
+  blockHash: AnyU8a;
+  doughnut: Option<Doughnut>;
+  era: AnyU8a | IExtrinsicEra;
+  genesisHash: AnyU8a;
+  method: AnyU8a | IMethod;
+  nonce: AnyNumber;
+  specVersion: AnyNumber;
+  tip: AnyNumber;
+  transactionPayment: ChargeTransactionPayment;
 }
 
 // The base of an extrinsic payload
 export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
-    method: 'Bytes',
-    doughnut: 'Option<Doughnut>',
-    era: 'ExtrinsicEra',
-    nonce: 'Compact<Index>',
-    tip: 'Compact<Balance>',
+  method: 'Bytes',
+  doughnut: 'Option<Doughnut>',
+  era: 'ExtrinsicEra',
+  nonce: 'Compact<Index>',
+  tip: 'Compact<Balance>',
+  transactionPayment: 'ChargeTransactionPayment',
 };
 
 // These fields are signed here as part of the extrinsic signature but are NOT encoded in
@@ -48,24 +50,24 @@ export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
 export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
-    // prml_doughnut::Option<PlugDoughnut<Doughnut, Runtime>>
-    // system::CheckVersion<Runtime>
-    specVersion: 'u32',
-    // system::CheckGenesis<Runtime>
-    genesisHash: 'Hash',
-    // system::CheckEra<Runtime>
-    blockHash: 'Hash',
-    // system::CheckNonce<Runtime>
-    // system::CheckWeight<Runtime>
-    // transaction_payment::ChargeTransactionPayment<Runtime>,
-    // contracts::CheckBlockGasLimit<Runtime>,
+  // prml_doughnut::Option<PlugDoughnut<Doughnut, Runtime>>
+  // system::CheckVersion<Runtime>
+  specVersion: 'u32',
+  // system::CheckGenesis<Runtime>
+  genesisHash: 'Hash',
+  // system::CheckEra<Runtime>
+  blockHash: 'Hash',
+  // system::CheckNonce<Runtime>
+  // system::CheckWeight<Runtime>
+  // transaction_payment::ChargeTransactionPayment<Runtime>,
+  // contracts::CheckBlockGasLimit<Runtime>,
 };
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
 export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
-    ...BasePayloadV2,
-    ...PayloadImplicitAddonsV2,
+  ...BasePayloadV2,
+  ...PayloadImplicitAddonsV2,
 };
 /**
  * @name ExtrinsicPayloadV2
@@ -79,70 +81,77 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV2 extends Struct {
-    constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
-        super(FullPayloadV2, value);
-    }
+  constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
+    super(FullPayloadV2, value);
+  }
 
-    /**
-     * @description The block [[Hash]] the signature applies to (mortal/immortal)
-     */
-    get blockHash(): Hash {
-        return this.get('blockHash') as Hash;
-    }
+  /**
+   * @description The block [[Hash]] the signature applies to (mortal/immortal)
+   */
+  get blockHash(): Hash {
+    return this.get('blockHash') as Hash;
+  }
 
-    /**
-     * @description The genesis [[Hash]] the signature applies to (mortal/immortal)
-     */
-    get genesisHash(): Hash {
-        return this.get('genesisHash') as Hash;
-    }
+  /**
+   * @description The genesis [[Hash]] the signature applies to (mortal/immortal)
+   */
+  get genesisHash(): Hash {
+    return this.get('genesisHash') as Hash;
+  }
 
-    /**
-     * @description The [[Bytes]] contained in the payload
-     */
-    get method(): Bytes {
-        return this.get('method') as Bytes;
-    }
+  /**
+   * @description The [[Bytes]] contained in the payload
+   */
+  get method(): Bytes {
+    return this.get('method') as Bytes;
+  }
 
-    /**
-     * @description The [[ExtrinsicEra]]
-     */
-    get era(): ExtrinsicEra {
-        return this.get('era') as ExtrinsicEra;
-    }
+  /**
+   * @description The [[ExtrinsicEra]]
+   */
+  get era(): ExtrinsicEra {
+    return this.get('era') as ExtrinsicEra;
+  }
 
-    /**
-     * @description The [[Index]]
-     */
-    get nonce(): Compact<Index> {
-        return this.get('nonce') as Compact<Index>;
-    }
+  /**
+   * @description The [[Index]]
+   */
+  get nonce(): Compact<Index> {
+    return this.get('nonce') as Compact<Index>;
+  }
 
-    /**
-     * @description The specVersion for this signature
-     */
-    get specVersion(): u32 {
-        return this.get('specVersion') as u32;
-    }
+  /**
+   * @description The specVersion for this signature
+   */
+  get specVersion(): u32 {
+    return this.get('specVersion') as u32;
+  }
 
-    /**
-     * @description The tip [[Balance]]
-     */
-    get tip(): Compact<Balance> {
-        return this.get('tip') as Compact<Balance>;
-    }
+  /**
+   * @description The tip [[Balance]]
+   */
+  get tip(): Compact<Balance> {
+    return this.transactionPayment.get('tip') as Compact<Balance>;
+  }
 
-    /**
-     * @description The [[Doughnut]]
-     */
-    get doughnut(): Option<Doughnut> {
-        return this.get('doughnut') as Option<Doughnut>;
-    }
+  /**
+   * @description transaction fee payment metadata
+   */
+  get transactionPayment(): ChargeTransactionPayment {
+    return this.get('transactionPayment') as ChargeTransactionPayment;
+  }
 
-    /**
-     * @description Sign the payload with the keypair
-     */
-    sign(signerPair: IKeyringPair): Uint8Array {
-        return sign(signerPair, this.toU8a(true), {withType: true});
-    }
+  /**
+   * @description The [[Doughnut]]
+   */
+  get doughnut(): Option<Doughnut> {
+    return this.get('doughnut') as Option<Doughnut>;
+  }
+
+  /**
+   * @description Sign the payload with the keypair
+   */
+  sign(signerPair: IKeyringPair): Uint8Array {
+    return sign(signerPair, this.toU8a(true), {withType: true});
+  }
 }

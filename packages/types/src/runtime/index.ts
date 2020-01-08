@@ -17,4 +17,5 @@ export * from './cennzx';
 export * from './ga';
 export * from './rewards';
 export * from './sylo';
+export * from './transaction-payment';
 export * from './fees';
