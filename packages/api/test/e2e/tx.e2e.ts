@@ -55,7 +55,7 @@ describe('e2e transactions', () => {
   });
 
   describe('Send()', () => {
-    it('makes a tx using immortal era', async done => {
+    it.only('makes a tx using immortal era', async done => {
       // const opt = {era: '0x00', blockHash: api.genesisHash};
       // transfer
       await api.tx.genericAsset
@@ -124,18 +124,22 @@ describe('e2e transactions', () => {
         });
     });
 
-    describe('feeExchange extrinsic', () => {
+    describe.skip('transactionPayment extrinsic', () => {
       it('use keypair to sign', async done => {
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         const senderKeypair = simpleKeyring.addFromUri(sender.uri);
 
-        const feeExchange = {
-          assetId: '16000',
-          maxPayment: '50000000000000000',
+        const transactionPayment = {
+          tip: 1000,
+          feeExchange: {
+            assetId: '16000',
+            maxPayment: '50000000000000000',
+          },
         };
+
         return api.tx.genericAsset
           .transfer(16000, receiver.address, 10000)
-          .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
+          .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
             console.log('Transaction status:', status.type);
             if (status.isFinalized) {
               console.log('Completed at block hash', status.value.toHex());

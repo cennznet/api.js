@@ -24,7 +24,7 @@ import {
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
 import Doughnut from '../Doughnut';
-import ChargeTransactionPayment from '../runtime/transaction-payment';
+import {ChargeTransactionPayment} from '../runtime/transaction-payment';
 
 export interface ExtrinsicOptions {
   isSigned?: boolean;
