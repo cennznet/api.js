@@ -35,6 +35,21 @@ export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
  * when added to an extrinsic payload.
  */
 export default class ChargeTransactionPayment extends Struct {
-  tip: Compact<Balance>;
-  feeExchange: Option<FeeExchange>;
+  constructor(value: any) {
+    super(
+      {
+        tip: 'Compact<Balance>',
+        feeExchange: 'Option<Bytes>',
+      },
+      value
+    );
+  }
+
+  get tip(): Compact<Balance> {
+    return this.get('tip') as Compact<Balance>;
+  }
+
+  get feeExchange(): Option<FeeExchange> {
+    return this.get('feeExchange') as Option<FeeExchange>;
+  }
 }
