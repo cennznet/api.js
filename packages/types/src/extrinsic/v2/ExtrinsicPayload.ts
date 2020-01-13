@@ -20,7 +20,7 @@ import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot
 
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from '../../Doughnut';
-import ChargeTransactionPayment from '../../runtime/transaction-payment';
+import {ChargeTransactionPayment} from '../../runtime/transaction-payment';
 import {CennznetInterfaceTypes} from '../types';
 
 export interface ExtrinsicPayloadValueV2 {

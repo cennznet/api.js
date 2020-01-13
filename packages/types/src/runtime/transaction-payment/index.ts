@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Enum} from '@polkadot/types';
+import {Enum, u32} from '@polkadot/types';
 import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
 import Struct from '@polkadot/types/codec/Struct';
-import {Balance} from '@polkadot/types/interfaces/runtime';
-import {AnyNumber, AnyU8a} from '@polkadot/types/types';
+import {Balance, BalanceOf} from '@polkadot/types/interfaces/runtime';
+import {AnyNumber} from '@polkadot/types/types';
+
+import '../../interfaceRegistry';
+import '../../Option';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
  */
 export class FeeExchangeV1 extends Struct {
-  assetId: AnyNumber;
-  maxPayment: AnyNumber;
+  assetId: u32;
+  maxPayment: Balance;
 }
 
 // The outer [[FeeExchange]] it is an enum to allow flexbility for future versions and backwards compatability.
@@ -34,22 +37,24 @@ export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
  * [[ChargeTransactionPayment]] allows paying a `tip` and/or specifying fee payment in another currency
  * when added to an extrinsic payload.
  */
-export default class ChargeTransactionPayment extends Struct {
-  constructor(value: any) {
-    super(
-      {
-        tip: 'Compact<Balance>',
-        feeExchange: 'Option<Bytes>',
-      },
-      value
-    );
-  }
+export class ChargeTransactionPayment extends Struct {
+  tip: Compact<BalanceOf>;
+  feeExchange: Option<FeeExchange>;
+  // constructor(value?: any) {
+  //   super(
+  //     {
+  //       tip: 'Compact<BalanceOf>',
+  //       feeExchange: 'Option<FeeExchange>',
+  //     },
+  //     value
+  //   );
+  // }
 
-  get tip(): Compact<Balance> {
-    return this.get('tip') as Compact<Balance>;
-  }
+  // get tip(): Compact<Balance> {
+  //   return this.get('tip') as Compact<Balance>;
+  // }
 
-  get feeExchange(): Option<FeeExchange> {
-    return this.get('feeExchange') as Option<FeeExchange>;
-  }
+  // get feeExchange(): Option<FeeExchange> {
+  //   return this.get('feeExchange') as Option<FeeExchange>;
+  // }
 }

@@ -16,32 +16,34 @@ import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
 
-// Monkey patch [[Option]] to encode `None` as a `0` byte
-Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
-    if (this.isNone) {
-        return new Uint8Array([0]);
-    }
-    if (isBare) {
-        return this.raw.toU8a(true);
-    }
+import './Option';
 
-    const u8a = new Uint8Array(this.encodedLength);
+// // Monkey patch [[Option]] to encode `None` as a `0` byte
+// Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
+//   if (this.isNone) {
+//     return new Uint8Array([0]);
+//   }
+//   if (isBare) {
+//     return this.raw.toU8a(true);
+//   }
 
-    if (this.isSome) {
-        u8a.set([1]);
-        u8a.set(this.raw.toU8a(), 1);
-    }
+//   const u8a = new Uint8Array(this.encodedLength);
 
-    return u8a;
-};
+//   if (this.isSome) {
+//     u8a.set([1]);
+//     u8a.set(this.raw.toU8a(), 1);
+//   }
+
+//   return u8a;
+// };
 
 export default {
-    ...runtimeTypes,
-    ...extrinsicTypes,
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-    RewardBalance: 'Balance',
-    Doughnut: Doughnut,
-    // The patched [[Option]] type
-    Option: Option,
+  ...runtimeTypes,
+  ...extrinsicTypes,
+  AssetOf: 'u128',
+  'ed25519::Signature': 'H512',
+  RewardBalance: 'Balance',
+  Doughnut: Doughnut,
+  // The patched [[Option]] type
+  Option: Option,
 };

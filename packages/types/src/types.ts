@@ -9,13 +9,15 @@ export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array |
 export type AnyAssetId = AnyNumber;
 
 export {
-    ExtrinsicExtraValue,
-    ExtrinsicOptions,
-    ExtrinsicPayloadOptions,
-    ExtrinsicPayloadValue,
-    ExtrinsicSignatureOptions,
-    DoughnutValue,
-    FeeExchangeValue,
-    IExtrinsicImpl,
-    SignatureOptions,
+  ExtrinsicExtraValue,
+  ExtrinsicOptions,
+  // ExtrinsicPayloadOptions,
+  ExtrinsicPayloadValue,
+  ExtrinsicSignatureOptions,
+  DoughnutValue,
+  FeeExchangeValue,
+  IExtrinsicImpl,
+  SignatureOptions,
+  FeeExchange,
+  ChargeTransactionPayment,
 } from './extrinsic/types';

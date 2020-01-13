@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Enum, u32} from '@polkadot/types';
+import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
 import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
 import {
@@ -24,7 +26,21 @@ import {
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
 import Doughnut from '../Doughnut';
-import ChargeTransactionPayment from '../runtime/transaction-payment';
+
+import {Balance, BalanceOf} from '@polkadot/types/interfaces';
+import '../Option';
+
+export type FeeExchangeV1 = {
+  assetId: u32;
+  maxPayment: Balance;
+};
+
+export type FeeExchange = Enum;
+
+export interface ChargeTransactionPayment {
+  tip: Compact<BalanceOf>;
+  feeExchange: Option<FeeExchange>;
+}
 
 export interface ExtrinsicOptions {
   isSigned?: boolean;
@@ -49,10 +65,10 @@ export interface ExtrinsicV2SignatureOptions {
   transactionPayment?: ChargeTransactionPayment;
 }
 
-export interface ExtrinsicPayloadOptions {
-  useDoughnut?: boolean;
-  useFeeExchange?: boolean;
-}
+// export interface ExtrinsicPayloadOptions {
+//   useDoughnut?: boolean;
+//   useFeeExchange?: boolean;
+// }
 
 export interface ExtrinsicExtraValue {
   era?: Uint8Array;
@@ -84,20 +100,13 @@ export interface IExtrinsicImpl extends IExtrinsicImplBase {
   addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): IExtrinsicImpl;
 }
 
+// export interface SignatureOptions extends SignatureOptionsBase {
+//   doughnut?: AnyU8a | Doughnut;
+//   feeExchange?: FeeExchangeValue;
+// }
+
 export interface SignatureOptions extends SignatureOptionsBase {
-  doughnut?: AnyU8a | Doughnut;
-  feeExchange?: FeeExchangeValue;
+  transactionPayment?: ChargeTransactionPayment;
 }
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
-
-// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with cennznet types
-declare module '@polkadot/types/interfaceRegistry' {
-  interface InterfaceRegistry {
-    // Add types that only cennznet knows about.
-    // TS will merge them into the polkadot provided [[InterfaceRegistry]]
-    Doughnut: Doughnut;
-    'Option<Doughnut>': Option<Doughnut>;
-    ChargeTransactionPayment: ChargeTransactionPayment;
-  }
-}

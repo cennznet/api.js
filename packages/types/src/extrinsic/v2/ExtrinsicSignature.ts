@@ -20,7 +20,7 @@ import {IExtrinsicSignature, IKeyringPair} from '@polkadot/types/types';
 import Option from '@polkadot/types/codec/Option';
 import {ExtrinsicSignatureOptions} from '@polkadot/types/primitive/Extrinsic/types';
 import Doughnut from '../../Doughnut';
-import ChargeTransactionPayment from '../../runtime/transaction-payment';
+import {ChargeTransactionPayment} from '../../runtime/transaction-payment';
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
 import {ExtrinsicV2SignatureOptions} from '../types';
 import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
