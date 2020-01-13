@@ -24,7 +24,7 @@ import {
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
 import Doughnut from '../Doughnut';
-import ChargeTransactionPayment from '../runtime/transaction-payment';
+import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-payment';
 
 export interface ExtrinsicOptions {
   isSigned?: boolean;
@@ -99,5 +99,7 @@ declare module '@polkadot/types/interfaceRegistry' {
     Doughnut: Doughnut;
     'Option<Doughnut>': Option<Doughnut>;
     ChargeTransactionPayment: ChargeTransactionPayment;
+    FeeExchange: FeeExchange;
+    'Option<FeeExchange>': Option<FeeExchange>;
   }
 }

@@ -20,7 +20,7 @@ import {IExtrinsicSignature, IKeyringPair} from '@polkadot/types/types';
 import Option from '@polkadot/types/codec/Option';
 import {ExtrinsicSignatureOptions} from '@polkadot/types/primitive/Extrinsic/types';
 import Doughnut from '../../Doughnut';
-import ChargeTransactionPayment from '../../runtime/transaction-payment';
+import {ChargeTransactionPayment} from '../../runtime/transaction-payment';
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
 import {ExtrinsicV2SignatureOptions} from '../types';
 import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
@@ -40,7 +40,6 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
         doughnut: 'Option<Doughnut>',
         era: 'ExtrinsicEra',
         nonce: 'Compact<Index>',
-        tip: 'Compact<Balance>',
         transactionPayment: 'ChargeTransactionPayment',
       },
       ExtrinsicSignatureV2.decodeExtrinsicSignature(value, isSigned)
@@ -179,8 +178,8 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       method: method.toHex(),
       nonce,
-      tip: tip || 0,
-      transactionPayment: transactionPayment || createType('ChargeTransactionPayment'),
+      transactionPayment:
+        transactionPayment || createType('ChargeTransactionPayment', {tip: 0, feeExchange: 'Option<FeeExchange>'}),
       specVersion,
     };
     const payload = new ExtrinsicPayloadV2(payloadValue);

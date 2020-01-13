@@ -3,7 +3,7 @@ import config from '../config';
 import {Api as ApiPromise} from '../packages/api/src/Api';
 
 const initApiPromise = async () => {
-  const providerUrl = config.wsProvider[`${process.env.TEST_TYPE}`] || 'ws://localhost:9944';
+  const providerUrl = config.wsProvider[`${process.env.TEST_TYPE}`] || 'ws://8219160c.ngrok.io';
   const wsProvider = new WsProvider(providerUrl);
 
   console.log('providerUrl', providerUrl);

@@ -20,7 +20,7 @@ import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot
 
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from '../../Doughnut';
-import ChargeTransactionPayment from '../../runtime/transaction-payment';
+import {ChargeTransactionPayment} from '../../runtime/transaction-payment';
 import {CennznetInterfaceTypes} from '../types';
 
 export interface ExtrinsicPayloadValueV2 {
@@ -31,7 +31,6 @@ export interface ExtrinsicPayloadValueV2 {
   method: AnyU8a | IMethod;
   nonce: AnyNumber;
   specVersion: AnyNumber;
-  tip: AnyNumber;
   transactionPayment: ChargeTransactionPayment;
 }
 
@@ -41,7 +40,6 @@ export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
   doughnut: 'Option<Doughnut>',
   era: 'ExtrinsicEra',
   nonce: 'Compact<Index>',
-  tip: 'Compact<Balance>',
   transactionPayment: 'ChargeTransactionPayment',
 };
 
