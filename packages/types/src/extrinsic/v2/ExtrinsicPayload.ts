@@ -32,7 +32,7 @@ export interface ExtrinsicPayloadValueV2 {
   nonce: AnyNumber;
   specVersion: AnyNumber;
   tip: AnyNumber;
-  transactionPayment: ChargeTransactionPayment;
+  transactionPayment: any;
 }
 
 // The base of an extrinsic payload

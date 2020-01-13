@@ -180,7 +180,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       method: method.toHex(),
       nonce,
       tip: tip || 0,
-      transactionPayment: transactionPayment || createType('ChargeTransactionPayment'),
+      transactionPayment: new Uint8Array([0, 0]),
       specVersion,
     };
     const payload = new ExtrinsicPayloadV2(payloadValue);

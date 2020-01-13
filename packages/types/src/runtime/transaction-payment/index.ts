@@ -1,3 +1,4 @@
+import {Codec} from '@polkadot/types/types';
 // Copyright 2019 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +22,7 @@ import {AnyNumber} from '@polkadot/types/types';
 
 import '../../interfaceRegistry';
 import '../../Option';
+import '../../Struct';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
@@ -38,21 +40,15 @@ export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
  * when added to an extrinsic payload.
  */
 export class ChargeTransactionPayment extends Struct {
-  tip: Compact<BalanceOf>;
-  feeExchange: Option<FeeExchange>;
-  // constructor(value?: any) {
-  //   super(
-  //     {
-  //       tip: 'Compact<BalanceOf>',
-  //       feeExchange: 'Option<FeeExchange>',
-  //     },
-  //     value
-  //   );
-  // }
+  // tip: Compact<BalanceOf>;
+  // feeExchange: Option<FeeExchange>;
+  constructor(value?: any) {
+    super({tip: 'Compact<Balance>', feeExchange: 'Option<FeeExchange>'}, value);
+  }
 
-  // get tip(): Compact<Balance> {
-  //   return this.get('tip') as Compact<Balance>;
-  // }
+  get tip(): Compact<Balance> {
+    return this.get('tip') as Compact<Balance>;
+  }
 
   // get feeExchange(): Option<FeeExchange> {
   //   return this.get('feeExchange') as Option<FeeExchange>;
