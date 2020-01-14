@@ -16,12 +16,12 @@
 import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
 import {Balance, ExtrinsicEra, Hash} from '@polkadot/types/interfaces/runtime';
 import {sign} from '@polkadot/types/primitive/Extrinsic/util';
-import {AnyNumber, AnyU8a, Codec, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot/types/types';
+import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot/types/types';
 import {u8aConcat} from '@polkadot/util';
 
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from '../../Doughnut';
-import {ChargeTransactionPayment} from '../../runtime/transaction-payment';
+import {ChargeTransactionPayment, Index} from '../../runtime';
 import {CennznetInterfaceTypes} from '../types';
 
 import '../../Option';
@@ -37,8 +37,6 @@ export interface ExtrinsicPayloadValueV2 {
   tip: AnyNumber;
   transactionPayment?: ChargeTransactionPayment;
 }
-
-type Index = u64;
 
 // The base of an extrinsic payload
 export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
@@ -84,7 +82,7 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   1/2 bytes: The Transaction Era as provided in the transaction itself.
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
-export default class ExtrinsicPayloadV2 extends Struct implements Codec {
+export default class ExtrinsicPayloadV2 extends Struct {
   constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
     super(FullPayloadV2, value);
   }

@@ -2,7 +2,7 @@ version: '3'
 services:
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:rc1
+    image: cennznet/cennznet:1.0.0-rc1
     command:
       - --chain=dev
       - --base-path=/mnt/node

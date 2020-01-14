@@ -18,3 +18,6 @@ export * from './ga';
 export * from './rewards';
 export * from './sylo';
 export * from './fees';
+export * from './transaction-payment';
+
+export {u64 as Index} from '@polkadot/types';

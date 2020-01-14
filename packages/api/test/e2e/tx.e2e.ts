@@ -124,7 +124,7 @@ describe('e2e transactions', () => {
         });
     });
 
-    describe('feeExchange extrinsic', () => {
+    describe.skip('feeExchange extrinsic', () => {
       it('use keypair to sign', async done => {
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         const senderKeypair = simpleKeyring.addFromUri(sender.uri);

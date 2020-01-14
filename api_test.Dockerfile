@@ -9,11 +9,11 @@ COPY yarn.lock $PROJECT_DIR
 COPY . $PROJECT_DIR
 
 RUN apt-get update && apt-get install -y \
-  apt-utils \
   automake \
-  curl \
+  # curl \
   # vim \
-  && yarn  --pure-lockfile \
+  && yarn config set cache-folder .yarn \
+  && yarn  --pure-lockfile --cache-folder .yarn \
   && rm -rf /var/lib/apt/lists/*
 
 RUN chmod +x ./scripts/*

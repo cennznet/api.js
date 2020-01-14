@@ -10,7 +10,7 @@ CMD=$1
 case "$CMD" in
 "integration")
   echo "Start integration tests"
-  export NODE_ENV=development
+  # export NODE_ENV=development
   exec yarn test:integration
   exec tail -f /dev/null
   ;;

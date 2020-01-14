@@ -33,7 +33,12 @@ if [ -z "$(docker network ls | grep "apijs_default" | awk '/ / { print $2 }')" ]
   docker network create --driver bridge apijs_default
 fi
 
-docker-compose up -d --build
+if [ -z "$(docker ps -a | grep "testnet_node_alice")" ]; then
+  docker-compose up -d --build
+else
+  docker-compose build api_test
+  docker-compose up -d
+fi
 
 # checkout scripts/api_test_docker_entrypoint.sh for more options, like:
 # docker-compose run api_test integration
