@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import {u64} from '@polkadot/types';
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
@@ -18,30 +19,30 @@ import * as runtimeTypes from './runtime';
 
 // Monkey patch [[Option]] to encode `None` as a `0` byte
 Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
-    if (this.isNone) {
-        return new Uint8Array([0]);
-    }
-    if (isBare) {
-        return this.raw.toU8a(true);
-    }
+  if (this.isNone) {
+    return new Uint8Array([0]);
+  }
+  if (isBare) {
+    return this.raw.toU8a(true);
+  }
 
-    const u8a = new Uint8Array(this.encodedLength);
+  const u8a = new Uint8Array(this.encodedLength);
 
-    if (this.isSome) {
-        u8a.set([1]);
-        u8a.set(this.raw.toU8a(), 1);
-    }
+  if (this.isSome) {
+    u8a.set([1]);
+    u8a.set(this.raw.toU8a(), 1);
+  }
 
-    return u8a;
+  return u8a;
 };
 
 export default {
-    ...runtimeTypes,
-    ...extrinsicTypes,
-    AssetOf: 'u128',
-    'ed25519::Signature': 'H512',
-    RewardBalance: 'Balance',
-    Doughnut: Doughnut,
-    // The patched [[Option]] type
-    Option: Option,
+  ...runtimeTypes,
+  ...extrinsicTypes,
+  AssetOf: 'u128',
+  'ed25519::Signature': 'H512',
+  RewardBalance: 'Balance',
+  Doughnut: Doughnut,
+  // The patched [[Option]] type
+  Option: Option,
 };
