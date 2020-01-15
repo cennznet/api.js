@@ -6,17 +6,18 @@
 
 import {Compact, u32, U8a} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Balance, Hash, Index} from '@polkadot/types/interfaces/runtime';
+import {Balance, Hash} from '@polkadot/types/interfaces/runtime';
 import {IExtrinsicEra, IKeyringPair} from '@polkadot/types/types';
 
 import {u8aToHex} from '@polkadot/util';
 
+import {ChargeTransactionPayment, Index} from '../runtime';
 import {DEFAULT_VERSION} from './constants';
 import {ExtrinsicPayloadValue} from './types';
 import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './v2/ExtrinsicPayload';
 
 interface ExtrinsicPayloadOptions {
-    version?: number;
+  version?: number;
 }
 
 // all our known types that can be returned
@@ -29,106 +30,113 @@ type ExtrinsicPayloadVx = ExtrinsicPayloadV2;
  * on the contents included
  */
 export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
-    constructor(
-        value: Partial<ExtrinsicPayloadValue> | Uint8Array | string | undefined,
-        {version}: ExtrinsicPayloadOptions = {}
-    ) {
-        super(ExtrinsicPayload.decodeExtrinsicPayload(value as ExtrinsicPayloadValue, version));
+  constructor(
+    value: Partial<ExtrinsicPayloadValue> | Uint8Array | string | undefined,
+    {version}: ExtrinsicPayloadOptions = {}
+  ) {
+    super(ExtrinsicPayload.decodeExtrinsicPayload(value as ExtrinsicPayloadValue, version));
+  }
+
+  static decodeExtrinsicPayload(
+    value: ExtrinsicPayload | ExtrinsicPayloadValue | ExtrinsicPayloadValueV2 | Uint8Array | string | undefined,
+    version: number = DEFAULT_VERSION
+  ): ExtrinsicPayloadVx {
+    if (value instanceof ExtrinsicPayload) {
+      return value.raw;
     }
 
-    static decodeExtrinsicPayload(
-        value: ExtrinsicPayload | ExtrinsicPayloadValue | ExtrinsicPayloadValueV2 | Uint8Array | string | undefined,
-        version: number = DEFAULT_VERSION
-    ): ExtrinsicPayloadVx {
-        if (value instanceof ExtrinsicPayload) {
-            return value.raw;
-        }
+    return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
+  }
 
-        return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
-    }
+  /**
+   * @description The block [[Hash]] the signature applies to (mortal/immortal)
+   */
+  get blockHash(): Hash {
+    return this.raw.blockHash;
+  }
 
-    /**
-     * @description The block [[Hash]] the signature applies to (mortal/immortal)
-     */
-    get blockHash(): Hash {
-        return this.raw.blockHash;
-    }
+  /**
+   * @description The [[ExtrinsicEra]]
+   */
+  get era(): IExtrinsicEra {
+    return this.raw.era;
+  }
 
-    /**
-     * @description The [[ExtrinsicEra]]
-     */
-    get era(): IExtrinsicEra {
-        return this.raw.era;
-    }
+  /**
+   * @description The genesis block [[Hash]] the signature applies to
+   */
+  get genesisHash(): Hash {
+    return (this.raw as ExtrinsicPayloadV2).genesisHash;
+  }
 
-    /**
-     * @description The genesis block [[Hash]] the signature applies to
-     */
-    get genesisHash(): Hash {
-        return (this.raw as ExtrinsicPayloadV2).genesisHash;
-    }
+  /**
+   * @description The [[U8a]] contained in the payload
+   */
+  get method(): U8a {
+    return this.raw.method;
+  }
 
-    /**
-     * @description The [[U8a]] contained in the payload
-     */
-    get method(): U8a {
-        return this.raw.method;
-    }
+  /**
+   * @description The [[Index]]
+   */
+  get nonce(): Compact<Index> {
+    return this.raw.nonce;
+  }
 
-    /**
-     * @description The [[Index]]
-     */
-    get nonce(): Compact<Index> {
-        return this.raw.nonce;
-    }
+  /**
+   * @description The specVersion as a [[u32]] for this payload
+   */
+  get specVersion(): u32 {
+    return (this.raw as ExtrinsicPayloadV2).specVersion;
+  }
 
-    /**
-     * @description The specVersion as a [[u32]] for this payload
-     */
-    get specVersion(): u32 {
-        return (this.raw as ExtrinsicPayloadV2).specVersion;
-    }
+  /**
+   * @description The tip [[Balance]] given to the transaction
+   */
+  get tip(): Compact<Balance> {
+    return (this.raw as ExtrinsicPayloadV2).tip;
+  }
 
-    /**
-     * @description The [[Balance]]
-     */
-    get tip(): Compact<Balance> {
-        return (this.raw as ExtrinsicPayloadV2).tip;
-    }
+  /**
+   * @description The fee payment metadata (includes. tip)
+   */
+  get transactionPayment(): ChargeTransactionPayment {
+    return (this.raw as ExtrinsicPayloadV2).transactionPayment;
+  }
 
-    /**
-     * @description Compares the value of the input to see if there is a match
-     */
-    eq(other?: any): boolean {
-        return this.raw.eq(other);
-    }
+  /**
+   * @description Compares the value of the input to see if there is a match
+   */
+  eq(other?: any): boolean {
+    return this.raw.eq(other);
+  }
 
-    /**
-     * @description Sign the payload with the keypair
-     */
-    sign(signerPair: IKeyringPair): {signature: string} {
-        const signature = this.raw.sign(signerPair);
+  /**
+   * @description Sign the payload with the keypair
+   */
+  sign(signerPair: IKeyringPair): {signature: string} {
+    const signature = this.raw.sign(signerPair);
 
-        // This is extensible, so we could quite readily extend to send back extra
-        // information, such as for instance the payload, i.e. `payload: this.toHex()`
-        // For the case here we sign via the extrinsic, we ignore the return, so generally
-        // this is applicable for external signing
-        return {
-            signature: u8aToHex(signature),
-        };
-    }
+    // This is extensible, so we could quite readily extend to send back extra
+    // information, such as for instance the payload, i.e. `payload: this.toHex()`
+    // For the case here we sign via the extrinsic, we ignore the return, so generally
+    // this is applicable for external signing
+    return {
+      signature: u8aToHex(signature),
+    };
+  }
 
-    /**
-     * @description Converts the Object to JSON, typically used for RPC transfers
-     */
-    toJSON(): any {
-        return this.toHex();
-    }
+  /**
+   * @description Converts the Object to JSON, typically used for RPC transfers
+   */
+  toJSON(): any {
+    return this.toHex();
+  }
 
-    /**
-     * @description Returns the string representation of the value
-     */
-    toString(): string {
-        return this.toHex();
-    }
+  /**
+   * @description Returns the string representation of the value
+   */
+  toString(): string {
+    return this.toHex();
+  }
 }
