@@ -2,6 +2,10 @@
 
 > The Cennznet JavaScript API library for browsers and Node.js.
 
+## Get started
+
+[Development guide](docs/GET_STARTED.md)
+
 ## Release notes
 
 [17/01/2020] Proper document to be added when 1.0.0 final is releasing, here is a quick note:
