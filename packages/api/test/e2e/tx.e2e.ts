@@ -85,13 +85,20 @@ describe('e2e transactions', () => {
     });
 
     it('makes a tx', async done => {
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, sender.address);
+      console.log('Balance before:', assetBalance.toString());
       // transfer
       await api.tx.genericAsset
         .transfer(16000, receiver.address, 1)
         .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
-            expect(events[0].event.method).toEqual('Transferred');
-            expect(events[0].event.section).toEqual('genericAsset');
+            console.log('Completed at block hash', status.value.toHex());
+            console.log('Events:');
+
+            events.forEach(({phase, event: {data, method, section}}) => {
+              console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+            });
+            api.query.genericAsset.freeBalance(16001, sender.address).then(bal => console.log('After balance:', bal.toString()));
             done();
           }
         });
@@ -133,9 +140,14 @@ describe('e2e transactions', () => {
           assetId: '16000',
           maxPayment: '50000000000000000',
         };
+        const transactionPayment = {
+          tip: '0', FeeExchangeV1: feeExchange
+        };
+        const assetBalance = await api.query.genericAsset.freeBalance(16000, sender.address);
+        console.log('Balance before:', assetBalance.toString());
         return api.tx.genericAsset
-          .transfer(16000, receiver.address, 10000)
-          .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
+          .transfer(16001, receiver.address, 10000)
+          .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
             console.log('Transaction status:', status.type);
             if (status.isFinalized) {
               console.log('Completed at block hash', status.value.toHex());
@@ -144,21 +156,22 @@ describe('e2e transactions', () => {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
-
+              api.query.genericAsset.freeBalance(16000, sender.address).then(bal => console.log('After balance:', bal.toString()));
               done();
             }
           });
       });
 
       it('use signer', async done => {
-        const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
-        const txOpt = {
-          feeExchange: {
+        const tx = api.tx.genericAsset.transfer(16001, receiver.address, 100);
+        const feeExchange = {
             assetId: '16000',
             maxPayment: '50000000000000000',
-          },
+          };
+        const transactionPayment = {
+          tip: '0', FeeExchangeV1: feeExchange
         };
-        return tx.signAndSend(sender.address, txOpt, ({events, status}) => {
+        return tx.signAndSend(sender.address, transactionPayment, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
             console.log('Completed at block hash', status.value.toHex());
