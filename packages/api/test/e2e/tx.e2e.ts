@@ -117,12 +117,8 @@ describe('e2e transactions', () => {
         .transfer(16000, receiver.address, 1)
         .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
-            console.log('Completed at block hash', status.value.toHex());
-            console.log('Events:');
-
-            events.forEach(({phase, event: {data, method, section}}) => {
-              console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-            });
+            expect(events[0].event.method).toEqual('Transferred');
+            expect(events[0].event.section).toEqual('genericAsset');
             done();
           }
         });
