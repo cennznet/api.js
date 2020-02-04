@@ -16,7 +16,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {AssetId, AssetOptions} from '@cennznet/types';
+import {AssetId, AssetOptions, FeeExchangeV1} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {SubmittableResult} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
@@ -35,6 +35,8 @@ const receiver = {
   address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const passphrase = 'passphrase';
+const minFee = 30000000000000;
+const feeAssetId = '16002';
 
 describe('e2e transactions', () => {
   let api;
@@ -55,6 +57,30 @@ describe('e2e transactions', () => {
   });
 
   describe('Send()', () => {
+
+    it("Deposit liquidity in fee asset's pool", async done => {
+      const poolAssetBalance = await api.cennzxSpot.getPoolAssetBalance(feeAssetId);
+      if (poolAssetBalance.toNumber() < minFee  ) {
+        const coreAmount = minFee;
+        const investmentAmount = await api.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
+        const minLiquidity = 1;
+        await api.tx.cennzxSpot
+          .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)
+          .signAndSend(sender.address, async ({events, status}) => {
+            if (status.isFinalized) {
+              let liquidityCreated = false;
+              for (const {event} of events) {
+                if (event.method === 'AddLiquidity') {
+                  done();
+                }
+              }
+            }
+          });
+      } else {
+        done();
+      }
+    });
+
     it('makes a tx using immortal era', async done => {
       // const opt = {era: '0x00', blockHash: api.genesisHash};
       // transfer
@@ -85,6 +111,7 @@ describe('e2e transactions', () => {
     });
 
     it('makes a tx', async done => {
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, sender.address);
       // transfer
       await api.tx.genericAsset
         .transfer(16000, receiver.address, 1)
@@ -130,12 +157,17 @@ describe('e2e transactions', () => {
         const senderKeypair = simpleKeyring.addFromUri(sender.uri);
 
         const feeExchange = {
-          assetId: '16000',
+          assetId: feeAssetId,
           maxPayment: '50000000000000000',
         };
-        return api.tx.genericAsset
-          .transfer(16000, receiver.address, 10000)
-          .signAndSend(senderKeypair, {feeExchange}, ({events, status}) => {
+        const feeExchangeV1 = {FeeExchangeV1 : feeExchange};
+        const transactionPayment = {
+          tip: '2', feeExchange:  feeExchangeV1,
+        };
+
+         api.tx.genericAsset
+          .transfer(16001, receiver.address, 100)
+          .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
             console.log('Transaction status:', status.type);
             if (status.isFinalized) {
               console.log('Completed at block hash', status.value.toHex());
@@ -144,21 +176,25 @@ describe('e2e transactions', () => {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
-
               done();
             }
           });
       });
 
       it('use signer', async done => {
-        const tx = api.tx.genericAsset.transfer(16000, receiver.address, 10000);
-        const txOpt = {
-          feeExchange: {
-            assetId: '16000',
-            maxPayment: '50000000000000000',
+        const feeExchange = {
+          assetId: feeAssetId,
+          maxPayment: '50000000000000000',
+        };
+        const transactionPayment = {
+          tip: 2,
+          feeExchange:  {
+            FeeExchangeV1: feeExchange,
           },
         };
-        return tx.signAndSend(sender.address, txOpt, ({events, status}) => {
+
+        const tx = api.tx.genericAsset.transfer(16001, receiver.address, 100);
+        return tx.signAndSend(sender.address, {transactionPayment}, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
             console.log('Completed at block hash', status.value.toHex());
@@ -167,7 +203,6 @@ describe('e2e transactions', () => {
             events.forEach(({phase, event: {data, method, section}}) => {
               console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
             });
-
             done();
           }
         });

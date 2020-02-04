@@ -31,9 +31,7 @@
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {
-    "@cennznet/cennznut": "^1.0.0",
     "@cennznet/wallet": "^0.20.7",
-    "@plugnet/doughnut-maker": "^2.0.0",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",

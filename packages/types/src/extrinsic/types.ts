@@ -35,7 +35,7 @@ export interface ExtrinsicOptions {
 export interface ExtrinsicSignatureOptions {
   isSigned?: boolean;
   doughnut?: Doughnut;
-  feeExchange?: any;
+  transactionPayment?: ChargeTransactionPayment;
 }
 
 export interface ExtrinsicV2SignatureOptions {
@@ -70,7 +70,7 @@ export interface ExtrinsicPayloadValue {
   specVersion: AnyNumber;
   tip: AnyNumber;
   doughnut?: AnyU8a | Doughnut;
-  feeExchange?: FeeExchangeValue;
+  transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
 
 export type DoughnutValue = AnyU8a;
@@ -87,7 +87,7 @@ export interface IExtrinsicImpl extends IExtrinsicImplBase {
 
 export interface SignatureOptions extends SignatureOptionsBase {
   doughnut?: AnyU8a | Doughnut;
-  feeExchange?: FeeExchangeValue;
+  transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;

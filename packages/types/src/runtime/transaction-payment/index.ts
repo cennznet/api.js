@@ -15,21 +15,33 @@
 import {Enum, Struct} from '@polkadot/types';
 import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
-import {Balance} from '@polkadot/types/interfaces/runtime';
-import {AnyNumber, AnyU8a, Codec} from '@polkadot/types/types';
-import {u8aConcat} from '@polkadot/util';
+import {AssetId, Balance} from '@polkadot/types/interfaces/runtime';
+import {AnyJson, AnyJsonObject} from '@polkadot/types/types';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
  */
 export class FeeExchangeV1 extends Struct {
-  constructor(value: any) {
-    super({assetId: 'AssetId', maxPayment: 'Compact<Balance>'}, value);
+  constructor(value?: any) {
+    super({assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
+  }
+  get assetId(): AssetId {
+    return this.get('assetId') as AssetId;
+  }
+
+  get maxPayment(): Balance {
+    return this.get('maxPayment') as Balance;
   }
 }
 
 // The outer [[FeeExchange]] it is an enum to allow flexbility for future versions and backwards compatability.
-export class FeeExchange extends Enum.with({FeeExchangeV1: FeeExchangeV1}) {}
+// export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
+
+export class FeeExchange extends Enum {
+  constructor(value: any) {
+    super({FeeExchangeV1: FeeExchangeV1}, value);
+  }
+}
 
 /**
  * [[ChargeTransactionPayment]] allows paying a `tip` and/or specifying fee payment in another currency

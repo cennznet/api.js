@@ -15,29 +15,30 @@
 import {DecoratedCennznetDerive} from '@cennznet/api/derives';
 import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
 import {
-    AnyAddress,
-    Callback,
-    CallFunction,
-    Codec,
-    CodecArg,
-    Constructor,
-    IExtrinsic as IExtrinsicBase,
-    IKeyringPair,
-    RegistryTypes,
-    SignatureOptions,
+  AnyAddress,
+  Callback,
+  CallFunction,
+  Codec,
+  CodecArg,
+  Constructor,
+  IExtrinsic as IExtrinsicBase,
+  IKeyringPair,
+  RegistryTypes,
+  SignatureOptions,
 } from '@cennznet/types/types';
 import {DeriveCustom} from '@polkadot/api-derive';
 import ApiBase from '@polkadot/api/base';
 import {
-    ApiOptions as ApiOptionsBase,
-    SignerOptions as SignerOptionsBase,
-    SubmittableExtrinsic as SubmittableExtrinsicBase,
-    SubmittableResultImpl,
-    SubmittableResultResult,
-    SubmittableResultSubscription,
-    UnsubscribePromise,
+  ApiOptions as ApiOptionsBase,
+  SignerOptions as SignerOptionsBase,
+  SubmittableExtrinsic as SubmittableExtrinsicBase,
+  SubmittableResultImpl,
+  SubmittableResultResult,
+  SubmittableResultSubscription,
+  UnsubscribePromise,
 } from '@polkadot/api/types';
 
+import {ChargeTransactionPayment} from '@cennznet/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import {u64} from '@polkadot/types';
 import {AccountId, Address, AssetOf, Hash} from '@polkadot/types/interfaces';
@@ -48,117 +49,117 @@ export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
-    /**
-     * provider implement ProviderInterface or string url for WsProvider.
-     * If not specified, it will default to connecting to the
-     * localhost with the default port, i.e. `ws://127.0.0.1:9944`
-     */
-    provider?: ProviderInterface | string;
-    plugins?: IPlugin[];
-    /**
-     * timeout for Api.create
-     * default 10000 ms, 0 indicates no limit
-     */
-    timeout?: number;
+  /**
+   * provider implement ProviderInterface or string url for WsProvider.
+   * If not specified, it will default to connecting to the
+   * localhost with the default port, i.e. `ws://127.0.0.1:9944`
+   */
+  provider?: ProviderInterface | string;
+  plugins?: IPlugin[];
+  /**
+   * timeout for Api.create
+   * default 10000 ms, 0 indicates no limit
+   */
+  timeout?: number;
 }
 
 export interface IPlugin {
-    injectName?: string;
-    sdkClass?: Constructor<any>;
-    sdkRxClass?: Constructor<any>;
-    types?: RegistryTypes;
-    derives?: DeriveCustom;
+  injectName?: string;
+  sdkClass?: Constructor<any>;
+  sdkRxClass?: Constructor<any>;
+  types?: RegistryTypes;
+  derives?: DeriveCustom;
 }
 
 export interface SignerOptions extends SignerOptionsBase {
-    doughnut?: DoughnutValue;
-    feeExchange?: FeeExchangeValue;
+  doughnut?: DoughnutValue;
+  transactionPayment?: ChargeTransactionPayment;
 }
 
 export interface IExtrinsic extends IExtrinsicBase {
-    sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
+  sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 }
 
 export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {
-    send(): SubmittableResultResult<ApiType>;
+  send(): SubmittableResultResult<ApiType>;
 
-    send(statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
+  send(statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
 
-    sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
+  sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
 
-    signAndSend(
-        account: IKeyringPair | string | AccountId | Address,
-        options?: Partial<SignerOptions>
-    ): SubmittableResultResult<ApiType>;
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    options?: Partial<SignerOptions>
+  ): SubmittableResultResult<ApiType>;
 
-    signAndSend(
-        account: IKeyringPair | string | AccountId | Address,
-        statusCb: Callback<SubmittableResultImpl>
-    ): SubmittableResultSubscription<ApiType>;
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    statusCb: Callback<SubmittableResultImpl>
+  ): SubmittableResultSubscription<ApiType>;
 
-    signAndSend(
-        account: IKeyringPair | string | AccountId | Address,
-        options: Partial<SignerOptions>,
-        statusCb?: Callback<SubmittableResultImpl>
-    ): SubmittableResultSubscription<ApiType>;
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    options: Partial<SignerOptions>,
+    statusCb?: Callback<SubmittableResultImpl>
+  ): SubmittableResultSubscription<ApiType>;
 
-    fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
+  fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
 }
 
 export interface SubmittableExtrinsicFunction<ApiType extends ApiTypes> extends CallFunction {
-    (...params: CodecArg[]): SubmittableExtrinsic<ApiType>;
+  (...params: CodecArg[]): SubmittableExtrinsic<ApiType>;
 }
 
 export interface SubmittableModuleExtrinsics<ApiType extends ApiTypes> {
-    [index: string]: SubmittableExtrinsicFunction<ApiType>;
+  [index: string]: SubmittableExtrinsicFunction<ApiType>;
 }
 
 export interface SubmittableExtrinsics<ApiType extends ApiTypes> {
-    (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
+  (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
 
-    [index: string]: SubmittableModuleExtrinsics<ApiType>;
+  [index: string]: SubmittableModuleExtrinsics<ApiType>;
 }
 
 export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['decorateDerive']> &
-    DecoratedCennznetDerive<ApiType>;
+  DecoratedCennznetDerive<ApiType>;
 
 interface StorageEntryBase<C, H, U> {
-    at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;
-    creator: StorageEntry;
-    hash: (arg1?: CodecArg, arg2?: CodecArg) => H;
-    key: (arg1?: CodecArg, arg2?: CodecArg) => string;
-    size: (arg1?: CodecArg, arg2?: CodecArg) => U;
+  at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;
+  creator: StorageEntry;
+  hash: (arg1?: CodecArg, arg2?: CodecArg) => H;
+  key: (arg1?: CodecArg, arg2?: CodecArg) => string;
+  size: (arg1?: CodecArg, arg2?: CodecArg) => U;
 }
 
 export interface StorageEntryObservable<T extends Codec>
-    extends StorageEntryBase<Observable<T>, Observable<Hash>, Observable<u64>> {
-    (arg1?: CodecArg, arg2?: CodecArg): Observable<T>;
+  extends StorageEntryBase<Observable<T>, Observable<Hash>, Observable<u64>> {
+  (arg1?: CodecArg, arg2?: CodecArg): Observable<T>;
 
-    multi: (args: (CodecArg[] | CodecArg)[]) => Observable<T[]>;
+  multi: (args: (CodecArg[] | CodecArg)[]) => Observable<T[]>;
 }
 
 export interface StorageEntryPromiseOverloads<T extends Codec> {
-    (arg1?: CodecArg, arg2?: CodecArg): Promise<T>;
+  (arg1?: CodecArg, arg2?: CodecArg): Promise<T>;
 
-    (callback: Callback<T>): UnsubscribePromise;
+  (callback: Callback<T>): UnsubscribePromise;
 
-    (arg: CodecArg, callback: Callback<T>): UnsubscribePromise;
+  (arg: CodecArg, callback: Callback<T>): UnsubscribePromise;
 
-    (arg1: CodecArg, arg2: CodecArg, callback: Callback<T>): UnsubscribePromise;
+  (arg1: CodecArg, arg2: CodecArg, callback: Callback<T>): UnsubscribePromise;
 }
 
 export interface StorageEntryPromiseMulti<T extends Codec> {
-    (args: (CodecArg[] | CodecArg)[]): Promise<T[]>;
+  (args: (CodecArg[] | CodecArg)[]): Promise<T[]>;
 
-    (args: (CodecArg[] | CodecArg)[], callback: Callback<T[]>): UnsubscribePromise;
+  (args: (CodecArg[] | CodecArg)[], callback: Callback<T[]>): UnsubscribePromise;
 }
 
 export interface StorageEntryPromise<T extends Codec>
-    extends StorageEntryBase<Promise<T>, Promise<Hash>, Promise<u64>>,
-        StorageEntryPromiseOverloads<T> {
-    multi: StorageEntryPromiseMulti<T>;
+  extends StorageEntryBase<Promise<T>, Promise<Hash>, Promise<u64>>,
+    StorageEntryPromiseOverloads<T> {
+  multi: StorageEntryPromiseMulti<T>;
 }
 
 export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType extends 'rxjs'
-    ? StorageEntryObservable<T>
-    : StorageEntryPromise<T>;
+  ? StorageEntryObservable<T>
+  : StorageEntryPromise<T>;
