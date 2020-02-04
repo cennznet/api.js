@@ -88,7 +88,7 @@ export interface IExtrinsicImpl extends IExtrinsicImplBase {
 
 export interface SignatureOptions extends SignatureOptionsBase {
   doughnut?: AnyU8a | Doughnut;
-  transactionPayment?: ChargeTransactionPayment;
+  transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;

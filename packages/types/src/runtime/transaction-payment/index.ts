@@ -22,8 +22,8 @@ import {AnyJson, AnyJsonObject} from '@polkadot/types/types';
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
  */
 export class FeeExchangeV1 extends Struct {
-  constructor(value: any) {
-    super({assetId: 'AssetId', maxPayment: 'Compact<Balance>'}, value);
+  constructor(value?: any) {
+    super({assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
   }
 
   get assetId(): AssetId {
@@ -33,6 +33,10 @@ export class FeeExchangeV1 extends Struct {
   get maxPayment(): Balance {
     return this.get('maxPayment') as Balance;
   }
+
+  // toJSON(): {assetId: number; maxPayment: string} {
+  //   return {assetId: this.assetId.toNumber(), maxPayment: this.maxPayment.toString()};
+  // }
 
   // toJSON(): AnyJsonObject {
   //   return {
@@ -46,16 +50,16 @@ export class FeeExchangeV1 extends Struct {
 }
 
 // The outer [[FeeExchange]] it is an enum to allow flexbility for future versions and backwards compatability.
-export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
+// export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
 
-// export class FeeExchange extends Enum {
-//   constructor(value: any) {
-//     super({ FeeExchangeV1: FeeExchangeV1}, value)
-//   }
-//   toJSON(): AnyJson{
-//     return {FeeExchangeV1: this.value.toJSON()};
-//   }
-// }
+export class FeeExchange extends Enum {
+  constructor(value: any) {
+    super({FeeExchangeV1: FeeExchangeV1}, value);
+  }
+  // toJSON(): AnyJson{
+  //   return {FeeExchangeV1: this.value.toJSON()};
+  // }
+}
 
 /**
  * [[ChargeTransactionPayment]] allows paying a `tip` and/or specifying fee payment in another currency
