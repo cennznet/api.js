@@ -40,15 +40,8 @@ const receiver = {
   address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const passphrase = 'passphrase';
-const CENNZ = '16000'
-
-async function addLiquidity(cennzxSpot: CennzxSpot) {
-  // return addLiquidity;
-  const poolAssetBalance = await cennzxSpot.getPoolAssetBalance(CENNZ);
-  const poolCoreBalance = await cennzxSpot.getPoolCoreAssetBalance(CENNZ);
-  console.log('Asset balance:', poolAssetBalance.toString());
-  console.log('Core balance:', poolCoreBalance.toString());
-}
+const minFee = 10000000000000;
+const feeAssetId = '16003';
 
 describe('e2e transactions', () => {
   let api;
@@ -69,6 +62,30 @@ describe('e2e transactions', () => {
   });
 
   describe('Send()', () => {
+
+    it("Deposit liquidity in second asset's existing pool' event", async done => {
+      const poolAssetBalance = await api.cennzxSpot.getPoolAssetBalance(feeAssetId);
+      if (poolAssetBalance.toNumber() < minFee  ) {
+        const coreAmount = minFee;
+        const investmentAmount = await api.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
+        const minLiquidity = 1;
+        await api.tx.cennzxSpot
+          .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)
+          .signAndSend(sender.address, async ({events, status}) => {
+            if (status.isFinalized) {
+              let liquidityCreated = false;
+              for (const {event} of events) {
+                if (event.method === 'AddLiquidity') {
+                  done();
+                }
+              }
+            }
+          });
+      } else {
+        done();
+      }
+    });
+
     it('makes a tx using immortal era', async done => {
       // const opt = {era: '0x00', blockHash: api.genesisHash};
       // transfer
@@ -100,7 +117,6 @@ describe('e2e transactions', () => {
 
     it('makes a tx', async done => {
       const assetBalance = await api.query.genericAsset.freeBalance(16001, sender.address);
-      console.log('Balance before:', assetBalance.toString());
       // transfer
       await api.tx.genericAsset
         .transfer(16000, receiver.address, 1)
@@ -112,7 +128,6 @@ describe('e2e transactions', () => {
             events.forEach(({phase, event: {data, method, section}}) => {
               console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
             });
-            api.query.genericAsset.freeBalance(16001, sender.address).then(bal => console.log('After balance:', bal.toString()));
             done();
           }
         });
@@ -150,25 +165,17 @@ describe('e2e transactions', () => {
         const simpleKeyring: SimpleKeyring = new SimpleKeyring();
         const senderKeypair = simpleKeyring.addFromUri(sender.uri);
 
-        // Check if there is liquidity in the pool
-        addLiquidity(api.cennzxSpot);
-        const feeExchangeV1 = {
-          assetId: '16002',
-          maxPayment: '500000000',
+        const feeExchange = {
+          assetId: feeAssetId,
+          maxPayment: '50000000000000000',
         };
-        // const transactionPayment = {
-        //   tip: '2', feeExchange:  new Option(FeeExchangeV1, {FeeExchangeV1: feeExchangeV1}),
-        // };
-
+        const feeExchangeV1 = {FeeExchangeV1 : feeExchange};
         const transactionPayment = {
-          tip: '2', feeExchange:  {FeeExchangeV1: feeExchangeV1},
+          tip: '2', feeExchange:  feeExchangeV1,
         };
 
-        console.log('Transaction payment:', transactionPayment);
-        const assetBalance = await api.query.genericAsset.freeBalance(16002, sender.address);
-        console.log('Balance before:', assetBalance.toString());
-        return api.tx.genericAsset
-          .transfer(16001, receiver.address, 1)
+         api.tx.genericAsset
+          .transfer(16001, receiver.address, 100)
           .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
             console.log('Transaction status:', status.type);
             if (status.isFinalized) {
@@ -178,7 +185,6 @@ describe('e2e transactions', () => {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
-              api.query.genericAsset.freeBalance(16002, sender.address).then(bal => console.log('After balance:', bal.toString()));
               done();
             }
           });
@@ -186,25 +192,17 @@ describe('e2e transactions', () => {
 
       it('use signer', async done => {
         const feeExchange = {
-            assetId: '16002',
-            maxPayment: '500000000',
-          };
-        // const feeExchangeV1 = new Option(
-        //   FeeExchangeV1, feeExchange);
+          assetId: feeAssetId,
+          maxPayment: '50000000000000000',
+        };
         const transactionPayment = {
           tip: 2,
           feeExchange:  {
-            FeeExchangeV1: feeExchange
+            FeeExchangeV1: feeExchange,
           },
         };
 
-        console.log('Transaction payment:', transactionPayment);
         const tx = api.tx.genericAsset.transfer(16001, receiver.address, 100);
-       // console.log('submittable extrinsic:', tx);
-       //  console.log('submittable extrinsic encoded:', tx.toU8a());
-        // const assetBalance = await api.query.genericAsset.freeBalance(16002, sender.address);
-        // console.log('Balance before:', assetBalance.toString());
-        // //tx.addFeeExchangeOpt()
         return tx.signAndSend(sender.address, {transactionPayment}, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
@@ -214,11 +212,9 @@ describe('e2e transactions', () => {
             events.forEach(({phase, event: {data, method, section}}) => {
               console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
             });
-        //    api.query.genericAsset.freeBalance(16002, sender.address).then(bal => console.log('After balance:', bal.toString()));
             done();
           }
         });
-        console.log('Decode extrinsic:', ExtrinsicV2.decodeExtrinsic(tx.toU8a()))
       });
     });
   });
