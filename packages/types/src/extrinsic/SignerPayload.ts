@@ -43,10 +43,6 @@ export interface SignerPayloadType extends Struct {
 
 export interface SignerPayloadJSON extends SignerPayloadJSONBase {
   doughnut?: string;
-  //  transactionPayment?: {
-  //    tip?: Compact<Balance>;
-  //    feeExchange?: {FeeExchangeV1: Option<FeeExchangeV1>}
-  //    };
   transactionPayment?: string;
 }
 

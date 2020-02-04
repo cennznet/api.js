@@ -21,11 +21,6 @@ import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {SubmittableResult} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
-import {ChargeTransactionPayment, FeeExchange} from '@cennznet/types/runtime/transaction-payment';
-import {Enum, Option, getTypeRegistry as registry} from '@polkadot/types';
-// import {getTypeRegistry} from '@polkadot/types';
-import {CennzxSpot} from '@cennznet/crml-cennzx-spot/CennzxSpot';
-import ExtrinsicV2 from '@cennznet/types/extrinsic/v2/Extrinsic';
 
 // const sender_on_rimu = {
 //     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -40,8 +35,8 @@ const receiver = {
   address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
 };
 const passphrase = 'passphrase';
-const minFee = 10000000000000;
-const feeAssetId = '16003';
+const minFee = 30000000000000;
+const feeAssetId = '16002';
 
 describe('e2e transactions', () => {
   let api;

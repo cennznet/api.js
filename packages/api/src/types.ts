@@ -72,8 +72,7 @@ export interface IPlugin {
 }
 
 export interface SignerOptions extends SignerOptionsBase {
-  // doughnut?: DoughnutValue;
-  // feeExchange?: FeeExchangeValue;
+  doughnut?: DoughnutValue;
   transactionPayment?: ChargeTransactionPayment;
 }
 

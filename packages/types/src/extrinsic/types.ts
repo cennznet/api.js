@@ -36,7 +36,6 @@ export interface ExtrinsicSignatureOptions {
   isSigned?: boolean;
   doughnut?: Doughnut;
   transactionPayment?: ChargeTransactionPayment;
-  //  feeExchange?: any;
 }
 
 export interface ExtrinsicV2SignatureOptions {
