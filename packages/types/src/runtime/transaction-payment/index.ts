@@ -25,7 +25,6 @@ export class FeeExchangeV1 extends Struct {
   constructor(value?: any) {
     super({assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
   }
-
   get assetId(): AssetId {
     return this.get('assetId') as AssetId;
   }
@@ -33,20 +32,6 @@ export class FeeExchangeV1 extends Struct {
   get maxPayment(): Balance {
     return this.get('maxPayment') as Balance;
   }
-
-  // toJSON(): {assetId: number; maxPayment: string} {
-  //   return {assetId: this.assetId.toNumber(), maxPayment: this.maxPayment.toString()};
-  // }
-
-  // toJSON(): AnyJsonObject {
-  //   return {
-  //     ...super.toJSON() as AnyJsonObject,
-  //     assetId: this.assetId? this.assetId.toJSON(): undefined,
-  //     maxPayment: this.maxPayment? this.maxPayment.toJSON() : undefined
-  //     //assetId: this.assetId.toJSON(),
-  //     //maxPayment: this.maxPayment.toJSON()
-  //   };
-  // }
 }
 
 // The outer [[FeeExchange]] it is an enum to allow flexbility for future versions and backwards compatability.
@@ -56,9 +41,6 @@ export class FeeExchange extends Enum {
   constructor(value: any) {
     super({FeeExchangeV1: FeeExchangeV1}, value);
   }
-  // toJSON(): AnyJson{
-  //   return {FeeExchangeV1: this.value.toJSON()};
-  // }
 }
 
 /**
@@ -77,17 +59,4 @@ export class ChargeTransactionPayment extends Struct {
   get feeExchange(): Option<FeeExchange> {
     return this.get('feeExchange') as Option<FeeExchange>;
   }
-
-  // toJSON(): AnyJsonObject {
-  //   // return {tip: this.tip, feeExchange: this.feeExchange.unwrap()};
-  //   return {
-  //     ...super.toJSON() as AnyJsonObject,
-  //     tip: this.tip
-  //       ? this.tip.toJSON()
-  //       : undefined,
-  //     feeExchange: this.feeExchange
-  //               ? this.feeExchange.unwrap().toJSON()
-  //               : undefined
-  //   };
-  // }
 }
