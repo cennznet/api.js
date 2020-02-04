@@ -58,7 +58,7 @@ describe('e2e transactions', () => {
 
   describe('Send()', () => {
 
-    it("Deposit liquidity in fee asset's pool' event", async done => {
+    it("Deposit liquidity in fee asset's pool", async done => {
       const poolAssetBalance = await api.cennzxSpot.getPoolAssetBalance(feeAssetId);
       if (poolAssetBalance.toNumber() < minFee  ) {
         const coreAmount = minFee;
