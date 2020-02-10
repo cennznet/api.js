@@ -51,16 +51,9 @@ export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
 // hence 'implicit'
 export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
   // prml_doughnut::Option<PlugDoughnut<Doughnut, Runtime>>
-  // system::CheckVersion<Runtime>
   specVersion: 'u32',
-  // system::CheckGenesis<Runtime>
   genesisHash: 'Hash',
-  // system::CheckEra<Runtime>
   blockHash: 'Hash',
-  // system::CheckNonce<Runtime>
-  // system::CheckWeight<Runtime>
-  // transaction_payment::ChargeTransactionPayment<Runtime>,
-  // contracts::CheckBlockGasLimit<Runtime>,
 };
 
 // The full definition for the extrinsic payload.

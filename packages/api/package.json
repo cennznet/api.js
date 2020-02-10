@@ -31,6 +31,8 @@
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {
+    "@cennznet/cennznut": "github:cennznet/cennznut.js",
+    "@plugnet/doughnut-maker": "https://github.com/cennznet/doughnut-maker",
     "@cennznet/wallet": "^0.20.7",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",

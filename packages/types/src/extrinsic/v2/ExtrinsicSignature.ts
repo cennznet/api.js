@@ -126,6 +126,14 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     signature: Signature,
     {doughnut, era, nonce, tip, transactionPayment}: ExtrinsicPayloadV2
   ): IExtrinsicSignature {
+    // console.log('Inside inject signature.........');
+    // if (doughnut.isEmpty) {
+    //   console.log('Doughnut is empty...');
+    // }
+    // if (doughnut.isNone) {
+    //   console.log('Doughnut is none...');
+    // }
+    // console.log('Doughnut:',doughnut);
     this.set('doughnut', doughnut);
     this.set('era', era);
     this.set('nonce', nonce);
@@ -169,6 +177,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       transactionPayment,
     }: ExtrinsicV2SignatureOptions
   ): IExtrinsicSignature {
+    // console.log('INSIDE SIGN *******');
     const signer = createType('Address', account.publicKey);
     const payloadValue: ExtrinsicPayloadValueV2 = {
       blockHash,
@@ -184,8 +193,12 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       specVersion,
     };
     const payload = new ExtrinsicPayloadV2(payloadValue);
+    // console.log(payload.doughnut);
     const signature = createType('Signature', payload.sign(account));
-    return this.injectSignature(signer, signature, payload);
+
+    const a = this.injectSignature(signer, signature, payload);
+    // console.log('Signature:', JSON.stringify(a.toU8a()));
+    return a;
   }
 
   /**

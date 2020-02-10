@@ -4,6 +4,7 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
+import {ExtrinsicV2SignatureOptions} from '@cennznet/types/extrinsic/types';
 import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
 import {ClassOf, Compact} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
@@ -231,7 +232,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   /**
    * @description Sign the extrinsic with a specific keypair
    */
-  sign(account: IKeyringPair, options: SignatureOptions): Extrinsic {
+  sign(account: IKeyringPair, options: ExtrinsicV2SignatureOptions): Extrinsic {
     (this.raw as ExtrinsicImpl).sign(account, options);
 
     return this;

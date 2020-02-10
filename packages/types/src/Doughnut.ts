@@ -21,25 +21,30 @@ import {AnyU8a, Codec} from '@polkadot/types/types';
  * An encoded, signed v0 Doughnut certificate
  **/
 export default class Doughnut extends U8a implements Codec {
-    get encodedLength(): number {
-        return this.toU8a().length;
-    }
+  get encodedLength(): number {
+    return this.toU8a().length;
+  }
 
-    constructor(value?: AnyU8a) {
-        // This function is used as both a constructor and a decoder
-        // Doughnut has its own codec but it must be length prefixed to support the SCALE codec used by the extrinsic
+  constructor(value?: AnyU8a) {
+    // console.log('^^?^^^?^^^?^^');
+    // This function is used as both a constructor and a decoder
+    // Doughnut has its own codec but it must be length prefixed to support the SCALE codec used by the extrinsic
 
-        // Failure to decode indicates a call as a constructor
-        const decoded = new Bytes(value);
-        if (decoded.length > 0) {
-            super(decoded);
-        } else {
-            super(value);
-        }
+    // Failure to decode indicates a call as a constructor
+    const decoded = new Bytes(value);
+    if (decoded.length > 0) {
+      super(decoded);
+    } else {
+      super(value);
     }
+    // console.log('INSIDE Doughnut');
+    // console.log('Value raw:', JSON.stringify(value));
+    // console.log('Value:', JSON.stringify(this.toU8a()));
+  }
 
-    toU8a(isBare?: boolean): Uint8Array {
-        // Encode the doughnut with length prefix to support SCALE codec
-        return isBare ? (this as Uint8Array) : Compact.addLengthPrefix(this);
-    }
+  toU8a(isBare?: boolean): Uint8Array {
+    // Encode the doughnut with length prefix to support SCALE codec
+    // console.log('Inside doughnuts toU8a');
+    return isBare ? (this as Uint8Array) : Compact.addLengthPrefix(this);
+  }
 }

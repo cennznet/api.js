@@ -19,6 +19,7 @@ import * as runtimeTypes from './runtime';
 
 // Monkey patch [[Option]] to encode `None` as a `0` byte
 Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
+  // console.log('Inside option toU8a...', this);
   if (this.isNone) {
     return new Uint8Array([0]);
   }
