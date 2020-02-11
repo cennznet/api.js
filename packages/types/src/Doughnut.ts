@@ -20,7 +20,7 @@ import {AnyU8a, Codec} from '@polkadot/types/types';
 /**
  * An encoded, signed v0 Doughnut certificate
  **/
-export default class Doughnut extends U8a implements Codec {
+export default class Doughnut extends U8a {
   get encodedLength(): number {
     return this.toU8a().length;
   }
@@ -42,9 +42,9 @@ export default class Doughnut extends U8a implements Codec {
     // console.log('Value:', JSON.stringify(this.toU8a()));
   }
 
-  toU8a(isBare?: boolean): Uint8Array {
-    // Encode the doughnut with length prefix to support SCALE codec
-    // console.log('Inside doughnuts toU8a');
-    return isBare ? (this as Uint8Array) : Compact.addLengthPrefix(this);
-  }
+  // toU8a(isBare?: boolean): Uint8Array {
+  //   // Encode the doughnut with length prefix to support SCALE codec
+  //   console.log('Inside doughnuts toU8a');
+  //   return isBare ? (this as Uint8Array) : Compact.addLengthPrefix(this);
+  // }
 }

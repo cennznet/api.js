@@ -19,13 +19,13 @@ import { generate as encodeDoughnut } from '@plugnet/doughnut-maker';
 
 import { Api } from '../../src/Api';
 import { Keypair } from '@plugnet/util-crypto/types';
-import { KeyringPair } from '@cennznet/util/types';
+// import { KeyringPair } from '@cennznet/util/types';
+import { KeyringPair } from '@plugnet/keyring/types';
 import { Extrinsic } from '@cennznet/types/extrinsic';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import Doughnut from '@cennznet/types/Doughnut';
-// import {ChargeTransactionPayment} from '@cennznet/types/runtime/transaction-payment';
 
 /// Helper for creating CENNZnuts
 function makeCennznut(module: string, method: string): Uint8Array {
@@ -55,13 +55,36 @@ async function makeDoughnut(
     {
       issuer: issuer.publicKey,
       holder: holder.publicKey,
-      expiry: 555555,
-     // block_cooldown: 0,
+     // expiry: new Date(2021,1,1,1,1,1,).getTime(), can't use as 'Expiry cannot be greater than 4294967295'
+      expiry: 2581386010,
+      notBefore: 1,
+   //   block_cooldown: 0,
       permissions: permissions,
     },
     issuer
   );
 }
+
+const Alice = {
+  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+  uri: '//Alice',
+}
+const Bob = {
+  address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+  uri: '//Bob',
+};
+const Charlie = {
+  address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
+  uri: '//Charlie',
+}
+const Dave = {
+  address: '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
+  uri: '//Dave'
+}
+const Eve = {
+  address: '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
+  uri: '//Eve'
+};
 
 describe('Doughnut for CennznetExtrinsic', () => {
   let aliceKeyPair = {
@@ -70,24 +93,26 @@ describe('Doughnut for CennznetExtrinsic', () => {
   };
 
   let api: Api;
+  let issuerKeyPair;
+  let holderKeyPair;
   let keyring: {
     [index: string]: KeyringPair;
   };
 
   beforeAll(async () => {
     api = await initApiPromise();
-    // await cryptoWaitReady();
-    //  api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
-    keyring = testingPairs({ type: 'sr25519' });
-    // const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-    // simpleKeyring.addFromUri(sender.uri);
-    // const wallet = new Wallet();
-    // await wallet.createNewVault('');
-    // await wallet.addKeyring(simpleKeyring);
-    // api.setSigner(wallet);
-    // console.log('IN BEFORE ALL...');
-    // console.log('ALICE:',keyring.alice);
-    // console.log('BOB:',keyring.bob.address);
+    await cryptoWaitReady();
+     //api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
+    //keyring = testingPairs({ type: 'sr25519' });
+    const simpleKeyring = new SimpleKeyring();
+    simpleKeyring.addFromUri(Alice.uri);
+    simpleKeyring.addFromUri(Bob.uri);
+    simpleKeyring.addFromUri(Charlie.uri);
+    simpleKeyring.addFromUri(Dave.uri);
+    const wallet = new Wallet();
+    await wallet.createNewVault('passphrase');
+    await wallet.addKeyring(simpleKeyring);
+    api.setSigner(wallet);
   });
 
   afterEach(() => {
@@ -96,18 +121,20 @@ describe('Doughnut for CennznetExtrinsic', () => {
 
   it('Delegates a GA transfer from alice to charlie when extrinsic is signed by bob', async done => {
 
+    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+    const holderKeypair: KeyringPair = simpleKeyring.addFromUri(Bob.uri);
     let doughnut = await makeDoughnut(
       aliceKeyPair,
-      keyring.bob,
+      holderKeypair,
       { "cennznet": makeCennznut("generic-asset", "transfer") }
     );
 
-    const tx = api.tx.genericAsset.transfer(16001, keyring.charlie.address, 10000);
+    const tx = api.tx.genericAsset.transfer(16001, Charlie.address, 10000);
     // tx.addDoughnut(doughnut);
 
     const opt = {doughnut: new Doughnut(doughnut)};
 
-    await tx.signAndSend(keyring.bob,  opt, async ({events, status}) => {
+    await tx.signAndSend(holderKeypair,  opt, async ({events, status}) => {
       if (status.isFinalized) {
         const transfer = events.find(
           event => (
