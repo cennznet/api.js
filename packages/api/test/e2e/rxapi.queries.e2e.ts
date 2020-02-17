@@ -43,13 +43,13 @@ describe('e2e queries', () => {
     apiRx = await initApiRx();
     api = await apiRx.toPromise();
 
-    await cryptoWaitReady();
-    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-    simpleKeyring.addFromUri(sender.uri);
-    const wallet = new Wallet();
-    await wallet.createNewVault(passphrase);
-    await wallet.addKeyring(simpleKeyring);
-    api.setSigner(wallet);
+    // await cryptoWaitReady();
+    // const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+    // simpleKeyring.addFromUri(sender.uri);
+    // const wallet = new Wallet();
+    // await wallet.createNewVault(passphrase);
+    // await wallet.addKeyring(simpleKeyring);
+    // api.setSigner(wallet);
   });
 
   afterAll(async done => {

@@ -4,10 +4,10 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {Compact, u32, U8a} from '@polkadot/types';
+import {Compact, Raw, u32} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
 import {Balance, Hash} from '@polkadot/types/interfaces/runtime';
-import {IExtrinsicEra, IKeyringPair} from '@polkadot/types/types';
+import {IExtrinsicEra, IKeyringPair, Registry} from '@polkadot/types/types';
 
 import {u8aToHex} from '@polkadot/util';
 
@@ -31,13 +31,15 @@ type ExtrinsicPayloadVx = ExtrinsicPayloadV2;
  */
 export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
   constructor(
+    registry: Registry,
     value: Partial<ExtrinsicPayloadValue> | Uint8Array | string | undefined,
     {version}: ExtrinsicPayloadOptions = {}
   ) {
-    super(ExtrinsicPayload.decodeExtrinsicPayload(value as ExtrinsicPayloadValue, version));
+    super(registry, ExtrinsicPayload.decodeExtrinsicPayload(registry, value as ExtrinsicPayloadValue, version));
   }
 
   static decodeExtrinsicPayload(
+    registry: Registry,
     value: ExtrinsicPayload | ExtrinsicPayloadValue | ExtrinsicPayloadValueV2 | Uint8Array | string | undefined,
     version: number = DEFAULT_VERSION
   ): ExtrinsicPayloadVx {
@@ -45,7 +47,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
       return value.raw;
     }
 
-    return new ExtrinsicPayloadV2(value as ExtrinsicPayloadValueV2);
+    return new ExtrinsicPayloadV2(registry, value as ExtrinsicPayloadValueV2);
   }
 
   /**
@@ -72,7 +74,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
   /**
    * @description The [[U8a]] contained in the payload
    */
-  get method(): U8a {
+  get method(): Raw {
     return this.raw.method;
   }
 

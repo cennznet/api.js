@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf} from '@polkadot/types';
+import {ClassOf, TypeRegistry} from '@polkadot/types';
 
-export default class AmountOf extends ClassOf('Balance') {}
+const registry = new TypeRegistry();
+export default class AmountOf extends ClassOf(registry, 'Balance') {}

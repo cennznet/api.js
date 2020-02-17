@@ -22,23 +22,23 @@ import {getExchangeKey} from '../utils/utils';
 import {coreAssetId, coreAssetIdAt} from './shared';
 
 export function totalLiquidity(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId): Observable<BN> => {
-        return coreAssetId(api)().pipe(
-            switchMap(coreAssetId => {
-                const exchangeKey = getExchangeKey(coreAssetId, assetId);
-                return (api.query.cennzxSpot.totalSupply(exchangeKey) as unknown) as Observable<BN>;
-            })
-        );
-    };
+  return (assetId: AnyAssetId): Observable<BN> => {
+    return coreAssetId(api)().pipe(
+      switchMap(coreAssetId => {
+        const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
+        return (api.query.cennzxSpot.totalSupply(exchangeKey) as unknown) as Observable<BN>;
+      })
+    );
+  };
 }
 
 export function totalLiquidityAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId): Observable<BN> => {
-        return coreAssetIdAt(api)(hash).pipe(
-            switchMap(coreAssetId => {
-                const exchangeKey = getExchangeKey(coreAssetId, assetId);
-                return (api.query.cennzxSpot.totalSupply.at(hash, exchangeKey) as unknown) as Observable<BN>;
-            })
-        );
-    };
+  return (hash: Hash, assetId: AnyAssetId): Observable<BN> => {
+    return coreAssetIdAt(api)(hash).pipe(
+      switchMap(coreAssetId => {
+        const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
+        return (api.query.cennzxSpot.totalSupply.at(hash, exchangeKey) as unknown) as Observable<BN>;
+      })
+    );
+  };
 }

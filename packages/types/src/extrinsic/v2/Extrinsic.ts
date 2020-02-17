@@ -14,9 +14,9 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {ClassOf, createType, Struct} from '@polkadot/types';
+import {ClassOf, createType, Struct, TypeRegistry} from '@polkadot/types';
 import {Address, Call} from '@polkadot/types/interfaces/runtime';
-import {IExtrinsicImpl, IKeyringPair, SignatureOptions} from '@polkadot/types/types';
+import {IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions} from '@polkadot/types/types';
 import {isU8a, u8aConcat} from '@polkadot/util';
 
 import {ExtrinsicOptions} from '../types';
@@ -24,11 +24,11 @@ import {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 import ExtrinsicSignatureV2 from './ExtrinsicSignature';
 
 export interface ExtrinsicValueV2 {
-  method?: Call;
   signature?: ExtrinsicSignatureV2;
+  method?: Call;
 }
 
-const TRANSACTION_VERSION = 3;
+const TRANSACTION_VERSION = 4;
 
 /**
  * @name ExtrinsicV2
@@ -36,35 +36,51 @@ const TRANSACTION_VERSION = 3;
  * The second generation of compact extrinsics
  */
 export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
-  constructor(value?: Uint8Array | ExtrinsicValueV2 | Call, {isSigned}: Partial<ExtrinsicOptions> = {}) {
+  constructor(
+    registry: Registry,
+    value?: Uint8Array | ExtrinsicValueV2 | Call,
+    {isSigned}: Partial<ExtrinsicOptions> = {}
+  ) {
     super(
+      registry,
       {
         signature: ExtrinsicSignatureV2,
         method: 'Call',
       },
-      ExtrinsicV2.decodeExtrinsic(value, isSigned)
+      ExtrinsicV2.decodeExtrinsic(registry, value, isSigned)
     );
   }
 
-  static decodeExtrinsic(value?: Call | Uint8Array | ExtrinsicValueV2, isSigned: boolean = false): ExtrinsicValueV2 {
+  static decodeExtrinsic(
+    registry: Registry,
+    value?: Call | Uint8Array | ExtrinsicValueV2,
+    isSigned: boolean = false
+  ): ExtrinsicValueV2 {
+    // const registry = new TypeRegistry();
     if (!value) {
       return {};
     } else if (value instanceof ExtrinsicV2) {
       return value;
-    } else if (value instanceof ClassOf('Call')) {
+    } else if (value instanceof ClassOf(registry, 'Call')) {
       return {method: value as Call};
     } else if (isU8a(value)) {
       // here we decode manually since we need to pull through the version information
-      let v = value;
-      const signature = new ExtrinsicSignatureV2(v, {isSigned});
-      v = v.subarray(signature.encodedLength);
-      const method = createType('Call', v);
+      // let v = value;
+      const signature = new ExtrinsicSignatureV2(registry, value, {isSigned});
+      // v = v.subarray(signature.encodedLength);
+      // const method = createType(registry, 'Call', v);
 
-      const extrinsicValue: ExtrinsicValueV2 = {signature, method};
-      return extrinsicValue;
+      // here we decode manually since we need to pull through the version information
+      // const signature = createType(registry, 'ExtrinsicSignatureV2', value, { isSigned });
+      const method = createType(registry, 'Call', value.subarray(signature.encodedLength));
+
+      return {
+        method,
+        signature,
+      };
     }
 
-    return value as ExtrinsicValueV2;
+    return value as ExtrinsicValueV2 | {};
   }
 
   /**
@@ -108,6 +124,14 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
     return this;
   }
 
+  /**
+   * @describe Adds a fake signature to the extrinsic
+   */
+  signFake(signer: Address | Uint8Array | string, options: SignatureOptions): ExtrinsicV2 {
+    this.signature.signFake(this.method, signer, options);
+
+    return this;
+  }
   /**
    * @description Sign the extrinsic with a specific keypair
    */

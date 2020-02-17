@@ -14,41 +14,42 @@
 
 import {IPlugin} from '@cennznet/api/types';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
+import {Registry} from '@polkadot/types/types';
 import {Api} from '../Api';
 import {ApiRx} from '../ApiRx';
 import {ApiOptions} from '../types';
 
 export function injectOption(options: ApiOptions, plugins: IPlugin[] = []): void {
-    for (const plugin of plugins) {
-        if (plugin.types) {
-            options.types = Object.assign({}, options.types, plugin.types);
-        }
-        if (plugin.derives) {
-            options.derives = mergeDeriveOptions(options.derives || {}, plugin.derives);
-        }
+  for (const plugin of plugins) {
+    if (plugin.types) {
+      options.types = Object.assign({}, options.types, plugin.types);
     }
+    if (plugin.derives) {
+      options.derives = mergeDeriveOptions(options.derives || {}, plugin.derives);
+    }
+  }
 }
 
-export function injectPlugins(api: Api | ApiRx, plugins: IPlugin[] = []): void {
-    for (const plugin of plugins) {
-        if (plugin.sdkClass && plugin.injectName && api.type === 'promise') {
-            Object.defineProperty(api, plugin.injectName, {
-                value: new plugin.sdkClass(api),
-            });
-        }
-        if (plugin.sdkRxClass && plugin.injectName && api.type === 'rxjs') {
-            Object.defineProperty(api, plugin.injectName, {
-                value: new plugin.sdkRxClass(api),
-            });
-        }
+export function injectPlugins(registry: Registry, api: Api | ApiRx, plugins: IPlugin[] = []): void {
+  for (const plugin of plugins) {
+    if (plugin.sdkClass && plugin.injectName && api.type === 'promise') {
+      Object.defineProperty(api, plugin.injectName, {
+        value: new plugin.sdkClass(registry, api),
+      });
     }
+    if (plugin.sdkRxClass && plugin.injectName && api.type === 'rxjs') {
+      Object.defineProperty(api, plugin.injectName, {
+        value: new plugin.sdkRxClass(registry, api),
+      });
+    }
+  }
 }
 
 export function mergePlugins(originPlugins: IPlugin[], incomePlugins: IPlugin[]) {
-    return incomePlugins.reduce((acc, plugin) => {
-        if (acc.findIndex(p => p.injectName === plugin.injectName) < 0) {
-            acc.push(plugin);
-        }
-        return acc;
-    }, originPlugins);
+  return incomePlugins.reduce((acc, plugin) => {
+    if (acc.findIndex(p => p.injectName === plugin.injectName) < 0) {
+      acc.push(plugin);
+    }
+    return acc;
+  }, originPlugins);
 }

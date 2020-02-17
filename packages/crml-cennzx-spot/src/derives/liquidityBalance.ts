@@ -14,7 +14,8 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/api-derive/util/drr';
+// import {drr} from '@polkadot/api-derive/util/drr';
+import {drr} from '@polkadot/rpc-core/rxjs';
 import {Balance, Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
@@ -23,31 +24,32 @@ import {getExchangeKey} from '../utils/utils';
 import {coreAssetId, coreAssetIdAt} from './shared';
 
 export function liquidityBalance(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-        return coreAssetId(api)().pipe(
-            switchMap(
-                coreAssetId =>
-                    api.query.cennzxSpot.liquidityBalance(getExchangeKey(coreAssetId, assetId), address) as Observable<
-                        Balance
-                    >
-            ),
-            drr()
-        );
-    };
+  return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+    return coreAssetId(api)().pipe(
+      switchMap(
+        coreAssetId =>
+          api.query.cennzxSpot.liquidityBalance(
+            getExchangeKey(api.registry, coreAssetId, assetId),
+            address
+          ) as Observable<Balance>
+      ),
+      drr()
+    );
+  };
 }
 
 export function liquidityBalanceAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-        return coreAssetIdAt(api)(hash).pipe(
-            switchMap(
-                coreAssetId =>
-                    api.query.cennzxSpot.liquidityBalance.at(
-                        hash,
-                        getExchangeKey(coreAssetId, assetId),
-                        address
-                    ) as Observable<Balance>
-            ),
-            drr()
-        );
-    };
+  return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+    return coreAssetIdAt(api)(hash).pipe(
+      switchMap(
+        coreAssetId =>
+          api.query.cennzxSpot.liquidityBalance.at(
+            hash,
+            getExchangeKey(api.registry, coreAssetId, assetId),
+            address
+          ) as Observable<Balance>
+      ),
+      drr()
+    );
+  };
 }

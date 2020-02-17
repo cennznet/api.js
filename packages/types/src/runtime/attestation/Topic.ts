@@ -15,49 +15,49 @@
 /*
     Custom `Topic` type for Attestation module.
  */
-import {ClassOf} from '@polkadot/types';
+import {ClassOf, TypeRegistry} from '@polkadot/types';
+import {Registry} from '@polkadot/types/types';
 import {isHex, isString, stringToU8a, u8aToString} from '@polkadot/util';
 
 function isAscii(str: string) {
-    return /^[\x20-\x7E]*$/.test(str);
+  return /^[\x20-\x7E]*$/.test(str);
 }
 
 const MAX_ALLOWED_LENGTH = 32;
 
 function validateTopic(topic: string) {
-    if (topic.length > MAX_ALLOWED_LENGTH) {
-        throw new Error('Topic cannot exceed 32 characters');
-    }
-    if (!isAscii(topic)) {
-        throw new Error(
-            'Topic must be an ASCII string with no characters that cannot be seen on a standard US keyboard'
-        );
-    }
+  if (topic.length > MAX_ALLOWED_LENGTH) {
+    throw new Error('Topic cannot exceed 32 characters');
+  }
+  if (!isAscii(topic)) {
+    throw new Error('Topic must be an ASCII string with no characters that cannot be seen on a standard US keyboard');
+  }
 }
 
 function stripTrailingZero(value: Uint8Array) {
-    let endPos = value.length - 1;
-    for (let i = endPos; i > -1; i--) {
-        if (value[i] !== 0) {
-            endPos = i;
-            break;
-        }
+  let endPos = value.length - 1;
+  for (let i = endPos; i > -1; i--) {
+    if (value[i] !== 0) {
+      endPos = i;
+      break;
     }
-    return value.slice(0, endPos + 1);
+  }
+  return value.slice(0, endPos + 1);
 }
+const registry = new TypeRegistry();
 
-export default class AttestationTopic extends ClassOf('H256') {
-    constructor(value: string | Uint8Array) {
-        if (isString(value) && !isHex(value)) {
-            validateTopic(value);
-            super(stringToU8a(value));
-        } else {
-            super(value);
-        }
+export default class AttestationTopic extends ClassOf(registry, 'H256') {
+  constructor(registry_: Registry, value: string | Uint8Array) {
+    if (isString(value) && !isHex(value)) {
+      validateTopic(value);
+      super(registry_, stringToU8a(value));
+    } else {
+      super(registry_, value);
     }
+  }
 
-    toString(base?: number): string {
-        const u8a = this.toU8a();
-        return u8aToString(stripTrailingZero(u8a));
-    }
+  toString(base?: number): string {
+    const u8a = this.toU8a();
+    return u8aToString(stripTrailingZero(u8a));
+  }
 }

@@ -75,6 +75,8 @@ export interface ExtrinsicPayloadValue {
 
 export type DoughnutValue = AnyU8a;
 
+// export type ChargeTransactionValue = AnyU8a;
+
 export type FeeExchangeValue = {
   assetId: AnyNumber;
   maxPayment: AnyNumber;

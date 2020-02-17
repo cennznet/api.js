@@ -19,23 +19,22 @@ import * as genericAsset from '@cennznet/crml-generic-asset/derives';
 import {AnyFunction} from '@cennznet/types/types';
 import {ApiInterfaceRx, MethodResult} from '@polkadot/api/types';
 import {Observable} from 'rxjs';
-import * as fees from './fees';
+// import * as fees from './fees';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = {attestation, cennzxSpot, fees, genericAsset};
+// export const derive = {attestation, cennzxSpot, fees, genericAsset};
+export const derive = {attestation, cennzxSpot, genericAsset};
 
 export type DecoratedCennznetDerive<
-    ApiType extends ApiTypes,
-    AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
+  ApiType extends ApiTypes,
+  AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
 > = {
-    [SectionName in keyof AllSections]: {
-        [MethodName in keyof AllSections[SectionName]]: ReturnType<
-            AllSections[SectionName][MethodName]
-        > extends AnyFunction
-            ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
-            : never;
-    };
+  [SectionName in keyof AllSections]: {
+    [MethodName in keyof AllSections[SectionName]]: ReturnType<AllSections[SectionName][MethodName]> extends AnyFunction
+      ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
+      : never;
+  };
 };
 
 export default derive;

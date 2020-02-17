@@ -14,48 +14,47 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/api-derive/util/drr';
+// import {drr} from '@polkadot/api-derive/util/drr';
+import {drr} from '@polkadot/rpc-core/rxjs';
 import {Hash} from '@polkadot/types/interfaces';
 import {combineLatest, Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {exchangeAddress} from './exchangeAddress';
 
 export function poolAssetBalance(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId): Observable<any> => {
-        return exchangeAddress(api)(assetId).pipe(
-            switchMap(exchangeAddress => api.query.genericAsset.freeBalance(assetId, exchangeAddress)),
-            drr()
-        );
-    };
+  return (assetId: AnyAssetId): Observable<any> => {
+    return exchangeAddress(api)(assetId).pipe(
+      switchMap(exchangeAddress => api.query.genericAsset.freeBalance(assetId, exchangeAddress)),
+      drr()
+    );
+  };
 }
 
 export function poolCoreAssetBalance(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId): Observable<any> => {
-        return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
-            switchMap(([exchangeAddress, coreAssetId]) =>
-                api.query.genericAsset.freeBalance(coreAssetId, exchangeAddress)
-            ),
-            drr()
-        );
-    };
+  return (assetId: AnyAssetId): Observable<any> => {
+    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
+      switchMap(([exchangeAddress, coreAssetId]) => api.query.genericAsset.freeBalance(coreAssetId, exchangeAddress)),
+      drr()
+    );
+  };
 }
 
 export function poolAssetBalanceAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
-        return exchangeAddress(api)(assetId).pipe(
-            switchMap(exchangeAddress => api.query.genericAsset.freeBalance.at(hash, assetId, exchangeAddress)),
-            drr()
-        );
-    };
+  return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
+    return exchangeAddress(api)(assetId).pipe(
+      switchMap(exchangeAddress => api.query.genericAsset.freeBalance.at(hash, assetId, exchangeAddress)),
+      drr()
+    );
+  };
 }
 
 export function poolCoreAssetBalanceAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
-        return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
-            switchMap(([exchangeAddress, coreAssetId]) =>
-                api.query.genericAsset.freeBalance.at(hash, coreAssetId, exchangeAddress)
-            ),
-            drr()
-        );
-    };
+  return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
+    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
+      switchMap(([exchangeAddress, coreAssetId]) =>
+        api.query.genericAsset.freeBalance.at(hash, coreAssetId, exchangeAddress)
+      ),
+      drr()
+    );
+  };
 }

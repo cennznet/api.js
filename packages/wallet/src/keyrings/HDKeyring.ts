@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {HDKeyring as BaseHdKeyring} from '@plugnet/wallet';
-import {IKeyring} from '@plugnet/wallet/types';
+import {HDKeyring as BaseHdKeyring} from '../../../plugnet_wallet/src';
+import {IKeyring} from '../../../plugnet_wallet/src/types';
 
 interface SerializedHDKeyring {
-    mnemonic: string;
-    numberOfAccounts?: number;
-    hdPath?: string;
-    keyringType?: string;
+  mnemonic: string;
+  numberOfAccounts?: number;
+  hdPath?: string;
+  keyringType?: string;
 }
 
 /**
@@ -27,5 +27,5 @@ interface SerializedHDKeyring {
  * will use hd path "m/44'/392'/0'/0" (for CENNZ) by default
  */
 export class HDKeyring extends BaseHdKeyring implements IKeyring<SerializedHDKeyring> {
-    static DEFAULT_HD_PATH = "m/44'/392'/0'/0";
+  static DEFAULT_HD_PATH = "m/44'/392'/0'/0";
 }

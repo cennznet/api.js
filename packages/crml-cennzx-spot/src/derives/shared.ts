@@ -14,24 +14,25 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
-import {drr} from '@polkadot/api-derive/util/drr';
+// import {drr} from '@polkadot/api-derive/util/drr';
+import {drr} from '@polkadot/rpc-core/rxjs';
 import {Hash, Permill} from '@polkadot/types/interfaces';
 import {Observable} from 'rxjs';
 
 export function coreAssetId(api: ApiInterfaceRx) {
-    return (): Observable<AssetId> => api.query.cennzxSpot.coreAssetId().pipe(drr()) as Observable<AssetId>;
+  return (): Observable<AssetId> => api.query.cennzxSpot.coreAssetId().pipe(drr()) as Observable<AssetId>;
 }
 
 export function coreAssetIdAt(api: ApiInterfaceRx) {
-    return (hash: Hash): Observable<AssetId> =>
-        api.query.cennzxSpot.coreAssetId.at(hash).pipe(drr()) as Observable<AssetId>;
+  return (hash: Hash): Observable<AssetId> =>
+    api.query.cennzxSpot.coreAssetId.at(hash).pipe(drr()) as Observable<AssetId>;
 }
 
 export function defaultFeeRate(api: ApiInterfaceRx) {
-    return (): Observable<Permill> => api.query.cennzxSpot.defaultFeeRate().pipe(drr()) as Observable<Permill>;
+  return (): Observable<Permill> => api.query.cennzxSpot.defaultFeeRate().pipe(drr()) as Observable<Permill>;
 }
 
 export function defaultFeeRateAt(api: ApiInterfaceRx) {
-    return (hash: Hash): Observable<Permill> =>
-        api.query.cennzxSpot.defaultFeeRate.at(hash).pipe(drr()) as Observable<Permill>;
+  return (hash: Hash): Observable<Permill> =>
+    api.query.cennzxSpot.defaultFeeRate.at(hash).pipe(drr()) as Observable<Permill>;
 }

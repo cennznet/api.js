@@ -18,14 +18,14 @@ import {GenericAsset} from './GenericAsset';
 import {GenericAssetRx} from './GenericAssetRx';
 import EnhancedAssetId from './registry/EnhancedAssetId';
 
-export default {
-    injectName: 'genericAsset',
-    sdkClass: GenericAsset,
-    sdkRxClass: GenericAssetRx,
-    types: {
-        AssetId: EnhancedAssetId,
-    },
-    derives: {
-        // genericAsset: derives,
-    },
-} as IPlugin;
+export default ({
+  injectName: 'genericAsset',
+  sdkClass: GenericAsset,
+  sdkRxClass: GenericAssetRx,
+  types: {
+    AssetId: EnhancedAssetId,
+  },
+  derives: {
+    // genericAsset: derives,
+  },
+} as unknown) as IPlugin;

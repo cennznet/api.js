@@ -23,15 +23,18 @@
     "@cennznet/crml-cennzx-spot": "^0.20.7",
     "@cennznet/crml-generic-asset": "^0.20.7",
     "@cennznet/types": "^0.20.7",
-    "@polkadot/api": "^0.96.1",
-    "@polkadot/api-metadata": "0.96.1",
-    "@polkadot/rpc-core": "^0.96.1",
-    "@polkadot/rpc-provider": "^0.96.1",
-    "@polkadot/types": "^0.96.1",
+    "@polkadot/api": "^1.1.1",
+    "@polkadot/metadata": "1.1.1",
+    "@polkadot/rpc-core": "^1.1.1",
+    "@polkadot/rpc-provider": "^1.1.1",
+    "@polkadot/types": "^1.1.1",
     "eventemitter3": "^4.0.0"
   },
+  "resolution": {
+    "@polkadot/keyring": "^1.6.1"
+  },
   "devDependencies": {
-    "@cennznet/wallet": "^0.20.7",
+    "@cennznet/wallet": "^0.21.7",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",

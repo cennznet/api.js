@@ -13,33 +13,34 @@
 // limitations under the License.
 
 import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/api-derive/util/drr';
 import {ApiInterfaceRx} from '@polkadot/api/types';
+// import {drr} from '@polkadot/api-derive/util/drr';
+import {drr} from '@polkadot/rpc-core/rxjs';
 import {Balance, Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export function totalBalance(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-        return combineLatest([
-            api.query.genericAsset.freeBalance(assetId, address),
-            api.query.genericAsset.reservedBalance(assetId, address),
-        ]).pipe(
-            map(([freeBalance, reservedBalance]) => (freeBalance as Balance).add(reservedBalance as Balance)),
-            drr()
-        );
-    };
+  return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+    return combineLatest([
+      api.query.genericAsset.freeBalance(assetId, address),
+      api.query.genericAsset.reservedBalance(assetId, address),
+    ]).pipe(
+      map(([freeBalance, reservedBalance]) => (freeBalance as Balance).add(reservedBalance as Balance)),
+      drr()
+    );
+  };
 }
 
 export function totalBalanceAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-        return combineLatest([
-            api.query.genericAsset.freeBalance.at(hash, assetId, address),
-            api.query.genericAsset.reservedBalance.at(hash, assetId, address),
-        ]).pipe(
-            map(([freeBalance, reservedBalance]) => (freeBalance as Balance).add(reservedBalance as Balance)),
-            drr()
-        );
-    };
+  return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+    return combineLatest([
+      api.query.genericAsset.freeBalance.at(hash, assetId, address),
+      api.query.genericAsset.reservedBalance.at(hash, assetId, address),
+    ]).pipe(
+      map(([freeBalance, reservedBalance]) => (freeBalance as Balance).add(reservedBalance as Balance)),
+      drr()
+    );
+  };
 }

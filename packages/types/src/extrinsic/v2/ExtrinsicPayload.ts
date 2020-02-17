@@ -16,7 +16,7 @@
 import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
 import {Balance, ExtrinsicEra, Hash} from '@polkadot/types/interfaces/runtime';
 import {sign} from '@polkadot/types/primitive/Extrinsic/util';
-import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot/types/types';
+import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry} from '@polkadot/types/types';
 import {u8aConcat} from '@polkadot/util';
 
 import Option from '@polkadot/types/codec/Option';
@@ -81,8 +81,8 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV2 extends Struct {
-  constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
-    super(FullPayloadV2, value);
+  constructor(registry: Registry, value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
+    super(registry, FullPayloadV2, value);
   }
 
   /**
@@ -152,6 +152,6 @@ export default class ExtrinsicPayloadV2 extends Struct {
    * @description Sign the payload with the keypair
    */
   sign(signerPair: IKeyringPair): Uint8Array {
-    return sign(signerPair, this.toU8a(true), {withType: true});
+    return sign(signerPair, this.toU8a({method: true}), {withType: true});
   }
 }

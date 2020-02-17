@@ -15,12 +15,12 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Api} from '../../src/Api';
 import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
+import testingPairs from '@polkadot/keyring/testingPairs';
 
 // const sender_for_rimu = {
 //     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -45,11 +45,11 @@ describe('e2e queries', () => {
     await cryptoWaitReady();
 
     const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-    simpleKeyring.addFromUri(sender.uri);
-    const wallet = new Wallet();
-    await wallet.createNewVault(passphrase);
-    await wallet.addKeyring(simpleKeyring);
-    api.setSigner(wallet);
+  //  simpleKeyring.addFromUri(sender.uri);
+    // const wallet = new Wallet();
+    // await wallet.createNewVault(passphrase);
+    // await wallet.addKeyring(simpleKeyring);
+  //  api.setSigner(wallet);
   });
 
   afterAll(async done => {
@@ -99,7 +99,9 @@ describe('e2e queries', () => {
       });
       await api.tx.genericAsset
         .create(
-          new AssetOptions({
+          new AssetOptions(
+            api.registry,
+            {
             initialIssuance: 0,
             permissions: {
               update: null,
