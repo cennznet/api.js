@@ -28,6 +28,7 @@ import testingPairs from '@polkadot/keyring/testingPairs';
 import testKeyring from '@polkadot/keyring/testing';
 import createPair from '@polkadot/keyring/pair';
 import { hexToU8a } from '@polkadot/util';
+import { SingleAccountSigner } from '../SingleAccountSigner';
 // const sender_on_rimu = {
 //     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
 //     uri: '//cennznet-js-test',
@@ -43,11 +44,13 @@ const receiver = {
 const passphrase = 'passphrase';
 const minFee = 30000000000000;
 const feeAssetId = '16002';
+let wallet, keyring;
 
 describe('e2e transactions', () => {
   let api;
   const registry = new TypeRegistry();
-  // const keyring = testKeyring({ type: 'ed25519' });
+  //const keyring = testKeyring({ type: 'sr25519' });
+  // const keyring = testingPairs({ type: 'sr25519'}, false);
   // const aliceEd = keyring.addPair(
   //   createPair('ed25519', {
   //     secretKey: hexToU8a('0xabf8e5bdbe30c65656c0a3cbd181ff8a56294a69dfedd27982aace4a7690911588dc3417d5058ec4b4503e0c12ea1a0a89be200fe98922423d4334014fa6b0ee'),
@@ -56,13 +59,14 @@ describe('e2e transactions', () => {
   // );
   beforeAll(async () => {
     await cryptoWaitReady();
+    keyring = testingPairs({ type: 'sr25519' });
    // const signer = new SingleAccountSigner(registry, keyring.alice_session);
     api = await ApiPromise.create({provider: 'ws://localhost:9944', registry});
    //  await api.isReady;
   //  api = await initApiPromise();
     const simpleKeyring: SimpleKeyring = new SimpleKeyring();
     simpleKeyring.addFromUri(sender.uri);
-    const wallet = new Wallet();
+    wallet = new Wallet(registry);
     await wallet.createNewVault(passphrase);
     await wallet.addKeyring(simpleKeyring);
     api.setSigner(wallet);
@@ -98,19 +102,25 @@ describe('e2e transactions', () => {
     });
 
     it('makes a tx using immortal era', async done => {
-      // const opt = {era: '0x00', blockHash: api.genesisHash};
-      // transfer
-     // const alice = keyring.addFromUri('//Alice');
+
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, keyring.bob.address);
+      // console.log('Balance before ',assetBalance.toString());
+      const nonce = await api.query.system.accountNonce(keyring.alice.address);
       const ex = await api.tx.genericAsset
-        .transfer(16000, receiver.address, 1)
-        .signAndSend(sender.address,  async ({events, status}: SubmittableResult) => {
+        .transfer(16000, keyring.bob.address, 100)
+        .signAndSend(keyring.alice,
+     // ex.send(
+        async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
             expect(events[0].event.method).toEqual('Transferred');
             expect(events[0].event.section).toEqual('genericAsset');
             done();
           }
         });
-      console.log('Extrinsic:', ex);
+      // console.log('Extrinsic sig:', ex.signature);
+      // const assetAfter = await api.query.genericAsset.freeBalance(16001, keyring.bob.address);
+      // console.log('Balance after ',assetAfter.toString());
+      // done();
     }, 10000000);
 
     it('makes a tx via send', async done => {
@@ -186,9 +196,9 @@ describe('e2e transactions', () => {
          api.tx.genericAsset
           .transfer(16001, receiver.address, 100)
           .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
-            console.log('Transaction status:', status.type);
+            // console.log('Transaction status:', status.type);
             if (status.isFinalized) {
-              console.log('Completed at block hash', status.value.toHex());
+              // console.log('Completed at block hash', status.value.toHex());
               console.log('Events:');
 
               events.forEach(({phase, event: {data, method, section}}) => {
@@ -211,8 +221,8 @@ describe('e2e transactions', () => {
           },
         };
 
-        const tx = api.tx.genericAsset.transfer(16001, receiver.address, 100);
-        return tx.signAndSend(sender.address, {transactionPayment}, ({events, status}) => {
+        const tx = api.tx.genericAsset.transfer(16001, keyring.bob.address, 100);
+        return tx.signAndSend(keyring.alice, {transactionPayment}, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
             console.log('Completed at block hash', status.value.toHex());

@@ -95,6 +95,8 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       version: version.toNumber(),
       transactionPayment: transactionPayment.toHex(),
     };
+    // console.log('transactionPayment is',transactionPayment);
+
     if (doughnut.isSome) {
       ret.doughnut = doughnut.unwrap().toHex();
     }

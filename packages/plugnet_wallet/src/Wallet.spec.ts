@@ -34,7 +34,8 @@ const TEST_ACCOUNT = {
 const GENESIS_HASH = '0x14ba3ad1bf42740e82a408d57955b0c026bfc268ee559ce9081ba7fb530de815';
 
 const testPayload = (address: string): SignerPayloadRaw => ({
-  data: '0x010200ea51b75b00000000',
+  data:
+    '0x070101fa8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48040065010000001b00000071db1859021818cd1cc7cf0fe001763641cccf06cdbae4c03c780271692f6b5a496c04437f7f747eb6989c93833b3346d45be17d55b7fbf61acd373b6ec33ff2',
   type: 'payload',
   address,
 });

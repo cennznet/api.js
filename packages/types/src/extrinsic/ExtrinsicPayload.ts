@@ -100,11 +100,11 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
   }
 
   /**
-   * @description The fee payment metadata (includes. tip)
-   */
-  get transactionPayment(): ChargeTransactionPayment {
-    return (this.raw as ExtrinsicPayloadV2).transactionPayment;
-  }
+  //  * @description The fee payment metadata (includes. tip)
+  //  */
+  // get transactionPayment(): ChargeTransactionPayment {
+  //   return (this.raw as ExtrinsicPayloadV2).transactionPayment;
+  // }
 
   /**
    * @description Compares the value of the input to see if there is a match

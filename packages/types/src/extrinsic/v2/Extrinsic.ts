@@ -140,4 +140,9 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
 
     return this;
   }
+
+  toU8a(isBare?: boolean): Uint8Array {
+    // console.log('Extrinsic decode:', super.toU8a(isBare).toString());
+    return super.toU8a(isBare);
+  }
 }

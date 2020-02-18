@@ -35,7 +35,7 @@ const receiver = {
   address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
 };
 const passphrase = '';
-
+let keyring;
 describe('e2e queries', () => {
   let api;
 
@@ -43,7 +43,7 @@ describe('e2e queries', () => {
     api = await initApiPromise();
 
     await cryptoWaitReady();
-
+    keyring = testingPairs({ type: 'sr25519' });
     const simpleKeyring: SimpleKeyring = new SimpleKeyring();
   //  simpleKeyring.addFromUri(sender.uri);
     // const wallet = new Wallet();
@@ -110,7 +110,7 @@ describe('e2e queries', () => {
             },
           })
         )
-        .signAndSend(sender.address);
+        .signAndSend(keyring.alice.address);
     }, 15000);
   });
 });

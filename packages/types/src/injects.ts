@@ -34,13 +34,13 @@ export default {
   ...runtimeTypes,
   ...extrinsicTypes,
   AssetOf: 'u128',
-  'ed25519::Signature': 'H512',
+  // 'ed25519::Signature': 'H512',
   // MultiSignature: 'MultiSignature',
   RewardBalance: 'Balance',
   Doughnut: Doughnut,
   //transactionPayment: 'ChargeTransactionPayment',
   // The patched [[Option]] type
-  Option: Option,
+  // Option: Option,
 };
 
 // const registry = new TypeRegistry();

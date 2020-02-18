@@ -8,6 +8,6 @@ export const UNMASK_VERSION = 0b01111111;
 
 export const EMPTY_U8A = new Uint8Array();
 
-export const DEFAULT_VERSION = 3;
+export const DEFAULT_VERSION = 4;
 
 export const IMMORTAL_ERA = new Uint8Array([0]);

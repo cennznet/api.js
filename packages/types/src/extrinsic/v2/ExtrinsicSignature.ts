@@ -42,7 +42,7 @@ import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSignature {
   constructor(
     registry: Registry,
-    value?: ExtrinsicSignatureV2 | Uint8Array | undefined,
+    value: ExtrinsicSignatureV2 | Uint8Array | undefined,
     {isSigned}: ExtrinsicSignatureOptions = {}
   ) {
     super(
@@ -164,6 +164,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     signature: Uint8Array | string,
     payload: ExtrinsicPayloadValueV2 | Uint8Array | string
   ): IExtrinsicSignature {
+    //console.log('this.registry:',this.registry);
     return this.injectSignature(
       createType(this.registry, 'Address', signer),
       createType(this.registry, 'MultiSignature', signature),
@@ -197,11 +198,11 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       method: method.toHex(),
       nonce,
+      specVersion,
       // [[tip]] is now set inside [[transactionPayment]]
       // This doesn't do anything, just signalling our intention not to use it.
       tip: null,
       transactionPayment: transactionPayment || createType(this.registry, 'ChargeTransactionPayment'),
-      specVersion,
     };
     const payload = new ExtrinsicPayloadV2(this.registry, payloadValue);
     const signature = createType(this.registry, 'MultiSignature', payload.sign(account));
@@ -234,11 +235,11 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       method: method.toHex(),
       nonce,
+      specVersion,
       // [[tip]] is now set inside [[transactionPayment]]
       // This doesn't do anything, just signalling our intention not to use it.
       tip: null,
       transactionPayment: transactionPayment || createType(this.registry, 'ChargeTransactionPayment'),
-      specVersion,
     };
     const signature = createType(
       this.registry,
