@@ -19,7 +19,7 @@
 import {AssetId, AssetOptions, FeeExchangeV1} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 // import {SimpleKeyring, Wallet} from '../../../wallet/src/index';
-import {SubmittableResult} from '@polkadot/api';
+import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import { TypeRegistry } from '@polkadot/types';
@@ -44,10 +44,11 @@ const receiver = {
 const passphrase = 'passphrase';
 const minFee = 30000000000000;
 const feeAssetId = '16002';
-let wallet, keyring;
+let wallet;
 
 describe('e2e transactions', () => {
   let api;
+  let alice, bob;
   const registry = new TypeRegistry();
   //const keyring = testKeyring({ type: 'sr25519' });
   // const keyring = testingPairs({ type: 'sr25519'}, false);
@@ -59,7 +60,10 @@ describe('e2e transactions', () => {
   // );
   beforeAll(async () => {
     await cryptoWaitReady();
-    keyring = testingPairs({ type: 'sr25519' });
+    const keyring = new Keyring({ type: 'sr25519' });
+    alice = keyring.addFromUri('//Alice');
+    bob = keyring.addFromUri('//Bob');
+   // keyring = testingPairs({ type: 'sr25519' });
    // const signer = new SingleAccountSigner(registry, keyring.alice_session);
     api = await ApiPromise.create({provider: 'ws://localhost:9944', registry});
    //  await api.isReady;
@@ -101,14 +105,27 @@ describe('e2e transactions', () => {
       }
     });
 
+    it('check transaction payment', async done => {
+
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      console.log('Balance before ',assetBalance.toString());
+      const nonce = await api.query.system.accountNonce(alice.address);
+      const ex = await api.tx.genericAsset
+        .transfer(16000, bob.address, 100);
+      // console.log('Ex:',ex.toU8a());
+      const payment =  await api.rpc.payment.queryInfo(ex.toHex());
+      console.log('Payment:', payment.weight.toString());
+      done();
+      }, 10000000);
+
     it('makes a tx using immortal era', async done => {
 
-      const assetBalance = await api.query.genericAsset.freeBalance(16001, keyring.bob.address);
-      // console.log('Balance before ',assetBalance.toString());
-      const nonce = await api.query.system.accountNonce(keyring.alice.address);
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      console.log('Balance before ',assetBalance.toString());
+      const nonce = await api.query.system.accountNonce(alice.address);
       const ex = await api.tx.genericAsset
-        .transfer(16000, keyring.bob.address, 100)
-        .signAndSend(keyring.alice,
+        .transfer(16000, receiver.address, 100)
+        .signAndSend(sender.address,
      // ex.send(
         async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
@@ -221,8 +238,8 @@ describe('e2e transactions', () => {
           },
         };
 
-        const tx = api.tx.genericAsset.transfer(16001, keyring.bob.address, 100);
-        return tx.signAndSend(keyring.alice, {transactionPayment}, ({events, status}) => {
+        const tx = api.tx.genericAsset.transfer(16001, bob.address, 100);
+        return tx.signAndSend(alice, {transactionPayment}, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
             console.log('Completed at block hash', status.value.toHex());

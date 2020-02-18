@@ -20,20 +20,11 @@ import * as runtimeTypes from './runtime';
 //import { ChargeTransactionPayment } from './runtime';
 
 // Monkey patch [[Option]] to encode `None` as a `0` byte
-// Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
-//   if (this.isNone) {
-//     return new Uint8Array([0]);
-//   }
-//   const u8a = new Uint8Array(this.encodedLength);
-//   u8a.set([1]);
-//   u8a.set(this.raw.toU8a(true), 1);
-//   return u8a;
-// };
 
 export default {
   ...runtimeTypes,
   ...extrinsicTypes,
-  AssetOf: 'u128',
+  // AssetOf: 'u128',
   // 'ed25519::Signature': 'H512',
   // MultiSignature: 'MultiSignature',
   RewardBalance: 'Balance',

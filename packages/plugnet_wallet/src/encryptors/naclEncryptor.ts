@@ -20,6 +20,7 @@ const newNonce = () => randomBytes(secretbox.nonceLength);
 const PASS_STRENGTH = 256;
 
 const encrypt = async (passphrase: string, json: object): Promise<string> => {
+  // console.log('JSON:', JSON.stringify(json));
   const keyUint8Array = u8aFixLength(stringToU8a(passphrase), PASS_STRENGTH, true);
 
   const nonce = newNonce();

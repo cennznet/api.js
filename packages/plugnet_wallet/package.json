@@ -21,10 +21,10 @@
     "dependencies": {
         "@polkadot/keyring": "^2.2.1",
         "@polkadot/util": "^2.2.1",
-        "bip39": "^2.6.0",
+        "bip39": "^3.0.2",
         "hdkey": "^1.1.1",
         "reflect-metadata": "^0.1.13",
-        "tweetnacl": "^1.0.1",
+        "tweetnacl": "^1.0.3",
         "@babel/runtime": "^7.7.4"
     }
 }

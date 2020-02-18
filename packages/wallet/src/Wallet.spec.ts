@@ -52,9 +52,9 @@ describe('a wallet', () => {
   });
 
   beforeEach(async () => {
-    wallet = new Wallet();
-    await wallet.createNewVault(walletPassphase);
     const registry = new TypeRegistry();
+    wallet = new Wallet(registry);
+    await wallet.createNewVault(walletPassphase);
     // const metadataStatic = new Metadata(staticMetadata[Object.keys(staticMetadata)[0]]);
     // const metadataStatic = staticMetadata[Object.keys(staticMetadata)[0]];
     const metadataStatic =
