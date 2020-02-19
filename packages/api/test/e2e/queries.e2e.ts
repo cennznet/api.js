@@ -29,7 +29,6 @@ describe('e2e queries', () => {
   let api, alice, bob;
 
   beforeAll(async () => {
-    const registry = new TypeRegistry();
     await cryptoWaitReady();
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');

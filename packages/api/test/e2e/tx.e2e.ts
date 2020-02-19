@@ -33,6 +33,7 @@ describe('e2e transactions', () => {
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
+    api = await initApiPromise();
   });
 
   afterAll(async () => {
