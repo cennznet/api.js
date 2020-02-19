@@ -1,7 +1,7 @@
 import {WsProvider} from '@polkadot/api';
 import config from '../config';
 import {ApiRx} from '../packages/api/src/ApiRx';
-import ExtrinsicSignatureV2 from '@cennznet/types/src/extrinsic/v2/ExtrinsicSignature';
+import ExtrinsicSignatureV2 from '../packages/types/src/extrinsic/v2/ExtrinsicSignature';
 import { TypeRegistry } from '@polkadot/types';
 
 const initApiRx = async () => {

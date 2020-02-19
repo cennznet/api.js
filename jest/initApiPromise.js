@@ -1,15 +1,22 @@
 import {WsProvider} from '@polkadot/api';
 import config from '../config';
 import {Api as ApiPromise} from '../packages/api/src/Api';
+import ExtrinsicSignatureV2 from '../packages/types/src/extrinsic/v2/ExtrinsicSignature';
+import { TypeRegistry } from '@polkadot/types';
 
 const initApiPromise = async () => {
   const providerUrl = config.wsProvider[`${process.env.TEST_TYPE}`] || 'ws://localhost:9944';
   const wsProvider = new WsProvider(providerUrl);
-
+  const registry = new TypeRegistry();
   console.log('providerUrl', providerUrl);
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
-  const api = await ApiPromise.create({provider: wsProvider});
+  const api = await ApiPromise.create(
+    {provider: wsProvider,
+      types: {
+        ExtrinsicSignatureV4: ExtrinsicSignatureV2,
+      },
+      registry});
   await api.isReady;
 
   return api;
