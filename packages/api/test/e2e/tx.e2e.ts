@@ -20,27 +20,19 @@ import {AssetId, AssetOptions, FeeExchangeV1} from '@cennznet/types';
 import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature'
 import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import { TypeRegistry } from '@polkadot/types';
-import {Api as ApiPromise} from '@cennznet/api';
+import initApiPromise from '../../../../jest/initApiPromise';
 const minFee = 30000000000000;
 const feeAssetId = '16003';
 
 describe('e2e transactions', () => {
   let api;
   let alice, bob;
-  const registry = new TypeRegistry();
+  // const registry = new TypeRegistry();
   beforeAll(async () => {
     await cryptoWaitReady();
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
-    api = await ApiPromise.create(
-      {provider: 'ws://localhost:9944',
-        types: {
-         ExtrinsicSignatureV4: ExtrinsicSignatureV2,
-        },
-      registry});
-    await api.isReady;
   });
 
   afterAll(async () => {
@@ -51,7 +43,6 @@ describe('e2e transactions', () => {
 
     it("Deposit liquidity in fee asset's pool", async done => {
       // await api.isReady;
-      console.log('Check API:', api);
       const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(feeAssetId);
       if (poolAssetBalance.toNumber() < minFee  ) {
         const coreAmount = minFee;

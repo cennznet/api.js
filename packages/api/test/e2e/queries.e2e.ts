@@ -23,7 +23,7 @@ import {Api as ApiPromise} from '@cennznet/api';
 import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
 import {TypeRegistry} from '@polkadot/types';
 import testKeyring from '@polkadot/keyring/testing';
-
+import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -34,12 +34,7 @@ describe('e2e queries', () => {
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
-    api = await ApiPromise.create(
-      {provider: 'ws://localhost:9944',
-        types: {
-          ExtrinsicSignatureV4: ExtrinsicSignatureV2,
-        },
-        registry});
+    api = await initApiPromise();
   });
 
   afterAll(async done => {
