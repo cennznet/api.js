@@ -22,7 +22,6 @@ import {Observable} from 'rxjs';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-// export const derive = {attestation, cennzxSpot, fees, genericAsset};
 export const derive = {attestation, cennzxSpot, genericAsset};
 
 export type DecoratedCennznetDerive<

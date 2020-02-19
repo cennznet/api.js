@@ -13,9 +13,6 @@ import { MetadataLatest, ModuleMetadataLatest } from '@cennznet/types/interfaces
 import Metadata from '@polkadot/metadata/Metadata';
 import rpcDataLatest from '@polkadot/metadata/Metadata/v7/static';
 import { TypeRegistry, createType } from '@polkadot/types';
-// import Metadata from '@polkadot/types/Metadata';
-// import rpcdata from '@polkadot/types/Metadata/static';
-// import MetadataV7, {ModuleMetadataV7} from '@polkadot/types/Metadata/v7';
 
 const ANCHOR_TOP = '';
 const LINK_BACK_TO_TOP = '';

@@ -11,28 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import {TypeRegistry, u64} from '@polkadot/types';
-import Option from '@polkadot/types/codec/Option';
-import {MultiSignature} from '@polkadot/types/interfaces/runtime/types';
 import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
-//import { ChargeTransactionPayment } from './runtime';
-
-// Monkey patch [[Option]] to encode `None` as a `0` byte
 
 export default {
   ...runtimeTypes,
   ...extrinsicTypes,
-  // AssetOf: 'u128',
+  AssetOf: 'u128',
   'ed25519::Signature': 'H512',
-  // MultiSignature: 'MultiSignature',
   RewardBalance: 'Balance',
   Doughnut: Doughnut,
-  //transactionPayment: 'ChargeTransactionPayment',
-  // The patched [[Option]] type
-  // Option: Option,
 };
-
-// const registry = new TypeRegistry();
-// registry.register(runtimeTypes.ChargeTransactionPayment);

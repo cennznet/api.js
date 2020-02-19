@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import getPlugins from '@cennznet/api/plugins';
-// import {decorateExtrinsics} from '@cennznet/api/util/customDecorators';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
 import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
 import {AttestationRx} from '@cennznet/crml-attestation';

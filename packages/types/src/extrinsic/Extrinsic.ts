@@ -59,7 +59,6 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
     value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
     version: number = DEFAULT_VERSION
   ): ExtrinsicV2 {
-    // const registry = new TypeRegistry();
     if (Array.isArray(value) || isHex(value)) {
       // Instead of the block below, it should simply be:
       // return Extrinsic.decodeExtrinsic(hexToU8a(value as string));

@@ -56,7 +56,6 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
     value?: Call | Uint8Array | ExtrinsicValueV2,
     isSigned: boolean = false
   ): ExtrinsicValueV2 {
-    // const registry = new TypeRegistry();
     if (!value) {
       return {};
     } else if (value instanceof ExtrinsicV2) {
@@ -65,13 +64,7 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
       return {method: value as Call};
     } else if (isU8a(value)) {
       // here we decode manually since we need to pull through the version information
-      // let v = value;
       const signature = new ExtrinsicSignatureV2(registry, value, {isSigned});
-      // v = v.subarray(signature.encodedLength);
-      // const method = createType(registry, 'Call', v);
-
-      // here we decode manually since we need to pull through the version information
-      // const signature = createType(registry, 'ExtrinsicSignatureV2', value, { isSigned });
       const method = createType(registry, 'Call', value.subarray(signature.encodedLength));
 
       return {

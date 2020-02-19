@@ -74,7 +74,7 @@ export interface ExtrinsicPayloadValue {
 
 export type DoughnutValue = AnyU8a;
 
-// export type ChargeTransactionValue = AnyU8a;
+export type ChargeTransactionValue = AnyU8a;
 
 export type FeeExchangeValue = {
   assetId: AnyNumber;
@@ -82,8 +82,8 @@ export type FeeExchangeValue = {
 };
 
 export interface IExtrinsicImpl extends IExtrinsicImplBase {
-  // addDoughnut(doughnut: DoughnutValue): IExtrinsicImpl;
-  // addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): IExtrinsicImpl;
+  addDoughnut(doughnut: DoughnutValue): IExtrinsicImpl;
+  addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): IExtrinsicImpl;
 }
 
 export interface SignatureOptions extends SignatureOptionsBase {

@@ -164,7 +164,6 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     signature: Uint8Array | string,
     payload: ExtrinsicPayloadValueV2 | Uint8Array | string
   ): IExtrinsicSignature {
-    //console.log('this.registry:',this.registry);
     return this.injectSignature(
       createType(this.registry, 'Address', signer),
       createType(this.registry, 'MultiSignature', signature),

@@ -23,7 +23,6 @@ import derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
-// import {decorateExtrinsics} from './util/customDecorators';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
@@ -45,7 +44,6 @@ export class Api extends ApiPromise {
         };
 
         api.isReady.then(res => {
-          // api.decorateCennznetExtrinsics();
           //  Remove error listener if API initialization success.
           (api as any)._eventemitter.removeListener('error', rejectError);
           resolve((res as unknown) as Api);

@@ -14,7 +14,6 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-// import {drr} from '@polkadot/api-derive/util/drr';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {Balance, Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';

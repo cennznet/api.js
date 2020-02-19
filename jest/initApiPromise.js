@@ -12,11 +12,10 @@ const initApiPromise = async () => {
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
   const api = await ApiPromise.create(
-    {provider: wsProvider,
-      types: {
-        ExtrinsicSignatureV4: ExtrinsicSignatureV2,
-      },
-      registry});
+    {
+      provider: wsProvider,
+      registry
+    });
   await api.isReady;
 
   return api;

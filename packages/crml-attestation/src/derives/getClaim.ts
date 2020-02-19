@@ -14,7 +14,6 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AttestationValue} from '@cennznet/types';
-// import {drr} from '@polkadot/api-derive/util/drr';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {Observable} from 'rxjs';
 

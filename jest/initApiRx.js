@@ -1,7 +1,6 @@
 import {WsProvider} from '@polkadot/api';
 import config from '../config';
 import {ApiRx} from '../packages/api/src/ApiRx';
-import ExtrinsicSignatureV2 from '../packages/types/src/extrinsic/v2/ExtrinsicSignature';
 import { TypeRegistry } from '@polkadot/types';
 
 const initApiRx = async () => {
@@ -12,12 +11,10 @@ const initApiRx = async () => {
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
   const apiRx = await ApiRx.create(
-    {provider: wsProvider,
-      types: {
-        ExtrinsicSignatureV4: ExtrinsicSignatureV2,
-      },
+    {
+      provider: wsProvider,
       registry
-  });
+    });
   await apiRx.toPromise().isReady;
 
   return apiRx;

@@ -14,7 +14,6 @@
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
-// import {drr} from '@polkadot/api-derive/util/drr';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {createType} from '@polkadot/types';
 import {Hash} from '@polkadot/types/interfaces';

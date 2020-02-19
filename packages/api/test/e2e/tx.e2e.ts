@@ -22,18 +22,17 @@ import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 const minFee = 30000000000000;
-const feeAssetId = '16003';
+const feeAssetId = '16002';
 
 describe('e2e transactions', () => {
   let api;
   let alice, bob;
-  // const registry = new TypeRegistry();
   beforeAll(async () => {
     await cryptoWaitReady();
+    api = await initApiPromise();
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
-    api = await initApiPromise();
   });
 
   afterAll(async () => {
@@ -43,7 +42,6 @@ describe('e2e transactions', () => {
   describe('Send()', () => {
 
     it("Deposit liquidity in fee asset's pool", async done => {
-      // await api.isReady;
       const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(feeAssetId);
       if (poolAssetBalance.toNumber() < minFee  ) {
         const coreAmount = minFee;
@@ -151,11 +149,8 @@ describe('e2e transactions', () => {
          api.tx.genericAsset
           .transfer(16001, bob.address, 100)
           .signAndSend(alice, {transactionPayment}, ({events, status}) => {
-            // console.log('Transaction status:', status.type);
             if (status.isFinalized) {
               // console.log('Completed at block hash', status.value.toHex());
-              console.log('Events:');
-
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
