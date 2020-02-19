@@ -80,65 +80,6 @@ export interface IExtrinsic extends IExtrinsicBase {
   sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 }
 
-/// Now that we can get estimate fee from paymentInfo, we don't need to extend the SubmittableExtrinsicBase and add fee as a method.
-// export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType>, IExtrinsic {
-//   send(): SubmittableResultResult<ApiType>;
-//
-//   send(statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
-//
-//   sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
-//
-//   signAndSend(
-//     account: IKeyringPair | string | AccountId | Address,
-//     options?: Partial<SignerOptions>
-//   ): SubmittableResultResult<ApiType>;
-//
-//   signAndSend(
-//     account: IKeyringPair | string | AccountId | Address,
-//     statusCb: Callback<SubmittableResultImpl>
-//   ): SubmittableResultSubscription<ApiType>;
-//
-//   signAndSend(
-//     account: IKeyringPair | string | AccountId | Address,
-//     options: Partial<SignerOptions>,
-//     statusCb?: Callback<SubmittableResultImpl>
-//   ): SubmittableResultSubscription<ApiType>;
-//
-//   fee(sender: AnyAddress): ApiType extends 'promise' ? Promise<AssetOf> : Observable<AssetOf>;
-// }
-
-// export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends IExtrinsic {
-//   paymentInfo (account: AddressOrPair, options?: Partial<SignerOptions>): SubmittablePaymentResult<ApiType>;
-//
-//   send(): SubmittableResultResult<ApiType>;
-//
-//   send(statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
-//
-//   sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
-//
-//   signAsync(account: AddressOrPair, _options: Partial<SignatureOptions>): SubmittableThis<ApiType, this>;
-//
-//   signAndSend(account: AddressOrPair, options?: Partial<SignerOptions>): SubmittableResultResult<ApiType>;
-//
-//   signAndSend(account: AddressOrPair, statusCb: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
-//
-//   signAndSend(account: AddressOrPair, options: Partial<SignerOptions>, statusCb?: Callback<SubmittableResultImpl>): SubmittableResultSubscription<ApiType>;
-// }
-
-// export interface SubmittableExtrinsicFunction<ApiType extends ApiTypes> extends CallFunction {
-//   (...params: CodecArg[]): SubmittableExtrinsic<ApiType>;
-// }
-//
-// export interface SubmittableModuleExtrinsics<ApiType extends ApiTypes> {
-//   [index: string]: SubmittableExtrinsicFunction<ApiType>;
-// }
-//
-// export interface SubmittableExtrinsics<ApiType extends ApiTypes> {
-//   (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
-//
-//   [index: string]: SubmittableModuleExtrinsics<ApiType>;
-// }
-
 export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['decorateDerive']> &
   DecoratedCennznetDerive<ApiType>;
 

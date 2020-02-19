@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import {SignerPayloadJSON} from '@cennznet/types/extrinsic/SignerPayload';
+import {Wallet as Base} from '@plugnet/wallet';
+import {requireUnlocked, waitForCryptoReady} from '@plugnet/wallet/decorators';
+import {IWallet, WalletOption} from '@plugnet/wallet/types';
 import {Signer, SignerResult} from '@polkadot/api/types';
-import {createType, TypeRegistry} from '@polkadot/types';
-import {Registry} from '@polkadot/types/types';
+import {createType} from '@polkadot/types';
 import {u8aToHex} from '@polkadot/util';
-import {Wallet as Base} from '../../plugnet_wallet/src';
-import {requireUnlocked, waitForCryptoReady} from '../../plugnet_wallet/src/decorators';
-import {IWallet, SignerPayloadRaw, WalletOption} from '../../plugnet_wallet/src/types';
 import {HDKeyring} from './keyrings/HDKeyring';
 
 /**
@@ -27,12 +26,10 @@ import {HDKeyring} from './keyrings/HDKeyring';
  * support multi-keyring and shipped with a HD Keyring as default keyring type.
  */
 export class Wallet extends Base implements Signer, IWallet {
-  private registry: Registry;
-  constructor(registry: Registry, option: WalletOption = {}) {
+  constructor(option: WalletOption = {}) {
     const opt = {...option};
     opt.keyringTypes = option.keyringTypes || [HDKeyring];
     super(option);
-    this.registry = registry;
   }
 
   /**
@@ -46,10 +43,7 @@ export class Wallet extends Base implements Signer, IWallet {
   @waitForCryptoReady
   async signPayload(payload: SignerPayloadJSON): Promise<SignerResult> {
     const {address, version} = payload;
-    // const registry = new TypeRegistry();
-    const hexPayload = u8aToHex(
-      createType(this.registry, 'ExtrinsicPayload', payload, {version}).toU8a({method: true})
-    );
+    const hexPayload = u8aToHex(createType('ExtrinsicPayload', payload, {version}).toU8a(true));
     return this.signRaw({type: 'payload', data: hexPayload, address});
   }
 }

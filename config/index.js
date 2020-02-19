@@ -5,7 +5,7 @@
  */
 
 const defaultConfig = {
-  apiTimeOut: 70000,
+  apiTimeOut: 30000,
   wsProvider: {
     localhost: 'ws://localhost:9944',
     integration: 'ws://testnet_node_alice:9944',

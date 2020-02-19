@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {HDKeyring as BaseHdKeyring} from '../../../plugnet_wallet/src';
-import {IKeyring} from '../../../plugnet_wallet/src/types';
+import {HDKeyring as BaseHdKeyring} from '@plugnet/wallet';
+import {IKeyring} from '@plugnet/wallet/types';
 
 interface SerializedHDKeyring {
   mnemonic: string;

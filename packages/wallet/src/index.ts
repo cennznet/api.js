@@ -14,7 +14,7 @@
 
 export {default as Keyring} from '@polkadot/keyring';
 export {default as TestingPairs} from '@polkadot/keyring/testingPairs';
-export {SimpleKeyring} from '../../plugnet_wallet/src';
+export {SimpleKeyring} from '@plugnet/wallet';
 
 export {Wallet} from './Wallet';
 export {HDKeyring} from './keyrings/HDKeyring';
