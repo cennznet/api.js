@@ -173,25 +173,22 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
   }
 
   /**
-   * @description Generate a payload and pplies the signature from a keypair
+   * @description Creates a payload from the supplied options
    */
-  sign(
+  createPayload(
     method: Call,
-    account: IKeyringPair,
     {
       blockHash,
       era,
       genesisHash,
       nonce,
       doughnut,
-      feeExchange,
       runtimeVersion: {specVersion},
       tip,
       transactionPayment,
     }: ExtrinsicV2SignatureOptions
-  ): IExtrinsicSignature {
-    const signer = createType(this.registry, 'Address', account.publicKey);
-    const payloadValue: ExtrinsicPayloadValueV2 = {
+  ): ExtrinsicPayloadV2 {
+    return new ExtrinsicPayloadV2(this.registry, {
       blockHash,
       doughnut: doughnut || createType(this.registry, 'Option<Doughnut>'),
       era: era || IMMORTAL_ERA,
@@ -203,8 +200,37 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       // This doesn't do anything, just signalling our intention not to use it.
       tip: null,
       transactionPayment: transactionPayment || createType(this.registry, 'ChargeTransactionPayment'),
-    };
-    const payload = new ExtrinsicPayloadV2(this.registry, payloadValue);
+    });
+  }
+
+  /**
+   * @description Generate a payload and pplies the signature from a keypair
+   */
+  sign(
+    method: Call,
+    account: IKeyringPair,
+    {
+      blockHash,
+      era,
+      genesisHash,
+      nonce,
+      doughnut,
+      runtimeVersion: {specVersion},
+      tip,
+      transactionPayment,
+    }: ExtrinsicV2SignatureOptions
+  ): IExtrinsicSignature {
+    const signer = createType(this.registry, 'Address', account.publicKey);
+    const payload = this.createPayload(method, {
+      blockHash,
+      era,
+      genesisHash,
+      nonce,
+      doughnut,
+      runtimeVersion: {specVersion},
+      tip,
+      transactionPayment,
+    } as ExtrinsicV2SignatureOptions);
     const signature = createType(this.registry, 'MultiSignature', payload.sign(account));
     return this.injectSignature(signer, signature, payload);
   }
@@ -228,26 +254,23 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     }: ExtrinsicV2SignatureOptions
   ): IExtrinsicSignature {
     const signer = createType(this.registry, 'Address', address);
-    const payloadValue: ExtrinsicPayloadValueV2 = {
+    const payload = this.createPayload(method, {
       blockHash,
-      doughnut: doughnut || createType(this.registry, 'Option<Doughnut>'),
-      era: era || IMMORTAL_ERA,
+      era,
       genesisHash,
-      method: method.toHex(),
       nonce,
-      specVersion,
-      // [[tip]] is now set inside [[transactionPayment]]
-      // This doesn't do anything, just signalling our intention not to use it.
-      tip: null,
-      transactionPayment: transactionPayment || createType(this.registry, 'ChargeTransactionPayment'),
-    };
+      doughnut,
+      runtimeVersion: {specVersion},
+      tip,
+      transactionPayment,
+    } as ExtrinsicV2SignatureOptions);
     const signature = createType(
       this.registry,
       'MultiSignature',
       u8aConcat(new Uint8Array([1]), new Uint8Array(64).fill(0x42))
     );
 
-    const payload = new ExtrinsicPayloadV2(this.registry, payloadValue);
+    // const payload = new ExtrinsicPayloadV2(this.registry, payloadValue);
     return this.injectSignature(signer, signature, payload);
   }
 
