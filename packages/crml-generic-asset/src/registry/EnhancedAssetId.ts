@@ -38,10 +38,10 @@ export default class EnhancedAssetId extends AssetId {
       this._asset = asset;
     } else if (isAssetObj(value)) {
       // value is asset object
-      super(value.id);
+      super(registry, value.id);
       this._asset = value;
     } else {
-      super(value);
+      super(registry, value);
       this._asset = findAssetById(this.toNumber());
     }
   }

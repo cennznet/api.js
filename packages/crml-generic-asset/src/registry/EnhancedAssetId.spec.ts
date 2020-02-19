@@ -31,7 +31,6 @@ describe('EnhancedAssetId', () => {
     it('from u8a', () => {
       const assetId = new AssetId(registry, CENTRAPAY.id);
       const enhanced = new EnhancedAssetId(registry, assetId.toU8a());
-      console.log('---ENCHANCED ASSET ID---', enhanced);
       expect(enhanced.toString()).toEqual(assetId.toString());
     });
 

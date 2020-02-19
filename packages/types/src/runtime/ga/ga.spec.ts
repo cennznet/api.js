@@ -24,10 +24,6 @@ const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
 const registry = new TypeRegistry();
 registry.register(gaTypes);
-// registry.register(gaTypes);
-// registry.register(typeof u32, gaTypes.AssetId);
-// registry.register(typeof AssetOptions, AssetOptions);
-// registry.register(typeof gaTypes.Owner, gaTypes.Owner);
 
 describe('ga types', () => {
   describe('Permission', () => {
