@@ -50,7 +50,7 @@ describe('e2e transactions', () => {
   describe('Send()', () => {
 
     it("Deposit liquidity in fee asset's pool", async done => {
-      await api.isReady;
+      // await api.isReady;
       console.log('Check API:', api);
       const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(feeAssetId);
       if (poolAssetBalance.toNumber() < minFee  ) {
