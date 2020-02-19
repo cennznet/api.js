@@ -14,7 +14,7 @@
 
 import {IPlugin} from '@cennznet/api/types';
 import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {Registry} from '@polkadot/types/types';
+import {TypeRegistry} from '@polkadot/types';
 import {Api} from '../Api';
 import {ApiRx} from '../ApiRx';
 import {ApiOptions} from '../types';
@@ -30,7 +30,8 @@ export function injectOption(options: ApiOptions, plugins: IPlugin[] = []): void
   }
 }
 
-export function injectPlugins(registry: Registry, api: Api | ApiRx, plugins: IPlugin[] = []): void {
+export function injectPlugins(api: Api | ApiRx, plugins: IPlugin[] = []): void {
+  const registry = new TypeRegistry();
   for (const plugin of plugins) {
     if (plugin.sdkClass && plugin.injectName && api.type === 'promise') {
       Object.defineProperty(api, plugin.injectName, {

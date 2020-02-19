@@ -64,8 +64,6 @@ describe('e2e api calls', () => {
       expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.isEpoch).toBe(true);
-      // expect(currentSession.lastEraLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
-      // expect(currentSession.lastLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);

@@ -25,7 +25,7 @@ export default {
   ...runtimeTypes,
   ...extrinsicTypes,
   // AssetOf: 'u128',
-  // 'ed25519::Signature': 'H512',
+  'ed25519::Signature': 'H512',
   // MultiSignature: 'MultiSignature',
   RewardBalance: 'Balance',
   Doughnut: Doughnut,

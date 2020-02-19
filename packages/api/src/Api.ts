@@ -96,6 +96,12 @@ export class Api extends ApiPromise {
       options.provider = getProvider(options.provider);
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
+    options.types = {...Types, ...options.types};
+    options.derives = mergeDeriveOptions(derives, options.derives);
+
+    super(options as ApiOptionsBase);
+
+    /// TODO: will reintroduce plugins later
     // let plugins: IPlugin[] = options.plugins || [];
     // try {
     //     plugins = mergePlugins(plugins, getPlugins());
@@ -104,19 +110,10 @@ export class Api extends ApiPromise {
     //     logger.error('plugin loading failed');
     // }
 
-    options.types = {...Types, ...options.types};
-    options.derives = mergeDeriveOptions(derives, options.derives);
-
-    super(options as ApiOptionsBase);
-
     // if (plugins) {
-    //     injectPlugins(this.registry, this, plugins);
+    //     injectPlugins(this, plugins);
     // }
   }
-
-  // decorateCennznetExtrinsics(): void {
-  //     decorateExtrinsics(this);
-  // }
 }
 
 async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {

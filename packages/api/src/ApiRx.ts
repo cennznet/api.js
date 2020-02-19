@@ -92,6 +92,12 @@ export class ApiRx extends ApiRxBase {
       options.provider = getProvider(options.provider);
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
+    options.types = {...Types, ...options.types};
+    options.derives = mergeDeriveOptions(derives, options.derives);
+
+    super(options as ApiOptionsBase);
+
+    /// TODO: will reintroduce plugins later
     // let plugins: IPlugin[] = options.plugins || [];
     // try {
     //     plugins = mergePlugins(plugins, getPlugins());
@@ -100,17 +106,8 @@ export class ApiRx extends ApiRxBase {
     //     logger.error('plugin loading failed');
     // }
 
-    options.types = {...Types, ...options.types};
-    options.derives = mergeDeriveOptions(derives, options.derives);
-
-    super(options as ApiOptionsBase);
-
     // if (plugins) {
     //     injectPlugins(this.registry, this, plugins);
     // }
   }
-
-  // decorateCennznetExtrinsics(): void {
-  //     decorateExtrinsics(this);
-  // }
 }

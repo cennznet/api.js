@@ -62,13 +62,3 @@ export class ChargeTransactionPayment extends Struct {
     return this.get('feeExchange') as Option<FeeExchange>;
   }
 }
-
-Option.prototype.toU8a = function toU8a(isBare?: boolean): Uint8Array {
-  if (this.isNone) {
-    return new Uint8Array([0]);
-  }
-  const u8a = new Uint8Array(this.encodedLength);
-  u8a.set([1]);
-  u8a.set(this.raw.toU8a(true), 1);
-  return u8a;
-};

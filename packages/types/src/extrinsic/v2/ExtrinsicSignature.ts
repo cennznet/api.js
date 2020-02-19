@@ -50,10 +50,10 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       {
         signer: 'Address',
         signature: 'MultiSignature',
-        transactionPayment: 'ChargeTransactionPayment',
         doughnut: 'Option<Doughnut>',
         era: 'ExtrinsicEra',
         nonce: 'Compact<Index>',
+        transactionPayment: 'ChargeTransactionPayment',
       },
       ExtrinsicSignatureV2.decodeExtrinsicSignature(value, isSigned)
     );
