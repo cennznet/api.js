@@ -149,7 +149,6 @@ describe('e2e transactions', () => {
           .transfer(16001, bob.address, 100)
           .signAndSend(alice, {transactionPayment}, ({events, status}) => {
             if (status.isFinalized) {
-              // console.log('Completed at block hash', status.value.toHex());
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
