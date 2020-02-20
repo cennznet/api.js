@@ -15,41 +15,22 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Api} from '../../src/Api';
-import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
+import {Keyring} from '@polkadot/api';
+import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 
-// const sender_for_rimu = {
-//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-//     uri: '//cennznet-js-test',
-// };
-
-const sender = {
-  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-  uri: '//Alice',
-};
-const receiver = {
-  address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
-};
-const passphrase = '';
-
 describe('e2e queries', () => {
-  let api;
+  let api, alice, bob;
 
   beforeAll(async () => {
-    api = await initApiPromise();
-
     await cryptoWaitReady();
-
-    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-    simpleKeyring.addFromUri(sender.uri);
-    const wallet = new Wallet();
-    await wallet.createNewVault(passphrase);
-    await wallet.addKeyring(simpleKeyring);
-    api.setSigner(wallet);
+    const keyring = new Keyring({ type: 'sr25519' });
+    alice = keyring.addFromUri('//Alice');
+    bob = keyring.addFromUri('//Bob');
+    api = await initApiPromise();
   });
 
   afterAll(async done => {
@@ -79,6 +60,18 @@ describe('e2e queries', () => {
       const nextAssetIdAt = await api.query.genericAsset.nextAssetId.at(blockHash);
       expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
     });
+
+    it('check transaction payment', async done => {
+
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      console.log('Balance before ',assetBalance.toString());
+      const nonce = await api.query.system.accountNonce(alice.address);
+      const ex = await api.tx.genericAsset
+        .transfer(16000, bob.address, 100);
+      const payment =  await api.rpc.payment.queryInfo(ex.toHex());
+      console.log('Payment:', payment.weight.toString());
+      done();
+    }, 10000000);
   });
 
   describe('Subscribe storage', () => {
@@ -97,18 +90,26 @@ describe('e2e queries', () => {
           done();
         }
       });
-      await api.tx.genericAsset
-        .create(
-          new AssetOptions({
-            initialIssuance: 0,
-            permissions: {
-              update: null,
-              mint: null,
-              burn: null,
-            },
-          })
-        )
-        .signAndSend(sender.address);
-    }, 15000);
+      const sudoKey = await api.query.sudo.key();
+      const keyring = testKeyring();
+      // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
+      const sudoPair = keyring.getPair(sudoKey.toString());
+
+      await api.tx.sudo
+        .sudo(api.tx.genericAsset
+          .create(alice.address,
+            new AssetOptions(
+              api.registry,
+              {
+                initialIssuance: 0,
+                permissions: {
+                  update: null,
+                  mint: null,
+                  burn: null,
+                },
+              })
+          ))
+        .signAndSend(sudoPair);
+    }, 12000);
   });
 });

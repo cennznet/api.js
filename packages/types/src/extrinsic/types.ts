@@ -14,6 +14,7 @@
 
 import Option from '@polkadot/types/codec/Option';
 import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
+import {MultiSignature} from '@polkadot/types/interfaces';
 import {
   AnyNumber,
   AnyU8a,
@@ -28,8 +29,6 @@ import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-paym
 
 export interface ExtrinsicOptions {
   isSigned?: boolean;
-  useDoughnut?: boolean;
-  useFeeExchange?: boolean;
 }
 
 export interface ExtrinsicSignatureOptions {
@@ -74,6 +73,8 @@ export interface ExtrinsicPayloadValue {
 }
 
 export type DoughnutValue = AnyU8a;
+
+export type ChargeTransactionValue = AnyU8a;
 
 export type FeeExchangeValue = {
   assetId: AnyNumber;

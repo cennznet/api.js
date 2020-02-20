@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "0.20.7-dev.1",
+    "version": "0.20.7-dev.2",
     "description": "additional types for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [
@@ -20,12 +20,13 @@
     "dependencies": {
         "@cennznet/util": "^0.20.7",
         "typescript": "^2.9.2",
-        "@polkadot/types": "^0.96.1",
-        "@polkadot/util": "^1.6.1",
+        "@polkadot/types": "^1.1.1",
+        "@polkadot/util": "^2.3.1",
+        "@polkadot/keyring": "^2.3.1",
         "memoizee": "^0.4.14"
     },
     "devDependencies": {
-        "@polkadot/api": "^0.96.1",
-        "@polkadot/rpc-provider": "^0.96.1"
+        "@polkadot/api": "^1.1.1",
+        "@polkadot/rpc-provider": "^1.1.1"
     }
 }

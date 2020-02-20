@@ -9,9 +9,10 @@ import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
 
 import interfaces from '@polkadot/jsonrpc';
 import Call from '@polkadot/types/primitive/Generic/Call';
-import Metadata from '@polkadot/types/Metadata';
-import rpcdata from '@polkadot/types/Metadata/static';
-import MetadataV7, {ModuleMetadataV7} from '@polkadot/types/Metadata/v7';
+import { MetadataLatest, ModuleMetadataLatest } from '@cennznet/types/interfaces';
+import Metadata from '@polkadot/metadata/Metadata';
+import rpcDataLatest from '@polkadot/metadata/Metadata/v7/static';
+import { TypeRegistry, createType } from '@polkadot/types';
 
 const ANCHOR_TOP = '';
 const LINK_BACK_TO_TOP = '';
@@ -80,7 +81,7 @@ function sortByName<T extends {name: any}>(a: T, b: T): number {
     return nameA.localeCompare(nameB);
 }
 
-function addConstants(metadata: MetadataV7): string {
+function addConstants(metadata: MetadataLatest): string {
     const renderHeading = `## ${ANCHOR_TOP}Constants${DESC_CONSTANTS}`;
     const orderedSections = metadata.modules.sort(sortByName);
     let renderAnchors = '';
@@ -110,7 +111,7 @@ function addConstants(metadata: MetadataV7): string {
     return renderHeading + renderAnchors + sections;
 }
 
-function addEvents(metadata: MetadataV7): string {
+function addEvents(metadata: MetadataLatest): string {
     const renderHeading = `## ${ANCHOR_TOP}Events${DESC_EVENTS}`;
     const orderedSections = metadata.modules.sort(sortByName);
     let renderAnchors = '';
@@ -141,9 +142,9 @@ function addEvents(metadata: MetadataV7): string {
     return renderHeading + renderAnchors + sections;
 }
 
-function addExtrinsics(metadata: MetadataV7): string {
+function addExtrinsics(metadata: MetadataLatest): string {
     const renderHeading = `## ${ANCHOR_TOP}Extrinsics${DESC_EXTRINSICS}`;
-    const orderedSections = metadata.modules.map((i): ModuleMetadataV7 => i).sort(sortByName);
+    const orderedSections = metadata.modules.map((i): ModuleMetadataLatest => i).sort(sortByName);
     let renderAnchors = '';
     const sections = orderedSections.reduce((md, meta): string => {
         if (meta.calls.isNone || !meta.calls.unwrap().length) {
@@ -174,7 +175,7 @@ function addExtrinsics(metadata: MetadataV7): string {
     return renderHeading + renderAnchors + sections;
 }
 
-function addStorage(metadata: MetadataV7): string {
+function addStorage(metadata: MetadataLatest): string {
     const renderHeading = `## ${ANCHOR_TOP}Storage${DESC_STORAGE}`;
     const orderedSections = metadata.modules.sort(sortByName);
     let renderAnchors = '';
@@ -235,26 +236,27 @@ function writeToRpcMd(): void {
     writeFile('docs/METHODS_RPC.md', addRpc());
 }
 
-function writeToConstantsMd(metadata: MetadataV7): void {
+function writeToConstantsMd(metadata: MetadataLatest): void {
     writeFile('docs/METHODS_CONSTANTS.md', addConstants(metadata));
 }
 
-function writeToStorageMd(metadata: MetadataV7): void {
+function writeToStorageMd(metadata: MetadataLatest): void {
     const options = {flags: 'r', encoding: 'utf8'};
     const data = fs.readFileSync('packages/types/src/scripts/METHODS_STORAGE_SUBSTRATE.md', options);
 
     writeFile('docs/METHODS_STORAGE.md', addStorage(metadata), data);
 }
 
-function writeToExtrinsicsMd(metadata: MetadataV7): void {
+function writeToExtrinsicsMd(metadata: MetadataLatest): void {
     writeFile('docs/METHODS_EXTRINSICS.md', addExtrinsics(metadata));
 }
 
-function writeToEventsMd(metadata: MetadataV7): void {
+function writeToEventsMd(metadata: MetadataLatest): void {
     writeFile('docs/METHODS_EVENTS.md', addEvents(metadata));
 }
 
-const metadata = new Metadata(rpcdata).asLatest;
+const registry = new TypeRegistry();
+const metadata = new Metadata(registry, rpcDataLatest).asLatest;
 
 writeToRpcMd();
 writeToConstantsMd(metadata);

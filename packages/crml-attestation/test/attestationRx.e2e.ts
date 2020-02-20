@@ -20,6 +20,7 @@ import {AttestationValue} from '@cennznet/types';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {filter, first} from 'rxjs/operators';
 import {AttestationRx} from '../src/AttestationRx';
+import { TypeRegistry } from '@polkadot/types';
 
 const issuer = {
     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
@@ -38,10 +39,11 @@ const holder = {
 
 const topic = 'passport';
 // hex of string 'identity'
-const attestationValue = new AttestationValue('0x6964656e74697479');
+const registry = new TypeRegistry();
+const attestationValue = new AttestationValue(registry, '0x6964656e74697479');
 
 const topic2 = 'over18';
-const attestationValue2 = new AttestationValue('0x12121212121234a1');
+const attestationValue2 = new AttestationValue(registry, '0x12121212121234a1');
 
 const passphrase = 'passphrase';
 

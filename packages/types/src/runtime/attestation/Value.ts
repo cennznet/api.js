@@ -15,6 +15,7 @@
 /*
     Custom `Value` type for Attestation module.
  */
-import {ClassOf} from '@polkadot/types';
+import {ClassOf, TypeRegistry} from '@polkadot/types';
+const registry = new TypeRegistry();
 
-export default class AttestationValue extends ClassOf('H256') {}
+export default class AttestationValue extends ClassOf(registry, 'H256') {}

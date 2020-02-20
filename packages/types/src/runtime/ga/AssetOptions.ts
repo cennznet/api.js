@@ -18,18 +18,19 @@
 
 import {Struct} from '@polkadot/types';
 import {Balance} from '@polkadot/types/interfaces';
+import {Registry} from '@polkadot/types/types';
 import PermissionLatest from './PermissionsV1';
 
 export default class AssetOptions extends Struct {
-    constructor(value: any) {
-        super({initialIssuance: 'Compact<Balance>', permissions: PermissionLatest}, value);
-    }
+  constructor(registry: Registry, value: any) {
+    super(registry, {initialIssuance: 'Compact<Balance>', permissions: PermissionLatest}, value);
+  }
 
-    get initialIssuance(): Balance {
-        return this.get('initialIssuance') as Balance;
-    }
+  get initialIssuance(): Balance {
+    return this.get('initialIssuance') as Balance;
+  }
 
-    get permissions(): PermissionLatest {
-        return this.get('permissions') as PermissionLatest;
-    }
+  get permissions(): PermissionLatest {
+    return this.get('permissions') as PermissionLatest;
+  }
 }

@@ -26,24 +26,24 @@ import {HDKeyring} from './keyrings/HDKeyring';
  * support multi-keyring and shipped with a HD Keyring as default keyring type.
  */
 export class Wallet extends Base implements Signer, IWallet {
-    constructor(option: WalletOption = {}) {
-        const opt = {...option};
-        opt.keyringTypes = option.keyringTypes || [HDKeyring];
-        super(option);
-    }
+  constructor(option: WalletOption = {}) {
+    const opt = {...option};
+    opt.keyringTypes = option.keyringTypes || [HDKeyring];
+    super(option);
+  }
 
-    /**
-     * sign a extrinsic payload (for the new Signer interface)
-     * @param extrinsic
-     * @param opt
-     * @requires wallet unlocked
-     * @throws when the account is not managed by the wallet.
-     */
-    @requireUnlocked
-    @waitForCryptoReady
-    async signPayload(payload: SignerPayloadJSON): Promise<SignerResult> {
-        const {address, version} = payload;
-        const hexPayload = u8aToHex(createType('ExtrinsicPayload', payload, {version}).toU8a(true));
-        return this.signRaw({type: 'payload', data: hexPayload, address});
-    }
+  /**
+   * sign a extrinsic payload (for the new Signer interface)
+   * @param extrinsic
+   * @param opt
+   * @requires wallet unlocked
+   * @throws when the account is not managed by the wallet.
+   */
+  @requireUnlocked
+  @waitForCryptoReady
+  async signPayload(payload: SignerPayloadJSON): Promise<SignerResult> {
+    const {address, version} = payload;
+    const hexPayload = u8aToHex(createType('ExtrinsicPayload', payload, {version}).toU8a(true));
+    return this.signRaw({type: 'payload', data: hexPayload, address});
+  }
 }

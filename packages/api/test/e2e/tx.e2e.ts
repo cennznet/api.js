@@ -16,40 +16,22 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {AssetId, AssetOptions, FeeExchangeV1} from '@cennznet/types';
-import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import {SubmittableResult} from '@polkadot/api';
+import {AssetId, AssetOptions} from '@cennznet/types';
+import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
-
-// const sender_on_rimu = {
-//     address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-//     uri: '//cennznet-js-test',
-// };
-
-const sender = {
-  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-  uri: '//Alice',
-};
-const receiver = {
-  address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-};
-const passphrase = 'passphrase';
 const minFee = 30000000000000;
 const feeAssetId = '16002';
 
 describe('e2e transactions', () => {
   let api;
-
+  let alice, bob;
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
-    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-    simpleKeyring.addFromUri(sender.uri);
-    const wallet = new Wallet();
-    await wallet.createNewVault(passphrase);
-    await wallet.addKeyring(simpleKeyring);
-    api.setSigner(wallet);
+    const keyring = new Keyring({ type: 'sr25519' });
+    alice = keyring.addFromUri('//Alice');
+    bob = keyring.addFromUri('//Bob');
   });
 
   afterAll(async () => {
@@ -59,14 +41,14 @@ describe('e2e transactions', () => {
   describe('Send()', () => {
 
     it("Deposit liquidity in fee asset's pool", async done => {
-      const poolAssetBalance = await api.cennzxSpot.getPoolAssetBalance(feeAssetId);
+      const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(feeAssetId);
       if (poolAssetBalance.toNumber() < minFee  ) {
         const coreAmount = minFee;
-        const investmentAmount = await api.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
+        const investmentAmount = await api.derive.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
         const minLiquidity = 1;
         await api.tx.cennzxSpot
           .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)
-          .signAndSend(sender.address, async ({events, status}) => {
+          .signAndSend(alice, async ({events, status}) => {
             if (status.isFinalized) {
               let liquidityCreated = false;
               for (const {event} of events) {
@@ -82,25 +64,26 @@ describe('e2e transactions', () => {
     });
 
     it('makes a tx using immortal era', async done => {
-      // const opt = {era: '0x00', blockHash: api.genesisHash};
-      // transfer
+
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      console.log('Balance before ',assetBalance.toString());
       await api.tx.genericAsset
-        .transfer(16000, receiver.address, 1)
-        .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+        .transfer(16000, bob.address, 100)
+        .signAndSend(alice,
+        async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
+            console.log(events[0].event.method);
             expect(events[0].event.method).toEqual('Transferred');
             expect(events[0].event.section).toEqual('genericAsset');
-            done();
+           done();
           }
         });
-    }, 10000000);
+      }, 10000000);
 
     it('makes a tx via send', async done => {
-      const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-      const senderKeypair = simpleKeyring.addFromUri(sender.uri);
-      const nonce = await api.query.system.accountNonce(senderKeypair.address);
+      const nonce = await api.query.system.accountNonce(alice.address);
       // transfer
-      const tx = api.tx.genericAsset.transfer(16000, receiver.address, 1).sign(senderKeypair, {nonce});
+      const tx = api.tx.genericAsset.transfer(16000, bob.address, 1).sign(alice, {nonce});
       await tx.send(async ({events, status}: SubmittableResult) => {
         if (status.isFinalized) {
           expect(events[0].event.method).toEqual('Transferred');
@@ -111,11 +94,11 @@ describe('e2e transactions', () => {
     });
 
     it('makes a tx', async done => {
-      const assetBalance = await api.query.genericAsset.freeBalance(16001, sender.address);
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
       // transfer
       await api.tx.genericAsset
-        .transfer(16000, receiver.address, 1)
-        .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+        .transfer(16000, alice.address, 1)
+        .signAndSend(bob, async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
             expect(events[0].event.method).toEqual('Transferred');
             expect(events[0].event.section).toEqual('genericAsset');
@@ -128,7 +111,7 @@ describe('e2e transactions', () => {
       const totalSupply = 100;
       const assetIdBefore = (await api.query.genericAsset.nextAssetId()) as AssetId;
       const reservedIdStart: number = 17000;
-      const assetOptions = new AssetOptions({
+      const assetOptions = new AssetOptions(api.registry, {
         initialIssuance: totalSupply,
         permissions: {
           update: null,
@@ -139,7 +122,7 @@ describe('e2e transactions', () => {
       // transfer
       await api.tx.genericAsset
         .create(assetOptions)
-        .signAndSend(sender.address, async ({events, status}: SubmittableResult) => {
+        .signAndSend(alice.address, async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
             const assetIdAfter = (await api.query.genericAsset.nextAssetId()) as AssetId;
             // expect
@@ -153,9 +136,6 @@ describe('e2e transactions', () => {
 
     describe('feeExchange extrinsic', () => {
       it('use keypair to sign', async done => {
-        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        const senderKeypair = simpleKeyring.addFromUri(sender.uri);
-
         const feeExchange = {
           assetId: feeAssetId,
           maxPayment: '50000000000000000',
@@ -166,13 +146,9 @@ describe('e2e transactions', () => {
         };
 
          api.tx.genericAsset
-          .transfer(16001, receiver.address, 100)
-          .signAndSend(senderKeypair, {transactionPayment}, ({events, status}) => {
-            console.log('Transaction status:', status.type);
+          .transfer(16001, bob.address, 100)
+          .signAndSend(alice, {transactionPayment}, ({events, status}) => {
             if (status.isFinalized) {
-              console.log('Completed at block hash', status.value.toHex());
-              console.log('Events:');
-
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
@@ -193,8 +169,8 @@ describe('e2e transactions', () => {
           },
         };
 
-        const tx = api.tx.genericAsset.transfer(16001, receiver.address, 100);
-        return tx.signAndSend(sender.address, {transactionPayment}, ({events, status}) => {
+        const tx = api.tx.genericAsset.transfer(16001, bob.address, 100);
+        return tx.signAndSend(alice, {transactionPayment}, ({events, status}) => {
           console.log('Transaction status:', status.type);
           if (status.isFinalized) {
             console.log('Completed at block hash', status.value.toHex());

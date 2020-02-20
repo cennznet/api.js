@@ -5,11 +5,11 @@
 // tslint:disable member-ordering no-magic-numbers
 
 import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
-import {ClassOf, Compact} from '@polkadot/types';
+import {ClassOf, Compact, TypeRegistry} from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Address, Balance, Call} from '@polkadot/types/interfaces';
+import {Address, Balance, Call, EcdsaSignature, Ed25519Signature, Sr25519Signature} from '@polkadot/types/interfaces';
 import {FunctionMetadataLatest} from '@polkadot/types/interfaces/metadata';
-import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair} from '@polkadot/types/types';
+import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair, Registry} from '@polkadot/types/types';
 import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/util';
 import {ChargeTransactionPayment, Index} from '../runtime';
 import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION} from './constants';
@@ -37,20 +37,25 @@ export interface ExtrinsicOptions {
  * - left as is, to create an inherent
  */
 export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic {
-  constructor(value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined, {version}: ExtrinsicOptions = {}) {
-    super(Extrinsic.decodeExtrinsic(value, version));
+  constructor(
+    registry: Registry,
+    value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
+    {version}: ExtrinsicOptions = {}
+  ) {
+    super(registry, Extrinsic.decodeExtrinsic(registry, value, version));
   }
 
-  private static newFromValue(value: any, version: number): ExtrinsicImpl {
+  private static newFromValue(registry: Registry, value: any, version: number): ExtrinsicImpl {
     if (value instanceof Extrinsic || value.constructor.name === 'Submittable') {
       return value.raw;
     }
 
     const isSigned = (version & BIT_SIGNED) === BIT_SIGNED;
-    return new ExtrinsicV2(value, {isSigned});
+    return new ExtrinsicV2(registry, value, {isSigned});
   }
 
   static decodeExtrinsic(
+    registry: Registry,
     value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
     version: number = DEFAULT_VERSION
   ): ExtrinsicV2 {
@@ -64,10 +69,10 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
       const [offset, length] = Compact.decodeU8a(u8a);
       const withPrefix = u8a.length === offset + length.toNumber();
 
-      return Extrinsic.decodeExtrinsic(withPrefix ? u8a : Compact.addLengthPrefix(u8a), version);
+      return Extrinsic.decodeExtrinsic(registry, withPrefix ? u8a : Compact.addLengthPrefix(u8a), version);
     } else if (isU8a(value)) {
       if (!value.length) {
-        return Extrinsic.newFromValue(new Uint8Array(), version);
+        return Extrinsic.newFromValue(registry, new Uint8Array(), version);
       }
 
       const [offset, length] = Compact.decodeU8a(value);
@@ -78,16 +83,16 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
         `Extrinsic: required length less than remainder, expected at least ${total}, found ${value.length}`
       );
 
-      return Extrinsic.decodeU8a(value.subarray(offset, total));
-    } else if (value instanceof ClassOf('Call')) {
-      return Extrinsic.newFromValue({method: value}, version);
+      return Extrinsic.decodeU8a(registry, value.subarray(offset, total));
+    } else if (value instanceof ClassOf(registry, 'Call')) {
+      return Extrinsic.newFromValue(registry, {method: value}, version);
     }
 
-    return Extrinsic.newFromValue(value, version);
+    return Extrinsic.newFromValue(registry, value, version);
   }
 
-  private static decodeU8a(value: Uint8Array): ExtrinsicV2 {
-    return Extrinsic.newFromValue(value.subarray(1), value[0]);
+  private static decodeU8a(registry: Registry, value: Uint8Array): ExtrinsicV2 {
+    return Extrinsic.newFromValue(registry, value.subarray(1), value[0]);
   }
   /**
    * @description The arguments passed to for the call, exposes args so it is compatible with [[Call]]
@@ -176,8 +181,8 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   /**
    * @description The [[ExtrinsicSignature]]
    */
-  get signature(): IHash {
-    return this.raw.signature.signature;
+  get signature(): EcdsaSignature | Ed25519Signature | Sr25519Signature {
+    return (this.raw as ExtrinsicImpl).signature.signature;
   }
 
   /**
@@ -238,6 +243,15 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   }
 
   /**
+   * @describe Adds a fake signature to the extrinsic
+   */
+  signFake(signer: Address | Uint8Array | string, options: SignatureOptions): Extrinsic {
+    (this.raw as ExtrinsicImpl).signFake(signer, options);
+
+    return this;
+  }
+
+  /**
    * @description Returns a hex string representation of the value
    */
   toHex(): string {
@@ -263,7 +277,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
    * @param isBare true when the value has none of the type-specific prefixes (internal)
    */
   toU8a(isBare?: boolean): Uint8Array {
-    const encoded = u8aConcat(new Uint8Array([this.version]), this.raw.toU8a(isBare));
+    const encoded = u8aConcat(new Uint8Array([this.version]), this.raw.toU8a());
     return isBare ? encoded : Compact.addLengthPrefix(encoded);
   }
 }

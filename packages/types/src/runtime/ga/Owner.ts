@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf} from '@polkadot/types';
+import {ClassOf, TypeRegistry} from '@polkadot/types';
 
-export default class Owner extends ClassOf('Option<AccountId>') {}
+const registry = new TypeRegistry();
+export default class Owner extends ClassOf(registry, 'Option<AccountId>') {}

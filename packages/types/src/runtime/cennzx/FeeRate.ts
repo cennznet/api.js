@@ -1,5 +1,6 @@
-import {ClassOf} from '@polkadot/types';
+import {ClassOf, TypeRegistry} from '@polkadot/types';
 
-export default class FeeRate extends ClassOf('u128') {
-    static readonly SCALE_FACTOR = 1000000;
+const registry = new TypeRegistry();
+export default class FeeRate extends ClassOf(registry, 'u128') {
+  static readonly SCALE_FACTOR = 1000000;
 }

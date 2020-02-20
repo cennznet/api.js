@@ -16,7 +16,7 @@
 import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
 import {Balance, ExtrinsicEra, Hash} from '@polkadot/types/interfaces/runtime';
 import {sign} from '@polkadot/types/primitive/Extrinsic/util';
-import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod} from '@polkadot/types/types';
+import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry} from '@polkadot/types/types';
 import {u8aConcat} from '@polkadot/util';
 
 import Option from '@polkadot/types/codec/Option';
@@ -50,17 +50,11 @@ export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
 export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
-  // prml_doughnut::Option<PlugDoughnut<Doughnut, Runtime>>
-  // system::CheckVersion<Runtime>
   specVersion: 'u32',
   // system::CheckGenesis<Runtime>
   genesisHash: 'Hash',
   // system::CheckEra<Runtime>
   blockHash: 'Hash',
-  // system::CheckNonce<Runtime>
-  // system::CheckWeight<Runtime>
-  // transaction_payment::ChargeTransactionPayment<Runtime>,
-  // contracts::CheckBlockGasLimit<Runtime>,
 };
 
 // The full definition for the extrinsic payload.
@@ -81,8 +75,8 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV2 extends Struct {
-  constructor(value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
-    super(FullPayloadV2, value);
+  constructor(registry: Registry, value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
+    super(registry, FullPayloadV2, value);
   }
 
   /**
@@ -152,6 +146,6 @@ export default class ExtrinsicPayloadV2 extends Struct {
    * @description Sign the payload with the keypair
    */
   sign(signerPair: IKeyringPair): Uint8Array {
-    return sign(signerPair, this.toU8a(true), {withType: true});
+    return sign(signerPair, this.toU8a({method: true}), {withType: true});
   }
 }

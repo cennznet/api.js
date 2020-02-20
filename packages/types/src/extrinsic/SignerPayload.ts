@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {Compact, createType, Option, Struct, u8} from '@polkadot/types';
+import {Compact, Option, Struct, u8} from '@polkadot/types';
 import {
   Address,
   Balance,
@@ -95,6 +95,7 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       version: version.toNumber(),
       transactionPayment: transactionPayment.toHex(),
     };
+
     if (doughnut.isSome) {
       ret.doughnut = doughnut.unwrap().toHex();
     }
@@ -107,7 +108,9 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
   toRaw(): SignerPayloadRaw {
     const payload = this.toPayload();
     // NOTE Explicitly pass the bare flag so the method is encoded un-prefixed (non-decodable, for signing only)
-    const data = u8aToHex(new ExtrinsicPayload(payload, {version: payload.version}).toU8a(true));
+    const data = u8aToHex(
+      new ExtrinsicPayload(this.registry, payload, {version: payload.version}).toU8a({method: true})
+    );
 
     return {
       address: payload.address,

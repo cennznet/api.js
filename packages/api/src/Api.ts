@@ -23,7 +23,6 @@ import derives from './derives';
 import getPlugins from './plugins';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
-import {decorateExtrinsics} from './util/customDecorators';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
@@ -33,103 +32,99 @@ import logger from './util/logging';
 export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
-    static async create(options: ApiOptions = {}): Promise<Api> {
-        const api = new Api(options);
-        return withTimeout(
-            new Promise((resolve, reject) => {
-                const rejectError = err => {
-                    // Disconnect provider if API initialization fails
-                    api.disconnect();
+  static async create(options: ApiOptions = {}): Promise<Api> {
+    const api = new Api(options);
+    return withTimeout(
+      new Promise((resolve, reject) => {
+        const rejectError = err => {
+          // Disconnect provider if API initialization fails
+          api.disconnect();
 
-                    reject(new Error('Connection fail'));
-                };
+          reject(new Error('Connection fail'));
+        };
 
-                api.isReady.then(res => {
-                    api.decorateCennznetExtrinsics();
-                    //  Remove error listener if API initialization success.
-                    (api as any)._eventemitter.removeListener('error', rejectError);
-                    resolve((res as unknown) as Api);
-                }, reject);
+        api.isReady.then(res => {
+          //  Remove error listener if API initialization success.
+          (api as any)._eventemitter.removeListener('error', rejectError);
+          resolve((res as unknown) as Api);
+        }, reject);
 
-                api.once('error', rejectError);
-            }),
-            getTimeout(options)
-        );
+        api.once('error', rejectError);
+      }),
+      getTimeout(options)
+    );
+  }
+
+  get tx(): SubmittableExtrinsics<'promise'> {
+    return super.tx as SubmittableExtrinsics<'promise'>;
+  }
+
+  get derive(): Derives<'promise'> {
+    return super.derive as Derives<'promise'>;
+  }
+
+  /**
+   * Attestation CRML extention
+   */
+  get attestation(): Attestation {
+    // `injectPlugins` will override this getter.
+    throw new Error('Attestation plugin has not been injected.');
+  }
+
+  /**
+   * Generic Asset CRML extention
+   */
+  get genericAsset(): GenericAsset {
+    // `injectPlugins` will override this getter.
+    throw new Error('Generic Asset plugin has not been injected.');
+  }
+
+  /**
+   * Cennzx Spot CRML extention
+   */
+  get cennzxSpot(): CennzxSpot {
+    // `injectPlugins` will override this getter.
+    throw new Error('Cennzx Spot plugin has not been injected.');
+  }
+
+  constructor(_options: ApiOptions = {}) {
+    const options = {..._options};
+
+    if (typeof options.provider === 'string') {
+      options.provider = getProvider(options.provider);
     }
+    options.metadata = Object.assign(staticMetadata, options.metadata);
+    options.types = {...Types, ...options.types};
+    options.derives = mergeDeriveOptions(derives, options.derives);
 
-    get tx(): SubmittableExtrinsics<'promise'> {
-        return super.tx as SubmittableExtrinsics<'promise'>;
-    }
+    super(options as ApiOptionsBase);
 
-    get derive(): Derives<'promise'> {
-        return super.derive as Derives<'promise'>;
-    }
+    /// TODO: will reintroduce plugins later
+    // let plugins: IPlugin[] = options.plugins || [];
+    // try {
+    //     plugins = mergePlugins(plugins, getPlugins());
+    //     injectOption(options, plugins);
+    // } catch (e) {
+    //     logger.error('plugin loading failed');
+    // }
 
-    /**
-     * Attestation CRML extention
-     */
-    get attestation(): Attestation {
-        // `injectPlugins` will override this getter.
-        throw new Error('Attestation plugin has not been injected.');
-    }
-
-    /**
-     * Generic Asset CRML extention
-     */
-    get genericAsset(): GenericAsset {
-        // `injectPlugins` will override this getter.
-        throw new Error('Generic Asset plugin has not been injected.');
-    }
-
-    /**
-     * Cennzx Spot CRML extention
-     */
-    get cennzxSpot(): CennzxSpot {
-        // `injectPlugins` will override this getter.
-        throw new Error('Cennzx Spot plugin has not been injected.');
-    }
-
-    constructor(_options: ApiOptions = {}) {
-        const options = {..._options};
-
-        if (typeof options.provider === 'string') {
-            options.provider = getProvider(options.provider);
-        }
-        options.metadata = Object.assign(staticMetadata, options.metadata);
-        let plugins: IPlugin[] = options.plugins || [];
-        try {
-            plugins = mergePlugins(plugins, getPlugins());
-            injectOption(options, plugins);
-        } catch (e) {
-            logger.error('plugin loading failed');
-        }
-
-        options.types = {...Types, ...options.types};
-        options.derives = mergeDeriveOptions(derives, options.derives);
-
-        super(options as ApiOptionsBase);
-
-        if (plugins) {
-            injectPlugins(this, plugins);
-        }
-    }
-
-    decorateCennznetExtrinsics(): void {
-        decorateExtrinsics(this);
-    }
+    // if (plugins) {
+    //     injectPlugins(this, plugins);
+    // }
+  }
 }
 
 async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
-    if (timeoutMs === 0) {
-        return promise;
-    }
+  if (timeoutMs === 0) {
+    return promise;
+  }
 
-    return Promise.race<Api>([
-        promise,
-        new Promise<Api>((_, reject) => {
-            setTimeout(() => {
-                reject(new Error(`Timed out in ${timeoutMs} ms.`));
-            }, timeoutMs);
-        }),
-    ]);
+  return Promise.race<Api>([
+    promise,
+    new Promise<Api>((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`Timed out in ${timeoutMs} ms.`));
+      }, timeoutMs);
+    }),
+  ]);
 }

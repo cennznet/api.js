@@ -12,47 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import '@polkadot/types/injector';
-import {createTypeUnsafe, getTypeRegistry} from '@polkadot/types';
+import {createTypeUnsafe, TypeRegistry, u32} from '@polkadot/types';
 
 import * as gaTypes from './';
 import AssetOptions from './AssetOptions';
 import PermissionsV1 from './PermissionsV1';
+import ExchangeKey from '@cennznet/types/runtime/cennzx/ExchangeKey';
+import FeeRate from '@cennznet/types/runtime/cennzx/FeeRate';
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
-const registry = getTypeRegistry();
+const registry = new TypeRegistry();
 registry.register(gaTypes);
 
 describe('ga types', () => {
-    describe('Permission', () => {
-        it('empty permissions', () => {
-            const permission = createTypeUnsafe<PermissionsV1>('PermissionLatest', [{}]);
-            expect(permission.burn.isNone).toBeTruthy();
-            expect(permission.mint.isNone).toBeTruthy();
-            expect(permission.update.isNone).toBeTruthy();
-        });
-
-        it('full permissions', () => {
-            const permission = createTypeUnsafe<PermissionsV1>('PermissionLatest', [
-                {
-                    burn: BOB,
-                    mint: BOB,
-                    update: BOB,
-                },
-            ]);
-            expect(permission.burn.unwrap().toString()).toEqual(BOB);
-            expect(permission.mint.unwrap().toString()).toEqual(BOB);
-            expect(permission.update.unwrap().toString()).toEqual(BOB);
-        });
+  describe('Permission', () => {
+    it('empty permissions', () => {
+      const permission = createTypeUnsafe<PermissionsV1>(registry, 'PermissionLatest', [{}]);
+      expect(permission.burn.isNone).toBeTruthy();
+      expect(permission.mint.isNone).toBeTruthy();
+      expect(permission.update.isNone).toBeTruthy();
     });
 
-    it('AssetOptions', () => {
-        const assetOptions = createTypeUnsafe<AssetOptions>('AssetOptions', [
-            {
-                initialIssuance: 1000,
-            },
-        ]);
-        expect(assetOptions.initialIssuance.toNumber()).toEqual(1000);
+    it('full permissions', () => {
+      const permission = createTypeUnsafe<PermissionsV1>(registry, 'PermissionLatest', [
+        {
+          burn: BOB,
+          mint: BOB,
+          update: BOB,
+        },
+      ]);
+      expect(permission.burn.unwrap().toString()).toEqual(BOB);
+      expect(permission.mint.unwrap().toString()).toEqual(BOB);
+      expect(permission.update.unwrap().toString()).toEqual(BOB);
     });
+  });
+
+  it('AssetOptions', () => {
+    const assetOptions = createTypeUnsafe<AssetOptions>(registry, 'AssetOptions', [
+      {
+        initialIssuance: 1000,
+      },
+    ]);
+    expect(assetOptions.initialIssuance.toNumber()).toEqual(1000);
+  });
 });

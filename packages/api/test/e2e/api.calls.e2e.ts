@@ -13,7 +13,7 @@
 // limitations under the License.
 import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@polkadot/types/interfaces';
 import {HeaderExtended} from '@polkadot/api-derive';
-import {AssetId, Fee} from '@cennznet/types';
+import {AssetId, } from '@cennznet/types';
 import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e api calls', () => {
@@ -46,7 +46,7 @@ describe('e2e api calls', () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     const header = block.header;
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-    const extHeader = new HeaderExtended(header, validators);
+    const extHeader = new HeaderExtended(api.registry, header, validators);
     const author: AccountId = extHeader.author;
     expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
   });
@@ -64,8 +64,6 @@ describe('e2e api calls', () => {
       expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.isEpoch).toBe(true);
-      expect(currentSession.lastEraLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.lastLengthChange.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);

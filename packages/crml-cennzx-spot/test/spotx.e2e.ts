@@ -16,28 +16,13 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Api} from '@cennznet/api';
-import {SimpleKeyring, Wallet} from '@cennznet/wallet';
-import {GenericAsset} from '@cennznet/crml-generic-asset';
+import {Keyring} from '@polkadot/api';
 import BN from 'bn.js';
+import { TypeRegistry } from '@polkadot/types';
+import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {CennzxSpot} from '../src/CennzxSpot';
 import {MAX_U128} from '@cennznet/crml-cennzx-spot/constants';
-
-const investor = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
-};
-
-const investorOnLocal = {
-    address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-    uri: '//Bob',
-};
-
-const trader = investor;
-
-const recipient = {
-    //addressOnLocal: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
-    address: '5ESNjjzmZnnCdrrpUo9TBKhDV1sakTjkspw2ZGg84LAK1e1Y',
-};
+import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
 
 const passphrase = '';
 
@@ -49,19 +34,20 @@ const tradeAssetB = 17237;
 
 describe('SpotX APIs', () => {
     let api: Api;
-    let cennzxSpot: CennzxSpot;
-    let ga: GenericAsset;
+    let alice, bob;
+    const url = 'ws://localhost:9944';
+    const registry = new TypeRegistry();
     beforeAll(async () => {
-        api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
-        //api = await Api.create({provider: undefined});
-        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromUri(investor.uri);
-        const wallet = new Wallet();
-        await wallet.createNewVault(passphrase);
-        await wallet.addKeyring(simpleKeyring);
-        api.setSigner(wallet);
-        cennzxSpot = api.cennzxSpot;
-        ga = api.genericAsset;
+      await cryptoWaitReady();
+      const keyring = new Keyring({ type: 'sr25519' });
+      alice = keyring.addFromUri('//Alice');
+      bob = keyring.addFromUri('//Bob');
+      api = await Api.create(
+        {provider: url,
+          types: {
+            ExtrinsicSignatureV4: ExtrinsicSignatureV2,
+          },
+          registry});
     });
 
     afterAll(async () => {
@@ -74,11 +60,11 @@ describe('SpotX APIs', () => {
             /*** Prepare test data to ensure balance *********************/
             /************************************************************/
 
-            const {address} = investor;
+            const {address} = alice;
 
             const initialIssuance = 100000000;
             const permissions = {mint: address};
-            await ga.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
+            await api.genericAsset.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
                     if (status.isFinalized) {
                         let assetCreated = false;
                         let assetId;
@@ -91,14 +77,14 @@ describe('SpotX APIs', () => {
                             }
                         }
                         expect(assetCreated).toEqual(true);
-                        const assetBalance = await ga.getFreeBalance(assetId, address);
+                        const assetBalance = await api.genericAsset.getFreeBalance(assetId, address);
                         expect(assetBalance.toString()).toBe(initialIssuance.toString());
                         const coreAmount = initialIssuance/2;
                         const minLiquidity = 1;
-                        const investmentAmount = await cennzxSpot.liquidityPrice(assetId, coreAmount);
-                        expect((await ga.getFreeBalance(assetId, address)).gt(investmentAmount)).toBeTruthy();
-                        expect((await ga.getFreeBalance(coreAssetId, address)).gtn(coreAmount)).toBeTruthy();
-                        await cennzxSpot
+                        const investmentAmount = await api.cennzxSpot.liquidityPrice(assetId, coreAmount);
+                        expect((await api.genericAsset.getFreeBalance(assetId, address)).gt(investmentAmount)).toBeTruthy();
+                        expect((await api.genericAsset.getFreeBalance(coreAssetId, address)).gtn(coreAmount)).toBeTruthy();
+                        await api.cennzxSpot
                                 .addLiquidity(assetId, minLiquidity, investmentAmount, coreAmount)
                                 .signAndSend(address, async ({events, status}) => {
                                     if (status.isFinalized) {
@@ -113,7 +99,7 @@ describe('SpotX APIs', () => {
                                                 expect(
                                                     ((targetInvestAmount as unknown) as BN).lte(new BN(investmentAmount))
                                                 ).toBeTruthy();
-                                                const liquidity = await cennzxSpot.getLiquidityBalance(assetId, investor.address);
+                                                const liquidity = await api.cennzxSpot.getLiquidityBalance(assetId, alice.address);
                                                 expect(liquidity.gtn(0)).toBeTruthy();
                                             }
                                         }
@@ -130,14 +116,14 @@ describe('SpotX APIs', () => {
             /**************************************************************/
             /*** Prepare test data to ensure balance *********************/
             /************************************************************/
-            const {address} = investor;
+            const {address} = alice;
             const coreAmount = 1000;
-            expect((await ga.getFreeBalance(tradeAssetA, address)).gtn(coreAmount)).toBeTruthy();
-            const cennzbal = await ga.getFreeBalance(tradeAssetA, address);
-            const investmentAmount = await cennzxSpot.liquidityPrice(tradeAssetA, coreAmount);
-            expect((await ga.getFreeBalance(tradeAssetA, address)).gt(investmentAmount)).toBeTruthy();
+            expect((await api.genericAsset.getFreeBalance(tradeAssetA, address)).gtn(coreAmount)).toBeTruthy();
+            const cennzbal = await api.genericAsset.getFreeBalance(tradeAssetA, address);
+            const investmentAmount = await api.cennzxSpot.liquidityPrice(tradeAssetA, coreAmount);
+            expect((await api.genericAsset.getFreeBalance(tradeAssetA, address)).gt(investmentAmount)).toBeTruthy();
             const minLiquidity = 1;
-            await cennzxSpot
+            await api.cennzxSpot
                 .addLiquidity(tradeAssetA, minLiquidity, investmentAmount, coreAmount)
                 .signAndSend(address, async ({events, status}) => {
                     if (status.isFinalized) {
@@ -152,7 +138,7 @@ describe('SpotX APIs', () => {
                                 expect(
                                     ((targetInvestAmount as unknown) as BN).lte(new BN(investmentAmount))
                                 ).toBeTruthy();
-                                const liquidity = await cennzxSpot.getLiquidityBalance(tradeAssetA, address);
+                                const liquidity = await api.cennzxSpot.getLiquidityBalance(tradeAssetA, address);
                                 expect(liquidity.gtn(0)).toBeTruthy();
                             }
                         }
@@ -167,14 +153,14 @@ describe('SpotX APIs', () => {
             /**************************************************************/
             /*** Prepare test data to ensure balance *********************/
             /************************************************************/
-            const {address} = investor;
+            const {address} = alice;
             const coreAmount = 1000;
-            expect((await ga.getFreeBalance(tradeAssetB, address)).gtn(coreAmount)).toBeTruthy();
-            const cennzbal = await ga.getFreeBalance(tradeAssetB, address);
-            const investmentAmount = await cennzxSpot.liquidityPrice(tradeAssetB, coreAmount);
-            expect((await ga.getFreeBalance(tradeAssetB, address)).gt(investmentAmount)).toBeTruthy();
+            expect((await api.genericAsset.getFreeBalance(tradeAssetB, address)).gtn(coreAmount)).toBeTruthy();
+            const cennzbal = await api.genericAsset.getFreeBalance(tradeAssetB, address);
+            const investmentAmount = await api.cennzxSpot.liquidityPrice(tradeAssetB, coreAmount);
+            expect((await api.genericAsset.getFreeBalance(tradeAssetB, address)).gt(investmentAmount)).toBeTruthy();
             const minLiquidity = 1;
-            await cennzxSpot
+            await api.cennzxSpot
                 .addLiquidity(tradeAssetB, minLiquidity, investmentAmount, coreAmount)
                 .signAndSend(address, async ({events, status}) => {
                     if (status.isFinalized) {
@@ -189,7 +175,7 @@ describe('SpotX APIs', () => {
                                 expect(
                                     ((targetInvestAmount as unknown) as BN).lte(new BN(investmentAmount))
                                 ).toBeTruthy();
-                                const liquidity = await cennzxSpot.getLiquidityBalance(tradeAssetB, address);
+                                const liquidity = await api.cennzxSpot.getLiquidityBalance(tradeAssetB, address);
                                 expect(liquidity.gtn(0)).toBeTruthy();
                             }
                         }
@@ -202,19 +188,19 @@ describe('SpotX APIs', () => {
 
 
         it("Remove liquidity and receive 'RemoveLiquidity' event", async done => {
-            const totalLiquidityBefore = await cennzxSpot.getTotalLiquidity(tradeAssetA);
+            const totalLiquidityBefore = await api.cennzxSpot.getTotalLiquidity(tradeAssetA);
             const removeLiquidity = 10;
             expect(totalLiquidityBefore.gtn(removeLiquidity)).toBeTruthy();
-            const {coreAmount, assetAmount} = await cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
-            await cennzxSpot
+            const {coreAmount, assetAmount} = await api.cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
+            await api.cennzxSpot
                 .removeLiquidity(tradeAssetA, removeLiquidity, 1, 1)
-                .signAndSend(investor.address, async ({events, status}) => {
+                .signAndSend(alice, async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         let isRemoved = false;
                         for (const {event} of events) {
                             if (event.method === 'RemoveLiquidity') {
                                 isRemoved = true;
-                                const totalLiquidity = await cennzxSpot.getTotalLiquidity(tradeAssetA);
+                                const totalLiquidity = await api.cennzxSpot.getTotalLiquidity(tradeAssetA);
                                 expect(totalLiquidityBefore.subn(removeLiquidity)).toBeTruthy();
                                 const coreFromEvent = event.data[1];
                                 const assetFromEvent = event.data[3];
@@ -232,11 +218,11 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset to core for exact core asset amount', async done => {
         const amountBought = 50;
-        const expectedCorePrice = await cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
+        const expectedCorePrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
         const buffer = 1000;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapOutput(tradeAssetA, coreAssetId, amountBought, expectedCorePrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -254,11 +240,11 @@ describe('SpotX APIs', () => {
     });
     it('can trade from core to asset for exact trade asset amount', async done => {
         const amountBought = 50;
-        const expectedAssetPrice = await cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
+        const expectedAssetPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
         const buffer = 1000;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapOutput(coreAssetId, tradeAssetA, amountBought, expectedAssetPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -278,11 +264,11 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('can trade from core to asset for exact core asset amount', async done => {
         const sellAmount = 50;
-        const expectedAssetPrice = await cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
+        const expectedAssetPrice = await api.cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapInput(coreAssetId, tradeAssetA, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob.address, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -301,13 +287,13 @@ describe('SpotX APIs', () => {
     });
 
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
-    it.skip('Get core asset from seller and transfer trade asset to recipient for exact trade asset amount', async done => {
+    it.skip('Get core asset from seller and transfer trade asset to alice for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
+        const expectedPrice = await api.cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
-            .assetTransferInput(recipient.address, coreAssetId, tradeAssetA, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferInput(alice.address, coreAssetId, tradeAssetA, sellAmount, minReceive)
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -326,11 +312,11 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset to core for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedCorePrice = await cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
+        const expectedCorePrice = await api.cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapInput(tradeAssetA, coreAssetId, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -348,13 +334,13 @@ describe('SpotX APIs', () => {
             });
     });
 
-    it('Get trade asset from seller and transfer core asset to recipient for exact trade asset amount', async done => {
+    it('Get trade asset from seller and transfer core asset to alice for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
+        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
-            .assetTransferInput(recipient.address, tradeAssetA, coreAssetId, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferInput(alice.address, tradeAssetA, coreAssetId, sellAmount, minReceive)
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -371,13 +357,13 @@ describe('SpotX APIs', () => {
             });
     });
 
-    it('Get trade asset from buyer and transfer core asset to recipient for exact core asset amount', async done => {
+    it('Get trade asset from buyer and transfer core asset to alice for exact core asset amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
+        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
         const buffer = 100;
-        await cennzxSpot
-            .assetTransferOutput(recipient.address, tradeAssetA, coreAssetId, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferOutput(alice.address, tradeAssetA, coreAssetId, amountBought, expectedPrice.addn(buffer))
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -394,13 +380,13 @@ describe('SpotX APIs', () => {
             });
     });
 
-    it('Get core asset from buyer and transfer trade asset to recipient for exact trade asset amount', async done => {
+    it('Get core asset from buyer and transfer trade asset to alice for exact trade asset amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
+        const expectedPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
         const buffer = 100;
-        await cennzxSpot
-            .assetTransferOutput(recipient.address, coreAssetId, tradeAssetA, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferOutput(alice.address, coreAssetId, tradeAssetA, amountBought, expectedPrice.addn(buffer))
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -420,11 +406,11 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset "A" to asset "B" with exact asset B amount and max A amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
+        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
         const buffer = 100;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapOutput(tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -441,13 +427,13 @@ describe('SpotX APIs', () => {
             });
     });
 
-    it('can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to recipient', async done => {
+    it('can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to alice', async done => {
         const amountBought = 50;
-        const expectedPrice = await cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
+        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
         const buffer = 100;
-        await cennzxSpot
-            .assetTransferOutput(recipient.address, tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferOutput(alice.address, tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -467,11 +453,11 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('can trade from asset "A" to asset "B" with exact asset A amount and min B amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
+        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
+        await api.cennzxSpot
             .assetSwapInput(tradeAssetA, tradeAssetB, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -490,13 +476,13 @@ describe('SpotX APIs', () => {
     });
 
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
-    it.skip('can trade from asset "A" to asset "B" with exact asset A amount and min B amount and transfer asset "B" to recipient', async done => {
+    it.skip('can trade from asset "A" to asset "B" with exact asset A amount and min B amount and transfer asset "B" to alice', async done => {
         const sellAmount = 50;
-        const expectedPrice = await cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
+        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
         const minReceive = 1;
-        await cennzxSpot
-            .assetTransferInput(recipient.address, tradeAssetA, tradeAssetB, sellAmount, minReceive)
-            .signAndSend(trader.address, async ({events, status}) => {
+        await api.cennzxSpot
+            .assetTransferInput(alice.address, tradeAssetA, tradeAssetB, sellAmount, minReceive)
+            .signAndSend(bob, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     let trade = false;
                     for (const {event} of events) {
@@ -515,19 +501,19 @@ describe('SpotX APIs', () => {
 
     describe('queries', () => {
         it('Get Pool trade asset balance and try to get input price', async () => {
-            const poolAssetBalance = await cennzxSpot.getPoolAssetBalance(tradeAssetA);
-            const poolCoreBalance = await cennzxSpot.getPoolCoreAssetBalance(tradeAssetA);
+            const poolAssetBalance = await api.cennzxSpot.getPoolAssetBalance(tradeAssetA);
+            const poolCoreBalance = await api.cennzxSpot.getPoolCoreAssetBalance(tradeAssetA);
             expect(poolAssetBalance.gtn(0)).toBeTruthy();
             expect(poolCoreBalance.gtn(0)).toBeTruthy();
-            const maxPrice = await cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance);
+            const maxPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance);
             expect(maxPrice).toStrictEqual(new BN(MAX_U128));
             // console.log('Balance:'+poolCoreBalance);
             // console.log('Asset Balance:'+poolAssetBalance);
-            await expect(cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance.addn(1))).rejects.toThrow(
+            await expect(api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance.addn(1))).rejects.toThrow(
                 'Pool balance is low'
             );
-            await expect(cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance)).resolves;
-            await expect(cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, poolCoreBalance)).resolves;
+            await expect(api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance)).resolves;
+            await expect(api.cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, poolCoreBalance)).resolves;
         });
     });
 });

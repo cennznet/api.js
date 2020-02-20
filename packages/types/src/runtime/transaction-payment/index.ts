@@ -16,14 +16,14 @@ import {Enum, Struct} from '@polkadot/types';
 import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
 import {AssetId, Balance} from '@polkadot/types/interfaces/runtime';
-import {AnyJson, AnyJsonObject} from '@polkadot/types/types';
+import {Registry} from '@polkadot/types/types';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
  */
 export class FeeExchangeV1 extends Struct {
-  constructor(value?: any) {
-    super({assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
+  constructor(registry: Registry, value?: any) {
+    super(registry, {assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
   }
   get assetId(): AssetId {
     return this.get('assetId') as AssetId;
@@ -38,8 +38,8 @@ export class FeeExchangeV1 extends Struct {
 // export class FeeExchange extends Enum.with({FeeExchangeV1}) {}
 
 export class FeeExchange extends Enum {
-  constructor(value: any) {
-    super({FeeExchangeV1: FeeExchangeV1}, value);
+  constructor(registry: Registry, value: any) {
+    super(registry, {FeeExchangeV1}, value);
   }
 }
 
@@ -48,8 +48,8 @@ export class FeeExchange extends Enum {
  * when added to an extrinsic payload.
  */
 export class ChargeTransactionPayment extends Struct {
-  constructor(value: any) {
-    super({tip: 'Compact<Balance>', feeExchange: 'Option<FeeExchange>'}, value);
+  constructor(registry: Registry, value: any) {
+    super(registry, {tip: 'Compact<Balance>', feeExchange: 'Option<FeeExchange>'}, value);
   }
 
   get tip(): Compact<Balance> {

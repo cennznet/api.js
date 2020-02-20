@@ -14,9 +14,9 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import {Metadata} from '@polkadot/types';
 import initApiPromise from '../../../../jest/initApiPromise';
 import config from '../../../../config';
+import { Metadata } from '@polkadot/types';
 
 describe('e2e api create', () => {
   let api;
