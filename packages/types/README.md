@@ -1,5 +1,14 @@
 # @cennznet/types
 
+[21/02/2020]  Upgraded to polkadot's 1.1.1 version:
+
+- `@cennznet/api@0.20.7-dev.2` is the last version working with `cennznet/cennznet:1.0.0-rc2`;
+- `@cennznet/api@1.0.0-beta.**` (current stage) is working with [cennznet/cennznet:1.0.0-rc2][cennznet/cennznet:1.0.0-rc2];
+
+Changes made in beta version:
+
+- Upgraded to polkadot's 1.1.1 version. Support MultiSignature, registry, discontinue support to v1.
+
 [17/01/2020] Proper document to be added when 1.0.0 final is releasing, here is a quick note:
 
 - `@cennznet/types@0.20.7` is the last version working with `cennznet/cennznet:0.*.*`;

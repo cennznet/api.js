@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/wallet",
-    "version": "0.21.7",
+    "version": "1.0.0-beta.1",
     "description": "wallet implementation to use with cennznet",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [
@@ -18,9 +18,9 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
+        "@plugnet/wallet": "^0.20.0",
         "@polkadot/api": "^0.96.1",
         "@polkadot/types": "^0.96.1",
-        "@plugnet/wallet": "^0.20.0",
         "reflect-metadata": "^0.1.13"
     }
 }
