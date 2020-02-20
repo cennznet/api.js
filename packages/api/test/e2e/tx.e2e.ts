@@ -16,8 +16,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {AssetId, AssetOptions, FeeExchangeV1} from '@cennznet/types';
-import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature'
+import {AssetId, AssetOptions} from '@cennznet/types';
 import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';

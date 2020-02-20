@@ -1,7 +1,6 @@
 import {WsProvider} from '@polkadot/api';
 import config from '../config';
 import {Api as ApiPromise} from '../packages/api/src/Api';
-import ExtrinsicSignatureV2 from '../packages/types/src/extrinsic/v2/ExtrinsicSignature';
 import { TypeRegistry } from '@polkadot/types';
 
 const initApiPromise = async () => {

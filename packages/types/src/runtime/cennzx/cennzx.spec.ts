@@ -20,8 +20,6 @@ import FeeRate from './FeeRate';
 import {IExchangeKey} from './types';
 
 const registry = new TypeRegistry();
-// registry.register(typeof ExchangeKey, ExchangeKey);
-// registry.register(typeof FeeRate, FeeRate);
 registry.register(cennzxTypes);
 
 describe('cennzx types', () => {

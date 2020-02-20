@@ -269,7 +269,6 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       u8aConcat(new Uint8Array([1]), new Uint8Array(64).fill(0x42))
     );
 
-    // const payload = new ExtrinsicPayloadV2(this.registry, payloadValue);
     return this.injectSignature(signer, signature, payload);
   }
 

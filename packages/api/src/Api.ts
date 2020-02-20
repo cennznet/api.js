@@ -29,7 +29,7 @@ import {getTimeout} from './util/getTimeout';
 import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
 import logger from './util/logging';
 
-export const DEFAULT_TIMEOUT = 100000;
+export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {

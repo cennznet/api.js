@@ -20,7 +20,6 @@ import {Keyring} from '@polkadot/api';
 import {GenericAsset} from '../src/GenericAsset';
 import { Hash, Balance } from '@polkadot/types/interfaces';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
 import { TypeRegistry } from '@polkadot/types';
 import {AssetOptions} from '@cennznet/types';
 import testKeyring from '@polkadot/keyring/testing';
@@ -44,9 +43,6 @@ describe('Generic asset APIs', () => {
       bob = keyring.addFromUri('//Bob');
       api = await Api.create(
         {provider: url,
-          types: {
-            ExtrinsicSignatureV4: ExtrinsicSignatureV2,
-          },
           registry});
       const sudoKey = await api.query.sudo.key();
       const keyringTest = testKeyring();

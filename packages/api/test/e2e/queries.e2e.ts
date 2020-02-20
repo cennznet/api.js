@@ -18,10 +18,7 @@
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions} from '@cennznet/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import {Keyring, SubmittableResult} from '@polkadot/api';
-import {Api as ApiPromise} from '@cennznet/api';
-import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
-import {TypeRegistry} from '@polkadot/types';
+import {Keyring} from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 
