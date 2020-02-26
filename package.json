@@ -9,7 +9,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "polkadot-dev-build-ts",
+    "build": "yarn build:interfaces && polkadot-dev-build-ts && (cd packages/typegen && copyfiles scripts/* build)",
+    "build:interfaces": "polkadot-types-internal-interfaces",
+    "docs": "polkadot-types-internal-metadata && polkadot-dev-build-docs",
+    "chain:info": "polkadot-types-chain-info",
+    "clean": "polkadot-dev-clean-build",
+    "postinstall": "polkadot-dev-yarn-only",
     "test": "jest -c ./jest/unit.config.js --coverage",
     "test:integration": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
     "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
@@ -18,11 +23,11 @@
     "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/runtime-corejs3": "^7.7.6",
-    "@polkadot/dev": "^0.31.1",
-    "@polkadot/ts": "^0.1.86",
+    "@babel/core": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
+    "@polkadot/dev": "^0.41.3",
+    "@polkadot/ts": "^0.2.3",
     "@types/jest": "^23.3.10",
     "babel-jest": "^24.9.0",
     "core-js": "^3.4.8",
@@ -39,11 +44,12 @@
     "tslint": "^5.14.0",
     "tslint-microsoft-contrib": "^5.2.1",
     "typedoc": "^0.14.2",
-    "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo"
+    "typedoc-plugin-monorepo": "https://github.com/ianhe8x/typedoc-plugin-monorepo",
+    "copyfiles": "^2.2.0"
   },
   "resolutions": {
     "babel-core": "^7.0.0-bridge.0",
-    "typescript": "^3.7.2",
+    "typescript": "^3.8.2",
     "braces": "^2.3.2",
     "fstream": "^1.0.12",
     "handlebars": "^4.5.3",

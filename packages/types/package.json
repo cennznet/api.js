@@ -18,10 +18,12 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
+        "@babel/runtime": "^7.8.4",
         "@cennznet/util": "^0.20.7",
         "typescript": "^2.9.2",
         "@polkadot/types": "^1.1.1",
         "@polkadot/util": "^2.3.1",
+        "@polkadot/typegen": "1.3.1",
         "@polkadot/keyring": "^2.3.1",
         "memoizee": "^0.4.14"
     },

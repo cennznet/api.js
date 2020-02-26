@@ -1,20 +1,7 @@
 {
+  "extends": "./node_modules/@polkadot/dev/config/tsconfig",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2017",
-    "noImplicitAny": false,
-    "moduleResolution": "node",
-    "outDir": "build",
     "baseUrl": ".",
-    "types": ["node", "jest"],
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "lib": ["ES2017"],
-    "emitDecoratorMetadata": true,
-    "declaration": true,
-    "sourceMap": true,
-    "inlineSources": true,
     "paths": {
       "@cennznet/api/*": ["packages/api/src/*"],
       "@cennznet/api": ["packages/api/src/index"],
@@ -30,9 +17,13 @@
       "@cennznet/util": ["packages/util/src/index"],
       "@cennznet/wallet/*": ["packages/wallet/src/*"],
       "@cennznet/wallet": ["packages/wallet/src/index"]
-    }
+    },
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./node_modules/@polkadot/ts",
+      "./node_modules/@types"
+    ]
   },
-  "include": ["packages/**/*", "scripts/*.ts", "config"],
-  "exclude": ["**/node_modules/**"],
-  "typeRoots": ["./node_modules/@types"]
+  "exclude": ["build/**/*",
+    "**/build/**/*"]
 }
