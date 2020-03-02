@@ -18,8 +18,8 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@polkadot/api": "^0.96.1",
-        "@polkadot/types": "^0.96.1",
+        "@polkadot/api": "1.1.1",
+        "@polkadot/types": "1.1.1",
         "@plugnet/wallet": "^0.20.0",
         "reflect-metadata": "^0.1.13"
     }

@@ -12,50 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyAddress, AnyNumber, CodecArg, IHash} from '@cennznet/types/types';
+import {Hash} from '@cennznet/types/interfaces';
+import {AnyAddress, AnyNumber, CodecArg} from '@cennznet/types/types';
 import BN from 'bn.js';
 import {Observable} from 'rxjs';
 
 export interface CodecArgObject {
-    [index: string]: CodecArg;
+  [index: string]: CodecArg;
 }
 
 export enum AssetType {
-    STAKING = 'staking',
-    SPENDING = 'spending',
-    RESERVE = 'reserve',
-    USER = 'user',
+  STAKING = 'staking',
+  SPENDING = 'spending',
+  RESERVE = 'reserve',
+  USER = 'user',
 }
 
 export interface IAsset {
-    id: number;
-    symbol: string;
-    /**
-     * @deprecated decimals will always be 18, and we expose it in constants.ts
-     */
-    decimals: number;
-    type: AssetType;
+  id: number;
+  symbol: string;
+  /**
+   * @deprecated decimals will always be 18, and we expose it in constants.ts
+   */
+  decimals: number;
+  type: AssetType;
 }
 
 export interface AssetOptionsValue extends CodecArgObject {
-    initialIssuance: AnyNumber;
-    permissions?: {
-        update?: AnyAddress;
-        mint?: AnyAddress;
-        burn?: AnyAddress;
-    };
+  initialIssuance: AnyNumber;
+  permissions?: {
+    update?: AnyAddress;
+    mint?: AnyAddress;
+    burn?: AnyAddress;
+  };
 }
 
 export interface QueryableGetBalance {
-    (assetId: AnyNumber, address: AnyAddress): Promise<BN>;
+  (assetId: AnyNumber, address: AnyAddress): Promise<BN>;
 
-    (assetId: AnyNumber, address: AnyAddress, cb: any): Promise<() => any>;
+  (assetId: AnyNumber, address: AnyAddress, cb: any): Promise<() => any>;
 
-    at(hash: IHash, assetId: AnyNumber, address: AnyAddress): Promise<BN>;
+  at(hash: Hash, assetId: AnyNumber, address: AnyAddress): Promise<BN>;
 }
 
 export interface QueryableGetBalanceRx {
-    (assetId: AnyNumber, address: AnyAddress): Observable<BN>;
+  (assetId: AnyNumber, address: AnyAddress): Observable<BN>;
 
-    at(hash: IHash, assetId: AnyNumber, address: AnyAddress): Observable<BN>;
+  at(hash: Hash, assetId: AnyNumber, address: AnyAddress): Observable<BN>;
 }

@@ -17,7 +17,7 @@ import {Wallet as Base} from '@plugnet/wallet';
 import {requireUnlocked, waitForCryptoReady} from '@plugnet/wallet/decorators';
 import {IWallet, WalletOption} from '@plugnet/wallet/types';
 import {Signer, SignerResult} from '@polkadot/api/types';
-import {createType} from '@polkadot/types';
+import {createType, TypeRegistry} from '@polkadot/types';
 import {u8aToHex} from '@polkadot/util';
 import {HDKeyring} from './keyrings/HDKeyring';
 
@@ -43,7 +43,8 @@ export class Wallet extends Base implements Signer, IWallet {
   @waitForCryptoReady
   async signPayload(payload: SignerPayloadJSON): Promise<SignerResult> {
     const {address, version} = payload;
-    const hexPayload = u8aToHex(createType('ExtrinsicPayload', payload, {version}).toU8a(true));
+    const registry = new TypeRegistry();
+    const hexPayload = u8aToHex(createType(registry, 'ExtrinsicPayload', payload, {version}).toU8a(true));
     return this.signRaw({type: 'payload', data: hexPayload, address});
   }
 }

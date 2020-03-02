@@ -32,7 +32,6 @@ import {
   ApiOptions as ApiOptionsBase,
   SignerOptions as SignerOptionsBase,
   SubmittableExtrinsic,
-  SubmittableResultImpl,
   SubmittableResultResult,
   SubmittableResultSubscription,
   UnsubscribePromise,
