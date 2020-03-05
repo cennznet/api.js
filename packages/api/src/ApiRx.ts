@@ -92,7 +92,7 @@ export class ApiRx extends ApiRxBase {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...Types, ...options.types};
-    options.derives = mergeDeriveOptions(derives, options.derives);
+    options.derives = mergeDeriveOptions(derives as any, options.derives);
 
     super(options as ApiOptionsBase);
 

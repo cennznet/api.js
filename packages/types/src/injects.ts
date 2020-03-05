@@ -19,6 +19,7 @@ export default {
   ...runtimeTypes,
   ...extrinsicTypes,
   AssetOf: 'u128',
+  Address: 'AccountId',
   'ed25519::Signature': 'H512',
   RewardBalance: 'Balance',
   Doughnut: Doughnut,
