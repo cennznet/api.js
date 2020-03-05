@@ -899,56 +899,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cennznet/api@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/api/-/api-0.20.7.tgz#3ec2dfc6a8ae77b316e65304516a77a654cc62e1"
-  integrity sha512-X4a902Mu8hlmeAn7++s1utrVgkpPrXqO9cIH/Cmfk0pXED0zcIulo4yIXVGo3AnIXrOPSLTWlGD/umqwAltpyw==
-  dependencies:
-    "@cennznet/crml-attestation" "^0.20.7"
-    "@cennznet/crml-cennzx-spot" "^0.20.7"
-    "@cennznet/crml-generic-asset" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@plugnet/api" "^0.90.104"
-    "@plugnet/api-metadata" "^0.90.104"
-    "@plugnet/rpc-core" "^0.90.104"
-    "@plugnet/rpc-provider" "^0.90.104"
-    "@plugnet/types" "^0.90.104"
-    eventemitter3 "^4.0.0"
-
-"@cennznet/crml-attestation@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-attestation/-/crml-attestation-0.20.7.tgz#acbd6cb923acb4389181f4685fc086d27716e954"
-  integrity sha512-IcobLkwYVJKae/o3ngBwA1m43U74Flrt33cpf2EVSVSrRMLdQ45ejWR+e8UWpi6ekwNWCvnZI7Sy7dbBQjvnCA==
-
-"@cennznet/crml-cennzx-spot@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-cennzx-spot/-/crml-cennzx-spot-0.20.7.tgz#0bd69facc1fa436670ec7afed1d5085a930552f0"
-  integrity sha512-cN3rzYJLmtZLRQldnK71VpOqx7RUQBw/Alc183l3oQzPcAKv2rKQ/tdpNOt0QokHXWfunZFf/joEJ3pRbT0k2A==
-  dependencies:
-    "@cennznet/api" "^0.20.7"
-    "@cennznet/crml-generic-asset" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@cennznet/util" "^0.20.7"
-
-"@cennznet/crml-generic-asset@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-generic-asset/-/crml-generic-asset-0.20.7.tgz#0675b76fb85f63dc70c9d4301fafc1e6bdc1104b"
-  integrity sha512-4+V1Y98w1iOr/NAB9JieA0AJ3xLRYaIBqMe06AA572G+wx7EM8ZOw35/g5eypJUWYGezLXF9D6ysPI4yYND4Ew==
-  dependencies:
-    "@cennznet/api" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@cennznet/util" "^0.20.7"
-
-"@cennznet/types@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/types/-/types-0.20.7.tgz#d4faca42e4904d3b91654097a310f605c7df30ed"
-  integrity sha512-n52W7QAfhowDR3fSMLO8fmWCYIVvEuUqO+MImjcG9OpdLBHUUU2RQc/BufxyEI9F+tf0y6mFkYnCITVNtFcRtg==
-  dependencies:
-    "@cennznet/util" "^0.20.7"
-    "@plugnet/types" "^0.90.104"
-    "@plugnet/util" "^1.1.100"
-    memoizee "^0.4.14"
-
 "@cennznet/wallet@^0.20.7":
   version "0.20.7"
   resolved "https://registry.yarnpkg.com/@cennznet/wallet/-/wallet-0.20.7.tgz#df23e7e893b5ff6bb4c059ef54334b963698694b"
