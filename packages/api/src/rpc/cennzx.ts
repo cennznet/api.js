@@ -4,7 +4,7 @@ import createMethod from '@polkadot/jsonrpc/create/method';
 import createParam from '@polkadot/jsonrpc/create/param';
 
 const buyPrice: RpcMethodOpt = {
-  description: 'Retrieves the exchange price (buy price)',
+  description: 'Retrieves the spot exchange buy price',
   isOptional: true,
   params: [
     createParam('AssetToBuy', 'AssetId'),
@@ -15,7 +15,7 @@ const buyPrice: RpcMethodOpt = {
 };
 
 const sellPrice: RpcMethodOpt = {
-  description: 'Retrieves the exchange price (sell price)',
+  description: 'Retrieves the spot exchange sell price',
   isOptional: true,
   params: [
     createParam('AssetToSell', 'AssetId'),
