@@ -21,6 +21,7 @@ import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
 import derives from './derives';
 import getPlugins from './plugins';
+import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
 import {mergeDeriveOptions} from './util/derives';
@@ -96,6 +97,7 @@ export class Api extends ApiPromise {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...Types, ...options.types};
     options.derives = mergeDeriveOptions(derives, options.derives);
+    options.rpc = {...(rpc as any), ...options.rpc};
 
     super(options as ApiOptionsBase);
 
