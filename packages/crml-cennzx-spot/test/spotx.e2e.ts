@@ -218,7 +218,7 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset to core for exact core asset amount', async done => {
         const amountBought = 50;
-        const expectedCorePrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
+        const expectedCorePrice = await api.rpc.cennzx.buyPrice(tradeAssetA, amountBought, coreAssetId);
         const buffer = 1000;
         await api.cennzxSpot
             .assetSwapOutput(tradeAssetA, coreAssetId, amountBought, expectedCorePrice.addn(buffer))
@@ -240,7 +240,7 @@ describe('SpotX APIs', () => {
     });
     it('can trade from core to asset for exact trade asset amount', async done => {
         const amountBought = 50;
-        const expectedAssetPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
+        const expectedAssetPrice = await api.rpc.cennzx.buyPrice(coreAssetId, amountBought, tradeAssetA);
         const buffer = 1000;
         await api.cennzxSpot
             .assetSwapOutput(coreAssetId, tradeAssetA, amountBought, expectedAssetPrice.addn(buffer))
@@ -264,7 +264,7 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('can trade from core to asset for exact core asset amount', async done => {
         const sellAmount = 50;
-        const expectedAssetPrice = await api.cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
+        const expectedAssetPrice = await api.rpc.cennzx.sellPrice(coreAssetId, sellAmount, tradeAssetA);
         const minReceive = 1;
         await api.cennzxSpot
             .assetSwapInput(coreAssetId, tradeAssetA, sellAmount, minReceive)
@@ -289,7 +289,7 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('Get core asset from seller and transfer trade asset to alice for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await api.cennzxSpot.getInputPrice(coreAssetId, tradeAssetA, sellAmount);
+        const expectedPrice = await api.rpc.cennzx.sellPrice(coreAssetId, sellAmount, tradeAssetA);
         const minReceive = 1;
         await api.cennzxSpot
             .assetTransferInput(alice.address, coreAssetId, tradeAssetA, sellAmount, minReceive)
@@ -312,7 +312,7 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset to core for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedCorePrice = await api.cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
+        const expectedCorePrice = await api.rpc.cennzx.sellPrice(tradeAssetA, sellAmount, coreAssetId);
         const minReceive = 1;
         await api.cennzxSpot
             .assetSwapInput(tradeAssetA, coreAssetId, sellAmount, minReceive)
@@ -336,7 +336,7 @@ describe('SpotX APIs', () => {
 
     it('Get trade asset from seller and transfer core asset to alice for exact trade asset amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, coreAssetId, sellAmount);
+        const expectedPrice = await api.rpc.cennzx.sellPrice(tradeAssetA, sellAmount, coreAssetId);
         const minReceive = 1;
         await api.cennzxSpot
             .assetTransferInput(alice.address, tradeAssetA, coreAssetId, sellAmount, minReceive)
@@ -359,7 +359,7 @@ describe('SpotX APIs', () => {
 
     it('Get trade asset from buyer and transfer core asset to alice for exact core asset amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, coreAssetId, amountBought);
+        const expectedPrice = await api.rpc.cennzx.buyPrice(tradeAssetA, amountBought, coreAssetId);
         const buffer = 100;
         await api.cennzxSpot
             .assetTransferOutput(alice.address, tradeAssetA, coreAssetId, amountBought, expectedPrice.addn(buffer))
@@ -382,7 +382,7 @@ describe('SpotX APIs', () => {
 
     it('Get core asset from buyer and transfer trade asset to alice for exact trade asset amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, amountBought);
+        const expectedPrice = await api.rpc.cennzx.buyPrice(coreAssetId, amountBought, tradeAssetA);
         const buffer = 100;
         await api.cennzxSpot
             .assetTransferOutput(alice.address, coreAssetId, tradeAssetA, amountBought, expectedPrice.addn(buffer))
@@ -406,7 +406,7 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset "A" to asset "B" with exact asset B amount and max A amount', async done => {
         const amountBought = 50;
-        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
+        const expectedPrice = await api.rpc.cennzx.buyPrice(tradeAssetA, amountBought, tradeAssetB);
         const buffer = 100;
         await api.cennzxSpot
             .assetSwapOutput(tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
@@ -429,7 +429,7 @@ describe('SpotX APIs', () => {
 
     it('can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to alice', async done => {
         const amountBought = 50;
-        const expectedPrice = await api.cennzxSpot.getOutputPrice(tradeAssetA, tradeAssetB, amountBought);
+        const expectedPrice = await api.rpc.cennzx.buyPrice(tradeAssetA, amountBought, tradeAssetB);
         const buffer = 100;
         await api.cennzxSpot
             .assetTransferOutput(alice.address, tradeAssetA, tradeAssetB, amountBought, expectedPrice.addn(buffer))
@@ -453,7 +453,7 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('can trade from asset "A" to asset "B" with exact asset A amount and min B amount', async done => {
         const sellAmount = 50;
-        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
+        const expectedPrice = await api.rpc.cennzx.sellPrice(tradeAssetA, sellAmount, tradeAssetB);
         const minReceive = 1;
         await api.cennzxSpot
             .assetSwapInput(tradeAssetA, tradeAssetB, sellAmount, minReceive)
@@ -478,7 +478,7 @@ describe('SpotX APIs', () => {
     // TODO: Once RIMU is deployed with latest CENNZnet node then undo the skip and test
     it.skip('can trade from asset "A" to asset "B" with exact asset A amount and min B amount and transfer asset "B" to alice', async done => {
         const sellAmount = 50;
-        const expectedPrice = await api.cennzxSpot.getInputPrice(tradeAssetA, tradeAssetB, sellAmount);
+        const expectedPrice = await api.rpc.cennzx.sellPrice(tradeAssetA, sellAmount, tradeAssetB);
         const minReceive = 1;
         await api.cennzxSpot
             .assetTransferInput(alice.address, tradeAssetA, tradeAssetB, sellAmount, minReceive)
@@ -505,7 +505,7 @@ describe('SpotX APIs', () => {
             const poolCoreBalance = await api.cennzxSpot.getPoolCoreAssetBalance(tradeAssetA);
             expect(poolAssetBalance.gtn(0)).toBeTruthy();
             expect(poolCoreBalance.gtn(0)).toBeTruthy();
-            const maxPrice = await api.cennzxSpot.getOutputPrice(coreAssetId, tradeAssetA, poolAssetBalance);
+            const maxPrice = await api.rpc.cennzx.buyPrice(coreAssetId, sellAmount, tradeAssetA);
             expect(maxPrice).toStrictEqual(new BN(MAX_U128));
             // console.log('Balance:'+poolCoreBalance);
             // console.log('Asset Balance:'+poolAssetBalance);

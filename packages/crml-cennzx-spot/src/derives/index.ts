@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {outputPrice, outputPriceAt} from './outputPrice';
-export {inputPrice, inputPriceAt} from './inputPrice';
 export {liquidityBalance, liquidityBalanceAt} from './liquidityBalance';
 export {totalLiquidity, totalLiquidityAt} from './totalLiquidity';
 export {exchangeAddress} from './exchangeAddress';
