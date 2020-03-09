@@ -18,229 +18,202 @@ import {AssetId} from '@cennznet/types';
 import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
 import {
-    QueryableGetAssetWithdrawn,
-    QueryableGetLiquidityBalance,
-    QueryableGetLiquidityBalancePrice,
-    QueryableGetPoolBalance,
-    QueryablePrice,
-    QueryableTotalLiquidityBalance,
+  QueryableGetAssetWithdrawn,
+  QueryableGetLiquidityBalance,
+  QueryableGetLiquidityBalancePrice,
+  QueryableGetPoolBalance,
+  QueryableTotalLiquidityBalance,
 } from './types';
 
 // tslint:disable:member-ordering
 export class CennzxSpot {
-    private _api: Api;
+  private _api: Api;
 
-    constructor(api: Api) {
-        assert(
-            (api as any)._options.derives.cennzxSpot || ((api as any)._derive || {}).cennzxSpot,
-            "init cennzx spot's derives first"
-        );
-        this._api = api;
-    }
+  constructor(api: Api) {
+    assert(
+      (api as any)._options.derives.cennzxSpot || ((api as any)._derive || {}).cennzxSpot,
+      "init cennzx spot's derives first"
+    );
+    this._api = api;
+  }
 
-    get api(): Api {
-        return this._api;
-    }
+  get api(): Api {
+    return this._api;
+  }
 
-    /**
-     * add liquidity
-     * @param {assetId} - The trade asset ID
-     * @param {minLiquidity} - The minimum liquidity to add
-     * @param {maxAssetAmount} - Amount of trade asset to add
-     * @param {coreAmount} - Amount of core asset to add
-     */
-    addLiquidity(
-        assetId: AnyAssetId,
-        minLiquidity: AnyNumber,
-        maxAssetAmount: AnyNumber,
-        coreAmount: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.addLiquidity(assetId, minLiquidity, maxAssetAmount, coreAmount);
-    }
+  /**
+   * add liquidity
+   * @param {assetId} - The trade asset ID
+   * @param {minLiquidity} - The minimum liquidity to add
+   * @param {maxAssetAmount} - Amount of trade asset to add
+   * @param {coreAmount} - Amount of core asset to add
+   */
+  addLiquidity(
+    assetId: AnyAssetId,
+    minLiquidity: AnyNumber,
+    maxAssetAmount: AnyNumber,
+    coreAmount: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.addLiquidity(assetId, minLiquidity, maxAssetAmount, coreAmount);
+  }
 
-    /**
-     * remove liquidity
-     * @param assetId - The asset to remove
-     * @param assetAmount - Amount of exchange asset to burn
-     * @param minAssetWithdraw - The minimum trade asset withdrawn
-     * @param minCoreWithdraw - The minimum core asset withdrawn
-     */
-    removeLiquidity(
-        assetId: AnyAssetId,
-        assetAmount: AnyNumber,
-        minAssetWithdraw: AnyNumber,
-        minCoreAssetWithdraw: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.removeLiquidity(assetId, assetAmount, minAssetWithdraw, minCoreAssetWithdraw);
-    }
+  /**
+   * remove liquidity
+   * @param assetId - The asset to remove
+   * @param assetAmount - Amount of exchange asset to burn
+   * @param minAssetWithdraw - The minimum trade asset withdrawn
+   * @param minCoreWithdraw - The minimum core asset withdrawn
+   */
+  removeLiquidity(
+    assetId: AnyAssetId,
+    assetAmount: AnyNumber,
+    minAssetWithdraw: AnyNumber,
+    minCoreAssetWithdraw: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.removeLiquidity(assetId, assetAmount, minAssetWithdraw, minCoreAssetWithdraw);
+  }
 
-    /**
-     * Buy AssetBought using AssetSold
-     * @param assetSold The asset to pay with
-     * @param assetBuy The asset to Buy
-     * @param amountBought amount to buy
-     * @param maxAmountSold maximum amount to pay
-     */
-    assetSwapOutput(
-        assetSold: AnyAssetId,
-        assetBought: AnyAssetId,
-        amountBought: AnyNumber,
-        maxAmountSold: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.assetSwapOutput(null, assetSold, assetBought, amountBought, maxAmountSold);
-    }
+  /**
+   * Buy AssetBought using AssetSold
+   * @param assetSold The asset to pay with
+   * @param assetBuy The asset to Buy
+   * @param amountBought amount to buy
+   * @param maxAmountSold maximum amount to pay
+   */
+  assetSwapOutput(
+    assetSold: AnyAssetId,
+    assetBought: AnyAssetId,
+    amountBought: AnyNumber,
+    maxAmountSold: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.assetSwapOutput(null, assetSold, assetBought, amountBought, maxAmountSold);
+  }
 
-    /**
-     * Buy AssetBought using AssetSold and transfer AssetBought to recipient
-     * @param recipient - The address that receives the output asset
-     * @param assetSold The asset to sell
-     * @param assetBuy The asset to buy
-     * @param amountBought amount of asset 2 to buy
-     * @param maxAmountSold maximum amount of asset allowed to sell
-     */
-    assetTransferOutput(
-        recipient: AnyAddress,
-        assetSold: AnyAssetId,
-        assetBought: AnyAssetId,
-        amountBought: AnyNumber,
-        maxAmountSold: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.assetSwapOutput(recipient, assetSold, assetBought, amountBought, maxAmountSold);
-    }
+  /**
+   * Buy AssetBought using AssetSold and transfer AssetBought to recipient
+   * @param recipient - The address that receives the output asset
+   * @param assetSold The asset to sell
+   * @param assetBuy The asset to buy
+   * @param amountBought amount of asset 2 to buy
+   * @param maxAmountSold maximum amount of asset allowed to sell
+   */
+  assetTransferOutput(
+    recipient: AnyAddress,
+    assetSold: AnyAssetId,
+    assetBought: AnyAssetId,
+    amountBought: AnyNumber,
+    maxAmountSold: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.assetSwapOutput(recipient, assetSold, assetBought, amountBought, maxAmountSold);
+  }
 
-    /**
-     * Sell AssetSold and gain AssetBought as payback
-     * @param assetSold The asset to sell
-     * @param assetBuy The asset to buy
-     * @param amountSell amount of trade asset 1 to sell
-     * @param minSale Min trade asset 2 to receive from sale (output)
-     */
-    assetSwapInput(
-        assetSold: AnyAssetId,
-        assetBought: AnyAssetId,
-        amountSell: AnyNumber,
-        minReceive: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.assetSwapInput(null, assetSold, assetBought, amountSell, minReceive);
-    }
+  /**
+   * Sell AssetSold and gain AssetBought as payback
+   * @param assetSold The asset to sell
+   * @param assetBuy The asset to buy
+   * @param amountSell amount of trade asset 1 to sell
+   * @param minSale Min trade asset 2 to receive from sale (output)
+   */
+  assetSwapInput(
+    assetSold: AnyAssetId,
+    assetBought: AnyAssetId,
+    amountSell: AnyNumber,
+    minReceive: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.assetSwapInput(null, assetSold, assetBought, amountSell, minReceive);
+  }
 
-    /**
-     * Sell AssetSold, gain AssetBought as payback then transfer to recipient
-     * @param recipient - The address that receives the output asset
-     * @param assetSold The asset to sell
-     * @param assetBuy The asset to buy
-     * @param amountSell amount of trade asset to sell
-     * @param minSale Min core asset to receive from sale (output)
-     */
-    assetTransferInput(
-        recipient: AnyAddress,
-        assetSold: AnyAssetId,
-        assetBought: AnyAssetId,
-        amountSell: AnyNumber,
-        minReceive: AnyNumber
-    ): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.cennzxSpot.assetSwapInput(recipient, assetSold, assetBought, amountSell, minReceive);
-    }
+  /**
+   * Sell AssetSold, gain AssetBought as payback then transfer to recipient
+   * @param recipient - The address that receives the output asset
+   * @param assetSold The asset to sell
+   * @param assetBuy The asset to buy
+   * @param amountSell amount of trade asset to sell
+   * @param minSale Min core asset to receive from sale (output)
+   */
+  assetTransferInput(
+    recipient: AnyAddress,
+    assetSold: AnyAssetId,
+    assetBought: AnyAssetId,
+    amountSell: AnyNumber,
+    minReceive: AnyNumber
+  ): SubmittableExtrinsic<'promise'> {
+    return this.api.tx.cennzxSpot.assetSwapInput(recipient, assetSold, assetBought, amountSell, minReceive);
+  }
 
-    /**
-     * query the price to buy amountBought asset
-     * @param assetSold assetId to sell
-     * @param assetBought assetId to buy
-     * @param amountBought amount of assetBought to buy
-     */
-    get getOutputPrice(): QueryablePrice {
-        const _fn = this.api.derive.cennzxSpot.outputPrice as QueryablePrice;
-        _fn.at = this.api.derive.cennzxSpot.outputPriceAt;
+  /**
+   * Query the total liquidity of an exchange pool
+   * @param assetId
+   */
+  get getTotalLiquidity(): QueryableTotalLiquidityBalance {
+    const _fn = this.api.derive.cennzxSpot.totalLiquidity as QueryableTotalLiquidityBalance;
+    _fn.at = this.api.derive.cennzxSpot.totalLiquidityAt;
 
-        return _fn;
-    }
+    return _fn;
+  }
 
-    /**
-     * query the price to sell asset of #amount
-     * @param assetSold assetId to sell
-     * @param assetBought assetId to buy
-     * @param amountSold amount of assetSold to sell
-     */
-    get getInputPrice(): QueryablePrice {
-        const _fn = this.api.derive.cennzxSpot.inputPrice as QueryablePrice;
-        _fn.at = this.api.derive.cennzxSpot.inputPriceAt;
+  /**
+   * Query the core asset id
+   */
+  get getCoreAssetId(): QueryableStorageEntry<'promise', AssetId> {
+    return this.api.query.cennzxSpot.coreAssetId as any;
+  }
 
-        return _fn;
-    }
+  /**
+   * Query liquidity balance for an account
+   * @param assetId The id of the asset
+   * @param address The address of the account
+   */
+  get getLiquidityBalance(): QueryableGetLiquidityBalance {
+    const _fn = this.api.derive.cennzxSpot.liquidityBalance as QueryableGetLiquidityBalance;
+    _fn.at = this.api.derive.cennzxSpot.liquidityBalanceAt;
 
-    /**
-     * Query the total liquidity of an exchange pool
-     * @param assetId
-     */
-    get getTotalLiquidity(): QueryableTotalLiquidityBalance {
-        const _fn = this.api.derive.cennzxSpot.totalLiquidity as QueryableTotalLiquidityBalance;
-        _fn.at = this.api.derive.cennzxSpot.totalLiquidityAt;
+    return _fn;
+  }
 
-        return _fn;
-    }
+  /**
+   * Query balance for an exchange pool
+   * @param assetId The id of the asset
+   */
+  get getPoolAssetBalance(): QueryableGetPoolBalance {
+    const _fn = this.api.derive.cennzxSpot.poolAssetBalance as QueryableGetPoolBalance;
+    _fn.at = this.api.derive.cennzxSpot.poolAssetBalanceAt;
 
-    /**
-     * Query the core asset id
-     */
-    get getCoreAssetId(): QueryableStorageEntry<'promise', AssetId> {
-        return this.api.query.cennzxSpot.coreAssetId as any;
-    }
+    return _fn;
+  }
 
-    /**
-     * Query liquidity balance for an account
-     * @param assetId The id of the asset
-     * @param address The address of the account
-     */
-    get getLiquidityBalance(): QueryableGetLiquidityBalance {
-        const _fn = this.api.derive.cennzxSpot.liquidityBalance as QueryableGetLiquidityBalance;
-        _fn.at = this.api.derive.cennzxSpot.liquidityBalanceAt;
+  /**
+   * Query balance for an exchange pool
+   * @param assetId The id of the asset
+   */
+  get getPoolCoreAssetBalance(): QueryableGetPoolBalance {
+    const _fn = this.api.derive.cennzxSpot.poolCoreAssetBalance as QueryableGetPoolBalance;
+    _fn.at = this.api.derive.cennzxSpot.poolCoreAssetBalanceAt;
 
-        return _fn;
-    }
+    return _fn;
+  }
 
-    /**
-     * Query balance for an exchange pool
-     * @param assetId The id of the asset
-     */
-    get getPoolAssetBalance(): QueryableGetPoolBalance {
-        const _fn = this.api.derive.cennzxSpot.poolAssetBalance as QueryableGetPoolBalance;
-        _fn.at = this.api.derive.cennzxSpot.poolAssetBalanceAt;
+  /**
+   * Query liquidity price for a core asset amount
+   * @param assetId The id of the asset
+   * @param coreAmount - the amount of core asset
+   */
+  get liquidityPrice(): QueryableGetLiquidityBalancePrice {
+    const _fn = this.api.derive.cennzxSpot.liquidityPrice as QueryableGetLiquidityBalancePrice;
+    _fn.at = this.api.derive.cennzxSpot.liquidityPriceAt;
 
-        return _fn;
-    }
+    return _fn;
+  }
 
-    /**
-     * Query balance for an exchange pool
-     * @param assetId The id of the asset
-     */
-    get getPoolCoreAssetBalance(): QueryableGetPoolBalance {
-        const _fn = this.api.derive.cennzxSpot.poolCoreAssetBalance as QueryableGetPoolBalance;
-        _fn.at = this.api.derive.cennzxSpot.poolCoreAssetBalanceAt;
+  /**
+   * Query asset withdrawn to get the max core and max asset which can we withdrawn with the input liquidity
+   * @param assetId The id of the asset
+   * @param liquidity - user liquidity
+   */
+  get assetToWithdraw(): QueryableGetAssetWithdrawn {
+    const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawn;
+    _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
 
-        return _fn;
-    }
-
-    /**
-     * Query liquidity price for a core asset amount
-     * @param assetId The id of the asset
-     * @param coreAmount - the amount of core asset
-     */
-    get liquidityPrice(): QueryableGetLiquidityBalancePrice {
-        const _fn = this.api.derive.cennzxSpot.liquidityPrice as QueryableGetLiquidityBalancePrice;
-        _fn.at = this.api.derive.cennzxSpot.liquidityPriceAt;
-
-        return _fn;
-    }
-
-    /**
-     * Query asset withdrawn to get the max core and max asset which can we withdrawn with the input liquidity
-     * @param assetId The id of the asset
-     * @param liquidity - user liquidity
-     */
-    get assetToWithdraw(): QueryableGetAssetWithdrawn {
-        const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawn;
-        _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
-
-        return _fn;
-    }
+    return _fn;
+  }
 }

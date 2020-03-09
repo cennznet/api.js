@@ -45,40 +45,6 @@ export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, asse
   return new Tuple(registry, [AssetId, AssetId], [coreAssetId, assetId]);
 }
 
-export function getOutputPrice(outputAmount: BN, inputReserve: BN, outputReserve: BN, feeRate: BN): BN {
-  if (inputReserve.isZero() || outputReserve.isZero() || outputAmount.gt(outputReserve)) {
-    //return new BN(0);
-    throw new Error('Pool balance is low');
-  }
-  if (outputAmount.eq(outputReserve)) {
-    return new BN(MAX_U128);
-  }
-  const output = inputReserve
-    .mul(outputAmount)
-    .div(outputReserve.sub(outputAmount))
-    .addn(1);
-  return feeRate
-    .mul(output)
-    .divn(PERMILL_BASE)
-    .add(output);
-}
-
-export function getInputPrice(inputAmount: BN, inputReserve: BN, outputReserve: BN, feeRate: BN): BN {
-  if (inputReserve.isZero() || outputReserve.isZero()) {
-    //return new BN(0);
-    throw new Error('Pool balance is low');
-  }
-  const divRate = feeRate.addn(PERMILL_BASE);
-  const inputAmountLessFee = inputAmount.muln(PERMILL_BASE).div(divRate);
-  const numerator = inputAmountLessFee.mul(outputReserve);
-  const denominator = inputAmountLessFee.add(inputReserve);
-  const price = numerator.div(denominator);
-  if (price.gte(outputReserve)) {
-    throw new Error('Pool balance is low');
-  }
-  return price;
-}
-
 export function getLiquidityPrice(coreAmount: BN, coreReserve: BN, assetReserve: BN) {
   if (coreReserve.isZero() || assetReserve.isZero()) {
     return coreAmount;
