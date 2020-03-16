@@ -1,6 +1,7 @@
 import {Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
+import {Balance} from '@polkadot/types/interfaces';
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
@@ -62,6 +63,54 @@ describe('CENNZX e2e queries/transactions', () => {
         expect(sellPrice.toNumber()).toBeGreaterThan(0);
         done();
       });
+
+      describe('feeExchange derive queries with positive flow', () => {
+        it('Query estimated fee in CENTRAPAY(default fee currency)', async done => {
+          const assetBalanceBefore: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
+          const extrinsic = api.tx.genericAsset
+            .transfer(PLUG, bob.address, 10000);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENTRAPAY, alice.address, null);
+
+          await extrinsic.signAndSend(alice,  async ({events, status}) => {
+            if (status.isFinalized) {
+              events.forEach(({phase, event: {data, method, section}}) => {
+                console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+              });
+              const assetBalanceAfter: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
+              expect(assetBalanceBefore.sub(assetBalanceAfter).toString()).toEqual(feeFromQuery.toString());
+              done();
+            }
+          });
+        });
+
+        it('Query estimated fee in different currency (CENNZ)', async done => {
+          const feeExchange = {
+            assetId: CENNZ,
+            maxPayment: '50000000000000000',
+          };
+          const transactionPayment = {
+            tip: 0,
+            feeExchange:  {
+              FeeExchangeV1: feeExchange,
+            },
+          };
+          const extrinsic = api.tx.genericAsset
+            .transfer(PLUG, bob.address, 10000);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENNZ, alice.address, transactionPayment);
+          await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
+            if (status.isFinalized) {
+              events.forEach(({phase, event: {data, method, section}}) => {
+                if (method === 'AssetPurchase') {
+                  const price = data[3];
+                  expect(feeFromQuery).toEqual(price);
+                }
+                console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+              });
+              done();
+            }
+          });
+        });
+      });
     });
 
     describe('Negative flow with no liquidity in pool', () => {
@@ -86,6 +135,27 @@ describe('CENNZX e2e queries/transactions', () => {
           'sellPrice(AssetToSell: AssetId, Amount: Balance, AssetToPayout: AssetId): Balance:: 2: Cannot exchange by requested amount.'
         );
         done();
+      });
+
+      describe('feeExchange derive queries with negative flow', () => {
+
+        it('Query estimated fee in different currency (PLUG)', async done => {
+          const feeExchange = {
+            assetId: PLUG,
+            maxPayment: '50000000000000000',
+          };
+          const transactionPayment = {
+            tip: 0,
+            feeExchange:  {
+              FeeExchangeV1: feeExchange,
+            },
+          };
+          const extrinsic = api.tx.genericAsset
+            .transfer(CENNZ, bob.address, 10000);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, PLUG, alice.address, transactionPayment);
+          expect(feeFromQuery).toEqual(new Error('buyPrice(AssetToBuy: AssetId, Amount: Balance, AssetToPay: AssetId): Balance:: 2: Cannot exchange for requested amount.: '));
+          done();
+        });
       });
     });
 

@@ -11,3 +11,5 @@ export const EMPTY_U8A = new Uint8Array();
 export const DEFAULT_VERSION = 4;
 
 export const IMMORTAL_ERA = new Uint8Array([0]);
+
+export const DEFAULT_FEE_ASSET = '16001';

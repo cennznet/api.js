@@ -69,7 +69,7 @@ describe('e2e queries', () => {
       const ex = await api.tx.genericAsset
         .transfer(16000, bob.address, 100);
       const payment =  await api.rpc.payment.queryInfo(ex.toHex());
-      console.log('Payment:', payment.weight.toString());
+      console.log('Payment:', payment.partialFee.toString());
       done();
     }, 10000000);
   });
