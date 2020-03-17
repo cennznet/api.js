@@ -1,6 +1,6 @@
 import {AnyAssetId} from '@cennznet/types/types';
 
-export function generateTransactionPayment(tip: number, assetId: AnyAssetId, maxPayment: string) {
+export function generateTransactionPayment({tip, assetId, maxPayment}) {
   const feeExchange = {
     assetId: assetId,
     maxPayment: maxPayment,
