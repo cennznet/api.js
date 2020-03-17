@@ -1,6 +1,6 @@
 import {ApiInterfaceRx} from '@cennznet/api/types';
-import {generateTransactionPayment} from '@cennznet/types';
 import Extrinsic from '@cennznet/types/extrinsic/Extrinsic';
+import {generateTransactionPayment} from '@cennznet/types/runtime/transaction-payment/TransactionPayment';
 import {AnyAssetId, IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {TypeRegistry} from '@polkadot/types';
