@@ -69,7 +69,7 @@ describe('CENNZX e2e queries/transactions', () => {
           const assetBalanceBefore: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
           const extrinsic = api.tx.genericAsset
             .transfer(PLUG, bob.address, 10000);
-          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENTRAPAY, alice.address, null);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENTRAPAY);
 
           await extrinsic.signAndSend(alice,  async ({events, status}) => {
             if (status.isFinalized) {
@@ -84,9 +84,10 @@ describe('CENNZX e2e queries/transactions', () => {
         });
 
         it('Query estimated fee in different currency (CENNZ)', async done => {
+          const maxPayment = '50000000000000000';
           const feeExchange = {
             assetId: CENNZ,
-            maxPayment: '50000000000000000',
+            maxPayment: maxPayment,
           };
           const transactionPayment = {
             tip: 0,
@@ -96,7 +97,7 @@ describe('CENNZX e2e queries/transactions', () => {
           };
           const extrinsic = api.tx.genericAsset
             .transfer(PLUG, bob.address, 10000);
-          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENNZ, alice.address, transactionPayment);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENNZ, maxPayment);
           await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
             if (status.isFinalized) {
               events.forEach(({phase, event: {data, method, section}}) => {
@@ -140,9 +141,10 @@ describe('CENNZX e2e queries/transactions', () => {
       describe('feeExchange derive queries with negative flow', () => {
 
         it('Query estimated fee in different currency (PLUG)', async done => {
+          const maxPayment = '50000000000000000';
           const feeExchange = {
             assetId: PLUG,
-            maxPayment: '50000000000000000',
+            maxPayment: maxPayment,
           };
           const transactionPayment = {
             tip: 0,
@@ -152,7 +154,7 @@ describe('CENNZX e2e queries/transactions', () => {
           };
           const extrinsic = api.tx.genericAsset
             .transfer(CENNZ, bob.address, 10000);
-          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, PLUG, alice.address, transactionPayment);
+          const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, PLUG, maxPayment);
           expect(feeFromQuery).toEqual(new Error('buyPrice(AssetToBuy: AssetId, Amount: Balance, AssetToPay: AssetId): Balance:: 2: Cannot exchange for requested amount.: '));
           done();
         });
