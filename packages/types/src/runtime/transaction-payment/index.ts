@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {AnyAssetId} from '@cennznet/types/types';
 import {Enum, Struct} from '@polkadot/types';
 import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
@@ -59,4 +60,18 @@ export class ChargeTransactionPayment extends Struct {
   get feeExchange(): Option<FeeExchange> {
     return this.get('feeExchange') as Option<FeeExchange>;
   }
+}
+
+export function generateTransactionPayment(tip: number, assetId: AnyAssetId, maxPayment: string) {
+  const feeExchange = {
+    assetId: assetId,
+    maxPayment: maxPayment,
+  };
+  const transactionPayment = {
+    tip: tip,
+    feeExchange: {
+      FeeExchangeV1: feeExchange,
+    },
+  };
+  return transactionPayment;
 }
