@@ -2,6 +2,7 @@ import {Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance} from '@polkadot/types/interfaces';
+import {generateTransactionPayment} from '@cennznet/api/util/FeeExchange';
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
@@ -85,16 +86,7 @@ describe('CENNZX e2e queries/transactions', () => {
 
         it('Query estimated fee in different currency (CENNZ)', async done => {
           const maxPayment = '50000000000000000';
-          const feeExchange = {
-            assetId: CENNZ,
-            maxPayment: maxPayment,
-          };
-          const transactionPayment = {
-            tip: 0,
-            feeExchange:  {
-              FeeExchangeV1: feeExchange,
-            },
-          };
+          const transactionPayment = generateTransactionPayment(0, CENNZ, maxPayment);
           const extrinsic = api.tx.genericAsset
             .transfer(PLUG, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, CENNZ, maxPayment);
@@ -142,16 +134,6 @@ describe('CENNZX e2e queries/transactions', () => {
 
         it('Query estimated fee in different currency (PLUG)', async done => {
           const maxPayment = '50000000000000000';
-          const feeExchange = {
-            assetId: PLUG,
-            maxPayment: maxPayment,
-          };
-          const transactionPayment = {
-            tip: 0,
-            feeExchange:  {
-              FeeExchangeV1: feeExchange,
-            },
-          };
           const extrinsic = api.tx.genericAsset
             .transfer(CENNZ, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee(extrinsic, PLUG, maxPayment);

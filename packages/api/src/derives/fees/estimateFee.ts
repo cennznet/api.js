@@ -1,10 +1,9 @@
 import {ApiInterfaceRx} from '@cennznet/api/types';
+import {generateTransactionPayment} from '@cennznet/api/util/FeeExchange';
 import Extrinsic from '@cennznet/types/extrinsic/Extrinsic';
-import {ChargeTransactionPayment} from '@cennznet/types/runtime/transaction-payment';
 import {AnyAssetId, IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {TypeRegistry} from '@polkadot/types';
-import {Address} from '@polkadot/types/interfaces';
 import {RuntimeDispatchInfo} from '@polkadot/types/interfaces/rpc';
 import ExtrinsicEra from '@polkadot/types/primitive/Extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
@@ -12,7 +11,8 @@ import {combineLatest, Observable, of} from 'rxjs';
 import {catchError, first, map, switchMap} from 'rxjs/operators';
 
 export function estimateFee(api: ApiInterfaceRx) {
-  /* To estimate fee correctly using extrinsic's fake signature */
+  // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
+  // This is because fees are currently based on the byte length of the extrinsic
   return (extrinsic: IExtrinsic, userFeeAssetId: AnyAssetId, maxPayment?: string): Observable<any> => {
     return combineLatest([
       api.rpc.state.getRuntimeVersion(),
@@ -30,20 +30,10 @@ export function estimateFee(api: ApiInterfaceRx) {
           });
           const nonce = null;
           const sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-          const feeExchange = {
-            assetId: userFeeAssetId,
-            maxPayment: maxPayment,
-          };
           const transactionPayment =
             userFeeAssetId.toString() === networkFeeAssetId.toString()
               ? null
-              : {
-                  tip: 0,
-                  feeExchange: {
-                    FeeExchangeV1: feeExchange,
-                  },
-                };
-
+              : generateTransactionPayment(0, userFeeAssetId, maxPayment);
           const payload = {runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment};
           (extrinsic as Extrinsic).signFake(sender, payload as any);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
