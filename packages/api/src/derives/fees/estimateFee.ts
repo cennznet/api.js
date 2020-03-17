@@ -13,6 +13,19 @@ import {catchError, first, map, switchMap} from 'rxjs/operators';
 // This interface is to determine fee estimate for any transaction that is going to be executed..
 // The estimate can be in any currency(userFeeAssetId) provided there is enough liquidity in the exchange pool for that currency.
 // In case user wants to know estimated fee in different currency, the interface also needs the maxPayment that can used from currency as fee.
+// Scenarios when this function can be useful
+// 1. User wants to show its Dapp user's, price the extrinsic will cost in default currency
+//   const extrinsic = api.tx.genericAsset
+//             .transfer(assetId, address, amount);
+//   const userFeeAssetId = '16001' // default spending asset
+//   const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId})
+// 2. Dapp user's desire to pay fee in different asset(not the default fee asset)
+//    const extrinsic = api.tx.genericAsset
+//              .transfer(assetId, address, amount);
+//    const userFeeAssetId = '16005' // asset to pay fee in
+//    const maxPayment = 'xxx' // Max amount user is ok to pay in 'fee asset'
+//    const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId, maxPayment}) // this will only be successful if their is enough liquidity of users asset in exchange pool
+
 export function estimateFee(api: ApiInterfaceRx) {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
