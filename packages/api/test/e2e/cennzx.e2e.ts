@@ -2,7 +2,7 @@ import {Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance} from '@polkadot/types/interfaces';
-import {generateTransactionPayment} from '@cennznet/api/util/FeeExchange';
+import {generateTransactionPayment} from '@cennznet/types';
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
