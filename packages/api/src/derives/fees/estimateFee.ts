@@ -10,10 +10,13 @@ import BN from 'bn.js';
 import {combineLatest, Observable, of} from 'rxjs';
 import {catchError, first, map, switchMap} from 'rxjs/operators';
 
+// This interface is to determine fee estimate for any transaction that is going to be executed..
+// The estimate can be in any currency(userFeeAssetId) provided there is enough liquidity in the exchange pool for that currency.
+// In case user wants to know estimated fee in different currency, the interface also needs the maxPayment that can used from currency as fee.
 export function estimateFee(api: ApiInterfaceRx) {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
-  return (extrinsic: IExtrinsic, userFeeAssetId: AnyAssetId, maxPayment?: string): Observable<any> => {
+  return ({extrinsic, userFeeAssetId, maxPayment}): Observable<any> => {
     return combineLatest([
       api.rpc.state.getRuntimeVersion(),
       api.rpc.chain.getBlockHash(),
@@ -29,13 +32,13 @@ export function estimateFee(api: ApiInterfaceRx) {
             period: 1,
           });
           const nonce = null;
-          const sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+          const fake_sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
           const transactionPayment =
             userFeeAssetId.toString() === networkFeeAssetId.toString()
               ? null
-              : generateTransactionPayment(0, userFeeAssetId, maxPayment);
+              : generateTransactionPayment({tip: 0, assetId: userFeeAssetId, maxPayment});
           const payload = {runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment};
-          (extrinsic as Extrinsic).signFake(sender, payload as any);
+          (extrinsic as Extrinsic).signFake(fake_sender, payload as any);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }
       ),
