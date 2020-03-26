@@ -18,5 +18,6 @@ import {Plugin as CrmlCennzx} from '@cennznet/crml-cennzx-spot';
 import {Plugin as CrmlGenericAsset} from '@cennznet/crml-generic-asset';
 
 export default function getPlugins(): IPlugin[] {
-    return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
+  // @ts-ignore
+  return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
 }

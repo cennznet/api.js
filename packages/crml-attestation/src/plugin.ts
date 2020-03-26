@@ -15,11 +15,11 @@
 import {IPlugin} from '@cennznet/api/types';
 import {Attestation} from './Attestation';
 import {AttestationRx} from './AttestationRx';
-
+// @ts-ignore
 export default {
-    injectName: 'attestation',
-    sdkClass: Attestation,
-    sdkRxClass: AttestationRx,
-    types: {},
-    derives: {},
+  injectName: 'attestation',
+  sdkClass: Attestation,
+  sdkRxClass: AttestationRx,
+  types: {},
+  derives: {},
 } as IPlugin;
