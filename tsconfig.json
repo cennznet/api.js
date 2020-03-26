@@ -30,7 +30,8 @@
       "@cennznet/util": ["packages/util/src/index"],
       "@cennznet/wallet/*": ["packages/wallet/src/*"],
       "@cennznet/wallet": ["packages/wallet/src/index"]
-    }
+    },
+    "skipLibCheck": true
   },
   "include": ["packages/**/*", "scripts/*.ts", "config"],
   "exclude": ["**/node_modules/**"],
