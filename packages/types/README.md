@@ -1,4 +1,12 @@
 # @cennznet/types
+[27/03/2020]  1.0.0 version:
+
+ - `@cennznet/api@1.0.0` (current stage) is working with [cennznet/cennznet:latest][cennznet/cennznet:latest];
+
+Changes made in this version:
+ 
+- changed Address: 'AccountId'
+- Support MultiSignature, registry, fee exchange, discontinue support to v1.
 
 [17/01/2020] Proper document to be added when 1.0.0 final is releasing, here is a quick note:
 
