@@ -13,8 +13,9 @@
 
 Changes made in this version:
  
-- Derived query for estimating fee is updated
-- New format to use fee exchange 
+- Derived query for estimating fee is updated.
+- New format to use fee exchange.
+```
     const feeExchange = {
                         assetId: feeAssetId,
                         maxPayment: '50000000000000000',
@@ -25,8 +26,9 @@ Changes made in this version:
                             FeeExchangeV1: feeExchange,
                         },
                     };
-- CENNZX rpc call to get price queries
-- Removed plugnet dependencies
+```
+- CENNZX rpc call to get price queries.
+- Removed plugnet dependencies.
 - Support MultiSignature, registry, discontinue support to v1.
 
 [17/01/2020] Proper document to be added when 1.0.0 final is releasing, here is a quick note:

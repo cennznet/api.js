@@ -17,7 +17,7 @@ Changes made in this version:
 Changes made in alpha version:
 
 - Updated `Extrinsic` types
-  - Added `ChargeTransactionPayment` type, which contains `tip (default 0)` and `FeeExchange (default None)`;
+- Added `ChargeTransactionPayment` type, which contains `tip (default 0)` and `FeeExchange (default None)`;
 - Changed dependencies from `@plugnet/api` to `@polkadot/types@0.96.1` (breaking changes were introduced in `@polkadot/types@0.97.1`, which could be upgraded in beta releases);
 
 [cennznet/cennznet:1.0.0-rc1]: https://hub.docker.com/r/cennznet/cennznet/tags
