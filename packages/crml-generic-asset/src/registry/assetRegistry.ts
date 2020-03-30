@@ -15,6 +15,8 @@
 import {defaultAssets} from '../constants';
 import {IAsset} from '../types';
 
+console.log('assssssssset Registry');
+
 export function findAssetById(assetId: number): IAsset | undefined {
     return defaultAssets.find(asset => asset.id === assetId);
 }

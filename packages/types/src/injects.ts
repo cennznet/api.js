@@ -15,6 +15,8 @@ import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
 import * as runtimeTypes from './runtime';
 
+console.log('injects~~~');
+
 export default {
   ...runtimeTypes,
   ...extrinsicTypes,
