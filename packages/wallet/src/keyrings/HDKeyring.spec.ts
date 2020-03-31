@@ -17,7 +17,7 @@ import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {IKeyring} from '@plugnet/wallet/types';
 
 import {HDKeyring} from './HDKeyring';
-// skipping the wallet related test - will fix with this task (https://centralitydev.atlassian.net/browse/IN-124)
+// skipping the wallet related test - will fix later as a task
 describe.skip('HDKeyring', () => {
   beforeAll(async () => {
     await cryptoWaitReady();

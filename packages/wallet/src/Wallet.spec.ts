@@ -37,7 +37,7 @@ const TEST_SIG_OPTS_V1 = {
   genesisHash: GENESIS_HASH,
   runtimeVersion: {} as any, //runtimeVersion is not used in v1
 };
-// skipping the wallet related test - will fix with this task (https://centralitydev.atlassian.net/browse/IN-124)
+// skipping the wallet related test - will fix later in task
 describe.skip('a wallet', () => {
   let wallet: Wallet;
   let testExtrinsic: IExtrinsic;
