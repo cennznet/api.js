@@ -18,11 +18,13 @@ import {GenericAsset} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
 import {ApiPromise} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import Metadata from '@polkadot/metadata/Metadata';
+import {TypeRegistry} from '@polkadot/types';
 
 import derives from './derives';
 import getPlugins from './plugins';
 import rpc from './rpc';
-import staticMetadata from './staticMetadata';
+import metadataStatic from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
@@ -34,7 +36,10 @@ export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
-    const api = new Api(options);
+    const registry = new TypeRegistry();
+    const metadata = new Metadata(registry, metadataStatic);
+
+    const api = new Api({...options, metadata});
     return withTimeout(
       new Promise((resolve, reject) => {
         const rejectError = err => {
@@ -90,11 +95,13 @@ export class Api extends ApiPromise {
 
   constructor(_options: ApiOptions = {}) {
     const options = {..._options};
+    const registry = new TypeRegistry();
+    const metadata = new Metadata(registry, metadataStatic);
 
     if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
-    options.metadata = Object.assign(staticMetadata, options.metadata);
+    options.metadata = options.metadata || metadata;
     options.types = {...Types, ...options.types};
     options.derives = mergeDeriveOptions(derives, options.derives);
     options.rpc = {...(rpc as any), ...options.rpc};

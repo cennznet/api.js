@@ -61,6 +61,7 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
    * default 10000 ms, 0 indicates no limit
    */
   timeout?: number;
+  metadata?: any;
 }
 
 export interface IPlugin {

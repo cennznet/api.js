@@ -60,5 +60,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx tslint -c tslint.json --project ."
     }
+  },
+  "dependencies": {
+    "@polkadot/metadata": "^1.8.1"
   }
 }

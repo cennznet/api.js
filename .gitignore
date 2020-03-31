@@ -13,3 +13,6 @@ api_docs
 .tmp
 tmp
 jest_cache
+
+.yalc/
+yalc.lock
