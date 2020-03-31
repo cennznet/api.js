@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import {StorageHasherV11} from '@cennznet/types/extrinsic/types';
 import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
 import metadata from './metaDataTypes';
