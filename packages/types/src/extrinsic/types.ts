@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Option from '@polkadot/types/codec/Option';
+import {Option} from '@polkadot/types/codec';
 import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
-import {MultiSignature} from '@polkadot/types/interfaces';
 import {
   AnyNumber,
   AnyU8a,

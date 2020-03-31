@@ -13,11 +13,13 @@
 // limitations under the License.
 import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
+import metadata from './metaDataTypes';
 import * as runtimeTypes from './runtime';
 
 export default {
   ...runtimeTypes,
   ...extrinsicTypes,
+  ...metadata,
   AssetOf: 'u128',
   Address: 'AccountId',
   'ed25519::Signature': 'H512',
