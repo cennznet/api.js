@@ -24,7 +24,8 @@ describe('e2e api create', () => {
 
   it('For local environment - checking if static metadata is same as latest', async () => {
     api = await initApiPromise();
-
+    console.log('GENESIS HASH::', api.genesisHash.toHex());
+    console.log('SPEC VERSION::', api.runtimeVersion.specVersion.toNumber());
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(api.registry, meta).toJSON());
