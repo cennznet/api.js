@@ -108,42 +108,6 @@ describe('e2e transactions', () => {
         });
     });
 
-    it('makes a tx with statusCb', async done => {
-      const totalSupply = 100;
-      const assetIdBefore = (await api.query.genericAsset.nextAssetId()) as AssetId;
-      const reservedIdStart: number = 17000;
-      const assetOptions = new AssetOptions(api.registry, {
-        initialIssuance: totalSupply,
-        permissions: {
-          update: null,
-          mint: null,
-          burn: null,
-        },
-      });
-
-      const sudoKey = await api.query.sudo.key();
-      const keyring = testKeyring();
-      // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
-      const sudoPair = keyring.getPair(sudoKey.toString());
-
-      await api.tx.sudo
-        .sudo(api.tx.genericAsset
-          .create(alice.address,
-            assetOptions
-          ))
-        .signAndSend(sudoPair, async ({events, status}: SubmittableResult) => {
-          if (status.isFinalized) {
-            const assetIdAfter = (await api.query.genericAsset.nextAssetId()) as AssetId;
-            // expect
-            expect(assetIdAfter.gt(assetIdBefore)).toBeTruthy();
-            // We don't know the reservedIdStart on node
-            //expect(Number(assetIdAfter.toString())).toBeGreaterThan(reservedIdStart);
-            //expect(Number(assetIdBefore.toString())).toBeGreaterThan(reservedIdStart);
-            done();
-          }
-        });
-    });
-
     describe('feeExchange extrinsic', () => {
       it('use keypair to sign', async done => {
         const feeExchange = {
