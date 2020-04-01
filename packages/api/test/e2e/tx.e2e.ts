@@ -19,7 +19,6 @@
 import {AssetId, AssetOptions} from '@cennznet/types';
 import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 const minFee = 30000000000000;
 const feeAssetId = '16002';
