@@ -1,7 +1,7 @@
 import {WsProvider} from '@polkadot/api';
+import {TypeRegistry} from '@polkadot/types';
 import config from '../config';
 import {Api as ApiPromise} from '../packages/api/src/Api';
-import { TypeRegistry } from '@polkadot/types';
 
 const initApiPromise = async () => {
   const providerUrl = config.wsProvider[`${process.env.TEST_TYPE}`] || 'ws://localhost:9944';
@@ -10,11 +10,11 @@ const initApiPromise = async () => {
   console.log('providerUrl', providerUrl);
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
-  const api = await ApiPromise.create(
-    {
-      provider: wsProvider,
-      registry
-    });
+  const api = await ApiPromise.create({
+    provider: wsProvider,
+    registry,
+  });
+
   await api.isReady;
 
   return api;

@@ -11,12 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import Metadata from '@polkadot/metadata/Metadata';
+import {TypeRegistry} from '@polkadot/types';
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import initApiPromise from '../../../../jest/initApiPromise';
 import config from '../../../../config';
-import { Metadata } from '@polkadot/types';
+import metadataStatic from '../../../../packages/api/src/staticMetadata';
 
 describe('e2e api create', () => {
   let api;
@@ -28,6 +29,20 @@ describe('e2e api create', () => {
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(meta).toJSON());
+  });
+
+  it('decodes latest cennznet properly', (): void => {
+    const registry = new TypeRegistry();
+    const metadata = new Metadata(registry, metadataStatic);
+    try {
+      expect(metadata.version).toBe('version');
+      expect((metadata[`asV${'version'}`]).modules.length).not.toBe(0);
+      expect(metadata.toJSON()).toEqual({});
+    } catch (error) {
+      console.error(JSON.stringify(metadata.toJSON()));
+
+      throw error;
+    }
   });
 
   afterEach(async () => {

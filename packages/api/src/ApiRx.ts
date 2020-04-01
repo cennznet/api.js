@@ -20,6 +20,9 @@ import {GenericAssetRx} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
 import {ApiRx as ApiRxBase} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import Metadata from '@polkadot/metadata/Metadata';
+import {TypeRegistry} from '@polkadot/types';
+
 import {fromEvent, Observable, race, throwError} from 'rxjs';
 import {switchMap, timeout} from 'rxjs/operators';
 
@@ -30,11 +33,12 @@ import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
-import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
-    const apiRx = new ApiRx(options);
+    const registry = new TypeRegistry();
+    const metadata = new Metadata(registry, staticMetadata);
+    const apiRx = new ApiRx({...options, metadata});
 
     const timeoutMs = getTimeout(options);
 
@@ -88,11 +92,15 @@ export class ApiRx extends ApiRxBase {
 
   constructor(_options: ApiOptions = {}) {
     const options = {..._options};
+    const registry = new TypeRegistry();
+    const metadata = new Metadata(registry, staticMetadata);
+
     if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
-    options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...options.types, ...Types};
+    options.metadata = options.metadata || metadata;
+
     options.derives = mergeDeriveOptions(derives as any, options.derives);
     options.rpc = {...(rpc as any), ...options.rpc};
 
