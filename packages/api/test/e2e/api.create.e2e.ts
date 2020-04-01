@@ -22,12 +22,12 @@ describe('e2e api create', () => {
   let api;
   let incorrectApi;
 
-  it.skip('For local environment - checking if static metadata is same as latest', async () => {
+  it('For local environment - checking if static metadata is same as latest', async () => {
     api = await initApiPromise();
 
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
-    expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(meta).toJSON());
+    expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(api.registry, meta).toJSON());
   });
 
   afterEach(async () => {
@@ -49,15 +49,15 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
-  it.skip('should get rejected if the connection fails', async () => {
+  it('should get rejected if the connection fails', async () => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
-    incorrectApi = await Api.create({provider: incorrectEndPoint});
-    await expect(incorrectApi).rejects.toBeDefined();
+    await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
+      'Connection fail');
   });
 
-  it.skip('should get rejected if it is not resolved in a specific period of time', async () => {
+  it('should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    incorrectApi = await Api.create({provider, timeout: 1});
-    await expect(incorrectApi).rejects.toBeDefined();
+    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
+      'Timed out in 1 ms.');
   });
 });

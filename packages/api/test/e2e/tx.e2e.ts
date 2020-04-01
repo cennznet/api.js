@@ -19,6 +19,7 @@
 import {AssetId, AssetOptions} from '@cennznet/types';
 import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
+import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 const minFee = 30000000000000;
 const feeAssetId = '16002';
@@ -107,7 +108,7 @@ describe('e2e transactions', () => {
         });
     });
 
-    it.skip('makes a tx with statusCb', async done => {
+    it('makes a tx with statusCb', async done => {
       const totalSupply = 100;
       const assetIdBefore = (await api.query.genericAsset.nextAssetId()) as AssetId;
       const reservedIdStart: number = 17000;
@@ -119,10 +120,18 @@ describe('e2e transactions', () => {
           burn: null,
         },
       });
-      // transfer
-      await api.tx.genericAsset
-        .create(assetOptions)
-        .signAndSend(alice.address, async ({events, status}: SubmittableResult) => {
+
+      const sudoKey = await api.query.sudo.key();
+      const keyring = testKeyring();
+      // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
+      const sudoPair = keyring.getPair(sudoKey.toString());
+
+      await api.tx.sudo
+        .sudo(api.tx.genericAsset
+          .create(alice.address,
+            assetOptions
+          ))
+        .signAndSend(sudoPair, async ({events, status}: SubmittableResult) => {
           if (status.isFinalized) {
             const assetIdAfter = (await api.query.genericAsset.nextAssetId()) as AssetId;
             // expect
