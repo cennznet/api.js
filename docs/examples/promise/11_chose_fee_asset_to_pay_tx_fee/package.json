@@ -1,5 +1,5 @@
 {
-  "name": "06_make_transfer",
+  "name": "11_chose_fee_asset",
   "version": "0.2.0",
   "description": "Example showing how to make a transfer",
   "main": "index.js",
