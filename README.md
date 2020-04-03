@@ -1,6 +1,6 @@
-# `CENNZNet SDK`
+# `CENNZnet API`
 
-> The Cennznet JavaScript API library for browsers and Node.js.
+> The CENNZnet JavaScript library for browsers and Node.js.
 
 ## Get started
 
@@ -9,7 +9,7 @@
 ## Release notes
 [27/03/2020]  1.0.0 version:
 
- - `@cennznet/api@1.0.0` (current stage) is working with [cennznet/cennznet:latest][cennznet/cennznet:latest];
+ - `@cennznet/api@1.0.0` compatible with `cennznet/cennznet:1.0.0`;
 
 Changes made in this version:
  
@@ -30,6 +30,7 @@ Changes made in this version:
 - CENNZX rpc call to get price queries.
 - Removed plugnet dependencies.
 - Support MultiSignature, registry, discontinue support to v1.
+- Disabled Wallet Support
 
 [17/01/2020] Proper document to be added when 1.0.0 final is releasing, here is a quick note:
 
@@ -56,13 +57,13 @@ Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_
 | [@cennznet/util](packages/util)     | cennznet specific utility functions                        |
 | [@cennznet/types](packages/types)   | cennznet specific type definitions                         |
 
-# Cennznet runtime module libraries
+# CENNZnet Runtime Module Plugins
 
 | Name                                                        | Description                                                          |
 | ----------------------------------------------------------- | -------------------------------------------------------------------- |
-| [@cennznet/crml-generic-asset](packages/crml-generic-asset) | A sdk providing additional features for generic asset runtime module |
-| [@cennznet/crml-cennzx-spot](packages/crml-cennzx-spot)     | A sdk providing additional features for cennzx spot runtime module   |
-| [@cennznet/crml-attestation](packages/crml-attestation)     | A sdk providing additional features for Cennznet's Identity Service. |
+| [@cennznet/crml-generic-asset](packages/crml-generic-asset) | An sdk providing additional features for generic asset runtime module |
+| [@cennznet/crml-cennzx-spot](packages/crml-cennzx-spot)     | An sdk providing additional features for cennzx spot runtime module   |
+| [@cennznet/crml-attestation](packages/crml-attestation)     | An sdk providing additional features for Cennznet's Identity Service. |
 
 # Examples
 
