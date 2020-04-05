@@ -19,6 +19,7 @@ import {Address, Call} from '@polkadot/types/interfaces/runtime';
 import {IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions} from '@polkadot/types/types';
 import {isU8a, u8aConcat} from '@polkadot/util';
 
+import {ExtrinsicV2SignatureOptions} from '@cennznet/types/extrinsic/types';
 import {ExtrinsicOptions} from '../types';
 import {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
 import ExtrinsicSignatureV2 from './ExtrinsicSignature';
@@ -120,7 +121,7 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
   /**
    * @describe Adds a fake signature to the extrinsic
    */
-  signFake(signer: Address | Uint8Array | string, options: SignatureOptions): ExtrinsicV2 {
+  signFake(signer: Address | Uint8Array | string, options: ExtrinsicV2SignatureOptions): ExtrinsicV2 {
     this.signature.signFake(this.method, signer, options);
 
     return this;
@@ -128,8 +129,9 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
   /**
    * @description Sign the extrinsic with a specific keypair
    */
-  sign(account: IKeyringPair, options: SignatureOptions): ExtrinsicV2 {
+  sign(account: IKeyringPair, options: ExtrinsicV2SignatureOptions): ExtrinsicV2 {
     this.signature.sign(this.method, account, options);
+    // console.log('Extra option:', JSON.stringify(options));
 
     return this;
   }
