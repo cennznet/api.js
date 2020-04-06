@@ -26,7 +26,7 @@ import {CennznetInterfaceTypes} from '../types';
 
 export interface ExtrinsicPayloadValueV2 {
   blockHash: AnyU8a;
-  doughnut: Option<Doughnut>;
+  doughnut?: Option<Doughnut>;
   era: AnyU8a | IExtrinsicEra;
   genesisHash: AnyU8a;
   method: AnyU8a | IMethod;

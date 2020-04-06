@@ -13,7 +13,7 @@ import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair, 
 import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/util';
 import {ChargeTransactionPayment, Index} from '../runtime';
 import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION} from './constants';
-import {SignatureOptions} from './types';
+import {ExtrinsicV2SignatureOptions, SignatureOptions} from './types';
 import ExtrinsicV2, {ExtrinsicValueV2} from './v2/Extrinsic';
 
 export type ExtrinsicImpl = ExtrinsicV2;
@@ -236,7 +236,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   /**
    * @description Sign the extrinsic with a specific keypair
    */
-  sign(account: IKeyringPair, options: SignatureOptions): Extrinsic {
+  sign(account: IKeyringPair, options: ExtrinsicV2SignatureOptions): Extrinsic {
     (this.raw as ExtrinsicImpl).sign(account, options);
 
     return this;
@@ -245,7 +245,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   /**
    * @describe Adds a fake signature to the extrinsic
    */
-  signFake(signer: Address | Uint8Array | string, options: SignatureOptions): Extrinsic {
+  signFake(signer: Address | Uint8Array | string, options: ExtrinsicV2SignatureOptions): Extrinsic {
     (this.raw as ExtrinsicImpl).signFake(signer, options);
 
     return this;

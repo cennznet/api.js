@@ -152,6 +152,7 @@ describe('e2e transactions', () => {
             events.forEach(({phase, event: {data, method, section}}) => {
               console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
             });
+            console.log('Extrinsic::', tx.toString());
             done();
           }
         });
