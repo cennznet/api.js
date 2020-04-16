@@ -27,7 +27,13 @@ const sellPrice: RpcMethodOpt = {
 
 const section = 'cennzx';
 
-export default [
-  {...createMethod(section, 'buyPrice', buyPrice), name: 'buyPrice'},
-  {...createMethod(section, 'sellPrice', sellPrice), name: 'sellPrice'},
-];
+export default {
+  isDeprecated: false,
+  isHidden: false,
+  description: 'CENNZX-spot',
+  section,
+  methods: {
+    buyPrice: createMethod(section, 'buyPrice', buyPrice),
+    sellPrice: createMethod(section, 'sellPrice', sellPrice),
+  },
+};
