@@ -1,18 +1,60 @@
 import {Keyring} from '@polkadot/api';
+import PolkadotApiPromise from '@polkadot/api/promise';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import initApiPromise from '../../../../jest/initApiPromise';
+import {TypeRegistry} from '@polkadot/types';
 import {Balance} from '@polkadot/types/interfaces';
 import {generateTransactionPayment} from '@cennznet/types/runtime/transaction-payment/TransactionPayment';
+
+import {provider} from '../../../../jest/initApiPromise';
+import types from '../../../types/src/injects';
+import derives from '../../../api/src/derives';
+
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
 
+const rpc = {
+  cennzx: [
+    {
+      name: 'buyPrice',
+      description: 'Retrieves the spot exchange buy price',
+      params: [
+        {name: 'AssetToBuy', type: 'AssetId'},
+        {name: 'Amount', type: 'Balance'},
+        {name: 'AssetToPay', type: 'AssetId'},
+      ],
+      type: 'Balance',
+    },
+    {
+      name: 'sellPrice',
+      description: 'Retrieves the spot exchange sell price',
+      params: [
+        {name: 'AssetToSell', type: 'AssetId'},
+        {name: 'Amount', type: 'Balance'},
+        {name: 'AssetToPayout', type: 'AssetId'},
+      ],
+      type: 'Balance',
+    },
+  ],
+};
+
 describe('CENNZX e2e queries/transactions', () => {
   let api;
   let alice, bob;
+
   beforeAll(async () => {
+    const registry = new TypeRegistry();
+
     await cryptoWaitReady();
-    api = await initApiPromise();
+
+    api = await new PolkadotApiPromise({
+      derives,
+      provider,
+      registry,
+      rpc,
+      types,
+    });
+
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
@@ -22,8 +64,7 @@ describe('CENNZX e2e queries/transactions', () => {
     api.disconnect();
   });
 
-  describe('Queries()', () => {
-
+  describe.skip('Queries()', () => {
     it("Deposit liquidity in CENNZ asset's pool", async done => {
         const amount = 30000000000000;
         const coreAmount = amount;
