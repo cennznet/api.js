@@ -1,3 +1,10 @@
+/**
+ * This is similar to type defination of cennzx
+ *
+ * Note: @polkadot/jsonrpc has been deprecated since version 1.8.1
+ *
+ * TODO: Get refactored by using types to make PRC decoration, once polkadot/api dependency is upgraded to 1.8.1 above
+ */
 import {RpcMethodOpt} from '@polkadot/jsonrpc/types';
 
 import createMethod from '@polkadot/jsonrpc/create/method';
@@ -27,7 +34,13 @@ const sellPrice: RpcMethodOpt = {
 
 const section = 'cennzx';
 
-export default [
-  {...createMethod(section, 'buyPrice', buyPrice), name: 'buyPrice'},
-  {...createMethod(section, 'sellPrice', sellPrice), name: 'sellPrice'},
-];
+export default {
+  isDeprecated: false,
+  isHidden: false,
+  description: 'CENNZX-spot',
+  section,
+  methods: {
+    buyPrice: createMethod(section, 'buyPrice', buyPrice),
+    sellPrice: createMethod(section, 'sellPrice', sellPrice),
+  },
+};

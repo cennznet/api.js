@@ -23,7 +23,6 @@ import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 import {fromEvent, Observable, race, throwError} from 'rxjs';
 import {switchMap, timeout} from 'rxjs/operators';
 
-import rpc from '@cennznet/api/rpc';
 import {DEFAULT_TIMEOUT} from './Api';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
@@ -94,7 +93,7 @@ export class ApiRx extends ApiRxBase {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...options.types, ...Types};
     options.derives = mergeDeriveOptions(derives as any, options.derives);
-    options.rpc = {...(rpc as any), ...options.rpc};
+    options.rpc = {...options.rpc};
 
     super(options as ApiOptionsBase);
 
