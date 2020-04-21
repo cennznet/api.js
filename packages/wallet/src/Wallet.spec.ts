@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createType, Metadata} from '@polkadot/types';
+import {createType, Metadata, TypeRegistry} from '@polkadot/types';
 import Call from '@polkadot/types/primitive/Generic/Call';
 import {IExtrinsic, SignerPayloadJSON} from '@polkadot/types/types';
 import {cryptoWaitReady} from '@polkadot/util-crypto';
@@ -47,14 +47,16 @@ describe.skip('a wallet', () => {
 
   beforeAll(async () => {
     const metadata = new Metadata(staticMetadata[Object.keys(staticMetadata)[0]]);
-    Call.injectMetadata(metadata);
+    // Need to fix wallet later.. this version of type's call object does not support injectMetadata
+    // Call.injectMetadata(metadata);
     await cryptoWaitReady();
   });
 
   beforeEach(async () => {
     wallet = new Wallet();
     await wallet.createNewVault(walletPassphase);
-    testExtrinsic = createType('Extrinsic', '0x010200ea51b75b00000000');
+    const registry = new TypeRegistry();
+    testExtrinsic = createType(registry, 'Extrinsic', '0x010200ea51b75b00000000');
   });
 
   describe('sign message', () => {

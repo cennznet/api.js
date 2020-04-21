@@ -14,9 +14,9 @@
 
 import {assert, isNumber} from '@polkadot/util';
 import BN from 'bn.js';
-import {stripEndZero} from '../format/stripEndZero';
+import {default as stripEndZero} from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';
-import {toFixed} from '../number/toFixed';
+import {default as toFixed} from '../number/toFixed';
 
 // tslint:disable prefer-const no-magic-numbers
 /**
@@ -25,17 +25,17 @@ import {toFixed} from '../number/toFixed';
  * @param decimals
  */
 export default function parseUnits(value: string | number, decimals: number): BN {
-    const strValue = isNumber(value) ? toFixed(value) : value;
-    let [intPart, fractionPart] = strValue.split('.');
-    assert(isSafeInteger(intPart), 'intPart not a integer');
-    let retValue = new BN(intPart).mul(new BN(10).pow(new BN(decimals)));
-    fractionPart = stripEndZero(fractionPart || '');
-    if (fractionPart && fractionPart !== '') {
-        assert(isSafeInteger(fractionPart), 'fractionPart not a integer');
-        if (fractionPart.length > decimals) {
-            throw new Error('too much decimals');
-        }
-        retValue = retValue.add(new BN(fractionPart).mul(new BN(10).pow(new BN(decimals - fractionPart.length))));
+  const strValue = isNumber(value) ? toFixed(value) : value;
+  let [intPart, fractionPart] = strValue.split('.');
+  assert(isSafeInteger(intPart), 'intPart not a integer');
+  let retValue = new BN(intPart).mul(new BN(10).pow(new BN(decimals)));
+  fractionPart = stripEndZero(fractionPart || '');
+  if (fractionPart && fractionPart !== '') {
+    assert(isSafeInteger(fractionPart), 'fractionPart not a integer');
+    if (fractionPart.length > decimals) {
+      throw new Error('too much decimals');
     }
-    return retValue;
+    retValue = retValue.add(new BN(fractionPart).mul(new BN(10).pow(new BN(decimals - fractionPart.length))));
+  }
+  return retValue;
 }

@@ -1,45 +1,53 @@
 {
-  "name": "@cennznet/api",
-  "version": "1.0.0",
-  "description": "cennznet's javascript client",
-  "keywords": [
-    "CENNZNet"
-  ],
-  "author": "ian.he <ian.he@centrality.ai>",
-  "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
-  "license": "Apache-2.0",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/cennznet/api.js.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
-    "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
-  },
-  "dependencies": {
-    "@cennznet/crml-attestation": "^1.0.0",
-    "@cennznet/crml-cennzx-spot": "^1.0.0",
-    "@cennznet/crml-generic-asset": "^1.0.0",
-    "@cennznet/types": "^1.0.0",
-    "@polkadot/api": "^1.1.1",
-    "@polkadot/metadata": "1.1.1",
-    "@polkadot/rpc-core": "^1.1.1",
-    "@polkadot/rpc-provider": "^1.1.1",
-    "@polkadot/types": "^1.1.1",
-    "eventemitter3": "^4.0.0"
-  },
-  "resolution": {
-    "@polkadot/keyring": "^1.6.1"
-  },
-  "devDependencies": {
-    "@cennznet/wallet": "^0.20.7",
-    "@types/jest": "^23.3.5",
-    "jest": "24.1.0",
-    "rimraf": "^2.6.2",
-    "ts-mockito": "^2.3.1",
-    "typedoc": "^0.13.0",
-    "typedoc-plugin-markdown": "^1.1.19"
-  }
+    "name": "@cennznet/api",
+    "version": "1.0.0",
+    "description": "cennznet's javascript client",
+    "keywords": [
+        "CENNZNet"
+    ],
+    "author": "ian.he <ian.he@centrality.ai>",
+    "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
+    "license": "Apache-2.0",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/cennznet/api.js.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1",
+        "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
+    },
+    "dependencies": {
+        "@cennznet/crml-attestation": "1.0.0",
+        "@cennznet/crml-cennzx-spot": "1.0.0",
+        "@cennznet/crml-generic-asset": "1.0.0",
+        "@polkadot/api-derive": "1.2.1",
+        "@cennznet/types": "1.0.0",
+        "@polkadot/api": "1.2.1",
+        "@polkadot/metadata": "1.2.1",
+        "@polkadot/rpc-core": "1.2.1",
+        "@polkadot/rpc-provider": "1.2.1",
+        "@polkadot/types": "1.2.1",
+        "@polkadot/jsonrpc": "1.2.1",
+        "eventemitter3": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/jest": "^23.3.5",
+        "jest": "24.1.0",
+        "rimraf": "^2.6.2",
+        "ts-mockito": "^2.3.1",
+        "typedoc": "^0.13.0",
+        "typedoc-plugin-markdown": "^1.1.19"
+    },
+    "bundledDependencies": [
+        "@cennznet/types",
+        "@polkadot/api-derive",
+        "@polkadot/api",
+        "@polkadot/metadata",
+        "@polkadot/rpc-core",
+        "@polkadot/rpc-provider",
+        "@polkadot/types",
+        "@polkadot/jsonrpc"
+    ]
 }

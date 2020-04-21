@@ -16,9 +16,9 @@
   },
   "scripts": {},
   "dependencies": {
-    "@cennznet/api": "^1.0.0",
-    "@cennznet/types": "^1.0.0",
-    "@cennznet/util": "^1.0.0"
+    "@cennznet/api": "1.0.0",
+    "@cennznet/types": "1.0.0",
+    "@cennznet/util": "1.0.0"
   },
   "devDependencies": {
     "@cennznet/wallet": "^0.20.7",
