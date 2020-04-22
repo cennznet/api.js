@@ -101,25 +101,12 @@ export class AcceptPayload extends Struct {
 const registry = new TypeRegistry();
 export class DeviceId extends ClassOf(registry, 'u32') {}
 
-export class PreKeyBundle extends ClassOf(registry, 'Bytes') {
-  constructor(values) {
-    super(values);
-  }
-}
+export class PreKeyBundle extends ClassOf(registry, 'Bytes') {}
 
 // Response enum constructors
 class DeviceIdResponse extends DeviceId {}
-class WithdrawnPreKeyBundle extends Tuple.with(['AccountId', 'u32', 'Bytes']) {
-  constructor(values) {
-    super(values);
-  }
+class WithdrawnPreKeyBundle extends Tuple.with(['AccountId', 'u32', 'Bytes']) {}
 
-  toJSON() {
-    const values = this.toArray();
-    const [accountId, deviceId, pkb] = values;
-    return [u8aToHex(accountId.toU8a(), -1, false), deviceId.toJSON(), u8aToHex(pkb.toU8a(true))];
-  }
-}
 class PreKeyBundlesResponse extends Vec.with(WithdrawnPreKeyBundle) {}
 
 export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse}) {}
