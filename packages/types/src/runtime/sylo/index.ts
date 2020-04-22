@@ -114,3 +114,7 @@ export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse
 export class VaultKey extends ClassOf(registry, 'Bytes') {}
 
 export class VaultValue extends ClassOf(registry, 'Bytes') {}
+
+export class MessageId extends ClassOf(registry, 'u32') {}
+
+export class Message extends ClassOf(registry, 'Bytes') {}
