@@ -7,6 +7,11 @@
 [Development guide](docs/GET_STARTED.md)
 
 ## Release notes
+
+[28/04/2020] 1.0.1
+
+- Patch: Add Sylo types
+
 [27/03/2020]  1.0.0 version:
 
  - `@cennznet/api@1.0.0` (current stage) is working with [cennznet/cennznet:latest][cennznet/cennznet:latest];

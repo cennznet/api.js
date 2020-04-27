@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/crml-attestation",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "cennznet's javascript library for supporting identity runtime",
     "author": "Centrality Development Team",
     "homepage": "https://github.com/cennznet/api.js/tree/master/packages/crml-attestation",
@@ -13,9 +13,9 @@
     },
     "scripts": {},
     "dependencies": {
-        "@cennznet/api": "^1.0.0",
-        "@cennznet/types": "^1.0.0",
-        "@cennznet/util": "^1.0.0"
+        "@cennznet/api": "^1.0.1",
+        "@cennznet/types": "^1.0.1",
+        "@cennznet/util": "^1.0.1"
     },
     "devDependencies": {
         "@cennznet/wallet": "^0.20.7",
