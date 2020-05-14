@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf, Enum, Struct, Text, Tuple, TypeRegistry, Vec} from '@polkadot/types';
+import {ClassOf, Enum, Null, Struct, Text, Tuple, TypeRegistry, Vec} from '@polkadot/types';
 import {Registry} from '@polkadot/types/types';
 import {u8aToHex} from '@polkadot/util';
 
@@ -109,7 +109,7 @@ class WithdrawnPreKeyBundle extends Tuple.with(['AccountId', 'u32', 'Bytes']) {}
 
 class PreKeyBundlesResponse extends Vec.with(WithdrawnPreKeyBundle) {}
 
-export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse}) {}
+export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse, Null}) {}
 
 export class VaultKey extends ClassOf(registry, 'Bytes') {}
 
