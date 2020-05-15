@@ -7,6 +7,9 @@
 [Development guide](docs/GET_STARTED.md)
 
 ## Release notes
+[15/05/2020] 1.0.1
+
+- Patch: modify Sylo types
 
 [28/04/2020] 1.0.1
 
