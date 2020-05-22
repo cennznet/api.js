@@ -22,7 +22,7 @@ describe('e2e api create', () => {
   let api;
   let incorrectApi;
 
-  it('For local environment - checking if static metadata is same as latest', async () => {
+  it.skip('For local environment - checking if static metadata is same as latest', async () => {
     api = await initApiPromise();
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
