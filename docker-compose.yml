@@ -2,7 +2,7 @@ version: '3'
 services:
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet@sha256:3a646b007f4c4cf3d8cce9fd62d59923176ccd09a81cde8639373964b64b15a8
+    image: cennznet/cennznet@sha256:3a646b007f4c4cf3d8cce9fd62d59923176ccd09a81cde8639373964b64b15a8 // Points to branch -https://github.com/cennznet/cennznet/tree/1.1.0-rc1
     command:
       - --chain=dev
       - --base-path=/mnt/node
