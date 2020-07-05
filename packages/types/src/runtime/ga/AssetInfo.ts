@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /*
- Custom `AssetOptions` type for generic asset module.
+ Custom `AssetInfo` type for generic asset module.
 */
 
 import {Struct, u8, Vec} from '@polkadot/types';
