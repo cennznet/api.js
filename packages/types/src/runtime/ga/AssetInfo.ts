@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as AssetId} from './AssetId';
-export {default as AssetOptions} from './AssetOptions';
-export {default as Owner} from './Owner';
-export {default as PermissionsV1, default as PermissionLatest} from './PermissionsV1';
-export {default as PermissionVersions} from './PermissionVersions';
-export {default as AssetInfo} from './AssetInfo';
+/*
+ Custom `AssetInfo` type for generic asset module.
+*/
+
+import {Struct, u8, Vec} from '@polkadot/types';
+import {Registry} from '@polkadot/types/types';
+
+export default class AssetInfo extends Struct {
+  constructor(registry: Registry, value: any) {
+    super(registry, {symbol: 'Vec<u8>', decimalPlaces: u8}, value);
+  }
+
+  get symbol(): Vec<u8> {
+    return this.get('symbol') as Vec<u8>;
+  }
+
+  get decimalPlaces(): u8 {
+    return this.get('decimalPlaces') as u8;
+  }
+}

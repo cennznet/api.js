@@ -16,13 +16,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {AssetId, AssetOptions} from '@cennznet/types';
+import {AssetId, AssetOptions, AssetInfo} from '@cennznet/types';
 import {SubmittableResult, Keyring} from '@polkadot/api';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 const minFee = 30000000000000;
-const feeAssetId = '17000';
+let feeAssetId;
 
 describe('e2e transactions', () => {
   let api;
@@ -62,24 +62,36 @@ describe('e2e transactions', () => {
                   mint: null,
                   burn: null,
                 },
-              })
+              }),
+              new AssetInfo(
+                  api.registry,
+                  {
+                    symbol: 'TEST',
+                    decimalPlaces: 4
+                  }
+              )
           ))
         .signAndSend(sudoPair, async({status, events}) => {
           if (status.isFinalized) {
-            const investmentAmount = await api.derive.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
-            const nonce = await api.query.system.accountNonce(alice.address);
-            await api.tx.cennzxSpot
-              .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)
-              .signAndSend(alice, {nonce},async ({events, status}) => {
-                if (status.isFinalized) {
-                  for (const {event} of events) {
-                    if (event.method === 'AddLiquidity') {
-                      done();
-                    }
-                  }
-                }
-              });
+            events.forEach(async ({phase, event: {data, method, section}}) => {
+              if (method === 'Created' && section === 'genericAsset')  {
+                feeAssetId = data[0];
+                const investmentAmount = await api.derive.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
+                const nonce = await api.query.system.accountNonce(alice.address);
+                await api.tx.cennzxSpot
+                    .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)
+                    .signAndSend(alice, {nonce}, async ({events, status}) => {
+                      if (status.isFinalized) {
+                        for (const {event} of events) {
+                          if (event.method === 'AddLiquidity') {
+                            done();
+                          }
+                        }
+                      }
+                    });
+              }
 
+            });
           }
       });
     });

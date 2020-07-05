@@ -16,7 +16,7 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Hash} from '@polkadot/types/interfaces';
-import {AssetOptions} from '@cennznet/types';
+import {AssetOptions, AssetInfo} from '@cennznet/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {Keyring} from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
@@ -107,7 +107,14 @@ describe('e2e queries', () => {
                   mint: null,
                   burn: null,
                 },
-              })
+              }),
+              new AssetInfo(
+                  api.registry,
+                  {
+                      symbol: 'SYLO',
+                      decimalPlaces: 3
+                  }
+              )
           ))
         .signAndSend(sudoPair);
     }, 12000);
