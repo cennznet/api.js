@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Option} from '@polkadot/types/codec';
+import {Option, Vec} from '@polkadot/types/codec';
 import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
 import {
   AnyNumber,
@@ -20,10 +20,12 @@ import {
   IExtrinsicEra,
   IExtrinsicImpl as IExtrinsicImplBase,
   IMethod,
+  ITuple,
   RuntimeVersionInterface,
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
 import Doughnut from '../Doughnut';
+import {AssetId, AssetInfo} from '../runtime/ga';
 import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-payment';
 
 export interface ExtrinsicOptions {
@@ -102,5 +104,6 @@ declare module '@polkadot/types/interfaceRegistry' {
     ChargeTransactionPayment;
     FeeExchange: FeeExchange;
     'Option<FeeExchange>': Option<FeeExchange>;
+    'Vec<(T::AssetId, AssetInfo)>': Vec<ITuple<[AssetId, AssetInfo]>>;
   }
 }

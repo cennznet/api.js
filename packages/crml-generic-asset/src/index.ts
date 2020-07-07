@@ -17,6 +17,3 @@ export {GenericAssetRx} from './GenericAssetRx';
 export {AssetType} from './types';
 
 export {default as Plugin} from './plugin';
-
-import * as assetRegistryFns from './registry/assetRegistry';
-export const assetRegistry = assetRegistryFns;

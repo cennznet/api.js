@@ -21,6 +21,7 @@ import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {Keyring} from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
+import {u8aToString} from '@polkadot/util';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -118,5 +119,25 @@ describe('e2e queries', () => {
           ))
         .signAndSend(sudoPair);
     }, 12000);
+  });
+
+  describe('GA rpc calls', () => {
+    it("Get generic asset registeredAssets through RPC call", async done => {
+       const registeredAsset = await api.rpc.genericAsset.registeredAssets();
+       expect(registeredAsset.length).toBeGreaterThan(0);
+       const [syloAssetId, syloAssetInfo] = registeredAsset[0];
+       const [cpayAssetId, cpayAssetInfo] = registeredAsset[1];
+       const [cennzAssetId, cennzAssetInfo] = registeredAsset[2];
+       expect(syloAssetId.toString()).toBe('17000');
+       expect(u8aToString(syloAssetInfo.symbol)).toBe('SYLO');
+       expect(syloAssetInfo.decimalPlaces.toString()).toBe('0');
+       expect(cpayAssetId.toString()).toBe('16001');
+       expect(u8aToString(cpayAssetInfo.symbol)).toBe('CPAY');
+       expect(cpayAssetInfo.decimalPlaces.toString()).toBe('0');
+       expect(cennzAssetId.toString()).toBe('16000');
+       expect(u8aToString(cennzAssetInfo.symbol)).toBe('CENNZ');
+       expect(cennzAssetInfo.decimalPlaces.toString()).toBe('0');
+       done();
+    });
   });
 });

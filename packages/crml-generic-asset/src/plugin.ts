@@ -16,15 +16,11 @@ import {IPlugin} from '@cennznet/api/types';
 // import * as derives from './derives';
 import {GenericAsset} from './GenericAsset';
 import {GenericAssetRx} from './GenericAssetRx';
-import EnhancedAssetId from './registry/EnhancedAssetId';
 
 export default ({
   injectName: 'genericAsset',
   sdkClass: GenericAsset,
   sdkRxClass: GenericAssetRx,
-  types: {
-    AssetId: EnhancedAssetId,
-  },
   derives: {
     // genericAsset: derives,
   },
