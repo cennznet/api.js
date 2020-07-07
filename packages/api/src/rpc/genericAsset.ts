@@ -3,7 +3,7 @@ import {RpcMethodOpt} from '@polkadot/jsonrpc/types';
 import createMethod from '@polkadot/jsonrpc/create/method';
 
 const registeredAssets: RpcMethodOpt = {
-  description: 'Retrieves the spot exchange buy price',
+  description: 'RPC call for querying asset metadata',
   isOptional: true,
   params: [],
   type: 'Vec<(T::AssetId, AssetInfo)>',
