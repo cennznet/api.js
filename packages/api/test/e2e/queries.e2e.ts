@@ -124,6 +124,7 @@ describe('e2e queries', () => {
   describe('GA rpc calls', () => {
     it("Get generic asset registeredAssets through RPC call", async done => {
        const registeredAsset = await api.rpc.genericAsset.registeredAssets();
+       console.log('registeredAsset:', registeredAsset.toString());
        expect(registeredAsset.length).toBeGreaterThan(0);
        const [cpayAssetId, cpayAssetInfo] = registeredAsset[0];
        const [cennzAssetId, cennzAssetInfo] = registeredAsset[1];
