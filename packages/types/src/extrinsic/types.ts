@@ -92,7 +92,6 @@ export interface SignatureOptions extends SignatureOptionsBase {
   transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
 
-export interface AssetMetaTuple extends ITuple<[AssetId, AssetInfo]> {}
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 
 // Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with cennznet types
@@ -105,8 +104,6 @@ declare module '@polkadot/types/interfaceRegistry' {
     ChargeTransactionPayment;
     FeeExchange: FeeExchange;
     'Option<FeeExchange>': Option<FeeExchange>;
-    // AssetMetaTuple: AssetMetaTuple;
-    // 'Vec<AssetMetaTuple>': Vec<AssetMetaTuple>;
     'Vec<(AssetId, AssetInfo)>': Vec<ITuple<[AssetId, AssetInfo]>>;
   }
 }
