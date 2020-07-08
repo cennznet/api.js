@@ -128,6 +128,7 @@ describe('e2e queries', () => {
        expect(registeredAsset.length).toBeGreaterThan(0);
        const [cpayAssetId, cpayAssetInfo] = registeredAsset[0];
        const [cennzAssetId, cennzAssetInfo] = registeredAsset[1];
+       expect(true).toBe(false);
        // expect(cpayAssetId.toString()).toBe('16001');
        // expect(u8aToString(cpayAssetInfo.symbol)).toBe('CPAY');
        // expect(cpayAssetInfo.decimalPlaces.toString()).toBe('0');
