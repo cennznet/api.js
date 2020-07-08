@@ -21,6 +21,7 @@ import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {Keyring} from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
+import {u8aToString} from '@polkadot/util';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -118,5 +119,17 @@ describe('e2e queries', () => {
           ))
         .signAndSend(sudoPair);
     }, 12000);
+  });
+
+  describe('GA rpc calls', () => {
+    it("Get generic asset registeredAssets through RPC call", async done => {
+        const registeredAsset = await api.rpc.genericAsset.registeredAssets();
+       expect(registeredAsset.length).toBeGreaterThan(0);
+       const hasCpayAsset = ([assetId, meta]) =>  assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '0';
+       const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '0';
+       expect(registeredAsset.some(hasCpayAsset)).toBe(true);
+       expect(registeredAsset.some(hasCennzAsset)).toBe(true);
+       done();
+    });
   });
 });
