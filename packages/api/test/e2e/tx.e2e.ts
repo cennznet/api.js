@@ -42,7 +42,6 @@ describe('e2e transactions', () => {
   describe('Send()', () => {
 
     it("Deposit liquidity in fee asset's pool", async done => {
-      const coreAmount = minFee;
       const minLiquidity = 1;
 
       const sudoKey = await api.query.sudo.key();
@@ -76,7 +75,7 @@ describe('e2e transactions', () => {
             events.forEach(async ({phase, event: {data, method, section}}) => {
               if (method === 'Created' && section === 'genericAsset')  {
                 feeAssetId = data[0];
-                const investmentAmount = await api.derive.cennzxSpot.liquidityPrice(feeAssetId, coreAmount);
+                const [coreAmount, investmentAmount] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, minFee);
                 const nonce = await api.query.system.accountNonce(alice.address);
                 await api.tx.cennzxSpot
                     .addLiquidity(feeAssetId, minLiquidity, investmentAmount, coreAmount)

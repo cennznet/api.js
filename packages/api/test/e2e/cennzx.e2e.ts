@@ -25,8 +25,8 @@ describe('CENNZX e2e queries/transactions', () => {
   describe('Queries()', () => {
 
     it("Deposit liquidity in CENNZ asset's pool", async done => {
-        const coreAmount = 30000000000000;
-        const investmentAmount = await api.derive.cennzxSpot.liquidityPrice(CENNZ, coreAmount);
+        const amount = 30000000000000;
+        const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
         const minLiquidity = 1;
         await api.tx.cennzxSpot
           .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
@@ -39,6 +39,14 @@ describe('CENNZX e2e queries/transactions', () => {
               }
             }
           });
+    });
+
+    it("Retrieve the liquidity for CENNZ asset in Alice's account", async done => {
+      const [liquidityVolume, coreValue, assetValue] = await api.rpc.cennzx.liquidityValue(alice.address, CENNZ);
+      expect(liquidityVolume.isZero()).toBe(false);
+      expect(coreValue.isZero()).toBe(false);
+      expect(assetValue.isZero()).toBe(false);
+      done();
     });
 
     describe('Positive flow with liquidity in pool', () => {

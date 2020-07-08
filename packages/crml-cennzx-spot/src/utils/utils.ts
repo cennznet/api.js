@@ -45,17 +45,6 @@ export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, asse
   return new Tuple(registry, [AssetId, AssetId], [coreAssetId, assetId]);
 }
 
-export function getLiquidityPrice(coreAmount: BN, coreReserve: BN, assetReserve: BN) {
-  if (coreReserve.isZero() || assetReserve.isZero()) {
-    return coreAmount;
-  } else {
-    return coreAmount
-      .mul(assetReserve)
-      .div(coreReserve)
-      .addn(ROUND_UP);
-  }
-}
-
 export function getAssetToWithdraw(liquidity: BN, coreReserve: BN, assetReserve: BN, totalLiquidity: BN) {
   if (liquidity.gt(totalLiquidity)) {
     throw new Error('Tried to overdraw liquidity');
