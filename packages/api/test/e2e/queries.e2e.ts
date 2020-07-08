@@ -123,18 +123,12 @@ describe('e2e queries', () => {
 
   describe('GA rpc calls', () => {
     it("Get generic asset registeredAssets through RPC call", async done => {
-       const registeredAsset = await api.rpc.genericAsset.registeredAssets();
-       console.log('registeredAsset:', registeredAsset.toString());
+        const registeredAsset = await api.rpc.genericAsset.registeredAssets();
        expect(registeredAsset.length).toBeGreaterThan(0);
-       const [cpayAssetId, cpayAssetInfo] = registeredAsset[0];
-       const [cennzAssetId, cennzAssetInfo] = registeredAsset[1];
-       expect(true).toBe(false);
-       // expect(cpayAssetId.toString()).toBe('16001');
-       // expect(u8aToString(cpayAssetInfo.symbol)).toBe('CPAY');
-       // expect(cpayAssetInfo.decimalPlaces.toString()).toBe('0');
-       // expect(cennzAssetId.toString()).toBe('16000');
-       // expect(u8aToString(cennzAssetInfo.symbol)).toBe('CENNZ');
-       // expect(cennzAssetInfo.decimalPlaces.toString()).toBe('0');
+       const hasCpayAsset = ([assetId, meta]) =>  assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '0';
+       const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '0';
+       expect(registeredAsset.some(hasCpayAsset)).toBe(true);
+       expect(registeredAsset.some(hasCennzAsset)).toBe(true);
        done();
     });
   });
