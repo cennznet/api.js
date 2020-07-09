@@ -26,7 +26,7 @@ const sellPrice: RpcMethodOpt = {
 };
 
 const liquidityPrice: RpcMethodOpt = {
-  description: 'Retrieves the price of liquidity for a particular `asset_id`',
+  description: 'Get the price of liquidity for the given asset ID',
   isOptional: true,
   params: [createParam('AssetId', 'AssetId'), createParam('liquidityToBuy', 'Balance')],
   type: '(Balance, Balance)' as any,
