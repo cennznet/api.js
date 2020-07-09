@@ -29,14 +29,14 @@ const liquidityPrice: RpcMethodOpt = {
   description: 'Retrieves the price of liquidity for a particular `asset_id`',
   isOptional: true,
   params: [createParam('AssetId', 'AssetId'), createParam('liquidityToBuy', 'Balance')],
-  type: '(Balance, Balance)',
+  type: '(Balance, Balance)' as any,
 };
 
 const liquidityValue: RpcMethodOpt = {
   description: 'Retrieves the value of liquidity in the exchange for `asset_id` for `account`',
   isOptional: true,
   params: [createParam('AccountId', 'Address'), createParam('AssetId', 'AssetId')],
-  type: '(Balance, Balance, Balance)',
+  type: '(Balance, Balance, Balance)' as any,
 };
 
 const section = 'cennzx';

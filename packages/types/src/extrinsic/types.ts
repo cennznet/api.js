@@ -105,7 +105,5 @@ declare module '@polkadot/types/interfaceRegistry' {
     FeeExchange: FeeExchange;
     'Option<FeeExchange>': Option<FeeExchange>;
     'Vec<(AssetId, AssetInfo)>': Vec<ITuple<[AssetId, AssetInfo]>>;
-    '(Balance, Balance)': '(Balance, Balance)';
-    '(Balance, Balance, Balance)': '(Balance, Balance, Balance)';
   }
 }

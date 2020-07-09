@@ -36,8 +36,6 @@ describe('CENNZX e2e queries/transactions', () => {
                 if (event.method === 'AddLiquidity') {
                   let amount = 20000;
                   const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
-                  console.log('Core amount:', coreAmount.toString());
-                  console.log('Asset amount:', investmentAmount.toString());
                   await api.tx.cennzxSpot
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
                       .signAndSend(alice, async ({events, status}) => {
