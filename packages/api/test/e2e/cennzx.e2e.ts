@@ -26,15 +26,29 @@ describe('CENNZX e2e queries/transactions', () => {
 
     it("Deposit liquidity in CENNZ asset's pool", async done => {
         const amount = 30000000000000;
-        const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
+        const coreAmount = amount;
         const minLiquidity = 1;
         await api.tx.cennzxSpot
-          .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
+          .addLiquidity(CENNZ, minLiquidity, amount, coreAmount)
           .signAndSend(alice, async ({events, status}) => {
             if (status.isFinalized) {
               for (const {event} of events) {
                 if (event.method === 'AddLiquidity') {
-                  done();
+                  let amount = 20000;
+                  const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
+                  console.log('Core amount:', coreAmount.toString());
+                  console.log('Asset amount:', investmentAmount.toString());
+                  await api.tx.cennzxSpot
+                      .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
+                      .signAndSend(alice, async ({events, status}) => {
+                        if (status.isFinalized) {
+                          for (const {event} of events) {
+                            if (event.method === 'AddLiquidity') {
+                              done();
+                            }
+                          }
+                        }
+                      });
                 }
               }
             }
