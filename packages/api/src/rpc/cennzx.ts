@@ -25,9 +25,25 @@ const sellPrice: RpcMethodOpt = {
   type: 'Balance',
 };
 
+const liquidityPrice: RpcMethodOpt = {
+  description: 'Get the price of liquidity for the given asset ID',
+  isOptional: true,
+  params: [createParam('AssetId', 'AssetId'), createParam('liquidityToBuy', 'Balance')],
+  type: '(Balance, Balance)' as any,
+};
+
+const liquidityValue: RpcMethodOpt = {
+  description: "Get the value of an account's liquidity for the given asset",
+  isOptional: true,
+  params: [createParam('AccountId', 'Address'), createParam('AssetId', 'AssetId')],
+  type: '(Balance, Balance, Balance)' as any,
+};
+
 const section = 'cennzx';
 
 export default [
   {...createMethod(section, 'buyPrice', buyPrice), name: 'buyPrice'},
   {...createMethod(section, 'sellPrice', sellPrice), name: 'sellPrice'},
+  {...createMethod(section, 'liquidityPrice', liquidityPrice), name: 'liquidityPrice'},
+  {...createMethod(section, 'liquidityValue', liquidityValue), name: 'liquidityValue'},
 ];

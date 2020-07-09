@@ -79,9 +79,9 @@ describe('SpotX APIs', () => {
                         expect(assetCreated).toEqual(true);
                         const assetBalance = await api.genericAsset.getFreeBalance(assetId, address);
                         expect(assetBalance.toString()).toBe(initialIssuance.toString());
-                        const coreAmount = initialIssuance/2;
+                        const amount = initialIssuance/2;
                         const minLiquidity = 1;
-                        const investmentAmount = await api.cennzxSpot.liquidityPrice(assetId, coreAmount);
+                        const [coreAmount, investmentAmount] = await (api.rpc as any).cennzx.liquidityPrice(assetId, amount);
                         expect((await api.genericAsset.getFreeBalance(assetId, address)).gt(investmentAmount)).toBeTruthy();
                         expect((await api.genericAsset.getFreeBalance(coreAssetId, address)).gtn(coreAmount)).toBeTruthy();
                         await api.cennzxSpot
@@ -117,10 +117,10 @@ describe('SpotX APIs', () => {
             /*** Prepare test data to ensure balance *********************/
             /************************************************************/
             const {address} = alice;
-            const coreAmount = 1000;
-            expect((await api.genericAsset.getFreeBalance(tradeAssetA, address)).gtn(coreAmount)).toBeTruthy();
+            const amount = 1000;
+            expect((await api.genericAsset.getFreeBalance(tradeAssetA, address)).gtn(amount)).toBeTruthy();
             const cennzbal = await api.genericAsset.getFreeBalance(tradeAssetA, address);
-            const investmentAmount = await api.cennzxSpot.liquidityPrice(tradeAssetA, coreAmount);
+            const [coreAmount, investmentAmount] = await (api.rpc as any).cennzx.liquidityPrice(tradeAssetA, amount);
             expect((await api.genericAsset.getFreeBalance(tradeAssetA, address)).gt(investmentAmount)).toBeTruthy();
             const minLiquidity = 1;
             await api.cennzxSpot
@@ -154,10 +154,10 @@ describe('SpotX APIs', () => {
             /*** Prepare test data to ensure balance *********************/
             /************************************************************/
             const {address} = alice;
-            const coreAmount = 1000;
-            expect((await api.genericAsset.getFreeBalance(tradeAssetB, address)).gtn(coreAmount)).toBeTruthy();
+            const amount = 1000;
+            expect((await api.genericAsset.getFreeBalance(tradeAssetB, address)).gtn(amount)).toBeTruthy();
             const cennzbal = await api.genericAsset.getFreeBalance(tradeAssetB, address);
-            const investmentAmount = await api.cennzxSpot.liquidityPrice(tradeAssetB, coreAmount);
+            const [coreAmount, investmentAmount] = await (api.rpc as any).cennzx.liquidityPrice(tradeAssetB, amount);
             expect((await api.genericAsset.getFreeBalance(tradeAssetB, address)).gt(investmentAmount)).toBeTruthy();
             const minLiquidity = 1;
             await api.cennzxSpot

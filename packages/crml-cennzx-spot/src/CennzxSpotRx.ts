@@ -197,18 +197,6 @@ export class CennzxSpotRx {
   }
 
   /**
-   * Query liquidity price for a core asset amount
-   * @param assetId The id of the asset
-   * @param coreAmount - the amount of core asset
-   */
-  get liquidityPrice(): QueryableGetLiquidityBalancePriceRx {
-    const _fn = this.api.derive.cennzxSpot.liquidityPrice as QueryableGetLiquidityBalancePriceRx;
-    _fn.at = this.api.derive.cennzxSpot.liquidityPriceAt;
-
-    return _fn;
-  }
-
-  /**
    * Query asset withdrawn to get the max core and max asset which can we withdrawn with the input liquidity
    * @param assetId The id of the asset
    * @param liquidity - user liquidity
