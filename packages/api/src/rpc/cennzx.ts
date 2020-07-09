@@ -33,7 +33,7 @@ const liquidityPrice: RpcMethodOpt = {
 };
 
 const liquidityValue: RpcMethodOpt = {
-  description: 'Retrieves the value of liquidity in the exchange for `asset_id` for `account`',
+  description: "Get the value of an account's liquidity for the given asset",
   isOptional: true,
   params: [createParam('AccountId', 'Address'), createParam('AssetId', 'AssetId')],
   type: '(Balance, Balance, Balance)' as any,
