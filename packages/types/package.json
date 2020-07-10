@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "additional types for cennznet sdk",
     "author": "ian.he <ian.he@centrality.ai>",
     "keywords": [
@@ -18,7 +18,7 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@cennznet/util": "^1.0.2",
+        "@cennznet/util": "^1.0.3",
         "@polkadot/keyring": "^2.3.1",
         "@polkadot/types": "^1.1.1",
         "@polkadot/util": "^2.3.1",
