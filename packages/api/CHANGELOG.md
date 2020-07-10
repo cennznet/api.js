@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+# [1.0.3]
+### Feature
+* Added AssetInfo types
 
 # [0.20.6](https://github.com/cennznet/api.js/compare/v20.3...v0.20.6) (2019-09-10)
 ### Feature
