@@ -23,35 +23,30 @@ async function generateSlimMeta() {
         "SyloVault",
         "CennzxSpot",
     ];
-    // metadata.asV11.modules
-    console.log('Orignal Meta: ',JSON.stringify(metadata));
     let magicNumber = metadata.magicNumber;
-  //  let modules = metadata.metadata['V11'].modules;
     let modules = api.runtimeMetadata.asV11.modules;
-    console.log('Modules::', JSON.stringify(modules));
     let newModules = [];
     for (const m of modules) {
         if (keep.indexOf(m.name.toJSON()) >= 0) {
-            console.log("keeping", m.name.toJSON());
-            newModules.push(m);
+            const module = m.toJSON();
+            removeKeys(module, "documentation");
+            // Creating ModuleMetadataV11
+            let modifiedModule = createType(api.registry, 'ModuleMetadataV11', module);
+            newModules.push(modifiedModule);
         } else {
             // Push an empty module
-            console.log("slimming", m.name.toJSON());
             newModules.push({"name": m.name, "calls": m.calls, "events": m.events});
         }
     }
-    console.log('New modules::', JSON.stringify(newModules));
     let extrinsic = metadata.metadata['V11'].extrinsic;
     let filteredModule = createType(api.registry, 'Vec<ModuleMetadataV11>', newModules);
     let filteredMetaLatest = createType(api.registry, 'MetadataLatest', {modules: filteredModule, extrinsic});
-    const filteredMetadata = createType(api.registry,'MetadataAll', toCallsOnly(api.registry, filteredMetaLatest), 11);
-    // removeKeys(filteredMetadata, "documentation");
+    const filteredMetadataAll = createType(api.registry,'MetadataAll', filteredMetaLatest, 11);
     const mVersionedNew = new MetadataVersioned(api.registry, {
         magicNumber: magicNumber,
-        metadata: filteredMetadata
+        metadata: filteredMetadataAll
     });
     console.log('metadata hex:', mVersionedNew.toHex());
-    console.log('Meta data:', JSON.stringify(mVersionedNew.asV11));
 
     process.exit();
 }
