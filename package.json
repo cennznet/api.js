@@ -15,6 +15,7 @@
     "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
     "make-docs": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
+    "generate-slim-metadata": "node ./scripts/generateSlimMetadataWrapper.js",
     "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
   },
   "devDependencies": {
