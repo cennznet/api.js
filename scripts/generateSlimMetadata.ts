@@ -1,7 +1,6 @@
-// Running this file with ~ node scripts/updateStaticMetadata.js will create a staticMetadata.ts on root directory which can used/copied
+// Running this file with ~ yarn generate-slim-metadata will create slim metadata
 import {Api} from '../packages/api/src/Api';
 import MetadataVersioned from '@polkadot/metadata/Metadata/MetadataVersioned';
-import {toCallsOnly} from '@polkadot/metadata/Metadata/util';
 
 import {createType} from '@cennznet/types';
 
