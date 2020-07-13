@@ -1,7 +1,7 @@
 {
-  "name": "rx_01_simple_connect",
+  "name": "rx_09_upgrade_chain",
   "version": "0.2.0",
-  "description": "Example showing how to connect using a WebSocket",
+  "description": "Example showing how to upgrade via upgradeKey",
   "main": "index.js",
   "author": "Stefie",
   "license": "MIT",
@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "rxjs": "^6.6.0",
-    "@cennznet/api": "^1.0.3"
+    "@cennznet/api": "^1.0.3",
+    "@cennznet/wallet": "^1.0.3",
+    "@plugnet/keyring": "^1.1.100"
   },
   "resolutions": {
     "@polkadot/types": "1.2.1",

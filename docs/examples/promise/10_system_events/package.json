@@ -1,16 +1,15 @@
 {
-  "name": "rx_01_simple_connect",
-  "version": "0.2.0",
-  "description": "Example showing how to connect using a WebSocket",
+  "name": "10_system_events",
+  "version": "0.1.0",
+  "description": "Example showing how to query and parse events",
   "main": "index.js",
-  "author": "Stefie",
+  "author": "Jaco Greeff <jacogr@gmail.com>",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf node_modules",
     "start": "node index.js"
   },
   "dependencies": {
-    "rxjs": "^6.6.0",
     "@cennznet/api": "^1.0.3"
   },
   "resolutions": {
