@@ -1,7 +1,7 @@
 {
-  "name": "rx_01_simple_connect",
-  "version": "0.2.0",
-  "description": "Example showing how to connect using a WebSocket",
+  "name": "rx_07_system_events",
+  "version": "0.1.0",
+  "description": "Example showing how to query and parse events",
   "main": "index.js",
   "author": "Stefie",
   "license": "MIT",

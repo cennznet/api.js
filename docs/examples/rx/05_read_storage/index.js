@@ -30,7 +30,7 @@ async function main () {
         // which we're turning back into an observable using of()
         return combineLatest(
           api.query.system.accountNonce(Alice).pipe(first()),
-          api.query.timestamp.minimumPeriod().pipe(first()),
+          api.query.staking.currentEraDuration().pipe(first()),
           of(validators),
           balances
         );

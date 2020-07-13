@@ -9,7 +9,9 @@ const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 const CENNZ = 16000;
 
 async function main () {
-  // Create an await for the API
+  // Here we don't pass the (optional) provider, connecting directly to the default
+  // node/port, i.e. `ws://127.0.0.1:9944`. Await for the isReady promise to ensure
+  // the API has connected to the node and completed the initialisation process
   const api = await Api.create();
 
   // Retrieve the initial balance. Since the call has no callback, it is simply a promise
