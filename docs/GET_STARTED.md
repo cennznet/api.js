@@ -81,6 +81,17 @@ Now that you have added the key for Alice you can use it to sign an extrinsic:
 const extrinsic = api.tx.genericAsset.transfer(CENNZ, BOB, 12345);
 const hash = await extrinsic.signAndSend(alice);
 ```
+## FAQ
+> What is the difference between @cennznet/types and @polkadot/types?
+
+We have custom types needed to interact with our specific modules such as Doughnut, CENNZxSpot, Generic Asset, Attestation and etc which you can only find in @cennznet/types. 
+@cennznet/types also exposes some of the basic polkadot types. If you are connecting to a cennznet node, for most of the use cases you would only need to import @cennznet/types. 
+However if a polkadot type is not in our package and you need to import polkadot/types as well, make sure to set the right dependency resolution as shown in this document.
+
+> What is the difference between @cennznet/api and @polkadot/api?
+
+If you connect to a cennznet node through a @polkadot/api, you wouldn't have access to our special RPCs and queries that we have added either for interacting with our own specific modules or for enriching polkadot.
+Basically as @cennznet/api is wrapping @polkadot/api, offering all its capabilities, you shouldn't need to use the latter at all.  
 ## Test in local 
 
 ```bash
