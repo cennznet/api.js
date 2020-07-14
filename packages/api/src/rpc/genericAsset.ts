@@ -11,4 +11,14 @@ const registeredAssets: RpcMethodOpt = {
 
 const section = 'genericAsset';
 
-export default [{...createMethod(section, 'registeredAssets', registeredAssets), name: 'registeredAssets'}];
+// export default [{...createMethod(section, 'registeredAssets', registeredAssets), name: 'registeredAssets'}];
+
+export default {
+  isDeprecated: false,
+  isHidden: false,
+  description: 'Generic asset',
+  section,
+  methods: {
+    registeredAssets: createMethod(section, 'registeredAssets', registeredAssets),
+  },
+};

@@ -20,6 +20,7 @@ export default {
   ...runtimeTypes,
   ...extrinsicTypes,
   ...metadata,
+  AssetInfo: '',
   AssetOf: 'u128',
   Address: 'AccountId',
   'ed25519::Signature': 'H512',
