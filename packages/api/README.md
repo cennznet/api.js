@@ -3,6 +3,14 @@
 The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 
 ## Release notes
+[10/07/2020]  1.0.3 version:
+    - `@cennznet/api@1.0.3` (current stage) is working with [cennznet/cennznet:latest][cennznet/cennznet:latest];
+
+Changes made in this version:
+
+- CENNZX + GA RPC call support
+
+## Release notes
 [27/03/2020]  1.0.0 version:
 
  - `@cennznet/api@1.0.0` (current stage) is working with [cennznet/cennznet:latest][cennznet/cennznet:latest];
