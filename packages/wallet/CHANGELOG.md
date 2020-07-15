@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0]
+* Dropped support for this package
+
 # [0.20.0](https://github.com/cennznet/api.js/compare/v0.15.1...v0.20.3) (2019-09-10)
 * Upgrade to implement new Payload Signer interface
 * move raw signer implementation to `@plugnet/wallet`

@@ -5,7 +5,7 @@
   "keywords": [
     "CENNZNet"
   ],
-  "author": "ian.he <ian.he@centrality.ai>",
+  "author": "Centrality Developers <support@centrality.ai>",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
   "license": "Apache-2.0",
   "main": "index.js",

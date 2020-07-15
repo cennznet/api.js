@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [UNRELEASED]
+
+## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)
+
+**Note:** Version bump only
+
+## [1.0.2](https://github.com/cennznet/api.js/compare/release/1.0.1...release/1.0.2) (15/05/2020)
+
+**Note:** Version bump only
+
+## [1.0.1](https://github.com/cennznet/api.js/compare/release/1.0.0...release/1.0.1) (27/03/2020)
+
+**Note:** Version bump only
+
+## [1.0.0](https://github.com/cennznet/api.js/compare/v0.20.5...release/1.0.0) (27/03/2020)
+  Discontinued support for pre-1.0.0 CENNZnet chains
+  Changed (breaking):
+    - Replaced @plugnet/* dependencies with @polkadot/api@0.96.1 directly
+    - Disabled plugins
+    - Use @polkadot/api 1.1.1
+
 # [0.20.6](https://github.com/cennznet/api.js/compare/v20.3...v0.20.6) (2019-09-10)
 ### Feature
 * migrate crml-attestation into monorepo
