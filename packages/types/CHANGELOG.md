@@ -3,7 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
+
+## [UNRELEASED]
+    Changed:
+    - Improve getting started doc (#122)
+    Added:
+    - Updated Azalea metadata for runtime version 36 (#122)
+
+## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)
+
+    Adds:
+    - Support CENNZX liquidity RPCs (#117)
+    - Slim metadata generation script (#120)
+    - Support on-chain asset registry (#116)
+    Fixes:
+    - Corrected some generated example snippets (#121)
+
+## [1.0.2](https://github.com/cennznet/api.js/compare/release/1.0.1...release/1.0.2) (15/05/2020)
+
+    Patch:
+    - Add null constructor to sylo runtime response enum (#109) 
+
+
+## [1.0.1](https://github.com/cennznet/api.js/compare/release/1.0.0...release/1.0.1) (27/03/2020)
+
+    Patch:
+    - Fix decoding of Sylo pkb response (#104) 
+    - Add Message and MessageId types for Sylo (#105)
+
+## [1.0.0](https://github.com/cennznet/api.js/compare/v0.14.0...release/1.0.0) (27/03/2020)
+    Discontinue support for pre-1.0.0 chains
+
+    Changes:
+    - Updated Extrinsic types to use new "signed extra" / extrinsic v4 format
+        - Added ChargeTransactionPayment type, which contains tip (default 0) and FeeExchange (default None);
+    - New format for fee exchange type
+    - Support MultiSignature and type registry refactors
+    - Replaced @plugnet/* dependencies with @polkadot/api@0.96.1 directly
+
+    Adds:
+    - Derived query for estimating fee is updated
+    - CENNZX rpc calls for price calculation
+
+
+## [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 
 
 ### Bug Fixes

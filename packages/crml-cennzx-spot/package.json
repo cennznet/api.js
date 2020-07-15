@@ -2,7 +2,7 @@
   "name": "@cennznet/crml-cennzx-spot",
   "version": "1.0.3",
   "description": "the javascript sdk for cennznet runtime module: CennzxSpot. also a plugin of @cennznet/api",
-  "author": "Ian He <ian.he@centrality.ai>",
+  "author": "Centrality Developers <support@centrality.ai>",
   "maintainers": [
     "Centrality Development Team"
   ],
