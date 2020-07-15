@@ -48,7 +48,8 @@ But if you are connecting to your own local node, it can be as simple as:
 ```js
 const api = await Api.create();
 ```
-Once the connection is created, you can use of one of the several api queries (located under api.query), RPCs (located under api.rpc) or Transactions (located under api.tx) to interact with the node. Here are examples of for each of these categories:
+Once the connection is created, you can use of one of the several api queries (located under api.query), RPCs (located under api.rpc) or Transactions (located under api.tx) to interact with the node. 
+Here are examples for each of these categories:
 
 Category | Example | Description
 --- | :---: | ---
