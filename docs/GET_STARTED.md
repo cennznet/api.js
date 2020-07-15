@@ -55,24 +55,32 @@ Category | Example | Description
 RPC | `api.rpc.system.chain()` | Get the change name
 Query | `api.query.genericAsset.freeBalance(CENNZ, Alice)` | How many CENNZs, Alice has in her free balance
 Tx | `api.tx.genericAsset.transfer(CENNZ, BOB, 12345)` | Create an extrinsic for transferring 12345 CENNZs to Bob  
-
+Note: In the above table, CENNZ is a const carrying an asset id value. 
+We have named it CENNZ as its value is 16000 which is the designated asset id for CENNZ in our test/dev network. 
+Alice and BOB are also consts carrying the public keys of Alice and BOB. 
+  
 ## Keyring
 Some of the interactions with the node should be signed. 
 For example if you say Alice transfers 1 CENNZ to Bob, you should have the secret key of Alice and sign the created extrinsic before submitting it.
-More importantly if you use a secret, you don't want to expose it to anyone by using it directly in the code. 
-You may also have several keys for your different accounts. Where to keep those keys and how to use them? Keyring or wallet is our answer to this need. In order to use @cennznet/wallet in your project you should add the following dependency to your package.json:
+More importantly if you use a secret key, you don't want to expose it to anyone by using it directly in the code. 
+You may also have several keys for your different accounts. 
+Where to keep those keys and how to use them? 
+Keyring is the answer to this need. 
+In order to use @polkadot/keyring in your project you should add the following dependency to your package.json:
 ```json 
-"@cennznet/wallet": "^1.0.3"
+"@polkadot/keyring": "^2.18.1"
 ```
 Then in your js code you may do:
 ```js
-const { Keyring } = require('@cennznet/wallet');
+const { Keyring } = require('@polkadot/keyring');
 ```    
-We currently support two different signing protocols: 'sr25519' or Schnorrkel and 'ed25519'. When you construct your Keyring you should specify the signing type:
+Polkadot currently supports two different signing protocols: 'sr25519' or Schnorrkel and 'ed25519'.
+When you construct your Keyring you should specify the signing type:
 ```js
 const keyring = new Keyring({ type: 'sr25519' });
 ```
-Now you can add your keys to the keyring securely by passing in their URI address. If you want to use one of our predefined keys only for development and testing purposes you can use a short URI as follows:
+Now you can add your keys to the keyring securely by passing in their URI address. 
+If you want to use one of our predefined keys only for development and testing purposes you can use a short URI as follows:
 ```js
 const alice = keyring.addFromUri('//Alice'); // Alice is predefined
 ``` 
