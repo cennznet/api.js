@@ -32,7 +32,7 @@ The next step for your project is that you import @cennznet/api in your js code.
 ```js
 const { Api } = require('@cennznet/api');
 ```
-When you have the api, you can easily connect to any cennznet node by calling "connect". 
+When you have the api, you can easily connect to any cennznet node by calling "create". 
 The underlying mechanism to connect to a node is through websockets. 
 So what you need to have for this call is the websocket address of your node. 
 The cennznet's main network is residing at `wss://cennznet.unfrastructure.io/public/ws`. 
