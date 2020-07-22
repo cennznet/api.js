@@ -21,15 +21,9 @@ import { Api } from '../../src/Api';
 import { Keypair } from '@plugnet/util-crypto/types';
 import {Keyring} from '@polkadot/api';
 import { KeyringPair } from '@plugnet/keyring/types';
-import { Extrinsic } from '@cennznet/types/extrinsic';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import Doughnut from '@cennznet/types/Doughnut';
-// import * as D from '/Users/karishma/WebstormProjects/doughnut-rs/js/libNode/doughnut.js';
-// const { Doughnut } = require('/Users/karishma/WebstormProjects/doughnut-rs/js/libNode/doughnut.js')
-
-// console.log('****************');
-// console.log('....',D);
 
 // Helper for creating CENNZnuts
 function makeCennznut(module: string, method: string): Uint8Array {
@@ -50,8 +44,6 @@ function makeCennznut(module: string, method: string): Uint8Array {
     ];
     const contractVec = [];
     const cennznut = new encodeCennznut(moduleVec, contractVec);
-    // console.log('CENNZNUT:::', cennznut);
-    console.log('ENCODE::', cennznut.encode().toString());
     return cennznut.encode();
 }
 
@@ -90,7 +82,6 @@ describe('Doughnut for CennznetExtrinsic', () => {
 
     let api: Api;
     let alice, bob, charlie;
-    let issuerKeyPair;
     let holderKeyPair;
     let keyring: {
         [index: string]: KeyringPair;
