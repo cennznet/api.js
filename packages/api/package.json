@@ -23,6 +23,7 @@
     "@cennznet/crml-cennzx-spot": "^1.0.3",
     "@cennznet/crml-generic-asset": "^1.0.3",
     "@cennznet/types": "^1.0.3",
+    "@plugnet/doughnut-wasm": "file:/Users/karishma/WebstormProjects/doughnut-rs/js",
     "@polkadot/api": "^1.1.1",
     "@polkadot/metadata": "1.1.1",
     "@polkadot/rpc-core": "^1.1.1",
@@ -34,7 +35,9 @@
     "@polkadot/keyring": "^1.6.1"
   },
   "devDependencies": {
+    "@cennznet/cennznut-wasm": "^0.0.1-dev.0",
     "@cennznet/wallet": "^0.20.7",
+    "@plugnet/doughnut-wasm": "^0.0.1-dev.3",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",

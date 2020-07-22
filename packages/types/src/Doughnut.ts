@@ -38,9 +38,4 @@ export default class Doughnut extends Raw {
       super(registry, value);
     }
   }
-
-  toU8a(isBare?: boolean): Uint8Array {
-    // Encode the doughnut with length prefix to support SCALE codec
-    return isBare ? (this as Raw) : Compact.addLengthPrefix(this.toU8a());
-  }
 }
