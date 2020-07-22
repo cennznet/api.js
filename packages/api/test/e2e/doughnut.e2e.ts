@@ -93,10 +93,6 @@ describe('Doughnut for CennznetExtrinsic', () => {
         holderKeyPair = bob;
     });
 
-    afterEach(() => {
-        jest.setTimeout(5000);
-    });
-
     it('Delegates a GA transfer from alice to charlie when extrinsic is signed by bob', async done => {
 
         let doughnut = makeDoughnut(

@@ -2,7 +2,6 @@ version: '3'
 services:
   testnet_node_alice:
     container_name: testnet_node_alice
-    # Points to branch -https://github.com/cennznet/cennznet/tree/1.1.0-rc1
     image: cennznet/cennznet:develop-993900
     command:
       - --chain=dev
