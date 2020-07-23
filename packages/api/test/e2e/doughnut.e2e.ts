@@ -105,7 +105,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                 const blockHash = status.value.toHex();
                 console.log('Completed at block hash', blockHash);
                 const allEvents = await api.query.system.events.at(blockHash);
-                const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, reciever,
+                const transfer = checkEventMatches(allEvents, 'Transferred', 'genericAsset', alice.address, reciever,
                     amount.toString(), CENNZ.toString());
                 allEvents.forEach(({phase, event: {data, method, section}}) => {
                     console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
@@ -133,7 +133,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
         );
     }
 
-    it('Fails when charlie uses bob\'s doughnut and works well when bob uses it', async done  => {
+    it('Fails when charlie uses bob\'s doughnut and works well when bob uses it', async done => {
         let doughnut = await makeDoughnut(
             aliceKeyPair,
             bob,
@@ -152,7 +152,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                 const blockHash = status.value.toHex();
                 console.log('Completed at block hash', blockHash);
                 const allEvents = await api.query.system.events.at(blockHash);
-                const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, charlie.address,
+                const transfer = checkEventMatches(allEvents, 'Transferred', 'genericAsset', alice.address, charlie.address,
                     '10000', '16001');
                 if (transfer != undefined) {
                     done();
@@ -221,7 +221,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                             const blockHash = status.value.toHex();
                             console.log('Completed at block hash', blockHash);
                             const allEvents = await api.query.system.events.at(blockHash);
-                            const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, charlie.address,
+                            const transfer = checkEventMatches(allEvents, 'Transferred', 'genericAsset', alice.address, charlie.address,
                                 '10000', '16001');
                             if (transfer != undefined) {
                                 done();
@@ -233,3 +233,4 @@ describe('Doughnut for CennznetExtrinsic', () => {
         });
     });
 });
+
