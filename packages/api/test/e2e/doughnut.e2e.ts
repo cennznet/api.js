@@ -64,12 +64,6 @@ function makeDoughnut(
     return d.encode();
 }
 
-
-const Dave = {
-    address: '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
-    uri: '//Dave',
-};
-
 describe('Doughnut for CennznetExtrinsic', () => {
     let aliceKeyPair = {
         secretKey: hexToU8a('0x98319d4ff8a9508c4bb0cf0b5a78d760a0b2082c02775e6e82370816fedfff48925a225d97aa00682d6a59b95b18780c10d7032336e88f3442b42361f4a66011'),
@@ -77,8 +71,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
     };
 
     let api: Api;
-    let alice, bob, charlie;
-    let holderKeyPair;
+    let alice, bob, charlie, dave;
     let keyring: {
         [index: string]: KeyringPair;
     };
@@ -90,38 +83,30 @@ describe('Doughnut for CennznetExtrinsic', () => {
         alice = keyring.addFromUri('//Alice');
         bob = keyring.addFromUri('//Bob');
         charlie = keyring.addFromUri('//Charlie');
-        holderKeyPair = bob;
+        dave = keyring.addFromUri('//Dave');
     });
 
     it('Delegates a GA transfer from alice to charlie when extrinsic is signed by bob', async done => {
 
         let doughnut = makeDoughnut(
             aliceKeyPair,
-            holderKeyPair,
+            bob,
             {'cennznet': makeCennznut('generic-asset', 'transfer')},
         );
         const CENNZ = 16000;
-        const reciever = Dave.address;
+        const reciever = dave.address;
         const amount = 8767535;
 
         const tx = api.tx.genericAsset.transfer(CENNZ, reciever, amount);
         const doughnutB = new Doughnut(api.registry, doughnut);
         const opt = {doughnut: doughnutB};
-        await tx.signAndSend(holderKeyPair, opt as any, async ({events, status}) => {
+        await tx.signAndSend(bob, opt as any, async ({events, status}) => {
             if (status.isFinalized) {
                 const blockHash = status.value.toHex();
                 console.log('Completed at block hash', blockHash);
                 const allEvents = await api.query.system.events.at(blockHash);
-                const transfer = allEvents.find(
-                    event => (
-                        event.event.data.method === 'Transferred' &&
-                        event.event.data.section === 'genericAsset' &&
-                        event.event.data[1].toString() === alice.address && // transferred from alice's account
-                        event.event.data[0].toString() === CENNZ.toString() && // CENNZ
-                        event.event.data[2].toString() === reciever && // Dave is reciever
-                        event.event.data[3].toString() === amount.toString()
-                    ),
-                );
+                const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, reciever,
+                    amount.toString(), CENNZ.toString());
                 allEvents.forEach(({phase, event: {data, method, section}}) => {
                     console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
                 });
@@ -134,7 +119,21 @@ describe('Doughnut for CennznetExtrinsic', () => {
         });
     });
 
-    it('Fails when charlie uses bob\'s doughnut', async () => {
+
+    function checkEventMatches(allEvents, method, section, sender, reciever, amount, asset) {
+        return allEvents.find(
+            event => (
+                event.event.data.method === method &&
+                event.event.data.section === section &&
+                event.event.data[1].toString() === sender &&
+                event.event.data[0].toString() === asset &&
+                event.event.data[2].toString() === reciever &&
+                event.event.data[3].toString() === amount
+            ),
+        );
+    }
+
+    it('Fails when charlie uses bob\'s doughnut and works well when bob uses it', async done  => {
         let doughnut = await makeDoughnut(
             aliceKeyPair,
             bob,
@@ -146,6 +145,20 @@ describe('Doughnut for CennznetExtrinsic', () => {
 
         await expect(tx.signAndSend(charlie, opt as any, () => {
         })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":180}');
+
+        // Signed by bob
+        await tx.signAndSend(bob, opt as any, async ({events, status}) => {
+            if (status.isFinalized) {
+                const blockHash = status.value.toHex();
+                console.log('Completed at block hash', blockHash);
+                const allEvents = await api.query.system.events.at(blockHash);
+                const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, charlie.address,
+                    '10000', '16001');
+                if (transfer != undefined) {
+                    done();
+                }
+            }
+        });
     });
 
     it('fails when cennznut does not authorize the extrinsic method', async (done) => {
@@ -175,14 +188,14 @@ describe('Doughnut for CennznetExtrinsic', () => {
     });
 
     it('fails when cennznut does not authorize the extrinsic module', async (done) => {
-        let doughnut = await makeDoughnut(
+        let badDoughnut = await makeDoughnut(
             aliceKeyPair,
             bob,
             {'cennznet': makeCennznut('balance', 'transfer')},
         );
 
         const tx = api.tx.genericAsset.transfer(16001, charlie.address, 10000);
-        const doughnutB = new Doughnut(api.registry, doughnut);
+        const doughnutB = new Doughnut(api.registry, badDoughnut);
         const opt = {doughnut: doughnutB};
 
         await tx.signAndSend(bob, opt as any, async ({events, status}) => {
@@ -191,10 +204,30 @@ describe('Doughnut for CennznetExtrinsic', () => {
                 console.log('Completed at block hash', blockHash);
                 const allEvents = await api.query.system.events.at(blockHash);
                 const failed = allEvents.find(event => event.event.data.method === 'ExtrinsicFailed');
-                if (failed != undefined) {
-                    done();
-                } else {
+                if (failed == undefined) {
                     assert(false, 'expected extrinsic to fail');
+                } else {
+                    let goodDoughnut = await makeDoughnut(
+                        aliceKeyPair,
+                        bob,
+                        {'cennznet': makeCennznut('generic-asset', 'transfer')},
+                    );
+                    const nonce = await api.query.system.accountNonce(bob.address);
+                    const doughnutG = new Doughnut(api.registry, goodDoughnut);
+                    const txPayload = {doughnut: doughnutG, nonce};
+
+                    await tx.signAndSend(bob, txPayload as any, async ({events, status}) => {
+                        if (status.isFinalized) {
+                            const blockHash = status.value.toHex();
+                            console.log('Completed at block hash', blockHash);
+                            const allEvents = await api.query.system.events.at(blockHash);
+                            const transfer = checkEventMatches(allEvents,'Transferred', 'genericAsset', alice.address, charlie.address,
+                                '10000', '16001');
+                            if (transfer != undefined) {
+                                done();
+                            }
+                        }
+                    });
                 }
             }
         });
