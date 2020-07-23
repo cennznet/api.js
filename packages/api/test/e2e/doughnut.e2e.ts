@@ -68,19 +68,16 @@ describe('Doughnut for CennznetExtrinsic', () => {
     let aliceKeyPair = {
         secretKey: hexToU8a('0x98319d4ff8a9508c4bb0cf0b5a78d760a0b2082c02775e6e82370816fedfff48925a225d97aa00682d6a59b95b18780c10d7032336e88f3442b42361f4a66011'),
         publicKey: hexToU8a('0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d'),
+        address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
     };
 
     let api: Api;
-    let alice, bob, charlie, dave;
-    let keyring: {
-        [index: string]: KeyringPair;
-    };
+    let bob, charlie, dave;
 
     beforeAll(async () => {
         api = await initApiPromise();
         await cryptoWaitReady();
         const keyring = new Keyring({type: 'sr25519'});
-        alice = keyring.addFromUri('//Alice');
         bob = keyring.addFromUri('//Bob');
         charlie = keyring.addFromUri('//Charlie');
         dave = keyring.addFromUri('//Dave');
@@ -110,7 +107,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                         allEvents,
                         method: 'Transferred',
                         section: 'genericAsset',
-                        sender: alice.address,
+                        sender: aliceKeyPair.address,
                         reciever,
                         amount: amount.toString(),
                         asset: CENNZ.toString(),
@@ -176,7 +173,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                     {
                         allEvents,
                         method: 'Transferred', section: 'genericAsset',
-                        sender: alice.address,
+                        sender: aliceKeyPair.address,
                         reciever: charlie.address,
                         amount: '10000',
                         asset: '16001',
@@ -223,7 +220,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                         allEvents,
                         method: 'Minted',
                         section: 'genericAsset',
-                        sender: alice.address,
+                        sender: aliceKeyPair.address,
                         reciever: charlie.address,
                         amount: '10000',
                         asset: '16001',
@@ -283,7 +280,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
                         allEvents,
                         method: 'Transferred',
                         section: 'genericAsset',
-                        sender: alice.address,
+                        sender: aliceKeyPair.address,
                         reciever: charlie.address,
                         amount: '10000',
                         asset: '16001',
