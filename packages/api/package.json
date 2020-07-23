@@ -36,7 +36,7 @@
   "devDependencies": {
     "@cennznet/cennznut-wasm": "^0.0.1-dev.0",
     "@cennznet/wallet": "^0.20.7",
-    "@plugnet/doughnut-wasm": "0.2.0",
+    "@plugnet/doughnut-wasm": "^0.2.0",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",
