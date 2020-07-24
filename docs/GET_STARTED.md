@@ -53,7 +53,7 @@ Here are examples for each of these categories:
 
 Category | Example | Description
 --- | :---: | ---
-RPC | `api.rpc.system.chain()` | Get the change name
+RPC | `api.rpc.system.chain()` | Get the chain name
 Query | `api.query.genericAsset.freeBalance(CENNZ, Alice)` | How many CENNZs, Alice has in her free balance
 Tx | `api.tx.genericAsset.transfer(CENNZ, BOB, 12345)` | Create an extrinsic for transferring 12345 CENNZs to Bob  
 Note: In the above table, CENNZ is a const carrying an asset id value. 
