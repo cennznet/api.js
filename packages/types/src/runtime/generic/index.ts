@@ -12,12 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from './attestation';
-export * from './cennzx';
-export * from './ga';
-export * from './rewards';
-export * from './sylo';
-export * from './transaction-payment';
-export * from './generic';
-// The CENNZnet nonce type
-export {u64 as Index} from '@polkadot/types';
+export {default as SignedBlock} from './block';
