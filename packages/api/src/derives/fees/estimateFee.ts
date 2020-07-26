@@ -4,7 +4,7 @@ import {generateTransactionPayment} from '@cennznet/types/runtime/transaction-pa
 import {AnyAssetId, IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {TypeRegistry} from '@polkadot/types';
-import {RuntimeDispatchInfo} from '@polkadot/types/interfaces/rpc';
+import {RuntimeDispatchInfo} from '@polkadot/types/interfaces/payment';
 import ExtrinsicEra from '@polkadot/types/primitive/Extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
 import {combineLatest, Observable, of} from 'rxjs';
