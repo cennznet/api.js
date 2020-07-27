@@ -79,7 +79,7 @@ export interface IExtrinsic extends IExtrinsicBase {
   sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 }
 
-export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['decorateDerive']> &
+export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['_decorateDerive']> &
   DecoratedCennznetDerive<ApiType>;
 
 interface StorageEntryBase<C, H, U> {
