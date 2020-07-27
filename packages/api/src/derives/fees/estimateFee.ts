@@ -5,7 +5,7 @@ import {AnyAssetId, IExtrinsic} from '@cennznet/types/types';
 import {drr} from '@polkadot/rpc-core/rxjs';
 import {TypeRegistry} from '@polkadot/types';
 import {RuntimeDispatchInfo} from '@polkadot/types/interfaces/payment';
-import ExtrinsicEra from '@polkadot/types/primitive/Extrinsic/ExtrinsicEra';
+import ExtrinsicEra from '@polkadot/types/Extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
 import {combineLatest, Observable, of} from 'rxjs';
 import {catchError, first, map, switchMap} from 'rxjs/operators';

@@ -14,7 +14,8 @@
 
 // tslint:disable member-ordering no-magic-numbers
 import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
-import {Balance, ExtrinsicEra, Hash} from '@polkadot/types/interfaces/runtime';
+import {Balance, Hash} from '@polkadot/types/interfaces/runtime';
+import ExtrinsicEra from '@polkadot/types/Extrinsic/ExtrinsicEra';
 import {sign} from '@polkadot/types/primitive/Extrinsic/util';
 import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry} from '@polkadot/types/types';
 import {u8aConcat} from '@polkadot/util';
