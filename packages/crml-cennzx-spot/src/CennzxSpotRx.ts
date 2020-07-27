@@ -47,7 +47,6 @@ export class CennzxSpotRx {
     minLiquidity: AnyNumber,
     maxAssetAmount: AnyNumber,
     coreAmount: AnyNumber,
-    expire: AnyNumber
   ): SubmittableExtrinsic<'rxjs'> {
     return this.api.tx.cennzxSpot.addLiquidity(assetId, minLiquidity, maxAssetAmount, coreAmount);
   }
