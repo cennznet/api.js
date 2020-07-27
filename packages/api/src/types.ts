@@ -40,7 +40,7 @@ import {
 import {ChargeTransactionPayment} from '@cennznet/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import {u64} from '@polkadot/types';
-import {AccountId, Address, AssetOf, Hash} from '@polkadot/types/interfaces';
+import {AccountId, Address, Hash} from '@polkadot/types/interfaces';
 import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
 import {Observable} from 'rxjs';
 
