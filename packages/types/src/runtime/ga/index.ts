@@ -18,3 +18,4 @@ export {default as Owner} from './Owner';
 export {default as PermissionsV1, default as PermissionLatest} from './PermissionsV1';
 export {default as PermissionVersions} from './PermissionVersions';
 export {default as AssetInfo} from './AssetInfo';
+export {BalanceLock, BalanceLockTo212} from './Balance';
