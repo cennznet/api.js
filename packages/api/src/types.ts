@@ -43,6 +43,7 @@ import {u64} from '@polkadot/types';
 import {AccountId, Address, Hash} from '@polkadot/types/interfaces';
 import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
 import {Observable} from 'rxjs';
+import {AnyU8a} from "@polkadot/types/types";
 
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
@@ -68,11 +69,6 @@ export interface IPlugin {
   sdkRxClass?: Constructor<any>;
   types?: RegistryTypes;
   derives?: DeriveCustom;
-}
-
-export interface SignerOptions extends SignerOptionsBase {
-  doughnut?: DoughnutValue;
-  transactionPayment?: ChargeTransactionPayment;
 }
 
 export interface IExtrinsic extends IExtrinsicBase {

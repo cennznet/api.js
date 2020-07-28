@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited & @polkadot/types authors & contributors
+// Copyright 2020 Centrality Investments Limited & @polkadot/types authors & contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,29 +13,16 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
+import {Bytes, Compact, Struct, u32} from '@polkadot/types';
 import {Balance, Hash} from '@polkadot/types/interfaces/runtime';
 import ExtrinsicEra from '@polkadot/types/Extrinsic/ExtrinsicEra';
-import {sign} from '@polkadot/types/primitive/Extrinsic/util';
-import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry} from '@polkadot/types/types';
-import {u8aConcat} from '@polkadot/util';
-
+import {sign} from '@polkadot/types/Extrinsic/util';
 import Option from '@polkadot/types/codec/Option';
+
 import Doughnut from '../../Doughnut';
 import {ChargeTransactionPayment, Index} from '../../runtime';
+import {ExtrinsicPayloadValue, IKeyringPair, Registry} from '../../types';
 import {CennznetInterfaceTypes} from '../types';
-
-export interface ExtrinsicPayloadValueV2 {
-  blockHash: AnyU8a;
-  doughnut: Option<Doughnut>;
-  era: AnyU8a | IExtrinsicEra;
-  genesisHash: AnyU8a;
-  method: AnyU8a | IMethod;
-  nonce: AnyNumber;
-  specVersion: AnyNumber;
-  tip: AnyNumber;
-  transactionPayment?: ChargeTransactionPayment;
-}
 
 // The base of an extrinsic payload
 export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
@@ -76,7 +63,7 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV2 extends Struct {
-  constructor(registry: Registry, value?: ExtrinsicPayloadValueV2 | Uint8Array | string) {
+  constructor(registry: Registry, value?: ExtrinsicPayloadValue | Uint8Array | string) {
     super(registry, FullPayloadV2, value);
   }
 
