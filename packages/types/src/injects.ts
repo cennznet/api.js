@@ -15,7 +15,6 @@ import Doughnut from './Doughnut';
 import * as extrinsicTypes from './extrinsic';
 import metadata from './metaDataTypes';
 import * as runtimeTypes from './runtime';
-// import Vec from '@polkadot/types/codec/Vec';
 
 export default {
   ...runtimeTypes,
@@ -26,5 +25,4 @@ export default {
   'ed25519::Signature': 'H512',
   RewardBalance: 'Balance',
   Doughnut: Doughnut,
-  // 'Vec<Extrinsic>': Vec<Extrinsic>
 };
