@@ -26,11 +26,11 @@ export default class Doughnut extends Raw {
   }
 
   constructor(registry: Registry, value?: AnyU8a) {
-    // This function doubles as the SCALE coded decode function.
-    // [[value]] could be a concatenation of encoded fields e.g. [sender][method][doughnut][era][nonce]
+    // This function doubles as the SCALE codec decode function.
+    // [[value]] can be a concatenation of encoded fields e.g. [sender][method][doughnut][era][nonce]
     // NOT only doughnut bytes.
     // We must ensure that any doughnut specific bytes are consumed
-    // so that th buffer [[value]] may be passed along to decode other types successfully
+    // so that the buffer [[value]] may be passed along to decode other types successfully
     const doughnut = DoughnutCodec.decode(value as Uint8Array);
     super(registry, doughnut.encode());
   }
