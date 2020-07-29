@@ -12,30 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Compact from '@polkadot/types/codec/Compact';
+import {Doughnut as DoughnutCodec} from '@plugnet/doughnut-wasm';
 import Raw from '@polkadot/types/codec/Raw';
-import Bytes from '@polkadot/types/primitive/Bytes';
-import {AnyU8a, Codec, Registry} from '@polkadot/types/types';
+import {AnyU8a, Registry} from '@polkadot/types/types';
 
 /**
- * An encoded, signed v0 Doughnut certificate
+ * A v0 Doughnut certificate
+ * It is attached to an extrinsic in it's binary encoded form.
  **/
 export default class Doughnut extends Raw {
-  // implements Codec {
   get encodedLength(): number {
     return this.toU8a().length;
   }
 
   constructor(registry: Registry, value?: AnyU8a) {
-    // This function is used as both a constructor and a decoder
-    // Doughnut has its own codec but it must be length prefixed to support the SCALE codec used by the extrinsic
-
-    // Failure to decode indicates a call as a constructor
-    const decoded = new Bytes(registry, value);
-    if (decoded.length > 0) {
-      super(registry, decoded);
-    } else {
-      super(registry, value);
-    }
+    // This function doubles as the SCALE codec decode function.
+    // [[value]] can be a concatenation of encoded fields e.g. [sender][method][doughnut][era][nonce]
+    // NOT only doughnut bytes.
+    // We must ensure that any doughnut specific bytes are consumed
+    // so that the buffer [[value]] may be passed along to decode other types successfully
+    const doughnut = DoughnutCodec.decode(value as Uint8Array);
+    super(registry, doughnut.encode());
   }
 }

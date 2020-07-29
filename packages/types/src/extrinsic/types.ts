@@ -50,11 +50,6 @@ export interface ExtrinsicV2SignatureOptions {
   transactionPayment?: ChargeTransactionPayment;
 }
 
-export interface ExtrinsicPayloadOptions {
-  useDoughnut?: boolean;
-  useFeeExchange?: boolean;
-}
-
 export interface ExtrinsicExtraValue {
   era?: Uint8Array;
   nonce?: AnyNumber;
@@ -73,19 +68,12 @@ export interface ExtrinsicPayloadValue {
   transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
 
-export type DoughnutValue = AnyU8a;
-
 export type ChargeTransactionValue = AnyU8a;
 
 export type FeeExchangeValue = {
   assetId: AnyNumber;
   maxPayment: AnyNumber;
 };
-
-export interface IExtrinsicImpl extends IExtrinsicImplBase {
-  addDoughnut(doughnut: DoughnutValue): IExtrinsicImpl;
-  addFeeExchangeOpt(feeExchangeOpt: FeeExchangeValue): IExtrinsicImpl;
-}
 
 export interface SignatureOptions extends SignatureOptionsBase {
   doughnut?: AnyU8a | Doughnut;
@@ -94,10 +82,10 @@ export interface SignatureOptions extends SignatureOptionsBase {
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 
-// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with cennznet types
+// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with CENNZnet types
 declare module '@polkadot/types/interfaceRegistry' {
   interface InterfaceRegistry {
-    // Add types that only cennznet knows about.
+    // Add types that only CENNZnet knows about.
     // TS will merge them into the polkadot provided [[InterfaceRegistry]]
     Doughnut: Doughnut;
     'Option<Doughnut>': Option<Doughnut>;

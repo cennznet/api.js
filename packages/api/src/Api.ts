@@ -20,15 +20,12 @@ import {ApiPromise} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
 import derives from './derives';
-import getPlugins from './plugins';
 import rpc from './rpc';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
+import {ApiOptions, Derives, SubmittableExtrinsics} from './types';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
-import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
-import logger from './util/logging';
 
 export const DEFAULT_TIMEOUT = 10000;
 

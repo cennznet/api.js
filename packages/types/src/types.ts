@@ -10,10 +10,7 @@ export type AnyAssetId = AnyNumber;
 export {
   ExtrinsicExtraValue,
   ExtrinsicOptions,
-  ExtrinsicPayloadOptions,
   ExtrinsicPayloadValue,
   ExtrinsicSignatureOptions,
-  DoughnutValue,
-  IExtrinsicImpl,
   SignatureOptions,
 } from './extrinsic/types';
