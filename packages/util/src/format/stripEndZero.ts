@@ -20,7 +20,7 @@ const STRIP_ZERO = /^(.*?)(0*)$/;
  * trim all trailing zeros. return '' if only zero is passed in.
  * @param value
  */
-export function stripEndZero(value: string) {
+export default function stripEndZero(value: string) {
     assert(!isUndefined(value), 'must not be undefined');
     return STRIP_ZERO.exec(value)[1];
 }

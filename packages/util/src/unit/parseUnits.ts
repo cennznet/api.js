@@ -14,9 +14,9 @@
 
 import {assert, isNumber} from '@polkadot/util';
 import BN from 'bn.js';
-import {stripEndZero} from '../format/stripEndZero';
+import stripEndZero from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';
-import {toFixed} from '../number/toFixed';
+import toFixed from '../number/toFixed';
 
 // tslint:disable prefer-const no-magic-numbers
 /**

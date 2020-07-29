@@ -16,7 +16,7 @@
  * convert number to string, without science notion
  * @param x
  */
-export function toFixed(x: number): string {
+export default function toFixed(x: number): string {
     if (Math.abs(x) < 1.0) {
         const [fixed, e] = x.toString().split('e-');
         if (!e) {
