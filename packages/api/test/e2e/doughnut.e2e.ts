@@ -130,12 +130,50 @@ describe('Doughnut for CennznetExtrinsic', () => {
       }
     });
   });
+
+  it('Fails when doughnut expires', async done => {
+    let doughnut = await makeDoughnut(
+       api.registry,
+        {
+            issuer: aliceKeyPair,
+            holder: bob,
+            permissions: {'cennznet': makeCennznut('balance', 'transfer')},
+            expiry: 100,
+        },
+    );
+
+    const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
+    await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+        // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
+    })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":181}');
+    done();
+  });
+
+  it('Fails when doughnut not signed', async done => {
+     let doughnut = await makeDoughnut(
+        api.registry,
+            {
+                issuer: aliceKeyPair,
+                holder: bob,
+                permissions: {'cennznet': makeCennznut('balance', 'transfer')},
+                isSigned: false,
+            },
+     );
+
+     const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
+     await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+         // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
+     })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":172}');
+     done();
+  });
 });
 
 interface DoughnutArgs {
   issuer: Keypair,
   holder: KeyringPair,
-  permissions: Record<string, Uint8Array>
+  permissions: Record<string, Uint8Array>,
+  expiry?: number,
+  isSigned?: boolean
 }
 
 /// Helper for creating CENNZnuts which takes module/section name and method name to be same for doughnut permissioning
@@ -162,17 +200,19 @@ function makeCennznut(module: string, method: string): Uint8Array {
 
 // Helper for creating v0 Doughnuts where user can pass expiry time for doughnut to be valid and
 // 'not before' which would mean doughnut is not applied before this block
-function makeDoughnut(registry, { issuer, holder, permissions }: DoughnutArgs): Doughnut {
+function makeDoughnut(registry, { issuer, holder, permissions, expiry = (new Date().getTime() / 1000) + 600, isSigned = true }: DoughnutArgs): Doughnut {
   const d = new DoughnutMaker(
     issuer.publicKey,
     holder.publicKey,
-    (new Date().getTime() / 1000) + 600, // expire in 10 minutes
+    expiry, // default expire in 10 minutes
     1, // 'not before'
   );
   for (const key in permissions) {
     d.addDomain(key, permissions[key]);
   }
-  d.signSr25519(new Uint8Array(issuer.secretKey));
+  if (isSigned) {
+      d.signSr25519(new Uint8Array(issuer.secretKey));
+  }
   let encoded = d.encode();
   return new Doughnut(registry, encoded)
 }
