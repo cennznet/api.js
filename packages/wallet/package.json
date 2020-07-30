@@ -19,8 +19,8 @@
     },
     "dependencies": {
         "@plugnet/wallet": "^0.20.0",
-        "@polkadot/api": "^0.96.1",
-        "@polkadot/types": "^0.96.1",
+        "@polkadot/api": "^1.25.1",
+        "@polkadot/types": "^1.25.1",
         "reflect-metadata": "^0.1.13"
     }
 }

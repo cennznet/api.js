@@ -18,9 +18,9 @@
         "@cennznet/util": "^1.0.3"
     },
     "devDependencies": {
-        "@cennznet/wallet": "^0.20.7",
-        "@types/jest": "^24.0.15",
-        "jest": "24.8.0",
-        "rimraf": "^2.6.2"
+        "@cennznet/wallet": "^1.0.3",
+        "@types/jest": "^26.0.7",
+        "jest": "^26.1.0",
+        "rimraf": "^3.0.2"
     }
 }

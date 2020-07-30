@@ -23,23 +23,21 @@
     "@cennznet/crml-cennzx-spot": "^1.0.3",
     "@cennznet/crml-generic-asset": "^1.0.3",
     "@cennznet/types": "^1.0.3",
-    "@polkadot/api": "^1.1.1",
-    "@polkadot/metadata": "1.1.1",
-    "@polkadot/rpc-core": "^1.1.1",
-    "@polkadot/rpc-provider": "^1.1.1",
-    "@polkadot/types": "^1.1.1",
+    "@polkadot/api": "^1.25.1",
+    "@polkadot/metadata": "1.25.1",
+    "@polkadot/rpc-core": "1.25.1",
+    "@polkadot/rpc-provider": "1.25.1",
+    "@polkadot/types": "1.25.1",
+    "@polkadot/keyring": "^2.18.1",
     "eventemitter3": "^4.0.0"
   },
-  "resolution": {
-    "@polkadot/keyring": "^1.6.1"
-  },
   "devDependencies": {
-    "@cennznet/wallet": "^0.20.7",
-    "@types/jest": "^23.3.5",
-    "jest": "24.1.0",
+    "@cennznet/wallet": "^1.0.3",
+    "@types/jest": "^26.0.7",
+    "jest": "^26.1.0",
     "rimraf": "^2.6.2",
     "ts-mockito": "^2.3.1",
-    "typedoc": "^0.13.0",
-    "typedoc-plugin-markdown": "^1.1.19"
+    "typedoc": "^0.17.8",
+    "typedoc-plugin-markdown": "^2.3.1"
   }
 }
