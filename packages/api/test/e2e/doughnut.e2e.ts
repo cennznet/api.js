@@ -198,7 +198,6 @@ describe('Doughnut for CennznetExtrinsic', () => {
              issuer: aliceKeyPair,
              holder: bob,
              permissions: {'cennznet': makeCennznut('balance', 'transfer')},
-             notBefore: (new Date().getTime() / 1000) + 100,
              signer: bobKeyPair
          },
      );
