@@ -16,7 +16,7 @@ import {createType} from '@cennznet/types';
 async function generateSlimMeta() {
     const provider: any = process.argv[2] ? process.argv[2]: 'wss://cennznet.unfrastructure.io/public/ws';
     const api = await Api.create({provider});
-    const metadata = api.runtimeMetadata.toJSON();
+    const metadata = api.runtimeMetadata;
     const KEEP = [
         "System",
         "Timestamp",
@@ -45,7 +45,7 @@ async function generateSlimMeta() {
             newModules.push({"name": m.name, "calls": m.calls, "events": m.events});
         }
     }
-    let extrinsic = metadata.metadata['V11'].extrinsic;
+    let extrinsic = metadata['V11'].extrinsic;
     let filteredModule = createType(api.registry, 'Vec<ModuleMetadataV11>', newModules);
     let filteredMetaLatest = createType(api.registry, 'MetadataLatest', {modules: filteredModule, extrinsic});
     const filteredMetadataAll = createType(api.registry,'MetadataAll', filteredMetaLatest, 11);
