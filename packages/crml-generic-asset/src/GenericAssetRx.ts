@@ -18,7 +18,7 @@ import {AssetId} from '@cennznet/types';
 import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
 import {Balance} from '@polkadot/types/interfaces';
-import {AssetOptionsValue, QueryableGetBalanceRx} from './types';
+import {AssetOptionsValue} from './types';
 
 export class GenericAssetRx {
     private _api: ApiRx;
@@ -113,11 +113,8 @@ export class GenericAssetRx {
      * @param assetId The id or symbol (for reserved asset) of the asset
      * @param address The address of the account
      */
-    get getTotalBalance(): QueryableGetBalanceRx {
-        const _fn = this.api.derive.genericAsset.totalBalance as QueryableGetBalanceRx;
-        _fn.at = this.api.derive.genericAsset.totalBalanceAt as any;
-
-        return _fn;
+    get getTotalBalance(): QueryableStorageEntry<'rxjs', Balance> {
+        return this.api.derive.genericAsset.totalBalance as any;
     }
 
     // tslint:enable:member-ordering

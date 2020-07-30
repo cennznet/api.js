@@ -13,9 +13,7 @@
 // limitations under the License.
 
 import {AnyAddress, AnyNumber, CodecArg} from '@cennznet/types/types';
-import { H256 } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
-import {Observable} from 'rxjs';
 
 export interface CodecArgObject {
     [index: string]: CodecArg;
@@ -45,18 +43,4 @@ export interface AssetOptionsValue extends CodecArgObject {
         mint?: AnyAddress;
         burn?: AnyAddress;
     };
-}
-
-export interface QueryableGetBalance {
-    (assetId: AnyNumber, address: AnyAddress): Promise<BN>;
-
-    (assetId: AnyNumber, address: AnyAddress, cb: any): Promise<() => any>;
-
-    at(hash: H256, assetId: AnyNumber, address: AnyAddress): Promise<BN>;
-}
-
-export interface QueryableGetBalanceRx {
-    (assetId: AnyNumber, address: AnyAddress): Observable<BN>;
-
-    at(hash: H256, assetId: AnyNumber, address: AnyAddress): Observable<BN>;
 }
