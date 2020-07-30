@@ -32,7 +32,7 @@ export function assetToWithdraw(api: ApiInterfaceRx) {
         ]).pipe(
             map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
                 new LiquidatedAsset(getAssetToWithdraw(
-                    new BN(liquidity),
+                    liquidity as any,
                     coreAssetReserve as any,
                     tradeAssetReserve as any,
                     totalLiquidity as any
@@ -51,7 +51,7 @@ export function assetToWithdrawAt(api: ApiInterfaceRx) {
         ]).pipe(
             map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
                 new LiquidatedAsset(getAssetToWithdraw(
-                    new BN(liquidity),
+                    liquidity as any,
                     coreAssetReserve as any,
                     tradeAssetReserve as any,
                     totalLiquidity as any
