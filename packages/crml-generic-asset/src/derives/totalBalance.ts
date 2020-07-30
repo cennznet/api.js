@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
+import {AnyAddress} from '@cennznet/types/types';
+import {AssetId} from '@cennznet/types';
 import {ApiInterfaceRx} from '@polkadot/api/types';
 // import {drr} from '@polkadot/api-derive/util/drr';
 import {drr} from '@polkadot/rpc-core/rxjs';
@@ -22,7 +23,7 @@ import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 export function totalBalance(api: ApiInterfaceRx) {
-  return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+  return (assetId: AssetId, address: AnyAddress): Observable<BN> => {
     return combineLatest([
       api.query.genericAsset.freeBalance(assetId, address),
       api.query.genericAsset.reservedBalance(assetId, address),
@@ -34,7 +35,7 @@ export function totalBalance(api: ApiInterfaceRx) {
 }
 
 export function totalBalanceAt(api: ApiInterfaceRx) {
-  return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
+  return (hash: Hash, assetId: AssetId, address: AnyAddress): Observable<BN> => {
     return combineLatest([
       api.query.genericAsset.freeBalance.at(hash, assetId, address),
       api.query.genericAsset.reservedBalance.at(hash, assetId, address),

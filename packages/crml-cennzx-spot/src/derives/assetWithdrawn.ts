@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
+import {AnyNumber} from '@cennznet/types/types';
+import {AssetId} from '@cennznet/types';
 import {Hash} from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import {LiquidatedAsset} from '../types'
@@ -24,7 +25,7 @@ import {poolAssetBalance, poolAssetBalanceAt, poolCoreAssetBalance, poolCoreAsse
 import {totalLiquidity, totalLiquidityAt} from './totalLiquidity';
 
 export function assetToWithdraw(api: ApiInterfaceRx) {
-    return (assetId: AnyAssetId, liquidity: AnyNumber): Observable<LiquidatedAsset> => {
+    return (assetId: AssetId, liquidity: AnyNumber): Observable<LiquidatedAsset> => {
         return combineLatest([
             poolAssetBalance(api)(assetId),
             poolCoreAssetBalance(api)(assetId),
@@ -43,7 +44,7 @@ export function assetToWithdraw(api: ApiInterfaceRx) {
 }
 
 export function assetToWithdrawAt(api: ApiInterfaceRx) {
-    return (hash: Hash, assetId: AnyAssetId, liquidity: AnyNumber): Observable<LiquidatedAsset> => {
+    return (hash: Hash, assetId: AssetId, liquidity: AnyNumber): Observable<LiquidatedAsset> => {
         return combineLatest([
             poolAssetBalanceAt(api)(hash, assetId),
             poolCoreAssetBalanceAt(api)(hash, assetId),
