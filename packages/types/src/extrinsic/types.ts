@@ -83,11 +83,11 @@ export interface SignatureOptions extends SignatureOptionsBase {
 
 // Adding here as the @polkadot/types version used here
 // is lagging behind current CENNZnet node
-export class Phase extends Enum {
-  ApplyExtrinsic: 'u32';
-  Finalization: 'Null';
-  Initialization: 'Null';
-}
+export class Phase extends Enum.with({
+  ApplyExtrinsic: 'u32',
+  Finalization: 'Null',
+  Initialization: 'Null',
+}) {}
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 
