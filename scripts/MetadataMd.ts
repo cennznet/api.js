@@ -8,7 +8,7 @@ import fs from 'fs';
 import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
 
 import interfaces from '@polkadot/types/interfaces/jsonrpc';
-import Call from '@polkadot/types/primitive/Generic/Call';
+import Call from '@polkadot/types/generic/Call';
 import { MetadataLatest, ModuleMetadataLatest } from '@cennznet/types/interfaces';
 import Metadata from '@polkadot/metadata/Metadata';
 import rpcDataLatest from '@polkadot/metadata/Metadata/v7/static';
