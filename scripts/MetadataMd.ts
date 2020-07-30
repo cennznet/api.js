@@ -218,7 +218,8 @@ function addStorage(metadata: MetadataLatest): string {
 }
 
 function writeFile(name: string, ...chunks: any[]): void {
-    const options = {flags: 'w', encoding: 'utf8'};
+    let encoding: BufferEncoding = "utf8";
+    const options = {flags: 'w', encoding};
     const writeStream = fs.createWriteStream(name, options);
 
     writeStream.on('finish', (): void => {
@@ -241,7 +242,8 @@ function writeToConstantsMd(metadata: MetadataLatest): void {
 }
 
 function writeToStorageMd(metadata: MetadataLatest): void {
-    const options = {flags: 'r', encoding: 'utf8'};
+    let encoding: BufferEncoding = "utf8";
+    const options = {flags: 'r', encoding};
     const data = fs.readFileSync('packages/types/src/scripts/METHODS_STORAGE_SUBSTRATE.md', options);
 
     writeFile('docs/METHODS_STORAGE.md', addStorage(metadata), data);
