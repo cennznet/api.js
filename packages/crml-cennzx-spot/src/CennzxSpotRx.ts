@@ -15,15 +15,10 @@
 import {ApiRx} from '@cennznet/api';
 import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
 import {AssetId} from '@cennznet/types';
+import {Balance} from '@polkadot/types/interfaces';
 import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {assert} from '@cennznet/util';
-import {
-  QueryableGetAssetWithdrawnRx,
-  QueryableGetLiquidityBalancePriceRx,
-  QueryableGetLiquidityBalanceRx,
-  QueryableGetPoolBalanceRx,
-  QueryableTotalLiquidityBalanceRx,
-} from './types';
+import {LiquidatedAsset} from "./types";
 
 export class CennzxSpotRx {
   private readonly _api: ApiRx;
@@ -145,11 +140,8 @@ export class CennzxSpotRx {
    * Query the total liquidity of an exchange pool
    * @param assetId
    */
-  get getTotalLiquidity(): QueryableTotalLiquidityBalanceRx {
-    const _fn = this.api.derive.cennzxSpot.totalLiquidity as QueryableTotalLiquidityBalanceRx;
-    _fn.at = this.api.derive.cennzxSpot.totalLiquidityAt;
-
-    return _fn;
+  get getTotalLiquidity(): QueryableStorageEntry<'promise', Balance> {
+    return this.api.derive.cennzxSpot.totalLiquidity as any;
   }
 
   /**
@@ -165,11 +157,8 @@ export class CennzxSpotRx {
    * @param {(AnyNumber,AnyNumber)} coreAssetIs, assetId The id of the asset
    * @param {AnyAddress} address The address of the account
    */
-  get getLiquidityBalance(): QueryableGetLiquidityBalanceRx {
-    const _fn = this.api.derive.cennzxSpot.liquidityBalance as QueryableGetLiquidityBalanceRx;
-    _fn.at = this.api.derive.cennzxSpot.liquidityBalanceAt;
-
-    return _fn;
+  get getLiquidityBalance(): QueryableStorageEntry<'rxjs', Balance> {
+    return this.api.derive.cennzxSpot.liquidityBalance as any;
   }
 
   // tslint:disable:member-ordering
@@ -177,11 +166,8 @@ export class CennzxSpotRx {
    * Query balance for an exchange pool
    * @param assetId The id of the asset
    */
-  get getPoolAssetBalance(): QueryableGetPoolBalanceRx {
-    const _fn = this.api.derive.cennzxSpot.poolAssetBalance as QueryableGetPoolBalanceRx;
-    _fn.at = this.api.derive.cennzxSpot.poolAssetBalanceAt;
-
-    return _fn;
+  get getPoolAssetBalance(): QueryableStorageEntry<'rxjs', Balance> {
+    return this.api.derive.cennzxSpot.poolAssetBalance as any;
   }
 
   // tslint:disable:member-ordering
@@ -189,11 +175,8 @@ export class CennzxSpotRx {
    * Query balance for an exchange pool
    * @param assetId The id of the asset
    */
-  get getPoolCoreAssetBalance(): QueryableGetPoolBalanceRx {
-    const _fn = this.api.derive.cennzxSpot.poolCoreAssetBalance as QueryableGetPoolBalanceRx;
-    _fn.at = this.api.derive.cennzxSpot.poolCoreAssetBalanceAt;
-
-    return _fn;
+  get getPoolCoreAssetBalance(): QueryableStorageEntry<'rxjs', Balance> {
+    return this.api.derive.cennzxSpot.poolCoreAssetBalance as any;
   }
 
   /**
@@ -201,10 +184,7 @@ export class CennzxSpotRx {
    * @param assetId The id of the asset
    * @param liquidity - user liquidity
    */
-  get assetToWithdraw(): QueryableGetAssetWithdrawnRx {
-    const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawnRx;
-    _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
-
-    return _fn;
+  get assetToWithdraw(): QueryableStorageEntry<'rxjs', LiquidatedAsset> {
+    return this.api.derive.cennzxSpot.assetToWithdraw as any;
   }
 }

@@ -12,78 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyAddress, AnyAssetId, AnyNumber, IHash} from '@cennznet/types/types';
-import BN from 'bn.js';
-import {Observable} from 'rxjs';
+import {AnyJson, BareOpts, Codec, Registry} from '@polkadot/types/types';
+import {Balance, H256} from '@polkadot/types/interfaces';
+import {u8aConcat} from '@polkadot/util';
 
-export interface QueryableGetLiquidityBalance {
-  (assetId: AnyAssetId, address: AnyAddress): Promise<BN>;
+export class LiquidatedAsset implements Codec {
+    coreAmount: Balance;
+    assetAmount: Balance;
 
-  (assetId: AnyAssetId, address: AnyAddress, cb: (res: BN) => void): Promise<() => any>;
+    readonly encodedLength: number;
+    readonly hash: H256;
+    readonly isEmpty: boolean;
+    readonly registry: Registry;
 
-  at(hash: IHash, assetId: AnyAssetId, address: AnyAddress): Promise<BN>;
-}
+    constructor({coreAmount, assetAmount}) {
+        this.coreAmount = coreAmount;
+        this.assetAmount = assetAmount;
+    }
 
-export interface QueryableGetLiquidityBalanceRx {
-  (assetId: AnyAssetId, address: AnyAddress): Observable<BN>;
+    eq(other?: LiquidatedAsset): boolean {
+        return this.coreAmount.eq(other.coreAmount) && this.assetAmount.eq(other.assetAmount);
+    }
 
-  at(hash: IHash, assetId: AnyAssetId, address: AnyAddress): Observable<BN>;
-}
+    toHex(isLe?: boolean): string {
+        return this.coreAmount.toHex(isLe) + this.coreAmount.toHex(isLe);
+    }
 
-export interface QueryableTotalLiquidityBalance {
-  (assetId: AnyAssetId): Promise<BN>;
+    toHuman(isExtended?: boolean): AnyJson {
+        return "{ \"core\": \"" + this.coreAmount.toHuman(isExtended) + "\", \"asset\": \"" + this.assetAmount.toHuman(isExtended) + "\"}";
+    }
 
-  (assetId: AnyAssetId, cb: (res: BN) => void): Promise<() => any>;
+    toJSON(): AnyJson {
+        return "{ \"core\":" + this.coreAmount.toRawType() + ", \"asset\":" + this.assetAmount.toRawType() + "}";
+    }
 
-  at(hash: IHash, assetId: AnyAssetId): Promise<BN>;
-}
+    toRawType(): string {
+        return this.toJSON().toString();
+    }
 
-export interface QueryableTotalLiquidityBalanceRx {
-  (assetId: AnyAssetId): Observable<BN>;
-
-  at(hash: IHash, assetId: AnyAssetId): Observable<BN>;
-}
-
-export interface QueryableGetPoolBalance {
-  (assetId: AnyAssetId): Promise<BN>;
-
-  (assetId: AnyAssetId, cb: (res: BN) => void): Promise<() => any>;
-
-  at(hash: IHash, assetId: AnyAssetId): Promise<BN>;
-}
-
-export interface QueryableGetPoolBalanceRx {
-  (assetId: AnyAssetId): Observable<BN>;
-
-  at(hash: IHash, assetId: AnyAssetId): Observable<BN>;
-}
-
-export interface QueryableGetLiquidityBalancePrice {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Promise<BN>;
-
-  (assetId: AnyAssetId, coreAmount: AnyNumber, cb: (res: BN) => void): Promise<() => any>;
-
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Promise<BN>;
-}
-
-export interface QueryableGetLiquidityBalancePriceRx {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Observable<BN>;
-
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Observable<BN>;
-}
-
-export interface QueryableGetAssetWithdrawn {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{coreAmount: BN; assetAmount: BN}>;
-
-  (assetId: AnyAssetId, coreAmount: AnyNumber, cb: (res: {coreAmount: BN; assetAmount: BN}) => void): Promise<
-    () => any
-  >;
-
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{coreAmount: BN; assetAmount: BN}>;
-}
-
-export interface QueryableGetAssetWithdrawnRx {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{coreAmount: BN; assetAmount: BN}>;
-
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{coreAmount: BN; assetAmount: BN}>;
+    toU8a(isBare?: BareOpts): Uint8Array {
+        // TODO check for isBare
+        return u8aConcat(this.coreAmount.toU8a(true), this.assetAmount.toU8a(true));
+    }
 }

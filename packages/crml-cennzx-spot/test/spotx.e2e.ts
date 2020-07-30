@@ -191,7 +191,7 @@ describe('SpotX APIs', () => {
             const totalLiquidityBefore = await api.cennzxSpot.getTotalLiquidity(tradeAssetA);
             const removeLiquidity = 10;
             expect(totalLiquidityBefore.gtn(removeLiquidity)).toBeTruthy();
-            const {coreAmount, assetAmount} = await api.cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
+            const liquidatedAsset = await api.cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
             await api.cennzxSpot
                 .removeLiquidity(tradeAssetA, removeLiquidity, 1, 1)
                 .signAndSend(alice, async ({events, status}) => {
@@ -204,8 +204,8 @@ describe('SpotX APIs', () => {
                                 expect(totalLiquidityBefore.subn(removeLiquidity)).toBeTruthy();
                                 const coreFromEvent = event.data[1];
                                 const assetFromEvent = event.data[3];
-                                expect(assetFromEvent.eq(assetAmount)).toBeTruthy();
-                                expect(coreFromEvent.eq(coreAmount)).toBeTruthy();
+                                expect(assetFromEvent.eq(liquidatedAsset.assetAmount)).toBeTruthy();
+                                expect(coreFromEvent.eq(liquidatedAsset.coreAmount)).toBeTruthy();
                             }
                         }
                         // return isCreated event
