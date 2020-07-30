@@ -7,7 +7,7 @@ import '@plugnet/types/injector';
 import fs from 'fs';
 import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
 
-import interfaces from '@polkadot/jsonrpc';
+import interfaces from '@polkadot/types/interfaces/jsonrpc';
 import Call from '@polkadot/types/primitive/Generic/Call';
 import { MetadataLatest, ModuleMetadataLatest } from '@cennznet/types/interfaces';
 import Metadata from '@polkadot/metadata/Metadata';
