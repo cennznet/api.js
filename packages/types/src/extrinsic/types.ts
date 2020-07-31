@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Enum} from '@polkadot/types';
 import {Option, Vec} from '@polkadot/types/codec';
 import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
 import {
@@ -79,6 +80,14 @@ export interface SignatureOptions extends SignatureOptionsBase {
   doughnut?: AnyU8a | Doughnut;
   transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
+
+// Adding here as the @polkadot/types version used here
+// is lagging behind current CENNZnet node
+export class Phase extends Enum.with({
+  ApplyExtrinsic: 'u32',
+  Finalization: 'Null',
+  Initialization: 'Null',
+}) {}
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 
