@@ -5,7 +5,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 
-## [1.0.4](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.0.4) (31/07/2020)
+## [1.1.4](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.1.4) (31/07/2020)
   Add doughnut + CENNZnut support and e2e tests
 
 ## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)

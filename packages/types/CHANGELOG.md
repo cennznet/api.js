@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 
-## [1.0.4](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.0.4) (31/07/2020)
+## [1.1.0](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.1.0) (31/07/2020)
     Changed:
     - Improve getting started doc (#122)
     Added:
