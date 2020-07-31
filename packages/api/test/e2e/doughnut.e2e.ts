@@ -149,7 +149,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
     );
 
     const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
-    await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+    await expect(tx.signAndSend(bob, { doughnut }, () => {
         // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
     })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":181}');
     done();
@@ -167,13 +167,13 @@ describe('Doughnut for CennznetExtrinsic', () => {
      );
 
      const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
-     await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+     await expect(tx.signAndSend(bob, { doughnut }, () => {
          // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
      })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":172}');
      done();
   });
 
-  it('Fails when doughnuts notBefore is set for future block', async done => {
+  it('Fails when doughnut notBefore is in the future ', async done => {
      let doughnut = await makeDoughnut(
         api.registry,
          {
@@ -185,7 +185,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
      );
 
      const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
-     await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+     await expect(tx.signAndSend(bob, { doughnut }, () => {
          // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
      })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":182}');
      done();
@@ -203,7 +203,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
      );
 
      const tx = api.tx.genericAsset.transfer(CENNZ, charlie.address, 10_000);
-     await expect(tx.signAndSend(bob, {doughnut: doughnut}, () => {
+     await expect(tx.signAndSend(bob, { doughnut }, () => {
          // https://github.com/cennznet/cennznet/wiki/Transaction-Error-Codes#doughnut-usage
      })).rejects.toThrow('submitAndWatchExtrinsic(extrinsic: Extrinsic): ExtrinsicStatus:: 1010: Invalid Transaction: {"Custom":170}');
      done();
