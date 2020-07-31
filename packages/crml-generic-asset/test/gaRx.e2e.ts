@@ -19,6 +19,7 @@ import {ApiRx} from '@cennznet/api';
 import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
+import BN from 'bn.js';
 
 import {GenericAssetRx} from '../src/GenericAssetRx';
 import { Balance, Hash } from '@polkadot/types/interfaces';
@@ -65,7 +66,7 @@ describe('Generic asset Rx APIs', () => {
             it('should create asset and return \'Created\' event when finishing', (done) => {
                 const totalAmount = 100;
                 const assetOptions = {
-                    initialIssuance: totalAmount
+                    initialIssuance: new BN(totalAmount)
                 };
                 ga.create(assetOptions).signAndSend(assetOwner.address)
                     .pipe(
@@ -105,9 +106,9 @@ describe('Generic asset Rx APIs', () => {
                 // Arrange
                 const {address} = assetOwner;
 
-                const initialIssuance = 100;
+                const initialIssuance = new BN(100);
                 const mintAmount = 100;
-                const expectedBalance = initialIssuance + mintAmount;
+                const expectedBalance = initialIssuance.addn(mintAmount);
 
                 const permissions = {mint: address};
 
@@ -150,9 +151,9 @@ describe('Generic asset Rx APIs', () => {
                 // Arrange
                 const {address} = assetOwner;
 
-                const initialIssuance = 100;
+                const initialIssuance = new BN(100);
                 const burnAmount = 100;
-                const expectedBalance = initialIssuance - burnAmount;
+                const expectedBalance = initialIssuance.subn(burnAmount);
 
                 const permissions = {burn: address};
 

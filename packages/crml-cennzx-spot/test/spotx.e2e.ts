@@ -62,7 +62,7 @@ describe('SpotX APIs', () => {
 
             const {address} = alice;
 
-            const initialIssuance = 100000000;
+            const initialIssuance = new BN(100000000);
             const permissions = {mint: address};
             await api.genericAsset.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
                     if (status.isFinalized) {
@@ -79,7 +79,7 @@ describe('SpotX APIs', () => {
                         expect(assetCreated).toEqual(true);
                         const assetBalance = await api.genericAsset.getFreeBalance(assetId, address);
                         expect(assetBalance.toString()).toBe(initialIssuance.toString());
-                        const amount = initialIssuance/2;
+                        const amount = initialIssuance.divn(2);
                         const minLiquidity = 1;
                         const [coreAmount, investmentAmount] = await (api.rpc as any).cennzx.liquidityPrice(assetId, amount);
                         expect((await api.genericAsset.getFreeBalance(assetId, address)).gt(investmentAmount)).toBeTruthy();

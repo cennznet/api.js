@@ -12,35 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyAddress, AnyNumber, CodecArg} from '@cennznet/types/types';
+import {AnyAddress, CodecArg} from '@cennznet/types/types';
 import BN from 'bn.js';
 
 export interface CodecArgObject {
-    [index: string]: CodecArg;
+  [index: string]: CodecArg;
 }
 
 export enum AssetType {
-    STAKING = 'staking',
-    SPENDING = 'spending',
-    RESERVE = 'reserve',
-    USER = 'user',
+  STAKING = 'staking',
+  SPENDING = 'spending',
+  RESERVE = 'reserve',
+  USER = 'user',
 }
 
 export interface IAsset {
-    id: number;
-    symbol: string;
-    /**
-     * @deprecated decimals will always be 18, and we expose it in constants.ts
-     */
-    decimals: number;
-    type: AssetType;
+  id: number;
+  symbol: string;
+  /**
+   * @deprecated decimals will always be 18, and we expose it in constants.ts
+   */
+  decimals: number;
+  type: AssetType;
 }
 
 export interface AssetOptionsValue extends CodecArgObject {
-    initialIssuance: AnyNumber;
-    permissions?: {
-        update?: AnyAddress;
-        mint?: AnyAddress;
-        burn?: AnyAddress;
-    };
+  initialIssuance: BN;
+  permissions?: {
+    update?: AnyAddress;
+    mint?: AnyAddress;
+    burn?: AnyAddress;
+  };
 }
