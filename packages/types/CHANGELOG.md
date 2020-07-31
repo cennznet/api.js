@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 
-## [UNRELEASED]
+## [1.0.4](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.0.4) (31/07/2020)
     Changed:
     - Improve getting started doc (#122)
     Added:
+    - Fix TS SignerOptions to include doughnut
+    - Phase type to include 'Initialization'
     - Updated Azalea metadata for runtime version 36 (#122)
 
 ## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)
