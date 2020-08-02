@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import {Enum} from '@polkadot/types';
 import {Option, Vec} from '@polkadot/types/codec';
 
 import {AnyNumber, AnyU8a, InterfaceTypes, ITuple,} from '../types';
@@ -39,12 +40,20 @@ export type FeeExchangeValue = {
   maxPayment: AnyNumber;
 };
 
+// Adding here as the @polkadot/types version used here
+// is lagging behind current CENNZnet node
+export class Phase extends Enum.with({
+  ApplyExtrinsic: 'u32',
+  Finalization: 'Null',
+  Initialization: 'Null',
+}) {}
+
 export type CennznetInterfaceTypes = keyof InterfaceTypes;
 
-// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with cennznet types
+// Merge the [[InterfaceRegistry]] definition from `@polkadot/types/interfaceRegistry` with CENNZnet types
 declare module '@polkadot/types/types/registry' {
   interface InterfaceTypes {
-    // Add types that only cennznet knows about.
+    // Add types that only CENNZnet knows about.
     // TS will merge them into the polkadot provided [[InterfaceRegistry]]
     Doughnut: Doughnut;
     'Option<Doughnut>': Option<Doughnut>;

@@ -13,11 +13,9 @@
 // limitations under the License.
 
 import {DecoratedCennznetDerive} from '@cennznet/api/derives';
-import {DoughnutValue, FeeExchangeValue} from '@cennznet/types/extrinsic/types';
+import {ChargeTransactionPayment} from '@cennznet/types';
 import {
-  AnyAddress,
   Callback,
-  CallFunction,
   Codec,
   CodecArg,
   Constructor,
@@ -31,22 +29,26 @@ import ApiBase from '@polkadot/api/base';
 import {
   ApiOptions as ApiOptionsBase,
   SignerOptions as SignerOptionsBase,
-  SubmittableExtrinsic,
+  SubmittableExtrinsic as SubmittableExtrinsicBase,
+  SubmittableExtrinsics as SubmittableExtrinsicsBase,
   SubmittableResultResult,
   SubmittableResultSubscription,
   UnsubscribePromise,
 } from '@polkadot/api/types';
-
-import {ChargeTransactionPayment} from '@cennznet/types';
 import {ProviderInterface} from '@polkadot/rpc-provider/types';
 import {u64} from '@polkadot/types';
 import {AccountId, Address, Hash} from '@polkadot/types/interfaces';
 import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
 import {Observable} from 'rxjs';
-import {AnyU8a} from "@polkadot/types/types";
+import {AnyU8a, CallBase, ISubmittableResult} from '@polkadot/types/types';
 
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
+
+export interface SignerOptions extends SignerOptionsBase {
+  doughnut?: Uint8Array;
+  transactionPayment?: ChargeTransactionPayment;
+}
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
   /**
@@ -118,3 +120,41 @@ export interface StorageEntryPromise<T extends Codec>
 export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType extends 'rxjs'
   ? StorageEntryObservable<T>
   : StorageEntryPromise<T>;
+
+export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType> {
+  send(): SubmittableResultResult<ApiType>;
+
+  send(statusCb: Callback<ISubmittableResult>): SubmittableResultSubscription<ApiType>;
+
+  sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
+
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    options?: Partial<SignerOptions>
+  ): SubmittableResultResult<ApiType>;
+
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    statusCb: Callback<ISubmittableResult>
+  ): SubmittableResultSubscription<ApiType>;
+
+  signAndSend(
+    account: IKeyringPair | string | AccountId | Address,
+    options: Partial<SignerOptions>,
+    statusCb?: Callback<ISubmittableResult>
+  ): SubmittableResultSubscription<ApiType>;
+}
+
+export interface SubmittableExtrinsics<ApiType extends ApiTypes> extends SubmittableExtrinsicsBase<ApiType> {
+  (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
+
+  [index: string]: SubmittableModuleExtrinsics<ApiType>;
+}
+
+export interface SubmittableExtrinsicFunction<ApiType extends ApiTypes> extends CallBase {
+  (...params: any[]): SubmittableExtrinsic<ApiType>;
+}
+
+export interface SubmittableModuleExtrinsics<ApiType extends ApiTypes> {
+  [index: string]: SubmittableExtrinsicFunction<ApiType>;
+}

@@ -1000,6 +1000,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@cennznet/cennznut-wasm@^0.0.1-dev.0":
+  version "0.0.1-dev.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/cennznut-wasm/-/cennznut-wasm-0.0.1-dev.0.tgz#ca14f8cdc24fc3865424303510492d96a166de0b"
+  integrity sha512-twB1kO8SjdsGRf4epz7aq7LhELQky2ed9tVE8hB2VykXNwBvgJhmBdRDOu5HSSxwiR7WNdJk0LwPfVLnhE6W7g==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2132,6 +2137,14 @@
   integrity sha512-XjOk9y4m8xTLIKPe1NFxNWBdzA2/z3PFFA/bwf4EoH6oS8hM0Y46mEa4Cb+KCyj/tFDznJFahzQ0Aj3o1FYq4A==
   dependencies:
     "@types/node" ">= 8"
+
+"@plugnet/doughnut-wasm@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@plugnet/doughnut-wasm/-/doughnut-wasm-0.2.0.tgz#bc0bbf3650f8389db08d2f44059ba93ffd3bd2a2"
+  integrity sha512-w4VjI5UghgKXEp2+BrEIzQ7ff9NZcL0w6pyQy7K5Gv6KMD/0keb9S/N4H1mpFXE2g9fU97RJ71w1+h9T7kOGcA==
+  dependencies:
+    "@polkadot/util-crypto" "^2.18.1"
+    tweetnacl "^1.0.3"
 
 "@plugnet/keyring@^1.1.100":
   version "1.1.100"
