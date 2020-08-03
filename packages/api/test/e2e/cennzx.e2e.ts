@@ -1,4 +1,4 @@
-import {Keyring} from '@polkadot/api';
+import testKeyring from '@plugnet/keyring/testing';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance} from '@polkadot/types/interfaces';
@@ -13,7 +13,7 @@ describe('CENNZX e2e queries/transactions', () => {
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring();
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
   });

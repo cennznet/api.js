@@ -16,13 +16,12 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Api} from '@cennznet/api';
-import {Keyring} from '@polkadot/api';
 import {GenericAsset} from '../src/GenericAsset';
 import { Hash, Balance } from '@polkadot/types/interfaces';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import { TypeRegistry } from '@polkadot/types';
 import {AssetOptions} from '@cennznet/types';
-import testKeyring from '@polkadot/keyring/testing';
+import testKeyring from '@plugnet/keyring/testing';
 
 const testAsset = {
     id: 16000,
@@ -38,16 +37,15 @@ describe('Generic asset APIs', () => {
     const registry = new TypeRegistry();
     beforeAll(async () => {
       await cryptoWaitReady();
-      const keyring = new Keyring({ type: 'sr25519' });
+      const keyring = testKeyring();
       alice = keyring.addFromUri('//Alice');
       bob = keyring.addFromUri('//Bob');
       api = await Api.create(
         {provider: url,
           registry});
       const sudoKey = await api.query.sudo.key();
-      const keyringTest = testKeyring();
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
-      sudoPair = keyringTest.getPair(sudoKey.toString());
+      sudoPair = keyring.getPair(sudoKey.toString());
       await api.isReady;
     });
 

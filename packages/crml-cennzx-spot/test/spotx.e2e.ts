@@ -16,10 +16,10 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {Api} from '@cennznet/api';
-import {Keyring} from '@polkadot/api';
 import BN from 'bn.js';
 import { TypeRegistry } from '@polkadot/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
+import testKeyring from '@plugnet/keyring/testing'
 import {CennzxSpot} from '../src/CennzxSpot';
 import {MAX_U128} from '@cennznet/crml-cennzx-spot/constants';
 import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
@@ -39,7 +39,7 @@ describe('SpotX APIs', () => {
     const registry = new TypeRegistry();
     beforeAll(async () => {
       await cryptoWaitReady();
-      const keyring = new Keyring({ type: 'sr25519' });
+      const keyring = testKeyring();
       alice = keyring.addFromUri('//Alice');
       bob = keyring.addFromUri('//Bob');
       api = await Api.create(

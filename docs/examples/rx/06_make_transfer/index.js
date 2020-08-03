@@ -1,6 +1,6 @@
 // Import the API, Keyring and some utility functions
 const { ApiRx } = require('@cennznet/api');
-const { Keyring } = require('@cennznet/wallet');
+const testKeyring = require('@plugnet/keyring/testing');
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
@@ -12,7 +12,7 @@ async function main () {
   const api = await ApiRx.create().toPromise();
 
   // Create an instance of the keyring
-  const keyring = new Keyring({ type: 'sr25519' });
+  const keyring = testKeyring.default();
 
   // Add Alice to our keyring (with the known seed for the account)
   const alice = keyring.addFromUri('//Alice');

@@ -19,7 +19,7 @@ import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions, AssetInfo} from '@cennznet/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import {Keyring} from '@polkadot/api';
-import testKeyring from '@polkadot/keyring/testing';
+import testKeyring from '@plugnet/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {u8aToString} from '@polkadot/util';
 
@@ -28,7 +28,7 @@ describe('e2e queries', () => {
 
   beforeAll(async () => {
     await cryptoWaitReady();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring();
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
     api = await initApiPromise();

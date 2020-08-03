@@ -17,24 +17,14 @@
  */
 import {Api} from '@cennznet/api';
 import {AttestationValue} from '@cennznet/types';
-import {SimpleKeyring, Wallet} from '@cennznet/wallet';
+import {KeyringPair} from '@plugnet/keyring/types'
+import testKeyring from '@plugnet/keyring/testing';
 import {Attestation} from '../src/Attestation';
 import { TypeRegistry } from '@polkadot/types';
 
-const issuer = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
-};
-
-const issuer2 = {
-    address: '5Cfi3s5oFypVtcSut1SLLyomz86nnZbG3YuR3CL2XwuJKFLw',
-    uri: '//Centrality',
-};
-
-const holder = {
-    address: '5HGiumVNPXBWB4ikWzwYxQ8miNJUiiHwUqupZQ3T8sYPE21k',
-    uri: '//Frank',
-};
+const issuerUri = '//Alice';
+const issuer2Uri = '//Bob';
+const holderUri = '//Charlie';
 
 const topic = 'passport';
 // hex of string 'identity'
@@ -49,16 +39,13 @@ const passphrase = 'passphrase';
 describe('Attestation APIs', () => {
     let api: Api;
     let attestation: Attestation;
+    let issuer, issuer2, holder: KeyringPair;
     beforeAll(async () => {
         api = await Api.create({provider: 'wss://rimu.unfrastructure.io/public/ws'});
-        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromUri(issuer.uri);
-        simpleKeyring.addFromUri(issuer2.uri);
-
-        const wallet = new Wallet();
-        await wallet.createNewVault(passphrase);
-        await wallet.addKeyring(simpleKeyring);
-        api.setSigner(wallet);
+        const simpleKeyring = testKeyring();
+        issuer = simpleKeyring.addFromUri(issuerUri);
+        issuer2 = simpleKeyring.addFromUri(issuer2Uri);
+        holder = simpleKeyring.addFromUri(holderUri);
         attestation = api.attestation;
     });
 
@@ -68,7 +55,7 @@ describe('Attestation APIs', () => {
 
     describe('Set Claims', () => {
         it('should create a claim', async done => {
-            await attestation.setClaim(holder.address, topic, attestationValue.toHex()).signAndSend(issuer.address, async ({events, status}) => {
+            await attestation.setClaim(holder.address, topic, attestationValue.toHex()).signAndSend(issuer, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     for (const {event: {method, data}} of events) {
                         if (method === 'ClaimSet') {
@@ -88,7 +75,7 @@ describe('Attestation APIs', () => {
         it('should create a claim with a u8a', async done => {
             const otherTopic = 'randomTopic';
 
-            await attestation.setClaim(holder.address, otherTopic, attestationValue.toU8a()).signAndSend(issuer.address, async ({events, status}) => {
+            await attestation.setClaim(holder.address, otherTopic, attestationValue.toU8a()).signAndSend(issuer, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     for (const {event: {method, data}} of events) {
                         if (method === 'ClaimSet') {
@@ -106,7 +93,7 @@ describe('Attestation APIs', () => {
         });
 
         it('should create a self claim', async done => {
-            await attestation.setSelfClaim(topic, attestationValue.toHex()).signAndSend(issuer.address, async ({events, status}) => {
+            await attestation.setSelfClaim(topic, attestationValue.toHex()).signAndSend(issuer, async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     for (const {event: {method, data}} of events) {
                         if (method === 'ClaimSet') {
@@ -136,7 +123,7 @@ describe('Attestation APIs', () => {
     describe('Create Multiple Claims', () => {
         it('should create a claim with issuer 1 and topic 1', async done => {
             await attestation.setClaim(holder.address, topic, attestationValue.toHex())
-                .signAndSend(issuer.address, async ({events, status}) => {
+                .signAndSend(issuer, async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         for (const {event: {method, data}} of events) {
                             if (method === 'ClaimSet') {
@@ -155,7 +142,7 @@ describe('Attestation APIs', () => {
 
             it('should create a claim with issuer 1 and topic 2', async done => {
                 await attestation.setClaim(holder.address, topic2, attestationValue2.toHex())
-                    .signAndSend(issuer.address, async ({events, status}) => {
+                    .signAndSend(issuer, async ({events, status}) => {
                         if (status.isFinalized && events !== undefined) {
                             for (const {event: {method, data}} of events) {
                                 if (method === 'ClaimSet') {
@@ -174,7 +161,7 @@ describe('Attestation APIs', () => {
 
             it('should create a claim with issuer 2 and topic 1', async done => {
                 await attestation.setClaim(holder.address, topic, attestationValue.toHex())
-                    .signAndSend(issuer2.address, async ({events, status}) => {
+                    .signAndSend(issuer2, async ({events, status}) => {
                         if (status.isFinalized && events !== undefined) {
                             for (const {event: {method, data}} of events) {
                                 if (method === 'ClaimSet') {
@@ -193,7 +180,7 @@ describe('Attestation APIs', () => {
 
             it('should create a claim with issuer 2 and topic 2', async done => {
                 await attestation.setClaim(holder.address, topic2, attestationValue2.toHex())
-                    .signAndSend(issuer2.address, async ({events, status}) => {
+                    .signAndSend(issuer2, async ({events, status}) => {
                         if (status.isFinalized && events !== undefined) {
                             for (const {event: {method, data}} of events) {
                                 if (method === 'ClaimSet') {
@@ -283,7 +270,7 @@ describe('Attestation APIs', () => {
         //
         describe('Remove Claims', () => {
             it('should create a claim', async done => {
-                await attestation.setClaim(holder.address, topic, attestationValue.toHex()).signAndSend(issuer.address, async ({events, status}) => {
+                await attestation.setClaim(holder.address, topic, attestationValue.toHex()).signAndSend(issuer, async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         for (const {event: {method, data}} of events) {
                             if (method === 'ClaimSet') {
@@ -303,7 +290,7 @@ describe('Attestation APIs', () => {
             it('should remove a claim', async done => {
                 // Expect holders to match
                 await attestation.removeClaim(holder.address, topic)
-                    .signAndSend(issuer.address, async ({events, status}) => {
+                    .signAndSend(issuer, async ({events, status}) => {
                         if (status.isFinalized && events !== undefined) {
                             for (const {event: {method, data}} of events) {
                                 if (method === 'ClaimRemoved') {

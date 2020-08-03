@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@cennznet/api": "^1.0.3",
-    "@cennznet/wallet": "^1.0.3"
+    "@plugnet/keyring": "^1.1.100"
   },
   "resolutions": {
     "@polkadot/types": "1.2.1",

@@ -24,7 +24,7 @@
     "@cennznet/util": "^1.1.0"
   },
   "devDependencies": {
-    "@cennznet/wallet": "^1.0.3",
+    "@plugnet/keyring": "^1.1.100",
     "@types/jest": "^26.0.7",
     "jest": "^26.1.0"
   }

@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@cennznet/api": "^1.0.3",
-    "@cennznet/wallet": "^1.0.3",
     "@cennznet/util": "^1.0.3",
     "@plugnet/keyring": "^1.1.100"
   },

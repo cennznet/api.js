@@ -17,9 +17,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AssetOptions, AssetInfo } from '@cennznet/types';
-import { SubmittableResult, Keyring } from '@polkadot/api';
+import { SubmittableResult } from '@polkadot/api';
 import { cryptoWaitReady } from '@plugnet/util-crypto';
-import testKeyring from '@polkadot/keyring/testing';
+import testKeyring from '@plugnet/keyring/testing';
 import { stringToHex } from '@polkadot/util';
 import initApiPromise from '../../../../jest/initApiPromise';
 
@@ -29,7 +29,7 @@ describe('e2e transactions', () => {
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring();
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
   });
