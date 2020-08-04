@@ -59,14 +59,15 @@ describe('e2e api calls', () => {
   describe('Get session info', () => {
     it('get correct session information (length, last length, era, current index, session per era', async () => {
       const currentSession = await api.derive.session.info();
+      const currentProgress = await api.derive.session.progress();
       expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentProgress.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.isEpoch).toBe(true);
       expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
+      expect(currentProgress.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
     });
   });

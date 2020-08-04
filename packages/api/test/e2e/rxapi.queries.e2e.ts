@@ -25,7 +25,7 @@ describe('e2e queries', () => {
   let api;
 
   beforeAll(async () => {
-    apiRx = await initApiRx();
+    apiRx = initApiRx();
     api = await apiRx.toPromise();
   });
 
@@ -36,7 +36,7 @@ describe('e2e queries', () => {
 
   describe('Query storage using at', () => {
     it('queries correct balance', async done => {
-      const nextAssetId$ = api.rpc.chain
+      const nextAssetId$ = apiRx.rpc.chain
         .getBlockHash()
         .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));
       combineLatest([api.query.genericAsset.nextAssetId(), nextAssetId$]).subscribe(([nextAssetId, nextAssetIdAt]) => {
