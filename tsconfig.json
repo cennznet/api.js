@@ -27,7 +27,7 @@
       "@cennznet/types/*": ["packages/types/src/*"],
       "@cennznet/types": ["packages/types/src/index"],
       "@cennznet/util/*": ["packages/util/src/*"],
-      "@cennznet/util": ["packages/util/src/index"],
+      "@cennznet/util": ["packages/util/src/index"]
     },
     "skipLibCheck": true
   },

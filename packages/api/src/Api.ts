@@ -26,6 +26,7 @@ import {ApiOptions, Derives, SubmittableExtrinsics} from './types';
 import {mergeDeriveOptions} from './util/derives';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
+import Events from "@polkadot/api/base/Events";
 
 export const DEFAULT_TIMEOUT = 10000;
 
@@ -43,7 +44,7 @@ export class Api extends ApiPromise {
 
         api.isReady.then(res => {
           //  Remove error listener if API initialization success.
-          (api as any)._eventemitter.removeListener('error', rejectError);
+          (api as Events).off('error', rejectError);
           resolve((res as unknown) as Api);
         }, reject);
 
