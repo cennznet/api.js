@@ -22,7 +22,7 @@ import {cryptoWaitReady} from '@plugnet/util-crypto';
 import testKeyring from '@plugnet/keyring/testing'
 import {CennzxSpot} from '../src/CennzxSpot';
 import {MAX_U128} from '@cennznet/crml-cennzx-spot/constants';
-import ExtrinsicSignatureV2 from '@cennznet/types/extrinsic/v2/ExtrinsicSignature';
+import ExtrinsicSignatureV4 from '@cennznet/types/extrinsic/v4/ExtrinsicSignature';
 
 const passphrase = '';
 
@@ -45,7 +45,7 @@ describe('SpotX APIs', () => {
       api = await Api.create(
         {provider: url,
           types: {
-            ExtrinsicSignatureV4: ExtrinsicSignatureV2,
+            ExtrinsicSignatureV4: ExtrinsicSignatureV4,
           },
           registry});
     });

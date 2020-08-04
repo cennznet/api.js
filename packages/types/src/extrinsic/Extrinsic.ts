@@ -10,6 +10,8 @@ import {
   Ed25519Signature,
   ExtrinsicUnknown,
   ExtrinsicV1,
+  ExtrinsicV2,
+  ExtrinsicV3,
   Sr25519Signature,
 } from '@polkadot/types/interfaces/extrinsics';
 import {Address, Balance, Call, Index} from '@polkadot/types/interfaces/runtime';
@@ -31,9 +33,11 @@ import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/uti
 import Base from '@polkadot/types/codec/Base';
 import Compact from '@polkadot/types/codec/Compact';
 import {ExtrinsicValueV1} from '@polkadot/types/extrinsic/v1/Extrinsic';
+import {ExtrinsicValueV2} from '@polkadot/types/extrinsic/v2/Extrinsic';
+import {ExtrinsicValueV3} from '@polkadot/types/extrinsic/v3/Extrinsic';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
 
-import {ExtrinsicV2, ExtrinsicValueV2, TRANSACTION_VERSION as CENNZNET_V4} from './v2/Extrinsic';
+import {ExtrinsicV4, ExtrinsicValueV4, TRANSACTION_VERSION as CENNZNET_V4} from './v4/Extrinsic';
 import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
 
 interface CreateOptions {
@@ -43,16 +47,18 @@ interface CreateOptions {
 // NOTE The following 2 types, as well as the VERSION structure and the latest export
 // is to be changed with the addition of a new extrinsic version
 
-type ExtrinsicVx = ExtrinsicV1 | ExtrinsicV2;
-type ExtrinsicValue = ExtrinsicValueV1 | ExtrinsicValueV2;
+type ExtrinsicVx = ExtrinsicV1 | ExtrinsicV2 | ExtrinsicV3 | ExtrinsicV4;
+type ExtrinsicValue = ExtrinsicValueV1 | ExtrinsicValueV2 | ExtrinsicValueV3 | ExtrinsicValueV4;
 
 const VERSIONS: (keyof InterfaceTypes)[] = [
   'ExtrinsicUnknown', // v0 is unknown
   'ExtrinsicV1',
   'ExtrinsicV2',
+  'ExtrinsicV3',
+  'ExtrinsicV4',
 ];
 
-export {TRANSACTION_VERSION as LATEST_EXTRINSIC_VERSION} from './v2/Extrinsic';
+export {TRANSACTION_VERSION as LATEST_EXTRINSIC_VERSION} from './v4/Extrinsic';
 
 abstract class ExtrinsicBase extends Base<ExtrinsicVx | ExtrinsicUnknown> {
   /**
@@ -158,7 +164,7 @@ abstract class ExtrinsicBase extends Base<ExtrinsicVx | ExtrinsicUnknown> {
    */
   public get tip(): Compact<Balance> {
     return this.type == CENNZNET_V4
-      ? (this._raw as ExtrinsicV2).signature.transactionPayment.tip
+      ? (this._raw as ExtrinsicV4).signature.transactionPayment.tip
       : (this._raw as ExtrinsicVx).signature.tip;
   }
 
@@ -254,7 +260,7 @@ export default class Extrinsic extends ExtrinsicBase implements IExtrinsic {
     signature: Uint8Array | string,
     payload: ExtrinsicPayloadValue | Uint8Array | string
   ): Extrinsic {
-    (this._raw as ExtrinsicV2).addSignature(signer, signature, payload);
+    (this._raw as ExtrinsicV4).addSignature(signer, signature, payload);
 
     return this;
   }

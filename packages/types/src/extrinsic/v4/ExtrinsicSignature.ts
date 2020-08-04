@@ -22,17 +22,17 @@ import {ExtrinsicPayloadValue, IExtrinsicSignature, IKeyringPair, Registry, Sign
 import Doughnut from '../../Doughnut';
 import {ExtrinsicSignatureOptions} from '../types';
 import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
-import ExtrinsicPayloadV2 from './ExtrinsicPayload';
+import ExtrinsicPayloadV4 from './ExtrinsicPayload';
 
 /**
- * @name GenericExtrinsicSignatureV2
+ * @name GenericExtrinsicSignatureV4
  * @description
  * A container for the [[Signature]] associated with a specific [[Extrinsic]]
  */
-export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSignature {
+export default class ExtrinsicSignatureV4 extends Struct implements IExtrinsicSignature {
   constructor(
     registry: Registry,
-    value: ExtrinsicSignatureV2 | Uint8Array | undefined,
+    value: ExtrinsicSignatureV4 | Uint8Array | undefined,
     {isSigned}: ExtrinsicSignatureOptions = {}
   ) {
     super(
@@ -45,7 +45,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
         nonce: 'Compact<Index>',
         transactionPayment: 'ChargeTransactionPayment',
       },
-      ExtrinsicSignatureV2.decodeExtrinsicSignature(value, isSigned)
+      ExtrinsicSignatureV4.decodeExtrinsicSignature(value, isSigned)
     );
   }
 
@@ -121,12 +121,12 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
 
   /** @internal */
   public static decodeExtrinsicSignature(
-    value: ExtrinsicSignatureV2 | Uint8Array | undefined,
+    value: ExtrinsicSignatureV4 | Uint8Array | undefined,
     isSigned = false
-  ): ExtrinsicSignatureV2 | Uint8Array {
+  ): ExtrinsicSignatureV4 | Uint8Array {
     if (!value) {
       return EMPTY_U8A;
-    } else if (value instanceof ExtrinsicSignatureV2) {
+    } else if (value instanceof ExtrinsicSignatureV4) {
       return value;
     }
 
@@ -144,7 +144,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     return this._injectSignature(
       this.registry.createType('Address', signer),
       this.registry.createType('MultiSignature', signature),
-      new ExtrinsicPayloadV2(this.registry, payload)
+      new ExtrinsicPayloadV4(this.registry, payload)
     );
   }
 
@@ -163,8 +163,8 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       tip,
       transactionPayment,
     }: SignatureOptions
-  ): ExtrinsicPayloadV2 {
-    return new ExtrinsicPayloadV2(this.registry, {
+  ): ExtrinsicPayloadV4 {
+    return new ExtrinsicPayloadV4(this.registry, {
       blockHash,
       doughnut: doughnut || createType(this.registry, 'Option<Doughnut>'),
       era: era || IMMORTAL_ERA,
@@ -218,7 +218,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
   protected _injectSignature(
     signer: Address,
     signature: MultiSignature,
-    {era, nonce, doughnut, transactionPayment}: ExtrinsicPayloadV2
+    {era, nonce, doughnut, transactionPayment}: ExtrinsicPayloadV4
   ): IExtrinsicSignature {
     this.set('doughnut', doughnut);
     this.set('era', era);

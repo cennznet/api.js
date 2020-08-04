@@ -208,7 +208,7 @@ export interface SignerPayloadJSON {
   doughnut?: string;
 
   /**
-   * @description [only for cennznet v2 extrinsic] transaction payment details, in hex
+   * @description [only for cennznet v4 extrinsic] transaction payment details, in hex
    */
   transactionPayment?: string;
 }

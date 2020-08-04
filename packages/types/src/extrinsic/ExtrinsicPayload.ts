@@ -9,9 +9,9 @@ import Raw from '@polkadot/types/codec/Raw';
 import u32 from '@polkadot/types/primitive/U32';
 import ExtrinsicEra from '@polkadot/types/Extrinsic/ExtrinsicEra';
 import {Balance, Hash, Index} from '@polkadot/types/interfaces/runtime';
-import {ExtrinsicPayloadV1} from '@polkadot/types/interfaces/extrinsics';
+import {ExtrinsicPayloadV1, ExtrinsicPayloadV2, ExtrinsicPayloadV3} from '@polkadot/types/interfaces/extrinsics';
 
-import ExtrinsicPayloadV2 from './v2/ExtrinsicPayload';
+import ExtrinsicPayloadV4 from './v4/ExtrinsicPayload';
 import {AnyJson, BareOpts, ExtrinsicPayloadValue, IKeyringPair, InterfaceTypes, Registry} from '../types';
 import {DEFAULT_VERSION} from './constants';
 
@@ -20,12 +20,14 @@ interface ExtrinsicPayloadOptions {
 }
 
 // all our known types that can be returned
-type ExtrinsicPayloadVx = ExtrinsicPayloadV1 | ExtrinsicPayloadV2;
+type ExtrinsicPayloadVx = ExtrinsicPayloadV1 | ExtrinsicPayloadV2 | ExtrinsicPayloadV3 | ExtrinsicPayloadV4;
 
 const VERSIONS: (keyof InterfaceTypes)[] = [
   'ExtrinsicPayloadUnknown', // v0 is unknown
   'ExtrinsicPayloadV1',
   'ExtrinsicPayloadV2',
+  'ExtrinsicPayloadV3',
+  'ExtrinsicPayloadV4',
 ];
 
 /**
@@ -75,7 +77,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
    */
   public get genesisHash(): Hash {
     // NOTE only v3+
-    return (this._raw as ExtrinsicPayloadV2).genesisHash || this.registry.createType('Hash');
+    return (this._raw as ExtrinsicPayloadV4).genesisHash || this.registry.createType('Hash');
   }
 
   /**
@@ -97,15 +99,15 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
    */
   public get specVersion(): u32 {
     // NOTE only v3+
-    return (this._raw as ExtrinsicPayloadV2).specVersion || this.registry.createType('u32');
+    return (this._raw as ExtrinsicPayloadV4).specVersion || this.registry.createType('u32');
   }
 
   /**
    * @description The [[Balance]]
    */
   public get tip(): Compact<Balance> {
-    // NOTE from v2+
-    return (this._raw as ExtrinsicPayloadV2).tip || this.registry.createType('Compact<Balance>');
+    // NOTE from v4+
+    return (this._raw as ExtrinsicPayloadV4).tip || this.registry.createType('Compact<Balance>');
   }
 
   /**

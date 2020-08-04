@@ -25,7 +25,7 @@ import {ExtrinsicPayloadValue, IKeyringPair, Registry} from '../../types';
 import {CennznetInterfaceTypes} from '../types';
 
 // The base of an extrinsic payload
-export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
+export const BasePayloadV4: Record<string, CennznetInterfaceTypes> = {
   method: 'Bytes',
   doughnut: 'Option<Doughnut>',
   era: 'ExtrinsicEra',
@@ -37,7 +37,7 @@ export const BasePayloadV2: Record<string, CennznetInterfaceTypes> = {
 // the final extrinsic payload itself.
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
-export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
+export const PayloadImplicitAddonsV4: Record<string, CennznetInterfaceTypes> = {
   specVersion: 'u32',
   // system::CheckGenesis<Runtime>
   genesisHash: 'Hash',
@@ -47,12 +47,12 @@ export const PayloadImplicitAddonsV2: Record<string, CennznetInterfaceTypes> = {
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
-export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
-  ...BasePayloadV2,
-  ...PayloadImplicitAddonsV2,
+export const FullPayloadV4: Record<string, CennznetInterfaceTypes> = {
+  ...BasePayloadV4,
+  ...PayloadImplicitAddonsV4,
 };
 /**
- * @name ExtrinsicPayloadV2
+ * @name ExtrinsicPayloadV4
  * @description
  * A signing payload for an [[Extrinsic]]. For the final encoding, it is variable length based
  * on the contents included
@@ -62,9 +62,9 @@ export const FullPayloadV2: Record<string, CennznetInterfaceTypes> = {
  *   1/2 bytes: The Transaction Era as provided in the transaction itself.
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
-export default class ExtrinsicPayloadV2 extends Struct {
+export default class ExtrinsicPayloadV4 extends Struct {
   constructor(registry: Registry, value?: ExtrinsicPayloadValue | Uint8Array | string) {
-    super(registry, FullPayloadV2, value);
+    super(registry, FullPayloadV4, value);
   }
 
   /**
