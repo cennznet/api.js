@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf, TypeRegistry} from '@polkadot/types';
+import {Enum} from '@polkadot/types';
 
-const registry = new TypeRegistry();
-export default class AmountOf extends ClassOf(registry, 'Balance') {}
+// Specifies which account staking rewards should be paid too.
+// Note: Polkadot has an additional 'Staked' option which is not supported in CENNZnet
+// due to the fact that the reward currency is different from the staked currency.
+export class RewardDestination extends Enum.with({
+  Stash: 'Null',
+  Controller: 'Null',
+}) {}
