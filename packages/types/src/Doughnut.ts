@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Doughnut as DoughnutCodec} from '@plugnet/doughnut-wasm';
 import Raw from '@polkadot/types/codec/Raw';
 import {AnyU8a, Registry} from '@polkadot/types/types';
 
@@ -31,7 +30,17 @@ export default class Doughnut extends Raw {
     // NOT only doughnut bytes.
     // We must ensure that any doughnut specific bytes are consumed
     // so that the buffer [[value]] may be passed along to decode other types successfully
-    const doughnut = DoughnutCodec.decode(value as Uint8Array);
-    super(registry, doughnut.encode());
+    let doughnut;
+    // @ts-ignore
+    if (DOUGHNUT_SUPPORT === true) {
+      // Added the above flag to support conditional compilation for exclusion/inclusion of wasm packages
+      const DoughnutCodec = require('@plugnet/doughnut-wasm');
+      doughnut = DoughnutCodec.Doughnut.decode(value as Uint8Array);
+      doughnut = doughnut.encode();
+    } else {
+      // fallback
+      doughnut = value;
+    }
+    super(registry, doughnut);
   }
 }
