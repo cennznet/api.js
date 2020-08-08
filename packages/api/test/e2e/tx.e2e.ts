@@ -149,7 +149,7 @@ describe('e2e transactions', () => {
 
       });
 
-      it('use keypair to sign', async done => {
+      it('test on new mac use keypair to sign', async done => {
         const feeExchange = {
           FeeExchangeV1: {
             assetId: feeAssetId,
