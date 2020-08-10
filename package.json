@@ -19,6 +19,8 @@
     "lint": "npx tslint -c tslint.json --project . && npx prettier --list-different './packages/**/src/*.ts'"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "babel-plugin-conditional-compile": "^0.0.5",
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
     "@babel/runtime-corejs3": "^7.7.6",

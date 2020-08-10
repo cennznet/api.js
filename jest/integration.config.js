@@ -29,6 +29,9 @@ module.exports = {
     '<rootDir>/packages/wallet/build',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest/jest.init.js'],
+  globals: { // Added global flag to enable doughnut wasm package while running integration tests
+    DOUGHNUT_SUPPORT: true
+  }
   // globalSetup: '<rootDir>/jest/jest.setup.js',
   // globalTeardown: '<rootDir>/jest/jest.teardown.js',
 };
