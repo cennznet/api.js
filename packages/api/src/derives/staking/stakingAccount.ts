@@ -30,10 +30,11 @@ function unwrapSessionIds(
   queuedKeys: [AccountId, Keys][],
   nextKeys: Option<Keys>
 ): {nextSessionIds: AccountId[]; sessionIds: AccountId[]} {
-  const sessionIds = (queuedKeys.find(([currentId]): boolean => currentId.eq(stashId)) || [
-    undefined,
-    [] as AccountId[],
-  ])[1];
+  let sessionIds: AccountId[] = [];
+  const idKeys = queuedKeys.find(([currentId]): boolean => currentId.eq(stashId));
+  if (idKeys) {
+    sessionIds = idKeys[1];
+  }
   const nextSessionIds = nextKeys.unwrapOr([] as AccountId[]);
 
   return {
