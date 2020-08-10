@@ -132,4 +132,24 @@ describe('e2e queries', () => {
        done();
     });
   });
+
+  describe('Staking account derived query', () => {
+    it("Get staking account details", async done => {
+      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY';
+      const stakingAccount = await api.derive.cennznetStaking.query(stashId);
+      expect(stakingAccount).toBeDefined();
+      expect(stakingAccount.accountId).toBeDefined();
+      expect(stakingAccount.controllerId).toBeDefined();
+      expect(stakingAccount.nominators).toBeDefined();
+      expect(stakingAccount.rewardDestination).toBeDefined();
+      expect(stakingAccount.stakers).toBeDefined();
+      expect(stakingAccount.stakingLedger).toBeDefined();
+      expect(stakingAccount.stashId).toBeDefined();
+      expect(stakingAccount.validatorPrefs).toBeDefined();
+      expect(stakingAccount.nextSessionIds).toBeDefined();
+      expect(stakingAccount.sessionIds).toBeDefined();
+      console.log('StakingAccount:::::', stakingAccount);
+      done();
+    });
+  });
 });
