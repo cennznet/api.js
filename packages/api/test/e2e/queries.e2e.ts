@@ -135,20 +135,17 @@ describe('e2e queries', () => {
 
   describe('Staking account derived query', () => {
     it("Get staking account details", async done => {
-      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY';
+      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
       const stakingAccount = await api.derive.cennznetStaking.query(stashId);
-      expect(stakingAccount).toBeDefined();
-      expect(stakingAccount.accountId).toBeDefined();
-      expect(stakingAccount.controllerId).toBeDefined();
-      expect(stakingAccount.nominators).toBeDefined();
-      expect(stakingAccount.rewardDestination).toBeDefined();
+      expect(stakingAccount.accountId.toString()).toBe(stashId);
+      expect(stakingAccount.controllerId.toString()).toBe(alice.address);
+      expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
+      expect(stakingAccount.rewardDestination.isStaked).toBeTruthy();
       expect(stakingAccount.stakers).toBeDefined();
-      expect(stakingAccount.stakingLedger).toBeDefined();
-      expect(stakingAccount.stashId).toBeDefined();
-      expect(stakingAccount.validatorPrefs).toBeDefined();
+      expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
+      expect(stakingAccount.validatorPrefs.toString()).toBe("commission,0");
       expect(stakingAccount.nextSessionIds).toBeDefined();
       expect(stakingAccount.sessionIds).toBeDefined();
-      console.log('StakingAccount:::::', stakingAccount);
       done();
     });
   });
