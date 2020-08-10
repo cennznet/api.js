@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import logger from '@cennznet/api/util/logging';
 import Raw from '@polkadot/types/codec/Raw';
 import {AnyU8a, Registry} from '@polkadot/types/types';
 
@@ -39,7 +40,8 @@ export default class Doughnut extends Raw {
       doughnut = doughnut.encode();
     } else {
       // fallback
-      doughnut = value;
+      logger.warn('Doughnut need not be attached');
+      doughnut = null;
     }
     super(registry, doughnut);
   }
