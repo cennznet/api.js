@@ -61,7 +61,7 @@ function retrieve(
 }
 
 /**
- * @description From a stash, retrieve the controllerId and all relevant details
+ * @description From a stash, retrieve the controller account ID and all relevant details
  */
 export function query(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<DerivedStakingQuery> {
   return memo(
