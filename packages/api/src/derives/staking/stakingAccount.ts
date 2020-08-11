@@ -25,7 +25,7 @@ type MultiResultV2 = [
   Option<StakingLedger>
 ];
 
-interface DerivedStakingStash {
+interface DerivedStakingInfo {
   accountId: AccountId;
   controllerId?: AccountId;
   nominators?: AccountId[];
@@ -39,26 +39,26 @@ interface DerivedStakingStash {
   nextSessionKeys?: Option<Keys>;
 }
 
-export interface DerivedStakingQuery {
-  nextSessionIds: AccountId[];
-  sessionIds: AccountId[];
+export interface DerivedSessionKeyInfo {
+  nextSessionKeys: AccountId[];
+  sessionKeys: AccountId[];
 }
 
 function unwrapSessionIds(
   stashId: AccountId,
   queuedKeys: [AccountId, Keys][],
   nextKeys: Option<Keys>
-): {nextSessionIds: AccountId[]; sessionIds: AccountId[]} {
-  let sessionIds: AccountId[] = [];
+): {nextSessionKeys: AccountId[]; sessionKeys: AccountId[]} {
+  let sessionKeys: AccountId[] = [];
   const idKeys = queuedKeys.find(([currentId]): boolean => currentId.eq(stashId));
   if (idKeys) {
-    sessionIds = idKeys[1];
+    sessionKeys = idKeys[1];
   }
-  const nextSessionIds = nextKeys.unwrapOr([] as AccountId[]);
+  const nextSessionKeys = nextKeys.unwrapOr([] as AccountId[]);
 
   return {
-    nextSessionIds,
-    sessionIds,
+    nextSessionKeys,
+    sessionKeys,
   };
 }
 
@@ -82,22 +82,22 @@ function retrieveSessionDetails(api: ApiInterfaceRx): Observable<Vec<ITuple<[Acc
  */
 export function queryStakingAccountDetails(
   api: ApiInterfaceRx
-): (accountId: Uint8Array | string) => Observable<DerivedStakingStash> {
+): (accountId: Uint8Array | string) => Observable<DerivedStakingInfo> {
   return memo(
-    (accountId: Uint8Array | string): Observable<DerivedStakingStash> => {
+    (accountId: Uint8Array | string): Observable<DerivedStakingInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
 
       return retrieveStakingAccountDetails(api, stashId).pipe(
         switchMap(
           ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs], nextKeys]): Observable<
-            DerivedStakingStash
+            DerivedStakingInfo
           > => {
             const controllerId = controllerIdOpt.unwrapOr(null);
 
             return controllerId
               ? api.query.staking.ledger(controllerId).pipe(
                   map(
-                    (stakingLedgerOpt): DerivedStakingStash => ({
+                    (stakingLedgerOpt): DerivedStakingInfo => ({
                       accountId: stashId,
                       controllerId,
                       nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
@@ -123,13 +123,13 @@ export function queryStakingAccountDetails(
  */
 export function querySession(
   api: ApiInterfaceRx
-): (accountId: Uint8Array | string, nextKeys) => Observable<DerivedStakingQuery> {
+): (accountId: Uint8Array | string, nextKeys) => Observable<DerivedSessionKeyInfo> {
   return memo(
-    (accountId: Uint8Array | string, nextKeys): Observable<DerivedStakingQuery> => {
+    (accountId: Uint8Array | string, nextKeys): Observable<DerivedSessionKeyInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
       return retrieveSessionDetails(api).pipe(
         switchMap(
-          (queuedKeys): Observable<DerivedStakingQuery> => {
+          (queuedKeys): Observable<DerivedSessionKeyInfo> => {
             return of(unwrapSessionIds(stashId, queuedKeys, nextKeys));
           }
         )
