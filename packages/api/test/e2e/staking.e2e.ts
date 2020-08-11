@@ -93,8 +93,9 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
-      if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() + additionalBond)) {
+    await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
+      let ledger = ledgerOpt.unwrapOr(null);
+      if (ledger?.active.toNumber() === (previousLedger.active.toNumber() + additionalBond)) {
         done();
       }
     });
@@ -107,8 +108,9 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
-      if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() - unbondAmount)) {
+    await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
+      let ledger = ledgerOpt.unwrapOr(null);
+      if (ledger?.active.toNumber() === (previousLedger.active.toNumber() - unbondAmount)) {
         done();
       }
     });
@@ -122,8 +124,9 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
-      if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() + rebondAmount)) {
+    await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
+      let ledger = ledgerOpt.unwrapOr(null);
+      if (ledger?.active.toNumber() === (previousLedger.active.toNumber() + rebondAmount)) {
         done();
       }
     });
