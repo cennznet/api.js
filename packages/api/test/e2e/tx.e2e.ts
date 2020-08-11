@@ -18,7 +18,7 @@
 
 import { AssetOptions, AssetInfo } from '@cennznet/types';
 import { SubmittableResult, Keyring } from '@polkadot/api';
-import { cryptoWaitReady } from '@plugnet/util-crypto';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 import testKeyring from '@polkadot/keyring/testing';
 import { stringToHex } from '@polkadot/util';
 import initApiPromise from '../../../../jest/initApiPromise';
@@ -26,12 +26,18 @@ import initApiPromise from '../../../../jest/initApiPromise';
 describe('e2e transactions', () => {
   let api;
   let alice, bob;
+  let spendingAssetId, stakingAssetId;
+
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
+
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
+
+    spendingAssetId = (await api.query.genericAsset.spendingAssetId());
+    stakingAssetId = (await api.query.genericAsset.stakingAssetId());
   });
 
   afterAll(async () => {
@@ -39,14 +45,13 @@ describe('e2e transactions', () => {
   });
 
   describe('Send', () => {
-
     it('makes a tx using immortal era', async done => {
-      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      const assetBalance = await api.query.genericAsset.freeBalance(spendingAssetId, bob.address);
       console.log('Balance before ', assetBalance.toString());
       const nonce = await api.query.system.accountNonce(bob.address);
 
       await api.tx.genericAsset
-        .transfer(16001, alice.address, 100)
+        .transfer(spendingAssetId, alice.address, 100)
         .signAndSend(bob, { nonce },
           async ({ events, status }: SubmittableResult) => {
             if (status.isFinalized) {
@@ -61,7 +66,7 @@ describe('e2e transactions', () => {
     it('makes a tx via send', async done => {
       const nonce = await api.query.system.accountNonce(bob.address);
       // transfer
-      const tx = api.tx.genericAsset.transfer(16000, alice.address, 1).sign(bob, { nonce });
+      const tx = api.tx.genericAsset.transfer(stakingAssetId, alice.address, 1).sign(bob, { nonce });
       await tx.send(async ({ events, status }: SubmittableResult) => {
         if (status.isFinalized) {
           expect(events[0].event.method).toEqual('Transferred');
@@ -74,7 +79,7 @@ describe('e2e transactions', () => {
     it('makes a tx', async done => {
       const nonce = await api.query.system.accountNonce(bob.address);
       await api.tx.genericAsset
-        .transfer(16000, alice.address, 1)
+        .transfer(stakingAssetId, alice.address, 1)
         .signAndSend(bob, { nonce }, async ({ events, status }: SubmittableResult) => {
           if (status.isFinalized) {
             expect(events[0].event.method).toEqual('Transferred');
@@ -84,149 +89,156 @@ describe('e2e transactions', () => {
         });
     });
 
-    describe('Custom fee asset extrinsics', () => {
+  });
 
-      // A generic asset to be used for fee payment
-      let feeAssetId;
+  describe('Custom fee asset extrinsics', () => {
 
-      beforeAll(async done => {
-        // Create a new generic asset and mint a liquidity pool on CENNZX.
-        // This fee asset will be used for fee payment in place of the default asset, CPAY.
+    // A generic asset to be used for fee payment
+    let feeAssetId;
 
-        let createFeeAssetTx = api.tx.genericAsset.create(
-          alice.address,
-          new AssetOptions(
-            api.registry,
-            {
-              initialIssuance: 900_000_000_000_000,
-              permissions: {
-                update: alice.address,
-                mint: alice.address,
-                burn: alice.address,
-              },
-            }),
-          new AssetInfo(
-            api.registry,
-            {
-              symbol: 'TEST',
-              decimalPlaces: 4
+    beforeAll(async done => {
+      // Create a new generic asset and mint a liquidity pool on CENNZX.
+      // This fee asset will be used for fee payment in place of the default asset, CPAY.
+
+      let createFeeAssetTx = api.tx.genericAsset.create(
+        alice.address,
+        new AssetOptions(
+          api.registry,
+          {
+            initialIssuance: 900_000_000_000_000,
+            permissions: {
+              update: alice.address,
+              mint: alice.address,
+              burn: alice.address,
+            },
+          }),
+        new AssetInfo(
+          api.registry,
+          {
+            symbol: 'TEST',
+            decimalPlaces: 4
+          }
+        )
+      );
+
+      // Creating new GAs requires sudo permission
+      const sudoAddress = await api.query.sudo.key();
+      // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
+      const sudoKeypair = testKeyring().getPair(sudoAddress.toString());
+      let nonce = await api.query.system.accountNonce(sudoAddress);
+
+      // Create the new fee asset
+      await api.tx.sudo.sudo(createFeeAssetTx).signAndSend(sudoKeypair, { nonce: nonce++ }, async ({ status, events }) => {
+        if (status.isInBlock) {
+          for (const { event: { data, method, section } } of events) {
+            if (method === 'Created' && section === 'genericAsset') {
+              feeAssetId = data[0];
             }
-          )
-        );
+          }
+        }
+      });
 
-        // Creating new GAs requires sudo permission
-        const sudoAddress = await api.query.sudo.key();
-        // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
-        const sudoKeypair = testKeyring().getPair(sudoAddress.toString());
-        const nonce = await api.query.system.accountNonce(sudoAddress);
+      // Setup fee asset <> CPAY liquidity
+      const desiredLiquidity = 30_000_000_000_000;
 
-        await api.tx.sudo.sudo(createFeeAssetTx).signAndSend(sudoKeypair, { nonce }, async ({ status, events }) => {
+      // Mint sudo some extra CPAY also (these calls are expensive and can affect other tests)
+      await api.tx.genericAsset
+        .mint(spendingAssetId, sudoAddress, desiredLiquidity * 10)
+        .signAndSend(sudoKeypair, { nonce: nonce++ });
+
+      const minimumLiquidity = 1;
+      const [coreInvestment, feeInvestment] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
+      await api.tx.cennzxSpot
+        .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
+        .signAndSend(sudoKeypair, { nonce }, async ({ events, status }) => {
           if (status.isInBlock) {
-            events.forEach(async ({ phase, event: { data, method, section } }) => {
-              if (method === 'Created' && section === 'genericAsset') {
-                feeAssetId = data[0];
-
-                // Setup fee asset <> CPAY liquidity
-                let desiredLiquidity = 30_000_000_000_000;
-                let minimumLiquidity = 1;
-                const [coreInvestment, feeInvestment] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
-                await api.tx.cennzxSpot
-                  .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
-                  .signAndSend(alice, { nonce: nonce + 1 }, async ({ events, status }) => {
-                    if (status.isInBlock) {
-                      for (const { event } of events) {
-                        if (event.method === 'AddLiquidity') {
-                          done();
-                        }
-                      }
-                    }
-                  });
-
+            for (const { event: { method } } of events) {
+              if (method === 'AddLiquidity') {
+                console.log("added liquidity");
+                done();
               }
-            });
+            }
           }
         });
 
-      });
+    });
 
-      it('test on new mac use keypair to sign', async done => {
-        const feeExchange = {
-          FeeExchangeV1: {
-            assetId: feeAssetId,
-            maxPayment: 50_000_000_000,
-          }
-        };
-        const transactionPayment = {
-          tip: 2,
-          feeExchange
-        };
-        const nonce = await api.query.system.accountNonce(alice.address);
-        api.tx.genericAsset
-          .transfer(16001, bob.address, 100)
-          .signAndSend(alice, { nonce, transactionPayment }, ({ events, status }) => {
-            if (status.isFinalized) {
-              events.forEach(({ phase, event: { data, method, section } }) => {
-                console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-              });
-              done();
-            }
-          });
-      });
-
-      it('use signer', async done => {
-        const feeExchange = {
-          FeeExchangeV1: {
-            assetId: feeAssetId,
-            maxPayment: 50_000_000_000,
-          }
-        };
-        const transactionPayment = {
-          tip: 2,
-          feeExchange,
-        };
-        const nonce = await api.query.system.accountNonce(alice.address);
-        const tx = api.tx.genericAsset.transfer(16001, bob.address, 100);
-        return tx.signAndSend(alice, { nonce, transactionPayment }, ({ events, status }) => {
-          console.log('Transaction status:', status.type);
+    it.only('uses keypair to sign', async done => {
+      const feeExchange = {
+        FeeExchangeV1: {
+          assetId: feeAssetId,
+          maxPayment: 50_000_000_000,
+        }
+      };
+      const transactionPayment = {
+        tip: 2,
+        feeExchange
+      };
+      const nonce = await api.query.system.accountNonce(alice.address);
+      api.tx.genericAsset
+        .transfer(spendingAssetId, bob.address, 100)
+        .signAndSend(alice, { nonce, transactionPayment }, ({ events, status }) => {
           if (status.isFinalized) {
-            console.log('Completed at block hash', status.value.toHex());
-            console.log('Events:');
-
             events.forEach(({ phase, event: { data, method, section } }) => {
               console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
             });
             done();
           }
         });
+    });
+
+    it('use signer', async done => {
+      const feeExchange = {
+        FeeExchangeV1: {
+          assetId: feeAssetId,
+          maxPayment: 50_000_000_000,
+        }
+      };
+      const transactionPayment = {
+        tip: 2,
+        feeExchange,
+      };
+      const nonce = await api.query.system.accountNonce(alice.address);
+      const tx = api.tx.genericAsset.transfer(spendingAssetId, bob.address, 100);
+      return tx.signAndSend(alice, { nonce, transactionPayment }, ({ events, status }) => {
+        console.log('Transaction status:', status.type);
+        if (status.isFinalized) {
+          console.log('Completed at block hash', status.value.toHex());
+          console.log('Events:');
+
+          events.forEach(({ phase, event: { data, method, section } }) => {
+            console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          });
+          done();
+        }
       });
+    });
 
-      it('update asset info', async done => {
-        const nonce = await api.query.system.accountNonce(alice.address);
-        await api.tx.genericAsset.updateAssetInfo(
-          feeAssetId,
-          new AssetInfo(
-            api.registry,
-            {
-              symbol: 'NEW_ASSET_ID',
-              decimalPlaces: 5
-            }
-          )
-        ).signAndSend(alice, { nonce }, async ({ events, status }) => {
-          console.log('Transaction status:', status.type);
-          if (status.isFinalized) {
-            expect(events[0].event.section).toEqual('genericAsset');
-            expect(events[0].event.method).toEqual('AssetInfoUpdated');
-            expect(events[0].event.data[0]).toEqual(feeAssetId); // ID
-            expect(events[0].event.data[1].toJSON()).toEqual({
-              decimalPlaces: 5,
-              symbol: stringToHex('NEW_ASSET_ID')
-            });
-
-            done();
+    it('update asset info', async done => {
+      const nonce = await api.query.system.accountNonce(alice.address);
+      await api.tx.genericAsset.updateAssetInfo(
+        feeAssetId,
+        new AssetInfo(
+          api.registry,
+          {
+            symbol: 'NEW_ASSET_ID',
+            decimalPlaces: 5
           }
-        });
-      });
+        )
+      ).signAndSend(alice, { nonce }, async ({ events, status }) => {
+        console.log('Transaction status:', status.type);
+        if (status.isFinalized) {
+          expect(events[0].event.section).toEqual('genericAsset');
+          expect(events[0].event.method).toEqual('AssetInfoUpdated');
+          expect(events[0].event.data[0]).toEqual(feeAssetId); // ID
+          expect(events[0].event.data[1].toJSON()).toEqual({
+            decimalPlaces: 5,
+            symbol: stringToHex('NEW_ASSET_ID')
+          });
 
+          done();
+        }
+      });
     });
 
   });
