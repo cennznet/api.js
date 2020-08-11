@@ -1,6 +1,6 @@
 {
   "name": "@cennznet/crml-cennzx-spot",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "the javascript sdk for cennznet runtime module: CennzxSpot. also a plugin of @cennznet/api",
   "author": "Centrality Developers <support@centrality.ai>",
   "maintainers": [
@@ -18,10 +18,10 @@
     "build": "echo \"Error: run build from root\" && exit 1"
   },
   "dependencies": {
-    "@cennznet/api": "^1.1.1",
-    "@cennznet/crml-generic-asset": "^1.1.1",
-    "@cennznet/types": "^1.1.1",
-    "@cennznet/util": "^1.1.1"
+    "@cennznet/api": "^1.1.2",
+    "@cennznet/crml-generic-asset": "^1.1.2",
+    "@cennznet/types": "^1.1.2",
+    "@cennznet/util": "^1.1.2"
   },
   "devDependencies": {
     "@cennznet/wallet": "^0.20.7",

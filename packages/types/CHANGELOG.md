@@ -5,6 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [Unreleased]
 
+## [1.1.2](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.1.2) (03/08/2020)
+### Changed
+    - Conditional compile support for @plugnet/doughnut-wasm dependency
+
 ## [1.1.1](https://github.com/cennznet/api.js/compare/release/1.1.0...release/1.1.1) (03/08/2020)
 ### Fixed
     - Fix missing @plugnet/doughnut-wasm dependency
