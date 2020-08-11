@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DecoratedCennznetDerive} from '../../api-derive';
+import {DecoratedCennznetDerive, DeriveCustom} from '@cennznet/api-derive';
 import {ChargeTransactionPayment} from '@cennznet/types';
 import {
   Callback,
@@ -24,7 +24,6 @@ import {
   RegistryTypes,
   SignatureOptions,
 } from '@cennznet/types/types';
-import {DeriveCustom} from '@polkadot/api-derive';
 import ApiBase from '@polkadot/api/base';
 import {
   ApiOptions as ApiOptionsBase,

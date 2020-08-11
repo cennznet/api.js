@@ -19,7 +19,7 @@ import Types from '@cennznet/types/injects';
 import {ApiPromise} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
-import derives from '../../api-derive';
+import {derive} from '@cennznet/api-derive';
 import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, SubmittableExtrinsics} from './types';
@@ -94,7 +94,7 @@ export class Api extends ApiPromise {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...options.types, ...Types};
-    options.derives = mergeDeriveOptions(derives, options.derives);
+    options.derives = mergeDeriveOptions(derive, options.derives);
     options.rpc = {...(rpc as any), ...options.rpc};
 
     super(options as ApiOptionsBase);

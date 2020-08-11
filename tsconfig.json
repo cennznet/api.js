@@ -18,6 +18,8 @@
     "paths": {
       "@cennznet/api/*": ["packages/api/src/*"],
       "@cennznet/api": ["packages/api/src/index"],
+      "@cennznet/api-derive": ["packages/api-derive/src/index"],
+      "@cennznet/api-derive/*": ["packages/api-derive/src/*"],
       "@cennznet/crml-attestation/*": ["packages/crml-attestation/src/*"],
       "@cennznet/crml-attestation": ["packages/crml-attestation/src/index"],
       "@cennznet/crml-cennzx-spot/*": ["packages/crml-cennzx-spot/src/*"],

@@ -1,0 +1,40 @@
+{
+  "name": "@cennznet/api-derive",
+  "version": "0.1.0",
+  "description": "Common functions used across cennznet, derived from RPC calls and storage queries.",
+  "main": "index.js",
+  "keywords": [
+    "CENNZNet",
+    "Promise",
+    "RxJs"
+  ],
+  "author": "Centrality Developers <support@centrality.ai>",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https@github.com:cennznet/api.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/polkadot-js/api/issues"
+  },
+  "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api-derive",
+  "dependencies": {
+    "@babel/runtime": "^7.10.5",
+    "@polkadot/api": "1.25.1",
+    "@polkadot/api-derive": "1.25.1",
+    "@polkadot/rpc-core": "1.25.1",
+    "@polkadot/rpc-provider": "1.25.1",
+    "@polkadot/types": "1.25.1",
+    "@polkadot/util": "^2.18.1",
+    "@polkadot/util-crypto": "^2.18.1",
+    "bn.js": "^5.1.2",
+    "rxjs": "^6.6.0"
+  },
+  "devDependencies": {
+    "@polkadot/keyring": "^2.18.1"
+  }
+}
