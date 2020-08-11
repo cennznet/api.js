@@ -143,7 +143,8 @@ describe('e2e queries', () => {
       expect(stakingAccount.rewardDestination.isStaked).toBeTruthy();
       expect(stakingAccount.stakers).toBeDefined();
       expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
-      expect(stakingAccount.validatorPrefs.toString()).toBe("commission,0");
+      expect(stakingAccount.validatorPrefs[0]).toBe('commission');
+      expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
       expect(stakingAccount.nextSessionIds).toBeDefined();
       expect(stakingAccount.sessionIds).toBeDefined();
       done();
