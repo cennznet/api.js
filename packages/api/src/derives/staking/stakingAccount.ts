@@ -3,6 +3,7 @@ import {memo} from '@polkadot/api-derive/util';
 import {createType, Option, Vec} from '@polkadot/types';
 import {
   AccountId,
+  EraIndex,
   Exposure,
   Keys,
   Nominations,
@@ -24,6 +25,25 @@ type MultiResultV2 = [
   Option<StakingLedger>
 ];
 
+interface DerivedStakingStash {
+  accountId: AccountId;
+  controllerId?: AccountId;
+  nominators?: AccountId[];
+  nominateAt?: EraIndex;
+  rewardDestination?: RewardDestination;
+  nextKeys?: Keys;
+  stakers?: Exposure;
+  stashId?: AccountId;
+  validatorPrefs?: ValidatorPrefs;
+  stakingLedger?: StakingLedger;
+  nextSessionKeys?: Option<Keys>;
+}
+
+export interface DerivedStakingQuery {
+  nextSessionIds: AccountId[];
+  sessionIds: AccountId[];
+}
+
 function unwrapSessionIds(
   stashId: AccountId,
   queuedKeys: [AccountId, Keys][],
@@ -42,7 +62,7 @@ function unwrapSessionIds(
   };
 }
 
-function retrieve(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
+function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
   return api.queryMulti([
     [api.query.staking.bonded, stashId],
     [api.query.staking.nominators, stashId],
@@ -60,31 +80,35 @@ function retrieveSessionDetails(api: ApiInterfaceRx): Observable<Vec<ITuple<[Acc
 /**
  * @description From a stash, retrieve the controller account ID and all relevant details
  */
-export function queryStakingAccountDetails(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<any> {
+export function queryStakingAccountDetails(
+  api: ApiInterfaceRx
+): (accountId: Uint8Array | string) => Observable<DerivedStakingStash> {
   return memo(
-    (accountId: Uint8Array | string): Observable<any> => {
+    (accountId: Uint8Array | string): Observable<DerivedStakingStash> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
 
-      return retrieve(api, stashId).pipe(
+      return retrieveStakingAccountDetails(api, stashId).pipe(
         switchMap(
           ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs], nextKeys]): Observable<
-            any
+            DerivedStakingStash
           > => {
             const controllerId = controllerIdOpt.unwrapOr(null);
 
             return controllerId
               ? api.query.staking.ledger(controllerId).pipe(
-                  map(stakingLedgerOpt => ({
-                    accountId: stashId,
-                    controllerId,
-                    nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
-                    rewardDestination,
-                    stakers,
-                    stakingLedger: stakingLedgerOpt.unwrapOr(undefined),
-                    stashId,
-                    validatorPrefs,
-                    nextKeys,
-                  }))
+                  map(
+                    (stakingLedgerOpt): DerivedStakingStash => ({
+                      accountId: stashId,
+                      controllerId,
+                      nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
+                      rewardDestination,
+                      stakers,
+                      stakingLedger: stakingLedgerOpt.unwrapOr(undefined),
+                      stashId,
+                      validatorPrefs,
+                      nextSessionKeys: nextKeys,
+                    })
+                  )
                 )
               : of({accountId: stashId});
           }
@@ -97,13 +121,15 @@ export function queryStakingAccountDetails(api: ApiInterfaceRx): (accountId: Uin
 /**
  * @description From a stash and sessions nextKeys, filter session and next session details
  */
-export function querySession(api: ApiInterfaceRx): (accountId: Uint8Array | string, nextKeys) => Observable<any> {
+export function querySession(
+  api: ApiInterfaceRx
+): (accountId: Uint8Array | string, nextKeys) => Observable<DerivedStakingQuery> {
   return memo(
-    (accountId: Uint8Array | string, nextKeys): Observable<any> => {
+    (accountId: Uint8Array | string, nextKeys): Observable<DerivedStakingQuery> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
       return retrieveSessionDetails(api).pipe(
         switchMap(
-          (queuedKeys): Observable<any> => {
+          (queuedKeys): Observable<DerivedStakingQuery> => {
             return of(unwrapSessionIds(stashId, queuedKeys, nextKeys));
           }
         )
