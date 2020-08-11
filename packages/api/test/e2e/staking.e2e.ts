@@ -28,7 +28,6 @@ let alice, bob;
 beforeAll(async () => {
   await cryptoWaitReady();
   api = await initApiPromise();
-  api.setSigner(keyring);
   alice = keyring.addFromUri('//Alice');
   bob = keyring.addFromUri('//Bob');
 });
