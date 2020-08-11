@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import BN from 'bn.js';
+import { RewardDestination } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
-import { Option } from '@polkadot/types';
-import { cryptoWaitReady } from '@polkadot/util-crypto';
-import initApiPromise from '../../../../jest/initApiPromise';
-import { StakingLedger, Balance, ValidatorPrefs } from '@polkadot/types/interfaces';
-import Address from '@polkadot/types/primitive/Generic/Address';
+import { Option, GenericEvent } from '@polkadot/types';
+import { StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
 import AccountId from '@polkadot/types/primitive/Generic/AccountId';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+
+import initApiPromise from '../../../../jest/initApiPromise';
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -119,12 +119,6 @@ describe('Staking Operations', () => {
 
   });
 
-  /// Take the origin account as a stash and lock up `value` of its balance. `controller` will
-  /// be the account that controls it.
-  ///
-  /// `value` must be more than the `minimum_bond` specified in genesis config.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the stash account.
   test('bond locks caller funds and assigns a controller account', async done => {
     let bond = (await api.query.staking.minimumBond()) + 12_345;
 
@@ -142,14 +136,6 @@ describe('Staking Operations', () => {
 
   });
 
-  /// Add some extra amount that have appeared in the stash `free_balance` into the balance up
-  /// for staking.
-  ///
-  /// Use this if there are additional funds in your stash account that you wish to bond.
-  /// Unlike [`bond`] or [`unbond`] this function does not impose any limitation on the amount
-  /// that can be added.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the stash, not the controller.
   test('bond extra locks additional funds', async done => {
 
     let additionalBond = 333;
@@ -166,19 +152,6 @@ describe('Staking Operations', () => {
     await api.tx.staking.bondExtra(additionalBond).signAndSend(stash);
   });
 
-  /// Schedule a portion of the stash to be unlocked ready for transfer out after the bond
-  /// period ends. If this leaves an amount actively bonded less than
-  /// T::Currency::minimum_balance(), then it is increased to the full amount.
-  ///
-  /// Once the unlock period is done, you can call `withdraw_unbonded` to actually move
-  /// the funds out of management ready for transfer.
-  ///
-  /// No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`)
-  /// can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need
-  /// to be called first to remove some of the chunks (if possible).
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the controller, not the stash.
-  ///
   test('unbond schedules some funds to unlock', async done => {
     let unbondAmount = 500;
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
@@ -192,19 +165,6 @@ describe('Staking Operations', () => {
     });
 
     await api.tx.staking.unbond(unbondAmount).signAndSend(controller);
-
-  });
-
-  /// Remove any unlocked chunks from the `unlocking` queue from our management.
-  ///
-  /// This essentially frees up that balance to be used by the stash account to do
-  /// whatever it wants.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the controller, not the stash.
-  ///
-  it.skip('withdraw unbonded', async done => {
-    // TODO: force era change
-    // Withdraw
   });
 
   /// Rebond a portion of the stash scheduled to be unlocked.
@@ -223,86 +183,71 @@ describe('Staking Operations', () => {
     await api.tx.staking.rebond(rebondAmount).signAndSend(controller);
   });
 
-
-  /// Declare the desire to validate for the origin controller.
-  ///
-  /// Effects will be felt at the beginning of the next era.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the controller, not the stash.
-  ///
-  /// # <weight>
-  /// - Independent of the arguments. Insignificant complexity.
-  /// - Contains a limited number of reads.
-  /// - Writes are limited to the `origin` account key.
-  /// # </weight>
-  it.skip('validates', async done => {
-
-  });
-
-
-  /// Declare no desire to either validate or nominate.
-  ///
-  /// Effects will be felt at the beginning of the next era.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the controller, not the stash.
-  ///
-  test('chill removes stash from nominator and validator sets', async done => {
-    await api.tx.staking.chill().signAndSend(controller, async ({ status }) => {
+  test('withdraw unbonded', async done => {
+    await api.tx.staking.withdrawUnbonded().signAndSend(controller, ({ status, events }) => {
       if (status.isInBlock) {
         expect(
-          ((await api.query.staking.validators(stash.address)) as ValidatorPrefs)
-        ).toEqual({commission: 0});
-        expect(
-          ((await api.query.staking.nominators(stash.address)) as ValidatorPrefs)
-        ).toEqual({commission: 0});
-
+          events.find(wrapper => wrapper.event.method === 'ExtrinsicSuccess')
+        ).toBeDefined();
         done();
       }
-    })
+    });
   });
 
-  /// (Re-)set the payment target for a controller.
-  ///
-  /// Effects will be felt at the beginning of the next era.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the controller, not the stash.
+  test('validate adds stash as a validator candidate', async done => {
+    // parts per billion
+    // 100,000,000 / 1,000,000,000 == 0.1%
+    let commission = 1_000_000_000;
+
+    let checkCommission = async ({ status }) => {
+      if (status.isInBlock) {
+        let prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
+        expect(prefs.commission.toNumber()).toEqual(commission);
+        done();
+      };
+    };
+
+    await api.tx.staking.validate({ commission }).signAndSend(controller, checkCommission);
+  });
+
+  test('chill removes stash from validator candidacy', async done => {
+
+    let checkCommission = async ({ status }) => {
+      if (status.isInBlock) {
+        let prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
+        expect(prefs.commission.toNumber()).toEqual(0);
+        done();
+      };
+    };
+
+    await api.tx.staking.chill().signAndSend(controller, checkCommission);
+  });
+
   test('setPayee changes reward destination', async done => {
-    // Subscribe to payee value changes
-    let unsub = await api.query.staking.payee(stash.address, (rewardDestination: AccountId) => {
-      if (rewardDestination.toString() === stash.toString()) {
-        unsub();
+    // Subscribe to reward destination changes
+    await api.query.staking.payee(stash.address, (rewardDestination: RewardDestination) => {
+      if (rewardDestination.toString().toLowerCase() === "stash") {
         done();
       }
     });
 
     await api.tx.staking.setPayee("stash").signAndSend(controller);
-    // force new era for changes to take affect
-    await api.tx.sudo.sudo(api.tx.staking.forceNewEra());
 
   });
 
-  /// (Re-)set the controller of a stash.
-  ///
-  /// Effects will be felt at the beginning of the next era.
-  ///
-  /// The dispatch origin for this call must be _Signed_ by the stash, not the controller.
-  ///
   test('setController changes controller account', async done => {
-    // NB: enusre to run this test last as it changes the controller account.
+    // NB: ensure to run this test last as it changes the controller account.
     let newController = keyring.addFromUri("//NewController");
 
     // Subscribe to controller account value changes
-    let unsub = await api.query.staking.bonded(stash.address, (controllerValue: AccountId) => {
-      if (controllerValue.toString() === newController.toString()) {
-        unsub();
+    await api.query.staking.bonded(stash.address, (controllerOpt: Option<AccountId>) => {
+      let controllerAddress = keyring.encodeAddress(controllerOpt.unwrap());
+      if (controllerAddress === newController.address) {
         done();
       }
     });
 
     await api.tx.staking.setController(newController.address).signAndSend(stash);
-    // force new era for changes to take affect
-    await api.tx.sudo.sudo(api.tx.staking.forceNewEra());
   });
-
 
 });
