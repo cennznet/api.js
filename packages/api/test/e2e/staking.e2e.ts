@@ -18,8 +18,8 @@
 
 import { RewardDestination } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
-import { Option, GenericEvent } from '@polkadot/types';
-import { StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
+import { Option } from '@polkadot/types';
+import { Forcing, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
 import AccountId from '@polkadot/types/primitive/Generic/AccountId';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -39,51 +39,6 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await api.disconnect();
-});
-
-describe.skip('Staking Governance (Sudo Required)', () => {
-  /// The ideal number of validators.
-  it.skip('Set validators', async () => {
-
-  });
-
-  /// Force there to be no new eras indefinitely.
-  it.skip('Force no eras', async () => {
-
-  });
-
-  /// Force there to be a new era at the end of the next session.
-  /// After this, it will reset to normal (non-forced) behaviour.
-  it.skip('Force new era', async () => {
-
-  });
-
-  /// Set the minimum bond balance required to validate OR nominate
-  it.skip('Set minimum bond', async () => {
-
-  });
-
-  /// Set the validators who cannot be slashed (if any).
-  it.skip('Set invulnerables', async () => {
-
-  });
-
-  /// Force a current staker to become completely unstaked, immediately.
-  it.skip('Force unstake', async () => {
-
-  });
-
-  /// Force there to be a new era at the end of sessions indefinitely.
-  it.skip('Force new era always', async () => {
-
-  });
-
-  /// Cancel enactment of a deferred slash. Can be called by root origin
-  /// passing the era and indices of the slashes for that era to kill.
-  it.skip('Cancel deferred slash', async () => {
-
-  });
-
 });
 
 describe('Staking Operations', () => {
@@ -249,5 +204,99 @@ describe('Staking Operations', () => {
 
     await api.tx.staking.setController(newController.address).signAndSend(stash);
   });
+
+});
+
+describe('Staking Governance (Sudo Required)', () => {
+  test('Set target validator count', async done => {
+    let validatorCount = 15;
+    let setValidatorTx = api.tx.staking.setValidatorCount(validatorCount);
+
+    await api.tx.sudo.sudo(setValidatorTx).signAndSend(alice, async ({ status }) => {
+      if (status.isInBlock) {
+        expect((await api.query.staking.validatorCount()).toString()).toEqual(validatorCount.toString());
+        done();
+      }
+    });
+  });
+
+  test('Set minimum bond', async done => {
+    let minimumBond = 1_234;
+    let setMinimumBondTx = api.tx.staking.setMinimumBond(minimumBond);
+
+    await api.tx.sudo.sudo(setMinimumBondTx).signAndSend(alice, async ({ status }) => {
+      if (status.isInBlock) {
+        expect((await api.query.staking.minimumBond()).toString()).toEqual(minimumBond.toString());
+        done();
+      }
+    });
+  });
+
+
+  test('Set invulnerable validators', async done => {
+    let invulnerables: AccountId[] = keyring.getPairs().map(p => p.publicKey as AccountId);
+    let setInvulnerablesTx = api.tx.staking.setInvulnerables(invulnerables);
+
+    await api.tx.sudo.sudo(setInvulnerablesTx).signAndSend(alice, async ({ status }) => {
+      if (status.isInBlock) {
+        expect(
+          (await api.query.staking.invulnerables()).map(k => keyring.encodeAddress(k))
+        ).toEqual(
+          invulnerables.map(k => keyring.encodeAddress(k))
+        );
+        done();
+      }
+    });
+  });
+
+  test('Force no eras', async done => {
+    await api.query.staking.forceEra(
+      (forcing: Forcing) => { if (forcing.isForceNone) done(); }
+    );
+    await api.tx.sudo.sudo(api.tx.staking.forceNoEras()).signAndSend(alice);
+  });
+
+  test('Force new era', async done => {
+    await api.query.staking.forceEra(
+      (forcing: Forcing) => { if (forcing.isForceNew) done(); }
+    );
+    await api.tx.sudo.sudo(api.tx.staking.forceNewEra()).signAndSend(alice);
+  });
+
+  test('Force new era always', async done => {
+    await api.query.staking.forceEra(
+      (forcing: Forcing) => { if (forcing.isForceAlways) done(); }
+    );
+    await api.tx.sudo.sudo(api.tx.staking.forceNewEraAlways()).signAndSend(alice);
+  });
+
+  test('Force unstake', async done => {
+    // Use charlie account as bob stash, it's simpler than funding a new account.
+    let bob_stash = keyring.addFromUri('//Charlie');
+    // bond bob's stash account.
+    await api.tx.staking.bond(bob.address, 10_000, "controller").signAndSend(
+      bob_stash,
+      async ({ status }) => {
+        if (status.isInBlock) {
+          let controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
+          expect(controller.unwrapOr(null)).toBeDefined();
+          done();
+        }
+      });
+
+    let unstake = api.tx.staking.forceUnstake(bob_stash.address);
+    await api.tx.sudo.sudo(unstake).signAndSend(alice, async ({ status }) => {
+      if (status.isInBlock) {
+        // bob stash is removed / unbonded
+        let controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
+        expect(controller.unwrapOr(null)).toBeNull();
+        done();
+      }
+    });
+  });
+
+  /// Cancel enactment of a deferred slash. Can be called by root origin
+  /// passing the era and indices of the slashes for that era to kill.
+  it.skip('Cancel deferred slash', async () => { });
 
 });
