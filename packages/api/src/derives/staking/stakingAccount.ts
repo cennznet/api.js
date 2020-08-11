@@ -1,7 +1,6 @@
 import {ApiInterfaceRx} from '@cennznet/api/types';
-import {DerivedStakingQuery} from '@polkadot/api-derive/types';
 import {memo} from '@polkadot/api-derive/util';
-import {createType, Option, TypeRegistry, Vec} from '@polkadot/types';
+import {createType, Option, Vec} from '@polkadot/types';
 import {
   AccountId,
   Exposure,
@@ -12,7 +11,7 @@ import {
   ValidatorPrefs,
 } from '@polkadot/types/interfaces';
 import {ITuple} from '@polkadot/types/types';
-import {combineLatest, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 type MultiResultV2 = [
@@ -43,56 +42,66 @@ function unwrapSessionIds(
   };
 }
 
-function retrieve(
-  api: ApiInterfaceRx,
-  stashId: AccountId
-): Observable<[Vec<ITuple<[AccountId, Keys]>>, MultiResultV2]> {
-  return combineLatest([
-    api.query.session.queuedKeys<Vec<ITuple<[AccountId, Keys]>>>(),
-    api.queryMulti([
-      [api.query.staking.bonded, stashId],
-      [api.query.staking.nominators, stashId],
-      [api.query.staking.payee, stashId],
-      [api.query.staking.stakers, stashId],
-      [api.query.staking.validators, stashId],
-      [api.query.session.nextKeys, stashId],
-    ]) as Observable<MultiResultV2>,
-  ]);
+function retrieve(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
+  return api.queryMulti([
+    [api.query.staking.bonded, stashId],
+    [api.query.staking.nominators, stashId],
+    [api.query.staking.payee, stashId],
+    [api.query.staking.stakers, stashId],
+    [api.query.staking.validators, stashId],
+    [api.query.session.nextKeys, stashId],
+  ]) as Observable<MultiResultV2>;
+}
+
+function retrieveSessionDetails(api: ApiInterfaceRx): Observable<Vec<ITuple<[AccountId, Keys]>>> {
+  return api.query.session.queuedKeys<Vec<ITuple<[AccountId, Keys]>>>();
+}
+
+export function queryStakingAccountDetails(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<any> {
+  return memo(
+    (accountId: Uint8Array | string): Observable<any> => {
+      const stashId = createType(api.registry, 'AccountId', accountId);
+
+      return retrieve(api, stashId).pipe(
+        switchMap(
+          ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs], nextKeys]): Observable<
+            any
+          > => {
+            const controllerId = controllerIdOpt.unwrapOr(null);
+
+            return controllerId
+              ? api.query.staking.ledger(controllerId).pipe(
+                  map(stakingLedgerOpt => ({
+                    accountId: stashId,
+                    controllerId,
+                    nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
+                    rewardDestination,
+                    stakers,
+                    stakingLedger: stakingLedgerOpt.unwrapOr(undefined),
+                    stashId,
+                    validatorPrefs,
+                    nextKeys,
+                  }))
+                )
+              : of({accountId: stashId});
+          }
+        )
+      );
+    }
+  );
 }
 
 /**
  * @description From a stash, retrieve the controller account ID and all relevant details
  */
-export function query(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<DerivedStakingQuery> {
+export function querySession(api: ApiInterfaceRx): (accountId: Uint8Array | string, nextKeys) => Observable<any> {
   return memo(
-    (accountId: Uint8Array | string): Observable<DerivedStakingQuery> => {
+    (accountId: Uint8Array | string, nextKeys): Observable<any> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
-
-      return retrieve(api, stashId).pipe(
+      return retrieveSessionDetails(api).pipe(
         switchMap(
-          ([
-            queuedKeys,
-            [controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs], nextKeys],
-          ]): Observable<DerivedStakingQuery> => {
-            const controllerId = controllerIdOpt.unwrapOr(null);
-
-            return controllerId
-              ? api.query.staking.ledger(controllerId).pipe(
-                  map(
-                    (stakingLedgerOpt): DerivedStakingQuery => ({
-                      accountId: stashId,
-                      controllerId,
-                      nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
-                      rewardDestination,
-                      stakers,
-                      stakingLedger: stakingLedgerOpt.unwrapOr(undefined),
-                      stashId,
-                      validatorPrefs,
-                      ...unwrapSessionIds(stashId, queuedKeys, nextKeys),
-                    })
-                  )
-                )
-              : of({accountId: stashId, nextSessionIds: [], sessionIds: []});
+          (queuedKeys): Observable<any> => {
+            return of(unwrapSessionIds(stashId, queuedKeys, nextKeys));
           }
         )
       );
