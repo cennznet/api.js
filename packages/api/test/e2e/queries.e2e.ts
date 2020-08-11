@@ -132,4 +132,25 @@ describe('e2e queries', () => {
        done();
     });
   });
+
+  describe('Staking account derived query', () => {
+    it("Get staking account details", async done => {
+      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
+      const stakingAccount = await api.derive.staking.accountInfo(stashId);
+      expect(stakingAccount.accountId.toString()).toBe(stashId);
+      expect(stakingAccount.controllerId.toString()).toBe(alice.address);
+      expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
+      expect(stakingAccount.rewardDestination.isStaked).toBeTruthy();
+      expect(stakingAccount.stakers).toBeDefined();
+      expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
+      expect(stakingAccount.validatorPrefs[0]).toBe('commission');
+      expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
+      const nextKeys = stakingAccount.nextSessionKeys;
+      const stakingSessionDetails = await api.derive.staking.sessionDetails(stashId, nextKeys);
+      const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
+      expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
+      expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);
+      done();
+    });
+  });
 });

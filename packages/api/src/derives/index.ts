@@ -20,10 +20,11 @@ import {AnyFunction} from '@cennznet/types/types';
 import {ApiInterfaceRx, MethodResult} from '@polkadot/api/types';
 import {Observable} from 'rxjs';
 import * as fees from './fees';
+import * as staking from './staking';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = {attestation, cennzxSpot, fees, genericAsset};
+export const derive = {attestation, cennzxSpot, fees, staking, genericAsset};
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,
