@@ -50,7 +50,7 @@ describe('Staking Operations', () => {
     let nonce = await api.query.system.accountNonce(alice.address);
 
     // How much to fund stash and controller with
-    let initialEndowment = 100_000_000_000_000;
+    const initialEndowment = 100_000_000_000_000;
 
     // controller needs CPAY
     await api.tx.genericAsset
@@ -71,13 +71,13 @@ describe('Staking Operations', () => {
   });
 
   test('bond locks caller funds and assigns a controller account', async done => {
-    let bond = (await api.query.staking.minimumBond()) + 12_345;
+    const bond = (await api.query.staking.minimumBond()) + 12_345;
 
     await api.tx.staking.bond(controller.address, bond, 'controller').signAndSend(stash, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.bonded(stash.address)).toString()).toEqual(controller.address);
         expect((await api.query.staking.payee(stash.address)).isController).toBeTruthy();
-        let ledger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
+        const ledger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
         expect(ledger.active.toString()).toEqual(bond);
         expect(ledger.total.toString()).toEqual(bond);
 
@@ -89,12 +89,12 @@ describe('Staking Operations', () => {
 
   test('bond extra locks additional funds', async done => {
 
-    let additionalBond = 333;
-    let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
+    const additionalBond = 333;
+    const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
     await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
-      let ledger = ledgerOpt.unwrapOr(null);
+      const ledger = ledgerOpt.unwrapOr(null);
       if (ledger?.active.toNumber() === (previousLedger.active.toNumber() + additionalBond)) {
         done();
       }
@@ -104,12 +104,12 @@ describe('Staking Operations', () => {
   });
 
   test('unbond schedules some funds to unlock', async done => {
-    let unbondAmount = 500;
-    let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
+    const unbondAmount = 500;
+    const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
     await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
-      let ledger = ledgerOpt.unwrapOr(null);
+      const ledger = ledgerOpt.unwrapOr(null);
       if (ledger?.active.toNumber() === (previousLedger.active.toNumber() - unbondAmount)) {
         done();
       }
@@ -120,12 +120,12 @@ describe('Staking Operations', () => {
 
   /// Rebond a portion of the stash scheduled to be unlocked.
   test('rebond locks funds again', async done => {
-    let rebondAmount = 300;
-    let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
+    const rebondAmount = 300;
+    const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
     await api.query.staking.ledger(controller.address, (ledgerOpt: Option<StakingLedger>) => {
-      let ledger = ledgerOpt.unwrapOr(null);
+      const ledger = ledgerOpt.unwrapOr(null);
       if (ledger?.active.toNumber() === (previousLedger.active.toNumber() + rebondAmount)) {
         done();
       }
@@ -148,11 +148,11 @@ describe('Staking Operations', () => {
   test('validate adds stash as a validator candidate', async done => {
     // parts per billion
     // 100,000,000 / 1,000,000,000 == 0.1%
-    let commission = 1_000_000_000;
+    const commission = 1_000_000_000;
 
-    let checkCommission = async ({ status }) => {
+    const checkCommission = async ({ status }) => {
       if (status.isInBlock) {
-        let prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
+        const prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
         expect(prefs.commission.toNumber()).toEqual(commission);
         done();
       };
@@ -163,9 +163,9 @@ describe('Staking Operations', () => {
 
   test('chill removes stash from validator candidacy', async done => {
 
-    let checkCommission = async ({ status }) => {
+    const checkCommission = async ({ status }) => {
       if (status.isInBlock) {
-        let prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
+        const prefs = ((await api.query.staking.validators(stash.address)) as ValidatorPrefs);
         expect(prefs.commission.toNumber()).toEqual(0);
         done();
       };
@@ -188,11 +188,11 @@ describe('Staking Operations', () => {
 
   test('setController changes controller account', async done => {
     // NB: ensure to run this test last as it changes the controller account.
-    let newController = keyring.addFromUri('//NewController');
+    const newController = keyring.addFromUri('//NewController');
 
     // Subscribe to controller account value changes
     await api.query.staking.bonded(stash.address, (controllerOpt: Option<AccountId>) => {
-      let controllerAddress = keyring.encodeAddress(controllerOpt.unwrap());
+      const controllerAddress = keyring.encodeAddress(controllerOpt.unwrap());
       if (controllerAddress === newController.address) {
         done();
       }
@@ -205,8 +205,8 @@ describe('Staking Operations', () => {
 
 describe('Staking Governance (Sudo Required)', () => {
   test('Set target validator count', async done => {
-    let validatorCount = 15;
-    let setValidatorTx = api.tx.staking.setValidatorCount(validatorCount);
+    const validatorCount = 15;
+    const setValidatorTx = api.tx.staking.setValidatorCount(validatorCount);
 
     await api.tx.sudo.sudo(setValidatorTx).signAndSend(alice, async ({ status }) => {
       if (status.isInBlock) {
@@ -217,8 +217,8 @@ describe('Staking Governance (Sudo Required)', () => {
   });
 
   test('Set minimum bond', async done => {
-    let minimumBond = 1_234;
-    let setMinimumBondTx = api.tx.staking.setMinimumBond(minimumBond);
+    const minimumBond = 1_234;
+    const setMinimumBondTx = api.tx.staking.setMinimumBond(minimumBond);
 
     await api.tx.sudo.sudo(setMinimumBondTx).signAndSend(alice, async ({ status }) => {
       if (status.isInBlock) {
@@ -230,8 +230,8 @@ describe('Staking Governance (Sudo Required)', () => {
 
 
   test('Set invulnerable validators', async done => {
-    let invulnerables: AccountId[] = keyring.getPairs().map(p => p.publicKey as AccountId);
-    let setInvulnerablesTx = api.tx.staking.setInvulnerables(invulnerables);
+    const invulnerables: AccountId[] = keyring.getPairs().map(p => p.publicKey as AccountId);
+    const setInvulnerablesTx = api.tx.staking.setInvulnerables(invulnerables);
 
     await api.tx.sudo.sudo(setInvulnerablesTx).signAndSend(alice, async ({ status }) => {
       if (status.isInBlock) {
@@ -247,44 +247,50 @@ describe('Staking Governance (Sudo Required)', () => {
 
   test('Force no eras', async done => {
     await api.query.staking.forceEra(
-      (forcing: Forcing) => { if (forcing.isForceNone) done(); }
+      (forcing: Forcing) => {
+        if (forcing.isForceNone) done();
+      }
     );
     await api.tx.sudo.sudo(api.tx.staking.forceNoEras()).signAndSend(alice);
   });
 
   test('Force new era', async done => {
     await api.query.staking.forceEra(
-      (forcing: Forcing) => { if (forcing.isForceNew) done(); }
+      (forcing: Forcing) => {
+        if (forcing.isForceNew) done();
+      }
     );
     await api.tx.sudo.sudo(api.tx.staking.forceNewEra()).signAndSend(alice);
   });
 
   test('Force new era always', async done => {
     await api.query.staking.forceEra(
-      (forcing: Forcing) => { if (forcing.isForceAlways) done(); }
+      (forcing: Forcing) => {
+        if (forcing.isForceAlways) done();
+      }
     );
     await api.tx.sudo.sudo(api.tx.staking.forceNewEraAlways()).signAndSend(alice);
   });
 
   test('Force unstake', async done => {
     // Use charlie account as bob stash, it's simpler than funding a new account.
-    let bob_stash = keyring.addFromUri('//Charlie');
+    const bob_stash = keyring.addFromUri('//Charlie');
     // bond bob's stash account.
     await api.tx.staking.bond(bob.address, 10_000, 'controller').signAndSend(
       bob_stash,
       async ({ status }) => {
         if (status.isInBlock) {
-          let controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
+          const controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
           expect(controller.unwrapOr(null)).toBeDefined();
           done();
         }
       });
 
-    let unstake = api.tx.staking.forceUnstake(bob_stash.address);
+    const unstake = api.tx.staking.forceUnstake(bob_stash.address);
     await api.tx.sudo.sudo(unstake).signAndSend(alice, async ({ status }) => {
       if (status.isInBlock) {
         // bob stash is removed / unbonded
-        let controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
+        const controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
         expect(controller.unwrapOr(null)).toBeNull();
         done();
       }
