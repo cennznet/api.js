@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DecoratedCennznetDerive} from '@cennznet/api/derives';
+import {DecoratedCennznetDerive} from '../../api-derive';
 import {ChargeTransactionPayment} from '@cennznet/types';
 import {
   Callback,

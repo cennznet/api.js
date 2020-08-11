@@ -19,7 +19,7 @@ import Types from '@cennznet/types/injects';
 import {ApiPromise} from '@polkadot/api';
 import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
 
-import derives from './derives';
+import derives from '../../api-derive';
 import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, SubmittableExtrinsics} from './types';

@@ -25,7 +25,7 @@ import {switchMap, timeout} from 'rxjs/operators';
 
 import rpc from '@cennznet/api/rpc';
 import {DEFAULT_TIMEOUT} from './Api';
-import derives from './derives';
+import derives from '../../api-derive';
 import staticMetadata from './staticMetadata';
 import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
 import {getProvider} from './util/getProvider';
