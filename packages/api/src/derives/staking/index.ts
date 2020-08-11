@@ -1,1 +1,1 @@
-export {queryStakingAccountDetails as accountDetails, querySession as sessionDetails} from './stakingAccount';
+export {queryStakingAccountDetails as accountInfo, querySession as sessionDetails} from './stakingAccount';

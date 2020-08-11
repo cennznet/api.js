@@ -136,7 +136,7 @@ describe('e2e queries', () => {
   describe('Staking account derived query', () => {
     it("Get staking account details", async done => {
       const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
-      const stakingAccount = await api.derive.staking.accountDetails(stashId);
+      const stakingAccount = await api.derive.staking.accountInfo(stashId);
       expect(stakingAccount.accountId.toString()).toBe(stashId);
       expect(stakingAccount.controllerId.toString()).toBe(alice.address);
       expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
