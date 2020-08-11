@@ -57,6 +57,9 @@ function retrieveSessionDetails(api: ApiInterfaceRx): Observable<Vec<ITuple<[Acc
   return api.query.session.queuedKeys<Vec<ITuple<[AccountId, Keys]>>>();
 }
 
+/**
+ * @description From a stash, retrieve the controller account ID and all relevant details
+ */
 export function queryStakingAccountDetails(api: ApiInterfaceRx): (accountId: Uint8Array | string) => Observable<any> {
   return memo(
     (accountId: Uint8Array | string): Observable<any> => {
@@ -92,7 +95,7 @@ export function queryStakingAccountDetails(api: ApiInterfaceRx): (accountId: Uin
 }
 
 /**
- * @description From a stash, retrieve the controller account ID and all relevant details
+ * @description From a stash and sessions nextKeys, filter session and next session details
  */
 export function querySession(api: ApiInterfaceRx): (accountId: Uint8Array | string, nextKeys) => Observable<any> {
   return memo(
