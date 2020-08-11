@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Copyright 2017-2018 @polkadot/api authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
 import { RewardDestination } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { Option } from '@polkadot/types';
@@ -45,8 +41,8 @@ describe('Staking Operations', () => {
   let stash, controller;
 
   beforeAll(async done => {
-    stash = keyring.addFromUri("//Test//Stash");
-    controller = keyring.addFromUri("//Test//Controller");
+    stash = keyring.addFromUri('//Test//Stash');
+    controller = keyring.addFromUri('//Test//Controller');
 
     // Fund stash and controller
     const stakingId = await api.query.genericAsset.stakingAssetId();
@@ -77,7 +73,7 @@ describe('Staking Operations', () => {
   test('bond locks caller funds and assigns a controller account', async done => {
     let bond = (await api.query.staking.minimumBond()) + 12_345;
 
-    await api.tx.staking.bond(controller.address, bond, "controller").signAndSend(stash, async ({ status }) => {
+    await api.tx.staking.bond(controller.address, bond, 'controller').signAndSend(stash, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.bonded(stash.address)).toString()).toEqual(controller.address);
         expect((await api.query.staking.payee(stash.address)).isController).toBeTruthy();
@@ -97,9 +93,8 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    let unsub = await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
+    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
       if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() + additionalBond)) {
-        unsub();
         done();
       }
     });
@@ -112,9 +107,8 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    let unsub = await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
+    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
       if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() - unbondAmount)) {
-        unsub();
         done();
       }
     });
@@ -128,9 +122,8 @@ describe('Staking Operations', () => {
     let previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
     // Subscribe to ledger value changes
-    let unsub = await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
+    await api.query.staking.ledger(controller.address, (ledger: Option<StakingLedger>) => {
       if (ledger.unwrap().active.toNumber() === (previousLedger.active.toNumber() + rebondAmount)) {
-        unsub();
         done();
       }
     });
@@ -181,18 +174,18 @@ describe('Staking Operations', () => {
   test('setPayee changes reward destination', async done => {
     // Subscribe to reward destination changes
     await api.query.staking.payee(stash.address, (rewardDestination: RewardDestination) => {
-      if (rewardDestination.toString().toLowerCase() === "stash") {
+      if (rewardDestination.toString().toLowerCase() === 'stash') {
         done();
       }
     });
 
-    await api.tx.staking.setPayee("stash").signAndSend(controller);
+    await api.tx.staking.setPayee('stash').signAndSend(controller);
 
   });
 
   test('setController changes controller account', async done => {
     // NB: ensure to run this test last as it changes the controller account.
-    let newController = keyring.addFromUri("//NewController");
+    let newController = keyring.addFromUri('//NewController');
 
     // Subscribe to controller account value changes
     await api.query.staking.bonded(stash.address, (controllerOpt: Option<AccountId>) => {
@@ -274,7 +267,7 @@ describe('Staking Governance (Sudo Required)', () => {
     // Use charlie account as bob stash, it's simpler than funding a new account.
     let bob_stash = keyring.addFromUri('//Charlie');
     // bond bob's stash account.
-    await api.tx.staking.bond(bob.address, 10_000, "controller").signAndSend(
+    await api.tx.staking.bond(bob.address, 10_000, 'controller').signAndSend(
       bob_stash,
       async ({ status }) => {
         if (status.isInBlock) {
