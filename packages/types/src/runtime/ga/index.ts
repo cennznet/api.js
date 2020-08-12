@@ -18,3 +18,5 @@ export {default as Owner} from './Owner';
 export {default as PermissionsV1, default as PermissionLatest} from './PermissionsV1';
 export {default as PermissionVersions} from './PermissionVersions';
 export {default as AssetInfo} from './AssetInfo';
+export {default as WithdrawReasons} from './WithdrawReasons';
+export {default as BalanceLock} from './BalanceLock';

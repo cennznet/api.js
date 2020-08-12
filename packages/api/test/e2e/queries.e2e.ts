@@ -12,16 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
- */
-import {Hash} from '@polkadot/types/interfaces';
-import {AssetOptions, AssetInfo} from '@cennznet/types';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
-import {Keyring} from '@polkadot/api';
+import { AssetInfo, AssetOptions, BalanceLock, Vec } from '@cennznet/types';
+import { Keyring } from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
+import { Hash } from '@polkadot/types/interfaces';
+import { u8aToString } from '@polkadot/util';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+
 import initApiPromise from '../../../../jest/initApiPromise';
-import {u8aToString} from '@polkadot/util';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -43,7 +41,7 @@ describe('e2e queries', () => {
   });
 
   describe('Query storage', () => {
-    it('makes the runtime, rpc, state & extrinsics available', (): void => {
+    it('Makes the runtime, rpc, state & extrinsics available', (): void => {
       expect(api.genesisHash).toBeDefined();
       expect(api.runtimeMetadata).toBeDefined();
       expect(api.runtimeVersion).toBeDefined();
@@ -55,21 +53,20 @@ describe('e2e queries', () => {
   });
 
   describe('Query storage using at', () => {
-    it('queries correct balance', async () => {
+    it('Queries correct balance', async () => {
       const nextAssetId = await api.query.genericAsset.nextAssetId();
       const blockHash: Hash = (await api.rpc.chain.getBlockHash()) as Hash;
       const nextAssetIdAt = await api.query.genericAsset.nextAssetId.at(blockHash);
       expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
     });
 
-    it('check transaction payment', async done => {
+    it('Checks transaction payment', async done => {
 
       const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
-      console.log('Balance before ',assetBalance.toString());
-      const nonce = await api.query.system.accountNonce(alice.address);
+      console.log('Balance before ', assetBalance.toString());
       const ex = await api.tx.genericAsset
         .transfer(16000, bob.address, 100);
-      const payment =  await api.rpc.payment.queryInfo(ex.toHex());
+      const payment = await api.rpc.payment.queryInfo(ex.toHex());
       console.log('Payment:', payment.partialFee.toString());
       done();
     }, 10000000);
@@ -77,8 +74,7 @@ describe('e2e queries', () => {
 
   describe('Subscribe storage', () => {
     let unsubscribeFn;
-    it('emits events when storage changes', async done => {
-      const totalSupply = 100;
+    it('Emits events when storage changes', async done => {
       let count = 0;
       const reservedIdStart: number = 17000;
       unsubscribeFn = await api.query.genericAsset.nextAssetId((result: any) => {
@@ -109,32 +105,32 @@ describe('e2e queries', () => {
                   burn: null,
                 },
               }),
-              new AssetInfo(
-                  api.registry,
-                  {
-                      symbol: 'SYLO',
-                      decimalPlaces: 3
-                  }
-              )
+            new AssetInfo(
+              api.registry,
+              {
+                symbol: 'SYLO',
+                decimalPlaces: 3
+              }
+            )
           ))
         .signAndSend(sudoPair);
     }, 12000);
   });
 
   describe('GA rpc calls', () => {
-    it("Get generic asset registeredAssets through RPC call", async done => {
-       const registeredAsset = await api.rpc.genericAsset.registeredAssets();
-       expect(registeredAsset.length).toBeGreaterThan(0);
-       const hasCpayAsset = ([assetId, meta]) =>  assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '0';
-       const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '0';
-       expect(registeredAsset.some(hasCpayAsset)).toBe(true);
-       expect(registeredAsset.some(hasCennzAsset)).toBe(true);
-       done();
+    it('Gets generic asset registeredAssets through RPC call', async done => {
+      const registeredAsset = await api.rpc.genericAsset.registeredAssets();
+      expect(registeredAsset.length).toBeGreaterThan(0);
+      const hasCpayAsset = ([assetId, meta]) => assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '0';
+      const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '0';
+      expect(registeredAsset.some(hasCpayAsset)).toBe(true);
+      expect(registeredAsset.some(hasCennzAsset)).toBe(true);
+      done();
     });
   });
 
   describe('Staking account derived query', () => {
-    it("Get staking account details", async done => {
+    it('Gets staking account details', async done => {
       const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
       const stakingAccount = await api.derive.staking.accountInfo(stashId);
       expect(stakingAccount.accountId.toString()).toBe(stashId);
@@ -150,6 +146,17 @@ describe('e2e queries', () => {
       const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
       expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
       expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);
+      done();
+    });
+  });
+
+  describe('Generic Asset Storage', () => {
+    it('Gets balance locks ok', async done => {
+      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
+      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
+      expect(balanceLocks.length).toBe(1);
+      let reasons = balanceLocks[0].reasons;
+      expect(reasons.isAll()).toBeTruthy();
       done();
     });
   });
