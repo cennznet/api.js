@@ -26,18 +26,16 @@ const ReasonMask = {
   FEE: 0b0000_1000,
   /// In order to tip a validator for transaction inclusion.
   TIP: 0b0001_0000,
-  // Combined mask, all on
-  ALL: this.TRANSACTION_VERSION & this.TRANSFER & this.RESERVE & this.FEE & this.TIP,
 };
 
 export default class WithdrawReasons extends i8 {
   // The mask value of all reasons set
   static all(): number {
-    return ReasonMask.ALL;
+    return ReasonMask.TRANSACTION_PAYMENT | ReasonMask.TRANSFER | ReasonMask.RESERVE | ReasonMask.FEE | ReasonMask.TIP;
   }
   // Whether the withdraw reasons are 'all' of them
   isAll(): boolean {
-    return (this.toNumber() & ReasonMask.ALL) === ReasonMask.ALL;
+    return this.toNumber() === WithdrawReasons.all();
   }
   // Whether the withdraw reasons include higher-level fees.
   isFee(): boolean {
