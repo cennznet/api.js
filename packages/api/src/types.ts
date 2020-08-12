@@ -12,7 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {DecoratedCennznetDerive, DeriveCustom} from '@cennznet/api-derive';
+import type BN from 'bn.js';
+import {Observable} from 'rxjs';
+
+// Augment the modules
+import '@polkadot/api/augment';
+
+import {Constants} from '@polkadot/metadata/Decorated/types';
+import {RpcInterface} from '@polkadot/rpc-core/types';
+import {ProviderInterface, ProviderInterfaceEmitted} from '@polkadot/rpc-provider/types';
+import {Metadata, u64} from '@polkadot/types';
+import {AccountId, Address, Hash, RuntimeVersion} from '@polkadot/types/interfaces';
+import {
+  AnyFunction,
+  AnyNumber,
+  AnyU8a,
+  CallBase,
+  DefinitionRpc,
+  DefinitionRpcSub, IExtrinsicEra,
+  ISubmittableResult,
+  RegisteredTypes,
+  Registry,
+  Signer
+} from '@polkadot/types/types';
+import {DeriveAllSections} from '@polkadot/api/util/decorate';
+import {DecoratedRpc} from '@polkadot/api/types/rpc';
+import {QueryableStorage, QueryableStorageMulti} from '@polkadot/api/types/storage';
+import {
+  SubmittableExtrinsics as SubmittableExtrinsicsBase,
+  UnsubscribePromise,
+} from '@polkadot/api/types';
+import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
+
+import {DeriveCustom, ExactDerive} from '@cennznet/api-derive';
 import {ChargeTransactionPayment} from '@cennznet/types';
 import {
   Callback,
@@ -24,30 +56,78 @@ import {
   RegistryTypes,
   SignatureOptions,
 } from '@cennznet/types/types';
-import ApiBase from '@polkadot/api/base';
-import {
-  ApiOptions as ApiOptionsBase,
-  SignerOptions as SignerOptionsBase,
-  SubmittableExtrinsic as SubmittableExtrinsicBase,
-  SubmittableExtrinsics as SubmittableExtrinsicsBase,
-  SubmittableResultResult,
-  SubmittableResultSubscription,
-  UnsubscribePromise,
-} from '@polkadot/api/types';
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import {u64} from '@polkadot/types';
-import {AccountId, Address, Hash} from '@polkadot/types/interfaces';
-import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
-import {Observable} from 'rxjs';
-import {AnyU8a, CallBase, ISubmittableResult} from '@polkadot/types/types';
+import ApiBase from './base';
+import {SubmittableExtrinsic} from './submittable/types'
 
-export * from '@polkadot/api/types';
+export {Signer, SignerResult} from '@polkadot/types/types';
+export * from './submittable/types';
+export * from '@polkadot/api/types/base';
+export * from '@polkadot/api/types/rpc';
+export * from '@polkadot/api/types/storage';
+export * from '@polkadot/api/types/submittable';
+
+export {default as ApiBase} from './base';
+
 export type ApiTypes = 'promise' | 'rxjs';
 
-export interface SignerOptions extends SignerOptionsBase {
-  doughnut?: Uint8Array;
-  transactionPayment?: ChargeTransactionPayment;
+export type AnyDerive = Record<string, Record<string, AnyFunction>>;
+
+export interface ApiOptionsBase extends RegisteredTypes {
+  /**
+   * @description Add custom derives to be injected
+   */
+  derives?: DeriveCustom;
+  /**
+   * @description Control the initialization of the wasm libraries. When not specified, it defaults to `true`, initializing the wasm libraries, set to `false` to not initialize wasm. (No sr25519 support)
+   */
+  initWasm?: boolean;
+  /**
+   * @description pre-bundles is a map of 'genesis hash and runtime spec version' as key to a metadata hex string
+   * if genesis hash and runtime spec version matches, then use metadata, else fetch it from chain
+   */
+  metadata?: Record<string, string>;
+  /**
+   * @description Transport Provider from rpc-provider. If not specified, it will default to
+   * connecting to a WsProvider connecting localhost with the default port, i.e. `ws://127.0.0.1:9944`
+   */
+  provider?: ProviderInterface;
+  /**
+   * @description A type registry to use along with this instance
+   */
+  registry?: Registry;
+  /**
+   * @description User-defined RPC methods
+   */
+  rpc?: Record<string, Record<string, DefinitionRpc | DefinitionRpcSub>>;
+  /**
+   * @description An external signer which will be used to sign extrinsic when account passed in is not KeyringPair
+   */
+  signer?: Signer;
+  /**
+   * @description The source object to use for runtime information (only used when cloning)
+   */
+  source?: ApiBase<any>;
 }
+
+// A smaller interface of ApiRx, used in derive and in SubmittableExtrinsic
+export interface ApiInterfaceRx {
+  consts: Constants;
+  // TODO This needs to be typed correctly
+  derive: DeriveAllSections<'rxjs', ExactDerive>;
+  extrinsicType: number;
+  genesisHash?: Hash;
+  hasSubscriptions: boolean;
+  registry: Registry;
+  runtimeMetadata: Metadata;
+  runtimeVersion?: RuntimeVersion;
+  query: QueryableStorage<'rxjs'>;
+  queryMulti: QueryableStorageMulti<'rxjs'>;
+  rpc: DecoratedRpc<'rxjs', RpcInterface>;
+  tx: SubmittableExtrinsics<'rxjs'>;
+  signer?: Signer;
+}
+
+export type ApiInterfaceEvents = ProviderInterfaceEmitted | 'ready';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
   /**
@@ -76,8 +156,7 @@ export interface IExtrinsic extends IExtrinsicBase {
   sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 }
 
-export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['_decorateDerive']> &
-  DecoratedCennznetDerive<ApiType>;
+export type Derives<ApiType extends ApiTypes, AllSections extends AnyDerive> = ReturnType<ApiBase<ApiType>['_decorateDerive']> & DeriveAllSections<ApiType, AllSections>;
 
 interface StorageEntryBase<C, H, U> {
   at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;
@@ -120,29 +199,6 @@ export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType ex
   ? StorageEntryObservable<T>
   : StorageEntryPromise<T>;
 
-export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType> {
-  send(): SubmittableResultResult<ApiType>;
-
-  send(statusCb: Callback<ISubmittableResult>): SubmittableResultSubscription<ApiType>;
-
-  sign(account: IKeyringPair, _options: Partial<SignatureOptions>): this;
-
-  signAndSend(
-    account: IKeyringPair | string | AccountId | Address,
-    options?: Partial<SignerOptions>
-  ): SubmittableResultResult<ApiType>;
-
-  signAndSend(
-    account: IKeyringPair | string | AccountId | Address,
-    statusCb: Callback<ISubmittableResult>
-  ): SubmittableResultSubscription<ApiType>;
-
-  signAndSend(
-    account: IKeyringPair | string | AccountId | Address,
-    options: Partial<SignerOptions>,
-    statusCb?: Callback<ISubmittableResult>
-  ): SubmittableResultSubscription<ApiType>;
-}
 
 export interface SubmittableExtrinsics<ApiType extends ApiTypes> extends SubmittableExtrinsicsBase<ApiType> {
   (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;

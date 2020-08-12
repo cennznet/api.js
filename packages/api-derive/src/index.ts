@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ApiTypes } from '@cennznet/api/types';
 import * as attestation from '@cennznet/crml-attestation/derives';
 import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
 import * as genericAsset from '@cennznet/crml-generic-asset/derives';
 import { AnyFunction } from '@polkadot/types/types';
-import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
 import * as accounts from '@polkadot/api-derive/accounts';
 import * as chain from '@polkadot/api-derive/chain';
 import * as contracts from '@polkadot/api-derive/contracts';
@@ -100,14 +99,3 @@ export default function decorateDerive (api: ApiInterfaceRx, custom: DeriveCusto
     ...injectFunctions(api, custom)
   };
 }
-
-export type DecoratedCennznetDerive<
-  ApiType extends ApiTypes,
-  AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
-> = {
-  [SectionName in keyof AllSections]: {
-    [MethodName in keyof AllSections[SectionName]]: ReturnType<AllSections[SectionName][MethodName]> extends AnyFunction
-      ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
-      : never;
-  };
-};

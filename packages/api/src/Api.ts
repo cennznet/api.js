@@ -16,14 +16,11 @@ import {Attestation} from '@cennznet/crml-attestation';
 import {CennzxSpot} from '@cennznet/crml-cennzx-spot';
 import {GenericAsset} from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
-import {ApiPromise} from '@polkadot/api';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
+import ApiPromise from './promise/Api';
 
-import {derive} from '@cennznet/api-derive';
 import rpc from './rpc';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, Derives, SubmittableExtrinsics} from './types';
-import {mergeDeriveOptions} from './util/derives';
+import {ApiOptions, ApiOptionsBase} from './types';
 import {getProvider} from './util/getProvider';
 import {getTimeout} from './util/getTimeout';
 import Events from "@polkadot/api/base/Events";
@@ -52,14 +49,6 @@ export class Api extends ApiPromise {
       }),
       getTimeout(options)
     );
-  }
-
-  get tx(): SubmittableExtrinsics<'promise'> {
-    return super.tx as SubmittableExtrinsics<'promise'>;
-  }
-
-  get derive(): Derives<'promise'> {
-    return super.derive as Derives<'promise'>;
   }
 
   /**
@@ -94,7 +83,6 @@ export class Api extends ApiPromise {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = {...options.types, ...Types};
-    options.derives = mergeDeriveOptions(derive, options.derives);
     options.rpc = {...(rpc as any), ...options.rpc};
 
     super(options as ApiOptionsBase);

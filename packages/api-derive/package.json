@@ -19,7 +19,7 @@
     "url": "git+https@github.com:cennznet/api.js.git"
   },
   "bugs": {
-    "url": "https://github.com/polkadot-js/api/issues"
+    "url": "https://github.com/cennznet/api.js/issues"
   },
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api-derive",
   "dependencies": {
