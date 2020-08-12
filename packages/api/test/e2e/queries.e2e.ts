@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, BalanceLock, Vec } from '@cennznet/types';
+import { AssetInfo, AssetOptions, BalanceLock, WithdrawReasons, Vec } from '@cennznet/types';
 import { Keyring } from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import { Hash } from '@polkadot/types/interfaces';
@@ -32,12 +32,8 @@ describe('e2e queries', () => {
     api = await initApiPromise();
   });
 
-  afterAll(async done => {
-    if (api) {
-      return await api.disconnect();
-    }
-    api = null;
-    done();
+  afterAll(async () => {
+    await api.disconnect();
   });
 
   describe('Query storage', () => {
@@ -69,7 +65,7 @@ describe('e2e queries', () => {
       const payment = await api.rpc.payment.queryInfo(ex.toHex());
       console.log('Payment:', payment.partialFee.toString());
       done();
-    }, 10000000);
+    });
   });
 
   describe('Subscribe storage', () => {
@@ -154,9 +150,10 @@ describe('e2e queries', () => {
     it('Gets balance locks ok', async done => {
       const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
       const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
-      expect(balanceLocks.length).toBe(1);
-      let reasons = balanceLocks[0].reasons;
+      expect(balanceLocks.isEmpty).toBeFalsy();
+      let reasons: WithdrawReasons = balanceLocks[0].reasons;
       expect(reasons.isAll()).toBeTruthy();
+
       done();
     });
   });

@@ -23,5 +23,5 @@ export default {
   Address: 'AccountId',
   'ed25519::Signature': 'H512',
   RewardBalance: 'Balance',
-  Doughnut: Doughnut,
+  Doughnut,
 };
