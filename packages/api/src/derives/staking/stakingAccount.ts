@@ -1,6 +1,6 @@
 import {ApiInterfaceRx} from '@cennznet/api/types';
 import {memo} from '@polkadot/api-derive/util';
-import {createType, Option, Vec} from '@polkadot/types';
+import {createType, Option} from '@polkadot/types';
 import {
   AccountId,
   EraIndex,
@@ -11,8 +11,7 @@ import {
   StakingLedger,
   ValidatorPrefs,
 } from '@polkadot/types/interfaces';
-import {ITuple} from '@polkadot/types/types';
-import {combineLatest, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
 type MultiResultV2 = [
@@ -38,29 +37,6 @@ export interface DerivedStakingInfo {
   stakingLedger?: StakingLedger;
 }
 
-export interface DerivedSessionKeyInfo {
-  nextSessionKeys: AccountId[];
-  sessionKeys: AccountId[];
-}
-
-function unwrapSessionIds(
-  stashId: AccountId,
-  queuedKeys: [AccountId, Keys][],
-  nextKeys: Option<Keys>
-): {nextSessionKeys: AccountId[]; sessionKeys: AccountId[]} {
-  let sessionKeys: AccountId[] = [];
-  const idKeys = queuedKeys.find(([currentId]): boolean => currentId.eq(stashId));
-  if (idKeys) {
-    sessionKeys = idKeys[1];
-  }
-  const nextSessionKeys = nextKeys.unwrapOr([] as AccountId[]);
-
-  return {
-    nextSessionKeys,
-    sessionKeys,
-  };
-}
-
 function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
   return api.queryMulti([
     [api.query.staking.bonded, stashId],
@@ -69,16 +45,6 @@ function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId):
     [api.query.staking.stakers, stashId],
     [api.query.staking.validators, stashId],
   ]) as Observable<MultiResultV2>;
-}
-
-function retrieveSessionDetails(
-  api: ApiInterfaceRx,
-  stashId: AccountId
-): Observable<[Vec<ITuple<[AccountId, Keys]>>, Option<Keys>]> {
-  return combineLatest([
-    api.query.session.queuedKeys<Vec<ITuple<[AccountId, Keys]>>>(),
-    api.query.session.nextKeys(stashId),
-  ]) as Observable<[Vec<ITuple<[AccountId, Keys]>>, Option<Keys>]>;
 }
 
 /**
@@ -114,24 +80,6 @@ export function queryStakingAccountInfo(
                   )
                 )
               : of({accountId: stashId});
-          }
-        )
-      );
-    }
-  );
-}
-
-/**
- * @description From a stash and sessions nextKeys, filter session and next session details
- */
-export function querySessionInfo(api: ApiInterfaceRx): (accountId: Uint8Array) => Observable<DerivedSessionKeyInfo> {
-  return memo(
-    (accountId: Uint8Array | string): Observable<DerivedSessionKeyInfo> => {
-      const stashId = createType(api.registry, 'AccountId', accountId);
-      return retrieveSessionDetails(api, stashId).pipe(
-        switchMap(
-          ([queuedKeys, nextKeys]): Observable<DerivedSessionKeyInfo> => {
-            return of(unwrapSessionIds(stashId, queuedKeys, nextKeys));
           }
         )
       );
