@@ -137,7 +137,7 @@ describe('e2e queries', () => {
       expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
       expect(stakingAccount.validatorPrefs[0]).toBe('commission');
       expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
-      const stakingSessionDetails = await api.derive.staking.sessionDetails(stashId);
+      const stakingSessionDetails = await api.derive.staking.sessionKeyInfo(stashId);
       const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
       expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
       expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);

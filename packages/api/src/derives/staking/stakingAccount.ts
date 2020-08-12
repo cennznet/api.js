@@ -84,7 +84,7 @@ function retrieveSessionDetails(
 /**
  * @description From a stash, retrieve the controller account ID and all relevant details
  */
-export function queryStakingAccountDetails(
+export function queryStakingAccountInfo(
   api: ApiInterfaceRx
 ): (accountId: Uint8Array | string) => Observable<DerivedStakingInfo> {
   return memo(
@@ -124,7 +124,7 @@ export function queryStakingAccountDetails(
 /**
  * @description From a stash and sessions nextKeys, filter session and next session details
  */
-export function querySession(api: ApiInterfaceRx): (accountId: Uint8Array) => Observable<DerivedSessionKeyInfo> {
+export function querySessionInfo(api: ApiInterfaceRx): (accountId: Uint8Array) => Observable<DerivedSessionKeyInfo> {
   return memo(
     (accountId: Uint8Array | string): Observable<DerivedSessionKeyInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);

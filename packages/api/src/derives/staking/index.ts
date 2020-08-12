@@ -1,6 +1,6 @@
 export {
-  queryStakingAccountDetails as accountInfo,
-  querySession as sessionDetails,
+  queryStakingAccountInfo as accountInfo,
+  querySessionInfo as sessionKeyInfo,
   DerivedStakingInfo,
   DerivedSessionKeyInfo,
 } from './stakingAccount';
