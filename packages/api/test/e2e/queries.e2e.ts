@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, BalanceLock, WithdrawReasons, Vec } from '@cennznet/types';
+import { AssetInfo, AssetOptions, BalanceLock, Vec, WithdrawReasons } from '@cennznet/types';
 import { Keyring } from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import { Hash } from '@polkadot/types/interfaces';
@@ -132,7 +132,7 @@ describe('e2e queries', () => {
       expect(stakingAccount.accountId.toString()).toBe(stashId);
       expect(stakingAccount.controllerId.toString()).toBe(alice.address);
       expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
-      expect(stakingAccount.rewardDestination.isStaked).toBeTruthy();
+      expect(stakingAccount.rewardDestination.isStash).toBeTruthy();
       expect(stakingAccount.stakers).toBeDefined();
       expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
       expect(stakingAccount.validatorPrefs[0]).toBe('commission');
