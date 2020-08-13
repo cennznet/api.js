@@ -61,11 +61,7 @@ describe('Staking Operations', () => {
       .signAndSend(alice, { nonce: nonce++ });
     await api.tx.genericAsset
       .mint(stakingId, stash.address, initialEndowment)
-      .signAndSend(alice, { nonce }, async ({ status }) => {
-        if (status.isInBlock) {
-          done();
-        }
-      });
+      .signAndSend(alice, { nonce }, ({ status }) => status.isInBlock ? done() : null);
 
   });
 
@@ -203,6 +199,13 @@ describe('Staking Operations', () => {
 });
 
 describe('Staking Governance (Sudo Required)', () => {
+
+  afterAll(async done => {
+    // Ensure era forcing is disabled
+    await api.tx.sudo.sudo(api.tx.staking.forceNewEra())
+      .signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
+  });
+
   test('Set target validator count', async done => {
     const validatorCount = 15;
     const setValidatorTx = api.tx.staking.setValidatorCount(validatorCount);
@@ -295,9 +298,5 @@ describe('Staking Governance (Sudo Required)', () => {
       }
     });
   });
-
-  /// Cancel enactment of a deferred slash. Can be called by root origin
-  /// passing the era and indices of the slashes for that era to kill.
-  it.skip('Cancel deferred slash', async () => { });
 
 });
