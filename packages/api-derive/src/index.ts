@@ -15,8 +15,8 @@
 import * as attestation from '@cennznet/crml-attestation/derives';
 import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
 import * as genericAsset from '@cennznet/crml-generic-asset/derives';
-import { AnyFunction } from '@polkadot/types/types';
-import { ApiInterfaceRx } from '@cennznet/api/types';
+import {AnyFunction} from '@polkadot/types/types';
+import {ApiInterfaceRx} from '@cennznet/api/types';
 import * as accounts from '@polkadot/api-derive/accounts';
 import * as chain from '@polkadot/api-derive/chain';
 import * as contracts from '@polkadot/api-derive/contracts';
@@ -24,9 +24,9 @@ import * as elections from '@polkadot/api-derive/elections';
 import * as imOnline from '@polkadot/api-derive/imOnline';
 import * as session from '@polkadot/api-derive/session';
 import * as treasury from '@polkadot/api-derive/treasury';
-import * as tx from '@polkadot/api-derive/tx';
+import * as tx from './tx';
 export * from '@polkadot/api-derive/type';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import * as fees from './fees';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
@@ -60,13 +60,13 @@ const deriveAvail: Record<string, string[]> = {
  * `allSections`, and keep the object architecture of `allSections`.
  */
 /** @internal */
-function injectFunctions<AllSections> (api: ApiInterfaceRx, allSections: AllSections): DeriveAllSections<AllSections> {
+function injectFunctions<AllSections>(api: ApiInterfaceRx, allSections: AllSections): DeriveAllSections<AllSections> {
   const queryKeys = Object.keys(api.query);
 
   return Object
     .keys(allSections)
     .filter((sectionName): boolean =>
-      !deriveAvail[sectionName] || deriveAvail[sectionName].some((query): boolean => queryKeys.includes(query))
+        !deriveAvail[sectionName] || deriveAvail[sectionName].some((query): boolean => queryKeys.includes(query))
     )
     .reduce((deriveAcc, sectionName): DeriveAllSections<AllSections> => {
       const section = allSections[sectionName as keyof AllSections];
@@ -93,7 +93,7 @@ function injectFunctions<AllSections> (api: ApiInterfaceRx, allSections: AllSect
 // FIXME The return type of this function should be {...ExactDerive, ...DeriveCustom}
 // For now we just drop the custom derive typings
 /** @internal */
-export default function decorateDerive (api: ApiInterfaceRx, custom: DeriveCustom = {}): ExactDerive {
+export default function decorateDerive(api: ApiInterfaceRx, custom: DeriveCustom = {}): ExactDerive {
   return {
     ...injectFunctions(api, derive),
     ...injectFunctions(api, custom)
