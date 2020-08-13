@@ -1,4 +1,8 @@
+import {Observable, of} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
+
 import {ApiInterfaceRx} from '@cennznet/api/types';
+import {RewardDestination} from '@cennznet/types';
 import {memo} from '@polkadot/api-derive/util';
 import {createType, Option} from '@polkadot/types';
 import {
@@ -7,12 +11,9 @@ import {
   Exposure,
   Keys,
   Nominations,
-  RewardDestination,
   StakingLedger,
   ValidatorPrefs,
 } from '@polkadot/types/interfaces';
-import {Observable, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
 
 type MultiResultV2 = [
   Option<AccountId>,
