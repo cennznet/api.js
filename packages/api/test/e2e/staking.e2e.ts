@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { RewardDestination } from '@cennznet/types';
+import { Option } from '@cennznet/types';
+import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@cennznet/types/interfaces';
 import { Keyring } from '@polkadot/keyring';
-import { Option } from '@polkadot/types';
-import { Forcing, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
-import AccountId from '@polkadot/types/primitive/Generic/AccountId';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
@@ -37,6 +35,7 @@ afterAll(async () => {
 });
 
 describe('Staking Operations', () => {
+  // Note: order of test execution matters here
   let stash, controller;
 
   beforeAll(async done => {
@@ -170,15 +169,13 @@ describe('Staking Operations', () => {
   });
 
   test('setPayee changes reward destination', async done => {
-    // Subscribe to reward destination changes
-    await api.query.staking.payee(stash.address, (rewardDestination: RewardDestination) => {
-      if (rewardDestination.toString().toLowerCase() === 'stash') {
-        done();
-      }
-    });
+    // Payee account should be set to controller after prior bond() test.
+    expect((await api.query.staking.payee(stash.address)).isController).toBeTruthy();
+
+    // Subscribe to payee changes
+    await api.query.staking.payee(stash.address, (payee: RewardDestination) => payee.isStash ? done() : null);
 
     await api.tx.staking.setPayee('stash').signAndSend(controller);
-
   });
 
   test('setController changes controller account', async done => {
@@ -275,8 +272,7 @@ describe('Staking Governance (Sudo Required)', () => {
   });
 
   test('Force unstake', async done => {
-    // Use charlie account as bob stash, it's simpler than funding a new account.
-    const bob_stash = keyring.addFromUri('//Charlie');
+    const bob_stash = keyring.addFromUri('//Bob//stash');
     // bond bob's stash account.
     await api.tx.staking.bond(bob.address, 10_000, 'controller').signAndSend(
       bob_stash,
