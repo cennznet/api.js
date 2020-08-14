@@ -39,8 +39,8 @@ export class GenericAsset {
      * Create an asset
      * @param options Initialization options of an asset
      */
-    create(options: AssetOptionsValue): SubmittableExtrinsic<'promise'> {
-        return this.api.tx.genericAsset.create(options);
+    create(owner: AnyAddress, options: AssetOptionsValue): SubmittableExtrinsic<'promise'> {
+        return this.api.tx.genericAsset.create(owner, options);
     }
 
     /**

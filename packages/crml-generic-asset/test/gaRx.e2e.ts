@@ -63,7 +63,7 @@ describe('Generic asset Rx APIs', () => {
                 const assetOptions = {
                     initialIssuance: new BN(totalAmount)
                 };
-                ga.create(assetOptions).signAndSend(assetOwner)
+                ga.create(assetOwner, assetOptions).signAndSend(assetOwner)
                     .pipe(
                         filter(({events, status}) => {
                             let isCreated = false;
@@ -105,7 +105,7 @@ describe('Generic asset Rx APIs', () => {
                 const permissions = {mint: assetOwner.address};
 
                 const assetId = await new Promise<number>((resolve, reject) => {
-                    ga.create({initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
+                    ga.create(assetOwner, {initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 if (event.method === "Created") {
@@ -147,7 +147,7 @@ describe('Generic asset Rx APIs', () => {
                 const permissions = {burn: assetOwner.address};
 
                 const assetId = await new Promise<number>((resolve, reject) => {
-                    ga.create({initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
+                    ga.create(assetOwner,{initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 if (event.method === "Created") {

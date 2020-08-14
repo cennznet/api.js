@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
- */
+import BN from 'bn.js';
 import {Api} from '@cennznet/api';
 import {GenericAsset} from '../src/GenericAsset';
 import { Hash, Balance } from '@polkadot/types/interfaces';
@@ -56,7 +54,7 @@ describe('Generic asset APIs', () => {
     describe('tests which work!', () => {
         describe('create()', () => {
             it("should create asset and return 'Created' event when finishing", async done => {
-                const totalAmount = 100;
+                const totalAmount = new BN("100");
                 const assetOptions = {
                     initialIssuance: totalAmount,
                 };
@@ -88,9 +86,9 @@ describe('Generic asset APIs', () => {
             it('should mint an amount of an asset to the specified address', async () => {
                 // Arrange
 
-                const initialIssuance = 100;
+                const initialIssuance = new BN(100);
                 const mintAmount = 100;
-                const expectedBalance = initialIssuance + mintAmount;
+                const expectedBalance = initialIssuance.addn(mintAmount);
 
                 const permissions = {mint: alice.address};
 
@@ -139,9 +137,9 @@ describe('Generic asset APIs', () => {
                 // Arrange
 
 
-                const initialIssuance = 100;
+                const initialIssuance = new BN(100);
                 const burnAmount = 100;
-                const expectedBalance = initialIssuance - burnAmount;
+                const expectedBalance = initialIssuance.subn(burnAmount);
 
                 const permissions = {burn: alice.address};
 

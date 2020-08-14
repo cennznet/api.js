@@ -7,11 +7,8 @@ import { AnyNumber, AnyU8a, Callback, Codec, IExtrinsicEra, IKeyringPair, Signer
 import { ApiTypes } from '../types';
 
 import { Observable } from 'rxjs';
-import {SubmittableExtrinsic as SubmittableExtrinsicBase} from "@polkadot/api/submittable/types";
 import {SignatureOptions} from "@cennznet/types/types";
 import {ChargeTransactionPayment} from "@cennznet/types";
-
-export {SubmittableExtrinsic as SubmittableExtrinsicBase} from "@polkadot/api/submittable/types";
 
 export interface SubmittableResultValue {
   events?: EventRecord[];
@@ -50,7 +47,7 @@ export interface SignerOptions {
 
 export type AddressOrPair = IKeyringPair | string | AccountId | Address;
 
-export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends SubmittableExtrinsicBase<ApiType> {
+export interface SubmittableExtrinsic<ApiType extends ApiTypes> extends Extrinsic {
   send(): SubmittableResultResult<ApiType>;
 
   send(statusCb: Callback<ISubmittableResult>): SubmittableResultSubscription<ApiType>;

@@ -16,7 +16,7 @@ import type BN from 'bn.js';
 import {Observable} from 'rxjs';
 
 // Augment the modules
-import '@polkadot/api/augment';
+import '@cennznet/api/augment';
 
 import {Constants} from '@polkadot/metadata/Decorated/types';
 import {RpcInterface} from '@polkadot/rpc-core/types';
@@ -39,7 +39,6 @@ import {DeriveAllSections} from '@polkadot/api/util/decorate';
 import {DecoratedRpc} from '@polkadot/api/types/rpc';
 import {QueryableStorage, QueryableStorageMulti} from '@polkadot/api/types/storage';
 import {
-  SubmittableExtrinsics as SubmittableExtrinsicsBase,
   UnsubscribePromise,
 } from '@polkadot/api/types';
 import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
@@ -57,14 +56,13 @@ import {
   SignatureOptions,
 } from '@cennznet/types/types';
 import ApiBase from './base';
-import {SubmittableExtrinsic} from './submittable/types'
+import {SubmittableExtrinsic, SubmittableExtrinsics} from '@cennznet/api/submittable'
 
 export {Signer, SignerResult} from '@polkadot/types/types';
 export * from './submittable/types';
 export * from '@polkadot/api/types/base';
 export * from '@polkadot/api/types/rpc';
 export * from '@polkadot/api/types/storage';
-export * from '@polkadot/api/types/submittable';
 
 export {default as ApiBase} from './base';
 
@@ -199,12 +197,10 @@ export declare type QueryableStorageEntry<ApiType, T extends Codec> = ApiType ex
   ? StorageEntryObservable<T>
   : StorageEntryPromise<T>;
 
-
-export interface SubmittableExtrinsics<ApiType extends ApiTypes> extends SubmittableExtrinsicsBase<ApiType> {
-  (extrinsic: Uint8Array | string): SubmittableExtrinsic<ApiType>;
-
-  [index: string]: SubmittableModuleExtrinsics<ApiType>;
+export interface AugmentedSubmittables<ApiType extends ApiTypes> {
 }
+
+export declare type AugmentedSubmittable<T extends AnyFunction> = T & CallBase;
 
 export interface SubmittableExtrinsicFunction<ApiType extends ApiTypes> extends CallBase {
   (...params: any[]): SubmittableExtrinsic<ApiType>;

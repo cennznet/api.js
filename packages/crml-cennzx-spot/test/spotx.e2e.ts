@@ -64,7 +64,7 @@ describe('SpotX APIs', () => {
 
             const initialIssuance = new BN(100000000);
             const permissions = {mint: address};
-            await api.genericAsset.create({initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
+            await api.genericAsset.create(alice,{initialIssuance, permissions}).signAndSend(address, async ({status, events}) => {
                     if (status.isFinalized) {
                         let assetCreated = false;
                         let assetId;

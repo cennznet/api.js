@@ -39,8 +39,8 @@ export class GenericAssetRx {
      * Create an asset
      * @param options Initialization options of an asset
      */
-    create(options: AssetOptionsValue): SubmittableExtrinsic<'rxjs'> {
-        return this.api.tx.genericAsset.create(options);
+    create(owner: AnyAddress, options: AssetOptionsValue): SubmittableExtrinsic<'rxjs'> {
+        return this.api.tx.genericAsset.create(owner, options);
     }
 
     /**
