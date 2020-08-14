@@ -2,7 +2,7 @@
 import {Api} from '../packages/api/src/Api';
 import MetadataVersioned from '@polkadot/metadata/Metadata/MetadataVersioned';
 
-import {createType} from '@cennznet/types';
+import {createType} from '@polkadot/types';
 
 // Metadata is slimmed as follows:
 // This function will remove all the documentation for each module in the chain.

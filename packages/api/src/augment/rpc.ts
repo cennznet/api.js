@@ -12,7 +12,7 @@ import { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
 import { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import { ContractCallRequest, ContractExecResult } from '@polkadot/types/interfaces/contracts';
 import { CreatedBlock } from '@polkadot/types/interfaces/engine';
-import { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
+import { Extrinsic } from '@cennznet/types/interfaces/extrinsics';
 import { ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
 import { StorageKind } from '@polkadot/types/interfaces/offchain';
 import { RuntimeDispatchInfo } from '@polkadot/types/interfaces/payment';

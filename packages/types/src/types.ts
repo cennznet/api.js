@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import {ExtrinsicStatus} from '@polkadot/types/interfaces/author';
-import {EcdsaSignature, Ed25519Signature, Sr25519Signature} from '@polkadot/types/interfaces/extrinsics';
+import {EcdsaSignature, Ed25519Signature, Sr25519Signature} from '@cennznet/types/interfaces/extrinsics';
 import {Address, AccountId, Balance, Call, H256, Index} from '@polkadot/types/interfaces/runtime';
 import {EventRecord} from '@polkadot/types/interfaces/system';
 import {Codec} from '@polkadot/types/types/codec';

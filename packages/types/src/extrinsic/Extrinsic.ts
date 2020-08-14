@@ -37,7 +37,7 @@ import {ExtrinsicValueV2} from '@polkadot/types/extrinsic/v2/Extrinsic';
 import {ExtrinsicValueV3} from '@polkadot/types/extrinsic/v3/Extrinsic';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
 
-import {ExtrinsicV4, ExtrinsicValueV4, TRANSACTION_VERSION as CENNZNET_V4} from './v4/Extrinsic';
+import {default as ExtrinsicV4, ExtrinsicValueV4, TRANSACTION_VERSION as CENNZNET_V4} from './v4/Extrinsic';
 import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION, UNMASK_VERSION} from './constants';
 
 interface CreateOptions {

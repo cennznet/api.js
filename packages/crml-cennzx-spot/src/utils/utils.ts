@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AssetId, createType, Tuple, u64} from '@cennznet/types';
+import {AssetId} from '@cennznet/types';
+import {createType, Tuple, u64} from '@polkadot/types';
 import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
 import {blake2AsU8a, stringToU8a, u8aConcat} from '@cennznet/util';
 import {Registry} from '@polkadot/types/types';

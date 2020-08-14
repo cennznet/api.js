@@ -48,7 +48,7 @@ import RpcCore from '@polkadot/rpc-core';
 import {WsProvider} from '@polkadot/rpc-provider';
 import {Metadata, Null, Option, Raw, Text, TypeRegistry, u64} from '@polkadot/types';
 import Linkage, {LinkageResult} from '@polkadot/types/codec/Linkage';
-import {DEFAULT_VERSION as EXTRINSIC_DEFAULT_VERSION} from '@polkadot/types/extrinsic/constants';
+import {DEFAULT_VERSION as EXTRINSIC_DEFAULT_VERSION} from '@cennznet/types/extrinsic/constants';
 import StorageKey, {StorageEntry, unwrapStorageType} from '@polkadot/types/primitive/StorageKey';
 import {assert, compactStripLength, logger, u8aToHex} from '@polkadot/util';
 

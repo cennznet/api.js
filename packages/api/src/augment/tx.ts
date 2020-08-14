@@ -9,7 +9,7 @@ import { MemberCount, ProposalIndex } from '@polkadot/types/interfaces/collectiv
 import { CodeHash, Gas, Schedule } from '@polkadot/types/interfaces/contracts';
 import { AccountVote, Conviction, PropIndex, Proposal, ReferendumIndex } from '@polkadot/types/interfaces/democracy';
 import { DefunctVoter, Renouncing } from '@polkadot/types/interfaces/elections';
-import { Extrinsic, Signature } from '@polkadot/types/interfaces/extrinsics';
+import { Extrinsic, Signature } from '@cennznet/types/interfaces/extrinsics';
 import { GrandpaEquivocationProof, KeyOwnerProof } from '@polkadot/types/interfaces/grandpa';
 import { IdentityFields, IdentityInfo, IdentityJudgement, RegistrarIndex } from '@polkadot/types/interfaces/identity';
 import { Heartbeat } from '@polkadot/types/interfaces/imOnline';

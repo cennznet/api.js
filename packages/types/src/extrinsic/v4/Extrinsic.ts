@@ -22,7 +22,7 @@ export interface ExtrinsicValueV4 {
  * @description
  * The third generation of compact extrinsics
  */
-export default class GenericExtrinsicV4 extends Struct implements IExtrinsicImpl {
+export default class ExtrinsicV4 extends Struct implements IExtrinsicImpl {
   constructor(
     registry: Registry,
     value?: Uint8Array | ExtrinsicValueV4 | Call,
@@ -35,7 +35,7 @@ export default class GenericExtrinsicV4 extends Struct implements IExtrinsicImpl
         // eslint-disable-next-line sort-keys
         method: 'Call',
       },
-      GenericExtrinsicV4.decodeExtrinsic(registry, value, isSigned)
+      ExtrinsicV4.decodeExtrinsic(registry, value, isSigned)
     );
   }
 
@@ -73,7 +73,7 @@ export default class GenericExtrinsicV4 extends Struct implements IExtrinsicImpl
     value?: Call | Uint8Array | ExtrinsicValueV4,
     isSigned = false
   ): ExtrinsicValueV4 {
-    if (value instanceof GenericExtrinsicV4) {
+    if (value instanceof ExtrinsicV4) {
       return value;
     } else if (value instanceof registry.createClass('Call')) {
       return {method: value};
@@ -122,6 +122,3 @@ export default class GenericExtrinsicV4 extends Struct implements IExtrinsicImpl
     return this;
   }
 }
-
-/** @name ExtrinsicV4 */
-export interface ExtrinsicV4 extends GenericExtrinsicV4 {}

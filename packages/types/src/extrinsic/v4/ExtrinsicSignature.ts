@@ -8,7 +8,7 @@ import {
   ExtrinsicEra,
   MultiSignature,
   Sr25519Signature,
-} from '@polkadot/types/interfaces/extrinsics';
+} from '@cennznet/types/interfaces/extrinsics';
 import {Address, Balance, Call, Index} from '@polkadot/types/interfaces/runtime';
 import {u8aConcat} from '@polkadot/util';
 import {blake2AsU8a} from '@polkadot/util-crypto';

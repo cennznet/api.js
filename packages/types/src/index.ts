@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from '@polkadot/types';
-
-export * from './extrinsic';
+export * from './interfaces';
 export * from './runtime';
+export * from './Doughnut';
+export * from './injects';
+export * from './metaDataTypes';
+export * from './types';

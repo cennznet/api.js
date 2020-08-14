@@ -52,7 +52,7 @@ export const FullPayloadV4: Record<string, CennznetInterfaceTypes> = {
   ...PayloadImplicitAddonsV4,
 };
 /**
- * @name ExtrinsicPayloadV4
+ * @name GenericExtrinsicPayloadV4
  * @description
  * A signing payload for an [[Extrinsic]]. For the final encoding, it is variable length based
  * on the contents included

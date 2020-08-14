@@ -15,4 +15,7 @@
 export {default as Extrinsic} from './Extrinsic';
 export {default as ExtrinsicPayload} from './ExtrinsicPayload';
 export {default as SignerPayload} from './SignerPayload';
-export {default as ExtrinsicSignatureV2} from './v4/ExtrinsicSignature';
+
+export {GenericExtrinsicV4} from './v4';
+export {GenericExtrinsicPayloadV4} from './v4';
+export {GenericExtrinsicSignatureV4} from './v4';
