@@ -5,6 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 
+## [1.1.3](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.1.3) (03/08/2020)
+### Added:
+    - Support for staking queries
+
 ## [1.1.1](https://github.com/cennznet/api.js/compare/release/1.1.0...release/1.1.1) (03/08/2020)
 ### Changed
 - bump elliptic from 6.5.2 to 6.5.3
