@@ -1,7 +1,6 @@
 // @ts-check
 // Required imports
-const { Api } = require('../../../../packages/api/build');
-const assert = require('assert');
+const { Api } = require('@cennznet/api');
 
 async function main () {
   // Initialise the provider to connect to the local node
@@ -9,7 +8,6 @@ async function main () {
 
   // Create the API and wait until ready
   const api = await Api.create({provider});
-  assert(api.isReady);
 
   // Retrieve the chain & node information information via rpc calls
   const [chain, nodeName, nodeVersion] = await Promise.all([
