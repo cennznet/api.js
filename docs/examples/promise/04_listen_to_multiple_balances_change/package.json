@@ -10,7 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@cennznet/api": "^1.0.3"
+    "@cennznet/api": "^1.2.0"
   },
   "resolutions": {
     "@polkadot/types": "1.2.1",

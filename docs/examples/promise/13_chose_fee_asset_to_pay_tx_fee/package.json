@@ -10,16 +10,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@cennznet/api": "^1.0.3",
-    "@cennznet/util": "^1.0.3",
-    "@plugnet/keyring": "^1.1.100"
-  },
-  "resolutions": {
-    "@polkadot/types": "1.2.1",
-    "@polkadot/metadata": "1.2.1",
-    "@polkadot/api": "1.2.1",
-    "@polkadot/api-derive": "1.2.1",
-    "@polkadot/rpc-core": "1.2.1"
+    "@cennznet/api": "^1.2.0",
+    "@cennznet/util": "^1.2.0",
+    "@polkadot/keyring": "^3.1.1"
   },
   "devDependencies": {
     "rimraf": "^3.0.2"
