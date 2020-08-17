@@ -17,8 +17,8 @@
  */
 import {Api} from '@cennznet/api';
 import {AttestationValue} from '@cennznet/types';
-import {KeyringPair} from '@plugnet/keyring/types'
-import testKeyring from '@plugnet/keyring/testing';
+import {KeyringPair} from '@polkadot/keyring/types'
+import testKeyring from '@polkadot/keyring/testing';
 import {Attestation} from '../src/Attestation';
 import { TypeRegistry } from '@polkadot/types';
 

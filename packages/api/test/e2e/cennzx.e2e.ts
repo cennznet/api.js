@@ -1,4 +1,4 @@
-import testKeyring from '@plugnet/keyring/testing';
+import testKeyring from '@polkadot/keyring/testing';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance} from '@polkadot/types/interfaces';

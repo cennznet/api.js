@@ -17,8 +17,8 @@
  */
 import {ApiRx} from '@cennznet/api';
 import {AttestationValue} from '@cennznet/types';
-import {KeyringPair} from '@plugnet/keyring/types'
-import testKeyring from '@plugnet/keyring/testing';
+import {KeyringPair} from '@polkadot/keyring/types'
+import testKeyring from '@polkadot/keyring/testing';
 import {filter, first} from 'rxjs/operators';
 import {AttestationRx} from '../src/AttestationRx';
 import { TypeRegistry } from '@polkadot/types';

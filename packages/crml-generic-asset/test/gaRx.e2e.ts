@@ -16,8 +16,8 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {ApiRx} from '@cennznet/api';
-import {KeyringPair} from '@plugnet/keyring/types'
-import testKeyring from '@plugnet/keyring/testing';
+import {KeyringPair} from '@polkadot/keyring/types'
+import testKeyring from '@polkadot/keyring/testing';
 import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 import BN from 'bn.js';

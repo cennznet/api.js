@@ -19,7 +19,7 @@
 import { AssetOptions, AssetInfo } from '@cennznet/types';
 import { SubmittableResult } from '@polkadot/api';
 import { cryptoWaitReady } from '@plugnet/util-crypto';
-import testKeyring from '@plugnet/keyring/testing';
+import testKeyring from '@polkadot/keyring/testing';
 import { stringToHex } from '@polkadot/util';
 import initApiPromise from '../../../../jest/initApiPromise';
 

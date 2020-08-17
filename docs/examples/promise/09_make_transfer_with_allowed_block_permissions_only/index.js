@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // Import the API, Keyring and some utility functions
 const { Api } = require('@cennznet/api');
-const testKeyring = require('@plugnet/keyring/testing');
+const testKeyring = require('@polkadot/keyring/testing');
 const { createType } = require('@polkadot/types');
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';

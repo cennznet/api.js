@@ -19,7 +19,7 @@ import {Api} from '@cennznet/api';
 import BN from 'bn.js';
 import { TypeRegistry } from '@polkadot/types';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
-import testKeyring from '@plugnet/keyring/testing'
+import testKeyring from '@polkadot/keyring/testing'
 import {CennzxSpot} from '../src/CennzxSpot';
 import {MAX_U128} from '@cennznet/crml-cennzx-spot/constants';
 import ExtrinsicSignatureV4 from '@cennznet/types/extrinsic/v4/ExtrinsicSignature';

@@ -15,7 +15,7 @@
 const { Api } = require('@cennznet/api');
 const { Attestation } = require('../dist');
 
-import testKeyring from '@plugnet/keyring/testing';
+import testKeyring from '@polkadot/keyring/testing';
 
 const issuerUri = '//Alice';
 const holderUri = '//Charlie';

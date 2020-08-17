@@ -19,7 +19,7 @@ import { Hash, Balance } from '@polkadot/types/interfaces';
 import {cryptoWaitReady} from '@plugnet/util-crypto';
 import { TypeRegistry } from '@polkadot/types';
 import {AssetOptions} from '@cennznet/types';
-import testKeyring from '@plugnet/keyring/testing';
+import testKeyring from '@polkadot/keyring/testing';
 
 const testAsset = {
     id: 16000,
