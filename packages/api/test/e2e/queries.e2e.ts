@@ -20,6 +20,7 @@ import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
+import derive from '@cennznet/api/derives';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -153,6 +154,20 @@ describe('e2e queries', () => {
       let reasons: WithdrawReasons = balanceLocks[0].reasons;
       expect(reasons.isAll()).toBeTruthy();
 
+      done();
+    });
+  });
+
+  // For every section and method exported in derive, check if it is a function
+  describe('Test all the modules exported by derived query is a function', () => {
+    it('Derived query exported is a function', async done => {
+      const deriveList = Object.entries(derive);
+      const deriveMethods = deriveList.values();
+      for (const [section, methods] of deriveMethods) {
+        for (const method in methods) {
+          expect(typeof api.derive[section][method]).toBe('function');
+        }
+      }
       done();
     });
   });
