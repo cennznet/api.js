@@ -35,3 +35,6 @@ jobs:
       - run:
           name: Run integration tests
           command: ./scripts/circleci/run_automation_test.sh -t integration
+      - run:
+          name: Run docs simple connection tests
+          command: node docs/examples/promise/01_simple_connect/index.js
