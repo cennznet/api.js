@@ -24,7 +24,7 @@ import BN from 'bn.js';
 
 import {GenericAssetRx} from '../src/GenericAssetRx';
 import { Balance, Hash } from '@polkadot/types/interfaces';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
+import {cryptoWaitReady} from '@polkadot/util-crypto';
 
 const assetOwnerUri = '//Alice';
 const receiverUri = '//Bob';

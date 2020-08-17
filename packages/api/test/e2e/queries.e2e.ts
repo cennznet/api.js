@@ -17,7 +17,7 @@
  */
 import {Hash} from '@polkadot/types/interfaces';
 import {AssetOptions, AssetInfo} from '@cennznet/types';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
+import {cryptoWaitReady} from '@polkadot/util-crypto';
 import {Keyring} from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../jest/initApiPromise';

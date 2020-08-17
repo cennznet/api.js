@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import '@plugnet/types/injector';
+import '@polkadot/types/injector';
 
 import fs from 'fs';
-import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
+import {stringCamelCase, stringLowerFirst} from '@polkadot/util';
 
 import interfaces from '@polkadot/types/interfaces/jsonrpc';
 import Call from '@polkadot/types/generic/Call';

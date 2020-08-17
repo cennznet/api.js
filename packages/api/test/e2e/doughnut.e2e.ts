@@ -20,7 +20,7 @@ import { Keypair } from '@polkadot/util-crypto/types';
 import testKeyring from '@polkadot/keyring/testing';
 import { KeyringPair } from '@polkadot/keyring/types';
 import initApiPromise from '../../../../jest/initApiPromise';
-import { cryptoWaitReady } from '@plugnet/util-crypto';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 import Doughnut from '@cennznet/types/Doughnut';
 
 const [CENNZ, CPAY] = [16_000, 16_001];

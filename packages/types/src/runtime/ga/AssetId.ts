@@ -12,11 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- Custom AssetId type, implementation of u32 found in
- @plugnet/types
-*/
-
 import {u32} from '@polkadot/types';
 
 export default u32;
