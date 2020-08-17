@@ -21,6 +21,9 @@ jobs:
       #     name: Run lint
       #     command: yarn lint
       - run:
+           name: Build
+           command: yarn build
+      - run:
           name: Run unit tests
           command: yarn test --coverage
       - store_test_results:

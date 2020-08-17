@@ -6,6 +6,7 @@ module.exports = {
       "define": {
         "DOUGHNUT_SUPPORT": false
       }
-    }]
+    }],
+    "@babel/plugin-proposal-numeric-separator"
   ]
 };

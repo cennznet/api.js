@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.10.4",
     "babel-plugin-conditional-compile": "^0.0.5",
     "@babel/core": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
