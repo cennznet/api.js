@@ -5,6 +5,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 
+## [1.2.0](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.2.0) (17/08/2020)
+### Added:
+    - Bump prismjs from 1.19.0 to 1.21.0
+    - Support for derived staking query (api.derive.staking.accountInfo)
+    - Support for derived session query (api.derive.session.keyInfo)
+### Fixed:
+    - Fix GA lock query when an account is staked
+
 ## [1.1.1](https://github.com/cennznet/api.js/compare/release/1.1.0...release/1.1.1) (03/08/2020)
 ### Changed
 - bump elliptic from 6.5.2 to 6.5.3
