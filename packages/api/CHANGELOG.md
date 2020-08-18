@@ -5,6 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 
+## [1.2.1](https://github.com/cennznet/api.js/compare/release/1.2.0...release/1.2.1) (18/08/2020)
+### Fixed:
+    - Fix API initialisation issue by moving derived types(interfaces) to a separate file
+
 ## [1.2.0](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.2.0) (17/08/2020)
 ### Added:
     - Bump prismjs from 1.19.0 to 1.21.0
