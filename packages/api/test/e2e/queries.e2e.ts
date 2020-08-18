@@ -20,7 +20,6 @@ import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
-import derive from '@cennznet/api/derives';
 
 describe('e2e queries', () => {
   let api, alice, bob;
@@ -157,5 +156,4 @@ describe('e2e queries', () => {
       done();
     });
   });
-
 });
