@@ -158,17 +158,4 @@ describe('e2e queries', () => {
     });
   });
 
-  // For every section and method exported in derive, check if it is a function
-  describe('Test all the modules exported by derived query is a function', () => {
-    it('Derived query exported is a function', async done => {
-      const deriveList = Object.entries(derive);
-      const deriveMethods = deriveList.values();
-      for (const [section, methods] of deriveMethods) {
-        for (const method in methods) {
-          expect(typeof api.derive[section][method]).toBe('function');
-        }
-      }
-      done();
-    });
-  });
 });
