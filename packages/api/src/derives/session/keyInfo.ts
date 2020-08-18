@@ -5,11 +5,7 @@ import {AccountId, Keys} from '@polkadot/types/interfaces';
 import {ITuple} from '@polkadot/types/types';
 import {combineLatest, Observable, of} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-
-export interface DerivedSessionKeyInfo {
-  nextSessionKeys: AccountId[];
-  sessionKeys: AccountId[];
-}
+import {DerivedSessionKeyInfo} from '../types';
 
 function unwrapSessionIds(
   stashId: AccountId,

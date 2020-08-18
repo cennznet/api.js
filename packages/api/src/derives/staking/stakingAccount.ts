@@ -14,6 +14,7 @@ import {
   StakingLedger,
   ValidatorPrefs,
 } from '@polkadot/types/interfaces';
+import {DerivedStakingInfo} from '../types';
 
 type MultiResultV2 = [
   Option<AccountId>,
@@ -24,19 +25,6 @@ type MultiResultV2 = [
   Option<Keys>,
   Option<StakingLedger>
 ];
-
-export interface DerivedStakingInfo {
-  accountId: AccountId;
-  controllerId?: AccountId;
-  nominators?: AccountId[];
-  nominateAt?: EraIndex;
-  rewardDestination?: RewardDestination;
-  nextKeys?: Keys;
-  stakers?: Exposure;
-  stashId?: AccountId;
-  validatorPrefs?: ValidatorPrefs;
-  stakingLedger?: StakingLedger;
-}
 
 function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
   return api.queryMulti([
@@ -60,7 +48,7 @@ export function queryStakingAccountInfo(
 
       return retrieveStakingAccountDetails(api, stashId).pipe(
         switchMap(
-          ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs], nextKeys]): Observable<
+          ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs]]): Observable<
             DerivedStakingInfo
           > => {
             const controllerId = controllerIdOpt.unwrapOr(null);
