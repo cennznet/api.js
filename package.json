@@ -51,11 +51,6 @@
       "path": "./node_modules/cz-lerna-changelog"
     }
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx tslint -c tslint.json --project ."
-    }
-  },
   "dependencies": {
     "typedoc-plugin-markdown": "^2.3.1"
   }
