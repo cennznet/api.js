@@ -1,6 +1,5 @@
 /build/**
-/coverage/**
-/docs/**
+/api_docs/**
 **/node_modules/**
 **/test/**/*
 **/*.spec.*
