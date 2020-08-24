@@ -1,7 +1,10 @@
 const AllHashers = {
-  Blake2_128: null, // eslint-disable-line @typescript-eslint/camelcase
-  Blake2_256: null, // eslint-disable-line @typescript-eslint/camelcase
-  Blake2_128Concat: null, // eslint-disable-line @typescript-eslint/camelcase
+  /* eslint-disable camelcase */
+  Blake2_128: null,
+  /* eslint-disable camelcase */
+  Blake2_256: null,
+  /* eslint-disable camelcase */
+  Blake2_128Concat: null,
   Twox128: null,
   Twox256: null,
   Twox64Concat: null,

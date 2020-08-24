@@ -32,11 +32,11 @@ module.exports = {
                 "accessibility": "no-public"
             }
         ],
-        "@typescript-eslint/member-ordering": "error",
-        "@typescript-eslint/naming-convention": "error",
-        "@typescript-eslint/no-param-reassign": "error",
+        // "@typescript-eslint/member-ordering": "error",
+        // "@typescript-eslint/naming-convention": "error",
+        // "@typescript-eslint/no-param-reassign": "error",
         "@typescript-eslint/promise-function-async": "error",
-        "arrow-body-style": "error",
+        // "arrow-body-style": "error",
         "complexity": "error",
         "curly": [
             "error",
@@ -48,13 +48,13 @@ module.exports = {
             "always"
         ],
         "import/no-extraneous-dependencies": "off",
-        "import/order": "error",
+        // "import/order": "error",
         "no-console": "error",
         "no-duplicate-imports": "error",
-        "no-magic-numbers": "error",
+        // "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
-        "prefer-const": "error",
+        // "prefer-const": "error",
         "prefer-template": "error",
         "use-isnan": "error"
     }
