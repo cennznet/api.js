@@ -48,6 +48,7 @@ export function injectPlugins(api: Api | ApiRx, plugins: IPlugin[] = []): void {
 
 export function mergePlugins(originPlugins: IPlugin[], incomePlugins: IPlugin[]) {
   return incomePlugins.reduce((acc, plugin) => {
+    // eslint-disable-next-line no-magic-numbers
     if (acc.findIndex(p => p.injectName === plugin.injectName) < 0) {
       acc.push(plugin);
     }

@@ -10,4 +10,5 @@ export const EMPTY_U8A = new Uint8Array();
 
 export const DEFAULT_VERSION = 4;
 
+// eslint-disable-next-line no-magic-numbers
 export const IMMORTAL_ERA = new Uint8Array([0]);

@@ -23,16 +23,18 @@ import isSafeInteger from '../is/integer';
  * @param decimals
  */
 export default function formatUnits(unValue: BN | number | string, decimals: number): string {
-    assert(isSafeInteger(unValue), 'not a safe integer');
-    let un = new BN(unValue).toString();
-    un = un.padStart(decimals + 1, '0');
-    const splitPos = un.length - decimals;
-    const intPart = un.slice(0, splitPos);
-    let fractionPart = un.slice(splitPos);
-    fractionPart = stripEndZero(fractionPart);
-    if (fractionPart !== '') {
-        return `${intPart}.${fractionPart}`;
-    } else {
-        return intPart;
-    }
+  assert(isSafeInteger(unValue), 'not a safe integer');
+  let un = new BN(unValue).toString();
+  const one = 1;
+  un = un.padStart(decimals + one, '0');
+  const splitPos = un.length - decimals;
+  const startPos = 0;
+  const intPart = un.slice(startPos, splitPos);
+  let fractionPart = un.slice(splitPos);
+  fractionPart = stripEndZero(fractionPart);
+  if (fractionPart !== '') {
+    return `${intPart}.${fractionPart}`;
+  } else {
+    return intPart;
+  }
 }

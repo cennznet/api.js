@@ -17,19 +17,22 @@
  * @param x
  */
 export function toFixed(x: number): string {
-    if (Math.abs(x) < 1.0) {
-        const [fixed, e] = x.toString().split('e-');
-        if (!e) {
-            return x.toString();
-        }
-        const decimal = fixed.split('.')[1] || '';
-        return x.toFixed(decimal.length + parseInt(e));
-    } else {
-        const [fixed, e] = x.toString().split('e+');
-        if (!e) {
-            return x.toString();
-        }
-        const [front, decimal = ''] = fixed.split('.');
-        return front + decimal + new Array(parseInt(e) - decimal.length + 1).join('0');
+  // eslint-disable-next-line no-magic-numbers
+  if (Math.abs(x) < 1.0) {
+    const [fixed, e] = x.toString().split('e-');
+    if (!e) {
+      return x.toString();
     }
+    const index = 1;
+    const decimal = fixed.split('.')[index] || '';
+    return x.toFixed(decimal.length + parseInt(e));
+  } else {
+    const [fixed, e] = x.toString().split('e+');
+    if (!e) {
+      return x.toString();
+    }
+    const [front, decimal = ''] = fixed.split('.');
+    // eslint-disable-next-line no-magic-numbers
+    return front + decimal + new Array(parseInt(e) - decimal.length + 1).join('0');
+  }
 }

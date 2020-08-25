@@ -35,13 +35,17 @@ function validateTopic(topic: string) {
 }
 
 function stripTrailingZero(value: Uint8Array) {
+  // eslint-disable-next-line no-magic-numbers
   let endPos = value.length - 1;
+  // eslint-disable-next-line no-magic-numbers
   for (let i = endPos; i > -1; i--) {
+    // eslint-disable-next-line no-magic-numbers
     if (value[i] !== 0) {
       endPos = i;
       break;
     }
   }
+  // eslint-disable-next-line no-magic-numbers
   return value.slice(0, endPos + 1);
 }
 const registry = new TypeRegistry();

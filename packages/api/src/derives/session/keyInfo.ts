@@ -15,7 +15,8 @@ function unwrapSessionIds(
   let sessionKeys: AccountId[] = [];
   const idKeys = queuedKeys.find(([currentId]): boolean => currentId.eq(stashId));
   if (idKeys) {
-    sessionKeys = idKeys[1];
+    const keyIndex = 1;
+    sessionKeys = idKeys[keyIndex];
   }
   const nextSessionKeys = nextKeys.unwrapOr([] as AccountId[]);
 

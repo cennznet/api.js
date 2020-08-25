@@ -76,7 +76,7 @@ module.exports = {
         // "import/order": "error",
         "no-console": "error",
         "no-duplicate-imports": "error",
-        // "no-magic-numbers": "error",
+        "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
         "prefer-template": "error",

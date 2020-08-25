@@ -42,8 +42,9 @@ export class Member extends Struct {
   }
 
   toJSON() {
+    const bitLenght = -1;
     return {
-      user_id: u8aToHex(this.get('userId').toU8a(), -1, false),
+      user_id: u8aToHex(this.get('userId').toU8a(), bitLenght, false),
       roles: this.get('roles').toJSON(),
       meta: this.get('meta').toJSON(),
     };
@@ -85,8 +86,9 @@ export class PendingInvite extends Struct {
   }
 
   toJSON() {
+    const bitLenght = -1;
     return {
-      invite_key: u8aToHex(this.get('inviteKey').toU8a(), -1, false),
+      invite_key: u8aToHex(this.get('inviteKey').toU8a(), bitLenght, false),
       meta: this.get('meta').toJSON(),
       roles: this.get('roles').toJSON(),
     };

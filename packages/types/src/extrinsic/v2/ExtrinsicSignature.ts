@@ -75,6 +75,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
    * @description The length of the value when encoded as a Uint8Array
    */
   get encodedLength(): number {
+    // eslint-disable-next-line no-magic-numbers
     return this.isSigned ? super.encodedLength : 0;
   }
 
@@ -266,6 +267,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
     const signature = createType(
       this.registry,
       'MultiSignature',
+      // eslint-disable-next-line no-magic-numbers
       u8aConcat(new Uint8Array([1]), new Uint8Array(64).fill(0x42))
     );
 

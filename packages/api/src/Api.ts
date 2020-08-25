@@ -114,6 +114,7 @@ export class Api extends ApiPromise {
 }
 
 async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
+  // eslint-disable-next-line no-magic-numbers
   if (timeoutMs === 0) {
     return promise;
   }

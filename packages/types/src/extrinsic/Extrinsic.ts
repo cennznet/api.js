@@ -92,7 +92,9 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   }
 
   private static decodeU8a(registry: Registry, value: Uint8Array): ExtrinsicV2 {
-    return Extrinsic.newFromValue(registry, value.subarray(1), value[0]);
+    const valueStartsAt = 1;
+    const versionIndex = 0;
+    return Extrinsic.newFromValue(registry, value.subarray(valueStartsAt), value[versionIndex]);
   }
   /**
    * @description The arguments passed to for the call, exposes args so it is compatible with [[Call]]

@@ -21,6 +21,7 @@ const STRIP_ZERO = /^(.*?)(0*)$/;
  * @param value
  */
 export function stripEndZero(value: string) {
-    assert(!isUndefined(value), 'must not be undefined');
-    return STRIP_ZERO.exec(value)[1];
+  assert(!isUndefined(value), 'must not be undefined');
+  const index = 1;
+  return STRIP_ZERO.exec(value)[index];
 }

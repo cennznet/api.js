@@ -49,6 +49,7 @@ export class ApiRx extends ApiRxBase {
     const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
     // api$.subscribe(api => api.decorateCennznetExtrinsics());
 
+    // eslint-disable-next-line no-magic-numbers
     return timeoutMs === 0
       ? race(api$, rejectError)
       : race(api$.pipe(timeout(timeoutMs || DEFAULT_TIMEOUT)), rejectError);

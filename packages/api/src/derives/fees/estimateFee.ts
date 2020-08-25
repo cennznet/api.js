@@ -29,11 +29,12 @@ import {catchError, first, map, switchMap} from 'rxjs/operators';
 export function estimateFee(api: ApiInterfaceRx) {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
+  const genesisBlock = 0;
   return ({extrinsic, userFeeAssetId, maxPayment}): Observable<any> => {
     return combineLatest([
       api.rpc.state.getRuntimeVersion(),
       api.rpc.chain.getBlockHash(),
-      api.rpc.chain.getBlockHash(0),
+      api.rpc.chain.getBlockHash(genesisBlock),
       api.query.genericAsset.spendingAssetId(),
     ]).pipe(
       first(),

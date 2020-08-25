@@ -27,14 +27,15 @@ export default function parseUnits(value: string | number, decimals: number): BN
   const strValue = isNumber(value) ? toFixed(value) : value;
   const [intPart, fractionalPart] = strValue.split('.');
   assert(isSafeInteger(intPart), 'intPart not a integer');
-  let retValue = new BN(intPart).mul(new BN(10).pow(new BN(decimals)));
+  const mulFactor = 10;
+  let retValue = new BN(intPart).mul(new BN(mulFactor).pow(new BN(decimals)));
   const fractionPart = stripEndZero(fractionalPart || '');
   if (fractionPart && fractionPart !== '') {
     assert(isSafeInteger(fractionPart), 'fractionPart not a integer');
     if (fractionPart.length > decimals) {
       throw new Error('too much decimals');
     }
-    retValue = retValue.add(new BN(fractionPart).mul(new BN(10).pow(new BN(decimals - fractionPart.length))));
+    retValue = retValue.add(new BN(fractionPart).mul(new BN(mulFactor).pow(new BN(decimals - fractionPart.length))));
   }
   return retValue;
 }
