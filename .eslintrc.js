@@ -23,7 +23,32 @@ module.exports = {
     "plugins": [
         "@typescript-eslint"
     ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
     "rules": {
+        // rules turned off in upstream project (also required when recommended-requiring-type-checking is extended)
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+        '@typescript-eslint/restrict-plus-operands': 'off',
+        '@typescript-eslint/restrict-template-expressions': 'off',
+        // Support recommended-requiring-type-checking (specific to this project)
+        '@typescript-eslint/unbound-method': 'off',
+        '@typescript-eslint/no-floating-promises': 'off',
+        // Making affected recommended types off for now
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/dot-notation": "error",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -54,7 +79,7 @@ module.exports = {
         // "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
-        // "prefer-const": "error",
+        "prefer-const": "off",
         "prefer-template": "error",
         "use-isnan": "error"
     }
