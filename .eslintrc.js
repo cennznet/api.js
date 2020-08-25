@@ -79,7 +79,6 @@ module.exports = {
         // "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
-        "prefer-const": "off",
         "prefer-template": "error",
         "use-isnan": "error"
     }
