@@ -23,7 +23,18 @@ module.exports = {
     "plugins": [
         "@typescript-eslint"
     ],
+    "extends": [
+        "plugin:@typescript-eslint/recommended"
+    ],
     "rules": {
+        // Making affected recommended types off for now
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/dot-notation": "error",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -54,7 +65,7 @@ module.exports = {
         // "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
-        // "prefer-const": "error",
+        "prefer-const": "off",
         "prefer-template": "error",
         "use-isnan": "error"
     }
