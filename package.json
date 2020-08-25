@@ -34,6 +34,7 @@
     "core-js": "^3.4.8",
     "cz-lerna-changelog": "^2.0.2",
     "eslint": "^7.7.0",
+    "eslint-plugin-import": "^2.22.0",
     "husky": "^1.1.1",
     "jest": "24.1.0",
     "jest-environment-node": "^24.0.0",

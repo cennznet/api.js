@@ -21,7 +21,8 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        'import',
     ],
     "extends": [
         "eslint:recommended",
@@ -73,7 +74,7 @@ module.exports = {
             "always"
         ],
         "import/no-extraneous-dependencies": "off",
-        // "import/order": "error",
+        "import/order": "error",
         "no-console": "error",
         "no-duplicate-imports": "error",
         // "no-magic-numbers": "error",
