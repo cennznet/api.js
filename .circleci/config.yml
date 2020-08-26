@@ -17,9 +17,9 @@ jobs:
           paths:
             - ~/.tmp/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      # - run:
-      #     name: Run lint
-      #     command: yarn lint
+      - run:
+          name: Run lint
+          command: yarn lint
       - run:
            name: Build
            command: yarn build
