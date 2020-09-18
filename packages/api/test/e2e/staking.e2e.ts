@@ -48,7 +48,7 @@ describe('Staking Operations', () => {
     let nonce = await api.query.system.accountNonce(alice.address);
 
     // How much to fund stash and controller with
-    const initialEndowment = 100_000_000_000_000;
+    const initialEndowment = 100_000_000;
 
     // controller needs CPAY
     await api.tx.genericAsset
@@ -176,6 +176,23 @@ describe('Staking Operations', () => {
     await api.query.staking.payee(stash.address, (payee: RewardDestination) => payee.isStash ? done() : null);
 
     await api.tx.staking.setPayee('stash').signAndSend(controller);
+  });
+
+  test('Payout to any account', async done => {
+      const rewardDestinationAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
+      // Payee account set to any account
+      await api.tx.staking.setPayee({account: rewardDestinationAddress}).
+      signAndSend(controller,  async ({ events, status }) => {
+        if (status.isInBlock) {
+          for (const { event: { method } } of events) {
+            if (method === 'ExtrinsicSuccess') {
+              const updatedPayee = await api.query.staking.payee(stash.address);
+              expect(updatedPayee.toJSON().Account).toEqual(rewardDestinationAddress);
+              done();
+            }
+          }
+        }
+      });
   });
 
   test('setController changes controller account', async done => {

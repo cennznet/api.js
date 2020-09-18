@@ -25,6 +25,7 @@ import {
   RuntimeVersionInterface,
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
+import {AccountId} from '@cennznet/types/interfaces';
 import Doughnut from '../Doughnut';
 import {AssetId, AssetInfo} from '../runtime/ga';
 import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-payment';
@@ -88,6 +89,18 @@ export class Phase extends Enum.with({
   Finalization: 'Null',
   Initialization: 'Null',
 }) {}
+
+/** RewardDestination is already available at interface registry at @polkadot/types/interfaceRegistry, can't overide it  */
+// Specifies which account staking rewards should be paid too.
+// Note: Polkadot has an additional 'Staked' option which is not supported in CENNZnet
+// due to the fact that the reward currency is different from the staked currency.
+// This version of RewardDestination does not support isAccount and asAccount
+export interface CennzNetRewardDestination extends Enum {
+  readonly isStash: boolean;
+  readonly isController: boolean;
+  readonly isAccount: boolean;
+  readonly asAccount: AccountId;
+}
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 
