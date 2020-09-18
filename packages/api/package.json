@@ -31,11 +31,10 @@
     "eventemitter3": "^4.0.0"
   },
   "resolution": {
-    "@polkadot/keyring": "^1.6.1"
+    "@polkadot/keyring": "2.3.1"
   },
   "devDependencies": {
     "@cennznet/cennznut-wasm": "^0.0.1-dev.0",
-    "@cennznet/wallet": "^0.20.7",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",

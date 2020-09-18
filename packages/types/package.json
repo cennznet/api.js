@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@cennznet/util": "^1.2.1",
-        "@polkadot/keyring": "^2.3.1",
+        "@polkadot/keyring": "2.3.1",
         "@polkadot/types": "^1.1.1",
         "@polkadot/util": "^2.3.1",
         "memoizee": "^0.4.14",

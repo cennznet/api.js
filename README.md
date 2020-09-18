@@ -11,7 +11,6 @@ See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/ex
 | [@cennznet/api](packages/api)       | The core API package                                       |
 | [@cennznet/types](packages/types)   | CENNZnet specific type definitions                         |
 | [@cennznet/util](packages/util)     | CENNZnet specific utility functions                        |
-| [@cennznet/wallet](packages/wallet) | CENNZnet keyring/wallet (**currently unsupported**)        |
 
 # CENNZnet Module Libraries
 These libraries provide some syntactic sugar and extensions to the core `@cennznet/api` package.

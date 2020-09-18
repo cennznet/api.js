@@ -12,8 +12,7 @@
   "dependencies": {
     "rxjs": "^6.6.0",
     "@cennznet/api": "^1.0.3",
-    "@cennznet/wallet": "^1.0.3",
-    "@plugnet/keyring": "^1.1.100"
+    "@polkadot/keyring": "2.3.1"
   },
   "resolutions": {
     "@polkadot/types": "1.2.1",

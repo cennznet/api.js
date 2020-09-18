@@ -12,7 +12,7 @@
   "dependencies": {
     "fs": "^0.0.1-security",
     "@cennznet/api": "^1.0.3",
-    "@plugnet/keyring": "^1.1.100"
+    "@polkadot/keyring": "2.3.1"
   },
   "resolutions": {
     "@polkadot/types": "1.2.1",

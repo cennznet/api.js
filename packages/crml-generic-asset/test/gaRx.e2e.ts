@@ -16,21 +16,18 @@
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
 import {ApiRx} from '@cennznet/api';
-import {SimpleKeyring, Wallet} from '@cennznet/wallet';
+import {KeyringPair} from '@polkadot/keyring/types'
+import testKeyring from '@polkadot/keyring/testing';
 import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 
 import {GenericAssetRx} from '../src/GenericAssetRx';
 import { Balance, Hash } from '@polkadot/types/interfaces';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
+import {cryptoWaitReady} from '@polkadot/util-crypto';
 
-const assetOwner = {
-  address: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-  uri: '//Alice',
-};
-const receiver = {
-  address: '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-};
+const assetOwnerUri = '//Alice';
+const receiverUri = '//Bob';
+
 const testAsset = {
     id: 16000,
     symbol: 'CENNZ-T',
@@ -44,15 +41,13 @@ const url = 'ws://localhost:9944';
 describe('Generic asset Rx APIs', () => {
     let api: ApiRx;
     let ga: GenericAssetRx;
+    let assetOwner, receiver: KeyringPair;
     beforeAll(async () => {
         await cryptoWaitReady();
         api = await ApiRx.create({provider: url}).toPromise();
-        const simpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromUri(assetOwner.uri);
-        const wallet = new Wallet();
-        await wallet.createNewVault(passphrase);
-        await wallet.addKeyring(simpleKeyring);
-        api.setSigner(wallet);
+        const simpleKeyring = testKeyring();
+        assetOwner = simpleKeyring.addFromUri(assetOwnerUri);
+        receiver = simpleKeyring.addFromUri(receiverUri);
         ga = api.genericAsset;
     });
 
@@ -67,7 +62,7 @@ describe('Generic asset Rx APIs', () => {
                 const assetOptions = {
                     initialIssuance: totalAmount
                 };
-                ga.create(assetOptions).signAndSend(assetOwner.address)
+                ga.create(assetOptions).signAndSend(assetOwner)
                     .pipe(
                         filter(({events, status}) => {
                             let isCreated = false;
@@ -102,17 +97,14 @@ describe('Generic asset Rx APIs', () => {
 
         describe('mint()', () => {
             it('should mint an amount of an asset to the specified address', async () => {
-                // Arrange
-                const {address} = assetOwner;
-
                 const initialIssuance = 100;
                 const mintAmount = 100;
                 const expectedBalance = initialIssuance + mintAmount;
 
-                const permissions = {mint: address};
+                const permissions = {mint: assetOwner.address};
 
                 const assetId = await new Promise<number>((resolve, reject) => {
-                    ga.create({initialIssuance, permissions}).signAndSend(address).subscribe(({status, events}) => {
+                    ga.create({initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 if (event.method === "Created") {
@@ -126,7 +118,7 @@ describe('Generic asset Rx APIs', () => {
 
                 // Act
                 await new Promise((resolve, reject) => {
-                    ga.mint(assetId, address, mintAmount).signAndSend(address).subscribe(({status, events}) => {
+                    ga.mint(assetId, assetOwner.address, mintAmount).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 // TODO: Once https://github.com/cennznet/cennznet/pull/16 is released, this
@@ -141,23 +133,20 @@ describe('Generic asset Rx APIs', () => {
                 });
 
                 // Assert
-                expect(+(await ga.getFreeBalance(assetId, address).pipe(first()).toPromise())).toBe(expectedBalance);
+                expect(+(await ga.getFreeBalance(assetId, assetOwner.address).pipe(first()).toPromise())).toBe(expectedBalance);
             });
         });
 
         describe('burn()', () => {
             it('should burn an amount of an asset from the specified address', async () => {
-                // Arrange
-                const {address} = assetOwner;
-
                 const initialIssuance = 100;
                 const burnAmount = 100;
                 const expectedBalance = initialIssuance - burnAmount;
 
-                const permissions = {burn: address};
+                const permissions = {burn: assetOwner.address};
 
                 const assetId = await new Promise<number>((resolve, reject) => {
-                    ga.create({initialIssuance, permissions}).signAndSend(address).subscribe(({status, events}) => {
+                    ga.create({initialIssuance, permissions}).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 if (event.method === "Created") {
@@ -171,7 +160,7 @@ describe('Generic asset Rx APIs', () => {
 
                 // Act
                 await new Promise((resolve, reject) => {
-                    ga.burn(assetId, address, burnAmount).signAndSend(address).subscribe(({status, events}) => {
+                    ga.burn(assetId, assetOwner.address, burnAmount).signAndSend(assetOwner).subscribe(({status, events}) => {
                         if (status.isFinalized) {
                             for (const {event} of events) {
                                 // TODO: Once https://github.com/cennznet/cennznet/pull/16 is released, this
@@ -186,7 +175,7 @@ describe('Generic asset Rx APIs', () => {
                 });
 
                 // Assert
-                expect(+(await ga.getFreeBalance(assetId, address).pipe(first()).toPromise())).toBe(expectedBalance);
+                expect(+(await ga.getFreeBalance(assetId, assetOwner.address).pipe(first()).toPromise())).toBe(expectedBalance);
             });
         });
     });
@@ -196,7 +185,7 @@ describe('Generic asset Rx APIs', () => {
             const transferAmount = 7;
             const balanceBefore = await ga.getFreeBalance(testAsset.id, assetOwner.address).pipe(first()).toPromise() as Balance;
             expect(balanceBefore).toBeDefined();
-            ga.transfer(testAsset.id, receiver.address, transferAmount).signAndSend(assetOwner.address)
+            ga.transfer(testAsset.id, receiver.address, transferAmount).signAndSend(assetOwner)
                 .subscribe(async ({events, status}) => {
                     if (status.isFinalized && events !== undefined) {
                         const balanceAfter = await ga.getFreeBalance(testAsset.id, assetOwner.address).pipe(first()).toPromise() as Balance;
@@ -212,7 +201,7 @@ describe('Generic asset Rx APIs', () => {
             expect(balanceBefore).toBeDefined();
             const tx = ga.transfer(transferAsset, receiver.address, transferAmount);
 
-            tx.signAndSend(assetOwner.address).subscribe(async ({events, status}) => {
+            tx.signAndSend(assetOwner).subscribe(async ({events, status}) => {
                 if (status.isFinalized && events !== undefined) {
                     const balanceAfter = await ga.getFreeBalance(transferAsset, assetOwner.address).pipe(first()).toPromise() as Balance;
                     expect((balanceBefore.sub(balanceAfter)).toString(10)).toEqual(transferAmount.toString());
@@ -256,7 +245,7 @@ describe('Generic asset Rx APIs', () => {
                 counter1 += 1;
             });
 
-            await ga.transfer(testAsset.id, receiver.address, transferAmount).signAndSend(assetOwner.address).subscribe();
+            await ga.transfer(testAsset.id, receiver.address, transferAmount).signAndSend(assetOwner).subscribe();
         })
     });
 

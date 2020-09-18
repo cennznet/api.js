@@ -22,11 +22,13 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e queries', () => {
-  let api, alice, bob;
+  let api, alice, aliceControllerCennznet, aliceStashCennznet, bob;
 
   beforeAll(async () => {
     await cryptoWaitReady();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring();
+    aliceControllerCennznet = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
+    aliceStashCennznet = "5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY";
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
     api = await initApiPromise();
@@ -127,10 +129,10 @@ describe('e2e queries', () => {
 
   describe('Staking account derived query', () => {
     it('Gets staking account details', async done => {
-      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
+      const stashId = aliceStashCennznet;
       const stakingAccount = await api.derive.staking.accountInfo(stashId);
       expect(stakingAccount.accountId.toString()).toBe(stashId);
-      expect(stakingAccount.controllerId.toString()).toBe(alice.address);
+      expect(stakingAccount.controllerId.toString()).toBe(aliceControllerCennznet);
       expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
       expect(stakingAccount.rewardDestination.isStash).toBeTruthy();
       expect(stakingAccount.stakers).toBeDefined();

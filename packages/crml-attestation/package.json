@@ -18,7 +18,7 @@
         "@cennznet/util": "^1.2.1"
     },
     "devDependencies": {
-        "@cennznet/wallet": "^0.20.7",
+        "@polkadot/keyring": "2.3.1",
         "@types/jest": "^24.0.15",
         "jest": "24.8.0",
         "rimraf": "^2.6.2"
