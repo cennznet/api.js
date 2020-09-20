@@ -5,7 +5,7 @@
 import '@plugnet/types/injector';
 
 import fs from 'fs';
-import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
+import {stringCamelCase, stringLowerFirst} from '@polkadot/util';
 
 import interfaces from '@polkadot/jsonrpc';
 import Call from '@polkadot/types/primitive/Generic/Call';

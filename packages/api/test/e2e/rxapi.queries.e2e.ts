@@ -15,25 +15,10 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {WsProvider} from '@polkadot/api';
 import {Hash} from '@polkadot/types/interfaces';
-import {Wallet, SimpleKeyring} from '@cennznet/wallet';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {cryptoWaitReady} from '@plugnet/util-crypto';
 import initApiRx from '../../../../jest/initApiRx';
-import config from '../../../../config';
-import {ApiRx} from '../../src/ApiRx';
-import Types from '../../../types/src/injects';
-
-const sender = {
-  address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-  uri: '//cennznet-js-test',
-};
-const receiver = {
-  address: '5EfqejHV2xUUTdmUVBH7PrQL3edtMm1NQVtvCgoYd8RumaP3',
-};
-const passphrase = 'passphrase';
 
 describe('e2e queries', () => {
   let apiRx;

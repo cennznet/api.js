@@ -17,25 +17,15 @@
  */
 import {ApiRx} from '@cennznet/api';
 import {AttestationValue} from '@cennznet/types';
-import {SimpleKeyring, Wallet} from '@cennznet/wallet';
+import {KeyringPair} from '@polkadot/keyring/types'
+import testKeyring from '@polkadot/keyring/testing';
 import {filter, first} from 'rxjs/operators';
 import {AttestationRx} from '../src/AttestationRx';
 import { TypeRegistry } from '@polkadot/types';
 
-const issuer = {
-    address: '5DXUeE5N5LtkW97F2PzqYPyqNkxqSWESdGSPTX6AvkUAhwKP',
-    uri: '//cennznet-js-test',
-};
-
-const issuer2 = {
-    address: '5Cfi3s5oFypVtcSut1SLLyomz86nnZbG3YuR3CL2XwuJKFLw',
-    uri: '//Centrality',
-};
-
-const holder = {
-    address: '5HGiumVNPXBWB4ikWzwYxQ8miNJUiiHwUqupZQ3T8sYPE21k',
-    uri: '//Frank',
-};
+const issuerUri = '//Alice';
+const issuer2Uri = '//Bob';
+const holderUri = '//Charlie';
 
 const topic = 'passport';
 // hex of string 'identity'
@@ -50,15 +40,13 @@ const passphrase = 'passphrase';
 describe('AttestationRx APIs', () => {
     let api: ApiRx;
     let attestation: AttestationRx;
+    let issuer, issuer2, holder: KeyringPair;
     beforeAll(async () => {
         api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
-        const simpleKeyring: SimpleKeyring = new SimpleKeyring();
-        simpleKeyring.addFromUri(issuer.uri);
-        simpleKeyring.addFromUri(issuer2.uri);
-        const wallet = new Wallet();
-        await wallet.createNewVault(passphrase);
-        await wallet.addKeyring(simpleKeyring);
-        api.setSigner(wallet);
+        const simpleKeyring = testKeyring({ type: 'sr25519' });
+        issuer = simpleKeyring.addFromUri(issuerUri);
+        issuer2 = simpleKeyring.addFromUri(issuer2Uri);
+        holder = simpleKeyring.addFromUri(holderUri);
         attestation = api.attestation;
     });
 
@@ -71,7 +59,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
             claim
-                .signAndSend(issuer.address)
+                .signAndSend(issuer)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -97,7 +85,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setSelfClaim(topic, attestationValue.toHex());
 
             claim
-                .signAndSend(issuer.address)
+                .signAndSend(issuer)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -136,7 +124,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
             claim
-                .signAndSend(issuer.address)
+                .signAndSend(issuer)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -161,7 +149,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
 
             claim
-                .signAndSend(issuer.address)
+                .signAndSend(issuer)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -186,7 +174,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
             claim
-                .signAndSend(issuer2.address)
+                .signAndSend(issuer2)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -211,7 +199,7 @@ describe('AttestationRx APIs', () => {
             const claim = attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
 
             claim
-                .signAndSend(issuer2.address)
+                .signAndSend(issuer2)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;
@@ -260,7 +248,7 @@ describe('AttestationRx APIs', () => {
 
             // Expect holders to match
             claim
-                .signAndSend(issuer.address)
+                .signAndSend(issuer)
                 .pipe(
                     filter(({events, status}) => {
                         return status.isFinalized && events !== undefined;

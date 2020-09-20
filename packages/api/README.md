@@ -90,21 +90,6 @@ We suggest passing provider as a string url, sdk will chose Provider Class based
 
 [check here](https://github.com/cennznet/singlesource-extension)
 
-### Use `@cennznet/wallet` as Signer
-
-`npm i --save @cennznet/wallet`
-
-```
-const {SimpleKeyring, Wallet} = require('@cennznet/wallet')
-
-wallet = new Wallet();
-await wallet.createNewVault('a passphrase');
-
-api.setSigner(wallet);
-```
-
-[Wallet Docs](https://cennznetdocs.com/api/latest/wallet/Overview.md)
-
 ## CennznetExtrinsic
 
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have

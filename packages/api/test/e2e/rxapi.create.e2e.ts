@@ -53,9 +53,7 @@ describe('e2e rx api create', () => {
   });
 
   it('should get rejected if it is not resolved in a specific period of time', async () => {
-    const incorrectEndPoint = 'wss://rimu.centrality.cloud/ws?apikey=d449e2d0-868a-4f38-b977-b99e1476b7f0';
-
-    incorrectApiRx = await ApiRx.create({provider: incorrectEndPoint, timeout: -1});
+    incorrectApiRx = await ApiRx.create({timeout: -1});
 
     await expect(incorrectApiRx.toPromise()).rejects.toThrow(/Timeout has occurred/);
   });

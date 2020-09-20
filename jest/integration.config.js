@@ -17,7 +17,6 @@ module.exports = {
     '@cennznet/crml-cennzx-spot(.*)$': '<rootDir>/packages/crml-cennzx-spot/src/$1',
     '@cennznet/types(.*)$': '<rootDir>/packages/types/src/$1',
     '@cennznet/util(.*)$': '<rootDir>/packages/util/src/$1',
-    '@cennznet/wallet(.*)$': '<rootDir>/packages/wallet/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/packages/api/build',
@@ -26,7 +25,6 @@ module.exports = {
     '<rootDir>/packages/crml-cennzx-spot/build',
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
-    '<rootDir>/packages/wallet/build',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest/jest.init.js'],
   globals: { // Added global flag to enable doughnut wasm package while running integration tests

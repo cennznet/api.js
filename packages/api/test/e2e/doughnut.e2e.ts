@@ -17,10 +17,10 @@ import { CENNZnut as encodeCennznut } from '@cennznet/cennznut-wasm';
 import { Doughnut as DoughnutMaker } from '@plugnet/doughnut-wasm';
 import { Api } from '../../src/Api';
 import { Keypair } from '@polkadot/util-crypto/types';
-import { Keyring } from '@polkadot/api';
-import { KeyringPair } from '@plugnet/keyring/types';
+import testKeyring from '@polkadot/keyring/testing';
+import { KeyringPair } from '@polkadot/keyring/types';
 import initApiPromise from '../../../../jest/initApiPromise';
-import { cryptoWaitReady } from '@plugnet/util-crypto';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 import Doughnut from '@cennznet/types/Doughnut';
 
 const [CENNZ, CPAY] = [16_000, 16_001];
@@ -44,7 +44,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
   beforeAll(async () => {
     api = await initApiPromise();
     await cryptoWaitReady();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring({ type: 'sr25519' });
     bob = keyring.addFromUri('//Bob');
     charlie = keyring.addFromUri('//Charlie');
     dave = keyring.addFromUri('//Dave');

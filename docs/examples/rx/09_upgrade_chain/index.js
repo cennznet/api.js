@@ -1,7 +1,7 @@
 // Import the API & Provider and some utility functions
 const { ApiRx } = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@plugnet/keyring/testing');
+const testKeyring = require('@polkadot/keyring/testing');
 const fs = require('fs');
 const { first } = require('rxjs/operators');
 

@@ -2,7 +2,7 @@
 const { ApiRx } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@plugnet/keyring/testing');
+const testKeyring = require('@polkadot/keyring/testing');
 
 // utility function for random values
 const { randomAsU8a } = require('@cennznet/util');

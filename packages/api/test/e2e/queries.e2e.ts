@@ -22,12 +22,13 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e queries', () => {
-  let api, alice, bob;
+  let api, alice, aliceStash, bob;
 
   beforeAll(async () => {
     await cryptoWaitReady();
-    const keyring = new Keyring({ type: 'sr25519' });
+    const keyring = testKeyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
+    aliceStash = keyring.addFromUri('//Alice//stash')
     bob = keyring.addFromUri('//Bob');
     api = await initApiPromise();
   });
@@ -84,7 +85,7 @@ describe('e2e queries', () => {
         }
       });
       const sudoKey = await api.query.sudo.key();
-      const keyring = testKeyring();
+      const keyring = testKeyring({ type: 'sr25519' });
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoPair = keyring.getPair(sudoKey.toString());
 
@@ -127,7 +128,7 @@ describe('e2e queries', () => {
 
   describe('Staking account derived query', () => {
     it('Gets staking account details', async done => {
-      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
+      const stashId = aliceStash.address;
       const stakingAccount = await api.derive.staking.accountInfo(stashId);
       expect(stakingAccount.accountId.toString()).toBe(stashId);
       expect(stakingAccount.controllerId.toString()).toBe(alice.address);
