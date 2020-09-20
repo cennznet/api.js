@@ -45,7 +45,7 @@ describe('Generic asset Rx APIs', () => {
     beforeAll(async () => {
         await cryptoWaitReady();
         api = await ApiRx.create({provider: url}).toPromise();
-        const simpleKeyring = testKeyring();
+        const simpleKeyring = testKeyring({ type: 'sr25519' });
         assetOwner = simpleKeyring.addFromUri(assetOwnerUri);
         receiver = simpleKeyring.addFromUri(receiverUri);
         ga = api.genericAsset;

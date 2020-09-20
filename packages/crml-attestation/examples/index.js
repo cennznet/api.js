@@ -21,7 +21,7 @@ const issuerUri = '//Alice';
 const holderUri = '//Charlie';
 
 async function main() {
-  let simpleKeyring = testKeyring();
+  let simpleKeyring = testKeyring({ type: 'sr25519' });
   const issuer = simpleKeyring.addFromUri(issuerUri);
   const holder = simpleKeyring.addFromUri(holderUri);
   const api = await Api.create({

@@ -44,7 +44,7 @@ describe('Doughnut for CennznetExtrinsic', () => {
   beforeAll(async () => {
     api = await initApiPromise();
     await cryptoWaitReady();
-    const keyring = testKeyring();
+    const keyring = testKeyring({ type: 'sr25519' });
     bob = keyring.addFromUri('//Bob');
     charlie = keyring.addFromUri('//Charlie');
     dave = keyring.addFromUri('//Dave');

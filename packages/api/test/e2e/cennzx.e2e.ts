@@ -13,7 +13,7 @@ describe('CENNZX e2e queries/transactions', () => {
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
-    const keyring = testKeyring();
+    const keyring = testKeyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
   });

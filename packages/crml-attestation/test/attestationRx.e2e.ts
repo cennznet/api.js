@@ -43,7 +43,7 @@ describe('AttestationRx APIs', () => {
     let issuer, issuer2, holder: KeyringPair;
     beforeAll(async () => {
         api = await ApiRx.create({provider: 'wss://rimu.unfrastructure.io/public/ws'}).toPromise();
-        const simpleKeyring = testKeyring();
+        const simpleKeyring = testKeyring({ type: 'sr25519' });
         issuer = simpleKeyring.addFromUri(issuerUri);
         issuer2 = simpleKeyring.addFromUri(issuer2Uri);
         holder = simpleKeyring.addFromUri(holderUri);

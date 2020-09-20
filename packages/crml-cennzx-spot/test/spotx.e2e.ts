@@ -39,7 +39,7 @@ describe('SpotX APIs', () => {
     const registry = new TypeRegistry();
     beforeAll(async () => {
       await cryptoWaitReady();
-      const keyring = testKeyring();
+      const keyring = testKeyring({ type: 'sr25519' });
       alice = keyring.addFromUri('//Alice');
       bob = keyring.addFromUri('//Bob');
       api = await Api.create(
