@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiRx} from '@cennznet/api';
-import {QueryableStorageEntry, SubmittableExtrinsic} from '@cennznet/api/types';
-import {AssetId} from '@cennznet/types';
-import {AnyAddress, AnyAssetId, AnyNumber} from '@cennznet/types/types';
-import {assert} from '@cennznet/util';
+import { ApiRx } from '@cennznet/api';
+import { QueryableStorageEntry, SubmittableExtrinsic } from '@cennznet/api/types';
+import { AssetId } from '@cennznet/types';
+import { AnyAddress, AnyAssetId, AnyNumber } from '@cennznet/types/types';
+import { assert } from '@cennznet/util';
 import {
   QueryableGetAssetWithdrawnRx,
   QueryableGetLiquidityBalancePriceRx,

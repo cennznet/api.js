@@ -1,4 +1,4 @@
-import {RpcMethodOpt} from '@polkadot/jsonrpc/types';
+import { RpcMethodOpt } from '@polkadot/jsonrpc/types';
 
 import createMethod from '@polkadot/jsonrpc/create/method';
 import createParam from '@polkadot/jsonrpc/create/param';
@@ -42,8 +42,8 @@ const liquidityValue: RpcMethodOpt = {
 const section = 'cennzx';
 
 export default [
-  {...createMethod(section, 'buyPrice', buyPrice), name: 'buyPrice'},
-  {...createMethod(section, 'sellPrice', sellPrice), name: 'sellPrice'},
-  {...createMethod(section, 'liquidityPrice', liquidityPrice), name: 'liquidityPrice'},
-  {...createMethod(section, 'liquidityValue', liquidityValue), name: 'liquidityValue'},
+  { ...createMethod(section, 'buyPrice', buyPrice), name: 'buyPrice' },
+  { ...createMethod(section, 'sellPrice', sellPrice), name: 'sellPrice' },
+  { ...createMethod(section, 'liquidityPrice', liquidityPrice), name: 'liquidityPrice' },
+  { ...createMethod(section, 'liquidityValue', liquidityValue), name: 'liquidityValue' },
 ];

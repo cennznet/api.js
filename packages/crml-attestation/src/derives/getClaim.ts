@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AttestationValue} from '@cennznet/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {Observable} from 'rxjs';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { AttestationValue } from '@cennznet/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { Observable } from 'rxjs';
 
 export function getClaim(api: ApiInterfaceRx) {
   return (holder: string, issuer: string, topic: string): Observable<AttestationValue> =>

@@ -13,16 +13,16 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import {Bytes, Compact, Struct, u32, u64} from '@polkadot/types';
-import {Balance, ExtrinsicEra, Hash} from '@polkadot/types/interfaces/runtime';
-import {sign} from '@polkadot/types/primitive/Extrinsic/util';
-import {AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry} from '@polkadot/types/types';
-import {u8aConcat} from '@polkadot/util';
+import { Bytes, Compact, Struct, u32, u64 } from '@polkadot/types';
+import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces/runtime';
+import { sign } from '@polkadot/types/primitive/Extrinsic/util';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
+import { u8aConcat } from '@polkadot/util';
 
 import Option from '@polkadot/types/codec/Option';
 import Doughnut from '../../Doughnut';
-import {ChargeTransactionPayment, Index} from '../../runtime';
-import {CennznetInterfaceTypes} from '../types';
+import { ChargeTransactionPayment, Index } from '../../runtime';
+import { CennznetInterfaceTypes } from '../types';
 
 export interface ExtrinsicPayloadValueV2 {
   blockHash: AnyU8a;
@@ -146,6 +146,6 @@ export default class ExtrinsicPayloadV2 extends Struct {
    * @description Sign the payload with the keypair
    */
   sign(signerPair: IKeyringPair): Uint8Array {
-    return sign(signerPair, this.toU8a({method: true}), {withType: true});
+    return sign(signerPair, this.toU8a({ method: true }), { withType: true });
   }
 }

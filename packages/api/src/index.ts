@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {Api} from './Api';
-export {ApiRx} from './ApiRx';
+export { Api } from './Api';
+export { ApiRx } from './ApiRx';
 
-export {SubmittableResult} from '@polkadot/api';
-export {WsProvider, HttpProvider} from '@polkadot/rpc-provider';
+export { SubmittableResult } from '@polkadot/api';
+export { WsProvider, HttpProvider } from '@polkadot/rpc-provider';

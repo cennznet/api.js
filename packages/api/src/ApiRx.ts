@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import getPlugins from '@cennznet/api/plugins';
-import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {injectOption, injectPlugins, mergePlugins} from '@cennznet/api/util/injectPlugin';
-import {AttestationRx} from '@cennznet/crml-attestation';
-import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
-import {GenericAssetRx} from '@cennznet/crml-generic-asset';
+import { mergeDeriveOptions } from '@cennznet/api/util/derives';
+import { injectOption, injectPlugins, mergePlugins } from '@cennznet/api/util/injectPlugin';
+import { AttestationRx } from '@cennznet/crml-attestation';
+import { CennzxSpotRx } from '@cennznet/crml-cennzx-spot';
+import { GenericAssetRx } from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
-import {ApiRx as ApiRxBase} from '@polkadot/api';
-import {ApiOptions as ApiOptionsBase} from '@polkadot/api/types';
-import {fromEvent, Observable, race, throwError} from 'rxjs';
-import {switchMap, timeout} from 'rxjs/operators';
+import { ApiRx as ApiRxBase } from '@polkadot/api';
+import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
+import { fromEvent, Observable, race, throwError } from 'rxjs';
+import { switchMap, timeout } from 'rxjs/operators';
 
 import rpc from '@cennznet/api/rpc';
-import {DEFAULT_TIMEOUT} from './Api';
+import { DEFAULT_TIMEOUT } from './Api';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
-import {getProvider} from './util/getProvider';
-import {getTimeout} from './util/getTimeout';
+import { ApiOptions, Derives, IPlugin, SubmittableExtrinsics } from './types';
+import { getProvider } from './util/getProvider';
+import { getTimeout } from './util/getTimeout';
 import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
@@ -87,14 +87,14 @@ export class ApiRx extends ApiRxBase {
   }
 
   constructor(_options: ApiOptions = {}) {
-    const options = {..._options};
+    const options = { ..._options };
     if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
-    options.types = {...options.types, ...Types};
+    options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives as any, options.derives);
-    options.rpc = {...(rpc as any), ...options.rpc};
+    options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
 

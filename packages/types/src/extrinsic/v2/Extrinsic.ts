@@ -14,13 +14,13 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {ClassOf, createType, Struct, TypeRegistry} from '@polkadot/types';
-import {Address, Call} from '@polkadot/types/interfaces/runtime';
-import {IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions} from '@polkadot/types/types';
-import {isU8a, u8aConcat} from '@polkadot/util';
+import { ClassOf, createType, Struct, TypeRegistry } from '@polkadot/types';
+import { Address, Call } from '@polkadot/types/interfaces/runtime';
+import { IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions } from '@polkadot/types/types';
+import { isU8a, u8aConcat } from '@polkadot/util';
 
-import {ExtrinsicOptions} from '../types';
-import {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
+import { ExtrinsicOptions } from '../types';
+import { ExtrinsicPayloadValueV2 } from './ExtrinsicPayload';
 import ExtrinsicSignatureV2 from './ExtrinsicSignature';
 
 export interface ExtrinsicValueV2 {
@@ -39,7 +39,7 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
   constructor(
     registry: Registry,
     value?: Uint8Array | ExtrinsicValueV2 | Call,
-    {isSigned}: Partial<ExtrinsicOptions> = {}
+    { isSigned }: Partial<ExtrinsicOptions> = {}
   ) {
     super(
       registry,
@@ -54,17 +54,17 @@ export default class ExtrinsicV2 extends Struct implements IExtrinsicImpl {
   static decodeExtrinsic(
     registry: Registry,
     value?: Call | Uint8Array | ExtrinsicValueV2,
-    isSigned: boolean = false
+    isSigned = false
   ): ExtrinsicValueV2 {
     if (!value) {
       return {};
     } else if (value instanceof ExtrinsicV2) {
       return value;
     } else if (value instanceof ClassOf(registry, 'Call')) {
-      return {method: value as Call};
+      return { method: value as Call };
     } else if (isU8a(value)) {
       // here we decode manually since we need to pull through the version information
-      const signature = new ExtrinsicSignatureV2(registry, value, {isSigned});
+      const signature = new ExtrinsicSignatureV2(registry, value, { isSigned });
       const method = createType(registry, 'Call', value.subarray(signature.encodedLength));
 
       return {

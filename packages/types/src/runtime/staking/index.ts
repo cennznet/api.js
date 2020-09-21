@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Enum} from '@polkadot/types';
-import {Registry} from '@polkadot/types/types';
-import {AccountId} from '@cennznet/types/interfaces';
+import { Enum } from '@polkadot/types';
+import { Registry } from '@polkadot/types/types';
+import { AccountId } from '@cennznet/types/interfaces';
 
 // Specifies which account staking rewards should be paid too.
 // Note: Polkadot has an additional 'Staked' option which is not supported in CENNZnet
 // due to the fact that the reward currency is different from the staked currency.
 export class RewardDestination extends Enum {
   constructor(registry: Registry, value: any) {
-    super(registry, {Stash: 'Null', Controller: 'Null', Account: 'AccountId'}, value);
+    super(registry, { Stash: 'Null', Controller: 'Null', Account: 'AccountId' }, value);
   }
 
   get isStash(): boolean {

@@ -1,17 +1,17 @@
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {memo} from '@polkadot/api-derive/util';
-import {createType, Option, Vec} from '@polkadot/types';
-import {AccountId, Keys} from '@polkadot/types/interfaces';
-import {ITuple} from '@polkadot/types/types';
-import {combineLatest, Observable, of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {DerivedSessionKeyInfo} from '../types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { memo } from '@polkadot/api-derive/util';
+import { createType, Option, Vec } from '@polkadot/types';
+import { AccountId, Keys } from '@polkadot/types/interfaces';
+import { ITuple } from '@polkadot/types/types';
+import { combineLatest, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { DerivedSessionKeyInfo } from '../types';
 
 function unwrapSessionIds(
   stashId: AccountId,
   queuedKeys: [AccountId, Keys][],
   nextKeys: Option<Keys>
-): {nextSessionKeys: AccountId[]; sessionKeys: AccountId[]} {
+): { nextSessionKeys: AccountId[]; sessionKeys: AccountId[] } {
   let sessionKeys: AccountId[] = [];
   const idKeys = queuedKeys.find(([currentId]): boolean => currentId.eq(stashId));
   if (idKeys) {

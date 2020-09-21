@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AnyAddress, AnyAssetId, AnyNumber, IHash} from '@cennznet/types/types';
+import { AnyAddress, AnyAssetId, AnyNumber, IHash } from '@cennznet/types/types';
 import BN from 'bn.js';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface QueryableGetLiquidityBalance {
   (assetId: AnyAssetId, address: AnyAddress): Promise<BN>;
@@ -73,17 +73,17 @@ export interface QueryableGetLiquidityBalancePriceRx {
 }
 
 export interface QueryableGetAssetWithdrawn {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{coreAmount: BN; assetAmount: BN}>;
+  (assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{ coreAmount: BN; assetAmount: BN }>;
 
-  (assetId: AnyAssetId, coreAmount: AnyNumber, cb: (res: {coreAmount: BN; assetAmount: BN}) => void): Promise<
+  (assetId: AnyAssetId, coreAmount: AnyNumber, cb: (res: { coreAmount: BN; assetAmount: BN }) => void): Promise<
     () => any
   >;
 
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{coreAmount: BN; assetAmount: BN}>;
+  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Promise<{ coreAmount: BN; assetAmount: BN }>;
 }
 
 export interface QueryableGetAssetWithdrawnRx {
-  (assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{coreAmount: BN; assetAmount: BN}>;
+  (assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }>;
 
-  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{coreAmount: BN; assetAmount: BN}>;
+  at(hash: IHash, assetId: AnyAssetId, coreAmount: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }>;
 }

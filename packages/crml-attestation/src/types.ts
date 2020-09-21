@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AttestationValue} from '@cennznet/types';
-import {Observable} from 'rxjs';
+import { AttestationValue } from '@cennznet/types';
+import { Observable } from 'rxjs';
 
-export type Claim = {holder: string; issuer: string; topic: string; value: AttestationValue};
+export type Claim = { holder: string; issuer: string; topic: string; value: AttestationValue };
 
 /**
  * @deprecated
  */
-export type Claims = {[topic: string]: {[issuers: string]: AttestationValue}};
+export type Claims = { [topic: string]: { [issuers: string]: AttestationValue } };
 /**
  * @deprecated
  */
-export type ClaimsAsHex = {[topic: string]: {[issuers: string]: string}};
+export type ClaimsAsHex = { [topic: string]: { [issuers: string]: string } };
 /**
  * @deprecated
  */
-export type ClaimsAsU8a = {[topic: string]: {[issuers: string]: Uint8Array}};
+export type ClaimsAsU8a = { [topic: string]: { [issuers: string]: Uint8Array } };
 /**
  * @deprecated
  */
@@ -42,40 +42,40 @@ export type ClaimsAsU8aFunc = () => ClaimsAsU8a;
  * @deprecated
  */
 export type ClaimsObject = {
-    claims: Claims;
-    claimsAsHex: ClaimsAsHexFunc;
-    claimsAsU8a: ClaimsAsU8aFunc;
+  claims: Claims;
+  claimsAsHex: ClaimsAsHexFunc;
+  claimsAsU8a: ClaimsAsU8aFunc;
 };
 
 export interface QueryableGetClaim {
-    (holder: string, issuer: string, topic: string): Promise<AttestationValue>;
-    (holder: string, issuer: string, topic: string, callbackFn: any): Promise<() => any>;
+  (holder: string, issuer: string, topic: string): Promise<AttestationValue>;
+  (holder: string, issuer: string, topic: string, callbackFn: any): Promise<() => any>;
 }
 
 export interface QueryableGetClaimList {
-    (holder: string, issuers: Array<string>, topic: Array<string>): Promise<Claim[]>;
-    (holder: string, issuers: Array<string>, topic: Array<string>, callbackFn: any): Promise<() => void>;
+  (holder: string, issuers: Array<string>, topic: Array<string>): Promise<Claim[]>;
+  (holder: string, issuers: Array<string>, topic: Array<string>, callbackFn: any): Promise<() => void>;
 }
 
 /**
  * @deprecated
  */
 export interface QueryableGetClaims {
-    (holder: string, issuers: Array<string>, topic: Array<string>): Promise<ClaimsObject>;
-    (holder: string, issuers: Array<string>, topic: Array<string>, callbackFn: any): Promise<() => void>;
+  (holder: string, issuers: Array<string>, topic: Array<string>): Promise<ClaimsObject>;
+  (holder: string, issuers: Array<string>, topic: Array<string>, callbackFn: any): Promise<() => void>;
 }
 
 export interface QueryableGetClaimRx {
-    (holder: string, issuer: string, topic: string): Observable<AttestationValue>;
+  (holder: string, issuer: string, topic: string): Observable<AttestationValue>;
 }
 
 export interface QueryableGetClaimListRx {
-    (holder: string, issuers: Array<string>, topic: Array<string>): Observable<Claim[]>;
+  (holder: string, issuers: Array<string>, topic: Array<string>): Observable<Claim[]>;
 }
 
 /**
  * @deprecated
  */
 export interface QueryableGetClaimsRx {
-    (holder: string, issuers: Array<string>, topic: Array<string>): Observable<ClaimsObject>;
+  (holder: string, issuers: Array<string>, topic: Array<string>): Observable<ClaimsObject>;
 }

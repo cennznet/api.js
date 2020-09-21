@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Enum, Struct} from '@polkadot/types';
+import { Enum, Struct } from '@polkadot/types';
 import Compact from '@polkadot/types/codec/Compact';
 import Option from '@polkadot/types/codec/Option';
-import {AssetId, Balance} from '@polkadot/types/interfaces/runtime';
-import {Registry} from '@polkadot/types/types';
+import { AssetId, Balance } from '@polkadot/types/interfaces/runtime';
+import { Registry } from '@polkadot/types/types';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.
  */
 export class FeeExchangeV1 extends Struct {
   constructor(registry: Registry, value?: any) {
-    super(registry, {assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>'}, value);
+    super(registry, { assetId: 'Compact<AssetId>', maxPayment: 'Compact<Balance>' }, value);
   }
   get assetId(): AssetId {
     return this.get('assetId') as AssetId;
@@ -39,7 +39,7 @@ export class FeeExchangeV1 extends Struct {
 
 export class FeeExchange extends Enum {
   constructor(registry: Registry, value: any) {
-    super(registry, {FeeExchangeV1}, value);
+    super(registry, { FeeExchangeV1 }, value);
   }
 }
 
@@ -49,7 +49,7 @@ export class FeeExchange extends Enum {
  */
 export class ChargeTransactionPayment extends Struct {
   constructor(registry: Registry, value: any) {
-    super(registry, {tip: 'Compact<Balance>', feeExchange: 'Option<FeeExchange>'}, value);
+    super(registry, { tip: 'Compact<Balance>', feeExchange: 'Option<FeeExchange>' }, value);
   }
 
   get tip(): Compact<Balance> {

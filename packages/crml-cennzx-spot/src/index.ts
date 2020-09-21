@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {CennzxSpot} from './CennzxSpot';
-export {CennzxSpotRx} from './CennzxSpotRx';
+export { CennzxSpot } from './CennzxSpot';
+export { CennzxSpotRx } from './CennzxSpotRx';
 
-export {default as Plugin} from './plugin';
+export { default as Plugin } from './plugin';

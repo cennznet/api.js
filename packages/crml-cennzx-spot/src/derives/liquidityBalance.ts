@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AnyAddress, AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {Balance, Hash} from '@polkadot/types/interfaces';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { AnyAddress, AnyAssetId } from '@cennznet/types/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { Balance, Hash } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
-import {Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {getExchangeKey} from '../utils/utils';
-import {coreAssetId, coreAssetIdAt} from './shared';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { getExchangeKey } from '../utils/utils';
+import { coreAssetId, coreAssetIdAt } from './shared';
 
 export function liquidityBalance(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {

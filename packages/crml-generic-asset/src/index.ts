@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {GenericAsset} from './GenericAsset';
-export {GenericAssetRx} from './GenericAssetRx';
-export {AssetType} from './types';
+export { GenericAsset } from './GenericAsset';
+export { GenericAssetRx } from './GenericAssetRx';
+export { AssetType } from './types';
 
-export {default as Plugin} from './plugin';
+export { default as Plugin } from './plugin';

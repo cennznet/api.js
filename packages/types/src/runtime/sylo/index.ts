@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ClassOf, Enum, Null, Struct, Text, Tuple, TypeRegistry, Vec} from '@polkadot/types';
-import {Registry} from '@polkadot/types/types';
-import {u8aToHex} from '@polkadot/util';
+import { ClassOf, Enum, Null, Struct, Text, Tuple, TypeRegistry, Vec } from '@polkadot/types';
+import { Registry } from '@polkadot/types/types';
+import { u8aToHex } from '@polkadot/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);
 
@@ -38,7 +38,7 @@ const MEMBER_JSON_MAP = new Map([['userId', 'user_id']]);
 
 export class Member extends Struct {
   constructor(registry: Registry, value) {
-    super(registry, {userId: 'AccountId', roles: Vec.with(MemberRoles), meta: Meta}, value, MEMBER_JSON_MAP);
+    super(registry, { userId: 'AccountId', roles: Vec.with(MemberRoles), meta: Meta }, value, MEMBER_JSON_MAP);
   }
 
   toJSON() {
@@ -81,7 +81,7 @@ const PENDING_INVITE_JSON_MAP = new Map([['inviteKey', 'invite_key']]);
 
 export class PendingInvite extends Struct {
   constructor(registry: Registry, value) {
-    super(registry, {inviteKey: 'H256', meta: Meta, roles: Vec.with(MemberRoles)}, value, PENDING_INVITE_JSON_MAP);
+    super(registry, { inviteKey: 'H256', meta: Meta, roles: Vec.with(MemberRoles) }, value, PENDING_INVITE_JSON_MAP);
   }
 
   toJSON() {
@@ -95,7 +95,7 @@ export class PendingInvite extends Struct {
 
 export class AcceptPayload extends Struct {
   constructor(registry: Registry, value) {
-    super(registry, {account_id: 'AccountId'}, value);
+    super(registry, { account_id: 'AccountId' }, value);
   }
 }
 const registry = new TypeRegistry();
@@ -109,7 +109,7 @@ class WithdrawnPreKeyBundle extends Tuple.with(['AccountId', 'u32', 'Bytes']) {}
 
 class PreKeyBundlesResponse extends Vec.with(WithdrawnPreKeyBundle) {}
 
-export class Response extends Enum.with({DeviceIdResponse, PreKeyBundlesResponse, Null}) {}
+export class Response extends Enum.with({ DeviceIdResponse, PreKeyBundlesResponse, Null }) {}
 
 export class VaultKey extends ClassOf(registry, 'Bytes') {}
 

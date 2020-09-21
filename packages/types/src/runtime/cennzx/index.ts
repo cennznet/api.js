@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as ExchangeKey} from './ExchangeKey';
-export {default as FeeRate} from './FeeRate';
+export { default as ExchangeKey } from './ExchangeKey';
+export { default as FeeRate } from './FeeRate';
