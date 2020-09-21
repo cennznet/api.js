@@ -181,18 +181,10 @@ describe('Staking Operations', () => {
   test('Payout to any account', async done => {
       const rewardDestinationAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
       // Payee account set to any account
-      await api.tx.staking.setPayee({account: rewardDestinationAddress}).
-      signAndSend(controller,  async ({ events, status }) => {
-        if (status.isInBlock) {
-          for (const { event: { method } } of events) {
-            if (method === 'ExtrinsicSuccess') {
-              const updatedPayee = await api.query.staking.payee(stash.address);
-              expect(updatedPayee.asAccount.toString()).toEqual(rewardDestinationAddress);
-              done();
-            }
-          }
-        }
-      });
+      await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
+    // Subscribe to payee changes
+    await api.query.staking.payee(stash.address, (payee: RewardDestination) =>
+        (payee.asAccount.toString() === rewardDestinationAddress) ? done() : null);
   });
 
   test('setController changes controller account', async done => {
