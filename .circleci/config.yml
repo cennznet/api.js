@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -15,7 +15,7 @@ jobs:
           command: yarn
       - save_cache:
           paths:
-            - ~/.tmp/yarn
+            - ~/.cache/yarn
           key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Run lint
@@ -35,3 +35,39 @@ jobs:
       - run:
           name: Run integration tests
           command: ./scripts/circleci/run_automation_test.sh -t integration
+  publish:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-v1-{{ .Branch }}-
+            - yarn-packages-v1-
+      - run:
+          name: Install Dependencies
+          command: yarn
+      - save_cache:
+          paths:
+            - ~/.cache/yarn
+          key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run:
+          name: Build
+          command: yarn build
+      - run:
+          name: Publish to NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
+            cd js
+            npm publish --access public --tag next
+workflows:
+  version: 2
+  run-build:
+    jobs:
+      - build
+      - publish:
+          filters:
+            branches:
+              only:
+                - /^[0-9]+[.][0-9]+[.][0-9](-[a-zA-Z].+)?$/
