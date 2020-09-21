@@ -25,6 +25,7 @@ import {
   RuntimeVersionInterface,
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
+import {AccountId} from '@cennznet/types/interfaces';
 import Doughnut from '../Doughnut';
 import {AssetId, AssetInfo} from '../runtime/ga';
 import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-payment';
@@ -88,6 +89,14 @@ export class Phase extends Enum.with({
   Finalization: 'Null',
   Initialization: 'Null',
 }) {}
+
+// Merge the staking types RewardDestination to support arbitrary account
+declare module '@polkadot/types/interfaces/staking/types' {
+  interface RewardDestination {
+    readonly isAccount: boolean;
+    readonly asAccount: AccountId;
+  }
+}
 
 export type CennznetInterfaceTypes = keyof InterfaceRegistry;
 

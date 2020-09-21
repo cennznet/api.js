@@ -25,7 +25,7 @@ describe('CENNZX e2e queries/transactions', () => {
   describe('Queries()', () => {
 
     it("Deposit liquidity in CENNZ asset's pool", async done => {
-        const amount = 30000000000000;
+        const amount = 3_000_000;
         const coreAmount = amount;
         const minLiquidity = 1;
         await api.tx.cennzxSpot
