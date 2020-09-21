@@ -4,17 +4,17 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {Compact, Raw, u32} from '@polkadot/types';
+import { Compact, Raw, u32 } from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Balance, Hash} from '@polkadot/types/interfaces/runtime';
-import {IExtrinsicEra, IKeyringPair, Registry} from '@polkadot/types/types';
+import { Balance, Hash } from '@polkadot/types/interfaces/runtime';
+import { IExtrinsicEra, IKeyringPair, Registry } from '@polkadot/types/types';
 
-import {u8aToHex} from '@polkadot/util';
+import { u8aToHex } from '@polkadot/util';
 
-import {ChargeTransactionPayment, Index} from '../runtime';
-import {DEFAULT_VERSION} from './constants';
-import {ExtrinsicPayloadValue} from './types';
-import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './v2/ExtrinsicPayload';
+import { ChargeTransactionPayment, Index } from '../runtime';
+import { DEFAULT_VERSION } from './constants';
+import { ExtrinsicPayloadValue } from './types';
+import ExtrinsicPayloadV2, { ExtrinsicPayloadValueV2 } from './v2/ExtrinsicPayload';
 
 interface ExtrinsicPayloadOptions {
   version?: number;
@@ -33,7 +33,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
   constructor(
     registry: Registry,
     value: Partial<ExtrinsicPayloadValue> | Uint8Array | string | undefined,
-    {version}: ExtrinsicPayloadOptions = {}
+    { version }: ExtrinsicPayloadOptions = {}
   ) {
     super(registry, ExtrinsicPayload.decodeExtrinsicPayload(registry, value as ExtrinsicPayloadValue, version));
   }
@@ -116,7 +116,7 @@ export default class ExtrinsicPayload extends Base<ExtrinsicPayloadVx> {
   /**
    * @description Sign the payload with the keypair
    */
-  sign(signerPair: IKeyringPair): {signature: string} {
+  sign(signerPair: IKeyringPair): { signature: string } {
     const signature = this.raw.sign(signerPair);
 
     // This is extensible, so we could quite readily extend to send back extra

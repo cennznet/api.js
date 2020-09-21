@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {liquidityBalance, liquidityBalanceAt} from './liquidityBalance';
-export {totalLiquidity, totalLiquidityAt} from './totalLiquidity';
-export {exchangeAddress} from './exchangeAddress';
-export {poolAssetBalance, poolCoreAssetBalance, poolAssetBalanceAt, poolCoreAssetBalanceAt} from './poolBalance';
-export {assetToWithdraw, assetToWithdrawAt} from './assetWithdrawn';
+export { liquidityBalance, liquidityBalanceAt } from './liquidityBalance';
+export { totalLiquidity, totalLiquidityAt } from './totalLiquidity';
+export { exchangeAddress } from './exchangeAddress';
+export { poolAssetBalance, poolCoreAssetBalance, poolAssetBalanceAt, poolCoreAssetBalanceAt } from './poolBalance';
+export { assetToWithdraw, assetToWithdrawAt } from './assetWithdrawn';

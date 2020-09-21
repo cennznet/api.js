@@ -1,14 +1,14 @@
-import {ApiInterfaceRx} from '@cennznet/api/types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
 import Extrinsic from '@cennznet/types/extrinsic/Extrinsic';
-import {generateTransactionPayment} from '@cennznet/types/runtime/transaction-payment/TransactionPayment';
-import {AnyAssetId, IExtrinsic} from '@cennznet/types/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {TypeRegistry} from '@polkadot/types';
-import {RuntimeDispatchInfo} from '@polkadot/types/interfaces/rpc';
+import { generateTransactionPayment } from '@cennznet/types/runtime/transaction-payment/TransactionPayment';
+import { AnyAssetId, IExtrinsic } from '@cennznet/types/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { TypeRegistry } from '@polkadot/types';
+import { RuntimeDispatchInfo } from '@polkadot/types/interfaces/rpc';
 import ExtrinsicEra from '@polkadot/types/primitive/Extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
-import {combineLatest, Observable, of} from 'rxjs';
-import {catchError, first, map, switchMap} from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 
 // This interface is to determine fee estimate for any transaction that is going to be executed..
 // The estimate can be in any currency(userFeeAssetId) provided there is enough liquidity in the exchange pool for that currency.
@@ -29,7 +29,7 @@ import {catchError, first, map, switchMap} from 'rxjs/operators';
 export function estimateFee(api: ApiInterfaceRx) {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
-  return ({extrinsic, userFeeAssetId, maxPayment}): Observable<any> => {
+  return ({ extrinsic, userFeeAssetId, maxPayment }): Observable<any> => {
     return combineLatest([
       api.rpc.state.getRuntimeVersion(),
       api.rpc.chain.getBlockHash(),
@@ -49,8 +49,8 @@ export function estimateFee(api: ApiInterfaceRx) {
           const transactionPayment =
             userFeeAssetId.toString() === networkFeeAssetId.toString()
               ? null
-              : generateTransactionPayment({tip: 0, assetId: userFeeAssetId, maxPayment});
-          const payload = {runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment};
+              : generateTransactionPayment({ tip: 0, assetId: userFeeAssetId, maxPayment });
+          const payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
           (extrinsic as Extrinsic).signFake(fake_sender, payload as any);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }

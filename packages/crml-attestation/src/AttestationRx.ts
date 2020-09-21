@@ -12,51 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiRx} from '@cennznet/api';
-import {SubmittableExtrinsic} from '@cennznet/api/types';
-import {assert} from '@cennznet/util';
+import { ApiRx } from '@cennznet/api';
+import { SubmittableExtrinsic } from '@cennznet/api/types';
+import { assert } from '@cennznet/util';
 
-import {QueryableGetClaimListRx, QueryableGetClaimRx, QueryableGetClaimsRx} from './types';
+import { QueryableGetClaimListRx, QueryableGetClaimRx, QueryableGetClaimsRx } from './types';
 
 export class AttestationRx {
-    private readonly _api: ApiRx;
+  private readonly _api: ApiRx;
 
-    constructor(api: ApiRx) {
-        assert(
-            (api as any)._options.derives.attestation || ((api as any)._derive || {}).attestation,
-            "init attestation's derives first"
-        );
-        this._api = api;
-    }
+  constructor(api: ApiRx) {
+    assert(
+      (api as any)._options.derives.attestation || ((api as any)._derive || {}).attestation,
+      "init attestation's derives first"
+    );
+    this._api = api;
+  }
 
-    get api(): ApiRx {
-        return this._api;
-    }
+  get api(): ApiRx {
+    return this._api;
+  }
 
-    setClaim(holder: string, topic: string, value: string | Uint8Array): SubmittableExtrinsic<'rxjs'> {
-        return this.api.tx.attestation.setClaim(holder, topic, value);
-    }
+  setClaim(holder: string, topic: string, value: string | Uint8Array): SubmittableExtrinsic<'rxjs'> {
+    return this.api.tx.attestation.setClaim(holder, topic, value);
+  }
 
-    setSelfClaim(topic: string, value: string | Uint8Array): SubmittableExtrinsic<'rxjs'> {
-        return this.api.tx.attestation.setSelfClaim(topic, value);
-    }
+  setSelfClaim(topic: string, value: string | Uint8Array): SubmittableExtrinsic<'rxjs'> {
+    return this.api.tx.attestation.setSelfClaim(topic, value);
+  }
 
-    removeClaim(holder: string, topic: string): SubmittableExtrinsic<'rxjs'> {
-        return this.api.tx.attestation.removeClaim(holder, topic);
-    }
+  removeClaim(holder: string, topic: string): SubmittableExtrinsic<'rxjs'> {
+    return this.api.tx.attestation.removeClaim(holder, topic);
+  }
 
-    get getClaim(): QueryableGetClaimRx {
-        return this.api.derive.attestation.getClaim;
-    }
+  get getClaim(): QueryableGetClaimRx {
+    return this.api.derive.attestation.getClaim;
+  }
 
-    /**
-     * @deprecated use getClaimList() instead
-     */
-    get getClaims(): QueryableGetClaimsRx {
-        return this.api.derive.attestation.getClaims;
-    }
+  /**
+   * @deprecated use getClaimList() instead
+   */
+  get getClaims(): QueryableGetClaimsRx {
+    return this.api.derive.attestation.getClaims;
+  }
 
-    get getClaimList(): QueryableGetClaimListRx {
-        return this.api.derive.attestation.claims;
-    }
+  get getClaimList(): QueryableGetClaimListRx {
+    return this.api.derive.attestation.claims;
+  }
 }

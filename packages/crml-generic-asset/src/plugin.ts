@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
+import { IPlugin } from '@cennznet/api/types';
 // import * as derives from './derives';
-import {GenericAsset} from './GenericAsset';
-import {GenericAssetRx} from './GenericAssetRx';
+import { GenericAsset } from './GenericAsset';
+import { GenericAssetRx } from './GenericAssetRx';
 
 export default ({
   injectName: 'genericAsset',

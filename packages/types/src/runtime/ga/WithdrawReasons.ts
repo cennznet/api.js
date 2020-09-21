@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {i8} from '@polkadot/types';
+import { i8 } from '@polkadot/types';
 
 // See: https://github.com/plugblockchain/plug-blockchain/blob/f580bbbb496f66655b27105e27e9d1e1d52bbb02/frame/support/src/traits.rs#L737-L756
 const ReasonMask = {

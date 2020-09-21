@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {DecoratedCennznetDerive} from '@cennznet/api/derives';
-import {ChargeTransactionPayment} from '@cennznet/types';
+import { DecoratedCennznetDerive } from '@cennznet/api/derives';
+import { ChargeTransactionPayment } from '@cennznet/types';
 import {
   Callback,
   Codec,
@@ -26,7 +26,7 @@ import {
   RegistryTypes,
   SignatureOptions,
 } from '@cennznet/types/types';
-import {DeriveCustom} from '@polkadot/api-derive';
+import { DeriveCustom } from '@polkadot/api-derive';
 import ApiBase from '@polkadot/api/base';
 import {
   ApiOptions as ApiOptionsBase,
@@ -38,11 +38,11 @@ import {
   SubmittableResultSubscription,
   UnsubscribePromise,
 } from '@polkadot/api/types';
-import {ProviderInterface} from '@polkadot/rpc-provider/types';
-import {u64} from '@polkadot/types';
-import {AccountId, Address, Hash} from '@polkadot/types/interfaces';
-import {StorageEntry} from '@polkadot/types/primitive/StorageKey';
-import {CallBase} from '@polkadot/types/types';
+import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { u64 } from '@polkadot/types';
+import { AccountId, Address, Hash } from '@polkadot/types/interfaces';
+import { StorageEntry } from '@polkadot/types/primitive/StorageKey';
+import { CallBase } from '@polkadot/types/types';
 
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';

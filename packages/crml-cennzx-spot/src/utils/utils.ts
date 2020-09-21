@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AssetId, createType, Tuple, u64} from '@cennznet/types';
-import {AnyAssetId, AnyNumber} from '@cennznet/types/types';
-import {blake2AsU8a, stringToU8a, u8aConcat} from '@cennznet/util';
-import {Registry} from '@polkadot/types/types';
+import { AssetId, createType, Tuple, u64 } from '@cennznet/types';
+import { AnyAssetId, AnyNumber } from '@cennznet/types/types';
+import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
+import { Registry } from '@polkadot/types/types';
 import BN from 'bn.js';
 
-import {MAX_U128, PERMILL_BASE, ROUND_UP} from '../constants';
+import { MAX_U128, PERMILL_BASE, ROUND_UP } from '../constants';
 
 /**
  * Generate the key of the balance storage
@@ -51,5 +51,5 @@ export function getAssetToWithdraw(liquidity: BN, coreReserve: BN, assetReserve:
   }
   const coreAmount = liquidity.mul(coreReserve).div(totalLiquidity);
   const assetAmount = liquidity.mul(assetReserve).div(totalLiquidity);
-  return {coreAmount, assetAmount};
+  return { coreAmount, assetAmount };
 }

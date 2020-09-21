@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {assert, isNumber} from '@polkadot/util';
+import { assert, isNumber } from '@polkadot/util';
 import BN from 'bn.js';
-import {stripEndZero} from '../format/stripEndZero';
+import { stripEndZero } from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';
-import {toFixed} from '../number/toFixed';
+import { toFixed } from '../number/toFixed';
 
 /**
  * format a amount from unit `un` to decimals passed in.

@@ -1,4 +1,4 @@
-import {RpcMethodOpt} from '@polkadot/jsonrpc/types';
+import { RpcMethodOpt } from '@polkadot/jsonrpc/types';
 
 import createMethod from '@polkadot/jsonrpc/create/method';
 
@@ -11,4 +11,4 @@ const registeredAssets: RpcMethodOpt = {
 
 const section = 'genericAsset';
 
-export default [{...createMethod(section, 'registeredAssets', registeredAssets), name: 'registeredAssets'}];
+export default [{ ...createMethod(section, 'registeredAssets', registeredAssets), name: 'registeredAssets' }];

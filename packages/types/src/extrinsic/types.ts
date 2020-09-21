@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Enum} from '@polkadot/types';
-import {Option, Vec} from '@polkadot/types/codec';
-import {InterfaceRegistry} from '@polkadot/types/interfaceRegistry';
+import { Enum } from '@polkadot/types';
+import { Option, Vec } from '@polkadot/types/codec';
+import { InterfaceRegistry } from '@polkadot/types/interfaceRegistry';
 import {
   AnyNumber,
   AnyU8a,
@@ -25,10 +25,10 @@ import {
   RuntimeVersionInterface,
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
-import {AccountId} from '@cennznet/types/interfaces';
+import { AccountId } from '@cennznet/types/interfaces';
 import Doughnut from '../Doughnut';
-import {AssetId, AssetInfo} from '../runtime/ga';
-import {ChargeTransactionPayment, FeeExchange} from '../runtime/transaction-payment';
+import { AssetId, AssetInfo } from '../runtime/ga';
+import { ChargeTransactionPayment, FeeExchange } from '../runtime/transaction-payment';
 
 export interface ExtrinsicOptions {
   isSigned?: boolean;

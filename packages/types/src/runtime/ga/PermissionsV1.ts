@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Struct} from '@polkadot/types';
-import {Registry} from '@polkadot/types/types';
+import { Struct } from '@polkadot/types';
+import { Registry } from '@polkadot/types/types';
 import Owner from './Owner';
 
 /**
@@ -21,7 +21,7 @@ import Owner from './Owner';
  */
 export default class PermissionsV1 extends Struct {
   constructor(registry: Registry, value: any) {
-    super(registry, {update: Owner, mint: Owner, burn: Owner}, value);
+    super(registry, { update: Owner, mint: Owner, burn: Owner }, value);
   }
 
   get update(): Owner {

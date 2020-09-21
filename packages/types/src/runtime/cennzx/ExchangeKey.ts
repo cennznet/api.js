@@ -1,5 +1,5 @@
-import {Tuple} from '@polkadot/types';
+import { Tuple } from '@polkadot/types';
 
-import {AssetId} from '../ga';
+import { AssetId } from '../ga';
 
 export default class ExchangeKey extends Tuple.with([AssetId, AssetId]) {}

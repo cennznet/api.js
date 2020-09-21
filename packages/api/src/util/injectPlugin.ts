@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {mergeDeriveOptions} from '@cennznet/api/util/derives';
-import {TypeRegistry} from '@polkadot/types';
-import {Api} from '../Api';
-import {ApiRx} from '../ApiRx';
-import {ApiOptions} from '../types';
+import { IPlugin } from '@cennznet/api/types';
+import { mergeDeriveOptions } from '@cennznet/api/util/derives';
+import { TypeRegistry } from '@polkadot/types';
+import { Api } from '../Api';
+import { ApiRx } from '../ApiRx';
+import { ApiOptions } from '../types';
 
 export function injectOption(options: ApiOptions, plugins: IPlugin[] = []): void {
   for (const plugin of plugins) {

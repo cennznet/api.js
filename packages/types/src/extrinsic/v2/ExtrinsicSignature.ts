@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import {Compact, createType, Struct, TypeRegistry} from '@polkadot/types';
+import { Compact, createType, Struct, TypeRegistry } from '@polkadot/types';
 import Option from '@polkadot/types/codec/Option';
 import {
   Address,
@@ -25,14 +25,14 @@ import {
   MultiSignature,
   Sr25519Signature,
 } from '@polkadot/types/interfaces/runtime';
-import {ExtrinsicSignatureOptions} from '@polkadot/types/primitive/Extrinsic/types';
-import {IExtrinsicSignature, IKeyringPair, Registry} from '@polkadot/types/types';
-import {u8aConcat} from '@polkadot/util';
+import { ExtrinsicSignatureOptions } from '@polkadot/types/primitive/Extrinsic/types';
+import { IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/types';
+import { u8aConcat } from '@polkadot/util';
 import Doughnut from '../../Doughnut';
-import {ChargeTransactionPayment, Index} from '../../runtime';
-import {EMPTY_U8A, IMMORTAL_ERA} from '../constants';
-import {ExtrinsicV2SignatureOptions} from '../types';
-import ExtrinsicPayloadV2, {ExtrinsicPayloadValueV2} from './ExtrinsicPayload';
+import { ChargeTransactionPayment, Index } from '../../runtime';
+import { EMPTY_U8A, IMMORTAL_ERA } from '../constants';
+import { ExtrinsicV2SignatureOptions } from '../types';
+import ExtrinsicPayloadV2, { ExtrinsicPayloadValueV2 } from './ExtrinsicPayload';
 
 /**
  * @name ExtrinsicSignature
@@ -43,7 +43,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
   constructor(
     registry: Registry,
     value: ExtrinsicSignatureV2 | Uint8Array | undefined,
-    {isSigned}: ExtrinsicSignatureOptions = {}
+    { isSigned }: ExtrinsicSignatureOptions = {}
   ) {
     super(
       registry,
@@ -61,7 +61,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
 
   static decodeExtrinsicSignature(
     value: ExtrinsicSignatureV2 | Uint8Array | undefined,
-    isSigned: boolean = false
+    isSigned = false
   ): ExtrinsicSignatureV2 | Uint8Array {
     if (!value) {
       return EMPTY_U8A;
@@ -144,7 +144,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
   private injectSignature(
     signer: Address,
     signature: MultiSignature,
-    {doughnut, era, nonce, tip, transactionPayment}: ExtrinsicPayloadV2
+    { doughnut, era, nonce, tip, transactionPayment }: ExtrinsicPayloadV2
   ): IExtrinsicSignature {
     this.set('doughnut', doughnut);
     this.set('era', era);
@@ -182,7 +182,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       nonce,
       doughnut,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       transactionPayment,
     }: ExtrinsicV2SignatureOptions
@@ -214,7 +214,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       nonce,
       doughnut,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       transactionPayment,
     }: ExtrinsicV2SignatureOptions
@@ -226,7 +226,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       nonce,
       doughnut,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       transactionPayment,
     } as ExtrinsicV2SignatureOptions);
@@ -247,7 +247,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       nonce,
       doughnut,
       feeExchange,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       transactionPayment,
     }: ExtrinsicV2SignatureOptions
@@ -259,7 +259,7 @@ export default class ExtrinsicSignatureV2 extends Struct implements IExtrinsicSi
       genesisHash,
       nonce,
       doughnut,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       transactionPayment,
     } as ExtrinsicV2SignatureOptions);

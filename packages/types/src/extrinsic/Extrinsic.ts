@@ -4,17 +4,26 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import {ExtrinsicPayloadValueV2} from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
-import {ClassOf, Compact, TypeRegistry} from '@polkadot/types';
+import { ExtrinsicPayloadValueV2 } from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
+import { ClassOf, Compact, TypeRegistry } from '@polkadot/types';
 import Base from '@polkadot/types/codec/Base';
-import {Address, Balance, Call, EcdsaSignature, Ed25519Signature, Sr25519Signature} from '@polkadot/types/interfaces';
-import {FunctionMetadataLatest} from '@polkadot/types/interfaces/metadata';
-import {AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IHash, IKeyringPair, Registry} from '@polkadot/types/types';
-import {assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a} from '@polkadot/util';
-import {ChargeTransactionPayment, Index} from '../runtime';
-import {BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION} from './constants';
-import {SignatureOptions} from './types';
-import ExtrinsicV2, {ExtrinsicValueV2} from './v2/Extrinsic';
+import { Address, Balance, Call, EcdsaSignature, Ed25519Signature, Sr25519Signature } from '@polkadot/types/interfaces';
+import { FunctionMetadataLatest } from '@polkadot/types/interfaces/metadata';
+import {
+  AnyU8a,
+  ArgsDef,
+  Codec,
+  IExtrinsic,
+  IExtrinsicEra,
+  IHash,
+  IKeyringPair,
+  Registry,
+} from '@polkadot/types/types';
+import { assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a } from '@polkadot/util';
+import { ChargeTransactionPayment, Index } from '../runtime';
+import { BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION } from './constants';
+import { SignatureOptions } from './types';
+import ExtrinsicV2, { ExtrinsicValueV2 } from './v2/Extrinsic';
 
 export type ExtrinsicImpl = ExtrinsicV2;
 export type ExtrinsicValue = ExtrinsicValueV2;
@@ -40,7 +49,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
   constructor(
     registry: Registry,
     value: Extrinsic | AnyU8a | Call | ExtrinsicValue | undefined,
-    {version}: ExtrinsicOptions = {}
+    { version }: ExtrinsicOptions = {}
   ) {
     super(registry, Extrinsic.decodeExtrinsic(registry, value, version));
   }
@@ -51,7 +60,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
     }
 
     const isSigned = (version & BIT_SIGNED) === BIT_SIGNED;
-    return new ExtrinsicV2(registry, value, {isSigned});
+    return new ExtrinsicV2(registry, value, { isSigned });
   }
 
   static decodeExtrinsic(
@@ -85,7 +94,7 @@ export default class Extrinsic extends Base<ExtrinsicImpl> implements IExtrinsic
 
       return Extrinsic.decodeU8a(registry, value.subarray(offset, total));
     } else if (value instanceof ClassOf(registry, 'Call')) {
-      return Extrinsic.newFromValue(registry, {method: value}, version);
+      return Extrinsic.newFromValue(registry, { method: value }, version);
     }
 
     return Extrinsic.newFromValue(registry, value, version);

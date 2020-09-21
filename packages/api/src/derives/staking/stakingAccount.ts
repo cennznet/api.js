@@ -1,10 +1,10 @@
-import {Observable, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {RewardDestination} from '@cennznet/types';
-import {memo} from '@polkadot/api-derive/util';
-import {createType, Option} from '@polkadot/types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { RewardDestination } from '@cennznet/types';
+import { memo } from '@polkadot/api-derive/util';
+import { createType, Option } from '@polkadot/types';
 import {
   AccountId,
   EraIndex,
@@ -14,7 +14,7 @@ import {
   StakingLedger,
   ValidatorPrefs,
 } from '@polkadot/types/interfaces';
-import {DerivedStakingInfo} from '../types';
+import { DerivedStakingInfo } from '../types';
 
 type MultiResultV2 = [
   Option<AccountId>,
@@ -59,7 +59,7 @@ export function queryStakingAccountInfo(
                     (stakingLedgerOpt): DerivedStakingInfo => ({
                       accountId: stashId,
                       controllerId,
-                      nominators: nominatorsOpt.unwrapOr({targets: []}).targets,
+                      nominators: nominatorsOpt.unwrapOr({ targets: [] }).targets,
                       rewardDestination,
                       stakers,
                       stakingLedger: stakingLedgerOpt.unwrapOr(undefined),
@@ -68,7 +68,7 @@ export function queryStakingAccountInfo(
                     })
                   )
                 )
-              : of({accountId: stashId});
+              : of({ accountId: stashId });
           }
         )
       );

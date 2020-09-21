@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {assert} from '@polkadot/util';
+import { assert } from '@polkadot/util';
 import BN from 'bn.js';
-import {stripEndZero} from '../format/stripEndZero';
+import { stripEndZero } from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';
 
 /**
@@ -23,16 +23,16 @@ import isSafeInteger from '../is/integer';
  * @param decimals
  */
 export default function formatUnits(unValue: BN | number | string, decimals: number): string {
-    assert(isSafeInteger(unValue), 'not a safe integer');
-    let un = new BN(unValue).toString();
-    un = un.padStart(decimals + 1, '0');
-    const splitPos = un.length - decimals;
-    const intPart = un.slice(0, splitPos);
-    let fractionPart = un.slice(splitPos);
-    fractionPart = stripEndZero(fractionPart);
-    if (fractionPart !== '') {
-        return `${intPart}.${fractionPart}`;
-    } else {
-        return intPart;
-    }
+  assert(isSafeInteger(unValue), 'not a safe integer');
+  let un = new BN(unValue).toString();
+  un = un.padStart(decimals + 1, '0');
+  const splitPos = un.length - decimals;
+  const intPart = un.slice(0, splitPos);
+  let fractionPart = un.slice(splitPos);
+  fractionPart = stripEndZero(fractionPart);
+  if (fractionPart !== '') {
+    return `${intPart}.${fractionPart}`;
+  } else {
+    return intPart;
+  }
 }
