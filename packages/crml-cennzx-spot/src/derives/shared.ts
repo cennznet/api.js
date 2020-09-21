@@ -15,7 +15,7 @@
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AssetId } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { Hash, Permill } from '@polkadot/types/interfaces';
+import { Hash, Permill } from '@cennznet/types/interfaces';
 import { Observable } from 'rxjs';
 
 export function coreAssetId(api: ApiInterfaceRx) {

@@ -17,9 +17,9 @@
  */
 import {Api} from '@cennznet/api';
 import {GenericAsset} from '../src/GenericAsset';
-import { Hash, Balance } from '@polkadot/types/interfaces';
+import { Hash, Balance } from '@cennznet/types/interfaces';
 import {cryptoWaitReady} from '@polkadot/util-crypto';
-import { TypeRegistry } from '@polkadot/types';
+import { TypeRegistry } from '@cennznet/types';
 import {AssetOptions} from '@cennznet/types';
 import testKeyring from '@polkadot/keyring/testing';
 

@@ -15,7 +15,7 @@
 /**
  * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
  */
-import {Hash} from '@polkadot/types/interfaces';
+import {Hash} from '@cennznet/types/interfaces';
 import {combineLatest} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import initApiRx from '../../../../jest/initApiRx';

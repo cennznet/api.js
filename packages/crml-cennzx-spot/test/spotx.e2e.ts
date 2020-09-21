@@ -17,7 +17,7 @@
  */
 import {Api} from '@cennznet/api';
 import BN from 'bn.js';
-import { TypeRegistry } from '@polkadot/types';
+import { TypeRegistry } from '@cennznet/types';
 import {cryptoWaitReady} from '@polkadot/util-crypto';
 import testKeyring from '@polkadot/keyring/testing'
 import {CennzxSpot} from '../src/CennzxSpot';

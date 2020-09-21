@@ -2,7 +2,7 @@
 const Api = require('@cennznet/api').Api;
 const fs = require('fs');
 const staticMetadata = require('@cennznet/api/staticMetadata');
-const Metadata  = require('@polkadot/types').Metadata;
+const Metadata  = require('@cennznet/types').Metadata;
 async function updateMeta() {
     const provider = 'wss://cennznet.unfrastructure.io/public/ws'; // Use Azalea
     const api = await Api.create({provider});

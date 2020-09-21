@@ -15,9 +15,10 @@
 import { Observable } from 'rxjs';
 
 import { DecoratedCennznetDerive } from '@cennznet/api/derives';
-import { ChargeTransactionPayment } from '@cennznet/types';
+import { ChargeTransactionPayment, u64 } from '@cennznet/types';
 import {
   Callback,
+  CallBase,
   Codec,
   CodecArg,
   Constructor,
@@ -39,10 +40,8 @@ import {
   UnsubscribePromise,
 } from '@polkadot/api/types';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import { u64 } from '@polkadot/types';
-import { AccountId, Address, Hash } from '@polkadot/types/interfaces';
-import { StorageEntry } from '@polkadot/types/primitive/StorageKey';
-import { CallBase } from '@polkadot/types/types';
+import { AccountId, Address, Hash } from '@cennznet/types/interfaces';
+import { StorageEntry } from '@cennznet/types/primitive';
 
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
