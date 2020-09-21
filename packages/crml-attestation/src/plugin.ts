@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {IPlugin} from '@cennznet/api/types';
-import {Attestation} from './Attestation';
-import {AttestationRx} from './AttestationRx';
+import { IPlugin } from '@cennznet/api/types';
+import { Attestation } from './Attestation';
+import { AttestationRx } from './AttestationRx';
 // @ts-ignore
 export default {
   injectName: 'attestation',

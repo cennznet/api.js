@@ -15,7 +15,7 @@
 export * from '@polkadot/util';
 export * from '@polkadot/util-crypto';
 
-export {default as stripEndZero} from './format/stripEndZero';
-export {default as isSafeInteger} from './is/integer';
-export {default as toFixed} from './number/toFixed';
+export { default as stripEndZero } from './format/stripEndZero';
+export { default as isSafeInteger } from './is/integer';
+export { default as toFixed } from './number/toFixed';
 export * from './unit';

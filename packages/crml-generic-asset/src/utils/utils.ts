@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {isBn, isNumber, isObject, isU8a} from '@cennznet/util';
+import { isBn, isNumber, isObject, isU8a } from '@cennznet/util';
 
 export function isAssetObj(value: any): boolean {
-    return isObject(value) && !isU8a(value) && !isBn(value) && isNumber(value.id);
+  return isObject(value) && !isU8a(value) && !isBn(value) && isNumber(value.id);
 }
 
 export function isStringNumber(str: string): boolean {
-    return !isNaN(Number(str));
+  return !isNaN(Number(str));
 }

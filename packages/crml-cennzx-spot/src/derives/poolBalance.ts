@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {Hash} from '@polkadot/types/interfaces';
-import {combineLatest, Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
-import {exchangeAddress} from './exchangeAddress';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { AnyAssetId } from '@cennznet/types/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { Hash } from '@polkadot/types/interfaces';
+import { combineLatest, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { exchangeAddress } from './exchangeAddress';
 
 export function poolAssetBalance(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<any> => {

@@ -12,34 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {combineLatest, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {Claim} from '../types';
-import {getClaim} from './getClaim';
+import { Claim } from '../types';
+import { getClaim } from './getClaim';
 
 export function claims(api: ApiInterfaceRx) {
-    return (holder: string, issuers: Array<string>, topics: Array<string>): Observable<Claim[]> => {
-        const observables = issuers.reduce(
-            (prev, issuer) => {
-                prev.push(
-                    ...topics.map(topic =>
-                        getClaim(api)(holder, issuer, topic).pipe(
-                            map(value => ({
-                                holder,
-                                issuer,
-                                topic,
-                                value,
-                            }))
-                        )
-                    )
-                );
-                return prev;
-            },
-            [] as Observable<Claim>[]
-        );
+  return (holder: string, issuers: Array<string>, topics: Array<string>): Observable<Claim[]> => {
+    const observables = issuers.reduce((prev, issuer) => {
+      prev.push(
+        ...topics.map(topic =>
+          getClaim(api)(holder, issuer, topic).pipe(
+            map(value => ({
+              holder,
+              issuer,
+              topic,
+              value,
+            }))
+          )
+        )
+      );
+      return prev;
+    }, [] as Observable<Claim>[]);
 
-        return combineLatest(observables);
-    };
+    return combineLatest(observables);
+  };
 }

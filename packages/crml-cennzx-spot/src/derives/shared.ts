@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AssetId} from '@cennznet/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {Hash, Permill} from '@polkadot/types/interfaces';
-import {Observable} from 'rxjs';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { AssetId } from '@cennznet/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { Hash, Permill } from '@polkadot/types/interfaces';
+import { Observable } from 'rxjs';
 
 export function coreAssetId(api: ApiInterfaceRx) {
   return (): Observable<AssetId> => api.query.cennzxSpot.coreAssetId().pipe(drr()) as Observable<AssetId>;

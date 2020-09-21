@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {AnyAssetId} from '@cennznet/types/types';
-import {drr} from '@polkadot/rpc-core/rxjs';
-import {Observable} from 'rxjs';
-import {first, map} from 'rxjs/operators';
-import {generateExchangeAddress} from '../utils/utils';
-import {coreAssetId} from './shared';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { AnyAssetId } from '@cennznet/types/types';
+import { drr } from '@polkadot/rpc-core/rxjs';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { generateExchangeAddress } from '../utils/utils';
+import { coreAssetId } from './shared';
 
 export function exchangeAddress(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<string> =>

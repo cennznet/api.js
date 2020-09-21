@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {CennzxSpot} from './CennzxSpot';
-import {CennzxSpotRx} from './CennzxSpotRx';
+import { CennzxSpot } from './CennzxSpot';
+import { CennzxSpotRx } from './CennzxSpotRx';
 // import * as derives from './derives';
 
 export default {
-    injectName: 'cennzxSpot',
-    sdkClass: CennzxSpot,
-    sdkRxClass: CennzxSpotRx,
-    types: {},
-    derives: {
-        // cennzxSpot: derives,
-    },
+  injectName: 'cennzxSpot',
+  sdkClass: CennzxSpot,
+  sdkRxClass: CennzxSpotRx,
+  types: {},
+  derives: {
+    // cennzxSpot: derives,
+  },
 };

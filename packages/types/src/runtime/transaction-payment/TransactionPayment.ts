@@ -1,4 +1,4 @@
-export function generateTransactionPayment({tip, assetId, maxPayment}) {
+export function generateTransactionPayment({ tip, assetId, maxPayment }) {
   const feeExchange = {
     assetId: assetId,
     maxPayment: maxPayment,

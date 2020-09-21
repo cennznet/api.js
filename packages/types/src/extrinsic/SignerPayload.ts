@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import {Compact, Option, Struct, u8} from '@polkadot/types';
+import { Compact, Option, Struct, u8 } from '@polkadot/types';
 import {
   Address,
   Balance,
@@ -20,10 +20,10 @@ import {
   SignerPayloadJSON as SignerPayloadJSONBase,
   SignerPayloadRaw,
 } from '@polkadot/types/types';
-import {u8aToHex} from '@polkadot/util';
+import { u8aToHex } from '@polkadot/util';
 
 import Doughnut from '../Doughnut';
-import {ChargeTransactionPayment} from '../runtime/transaction-payment';
+import { ChargeTransactionPayment } from '../runtime/transaction-payment';
 import ExtrinsicPayload from './ExtrinsicPayload';
 
 export interface SignerPayloadType extends Struct {
@@ -76,7 +76,7 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       genesisHash,
       method,
       nonce,
-      runtimeVersion: {specVersion},
+      runtimeVersion: { specVersion },
       tip,
       version,
       doughnut,
@@ -109,7 +109,7 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
     const payload = this.toPayload();
     // NOTE Explicitly pass the bare flag so the method is encoded un-prefixed (non-decodable, for signing only)
     const data = u8aToHex(
-      new ExtrinsicPayload(this.registry, payload, {version: payload.version}).toU8a({method: true})
+      new ExtrinsicPayload(this.registry, payload, { version: payload.version }).toU8a({ method: true })
     );
 
     return {

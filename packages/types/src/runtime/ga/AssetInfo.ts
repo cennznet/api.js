@@ -16,12 +16,12 @@
  Custom `AssetInfo` type for generic asset module.
 */
 
-import {Struct, u8, Vec} from '@polkadot/types';
-import {Registry} from '@polkadot/types/types';
+import { Struct, u8, Vec } from '@polkadot/types';
+import { Registry } from '@polkadot/types/types';
 
 export default class AssetInfo extends Struct {
   constructor(registry: Registry, value: any) {
-    super(registry, {symbol: 'Vec<u8>', decimalPlaces: u8}, value);
+    super(registry, { symbol: 'Vec<u8>', decimalPlaces: u8 }, value);
   }
 
   get symbol(): Vec<u8> {
