@@ -18,11 +18,11 @@ describe('RewardDestination', (): void => {
 
     const destinationAccountAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
     const destinationAccount = createType(registry, 'RewardDestination', {account: destinationAccountAddress}, 2);
-    // @ts-ignore - need to ignore cause 'RewardDestination' - does not have Account
-    expect(destinationAccount.toJSON().Account).toEqual(destinationAccountAddress);
+    expect(destinationAccount.asAccount.toString()).toEqual(destinationAccountAddress);
+    expect(destinationAccount.isAccount).toBeTruthy();
     const destinationAccountStr = createType(registry, 'RewardDestination', {account: destinationAccountAddress});
-    // @ts-ignore - need to ignore cause 'RewardDestination' - does not have Account
-    expect(destinationAccountStr.toJSON().Account).toEqual(destinationAccountAddress);
+    expect(destinationAccountStr.asAccount.toString()).toEqual(destinationAccountAddress);
+    expect(destinationAccountStr.isAccount).toBeTruthy();
 
     const destinationPayee = new RewardDestination(registry, {account: destinationAccountAddress});
     expect(destinationPayee.asAccount.toString()).toEqual(destinationAccountAddress);

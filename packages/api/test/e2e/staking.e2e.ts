@@ -187,7 +187,7 @@ describe('Staking Operations', () => {
           for (const { event: { method } } of events) {
             if (method === 'ExtrinsicSuccess') {
               const updatedPayee = await api.query.staking.payee(stash.address);
-              expect(updatedPayee.toJSON().Account).toEqual(rewardDestinationAddress);
+              expect(updatedPayee.asAccount.toString()).toEqual(rewardDestinationAddress);
               done();
             }
           }
