@@ -14,7 +14,6 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import initApiPromise from '../../../../jest/initApiPromise';
 import config from '../../../../config';
 import { Metadata } from '@cennznet/types';
 

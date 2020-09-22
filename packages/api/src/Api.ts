@@ -42,6 +42,9 @@ export class Api extends ApiPromise {
         };
 
         api.isReady.then(res => {
+          // alias cennzxSpot as cennzx
+          api.query.cennzx = api.query.cennzxSpot;
+          api.tx.cennzx = api.tx.cennzxSpot;
           //  Remove error listener if API initialization success.
           (api as any)._eventemitter.removeListener('error', rejectError);
           resolve((res as unknown) as Api);

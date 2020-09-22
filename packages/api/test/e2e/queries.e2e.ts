@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { AssetInfo, AssetOptions, BalanceLock, Vec, WithdrawReasons } from '@cennznet/types';
-import { Keyring } from '@polkadot/api';
 import testKeyring from '@polkadot/keyring/testing';
 import { Hash } from '@cennznet/types/interfaces';
 import { u8aToString } from '@polkadot/util';

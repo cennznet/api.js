@@ -28,7 +28,7 @@ describe('CENNZX e2e queries/transactions', () => {
         const amount = 3_000_000;
         const coreAmount = amount;
         const minLiquidity = 1;
-        await api.tx.cennzxSpot
+        await api.tx.cennzx
           .addLiquidity(CENNZ, minLiquidity, amount, coreAmount)
           .signAndSend(alice, async ({events, status}) => {
             if (status.isFinalized) {
@@ -36,7 +36,7 @@ describe('CENNZX e2e queries/transactions', () => {
                 if (event.method === 'AddLiquidity') {
                   let amount = 20000;
                   const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
-                  await api.tx.cennzxSpot
+                  await api.tx.cennzx
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
                       .signAndSend(alice, async ({events, status}) => {
                         if (status.isFinalized) {
@@ -64,8 +64,8 @@ describe('CENNZX e2e queries/transactions', () => {
     describe('Positive flow with liquidity in pool', () => {
       it("Calculate the buy price when buying CENTRAPAY for CENNZ", async done => {
         const amount = 100;
-        const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(CENNZ);
-        const poolCoreAssetBalance = await api.derive.cennzxSpot.poolCoreAssetBalance(CENNZ);
+        const poolAssetBalance = await api.derive.cennzx.poolAssetBalance(CENNZ);
+        const poolCoreAssetBalance = await api.derive.cennzx.poolCoreAssetBalance(CENNZ);
         console.log('Amount of asset in CENNZ pool:', poolAssetBalance.toString());
         console.log('Amount of core in CENNZ pool:', poolCoreAssetBalance.toString());
         // How much CENTRAPAY will it cost to buy 100 (amount) CENNZ
@@ -129,8 +129,8 @@ describe('CENNZX e2e queries/transactions', () => {
     describe('Negative flow with no liquidity in pool', () => {
       it("Calculate the buy price when buying CENTRAPAY for PLUG", async done => {
         const amount = 100;
-        const poolAssetBalance = await api.derive.cennzxSpot.poolAssetBalance(PLUG);
-        const poolCoreAssetBalance = await api.derive.cennzxSpot.poolCoreAssetBalance(PLUG);
+        const poolAssetBalance = await api.derive.cennzx.poolAssetBalance(PLUG);
+        const poolCoreAssetBalance = await api.derive.cennzx.poolCoreAssetBalance(PLUG);
         console.log('Amount of asset in PLUG pool:', poolAssetBalance.toString());
         console.log('Amount of core in PLUG pool:', poolCoreAssetBalance.toString());
         // How much CENTRAPAY will it cost to buy 100 (amount) PLUG
