@@ -22,7 +22,7 @@ import {take, filter, switchMap, first} from 'rxjs/operators';
 import {combineLatest, Observable} from 'rxjs';
 
 import {GenericAssetRx} from '../src/GenericAssetRx';
-import { Balance, Hash } from '@polkadot/types/interfaces';
+import { Balance, Hash } from '@cennznet/types/interfaces';
 import {cryptoWaitReady} from '@polkadot/util-crypto';
 
 const assetOwnerUri = '//Alice';

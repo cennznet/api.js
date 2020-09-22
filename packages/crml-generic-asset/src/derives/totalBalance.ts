@@ -16,7 +16,7 @@ import { AnyAddress, AnyAssetId } from '@cennznet/types/types';
 import { ApiInterfaceRx } from '@polkadot/api/types';
 // import {drr} from '@polkadot/api-derive/util/drr';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { Balance, Hash } from '@polkadot/types/interfaces';
+import { Balance, Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -21,7 +21,7 @@ import {KeyringPair} from '@polkadot/keyring/types'
 import testKeyring from '@polkadot/keyring/testing';
 import {filter, first} from 'rxjs/operators';
 import {AttestationRx} from '../src/AttestationRx';
-import { TypeRegistry } from '@polkadot/types';
+import { TypeRegistry } from '@cennznet/types';
 
 const issuerUri = '//Alice';
 const issuer2Uri = '//Bob';

@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import { AssetId, createType, Tuple, u64 } from '@cennznet/types';
-import { AnyAssetId, AnyNumber } from '@cennznet/types/types';
+import { AnyAssetId, AnyNumber, Registry } from '@cennznet/types/types';
 import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
-import { Registry } from '@polkadot/types/types';
 import BN from 'bn.js';
 
 import { MAX_U128, PERMILL_BASE, ROUND_UP } from '../constants';

@@ -14,7 +14,7 @@
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AnyAssetId, AnyNumber } from '@cennznet/types/types';
-import { Hash } from '@polkadot/types/interfaces';
+import { Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -8,11 +8,11 @@ import fs from 'fs';
 import {stringCamelCase, stringLowerFirst} from '@polkadot/util';
 
 import interfaces from '@polkadot/jsonrpc';
-import Call from '@polkadot/types/primitive/Generic/Call';
+import { Call } from '@cennznet/types/primitive';
 import { MetadataLatest, ModuleMetadataLatest } from '@cennznet/types/interfaces';
 import Metadata from '@polkadot/metadata/Metadata';
 import rpcDataLatest from '@polkadot/metadata/Metadata/v7/static';
-import { TypeRegistry, createType } from '@polkadot/types';
+import { TypeRegistry, createType } from '@cennznet/types';
 
 const ANCHOR_TOP = '';
 const LINK_BACK_TO_TOP = '';

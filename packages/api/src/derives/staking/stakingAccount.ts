@@ -2,9 +2,8 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { RewardDestination } from '@cennznet/types';
 import { memo } from '@polkadot/api-derive/util';
-import { createType, Option } from '@polkadot/types';
+import { createType, Option, RewardDestination } from '@cennznet/types';
 import {
   AccountId,
   EraIndex,
@@ -13,7 +12,7 @@ import {
   Nominations,
   StakingLedger,
   ValidatorPrefs,
-} from '@polkadot/types/interfaces';
+} from '@cennznet/types/interfaces';
 import { DerivedStakingInfo } from '../types';
 
 type MultiResultV2 = [
