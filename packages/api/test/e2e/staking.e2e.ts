@@ -179,12 +179,12 @@ describe('Staking Operations', () => {
   });
 
   test('Payout to any account', async done => {
-      const rewardDestinationAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
-      // Payee account set to any account
-      await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
+    const rewardDestinationAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
+    // Payee account set to any account
+    await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
     // Subscribe to payee changes
     await api.query.staking.payee(stash.address, (payee: RewardDestination) =>
-        (payee.asAccount.toString() === rewardDestinationAddress) ? done() : null);
+      (payee.asAccount.toString() === rewardDestinationAddress) ? done() : null);
   });
 
   test('setController changes controller account', async done => {

@@ -12,14 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AttestationValue } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { Observable } from 'rxjs';
 
+import { Claim } from './types';
+
+/**
+ * Retrieve a single claim made about a holder by the given issuer on a given topic.
+ *
+ * @param holder  The claim holder address
+ * @param issuer The claim issuer address
+ * @param topic  The claim topic
+ *
+ *  @returns the claim
+ */
 export function getClaim(api: ApiInterfaceRx) {
-  return (holder: string, issuer: string, topic: string): Observable<AttestationValue> =>
+  return (holder: string, issuer: string, topic: string): Observable<Claim> =>
     api.query.attestation
       .values<AttestationValue>([holder, issuer, topic])
-      .pipe(drr());
+      .pipe(drr())
+      .pipe(
+        map(value => ({
+          holder,
+          issuer,
+          topic,
+          value,
+        }))
+      );
 }

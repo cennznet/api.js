@@ -2020,7 +2020,7 @@
     eventemitter3 "^4.0.0"
     rxjs "^6.5.4"
 
-"@polkadot/dev@^0.31.1":
+"@polkadot/dev@0.31.1":
   version "0.31.1"
   resolved "https://registry.yarnpkg.com/@polkadot/dev/-/dev-0.31.1.tgz#4acb8221796c2d786668b79d44952e3e2f8cb046"
   integrity sha512-DYE26hosBKjcblgXtOX9dtYSUbwKjgg/JlMZ9J0olrX09LgP0ghFbz3SprEs/9vti5YKSbVkSh2eTS0NyUOwYg==

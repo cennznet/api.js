@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ApiInterfaceRx } from '@cennznet/api/types';
 import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Claim } from '../types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+
+import { Claim } from './types';
 import { getClaim } from './getClaim';
 
-export function claims(api: ApiInterfaceRx) {
+/**
+ * Get all claims made about a holder by the given issuers on the given topics.
+ *
+ * @param holder  The claims' holder address
+ * @param issuers  A list of claim issuer addresses to include
+ * @param topics  A list of claim topics to include
+ */
+export function getClaims(api: ApiInterfaceRx) {
   return (holder: string, issuers: Array<string>, topics: Array<string>): Observable<Claim[]> => {
     const observables = issuers.reduce((prev, issuer) => {
-      prev.push(
-        ...topics.map(topic =>
-          getClaim(api)(holder, issuer, topic).pipe(
-            map(value => ({
-              holder,
-              issuer,
-              topic,
-              value,
-            }))
-          )
-        )
-      );
+      prev.push(...topics.map(topic => getClaim(api)(holder, issuer, topic)));
       return prev;
     }, [] as Observable<Claim>[]);
 

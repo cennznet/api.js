@@ -13,11 +13,9 @@
 // limitations under the License.
 
 import { IPlugin } from '@cennznet/api/types';
-import { Plugin as CrmlAttestation } from '@cennznet/crml-attestation';
 import { Plugin as CrmlCennzx } from '@cennznet/crml-cennzx-spot';
-import { Plugin as CrmlGenericAsset } from '@cennznet/crml-generic-asset';
 
 export default function getPlugins(): IPlugin[] {
   // @ts-ignore
-  return [CrmlGenericAsset, CrmlCennzx, CrmlAttestation];
+  return [CrmlCennzx];
 }
