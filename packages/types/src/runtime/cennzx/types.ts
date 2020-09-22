@@ -1,4 +1,4 @@
-import { Codec } from '@polkadot/types/types';
+import { Codec } from '@cennznet/types/types';
 
 import AssetId from '../ga/AssetId';
 

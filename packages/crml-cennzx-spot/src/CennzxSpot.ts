@@ -86,7 +86,7 @@ export class CennzxSpot {
     amountBought: AnyNumber,
     maxAmountSold: AnyNumber
   ): SubmittableExtrinsic<'promise'> {
-    return this.api.tx.cennzxSpot.assetSwapOutput(null, assetSold, assetBought, amountBought, maxAmountSold);
+    return this.api.tx.cennzxSpot.buyAsset(null, assetSold, assetBought, amountBought, maxAmountSold);
   }
 
   /**
@@ -104,7 +104,7 @@ export class CennzxSpot {
     amountBought: AnyNumber,
     maxAmountSold: AnyNumber
   ): SubmittableExtrinsic<'promise'> {
-    return this.api.tx.cennzxSpot.assetSwapOutput(recipient, assetSold, assetBought, amountBought, maxAmountSold);
+    return this.api.tx.cennzxSpot.buyAsset(recipient, assetSold, assetBought, amountBought, maxAmountSold);
   }
 
   /**
@@ -120,7 +120,7 @@ export class CennzxSpot {
     amountSell: AnyNumber,
     minReceive: AnyNumber
   ): SubmittableExtrinsic<'promise'> {
-    return this.api.tx.cennzxSpot.assetSwapInput(null, assetSold, assetBought, amountSell, minReceive);
+    return this.api.tx.cennzxSpot.sellAsset(null, assetSold, assetBought, amountSell, minReceive);
   }
 
   /**
@@ -138,7 +138,7 @@ export class CennzxSpot {
     amountSell: AnyNumber,
     minReceive: AnyNumber
   ): SubmittableExtrinsic<'promise'> {
-    return this.api.tx.cennzxSpot.assetSwapInput(recipient, assetSold, assetBought, amountSell, minReceive);
+    return this.api.tx.cennzxSpot.sellAsset(recipient, assetSold, assetBought, amountSell, minReceive);
   }
 
   /**
@@ -198,7 +198,7 @@ export class CennzxSpot {
    * @param assetId The id of the asset
    * @param liquidity - user liquidity
    */
-  get assetToWithdraw(): QueryableGetAssetWithdrawn {
+  get getAssetToWithdraw(): QueryableGetAssetWithdrawn {
     const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawn;
     _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
 

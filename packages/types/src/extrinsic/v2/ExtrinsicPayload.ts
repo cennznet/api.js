@@ -13,13 +13,12 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import { Bytes, Compact, Struct, u32, u64 } from '@polkadot/types';
-import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces/runtime';
+import { Bytes, Compact, Struct, u32, Option } from '@cennznet/types';
+import { ExtrinsicEra } from '@cennznet/types/primitive';
 import { sign } from '@polkadot/types/primitive/Extrinsic/util';
-import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
-import { u8aConcat } from '@polkadot/util';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@cennznet/types/types';
 
-import Option from '@polkadot/types/codec/Option';
+import { Balance, Hash } from '@cennznet/types/interfaces';
 import Doughnut from '../../Doughnut';
 import { ChargeTransactionPayment, Index } from '../../runtime';
 import { CennznetInterfaceTypes } from '../types';

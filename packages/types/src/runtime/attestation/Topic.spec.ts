@@ -1,5 +1,5 @@
 import AttestationTopic from './Topic';
-import {TypeRegistry} from '@polkadot/types';
+import { TypeRegistry } from '@cennznet/types';
 
 const registry = new TypeRegistry();
 describe('AttestationTopic', () => {

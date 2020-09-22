@@ -947,6 +947,16 @@
   resolved "https://registry.yarnpkg.com/@cennznet/cennznut-wasm/-/cennznut-wasm-0.0.1-dev.0.tgz#ca14f8cdc24fc3865424303510492d96a166de0b"
   integrity sha512-twB1kO8SjdsGRf4epz7aq7LhELQky2ed9tVE8hB2VykXNwBvgJhmBdRDOu5HSSxwiR7WNdJk0LwPfVLnhE6W7g==
 
+"@cennznet/crml-cennzx-spot@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@cennznet/crml-cennzx-spot/-/crml-cennzx-spot-1.2.1.tgz#9fadab2420dd47b3f262113cd2c138ca3584a7b7"
+  integrity sha512-nHKX9NlNjxmPNbOvxhetqBm9/QvH5Jd6ZebDX+gaFolzLvk64aGgJ1EKnjcI/kf+7ORhHIjN+EP+Pnup/UO+rw==
+  dependencies:
+    "@cennznet/api" "^1.2.1"
+    "@cennznet/crml-generic-asset" "^1.2.1"
+    "@cennznet/types" "^1.2.1"
+    "@cennznet/util" "^1.2.1"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

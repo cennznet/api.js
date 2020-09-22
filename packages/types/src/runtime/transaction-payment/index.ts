@@ -12,11 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Enum, Struct } from '@polkadot/types';
-import Compact from '@polkadot/types/codec/Compact';
-import Option from '@polkadot/types/codec/Option';
-import { AssetId, Balance } from '@polkadot/types/interfaces/runtime';
-import { Registry } from '@polkadot/types/types';
+import { Enum, Struct, Compact, Option } from '@cennznet/types';
+import { AssetId, Balance } from '@cennznet/types/interfaces';
+import { Registry } from '@cennznet/types/types';
 
 /* [[FeeExchangeV1]] when included in a transaction it indicates network fees should be
  * paid in `assetId` by paying up to `maxPayment` after the exchange rate is calculated.

@@ -14,7 +14,6 @@
 
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
-import initApiPromise from '../../../../jest/initApiPromise';
 import config from '../../../../config';
 import { Metadata } from '@cennznet/types';
 
@@ -40,7 +39,7 @@ describe('e2e api create', () => {
     } catch (e) {}
   });
 
-  it('should create an Api instance with the timeout option', async () => {
+  it('Should create an Api instance with the timeout option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider, timeout: 1000000});
 
@@ -49,13 +48,13 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
-  it('should get rejected if the connection fails', async () => {
+  it('Should get rejected if the connection fails', async () => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
     await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
       'Connection fail');
   });
 
-  it('should get rejected if it is not resolved in a specific period of time', async () => {
+  it('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
       'Timed out in 1 ms.');

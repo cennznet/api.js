@@ -1,4 +1,4 @@
-import { ClassOf, TypeRegistry } from '@polkadot/types';
+import { ClassOf, TypeRegistry } from '@cennznet/types';
 
 const registry = new TypeRegistry();
 export default class FeeRate extends ClassOf(registry, 'u128') {

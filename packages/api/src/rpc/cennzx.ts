@@ -4,7 +4,7 @@ import createMethod from '@polkadot/jsonrpc/create/method';
 import createParam from '@polkadot/jsonrpc/create/param';
 
 const buyPrice: RpcMethodOpt = {
-  description: 'Retrieves the spot exchange buy price',
+  description: 'Retrieves the CENNZX exchange buy price',
   isOptional: true,
   params: [
     createParam('AssetToBuy', 'AssetId'),
@@ -15,7 +15,7 @@ const buyPrice: RpcMethodOpt = {
 };
 
 const sellPrice: RpcMethodOpt = {
-  description: 'Retrieves the spot exchange sell price',
+  description: 'Retrieves the CENNZX exchange sell price',
   isOptional: true,
   params: [
     createParam('AssetToSell', 'AssetId'),
@@ -25,6 +25,7 @@ const sellPrice: RpcMethodOpt = {
   type: 'Balance',
 };
 
+// Returns the core asset price and investment asset's price for investment asset Id
 const liquidityPrice: RpcMethodOpt = {
   description: 'Get the price of liquidity for the given asset ID',
   isOptional: true,
@@ -32,6 +33,7 @@ const liquidityPrice: RpcMethodOpt = {
   type: '(Balance, Balance)' as any,
 };
 
+// Returns liquidity volume, core amount, asset amount for given asset
 const liquidityValue: RpcMethodOpt = {
   description: "Get the value of an account's liquidity for the given asset",
   isOptional: true,

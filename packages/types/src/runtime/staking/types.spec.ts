@@ -1,5 +1,5 @@
-import {RewardDestination} from '.';
-import {TypeRegistry, createType} from '@polkadot/types';
+import { RewardDestination } from '.';
+import { TypeRegistry, createType } from '@cennznet/types';
 
 const registry = new TypeRegistry();
 registry.register(RewardDestination);
@@ -17,14 +17,14 @@ describe('RewardDestination', (): void => {
     expect(destinationControllerStr.isController).toBeTruthy();
 
     const destinationAccountAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
-    const destinationAccount = createType(registry, 'RewardDestination', {account: destinationAccountAddress}, 2);
+    const destinationAccount = createType(registry, 'RewardDestination', { account: destinationAccountAddress }, 2);
     expect(destinationAccount.asAccount.toString()).toEqual(destinationAccountAddress);
     expect(destinationAccount.isAccount).toBeTruthy();
-    const destinationAccountStr = createType(registry, 'RewardDestination', {account: destinationAccountAddress});
+    const destinationAccountStr = createType(registry, 'RewardDestination', { account: destinationAccountAddress });
     expect(destinationAccountStr.asAccount.toString()).toEqual(destinationAccountAddress);
     expect(destinationAccountStr.isAccount).toBeTruthy();
 
-    const destinationPayee = new RewardDestination(registry, {account: destinationAccountAddress});
+    const destinationPayee = new RewardDestination(registry, { account: destinationAccountAddress });
     expect(destinationPayee.asAccount.toString()).toEqual(destinationAccountAddress);
     expect(destinationPayee.isAccount).toBeTruthy();
   });

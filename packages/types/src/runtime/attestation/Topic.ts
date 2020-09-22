@@ -15,8 +15,8 @@
 /*
     Custom `Topic` type for Attestation module.
  */
-import { ClassOf, TypeRegistry } from '@polkadot/types';
-import { Registry } from '@polkadot/types/types';
+import { ClassOf, TypeRegistry } from '@cennznet/types';
+import { Registry } from '@cennznet/types/types';
 import { isHex, isString, stringToU8a, u8aToString } from '@polkadot/util';
 
 function isAscii(str: string) {

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createTypeUnsafe, TypeRegistry} from '@polkadot/types';
+import { createTypeUnsafe, TypeRegistry } from '@cennznet/types';
 
 import * as cennzxTypes from './';
 import ExchangeKey from './ExchangeKey';
 import FeeRate from './FeeRate';
-import {IExchangeKey} from './types';
+import { IExchangeKey } from './types';
 
 const registry = new TypeRegistry();
 registry.register(cennzxTypes);

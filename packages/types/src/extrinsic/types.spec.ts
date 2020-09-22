@@ -1,5 +1,5 @@
-import {TypeRegistry, createType} from '@polkadot/types';
-import {Phase} from './types';
+import { TypeRegistry, createType } from '@cennznet/types';
+import { Phase } from './types';
 
 const registry = new TypeRegistry();
 registry.register(Phase);

@@ -44,7 +44,7 @@ describe('e2e transactions', () => {
 
   describe('Send', () => {
 
-    it('makes a tx using immortal era', async done => {
+    it('Makes a tx using immortal era', async done => {
       const nonce = await api.query.system.accountNonce(bob.address);
       await api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 100)
@@ -58,7 +58,7 @@ describe('e2e transactions', () => {
           });
     });
 
-    it('makes a tx via send', async done => {
+    it('Makes a tx via send', async done => {
       const nonce = await api.query.system.accountNonce(bob.address);
       const tx = api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 1)
@@ -72,7 +72,7 @@ describe('e2e transactions', () => {
       });
     });
 
-    it('makes a tx', async done => {
+    it('Makes a tx', async done => {
       const nonce = await api.query.system.accountNonce(bob.address);
       await api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 1)
@@ -152,7 +152,7 @@ describe('e2e transactions', () => {
 
     });
 
-    it('uses keypair to sign', async done => {
+    it('Uses keypair to sign', async done => {
       const feeExchange = {
         FeeExchangeV1: {
           assetId: feeAssetId,
@@ -173,7 +173,7 @@ describe('e2e transactions', () => {
         );
     });
 
-    it('use signer', async done => {
+    it('Use signer', async done => {
       const feeExchange = {
         FeeExchangeV1: {
           assetId: feeAssetId,
@@ -193,7 +193,7 @@ describe('e2e transactions', () => {
       );
     });
 
-    it('update asset info', async done => {
+    it('Update asset info', async done => {
       const nonce = await api.query.system.accountNonce(assetOwner.address);
       await api.tx.genericAsset.updateAssetInfo(
         feeAssetId,

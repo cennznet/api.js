@@ -1,4 +1,4 @@
-import {createType, TypeRegistry} from '@polkadot/types';
+import { createType, TypeRegistry } from '@cennznet/types';
 
 import BalanceLock from './BalanceLock';
 

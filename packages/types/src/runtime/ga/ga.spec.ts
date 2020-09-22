@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createTypeUnsafe, TypeRegistry, u32} from '@polkadot/types';
+import { createTypeUnsafe, TypeRegistry } from '@cennznet/types';
 
 import * as gaTypes from './';
 import AssetOptions from './AssetOptions';
 import PermissionsV1 from './PermissionsV1';
-import ExchangeKey from '@cennznet/types/runtime/cennzx/ExchangeKey';
-import FeeRate from '@cennznet/types/runtime/cennzx/FeeRate';
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 

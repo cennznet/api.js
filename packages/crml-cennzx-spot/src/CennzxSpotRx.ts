@@ -201,7 +201,7 @@ export class CennzxSpotRx {
    * @param assetId The id of the asset
    * @param liquidity - user liquidity
    */
-  get assetToWithdraw(): QueryableGetAssetWithdrawnRx {
+  get getAssetToWithdraw(): QueryableGetAssetWithdrawnRx {
     const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawnRx;
     _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
 

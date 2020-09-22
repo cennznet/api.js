@@ -32,17 +32,17 @@ describe('e2e api calls', () => {
     done();
   });
 
-  it('get correct block', async () => {
+  it('Get correct block', async () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     expect(block.header.hash.toString()).toEqual(blockHash.toString());
   });
 
-  it('get correct validators', async () => {
+  it('Get correct validators', async () => {
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
     expect(validators.length).toBeGreaterThan(0);
   });
 
-  it('expect author is in validators', async () => {
+  it('Expect author is in validators', async () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     const header = block.header;
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
@@ -51,13 +51,13 @@ describe('e2e api calls', () => {
     expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
   });
 
-  it('expect at least one event', async () => {
+  it('Expect at least one event', async () => {
     const events: EventRecord[] = (await api.query.system.events.at(blockHash)) as any;
     expect(events.length).toBeGreaterThan(0);
   });
 
   describe('Get session info', () => {
-    it('get correct session information (length, last length, era, current index, session per era', async () => {
+    it('Get correct session information (length, last length, era, current index, session per era', async () => {
       const currentSession = await api.derive.session.info();
       expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
@@ -72,12 +72,12 @@ describe('e2e api calls', () => {
   });
 
   describe('Get core asset id', () => {
-    it('get correct spending asset id', async () => {
+    it('Get correct spending asset id', async () => {
       const spendingAssetId = (await api.query.genericAsset.spendingAssetId.at(blockHash)) as AssetId;
       expect(spendingAssetId.gtn(0)).toBeTruthy();
     });
 
-    it('get correct staking asset id', async () => {
+    it('Get correct staking asset id', async () => {
       const stakingAssetId = (await api.query.genericAsset.stakingAssetId.at(blockHash)) as AssetId;
       expect(stakingAssetId.gtn(0)).toBeTruthy();
     });
