@@ -58,7 +58,7 @@ workflows:
   run-build:
     jobs:
       - build
-      - publish:
+      - publish
           # TODO uncomment the filter after the test
           # filters:
           #  branches:
