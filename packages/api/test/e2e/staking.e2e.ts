@@ -64,7 +64,7 @@ describe('Staking Operations', () => {
 
   });
 
-  test('bond locks caller funds and assigns a controller account', async done => {
+  test('Bond locks caller funds and assigns a controller account', async done => {
     const bond = (await api.query.staking.minimumBond()) + 12_345;
 
     await api.tx.staking.bond(controller.address, bond, 'controller').signAndSend(stash, async ({ status }) => {
@@ -81,7 +81,7 @@ describe('Staking Operations', () => {
 
   });
 
-  test('bond extra locks additional funds', async done => {
+  test('Bond extra locks additional funds', async done => {
 
     const additionalBond = 333;
     const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
@@ -97,7 +97,7 @@ describe('Staking Operations', () => {
     await api.tx.staking.bondExtra(additionalBond).signAndSend(stash);
   });
 
-  test('unbond schedules some funds to unlock', async done => {
+  test('Unbond schedules some funds to unlock', async done => {
     const unbondAmount = 500;
     const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
@@ -113,7 +113,7 @@ describe('Staking Operations', () => {
   });
 
   /// Rebond a portion of the stash scheduled to be unlocked.
-  test('rebond locks funds again', async done => {
+  test('Rebond locks funds again', async done => {
     const rebondAmount = 300;
     const previousLedger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
 
@@ -128,7 +128,7 @@ describe('Staking Operations', () => {
     await api.tx.staking.rebond(rebondAmount).signAndSend(controller);
   });
 
-  test('withdraw unbonded', async done => {
+  test('Withdraw unbonded', async done => {
     await api.tx.staking.withdrawUnbonded().signAndSend(controller, ({ status, events }) => {
       if (status.isInBlock) {
         expect(
@@ -139,7 +139,7 @@ describe('Staking Operations', () => {
     });
   });
 
-  test('validate adds stash as a validator candidate', async done => {
+  test('Validate adds stash as a validator candidate', async done => {
     // parts per billion
     // 100,000,000 / 1,000,000,000 == 0.1%
     const commission = 1_000_000_000;
@@ -155,7 +155,7 @@ describe('Staking Operations', () => {
     await api.tx.staking.validate({ commission }).signAndSend(controller, checkCommission);
   });
 
-  test('chill removes stash from validator candidacy', async done => {
+  test('Chill removes stash from validator candidacy', async done => {
 
     const checkCommission = async ({ status }) => {
       if (status.isInBlock) {

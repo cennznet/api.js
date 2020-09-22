@@ -17,8 +17,6 @@ import { AnyAssetId, AnyNumber, Registry } from '@cennznet/types/types';
 import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
 import BN from 'bn.js';
 
-import { MAX_U128, PERMILL_BASE, ROUND_UP } from '../constants';
-
 /**
  * Generate the key of the balance storage
  * @param prefixString
@@ -44,6 +42,13 @@ export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, asse
   return new Tuple(registry, [AssetId, AssetId], [coreAssetId, assetId]);
 }
 
+/**
+ * get the amount of core asset and other asset that can be withdrawn for given liquidity amount
+ * @param liquidity
+ * @param coreReserve
+ * @param assetReserve
+ * @param totalLiquidity
+ */
 export function getAssetToWithdraw(liquidity: BN, coreReserve: BN, assetReserve: BN, totalLiquidity: BN) {
   if (liquidity.gt(totalLiquidity)) {
     throw new Error('Tried to overdraw liquidity');

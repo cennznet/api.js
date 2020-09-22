@@ -35,7 +35,7 @@ describe('e2e queries', () => {
   });
 
   describe('Query storage using at', () => {
-    it('queries correct balance', async done => {
+    it('Queries correct balance', async done => {
       const nextAssetId$ = api.rpc.chain
         .getBlockHash()
         .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));

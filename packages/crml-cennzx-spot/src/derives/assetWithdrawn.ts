@@ -22,6 +22,11 @@ import { getAssetToWithdraw } from '../utils/utils';
 import { poolAssetBalance, poolAssetBalanceAt, poolCoreAssetBalance, poolCoreAssetBalanceAt } from './poolBalance';
 import { totalLiquidity, totalLiquidityAt } from './totalLiquidity';
 
+/**
+ * Given an asset Id and liquidity amount, the function returns the core and asset that can be withdrawn from exchange
+ * @param assetId
+ * @param liquidty
+ */
 export function assetToWithdraw(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId, liquidity: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }> => {
     return combineLatest([
@@ -36,6 +41,12 @@ export function assetToWithdraw(api: ApiInterfaceRx) {
   };
 }
 
+/**
+ * Given an asset Id and liquidity amount, the function returns the core and asset that can be withdrawn from exchange at a blockHash
+ * @param hash - blockHash
+ * @param assetId
+ * @param liquidty
+ */
 export function assetToWithdrawAt(api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId, liquidity: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }> => {
     return combineLatest([

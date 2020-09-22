@@ -20,6 +20,10 @@ import { first, map } from 'rxjs/operators';
 import { generateExchangeAddress } from '../utils/utils';
 import { coreAssetId } from './shared';
 
+/**
+ * Returns the exchange address for a given assetId
+ @param assetId
+ */
 export function exchangeAddress(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<string> =>
     coreAssetId(api)().pipe(

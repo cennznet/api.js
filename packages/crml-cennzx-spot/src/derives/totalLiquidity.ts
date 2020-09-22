@@ -21,6 +21,10 @@ import { switchMap } from 'rxjs/operators';
 import { getExchangeKey } from '../utils/utils';
 import { coreAssetId, coreAssetIdAt } from './shared';
 
+/**
+ * Returns the total liqudity in the exchange for the asset
+ * @param assetId
+ */
 export function totalLiquidity(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<BN> => {
     return coreAssetId(api)().pipe(
@@ -32,6 +36,11 @@ export function totalLiquidity(api: ApiInterfaceRx) {
   };
 }
 
+/**
+ * Returns the total liqudity in the exchange for the asset at a blockHash
+ * @param hash - blockHash
+ * @param assetId
+ */
 export function totalLiquidityAt(api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId): Observable<BN> => {
     return coreAssetIdAt(api)(hash).pipe(

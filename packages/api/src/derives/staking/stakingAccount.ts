@@ -6,7 +6,6 @@ import { memo } from '@polkadot/api-derive/util';
 import { createType, Option, RewardDestination } from '@cennznet/types';
 import {
   AccountId,
-  EraIndex,
   Exposure,
   Keys,
   Nominations,

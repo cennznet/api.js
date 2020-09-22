@@ -20,6 +20,10 @@ import { combineLatest, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { exchangeAddress } from './exchangeAddress';
 
+/**
+ * Returns the amount of asset in the exchange
+ * @param assetId
+ */
 export function poolAssetBalance(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<any> => {
     return exchangeAddress(api)(assetId).pipe(
@@ -29,6 +33,10 @@ export function poolAssetBalance(api: ApiInterfaceRx) {
   };
 }
 
+/**
+ * Returns the amount of core asset in the exchange for the asset
+ * @param assetId
+ */
 export function poolCoreAssetBalance(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<any> => {
     return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
@@ -38,6 +46,11 @@ export function poolCoreAssetBalance(api: ApiInterfaceRx) {
   };
 }
 
+/**
+ * Returns the amount of asset in the exchange at a blockHash
+ * @param hash - blockHash
+ * @param assetId
+ */
 export function poolAssetBalanceAt(api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
     return exchangeAddress(api)(assetId).pipe(
@@ -47,6 +60,11 @@ export function poolAssetBalanceAt(api: ApiInterfaceRx) {
   };
 }
 
+/**
+ * Returns the amount of core asset in the exchange for the asset at a blockHash
+ * @param hash - blockHash
+ * @param assetId
+ */
 export function poolCoreAssetBalanceAt(api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
     return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(

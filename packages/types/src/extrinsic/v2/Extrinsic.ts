@@ -17,7 +17,7 @@
 import { ClassOf, createType, Struct, TypeRegistry } from '@polkadot/types';
 import { Address, Call } from '@polkadot/types/interfaces/runtime';
 import { IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions } from '@polkadot/types/types';
-import { isU8a, u8aConcat } from '@polkadot/util';
+import { isU8a } from '@polkadot/util';
 
 import { ExtrinsicOptions } from '../types';
 import { ExtrinsicPayloadValueV2 } from './ExtrinsicPayload';

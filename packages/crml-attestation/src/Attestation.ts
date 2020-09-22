@@ -48,13 +48,6 @@ export class Attestation {
     return this.api.derive.attestation.getClaim;
   }
 
-  /**
-   * @deprecated use getClaimList() instead
-   */
-  get getClaims(): QueryableGetClaims {
-    return this.api.derive.attestation.getClaims;
-  }
-
   get getClaimList(): QueryableGetClaimList {
     return this.api.derive.attestation.claims;
   }

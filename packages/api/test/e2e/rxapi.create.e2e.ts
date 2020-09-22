@@ -31,7 +31,7 @@ describe('e2e rx api create', () => {
     incorrectApiRx = null;
     done();
   });
-  it('should create an Api instance with the timeout option', async done => {
+  it('Should create an Api instance with the timeout option', async done => {
     const api = await apiRx.toPromise();
 
     api.rpc.chain.getBlockHash().subscribe(hash => {
@@ -40,7 +40,7 @@ describe('e2e rx api create', () => {
     });
   });
 
-  it('should create Api without timeout if timeout is 0', async done => {
+  it('Should create Api without timeout if timeout is 0', async done => {
     const api = await apiRx.toPromise();
     api.rpc.chain.getBlockHash().subscribe(hash => {
       expect(hash).toBeDefined();
@@ -48,11 +48,11 @@ describe('e2e rx api create', () => {
     });
   });
 
-  it('should get error if the connection fails', async () => {
+  it('Should get error if the connection fails', async () => {
     await expect(incorrectApiRx.toPromise()).rejects.toThrow(/Connection fail/);
   });
 
-  it('should get rejected if it is not resolved in a specific period of time', async () => {
+  it('Should get rejected if it is not resolved in a specific period of time', async () => {
     incorrectApiRx = await ApiRx.create({timeout: -1});
 
     await expect(incorrectApiRx.toPromise()).rejects.toThrow(/Timeout has occurred/);

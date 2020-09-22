@@ -191,7 +191,7 @@ describe('SpotX APIs', () => {
             const totalLiquidityBefore = await api.cennzxSpot.getTotalLiquidity(tradeAssetA);
             const removeLiquidity = 10;
             expect(totalLiquidityBefore.gtn(removeLiquidity)).toBeTruthy();
-            const {coreAmount, assetAmount} = await api.cennzxSpot.assetToWithdraw(tradeAssetA, removeLiquidity);
+            const {coreAmount, assetAmount} = await api.cennzxSpot.getAssetToWithdraw(tradeAssetA, removeLiquidity);
             await api.cennzxSpot
                 .removeLiquidity(tradeAssetA, removeLiquidity, 1, 1)
                 .signAndSend(alice, async ({events, status}) => {

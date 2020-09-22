@@ -14,12 +14,12 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 // The estimate can be in any currency(userFeeAssetId) provided there is enough liquidity in the exchange pool for that currency.
 // In case user wants to know estimated fee in different currency, the interface also needs the maxPayment that can used from currency as fee.
 // Scenarios when this function can be useful
-// 1. User wants to show its Dapp user's, price the extrinsic will cost in default currency
+// 1. DAPP creator wants to show price the extrinsic will cost in default currency
 //   const extrinsic = api.tx.genericAsset
 //             .transfer(assetId, address, amount);
 //   const userFeeAssetId = '16001' // default spending asset
 //   const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId})
-// 2. Dapp user's desire to pay fee in different asset(not the default fee asset)
+// 2. DAPP user desire to pay fee in different asset(not the default fee asset)
 //    const extrinsic = api.tx.genericAsset
 //              .transfer(assetId, address, amount);
 //    const userFeeAssetId = '16005' // asset to pay fee in
