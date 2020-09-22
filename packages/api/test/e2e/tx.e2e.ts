@@ -145,7 +145,7 @@ describe('e2e transactions', () => {
         const minimumLiquidity = 1;
         const [coreInvestment, feeInvestment] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
 
-        await api.tx.cennzx
+        await api.tx.cennzxSpot
           .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
           .signAndSend(assetOwner, ({ status }) => status.isInBlock ? done() : null);
       });

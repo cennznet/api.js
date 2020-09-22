@@ -146,8 +146,8 @@ export class CennzxSpotRx {
    * @param assetId
    */
   get getTotalLiquidity(): QueryableTotalLiquidityBalanceRx {
-    const _fn = this.api.derive.cennzx.totalLiquidity as QueryableTotalLiquidityBalanceRx;
-    _fn.at = this.api.derive.cennzx.totalLiquidityAt;
+    const _fn = this.api.derive.cennzxSpot.totalLiquidity as QueryableTotalLiquidityBalanceRx;
+    _fn.at = this.api.derive.cennzxSpot.totalLiquidityAt;
 
     return _fn;
   }
@@ -166,8 +166,8 @@ export class CennzxSpotRx {
    * @param {AnyAddress} address The address of the account
    */
   get getLiquidityBalance(): QueryableGetLiquidityBalanceRx {
-    const _fn = this.api.derive.cennzx.liquidityBalance as QueryableGetLiquidityBalanceRx;
-    _fn.at = this.api.derive.cennzx.liquidityBalanceAt;
+    const _fn = this.api.derive.cennzxSpot.liquidityBalance as QueryableGetLiquidityBalanceRx;
+    _fn.at = this.api.derive.cennzxSpot.liquidityBalanceAt;
 
     return _fn;
   }
@@ -178,8 +178,8 @@ export class CennzxSpotRx {
    * @param assetId The id of the asset
    */
   get getPoolAssetBalance(): QueryableGetPoolBalanceRx {
-    const _fn = this.api.derive.cennzx.poolAssetBalance as QueryableGetPoolBalanceRx;
-    _fn.at = this.api.derive.cennzx.poolAssetBalanceAt;
+    const _fn = this.api.derive.cennzxSpot.poolAssetBalance as QueryableGetPoolBalanceRx;
+    _fn.at = this.api.derive.cennzxSpot.poolAssetBalanceAt;
 
     return _fn;
   }
@@ -190,8 +190,8 @@ export class CennzxSpotRx {
    * @param assetId The id of the asset
    */
   get getPoolCoreAssetBalance(): QueryableGetPoolBalanceRx {
-    const _fn = this.api.derive.cennzx.poolCoreAssetBalance as QueryableGetPoolBalanceRx;
-    _fn.at = this.api.derive.cennzx.poolCoreAssetBalanceAt;
+    const _fn = this.api.derive.cennzxSpot.poolCoreAssetBalance as QueryableGetPoolBalanceRx;
+    _fn.at = this.api.derive.cennzxSpot.poolCoreAssetBalanceAt;
 
     return _fn;
   }
@@ -202,8 +202,8 @@ export class CennzxSpotRx {
    * @param liquidity - user liquidity
    */
   get getAssetToWithdraw(): QueryableGetAssetWithdrawnRx {
-    const _fn = this.api.derive.cennzx.assetToWithdraw as QueryableGetAssetWithdrawnRx;
-    _fn.at = this.api.derive.cennzx.assetToWithdraw;
+    const _fn = this.api.derive.cennzxSpot.assetToWithdraw as QueryableGetAssetWithdrawnRx;
+    _fn.at = this.api.derive.cennzxSpot.assetToWithdraw;
 
     return _fn;
   }
