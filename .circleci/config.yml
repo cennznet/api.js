@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Package
           command: |
+            npm install cpx
             npx lerna exec -- 'cpx package.json build/'
             npx lerna exec -- 'cpx README.md build/'
             npx lerna exec -- 'cpx ../../LICENSE build/'
