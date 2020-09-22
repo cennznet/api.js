@@ -13,8 +13,7 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import { Compact, createType, Struct, TypeRegistry } from '@polkadot/types';
-import Option from '@polkadot/types/codec/Option';
+import { Compact, createType, Struct, Option } from '@cennznet/types';
 import {
   Address,
   Balance,
@@ -24,14 +23,13 @@ import {
   ExtrinsicEra,
   MultiSignature,
   Sr25519Signature,
-} from '@polkadot/types/interfaces/runtime';
-import { ExtrinsicSignatureOptions } from '@polkadot/types/primitive/Extrinsic/types';
-import { IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/types';
+} from '@cennznet/types/interfaces';
+import { IExtrinsicSignature, IKeyringPair, Registry } from '@cennznet/types/types';
 import { u8aConcat } from '@polkadot/util';
 import Doughnut from '../../Doughnut';
 import { ChargeTransactionPayment, Index } from '../../runtime';
 import { EMPTY_U8A, IMMORTAL_ERA } from '../constants';
-import { ExtrinsicV2SignatureOptions } from '../types';
+import { ExtrinsicSignatureOptions, ExtrinsicV2SignatureOptions } from '../types';
 import ExtrinsicPayloadV2, { ExtrinsicPayloadValueV2 } from './ExtrinsicPayload';
 
 /**

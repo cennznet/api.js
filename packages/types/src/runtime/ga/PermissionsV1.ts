@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Struct } from '@polkadot/types';
-import { Registry } from '@polkadot/types/types';
+import { Struct } from '@cennznet/types';
+import { Registry } from '@cennznet/types/types';
 import Owner from './Owner';
 
 /**

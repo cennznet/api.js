@@ -1,6 +1,6 @@
-import { Struct } from '@polkadot/types';
-import { Balance, LockIdentifier } from '@polkadot/types/interfaces';
-import { Registry } from '@polkadot/types/types';
+import { Struct } from '@cennznet/types';
+import { Balance, LockIdentifier } from '@cennznet/types/interfaces';
+import { Registry } from '@cennznet/types/types';
 
 import { WithdrawReasons } from './';
 

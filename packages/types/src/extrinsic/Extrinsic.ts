@@ -5,20 +5,18 @@
 // tslint:disable member-ordering no-magic-numbers
 
 import { ExtrinsicPayloadValueV2 } from '@cennznet/types/extrinsic/v2/ExtrinsicPayload';
-import { ClassOf, Compact, TypeRegistry } from '@polkadot/types';
+import { ClassOf, Compact } from '@cennznet/types';
 import Base from '@polkadot/types/codec/Base';
-import { Address, Balance, Call, EcdsaSignature, Ed25519Signature, Sr25519Signature } from '@polkadot/types/interfaces';
-import { FunctionMetadataLatest } from '@polkadot/types/interfaces/metadata';
 import {
-  AnyU8a,
-  ArgsDef,
-  Codec,
-  IExtrinsic,
-  IExtrinsicEra,
-  IHash,
-  IKeyringPair,
-  Registry,
-} from '@polkadot/types/types';
+  Address,
+  Balance,
+  Call,
+  EcdsaSignature,
+  Ed25519Signature,
+  Sr25519Signature,
+  FunctionMetadataLatest,
+} from '@cennznet/types/interfaces';
+import { AnyU8a, ArgsDef, Codec, IExtrinsic, IExtrinsicEra, IKeyringPair, Registry } from '@cennznet/types/types';
 import { assert, isHex, isU8a, u8aConcat, u8aToHex, u8aToU8a } from '@polkadot/util';
 import { ChargeTransactionPayment, Index } from '../runtime';
 import { BIT_SIGNED, BIT_UNSIGNED, DEFAULT_VERSION } from './constants';

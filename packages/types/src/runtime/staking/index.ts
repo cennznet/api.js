@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Enum } from '@polkadot/types';
-import { Registry } from '@polkadot/types/types';
+import { Enum } from '@cennznet/types';
+import { Registry } from '@cennznet/types/types';
 import { AccountId } from '@cennznet/types/interfaces';
 
 // Specifies which account staking rewards should be paid too.

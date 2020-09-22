@@ -12,19 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Enum } from '@polkadot/types';
-import { Option, Vec } from '@polkadot/types/codec';
+import { Enum, Option, Vec } from '@cennznet/types';
 import { InterfaceRegistry } from '@polkadot/types/interfaceRegistry';
-import {
-  AnyNumber,
-  AnyU8a,
-  IExtrinsicEra,
-  IExtrinsicImpl as IExtrinsicImplBase,
-  IMethod,
-  ITuple,
-  RuntimeVersionInterface,
-  SignatureOptions as SignatureOptionsBase,
-} from '@polkadot/types/types';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IMethod, ITuple, RuntimeVersionInterface } from '@cennznet/types/types';
+import { SignatureOptions as SignatureOptionsBase } from '@polkadot/types/types';
 import { AccountId } from '@cennznet/types/interfaces';
 import Doughnut from '../Doughnut';
 import { AssetId, AssetInfo } from '../runtime/ga';

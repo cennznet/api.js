@@ -16,8 +16,8 @@
  Custom `AssetInfo` type for generic asset module.
 */
 
-import { Struct, u8, Vec } from '@polkadot/types';
-import { Registry } from '@polkadot/types/types';
+import { Struct, u8, Vec } from '@cennznet/types';
+import { Registry } from '@cennznet/types/types';
 
 export default class AssetInfo extends Struct {
   constructor(registry: Registry, value: any) {

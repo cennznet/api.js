@@ -14,12 +14,13 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import { ClassOf, createType, Struct, TypeRegistry } from '@polkadot/types';
+import { ClassOf, createType, Struct } from '@cennznet/types';
 import { Address, Call } from '@polkadot/types/interfaces/runtime';
-import { IExtrinsicImpl, IKeyringPair, Registry, SignatureOptions } from '@polkadot/types/types';
+import { IExtrinsicImpl, IKeyringPair, Registry } from '@cennznet/types/types';
+import { SignatureOptions } from '@polkadot/types/types';
 import { isU8a } from '@polkadot/util';
-
 import { ExtrinsicOptions } from '../types';
+
 import { ExtrinsicPayloadValueV2 } from './ExtrinsicPayload';
 import ExtrinsicSignatureV2 from './ExtrinsicSignature';
 

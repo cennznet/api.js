@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import logger from '@cennznet/api/util/logging';
-import Raw from '@polkadot/types/codec/Raw';
-import { AnyU8a, Registry } from '@polkadot/types/types';
+import { Raw } from '@cennznet/types';
+import { AnyU8a, Registry } from '@cennznet/types/types';
 
 /**
  * A v0 Doughnut certificate

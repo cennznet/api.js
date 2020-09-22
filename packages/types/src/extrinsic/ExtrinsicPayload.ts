@@ -4,10 +4,10 @@
 
 // tslint:disable member-ordering no-magic-numbers
 
-import { Compact, Raw, u32 } from '@polkadot/types';
+import { Compact, Raw, u32 } from '@cennznet/types';
 import Base from '@polkadot/types/codec/Base';
-import { Balance, Hash } from '@polkadot/types/interfaces/runtime';
-import { IExtrinsicEra, IKeyringPair, Registry } from '@polkadot/types/types';
+import { Balance, Hash } from '@cennznet/types/interfaces';
+import { IExtrinsicEra, IKeyringPair, Registry } from '@cennznet/types/types';
 
 import { u8aToHex } from '@polkadot/util';
 

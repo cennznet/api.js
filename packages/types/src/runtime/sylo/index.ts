@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ClassOf, Enum, Null, Struct, Text, Tuple, TypeRegistry, Vec } from '@polkadot/types';
-import { Registry } from '@polkadot/types/types';
+import { ClassOf, Enum, Null, Struct, Text, Tuple, TypeRegistry, Vec } from '@cennznet/types';
+import { Registry } from '@cennznet/types/types';
 import { u8aToHex } from '@polkadot/util';
 
 const GROUP_JSON_MAP = new Map([['groupId', 'group_id']]);

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Compact, Option, Struct, u8 } from '@polkadot/types';
+import { Compact, Option, Struct, u8 } from '@cennznet/types';
 import {
   Address,
   Balance,
@@ -12,14 +12,14 @@ import {
   Hash,
   Index,
   RuntimeVersion,
-} from '@polkadot/types/interfaces';
+} from '@cennznet/types/interfaces';
 import {
   Codec,
   Constructor,
   ISignerPayload,
   SignerPayloadJSON as SignerPayloadJSONBase,
   SignerPayloadRaw,
-} from '@polkadot/types/types';
+} from '@cennznet/types/types';
 import { u8aToHex } from '@polkadot/util';
 
 import Doughnut from '../Doughnut';
