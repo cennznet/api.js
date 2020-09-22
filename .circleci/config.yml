@@ -47,7 +47,6 @@ jobs:
             npx lerna exec -- 'cpx package.json build/'
             npx lerna exec -- 'cpx README.md build/'
             npx lerna exec -- 'cpx ../../LICENSE build/'
-            npx lerna exec -- 'cd build'
       - run:
           name: Publish
           command: |
