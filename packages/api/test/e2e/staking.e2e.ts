@@ -282,18 +282,17 @@ describe('Staking Governance (Sudo Required)', () => {
 
   test('Force unstake', async done => {
     const bobStash = keyring.addFromUri('//Bob//stash');
-    // Wrap a promise
-    await new Promise(async(resolve) => {
+    new Promise(async (resolve) => {
       // bond bob's stash account.
       await api.tx.staking.bond(bob.address, 10_000, 'controller')
-          .signAndSend( bobStash, async ({events, status}) => {
+          .signAndSend( bobStash, async ({ status }) => {
             if (status.isInBlock) {
                   const controller = (await api.query.staking.bonded(bobStash.address)) as Option<AccountId>;
                   expect(controller.unwrapOr(null)).toBeDefined();
                   resolve();
             }
           });
-    }).then(async ()=>{
+    }).then(async () => {
       const unstake = api.tx.staking.forceUnstake(bobStash.address);
       await api.tx.sudo.sudo(unstake).signAndSend(alice);
         // bob stash is removed / unbonded
