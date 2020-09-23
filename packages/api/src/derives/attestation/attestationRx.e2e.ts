@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
 import { filter, first } from 'rxjs/operators';
 
 import { ApiRx } from '@cennznet/api';
-import { AttestationValue, TypeRegistry } from '@cennznet/types';
+import { AttestationValue, H256, TypeRegistry } from '@cennznet/types';
 import testKeyring from '@polkadot/keyring/testing';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiRx from '../../../../../jest/initApiRx';
-import { H256 } from '@cennznet/types';
 
 const issuerUri = '//Alice';
 const issuer2Uri = '//Bob';
@@ -66,7 +65,7 @@ describe('AttestationRx APIs', () => {
           }),
           first()
         )
-        .subscribe(({ events, status }) => {
+        .subscribe(({ events }) => {
           for (const {
             event: { method, data },
           } of events) {
@@ -87,10 +86,7 @@ describe('AttestationRx APIs', () => {
   describe('Get Claim', () => {
     it('should get a claim with a specific issuer and holder', done => {
       api.derive.attestation.getClaim(holder.address, issuer.address, topic).subscribe(claim => {
-        // claim is of type AttestationValue (H256), check when it is not default it has the right value
-        if (claim.value.toString() !== new H256(api.registry).toString()) {
-          expect(claim.value.toHex()).toBe(attestationValue.toHex());
-          expect(claim.value.toU8a()).toEqual(attestationValue.toU8a());
+        if (claim.value.toHex() === attestationValue.toHex() && claim.value.toU8a() === attestationValue.toU8a()) {
           done();
         }
       });
@@ -108,7 +104,7 @@ describe('AttestationRx APIs', () => {
             return status.isInBlock && events !== undefined;
           })
         )
-        .subscribe(({ events, status }) => {
+        .subscribe(({ events }) => {
           for (const {
             event: { method, data },
           } of events) {
@@ -135,7 +131,7 @@ describe('AttestationRx APIs', () => {
             return status.isInBlock && events !== undefined;
           })
         )
-        .subscribe(({ events, status }) => {
+        .subscribe(({ events }) => {
           for (const {
             event: { method, data },
           } of events) {
@@ -162,7 +158,7 @@ describe('AttestationRx APIs', () => {
             return status.isInBlock && events !== undefined;
           })
         )
-        .subscribe(({ events, status }) => {
+        .subscribe(({ events }) => {
           for (const {
             event: { method, data },
           } of events) {
@@ -212,11 +208,14 @@ describe('AttestationRx APIs', () => {
       api.derive.attestation
         .getClaims(holder.address, [issuer.address, issuer2.address], [topic, topic2])
         .subscribe(claims => {
+          let claimsForTopic = false;
+          let claimsForTopic2 = false;
           if (claims[topic]) {
             expect(claims[topic][issuer.address].toHex()).toEqual(attestationValue.toHex());
             expect(claims[topic][issuer.address].toU8a()).toEqual(attestationValue.toU8a());
             expect(claims[topic][issuer2.address].toHex()).toEqual(attestationValue.toHex());
             expect(claims[topic][issuer2.address].toU8a()).toEqual(attestationValue.toU8a());
+            claimsForTopic = true;
           }
           if (claims[topic2]) {
             expect(claims[topic2][issuer.address].toHex()).toEqual(attestationValue2.toHex());
@@ -224,9 +223,12 @@ describe('AttestationRx APIs', () => {
 
             expect(claims[topic2][issuer2.address].toHex()).toEqual(attestationValue2.toHex());
             expect(claims[topic2][issuer2.address].toU8a()).toEqual(attestationValue2.toU8a());
+            claimsForTopic2 = true;
+          }
+          if (claimsForTopic && claimsForTopic2) {
+            done();
           }
         });
-      done();
     });
   });
 
@@ -242,7 +244,7 @@ describe('AttestationRx APIs', () => {
             return status.isInBlock && events !== undefined;
           })
         )
-        .subscribe(({ events, status }) => {
+        .subscribe(({ events }) => {
           for (const {
             event: { method, data },
           } of events) {
