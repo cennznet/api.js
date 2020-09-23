@@ -281,26 +281,23 @@ describe('Staking Governance (Sudo Required)', () => {
   });
 
   test('Force unstake', async done => {
-    const bob_stash = keyring.addFromUri('//Bob//stash');
-    // bond bob's stash account.
-    await api.tx.staking.bond(bob.address, 10_000, 'controller').signAndSend(
-      bob_stash,
-      async ({ status }) => {
-        if (status.isInBlock) {
-          const controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
-          expect(controller.unwrapOr(null)).toBeDefined();
-          done();
-        }
-      });
-
-    const unstake = api.tx.staking.forceUnstake(bob_stash.address);
-    await api.tx.sudo.sudo(unstake).signAndSend(alice, async ({ status }) => {
-      if (status.isInBlock) {
+    const bobStash = keyring.addFromUri('//Bob//stash');
+    new Promise(async (resolve) => {
+      // bond bob's stash account.
+      await api.tx.staking.bond(bob.address, 10_000, 'controller')
+          .signAndSend( bobStash, async ({ status }) => {
+            if (status.isInBlock) {
+                  const controller = (await api.query.staking.bonded(bobStash.address)) as Option<AccountId>;
+                  expect(controller.unwrapOr(null)).toBeDefined();
+                  resolve();
+            }
+          });
+    }).then(async () => {
+      const unstake = api.tx.staking.forceUnstake(bobStash.address);
+      await api.tx.sudo.sudo(unstake).signAndSend(alice);
         // bob stash is removed / unbonded
-        const controller = (await api.query.staking.bonded(bob_stash.address)) as Option<AccountId>;
-        expect(controller.unwrapOr(null)).toBeNull();
-        done();
-      }
+      await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
+        (controller.unwrapOr(null) === null) ? done() : null);
     });
   });
 
