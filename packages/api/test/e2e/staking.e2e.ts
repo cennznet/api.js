@@ -293,13 +293,13 @@ describe('Staking Governance (Sudo Required)', () => {
                   resolve();
             }
           });
-    });
-
-    const unstake = api.tx.staking.forceUnstake(bobStash.address);
-    await api.tx.sudo.sudo(unstake).signAndSend(alice);
+    }).then(async ()=>{
+      const unstake = api.tx.staking.forceUnstake(bobStash.address);
+      await api.tx.sudo.sudo(unstake).signAndSend(alice);
         // bob stash is removed / unbonded
-    await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
+      await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
         (controller.unwrapOr(null) === null) ? done() : null);
+    });
   });
 
 });
