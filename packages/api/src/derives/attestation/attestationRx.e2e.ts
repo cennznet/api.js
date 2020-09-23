@@ -86,7 +86,10 @@ describe('AttestationRx APIs', () => {
   describe('Get Claim', () => {
     it('should get a claim with a specific issuer and holder', done => {
       api.derive.attestation.getClaim(holder.address, issuer.address, topic).subscribe(claim => {
-        if (claim.value.toHex() === attestationValue.toHex() && claim.value.toU8a() === attestationValue.toU8a()) {
+        if (
+          claim.value.toHex() === attestationValue.toHex() &&
+          claim.value.toU8a().toString() === attestationValue.toU8a().toString()
+        ) {
           done();
         }
       });
@@ -210,20 +213,19 @@ describe('AttestationRx APIs', () => {
         .subscribe(claims => {
           let claimsForTopic = false;
           let claimsForTopic2 = false;
-          if (claims[topic]) {
-            expect(claims[topic][issuer.address].toHex()).toEqual(attestationValue.toHex());
-            expect(claims[topic][issuer.address].toU8a()).toEqual(attestationValue.toU8a());
-            expect(claims[topic][issuer2.address].toHex()).toEqual(attestationValue.toHex());
-            expect(claims[topic][issuer2.address].toU8a()).toEqual(attestationValue.toU8a());
-            claimsForTopic = true;
-          }
-          if (claims[topic2]) {
-            expect(claims[topic2][issuer.address].toHex()).toEqual(attestationValue2.toHex());
-            expect(claims[topic2][issuer.address].toU8a()).toEqual(attestationValue2.toU8a());
-
-            expect(claims[topic2][issuer2.address].toHex()).toEqual(attestationValue2.toHex());
-            expect(claims[topic2][issuer2.address].toU8a()).toEqual(attestationValue2.toU8a());
-            claimsForTopic2 = true;
+          for (const { value } of claims) {
+            if (
+              value.toHex() === attestationValue.toHex() &&
+              value.toU8a().toString() === attestationValue.toU8a().toString()
+            ) {
+              claimsForTopic = true;
+            }
+            if (
+              value.toHex() === attestationValue2.toHex() &&
+              value.toU8a().toString() === attestationValue2.toU8a().toString()
+            ) {
+              claimsForTopic2 = true;
+            }
           }
           if (claimsForTopic && claimsForTopic2) {
             done();
