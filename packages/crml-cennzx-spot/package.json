@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@cennznet/api": "^1.2.1",
-    "@cennznet/crml-generic-asset": "^1.2.1",
     "@cennznet/types": "^1.2.1",
     "@cennznet/util": "^1.2.1"
   },

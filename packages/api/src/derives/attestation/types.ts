@@ -12,14 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { IPlugin } from '@cennznet/api/types';
-import { Attestation } from './Attestation';
-import { AttestationRx } from './AttestationRx';
-// @ts-ignore
-export default {
-  injectName: 'attestation',
-  sdkClass: Attestation,
-  sdkRxClass: AttestationRx,
-  types: {},
-  derives: {},
-} as IPlugin;
+import { AttestationValue } from '@cennznet/types';
+
+/**
+ * A cryptographic claim about a holder address made by another issuing address.
+ * The claim is made on a certain `topic` with some `value`
+ * An alias for `AttestationValue`
+ */
+export type Claim = {
+  holder: string;
+  issuer: string;
+  topic: string;
+  value: AttestationValue;
+};

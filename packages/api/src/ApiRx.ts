@@ -11,12 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import getPlugins from '@cennznet/api/plugins';
+
 import { mergeDeriveOptions } from '@cennznet/api/util/derives';
-import { injectOption, injectPlugins, mergePlugins } from '@cennznet/api/util/injectPlugin';
-import { AttestationRx } from '@cennznet/crml-attestation';
 import { CennzxSpotRx } from '@cennznet/crml-cennzx-spot';
-import { GenericAssetRx } from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
@@ -27,10 +24,9 @@ import rpc from '@cennznet/api/rpc';
 import { DEFAULT_TIMEOUT } from './Api';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-import { ApiOptions, Derives, IPlugin, SubmittableExtrinsics } from './types';
+import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
-import logger from './util/logging';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
@@ -63,23 +59,7 @@ export class ApiRx extends ApiRxBase {
   }
 
   /**
-   * Attestation CRML extention
-   */
-  get attestation(): AttestationRx {
-    // `injectPlugins` will override this getter.
-    throw new Error('Attestation plugin has not been injected.');
-  }
-
-  /**
-   * Generic Asset CRML extention
-   */
-  get genericAsset(): GenericAssetRx {
-    // `injectPlugins` will override this getter.
-    throw new Error('Generic Asset plugin has not been injected.');
-  }
-
-  /**
-   * Cennzx Spot CRML extention
+   * Cennzx Spot CRML extension
    */
   get cennzxSpot(): CennzxSpotRx {
     // `injectPlugins` will override this getter.
@@ -97,18 +77,5 @@ export class ApiRx extends ApiRxBase {
     options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
-
-    /// TODO: will reintroduce plugins later
-    // let plugins: IPlugin[] = options.plugins || [];
-    // try {
-    //     plugins = mergePlugins(plugins, getPlugins());
-    //     injectOption(options, plugins);
-    // } catch (e) {
-    //     logger.error('plugin loading failed');
-    // }
-
-    // if (plugins) {
-    //     injectPlugins(this.registry, this, plugins);
-    // }
   }
 }

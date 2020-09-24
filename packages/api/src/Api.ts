@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Attestation } from '@cennznet/crml-attestation';
 import { CennzxSpot } from '@cennznet/crml-cennzx-spot';
-import { GenericAsset } from '@cennznet/crml-generic-asset';
 import Types from '@cennznet/types/injects';
 import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
@@ -62,22 +60,6 @@ export class Api extends ApiPromise {
   }
 
   /**
-   * Attestation CRML extention
-   */
-  get attestation(): Attestation {
-    // `injectPlugins` will override this getter.
-    throw new Error('Attestation plugin has not been injected.');
-  }
-
-  /**
-   * Generic Asset CRML extention
-   */
-  get genericAsset(): GenericAsset {
-    // `injectPlugins` will override this getter.
-    throw new Error('Generic Asset plugin has not been injected.');
-  }
-
-  /**
    * Cennzx Spot CRML extention
    */
   get cennzxSpot(): CennzxSpot {
@@ -97,19 +79,6 @@ export class Api extends ApiPromise {
     options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
-
-    /// TODO: will reintroduce plugins later
-    // let plugins: IPlugin[] = options.plugins || [];
-    // try {
-    //     plugins = mergePlugins(plugins, getPlugins());
-    //     injectOption(options, plugins);
-    // } catch (e) {
-    //     logger.error('plugin loading failed');
-    // }
-
-    // if (plugins) {
-    //     injectPlugins(this, plugins);
-    // }
   }
 }
 

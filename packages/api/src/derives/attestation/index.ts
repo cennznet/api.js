@@ -12,7 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { Attestation } from './Attestation';
-export { AttestationRx } from './AttestationRx';
-
-export { default as Plugin } from './plugin';
+export { getClaim } from './getClaim';
+export { getClaims } from './getClaims';
