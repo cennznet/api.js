@@ -12,9 +12,3 @@ See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/ex
 | [@cennznet/types](packages/types)   | CENNZnet specific type definitions                         |
 | [@cennznet/util](packages/util)     | CENNZnet specific utility functions                        |
 
-# CENNZnet Module Libraries
-These libraries provide some syntactic sugar and extensions to the core `@cennznet/api` package.
-
-| Name                                                        | Description                                                          |
-| ----------------------------------------------------------- | -------------------------------------------------------------------- |
-| [@cennznet/crml-cennzx-spot](packages/crml-cennzx-spot)     | An sdk providing additional features for CENNZX spot runtime module   |

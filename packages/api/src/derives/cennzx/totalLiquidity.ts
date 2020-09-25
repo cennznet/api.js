@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import { Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getExchangeKey } from '../utils/utils';
+import { getExchangeKey } from './utils/utils';
 import { coreAssetId, coreAssetIdAt } from './shared';
 
 /**
@@ -30,7 +30,7 @@ export function totalLiquidity(api: ApiInterfaceRx) {
     return coreAssetId(api)().pipe(
       switchMap(coreAssetId => {
         const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
-        return (api.query.cennzxSpot.totalSupply(exchangeKey) as unknown) as Observable<BN>;
+        return (api.query.cennzx.totalLiquidity(exchangeKey) as unknown) as Observable<BN>;
       })
     );
   };
@@ -46,7 +46,7 @@ export function totalLiquidityAt(api: ApiInterfaceRx) {
     return coreAssetIdAt(api)(hash).pipe(
       switchMap(coreAssetId => {
         const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
-        return (api.query.cennzxSpot.totalSupply.at(hash, exchangeKey) as unknown) as Observable<BN>;
+        return (api.query.cennzx.totalSupply.at(hash, exchangeKey) as unknown) as Observable<BN>;
       })
     );
   };

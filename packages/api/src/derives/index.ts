@@ -13,18 +13,18 @@
 // limitations under the License.
 
 import { ApiTypes } from '@cennznet/api/types';
-import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
 import { AnyFunction } from '@cennznet/types/types';
 import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import * as attestation from './attestation';
+import * as cennzx from './cennzx';
 import * as fees from './fees';
 import * as session from './session';
 import * as staking from './staking';
 
 export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = { attestation, cennzxSpot, fees, staking, session };
+export const derive = { attestation, cennzx, fees, staking, session };
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,
