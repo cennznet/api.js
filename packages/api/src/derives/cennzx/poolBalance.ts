@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ export function poolAssetBalance(api: ApiInterfaceRx) {
  */
 export function poolCoreAssetBalance(api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<any> => {
-    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
+    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
       switchMap(([exchangeAddress, coreAssetId]) => api.query.genericAsset.freeBalance(coreAssetId, exchangeAddress)),
       drr()
     );
@@ -67,7 +67,7 @@ export function poolAssetBalanceAt(api: ApiInterfaceRx) {
  */
 export function poolCoreAssetBalanceAt(api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
-    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzxSpot.coreAssetId()]).pipe(
+    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
       switchMap(([exchangeAddress, coreAssetId]) =>
         api.query.genericAsset.freeBalance.at(hash, coreAssetId, exchangeAddress)
       ),

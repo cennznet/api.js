@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,19 +19,18 @@ import { Hash, Permill } from '@cennznet/types/interfaces';
 import { Observable } from 'rxjs';
 
 export function coreAssetId(api: ApiInterfaceRx) {
-  return (): Observable<AssetId> => api.query.cennzxSpot.coreAssetId().pipe(drr()) as Observable<AssetId>;
+  return (): Observable<AssetId> => api.query.cennzx.coreAssetId().pipe(drr()) as Observable<AssetId>;
 }
 
 export function coreAssetIdAt(api: ApiInterfaceRx) {
-  return (hash: Hash): Observable<AssetId> =>
-    api.query.cennzxSpot.coreAssetId.at(hash).pipe(drr()) as Observable<AssetId>;
+  return (hash: Hash): Observable<AssetId> => api.query.cennzx.coreAssetId.at(hash).pipe(drr()) as Observable<AssetId>;
 }
 
 export function defaultFeeRate(api: ApiInterfaceRx) {
-  return (): Observable<Permill> => api.query.cennzxSpot.defaultFeeRate().pipe(drr()) as Observable<Permill>;
+  return (): Observable<Permill> => api.query.cennzx.defaultFeeRate().pipe(drr()) as Observable<Permill>;
 }
 
 export function defaultFeeRateAt(api: ApiInterfaceRx) {
   return (hash: Hash): Observable<Permill> =>
-    api.query.cennzxSpot.defaultFeeRate.at(hash).pipe(drr()) as Observable<Permill>;
+    api.query.cennzx.defaultFeeRate.at(hash).pipe(drr()) as Observable<Permill>;
 }

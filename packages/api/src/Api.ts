@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { CennzxSpot } from '@cennznet/crml-cennzx-spot';
 import Types from '@cennznet/types/injects';
 import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
@@ -57,14 +56,6 @@ export class Api extends ApiPromise {
 
   get derive(): Derives<'promise'> {
     return super.derive as Derives<'promise'>;
-  }
-
-  /**
-   * Cennzx Spot CRML extention
-   */
-  get cennzxSpot(): CennzxSpot {
-    // `injectPlugins` will override this getter.
-    throw new Error('Cennzx Spot plugin has not been injected.');
   }
 
   constructor(_options: ApiOptions = {}) {

@@ -19,7 +19,6 @@
     "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
   },
   "dependencies": {
-    "@cennznet/crml-cennzx-spot": "^1.2.1",
     "@cennznet/types": "^1.2.1",
     "@polkadot/api": "^1.1.1",
     "@polkadot/metadata": "1.1.1",

@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import { Balance, Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getExchangeKey } from '../utils/utils';
+import { getExchangeKey } from './utils';
 import { coreAssetId, coreAssetIdAt } from './shared';
 
 /**
@@ -32,10 +32,9 @@ export function liquidityBalance(api: ApiInterfaceRx) {
     return coreAssetId(api)().pipe(
       switchMap(
         coreAssetId =>
-          api.query.cennzxSpot.liquidityBalance(
-            getExchangeKey(api.registry, coreAssetId, assetId),
-            address
-          ) as Observable<Balance>
+          api.query.cennzx.liquidityBalance(getExchangeKey(api.registry, coreAssetId, assetId), address) as Observable<
+            Balance
+          >
       ),
       drr()
     );
@@ -53,7 +52,7 @@ export function liquidityBalanceAt(api: ApiInterfaceRx) {
     return coreAssetIdAt(api)(hash).pipe(
       switchMap(
         coreAssetId =>
-          api.query.cennzxSpot.liquidityBalance.at(
+          api.query.cennzx.liquidityBalance.at(
             hash,
             getExchangeKey(api.registry, coreAssetId, assetId),
             address

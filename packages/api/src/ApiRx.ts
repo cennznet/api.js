@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { mergeDeriveOptions } from '@cennznet/api/util/derives';
-import { CennzxSpotRx } from '@cennznet/crml-cennzx-spot';
 import Types from '@cennznet/types/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
@@ -56,14 +55,6 @@ export class ApiRx extends ApiRxBase {
 
   get derive(): Derives<'rxjs'> {
     return super.derive as Derives<'rxjs'>;
-  }
-
-  /**
-   * Cennzx Spot CRML extension
-   */
-  get cennzxSpot(): CennzxSpotRx {
-    // `injectPlugins` will override this getter.
-    throw new Error('Cennzx Spot plugin has not been injected.');
   }
 
   constructor(_options: ApiOptions = {}) {
