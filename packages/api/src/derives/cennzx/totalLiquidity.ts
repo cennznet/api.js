@@ -46,7 +46,7 @@ export function totalLiquidityAt(api: ApiInterfaceRx) {
     return coreAssetIdAt(api)(hash).pipe(
       switchMap(coreAssetId => {
         const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
-        return (api.query.cennzx.totalSupply.at(hash, exchangeKey) as unknown) as Observable<BN>;
+        return (api.query.cennzx.totalLiquidity.at(hash, exchangeKey) as unknown) as Observable<BN>;
       })
     );
   };
