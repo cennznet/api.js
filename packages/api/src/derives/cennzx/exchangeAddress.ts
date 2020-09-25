@@ -17,7 +17,7 @@ import { AnyAssetId } from '@cennznet/types/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { generateExchangeAddress } from './utils/utils';
+import { generateExchangeAddress } from './utils';
 import { coreAssetId } from './shared';
 
 /**

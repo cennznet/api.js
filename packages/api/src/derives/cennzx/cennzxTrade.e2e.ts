@@ -145,15 +145,15 @@ describe('Cennzx Operations', () => {
   describe('Trading Operations', () => {
     it('Can trade from asset to core for exact core asset amount', async done => {
       const recipient = null; // in which case the caller receives the exchanged amount
-      const assetToSale = assetA;
+      const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum of assetA willing to pay for the exchange
       // sell assetA to buy coreAsset
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -169,15 +169,15 @@ describe('Cennzx Operations', () => {
     });
     it('Can trade from core to asset for exact trade asset amount', async done => {
       const recipient = null; // in which case the caller receives the exchanged amount
-      const assetToSale = coreAssetId;
+      const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       // sell assetA to buy coreAsset
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -254,11 +254,9 @@ describe('Cennzx Operations', () => {
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
-            let trade = false;
             for (const { event } of events) {
               if (event.method === 'AssetPurchase') {
                 // check if ExtrinsicFailed or successful
-                trade = true;
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedCorePrice)).toBeTruthy();
                 done();
@@ -298,15 +296,15 @@ describe('Cennzx Operations', () => {
 
     it('Get trade asset from buyer and transfer core asset to charlie for exact core asset amount', async done => {
       const recipient = charlie.address; // in which case bob receives the exchanged amount
-      const assetToSale = assetA;
+      const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
       const maxAmountSold = expectedAssetPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -327,15 +325,15 @@ describe('Cennzx Operations', () => {
 
     it('Get core asset from buyer and transfer trade asset to charlie for exact trade asset amount', async done => {
       const recipient = charlie.address; // in which case charlie receives the exchanged amount
-      const assetToSale = coreAssetId;
+      const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -356,14 +354,14 @@ describe('Cennzx Operations', () => {
 
     it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount', async done => {
       const recipient = null; // in which case the caller receives the exchanged amount
-      const assetToSale = assetA;
+      const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -380,15 +378,15 @@ describe('Cennzx Operations', () => {
 
     it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to charlie', async done => {
       const recipient = charlie.address; // in which case the charlie receives the exchanged amount
-      const assetToSale = assetA;
+      const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSale);
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
-        .buyAsset(recipient, assetToSale, assetToBuy, amountBought, maxAmountSold)
+        .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
@@ -442,11 +440,9 @@ describe('Cennzx Operations', () => {
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
-            let trade = false;
             for (const { event } of events) {
               if (event.method === 'AssetPurchase') {
                 //check if ExtrinsicFailed or successful
-                trade = true;
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedPrice)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);

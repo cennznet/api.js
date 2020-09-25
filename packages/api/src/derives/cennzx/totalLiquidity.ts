@@ -18,7 +18,7 @@ import { Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { getExchangeKey } from './utils/utils';
+import { getExchangeKey } from './utils';
 import { coreAssetId, coreAssetIdAt } from './shared';
 
 /**

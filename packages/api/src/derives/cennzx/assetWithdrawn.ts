@@ -18,7 +18,7 @@ import { Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getAssetToWithdraw } from './utils/utils';
+import { getAssetToWithdraw } from './utils';
 import { poolAssetBalance, poolAssetBalanceAt, poolCoreAssetBalance, poolCoreAssetBalanceAt } from './poolBalance';
 import { totalLiquidity, totalLiquidityAt } from './totalLiquidity';
 
