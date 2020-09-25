@@ -21,13 +21,12 @@ import initApiPromise from '../../../../../jest/initApiPromise';
 
 const keyring = testKeyring({ type: 'sr25519' });
 
-describe('Cennzx APIs', () => {
+describe('Cennzx Operations', () => {
   let api;
   let alice, bob, charlie, sudoKeypair, nonce;
   let coreAssetId, assetA, assetB;
 
   beforeAll(async done => {
-    jest.setTimeout(160000);
     await cryptoWaitReady();
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
