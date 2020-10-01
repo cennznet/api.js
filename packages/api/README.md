@@ -2,6 +2,9 @@
 
 The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 
+## Quick Start
+
+You must use **yarn** with @cennznet/api and set the following **resolutions** in your package.json, otherwise your install may break due to breaking changes in downstream package versions.
 
 ## Install
 
