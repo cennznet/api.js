@@ -17,7 +17,9 @@
     "@polkadot/metadata": "1.2.1",
     "@polkadot/api": "1.2.1",
     "@polkadot/api-derive": "1.2.1",
-    "@polkadot/rpc-core": "1.2.1"
+    "@polkadot/rpc-core": "1.2.1",
+    "@polkadot/rpc-provider": "1.2.1",
+    "@polkadot/jsonrpc": "1.2.1"
   },
   "devDependencies": {
     "rimraf": "^3.0.2"

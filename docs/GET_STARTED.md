@@ -21,11 +21,13 @@ Therefore you need to have the following lines in your package.json:
   "@cennznet/api": "^1.0.3"
 },
 "resolutions": {
-  "@polkadot/types": "1.2.1",
-  "@polkadot/metadata": "1.2.1",
-  "@polkadot/api": "1.2.1",
-  "@polkadot/api-derive": "1.2.1",
-  "@polkadot/rpc-core": "1.2.1"
+    "@polkadot/types": "1.2.1",
+    "@polkadot/metadata": "1.2.1",
+    "@polkadot/api": "1.2.1",
+    "@polkadot/api-derive": "1.2.1",
+    "@polkadot/rpc-core": "1.2.1",
+    "@polkadot/rpc-provider": "1.2.1",
+    "@polkadot/jsonrpc": "1.2.1",
 }
 ``` 
 The next step for your project is that you import @cennznet/api in your js code. The best way to do that is through a line such as:
