@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ProviderInterface } from '@polkadot/rpc-provider/types';
-import { isFunction, isObject } from '@polkadot/util';
 import { ApiOptions } from '../types';
 
-export function getTimeout(options: ApiOptions | ProviderInterface = {}): number {
-  return isObject(options) && isFunction((options as ProviderInterface).send)
-    ? undefined
-    : (options as ApiOptions).timeout;
+const DEFAULT_TIMEOUT_MS: number = 10000;
+
+export function getTimeout(options: ApiOptions): number {
+  if (options.timeout) {
+    return options.timeout;
+  }
+  return DEFAULT_TIMEOUT_MS;
 }

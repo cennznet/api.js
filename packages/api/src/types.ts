@@ -47,7 +47,6 @@ import {
   //   SubmittableResultSubscription,
   //   UnsubscribePromise,
 } from '@polkadot/api/types';
-// import { ProviderInterface } from '@polkadot/rpc-provider/types';
 // import { AccountId, Address, Hash } from '@polkadot/types/interfaces';
 // import { StorageEntry } from '@polkadot/types/primitive/StorageKey';
 // export * from '@polkadot/api/types';

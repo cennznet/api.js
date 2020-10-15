@@ -17,11 +17,10 @@ import { mergeDeriveOptions } from '@cennznet/api/util/derives';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
-import { fromEvent, Observable, race, throwError } from 'rxjs';
-import { switchMap, timeout } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 // import rpc from '@cennznet/api/rpc';
-import { DEFAULT_TIMEOUT } from './Api';
 // import derives from './derives';
 import staticMetadata from './staticMetadata';
 // import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
@@ -33,22 +32,19 @@ export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
     const apiRx = new ApiRx(options);
 
-    const timeoutMs = getTimeout(options);
+    apiRx.on('error', (): void => {
+      console.error('An error occurred during connection establishment');
+    });
 
-    const rejectError = fromEvent((apiRx as any)._eventemitter, 'error').pipe(
-      switchMap(err => {
-        // Disconnect provider if API initialization fails
-        apiRx.disconnect();
+    apiRx.on('connected', (): void => {
+      console.info('API has been connected to the endpoint');
+    });
 
-        return throwError(new Error('Connection fail'));
-      })
-    );
-    const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
-    // api$.subscribe(api => api.decorateCennznetExtrinsics());
+    apiRx.on('disconnected', (): void => {
+      console.info('API has been disconnected from the endpoint');
+    });
 
-    return timeoutMs === 0
-      ? race(api$, rejectError)
-      : race(api$.pipe(timeout(timeoutMs || DEFAULT_TIMEOUT)), rejectError);
+    return apiRx.isReady.pipe(timeout(getTimeout(options)));
   }
 
   get tx(): SubmittableExtrinsics<'rxjs'> {

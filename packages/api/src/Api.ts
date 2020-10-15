@@ -15,18 +15,16 @@
 // import Types from '@cennznet/types/injects';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiPromise } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase, ApiTypes, SubmittableExtrinsics } from '@polkadot/api/types';
+import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
 // import derives from './derives';
 // import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 // import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
 import { ApiOptions } from './types';
-import { mergeDeriveOptions } from './util/derives';
+// import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
-
-export const DEFAULT_TIMEOUT = 10000;
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
@@ -75,7 +73,7 @@ export class Api extends ApiPromise {
   }
 }
 
-async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
+async function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
   if (timeoutMs === 0) {
     return promise;
   }
