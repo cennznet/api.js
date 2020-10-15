@@ -95,7 +95,7 @@ declare module '@polkadot/api/types/consts' {
        **/
       maxSignatories: u16 & AugmentedConst<ApiType>;
     };
-    // @ts-ignore  'staking' was also declared at ../node_modules/@polkadot/api/augment/consts.d.ts:277:9
+    // @ts-ignore // staking also exist in polkadot at  ../node_modules/@polkadot/api/augment/consts.d.ts
     staking: {
       [key: string]: Codec;
       /**
