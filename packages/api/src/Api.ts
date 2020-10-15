@@ -42,11 +42,11 @@ export class Api extends ApiPromise {
 
         api.isReady.then(res => {
           //  Remove error listener if API initialization success.
-          //   (api as any).emitter.removeListener('error', rejectError);
+          (api as ApiPromise).off('error', rejectError);
           resolve((res as unknown) as Api);
         }, reject);
 
-        // api.once('error', rejectError);
+        api.once('error', rejectError);
       }),
       getTimeout(options)
     );
