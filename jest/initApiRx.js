@@ -1,7 +1,7 @@
 import {WsProvider} from '@polkadot/api';
 import config from '../config';
 import {ApiRx} from '../packages/api/src/ApiRx';
-import { TypeRegistry } from '@cennznet/types';
+import { TypeRegistry } from '@polkadot/types';
 
 const initApiRx = async () => {
   const providerUrl = config.wsProvider[`${process.env.TEST_TYPE}`] || 'ws://localhost:9944';

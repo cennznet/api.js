@@ -11,9 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@cennznet/types/interfaces';
+// import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@cennznet/types/interfaces';
+import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance, AssetId} from '@polkadot/types/interfaces'
 import {HeaderExtended} from '@polkadot/api-derive';
-import {AssetId, } from '@cennznet/types';
+// import {AssetId, } from '@cennznet/types';
 import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e api calls', () => {
@@ -62,11 +63,9 @@ describe('e2e api calls', () => {
       expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.eraProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.isEpoch).toBe(true);
       expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.sessionProgress.toNumber()).toBeGreaterThanOrEqual(0);
       expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
     });
   });

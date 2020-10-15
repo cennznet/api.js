@@ -14,7 +14,7 @@
 
 import { assert } from '@polkadot/util';
 import BN from 'bn.js';
-import { stripEndZero } from '../format/stripEndZero';
+import stripEndZero from '../format/stripEndZero';
 import isSafeInteger from '../is/integer';
 
 /**

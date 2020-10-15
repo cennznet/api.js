@@ -15,7 +15,7 @@
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';
-import { Metadata } from '@cennznet/types';
+import { Metadata } from '@polkadot/types';
 
 describe('e2e api create', () => {
   let api;

@@ -12,14 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Types from '@cennznet/types/injects';
+// import Types from '@cennznet/types/injects';
+import Types from '@cennznet/types/interfaces/injects';
 import { ApiPromise } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
+import { ApiOptions as ApiOptionsBase, ApiTypes, SubmittableExtrinsics } from '@polkadot/api/types';
 
-import derives from './derives';
-import rpc from './rpc';
+// import derives from './derives';
+// import rpc from './rpc';
 import staticMetadata from './staticMetadata';
-import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+// import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+import { ApiOptions } from './types';
 import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
@@ -40,11 +42,11 @@ export class Api extends ApiPromise {
 
         api.isReady.then(res => {
           //  Remove error listener if API initialization success.
-          (api as any)._eventemitter.removeListener('error', rejectError);
+          //   (api as any).emitter.removeListener('error', rejectError);
           resolve((res as unknown) as Api);
         }, reject);
 
-        api.once('error', rejectError);
+        // api.once('error', rejectError);
       }),
       getTimeout(options)
     );
@@ -54,9 +56,9 @@ export class Api extends ApiPromise {
     return super.tx as SubmittableExtrinsics<'promise'>;
   }
 
-  get derive(): Derives<'promise'> {
-    return super.derive as Derives<'promise'>;
-  }
+  // get derive(): Derives<'promise'> {
+  //   return super.derive as Derives<'promise'>;
+  // }
 
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
@@ -66,8 +68,8 @@ export class Api extends ApiPromise {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
-    options.derives = mergeDeriveOptions(derives, options.derives);
-    options.rpc = { ...(rpc as any), ...options.rpc };
+    // options.derives = mergeDeriveOptions(derives, options.derives);
+    //  options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
   }

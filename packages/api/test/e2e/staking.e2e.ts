@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Option } from '@cennznet/types';
-import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@cennznet/types/interfaces';
+import { Option } from '@polkadot/types';
+import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -45,7 +45,7 @@ describe('Staking Operations', () => {
     // Fund stash and controller
     const stakingId = await api.query.genericAsset.stakingAssetId();
     const spendingId = await api.query.genericAsset.spendingAssetId();
-    let nonce = await api.query.system.accountNonce(alice.address);
+    let nonce = await api.rpc.system.accountNextIndex(alice.address);
 
     // How much to fund stash and controller with
     const initialEndowment = 100_000_000;
