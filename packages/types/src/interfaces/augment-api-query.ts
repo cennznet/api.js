@@ -501,7 +501,7 @@ declare module '@polkadot/api/types/storage' {
        **/
       validators: AugmentedQuery<ApiType, () => Observable<Vec<ValidatorId>>> & QueryableStorageEntry<ApiType>;
     };
-    // @ts-ignore 'staking' was also declared at ../node_modules/@polkadot/api/augment/query.d.ts
+    // @ts-ignore // staking also exist in polkadot at  ../node_modules/@polkadot/api/augment/query.d.ts:583:9
     staking: {
       [key: string]: QueryableStorageEntry<ApiType>;
       /**
