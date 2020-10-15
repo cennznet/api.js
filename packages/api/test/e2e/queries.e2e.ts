@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AssetOptions} from "@cennznet/types/interfaces";
+import {AssetInfo, AssetOptions} from "@cennznet/types/interfaces";
 // import { AssetInfo, AssetOptions, BalanceLock, Vec, WithdrawReasons } from '@polkadot/types';
 import testKeyring from '@polkadot/keyring/testing';
 import { Hash } from '@polkadot/types/interfaces';
@@ -88,34 +88,16 @@ describe('e2e queries', () => {
       const keyring = testKeyring({ type: 'sr25519' });
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoPair = keyring.getPair(sudoKey.toString());
-      const assetOption = {initialIssuance : 0, permissions: {
-          update: null,
-          mint: null,
-          burn: null,
-        }};
-      const assetInfo = {symbol: 'SYLO', decimalPlaces: 3};
+      const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
+      const option = {initialIssuance : 0, permissions};
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
       await api.tx.sudo
         .sudo(api.tx.genericAsset
           .create(alice.address,
-            // new AssetOptions(
-            //   api.registry,
-            //   {
-            //     initialIssuance: 0,
-            //     permissions: {
-            //       update: null,
-            //       mint: null,
-            //       burn: null,
-            //     },
-            //   }),
             assetOption,
             assetInfo
-            // new AssetInfo(
-            //   api.registry,
-            //   {
-            //     symbol: 'SYLO',
-            //     decimalPlaces: 3
-            //   }
-            // )
           ))
         .signAndSend(sudoPair);
     }, 12000);

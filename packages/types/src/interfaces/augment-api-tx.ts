@@ -1062,7 +1062,7 @@ declare module '@polkadot/api/types/submittable' {
        **/
       setKeys: AugmentedSubmittable<(keys: Keys, proof: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
     };
-    // @ts-ignore  'staking' was also declared at ../node_modules/@polkadot/api/augment/tx.d.ts:2365:9
+    // @ts-ignore staking exist at  ../node_modules/@polkadot/api/augment/tx.d.ts
     staking: {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
       /**

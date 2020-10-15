@@ -33,7 +33,7 @@ export default {
     DeviceId: 'u32',
     PreKeyBundle: 'Bytes',
     DeviceIdResponse: 'DeviceId',
-    WithdrawnPreKeyBundle: "('AccountId', 'u32', 'Bytes')",
+    WithdrawnPreKeyBundle: '(AccountId, u32, Bytes)',
     PreKeyBundlesResponse: 'Vec<WithdrawnPreKeyBundle>',
     Response: {
       _enum: {
@@ -43,5 +43,7 @@ export default {
     },
     VaultKey: 'Bytes',
     VaultValue: 'Bytes',
+    MessageId: 'u32',
+    Message: 'Bytes',
   },
 };
