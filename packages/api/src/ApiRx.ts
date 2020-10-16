@@ -20,13 +20,13 @@ import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/a
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
-// import rpc from '@cennznet/api/rpc';
 // import derives from './derives';
 import staticMetadata from './staticMetadata';
 // import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
 import { ApiOptions } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
+import rpc from './rpc';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
@@ -67,7 +67,7 @@ export class ApiRx extends ApiRxBase {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     // options.derives = mergeDeriveOptions(derives as any, options.derives);
-    //  options.rpc = { ...(rpc as any), ...options.rpc };
+    options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
   }

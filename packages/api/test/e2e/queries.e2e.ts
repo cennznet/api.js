@@ -57,16 +57,15 @@ describe('e2e queries', () => {
       expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
     });
 
-    // it('Checks transaction payment', async done => {
-    //
-    //   const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
-    //   console.log('Balance before ', assetBalance.toString());
-    //   const ex = await api.tx.genericAsset
-    //     .transfer(16000, bob.address, 100);
-    //   const payment = await api.rpc.payment.queryInfo(ex.toHex());
-    //   console.log('Payment:', payment.partialFee.toString());
-    //   done();
-    // });
+    it('Checks transaction payment', async done => {
+      const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
+      console.log('Balance before ', assetBalance.toString());
+      const ex = await api.tx.genericAsset
+        .transfer(16000, bob.address, 100);
+      const payment = await api.rpc.payment.queryInfo(ex.toHex());
+      console.log('Payment:', payment.partialFee.toString());
+      done();
+    });
   });
 
   describe('Subscribe storage', () => {

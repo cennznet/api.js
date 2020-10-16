@@ -1,9 +1,11 @@
-// import cennzx from './cennzx';
-// import genericAsset from './genericAsset';
-//
-// const interfaces: Record<string, object> = {
-//   cennzx,
-//   genericAsset,
-// };
-//
-// export default interfaces;
+import cennzxRpc from './cennzx';
+import genericAssetRpc from './genericAsset';
+import paymentRpc from './payment';
+
+const interfaces = {
+  cennzx: cennzxRpc,
+  genericAsset: genericAssetRpc,
+  payment: paymentRpc,
+};
+
+export default interfaces;
