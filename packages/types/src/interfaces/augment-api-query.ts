@@ -6,8 +6,8 @@ import { Option, U8aFixed, Vec } from '@polkadot/types/codec';
 import { Bytes, Data, bool, u32, u64 } from '@polkadot/types/primitive';
 import { ExchangeKey, FeeRate } from './cennzx';
 import { AssetInfo } from './ga';
-import { DeviceId, Group, Message, MessageId, PreKeyBundle, Response, VaultKey, VaultValue } from './sylo';
 import { RewardBalanceOf } from './staking';
+import { DeviceId, Group, Message, MessageId, PreKeyBundle, Response, VaultKey, VaultValue } from './sylo';
 import { UncleEntryItem } from '@polkadot/types/interfaces/authorship';
 import {
   BabeAuthorityWeight,

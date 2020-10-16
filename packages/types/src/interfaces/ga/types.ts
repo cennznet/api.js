@@ -5,16 +5,16 @@ import { Compact, Enum, Struct } from '@polkadot/types/codec';
 import { Bytes, u8 } from '@polkadot/types/primitive';
 import { AccountId, Balance } from '@polkadot/types/interfaces/runtime';
 
-/** @name AssetOptions */
-export interface AssetOptions extends Struct {
-  readonly initialIssuance: Compact<Balance>;
-  readonly permissions: PermissionLatest;
-}
-
 /** @name AssetInfo */
 export interface AssetInfo extends Struct {
   readonly symbol: Bytes;
   readonly decimalPlaces: u8;
+}
+
+/** @name AssetOptions */
+export interface AssetOptions extends Struct {
+  readonly initialIssuance: Compact<Balance>;
+  readonly permissions: PermissionLatest;
 }
 
 /** @name Owner */

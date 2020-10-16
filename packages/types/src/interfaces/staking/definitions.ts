@@ -2,5 +2,6 @@
 export default {
   types: {
     RewardBalance: 'Balance',
+    RewardBalanceOf: 'Balance',
   },
 };

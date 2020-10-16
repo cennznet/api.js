@@ -2,8 +2,12 @@ export default {
   rpc: {},
   types: {
     AssetOptions: {
-      initial_issuance: 'Compact<Balance>',
+      initialIssuance: 'Compact<Balance>',
       permissions: 'PermissionLatest',
+    },
+    AssetInfo: {
+      symbol: 'Vec<u8>',
+      decimalPlaces: 'u8',
     },
     Owner: {
       _enum: {
