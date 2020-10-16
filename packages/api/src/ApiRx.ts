@@ -32,19 +32,23 @@ export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
     const apiRx = new ApiRx(options);
 
-    apiRx.on('error', (): void => {
-      console.error('An error occurred during connection establishment');
+    const observable: Observable<ApiRx> = new Observable(x => {
+      apiRx.on('error', (): void => {
+        x.error(new Error('Connection fail'));
+      });
+      apiRx.on('disconnected', (): void => {
+        x.error(new Error('Disconnected'));
+      });
+      apiRx.on('connected', (): void => {
+        console.info('API has been connected to the endpoint');
+      });
+      apiRx.once('ready', (): void => {
+        x.next(apiRx);
+        x.complete();
+      });
     });
 
-    apiRx.on('connected', (): void => {
-      console.info('API has been connected to the endpoint');
-    });
-
-    apiRx.on('disconnected', (): void => {
-      console.info('API has been disconnected from the endpoint');
-    });
-
-    return apiRx.isReady.pipe(timeout(getTimeout(options)));
+    return observable.pipe(timeout(getTimeout(options)));
   }
 
   get tx(): SubmittableExtrinsics<'rxjs'> {
