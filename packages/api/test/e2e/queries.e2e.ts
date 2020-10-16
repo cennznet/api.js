@@ -115,23 +115,23 @@ describe('e2e queries', () => {
   });
 
   describe('Staking account derived query', () => {
-    // it('Gets staking account details', async done => {
-    //   const stashId = aliceStash.address;
-    //   const stakingAccount = await api.derive.staking.accountInfo(stashId);
-    //   expect(stakingAccount.accountId.toString()).toBe(stashId);
-    //   expect(stakingAccount.controllerId.toString()).toBe(alice.address);
-    //   expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
-    //   expect(stakingAccount.rewardDestination.isStash).toBeTruthy();
-    //   expect(stakingAccount.stakers).toBeDefined();
-    //   expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
-    //   expect(stakingAccount.validatorPrefs[0]).toBe('commission');
-    //   expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
-    //   const stakingSessionDetails = await api.derive.session.keyInfo(stashId);
-    //   const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
-    //   expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
-    //   expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);
-    //   done();
-    // });
+    it('Gets staking account details', async done => {
+      const stashId = aliceStash.address;
+      const stakingAccount = await api.derive.staking.accountInfo(stashId);
+      expect(stakingAccount.accountId.toString()).toBe(stashId);
+      expect(stakingAccount.controllerId.toString()).toBe(alice.address);
+      expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
+      expect(stakingAccount.rewardDestination.isStash).toBeTruthy();
+      expect(stakingAccount.stakers).toBeDefined();
+      expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
+      expect(stakingAccount.validatorPrefs[0]).toBe('commission');
+      expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
+      const stakingSessionDetails = await api.derive.session.keyInfo(stashId);
+      const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
+      expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
+      expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);
+      done();
+    });
   });
 
   // describe('Generic Asset Storage', () => {

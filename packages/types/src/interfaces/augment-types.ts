@@ -30,7 +30,7 @@ import {
 import { AttestationTopic, AttestationValue } from './attestation';
 import { ExchangeKey, FeeRate } from './cennzx';
 import { AssetInfo } from './ga';
-import { RewardBalance, RewardBalanceOf } from './staking';
+import { RewardBalance, RewardBalanceOf, RewardDestination } from './staking';
 import {
   AcceptPayload,
   DeviceId,
@@ -1815,6 +1815,12 @@ declare module '@polkadot/types/types/registry' {
     RewardBalanceOf: RewardBalanceOf;
     'Option<RewardBalanceOf>': Option<RewardBalanceOf>;
     'Vec<RewardBalanceOf>': Vec<RewardBalanceOf>;
+    // @ts-ignore
+    RewardDestination: RewardDestination;
+    // @ts-ignore
+    'Option<RewardDestination>': Option<RewardDestination>;
+    // @ts-ignore
+    'Vec<RewardDestination>': Vec<RewardDestination>;
     Meta: Meta;
     'Option<Meta>': Option<Meta>;
     'Vec<Meta>': Vec<Meta>;

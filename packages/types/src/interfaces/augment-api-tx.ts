@@ -1086,14 +1086,7 @@ declare module '@polkadot/api/types/submittable' {
         (
           controller: AccountId | string | Uint8Array,
           value: Compact<BalanceOf> | AnyNumber | Uint8Array,
-          payee:
-            | RewardDestination
-            | { Staked: any }
-            | { Stash: any }
-            | { Controller: any }
-            | { Account: any }
-            | string
-            | Uint8Array
+          payee: RewardDestination | { Stash: any } | { Controller: any } | { Account: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>
       >;
       /**
@@ -1260,14 +1253,7 @@ declare module '@polkadot/api/types/submittable' {
        **/
       setPayee: AugmentedSubmittable<
         (
-          payee:
-            | RewardDestination
-            | { Staked: any }
-            | { Stash: any }
-            | { Controller: any }
-            | { Account: any }
-            | string
-            | Uint8Array
+          payee: RewardDestination | { Stash: any } | { Controller: any } | { Account: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>
       >;
       /**

@@ -3,5 +3,12 @@ export default {
   types: {
     RewardBalance: 'Balance',
     RewardBalanceOf: 'Balance',
+    RewardDestination: {
+      _enum: {
+        Stash: 'Null',
+        Controller: 'Null',
+        Account: 'AccountId',
+      },
+    },
   },
 };
