@@ -29,7 +29,7 @@ async function generateSlimMeta() {
         "CennzxSpot",
     ];
     let magicNumber = metadata.magicNumber;
-    let modules = api.runtimeMetadata.asV11.modules;
+    let modules = api.runtimeMetadata.asLatest.modules;
     let newModules = [];
     for (const m of modules) {
         if (KEEP.indexOf(m.name.toJSON()) >= 0) {
@@ -43,10 +43,10 @@ async function generateSlimMeta() {
             newModules.push({"name": m.name, "calls": m.calls, "events": m.events});
         }
     }
-    let extrinsic = metadata.asV11.extrinsic;
-    let filteredModule = api.registry.createType( 'Vec<ModuleMetadataV11>', newModules);
+    let extrinsic = metadata.asLatest.extrinsic;
+    let filteredModule = api.registry.createType( 'Vec<ModuleMetadataLatest>', newModules);
     let filteredMetaLatest = api.registry.createType( 'MetadataLatest', {modules: filteredModule, extrinsic});
-    const filteredMetadataAll = api.registry.createType('MetadataAll', filteredMetaLatest, 11);
+    const filteredMetadataAll = api.registry.createType('MetadataAll', filteredMetaLatest, 12);
     const mVersionedNew = new MetadataVersioned(api.registry, {
         magicNumber: magicNumber,
         metadata: filteredMetadataAll
