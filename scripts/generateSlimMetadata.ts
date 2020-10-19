@@ -35,8 +35,8 @@ async function generateSlimMeta() {
         if (KEEP.indexOf(m.name.toJSON()) >= 0) {
             const module = m.toJSON();
             removeKeys(module, "documentation");
-            // Creating ModuleMetadataV11
-            let modifiedModule = api.registry.createType( 'ModuleMetadataV11', module);
+            // Creating ModuleMetadataLatest
+            let modifiedModule = api.registry.createType( 'ModuleMetadataLatest', module);
             newModules.push(modifiedModule);
         } else {
             // Push an empty module
