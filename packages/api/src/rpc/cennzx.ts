@@ -15,7 +15,7 @@ const cennzxRpc = {
         type: 'AssetId',
       },
     ],
-    type: 'Balance',
+    type: 'u64',
   },
   sellPrice: {
     description: 'Retrieves the spot exchange sell price',
@@ -33,7 +33,7 @@ const cennzxRpc = {
         type: 'AssetId',
       },
     ],
-    type: 'Balance',
+    type: 'u64',
   },
   liquidityPrice: {
     description: 'Get the price of liquidity for the given asset ID',
@@ -47,7 +47,7 @@ const cennzxRpc = {
         type: 'Balance',
       },
     ],
-    type: '(Balance, Balance) as any',
+    type: '(u64, u64)',
   },
   liquidityValue: {
     description: "Get the value of an account's liquidity for the given asset",
@@ -61,7 +61,7 @@ const cennzxRpc = {
         type: 'AssetId',
       },
     ],
-    type: '(Balance, Balance, Balance) as any',
+    type: '(u64, u64, u64)',
   },
 };
 export default cennzxRpc;
