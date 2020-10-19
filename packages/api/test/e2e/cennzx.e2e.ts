@@ -36,9 +36,7 @@ describe('CENNZX RPC calls testing', () => {
               for (const {event} of events) {
                 if (event.method === 'AddLiquidity') {
                   let amount = 20000;
-                  let coreAmount = 20000;
-                  let investmentAmount = 20000;
-                  // const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
+                  const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
                   // Deposit liquidity in existing pool
                   await api.tx.cennzx
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
