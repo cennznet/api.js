@@ -29,7 +29,7 @@ const cennzxRpc = {
         type: 'Balance',
       },
       {
-        name: 'AssetToPay',
+        name: 'AssetToPayout',
         type: 'AssetId',
       },
     ],
