@@ -18,13 +18,13 @@ import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
 // import derives from './derives';
-// import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 // import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
 import { ApiOptions } from './types';
 // import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
+import rpc from './rpc';
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
@@ -67,7 +67,7 @@ export class Api extends ApiPromise {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     // options.derives = mergeDeriveOptions(derives, options.derives);
-    //  options.rpc = { ...(rpc as any), ...options.rpc };
+    options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);
   }
