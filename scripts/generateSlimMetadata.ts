@@ -26,7 +26,7 @@ async function generateSlimMeta() {
     'SyloInbox',
     'SyloResponse',
     'SyloVault',
-    'CennzxSpot',
+    'Cennzx',
   ];
   let magicNumber = metadata.magicNumber;
   let modules = api.runtimeMetadata.asLatest.modules;
