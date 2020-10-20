@@ -47,15 +47,13 @@ We suggest passing provider as a string url, sdk will chose Provider Class based
 
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
 
-To use doughnut or feeExchange, it is required to pass them as part of SignerOption
+To use feeExchange, it is required to pass them as part of SignerOption
 
 ```
 const tx = api.tx.genericAsset.transfer(16000, 'some address', 1000000);
 
-tx.signAndSend('sender address', {doughnut, feeExchangeOpt}, callbackFn);
+tx.signAndSend('sender address', {feeExchangeOpt}, callbackFn);
 ```
-
-[see more](https://github.com/cennznet/cennznet/wiki/Javascript-API-Reference#sending-extrinsics-with-doughnut)
 
 ## Dynamic
 
