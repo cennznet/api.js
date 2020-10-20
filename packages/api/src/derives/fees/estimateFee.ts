@@ -1,4 +1,19 @@
+// Copyright 2019-2020 Centrality Investments Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import { ApiInterfaceRx } from '@cennznet/api/types';
+import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
 import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
 import { drr } from '@polkadot/rpc-core/rxjs';
 import { TypeRegistry, RuntimeDispatchInfo } from '@cennznet/types/interfaces';
@@ -43,16 +58,16 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
           });
           const nonce = null;
           const fake_sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-          let transactionPayment;
+          let payload;
           if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
-            transactionPayment = null;
+            payload = { runtimeVersion, era, blockHash, genesisHash, nonce };
           } else {
             const assetId = api.registry.createType('AssetId', userFeeAssetId);
             const feeExchange = api.registry.createType('FeeExchange', { assetId, maxPayment }, 0);
-            transactionPayment = api.registry.createType('ChargeTransactionPayment', { tip: 0, feeExchange });
+            const transactionPayment = api.registry.createType('ChargeTransactionPayment', { tip: 0, feeExchange });
+            payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
           }
-          const payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
-          (extrinsic as Extrinsic).signFake(fake_sender, payload as any);
+          (extrinsic as Extrinsic).signFake(fake_sender, payload as SignatureOptions);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }
       ),
@@ -65,7 +80,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
         }
       }),
       map((price: BN) => price),
-      catchError((err: any) => of(err)),
+      catchError((err: Error) => of(err)),
       map((err: Error) => err),
       drr()
     );
