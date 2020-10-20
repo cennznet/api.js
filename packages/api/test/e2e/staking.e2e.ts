@@ -183,8 +183,9 @@ describe('Staking Operations', () => {
     // Payee account set to any account
     await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
     // Subscribe to payee changes
-    await api.query.staking.payee(stash.address, (payee: RewardDestination) =>
-      (payee.asAccount.toString() === rewardDestinationAddress) ? done() : null);
+    await api.query.staking.payee(stash.address, (payee: RewardDestination) => {
+      (payee.isAccount && payee.asAccount.toString() === rewardDestinationAddress) ? done() : null
+    });
   });
 
   test('setController changes controller account', async done => {
