@@ -18,7 +18,6 @@ import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
 import derives from './derives';
-// import rpc from './rpc';
 import staticMetadata from './staticMetadata';
 // import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
 import { ApiOptions, Derives } from './types';
