@@ -1,7 +1,6 @@
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { memo } from '@polkadot/api-derive/util';
-import { createType, ITuple, Option, Vec } from '@cennznet/types/interfaces';
-import { AccountId, Keys } from '@polkadot/types/interfaces';
+import { createType, ITuple, Option, Vec, AccountId, Keys } from '@cennznet/types/interfaces';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DerivedSessionKeyInfo } from '../types';

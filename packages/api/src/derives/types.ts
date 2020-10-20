@@ -6,7 +6,7 @@ import {
   StakingLedger,
   ValidatorPrefs,
   RewardDestination,
-} from '@polkadot/types/interfaces';
+} from '@cennznet/types/interfaces';
 
 export interface DerivedStakingInfo {
   accountId: AccountId;

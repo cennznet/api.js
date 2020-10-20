@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AssetInfo, AssetOptions} from "@cennznet/types/interfaces";
+import {AssetInfo, AssetOptions, Hash} from "@cennznet/types/interfaces";
 // import { BalanceLock, Vec, WithdrawReasons } from '@polkadot/types';
 import testKeyring from '@polkadot/keyring/testing';
-import { Hash } from '@polkadot/types/interfaces';
 import {u8aToString} from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 

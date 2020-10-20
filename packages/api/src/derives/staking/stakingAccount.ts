@@ -12,7 +12,7 @@ import {
   RewardDestination,
   StakingLedger,
   ValidatorPrefs,
-} from '@polkadot/types/interfaces';
+} from '@cennznet/types/interfaces';
 import { DerivedStakingInfo } from '../types';
 
 type MultiResultV2 = [

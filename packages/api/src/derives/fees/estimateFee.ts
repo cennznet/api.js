@@ -1,9 +1,8 @@
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { TypeRegistry } from '@cennznet/types/interfaces';
+import { TypeRegistry, RuntimeDispatchInfo } from '@cennznet/types/interfaces';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
-import { RuntimeDispatchInfo } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';

@@ -4,6 +4,23 @@ import { AccountId, Address } from '@polkadot/types/interfaces';
 import { AnyNumber } from '@polkadot/types/types';
 import BN from 'bn.js';
 
+export {
+  Hash,
+  Block,
+  AccountId,
+  EventRecord,
+  AssetId,
+  Keys,
+  Balance,
+  Nominations,
+  Permill,
+  RuntimeDispatchInfo,
+  EraIndex,
+  Exposure,
+  StakingLedger,
+  ValidatorPrefs,
+  Forcing,
+} from '@polkadot/types/interfaces';
 export * from '@polkadot/types/types';
 
 export * from './attestation/types';
