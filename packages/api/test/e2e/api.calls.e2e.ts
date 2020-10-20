@@ -11,10 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance} from '@cennznet/types/interfaces';
-import {Hash, Block, AccountId, EventRecord, BlockNumber, Balance, AssetId} from '@polkadot/types/interfaces'
-import {HeaderExtended} from '@polkadot/api-derive';
-// import {AssetId, } from '@cennznet/types';
+import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types/interfaces'
+import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
 
 describe('e2e api calls', () => {

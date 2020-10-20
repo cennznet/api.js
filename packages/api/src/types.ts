@@ -22,7 +22,7 @@
 // } from "@polkadot/types/types";
 // import { Observable } from 'rxjs';
 //
-// import { DecoratedCennznetDerive } from '@cennznet/api/derives';
+import { DecoratedCennznetDerive } from '@cennznet/api/derives';
 // // import { ChargeTransactionPayment, u64 } from '@cennznet/types';
 // // import {
 // //   Callback,
@@ -36,7 +36,7 @@
 // //   SignatureOptions,
 // // } from '@cennznet/types/types';
 // import { DeriveCustom } from '@polkadot/api-derive';
-// import ApiBase from '@polkadot/api/base';
+import ApiBase from '@polkadot/api/base';
 import {
   ApiOptions as ApiOptionsBase,
   //   SignerOptions as SignerOptionsBase,
@@ -49,8 +49,8 @@ import {
 } from '@polkadot/api/types';
 // import { AccountId, Address, Hash } from '@polkadot/types/interfaces';
 // import { StorageEntry } from '@polkadot/types/primitive/StorageKey';
-// export * from '@polkadot/api/types';
-// export type ApiTypes = 'promise' | 'rxjs';
+export * from '@polkadot/api/types';
+export type ApiTypes = 'promise' | 'rxjs';
 //
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
 
@@ -86,8 +86,8 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
 //   sign(account: IKeyringPair, options: SignatureOptions): IExtrinsic;
 // }
 //
-// export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['decorateDerive']> &
-//   DecoratedCennznetDerive<ApiType>;
+export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['_decorateDerive']> &
+  DecoratedCennznetDerive<ApiType>;
 //
 // interface StorageEntryBase<C, H, U> {
 //   at: (hash: Hash | Uint8Array | string, arg1?: CodecArg, arg2?: CodecArg) => C;

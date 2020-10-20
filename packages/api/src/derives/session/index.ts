@@ -1,2 +1,2 @@
-// export { queryKeyInfo as keyInfo } from './keyInfo';
-// export * from '@polkadot/api-derive/session';
+export { queryKeyInfo as keyInfo } from './keyInfo';
+export * from '@polkadot/api-derive/session';

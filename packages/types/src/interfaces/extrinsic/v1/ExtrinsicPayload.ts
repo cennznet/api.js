@@ -15,10 +15,11 @@
 import { Bytes, Compact, Option, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
-import { ExtrinsicPayloadValue, IKeyringPair, Registry } from '@polkadot/types/types';
+import { IKeyringPair, Registry } from '@polkadot/types/types';
 
 import { ChargeTransactionPayment, Index } from '../../types';
 import { defaultExtensions, expandExtensionTypes } from '../signedExtensions';
+import { ExtrinsicPayloadValue } from '../types';
 
 /**
  * @name CENNZnetExtrinsicPayloadV1

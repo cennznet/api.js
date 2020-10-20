@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { mergeDeriveOptions } from '@cennznet/api/util/derives';
-// import Types from '@cennznet/types/injects';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import { mergeDeriveOptions } from './util/derives';
 
-// import derives from './derives';
+import derives from './derives';
 import staticMetadata from './staticMetadata';
-// import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
-import { ApiOptions } from './types';
+// import { SubmittableExtrinsics } from './types';
+import { ApiOptions, Derives } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 import rpc from './rpc';
@@ -55,9 +54,9 @@ export class ApiRx extends ApiRxBase {
     return super.tx as SubmittableExtrinsics<'rxjs'>;
   }
 
-  // get derive(): Derives<'rxjs'> {
-  //   return super.derive as Derives<'rxjs'>;
-  // }
+  get derive(): Derives<'rxjs'> {
+    return super.derive as Derives<'rxjs'>;
+  }
 
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
@@ -66,7 +65,7 @@ export class ApiRx extends ApiRxBase {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
-    // options.derives = mergeDeriveOptions(derives as any, options.derives);
+    options.derives = mergeDeriveOptions(derives, options.derives);
     options.rpc = { ...(rpc as any), ...options.rpc };
 
     super(options as ApiOptionsBase);

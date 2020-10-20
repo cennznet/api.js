@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Option } from '@polkadot/types';
-import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
+import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@cennznet/types/interfaces';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 

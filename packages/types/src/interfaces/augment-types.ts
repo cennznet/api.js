@@ -30,7 +30,7 @@ import {
 import { AttestationTopic, AttestationValue } from './attestation';
 import { ExchangeKey, FeeRate } from './cennzx';
 import { AssetInfo } from './ga';
-import { RewardBalance, RewardBalanceOf } from './staking';
+import { RewardBalance, RewardBalanceOf, RewardDestination } from './staking';
 import {
   AcceptPayload,
   DeviceId,
@@ -1815,6 +1815,12 @@ declare module '@polkadot/types/types/registry' {
     RewardBalanceOf: RewardBalanceOf;
     'Option<RewardBalanceOf>': Option<RewardBalanceOf>;
     'Vec<RewardBalanceOf>': Vec<RewardBalanceOf>;
+    // @ts-ignore - As RewardDestination is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'RewardDestination' must be of type 'RewardDestination', but here has type 'RewardDestination'.
+    RewardDestination: RewardDestination;
+    // @ts-ignore - As Option<RewardDestination> is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'Option<RewardDestination>' must be of type 'RewardDestination', but here has type 'Option<RewardDestination>'
+    'Option<RewardDestination>': Option<RewardDestination>;
+    // @ts-ignore - As Vec<RewardDestination> is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'Vec<RewardDestination>' must be of type 'RewardDestination', but here has type 'Vec<RewardDestination>'
+    'Vec<RewardDestination>': Vec<RewardDestination>;
     Meta: Meta;
     'Option<Meta>': Option<Meta>;
     'Vec<Meta>': Vec<Meta>;

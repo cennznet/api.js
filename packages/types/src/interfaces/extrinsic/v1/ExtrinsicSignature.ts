@@ -24,17 +24,12 @@ import {
   Sr25519Signature,
 } from '@polkadot/types/interfaces';
 import { Compact, Struct } from '@polkadot/types';
-import {
-  ExtrinsicPayloadValue,
-  IExtrinsicSignature,
-  IKeyringPair,
-  Registry,
-  SignatureOptions,
-} from '@polkadot/types/types';
+import { ExtrinsicPayloadValue, IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/types';
 import { EMPTY_U8A, IMMORTAL_ERA } from '@polkadot/types/extrinsic/constants';
 import { u8aConcat } from '@polkadot/util';
 
 import { ExtrinsicSignatureOptions } from '@polkadot/types/extrinsic/types';
+import { SignatureOptions } from '../types';
 import { expandExtensionTypes, defaultExtensions } from '../signedExtensions';
 import { ChargeTransactionPayment } from '../../transactionPayment';
 import ExtrinsicPayloadV4 from './ExtrinsicPayload';
@@ -172,7 +167,14 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
    */
   createPayload(
     method: Call,
-    { blockHash, era, genesisHash, nonce, runtimeVersion: { specVersion, transactionVersion } }: SignatureOptions
+    {
+      blockHash,
+      era,
+      genesisHash,
+      nonce,
+      runtimeVersion: { specVersion, transactionVersion },
+      transactionPayment,
+    }: SignatureOptions
   ): ExtrinsicPayloadV4 {
     return new ExtrinsicPayloadV4(this.registry, {
       blockHash,
@@ -185,6 +187,7 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
       // This doesn't do anything, just signalling our intention not to use it.
       tip: null,
       transactionVersion: transactionVersion || 0,
+      transactionPayment: transactionPayment,
     });
   }
 
