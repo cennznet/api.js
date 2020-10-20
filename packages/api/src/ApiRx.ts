@@ -13,17 +13,15 @@
 // limitations under the License.
 
 import { mergeDeriveOptions } from '@cennznet/api/util/derives';
-// import Types from '@cennznet/types/injects';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
-// import derives from './derives';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-// import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+// import { SubmittableExtrinsics } from './types';
 import { ApiOptions, Derives } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';

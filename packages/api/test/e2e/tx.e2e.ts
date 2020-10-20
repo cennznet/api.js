@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {AssetInfo, AssetOptions} from "@cennznet/types/interfaces";
-// import { AssetInfo, AssetOptions } from '@cennznet/types';
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';

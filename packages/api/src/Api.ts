@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import Types from '@cennznet/types/injects';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-// import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+// import { SubmittableExtrinsics } from './types';
 import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
