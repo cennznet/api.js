@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
 import {
   Address,
   Balance,
@@ -24,13 +25,7 @@ import {
   Sr25519Signature,
 } from '@polkadot/types/interfaces';
 import { Compact, Struct } from '@polkadot/types';
-import {
-  ExtrinsicPayloadValue,
-  IExtrinsicSignature,
-  IKeyringPair,
-  Registry,
-  SignatureOptions,
-} from '@polkadot/types/types';
+import { ExtrinsicPayloadValue, IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/types';
 import { EMPTY_U8A, IMMORTAL_ERA } from '@polkadot/types/extrinsic/constants';
 import { u8aConcat } from '@polkadot/util';
 
@@ -172,7 +167,14 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
    */
   createPayload(
     method: Call,
-    { blockHash, era, genesisHash, nonce, runtimeVersion: { specVersion, transactionVersion } }: SignatureOptions
+    {
+      blockHash,
+      era,
+      genesisHash,
+      nonce,
+      runtimeVersion: { specVersion, transactionVersion },
+      transactionPayment,
+    }: SignatureOptions
   ): ExtrinsicPayloadV4 {
     return new ExtrinsicPayloadV4(this.registry, {
       blockHash,
@@ -185,6 +187,7 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
       // This doesn't do anything, just signalling our intention not to use it.
       tip: null,
       transactionVersion: transactionVersion || 0,
+      transactionPayment: transactionPayment,
     });
   }
 

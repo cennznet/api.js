@@ -44,11 +44,14 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
           });
           const nonce = null;
           const fake_sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-          const transactionPayment =
-            userFeeAssetId.toString() === networkFeeAssetId.toString()
-              ? null
-              : registry.createType('ChargeTransactionPayment', { tip: 0, assetId: userFeeAssetId, maxPayment });
-          // : generateTransactionPayment({ tip: 0, assetId: userFeeAssetId, maxPayment });
+          let transactionPayment;
+          if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
+            transactionPayment = null;
+          } else {
+            const assetId = api.registry.createType('AssetId', userFeeAssetId);
+            const feeExchange = api.registry.createType('FeeExchange', { assetId, maxPayment }, 0);
+            transactionPayment = api.registry.createType('ChargeTransactionPayment', { tip: 0, feeExchange });
+          }
           const payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
           (extrinsic as Extrinsic).signFake(fake_sender, payload as any);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);

@@ -144,12 +144,10 @@ describe('Cennzx Operations', () => {
       const assetToSell = 17000;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const buffer = 100;
-      // const maxAmountSold = expectedPrice.addn(buffer); // Maximum of assetA willing to pay for the exchange
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const buffer = 100;
+      const maxAmountSold = expectedPrice.addn(buffer); // Maximum of assetA willing to pay for the exchange
       // sell assetA to buy coreAsset
-      const maxAmountSold = 150;
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -158,8 +156,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                // TODO - uncomment the following comments once RPC is fixed
-                // expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice)).toBeTruthy();
                 done();
               }
             }
@@ -171,11 +168,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const buffer = 100;
-      // const maxAmountSold = expectedPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
-      const maxAmountSold = 150;
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const buffer = 100;
+      const maxAmountSold = expectedPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       // sell assetA to buy coreAsset
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
@@ -185,8 +180,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                // TODO - uncomment the following comments once RPC is fixed
-                // expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice)).toBeTruthy();
                 done();
               }
             }
@@ -199,8 +193,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedAssetPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedAssetPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -209,9 +202,8 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedAssetPrice)).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedAssetPrice)).toBeTruthy();
                 done();
               }
             }
@@ -224,8 +216,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
@@ -235,13 +226,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }
@@ -254,8 +244,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedCorePrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedCorePrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -264,9 +253,8 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedCorePrice)).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedCorePrice)).toBeTruthy();
                 done();
               }
             }
@@ -279,8 +267,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const minSale = 1;
       await api.tx.cennzx
@@ -290,13 +277,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }
@@ -309,12 +295,10 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-      // const buffer = 100;
-      // const maxAmountSold = expectedAssetPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
-      const maxAmountSold = 150;
+      const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+      const buffer = 100;
+      const maxAmountSold = expectedAssetPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -322,13 +306,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const price = event.data[3];
-                // expect(price.eq(expectedAssetPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const price = event.data[3];
+                expect(price.eq(expectedAssetPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }
@@ -341,12 +324,10 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-      // const buffer = 100;
-      // const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
-      const maxAmountSold = 150;
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+      const buffer = 100;
+      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -354,13 +335,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const price = event.data[3];
-                // expect(price.eq(expectedPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const price = event.data[3];
+                expect(price.eq(expectedPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }
@@ -373,11 +353,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const buffer = 100;
-      // const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
-      const maxAmountSold = 150;
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const buffer = 100;
+      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -385,9 +363,8 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const price = event.data[3];
-                // expect(price.eq(expectedPrice)).toBeTruthy();
+                const price = event.data[3];
+                expect(price.eq(expectedPrice)).toBeTruthy();
                 done();
               }
             }
@@ -400,11 +377,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
-      // const buffer = 100;
-      // const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
-      const maxAmountSold = 150;
+      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const buffer = 100;
+      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
@@ -413,13 +388,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const price = event.data[3];
-                // expect(price.eq(expectedPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const price = event.data[3];
+                expect(price.eq(expectedPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }
@@ -432,8 +406,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -442,9 +415,8 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedPrice)).toBeTruthy();
                 done();
               }
             }
@@ -457,8 +429,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const sellAmount = 50;
-      // TODO - uncomment the following comments once RPC is fixed
-      // const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
@@ -468,13 +439,12 @@ describe('Cennzx Operations', () => {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
-                // TODO - uncomment the following comments once RPC is fixed
-                // const sellValue = event.data[4];
-                // expect(sellValue.eq(expectedPrice)).toBeTruthy();
-                // const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
-                // expect(
-                //   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
-                // ).toBeTruthy();
+                const sellValue = event.data[4];
+                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
+                expect(
+                  new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
+                ).toBeTruthy();
                 done();
               }
             }

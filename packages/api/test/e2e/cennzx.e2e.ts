@@ -2,7 +2,6 @@ import testKeyring from '@polkadot/keyring/testing';
 import {cryptoWaitReady} from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance} from '@polkadot/types/interfaces';
-// import {generateTransactionPayment} from '@cennznet/types/runtime/transaction-payment/TransactionPayment';
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
@@ -41,7 +40,6 @@ describe('CENNZX RPC calls testing', () => {
                   await api.tx.cennzx
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
                       .signAndSend(alice, async ({events, status}) => {
-                        console.log('Status::', status.toJSON())
                         if (status.isFinalized) {
                           for (const {event} of events) {
                             if (event.method === 'AddLiquidity') {
@@ -92,7 +90,7 @@ describe('CENNZX RPC calls testing', () => {
         it('Query estimated fee in CENTRAPAY(default fee currency)', async done => {
           const assetBalanceBefore: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
           const extrinsic = api.tx.genericAsset
-            .transfer(PLUG, bob.address, 10000);
+            .transfer(CENNZ, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId:CENTRAPAY});
 
           await extrinsic.signAndSend(alice,  async ({events, status}) => {
@@ -107,25 +105,28 @@ describe('CENNZX RPC calls testing', () => {
           });
         });
 
-        // it('Query estimated fee in different currency (CENNZ)', async done => {
-        //   const maxPayment = '50000000000000000';
-        //   const transactionPayment = generateTransactionPayment({tip:0, assetId:CENNZ, maxPayment});
-        //   const extrinsic = api.tx.genericAsset
-        //     .transfer(PLUG, bob.address, 10000);
-        //   const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
-        //   await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
-        //     if (status.isFinalized) {
-        //       events.forEach(({phase, event: {data, method, section}}) => {
-        //         if (method === 'AssetPurchase') {
-        //           const price = data[3];
-        //           expect(feeFromQuery).toEqual(price);
-        //         }
-        //         console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-        //       });
-        //       done();
-        //     }
-        //   });
-        // });
+        it('Query estimated fee in different currency (CENNZ)', async done => {
+          const maxPayment = '50000000000000000';
+          const assetId = api.registry.createType('AssetId', CENNZ);
+          const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
+          const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
+          const extrinsic = api.tx.treasury.reportAwesome('Fantastic Work', alice.address);
+
+          const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
+          await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
+            if (status.isFinalized) {
+              events.forEach(({phase, event: {data, method, section}}) => {
+                if (method === 'AssetBought') {
+                  const price = data[3];
+                  console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+
+                  expect(feeFromQuery).toEqual(price);
+                  done();
+                }
+              });
+            }
+          });
+        });
       });
     });
 
@@ -138,7 +139,7 @@ describe('CENNZX RPC calls testing', () => {
         console.log('Amount of core in PLUG pool:', poolCoreAssetBalance.toString());
         // How much CENTRAPAY will it cost to buy 100 (amount) PLUG
         await expect(api.rpc.cennzx.buyPrice(CENTRAPAY, amount, PLUG)).rejects.toThrow(
-          'buyPrice(AssetToBuy: AssetId, Amount: Balance, AssetToPay: AssetId): Balance:: 2: Cannot exchange for requested amount.:'
+          '2: Cannot exchange for requested amount.:'
         );
         done();
       });
@@ -148,7 +149,7 @@ describe('CENNZX RPC calls testing', () => {
         // when I sell 1000(amount) PLUG, how much of CENTRAPAY will I get in return
         await expect(api.rpc.cennzx
           .sellPrice(PLUG, amount, CENTRAPAY)).rejects.toThrow(
-          'sellPrice(AssetToSell: AssetId, Amount: Balance, AssetToPayout: AssetId): Balance:: 2: Cannot exchange by requested amount.'
+          '2: Cannot exchange by requested amount.'
         );
         done();
       });
@@ -160,7 +161,7 @@ describe('CENNZX RPC calls testing', () => {
           const extrinsic = api.tx.genericAsset
             .transfer(CENNZ, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId:PLUG, maxPayment});
-          expect(feeFromQuery).toEqual(new Error('buyPrice(AssetToBuy: AssetId, Amount: Balance, AssetToPay: AssetId): Balance:: 2: Cannot exchange for requested amount.: '));
+          expect(feeFromQuery).toEqual(new Error('2: Cannot exchange for requested amount.: '));
           done();
         });
       });
