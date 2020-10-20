@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
 import {
   Address,
   Balance,
@@ -30,6 +29,7 @@ import { EMPTY_U8A, IMMORTAL_ERA } from '@polkadot/types/extrinsic/constants';
 import { u8aConcat } from '@polkadot/util';
 
 import { ExtrinsicSignatureOptions } from '@polkadot/types/extrinsic/types';
+import { SignatureOptions } from '../types';
 import { expandExtensionTypes, defaultExtensions } from '../signedExtensions';
 import { ChargeTransactionPayment } from '../../transactionPayment';
 import ExtrinsicPayloadV4 from './ExtrinsicPayload';

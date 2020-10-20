@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { mergeDeriveOptions } from '@cennznet/api/util/derives';
 import Types from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import { mergeDeriveOptions } from './util/derives';
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
