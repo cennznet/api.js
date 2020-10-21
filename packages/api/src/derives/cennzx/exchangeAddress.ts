@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId } from '@cennznet/types/interfaces';
+import { AnyAssetId } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';

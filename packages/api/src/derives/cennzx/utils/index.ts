@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import { createType, Tuple, u64, u32, AnyAssetId, AnyNumber, Registry } from '@cennznet/types/interfaces';
+import { createType, Tuple, u64, u32, AnyAssetId, AnyNumber, Registry } from '@cennznet/types';
 import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
 import BN from 'bn.js';
 

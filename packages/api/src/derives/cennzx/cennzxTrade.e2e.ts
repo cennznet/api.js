@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import BN from 'bn.js';
-import { AssetInfo, AssetOptions } from '@cennznet/types/interfaces';
+import { AssetInfo, AssetOptions } from '@cennznet/types';
 import testKeyring from '@polkadot/keyring/testing';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 

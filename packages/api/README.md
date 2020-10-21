@@ -2,33 +2,12 @@
 
 The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 
-## Quick Start
-
-You must use **yarn** with @cennznet/api and set the following **resolutions** in your package.json, otherwise your install may break due to breaking changes in downstream package versions.
-
 ## Install
 
 ```
 $> npm i --save @cennznet/api
 ```
 
-At the moment a breaking change in the recent versions of polkadot has prevented us from updating with the recent versions. 
-That's why in package.json there should be a resolution set so we can make sure the right version of polkadot packages are fetched. Therefore you need to have the following lines in your package.json:
-```json
-"dependencies": {
-  "@cennznet/api": "^1.2.1"
-},
-"resolutions": {
-  "@polkadot/types": "1.2.1",
-  "@polkadot/metadata": "1.2.1",
-  "@polkadot/api": "1.2.1",
-  "@polkadot/api-derive": "1.2.1",
-  "@polkadot/rpc-core": "1.2.1",
-  "@polkadot/rpc-provider": "1.2.1",
-  "@polkadot/jsonrpc": "1.2.1",
-}
-``` 
-Please use yarn as package manager to install the above dependecies.
 ## Usage
 
 The cennznet's main network is residing at `wss://cennznet.unfrastructure.io/public/ws`. 
@@ -64,15 +43,13 @@ We suggest passing provider as a string url, sdk will chose Provider Class based
 
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
 
-To use doughnut or feeExchange, it is required to pass them as part of SignerOption
+To set fee exchange options on a transaction, it should be included as an additional argument when signing e.g
 
 ```
 const tx = api.tx.genericAsset.transfer(16000, 'some address', 1000000);
 
-tx.signAndSend('sender address', {doughnut, feeExchangeOpt}, callbackFn);
+tx.signAndSend('sender address', {feeExchangeOpt}, callbackFn);
 ```
-
-[see more](https://github.com/cennznet/cennznet/wiki/Javascript-API-Reference#sending-extrinsics-with-doughnut)
 
 ## Dynamic
 

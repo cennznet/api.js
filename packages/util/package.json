@@ -23,6 +23,6 @@
     },
     "devDependencies": {
         "@polkadot/keyring": "^3.5.1",
-        "@polkadot/types": "2.1.2-2"
+        "@polkadot/types": "^2.3.1"
     }
 }

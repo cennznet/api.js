@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/a
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-// import { SubmittableExtrinsics } from './types';
 import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';

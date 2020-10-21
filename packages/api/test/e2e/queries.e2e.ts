@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, Hash } from "@cennznet/types/interfaces";
-// import { BalanceLock, Vec, WithdrawReasons } from '@polkadot/types';
+import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
 import testKeyring from '@polkadot/keyring/testing';
 import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -133,15 +132,18 @@ describe('e2e queries', () => {
     });
   });
 
-  // describe('Generic Asset Storage', () => {
-  //   it('Gets balance locks ok', async done => {
-  //     const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
-  //     const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
-  //     expect(balanceLocks.isEmpty).toBeFalsy();
-  //     let reasons: WithdrawReasons = balanceLocks[0].reasons;
-  //     expect(reasons.isAll()).toBeTruthy();
-  //
-  //     done();
-  //   });
-  // });
+  describe('Generic Asset Storage', () => {
+    it('Gets balance locks ok', async done => {
+      const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
+      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
+      expect(balanceLocks.isEmpty).toBeFalsy();
+      let reasons: WithdrawReasons = balanceLocks[0].reasons;
+      expect(reasons.isTransactionPayment).toBeTruthy();
+      expect(reasons.isTransfer).toBeTruthy();
+      expect(reasons.isTip).toBeTruthy();
+      expect(reasons.isReserve).toBeTruthy();
+      expect(reasons.isFee).toBeTruthy();
+      done();
+    });
+  });
 });

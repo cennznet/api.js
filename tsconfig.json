@@ -10,7 +10,8 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["ES2017"],
+    "lib": ["ES2017","es2018", "es2019"
+    ],
     "emitDecoratorMetadata": true,
     "declaration": true,
     "sourceMap": true,

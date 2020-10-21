@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Get more fund from https://cennznet-faucet-ui.centrality.me/ if the sender account does not have enough fund
- */
-import { Hash } from '@cennznet/types/interfaces';
+import { Hash } from '@cennznet/types';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import initApiRx from '../../../../jest/initApiRx';
