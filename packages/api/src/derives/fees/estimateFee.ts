@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
 import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { TypeRegistry, RuntimeDispatchInfo } from '@cennznet/types/interfaces';
+import { TypeRegistry, RuntimeDispatchInfo, SignatureOptions } from '@cennznet/types';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId, Hash } from '@cennznet/types/interfaces';
+import { AnyAssetId, Hash } from '@cennznet/types';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

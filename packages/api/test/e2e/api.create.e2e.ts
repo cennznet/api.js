@@ -12,22 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Metadata from "@polkadot/metadata/Metadata";
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';
-import { Metadata } from '@polkadot/types';
 
 describe('e2e api create', () => {
   let api;
   let incorrectApi;
 
-  // TODO - enable this test on runtime upgrade on Azalea
-  it.skip('For Azalea chain - checking if static metadata is same as latest', async () => {
-    const provider = 'wss://cennznet.unfrastructure.io/public/ws'; // Use Azalea
+  it('For local chain - checking if static metadata is same as latest', async () => {
+    const provider = 'ws://localhost:9944'; // Use local dev chain
     api = await Api.create({provider});
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
-    expect(api.runtimeMetadata.toJSON()).toEqual(new Metadata(api.registry, meta).toJSON());
+    expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
   });
 
   afterEach(async () => {

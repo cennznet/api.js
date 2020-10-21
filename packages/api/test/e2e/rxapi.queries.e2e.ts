@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Hash } from '@cennznet/types/interfaces';
+import { Hash } from '@cennznet/types';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import initApiRx from '../../../../jest/initApiRx';

@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types/interfaces'
+import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types'
 import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types/interfaces";
+import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
 import testKeyring from '@polkadot/keyring/testing';
 import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';

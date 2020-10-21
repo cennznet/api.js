@@ -2,10 +2,6 @@
 
 The CENNZNet JavaScript SDK for browsers, RN and Node.js.
 
-## Quick Start
-
-You must use **yarn** with @cennznet/api. Please use yarn as package manager to install the above dependencies.
-
 ## Install
 
 ```
@@ -47,7 +43,7 @@ We suggest passing provider as a string url, sdk will chose Provider Class based
 
 All `api.tx.<section>.<method>(...)` return CennznetExtrinsic, which have
 
-To use feeExchange, it is required to pass them as part of SignerOption
+To set fee exchange options on a transaction, it should be included as an additional argument when signing e.g
 
 ```
 const tx = api.tx.genericAsset.transfer(16000, 'some address', 1000000);

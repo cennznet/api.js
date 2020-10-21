@@ -1,19 +1,19 @@
-// Running this file with ~ node scripts/updateStaticMetadata.js will create a staticMetadata.ts on root directory which can used/copied
-const Api = require('@cennznet/api').Api;
-const fs = require('fs');
-const staticMetadata = require('@cennznet/api/staticMetadata');
-const Metadata  = require('@cennznet/types').Metadata;
-async function updateMeta() {
-    const provider = 'wss://cennznet.unfrastructure.io/public/ws'; // Use Azalea
-    const api = await Api.create({provider});
-    const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
-    const staticMeta = new Metadata(api.registry, meta).toJSON();
-    if (api.runtimeMetadata.toJSON() !== staticMeta) {
-        const newMeta = {};
-        newMeta[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`] = api.runtimeMetadata.toHex();
-        const data = `export default ${JSON.stringify(newMeta, null, '\n')};`;
-        fs.writeFileSync('staticMetadata.ts', data, 'utf-8');
-        process.exit()
-    }
-}
-updateMeta();
+#!/usr/bin/env node
+// Copyright 2017-2019 @polkadot/types authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+require('@babel/register')({
+    extensions: ['.js', '.ts'],
+    plugins: [
+        ['module-resolver', {
+            alias: {
+                '^@cennznet/api(.*)': './packages/api/src\\1',
+                '^@cennznet/types(.*)': './packages/types/src\\1',
+                '^@cennznet/util(.*)': './packages/util/src\\1',
+            }
+        }]
+    ]
+});
+
+require('./updateStaticMetadata.ts');

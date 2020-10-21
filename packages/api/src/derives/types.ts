@@ -1,12 +1,4 @@
-import {
-  AccountId,
-  EraIndex,
-  Exposure,
-  Keys,
-  StakingLedger,
-  ValidatorPrefs,
-  RewardDestination,
-} from '@cennznet/types/interfaces';
+import { AccountId, EraIndex, Exposure, Keys, StakingLedger, ValidatorPrefs, RewardDestination } from '@cennznet/types';
 
 export interface DerivedStakingInfo {
   accountId: AccountId;

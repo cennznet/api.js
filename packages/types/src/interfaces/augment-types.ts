@@ -92,7 +92,7 @@ import {
 import { BlockHash } from '@polkadot/types/interfaces/chain';
 import { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
 import { EthereumAddress, StatementKind } from '@polkadot/types/interfaces/claims';
-import { MemberCount, ProposalIndex, Votes, VotesTo230 } from '@polkadot/types/interfaces/collective';
+import { CollectiveOrigin, MemberCount, ProposalIndex, Votes, VotesTo230 } from '@polkadot/types/interfaces/collective';
 import { AuthorityId, RawVRFOutput } from '@polkadot/types/interfaces/consensus';
 import {
   AliveContractInfo,
@@ -105,14 +105,42 @@ import {
   ContractInfo,
   ContractStorageKey,
   Gas,
+  HostFnWeights,
+  InstructionWeights,
   PrefabWasmModule,
   PrefabWasmModuleReserved,
   Schedule,
   ScheduleTo212,
+  ScheduleTo258,
   SeedOf,
   TombstoneContractInfo,
   TrieId,
 } from '@polkadot/types/interfaces/contracts';
+import {
+  ContractConstructorSpec,
+  ContractContractSpec,
+  ContractCryptoHasher,
+  ContractDiscriminant,
+  ContractDisplayName,
+  ContractEventParamSpec,
+  ContractEventSpec,
+  ContractLayoutArray,
+  ContractLayoutCell,
+  ContractLayoutEnum,
+  ContractLayoutHash,
+  ContractLayoutHashingStrategy,
+  ContractLayoutKey,
+  ContractLayoutStruct,
+  ContractLayoutStructField,
+  ContractMessageParamSpec,
+  ContractMessageSpec,
+  ContractProject,
+  ContractProjectContract,
+  ContractProjectSource,
+  ContractSelector,
+  ContractStorageLayout,
+  ContractTypeSpec,
+} from '@polkadot/types/interfaces/contractsAbi';
 import {
   AccountVote,
   AccountVoteSplit,
@@ -392,7 +420,9 @@ import {
   Moment,
   OpaqueCall,
   Origin,
+  OriginCaller,
   PalletVersion,
+  PalletsOrigin,
   Pays,
   PerU16,
   Perbill,
@@ -415,11 +445,26 @@ import {
   WeightMultiplier,
 } from '@polkadot/types/interfaces/runtime';
 import {
+  SiField,
+  SiLookupTypeId,
+  SiPath,
+  SiType,
+  SiTypeDef,
+  SiTypeDefArray,
+  SiTypeDefComposite,
+  SiTypeDefPrimitive,
+  SiTypeDefSequence,
+  SiTypeDefTuple,
+  SiTypeDefVariant,
+  SiVariant,
+} from '@polkadot/types/interfaces/scaleInfo';
+import {
   Period,
   Priority,
   SchedulePeriod,
   SchedulePriority,
   Scheduled,
+  ScheduledTo254,
   TaskAddress,
 } from '@polkadot/types/interfaces/scheduler';
 import {
@@ -710,6 +755,12 @@ declare module '@polkadot/types/types/registry' {
     Origin: Origin;
     'Option<Origin>': Option<Origin>;
     'Vec<Origin>': Vec<Origin>;
+    OriginCaller: OriginCaller;
+    'Option<OriginCaller>': Option<OriginCaller>;
+    'Vec<OriginCaller>': Vec<OriginCaller>;
+    PalletsOrigin: PalletsOrigin;
+    'Option<PalletsOrigin>': Option<PalletsOrigin>;
+    'Vec<PalletsOrigin>': Vec<PalletsOrigin>;
     PalletVersion: PalletVersion;
     'Option<PalletVersion>': Option<PalletVersion>;
     'Vec<PalletVersion>': Vec<PalletVersion>;
@@ -860,6 +911,9 @@ declare module '@polkadot/types/types/registry' {
     WithdrawReasons: WithdrawReasons;
     'Option<WithdrawReasons>': Option<WithdrawReasons>;
     'Vec<WithdrawReasons>': Vec<WithdrawReasons>;
+    CollectiveOrigin: CollectiveOrigin;
+    'Option<CollectiveOrigin>': Option<CollectiveOrigin>;
+    'Vec<CollectiveOrigin>': Vec<CollectiveOrigin>;
     MemberCount: MemberCount;
     'Compact<MemberCount>': Compact<MemberCount>;
     'Option<MemberCount>': Option<MemberCount>;
@@ -911,6 +965,12 @@ declare module '@polkadot/types/types/registry' {
     'Compact<Gas>': Compact<Gas>;
     'Option<Gas>': Option<Gas>;
     'Vec<Gas>': Vec<Gas>;
+    HostFnWeights: HostFnWeights;
+    'Option<HostFnWeights>': Option<HostFnWeights>;
+    'Vec<HostFnWeights>': Vec<HostFnWeights>;
+    InstructionWeights: InstructionWeights;
+    'Option<InstructionWeights>': Option<InstructionWeights>;
+    'Vec<InstructionWeights>': Vec<InstructionWeights>;
     PrefabWasmModule: PrefabWasmModule;
     'Option<PrefabWasmModule>': Option<PrefabWasmModule>;
     'Vec<PrefabWasmModule>': Vec<PrefabWasmModule>;
@@ -920,6 +980,9 @@ declare module '@polkadot/types/types/registry' {
     ScheduleTo212: ScheduleTo212;
     'Option<ScheduleTo212>': Option<ScheduleTo212>;
     'Vec<ScheduleTo212>': Vec<ScheduleTo212>;
+    ScheduleTo258: ScheduleTo258;
+    'Option<ScheduleTo258>': Option<ScheduleTo258>;
+    'Vec<ScheduleTo258>': Vec<ScheduleTo258>;
     Schedule: Schedule;
     'Option<Schedule>': Option<Schedule>;
     'Vec<Schedule>': Vec<Schedule>;
@@ -1265,6 +1328,9 @@ declare module '@polkadot/types/types/registry' {
     Scheduled: Scheduled;
     'Option<Scheduled>': Option<Scheduled>;
     'Vec<Scheduled>': Vec<Scheduled>;
+    ScheduledTo254: ScheduledTo254;
+    'Option<ScheduledTo254>': Option<ScheduledTo254>;
+    'Vec<ScheduledTo254>': Vec<ScheduledTo254>;
     TaskAddress: TaskAddress;
     'Option<TaskAddress>': Option<TaskAddress>;
     'Vec<TaskAddress>': Vec<TaskAddress>;
@@ -1527,6 +1593,113 @@ declare module '@polkadot/types/types/registry' {
     AccountValidity: AccountValidity;
     'Option<AccountValidity>': Option<AccountValidity>;
     'Vec<AccountValidity>': Vec<AccountValidity>;
+    ContractCryptoHasher: ContractCryptoHasher;
+    'Option<ContractCryptoHasher>': Option<ContractCryptoHasher>;
+    'Vec<ContractCryptoHasher>': Vec<ContractCryptoHasher>;
+    ContractDiscriminant: ContractDiscriminant;
+    'Compact<ContractDiscriminant>': Compact<ContractDiscriminant>;
+    'Option<ContractDiscriminant>': Option<ContractDiscriminant>;
+    'Vec<ContractDiscriminant>': Vec<ContractDiscriminant>;
+    ContractLayoutArray: ContractLayoutArray;
+    'Option<ContractLayoutArray>': Option<ContractLayoutArray>;
+    'Vec<ContractLayoutArray>': Vec<ContractLayoutArray>;
+    ContractLayoutCell: ContractLayoutCell;
+    'Option<ContractLayoutCell>': Option<ContractLayoutCell>;
+    'Vec<ContractLayoutCell>': Vec<ContractLayoutCell>;
+    ContractLayoutEnum: ContractLayoutEnum;
+    'Option<ContractLayoutEnum>': Option<ContractLayoutEnum>;
+    'Vec<ContractLayoutEnum>': Vec<ContractLayoutEnum>;
+    ContractLayoutHash: ContractLayoutHash;
+    'Option<ContractLayoutHash>': Option<ContractLayoutHash>;
+    'Vec<ContractLayoutHash>': Vec<ContractLayoutHash>;
+    ContractLayoutHashingStrategy: ContractLayoutHashingStrategy;
+    'Option<ContractLayoutHashingStrategy>': Option<ContractLayoutHashingStrategy>;
+    'Vec<ContractLayoutHashingStrategy>': Vec<ContractLayoutHashingStrategy>;
+    ContractLayoutKey: ContractLayoutKey;
+    'Option<ContractLayoutKey>': Option<ContractLayoutKey>;
+    'Vec<ContractLayoutKey>': Vec<ContractLayoutKey>;
+    ContractLayoutStruct: ContractLayoutStruct;
+    'Option<ContractLayoutStruct>': Option<ContractLayoutStruct>;
+    'Vec<ContractLayoutStruct>': Vec<ContractLayoutStruct>;
+    ContractLayoutStructField: ContractLayoutStructField;
+    'Option<ContractLayoutStructField>': Option<ContractLayoutStructField>;
+    'Vec<ContractLayoutStructField>': Vec<ContractLayoutStructField>;
+    ContractStorageLayout: ContractStorageLayout;
+    'Option<ContractStorageLayout>': Option<ContractStorageLayout>;
+    'Vec<ContractStorageLayout>': Vec<ContractStorageLayout>;
+    ContractConstructorSpec: ContractConstructorSpec;
+    'Option<ContractConstructorSpec>': Option<ContractConstructorSpec>;
+    'Vec<ContractConstructorSpec>': Vec<ContractConstructorSpec>;
+    ContractContractSpec: ContractContractSpec;
+    'Option<ContractContractSpec>': Option<ContractContractSpec>;
+    'Vec<ContractContractSpec>': Vec<ContractContractSpec>;
+    ContractDisplayName: ContractDisplayName;
+    'Option<ContractDisplayName>': Option<ContractDisplayName>;
+    'Vec<ContractDisplayName>': Vec<ContractDisplayName>;
+    ContractEventParamSpec: ContractEventParamSpec;
+    'Option<ContractEventParamSpec>': Option<ContractEventParamSpec>;
+    'Vec<ContractEventParamSpec>': Vec<ContractEventParamSpec>;
+    ContractEventSpec: ContractEventSpec;
+    'Option<ContractEventSpec>': Option<ContractEventSpec>;
+    'Vec<ContractEventSpec>': Vec<ContractEventSpec>;
+    ContractMessageParamSpec: ContractMessageParamSpec;
+    'Option<ContractMessageParamSpec>': Option<ContractMessageParamSpec>;
+    'Vec<ContractMessageParamSpec>': Vec<ContractMessageParamSpec>;
+    ContractMessageSpec: ContractMessageSpec;
+    'Option<ContractMessageSpec>': Option<ContractMessageSpec>;
+    'Vec<ContractMessageSpec>': Vec<ContractMessageSpec>;
+    ContractSelector: ContractSelector;
+    'Option<ContractSelector>': Option<ContractSelector>;
+    'Vec<ContractSelector>': Vec<ContractSelector>;
+    ContractTypeSpec: ContractTypeSpec;
+    'Option<ContractTypeSpec>': Option<ContractTypeSpec>;
+    'Vec<ContractTypeSpec>': Vec<ContractTypeSpec>;
+    ContractProject: ContractProject;
+    'Option<ContractProject>': Option<ContractProject>;
+    'Vec<ContractProject>': Vec<ContractProject>;
+    ContractProjectContract: ContractProjectContract;
+    'Option<ContractProjectContract>': Option<ContractProjectContract>;
+    'Vec<ContractProjectContract>': Vec<ContractProjectContract>;
+    ContractProjectSource: ContractProjectSource;
+    'Option<ContractProjectSource>': Option<ContractProjectSource>;
+    'Vec<ContractProjectSource>': Vec<ContractProjectSource>;
+    SiField: SiField;
+    'Option<SiField>': Option<SiField>;
+    'Vec<SiField>': Vec<SiField>;
+    SiLookupTypeId: SiLookupTypeId;
+    'Compact<SiLookupTypeId>': Compact<SiLookupTypeId>;
+    'Option<SiLookupTypeId>': Option<SiLookupTypeId>;
+    'Vec<SiLookupTypeId>': Vec<SiLookupTypeId>;
+    SiPath: SiPath;
+    'Option<SiPath>': Option<SiPath>;
+    'Vec<SiPath>': Vec<SiPath>;
+    SiType: SiType;
+    'Option<SiType>': Option<SiType>;
+    'Vec<SiType>': Vec<SiType>;
+    SiTypeDef: SiTypeDef;
+    'Option<SiTypeDef>': Option<SiTypeDef>;
+    'Vec<SiTypeDef>': Vec<SiTypeDef>;
+    SiTypeDefArray: SiTypeDefArray;
+    'Option<SiTypeDefArray>': Option<SiTypeDefArray>;
+    'Vec<SiTypeDefArray>': Vec<SiTypeDefArray>;
+    SiTypeDefComposite: SiTypeDefComposite;
+    'Option<SiTypeDefComposite>': Option<SiTypeDefComposite>;
+    'Vec<SiTypeDefComposite>': Vec<SiTypeDefComposite>;
+    SiTypeDefVariant: SiTypeDefVariant;
+    'Option<SiTypeDefVariant>': Option<SiTypeDefVariant>;
+    'Vec<SiTypeDefVariant>': Vec<SiTypeDefVariant>;
+    SiTypeDefPrimitive: SiTypeDefPrimitive;
+    'Option<SiTypeDefPrimitive>': Option<SiTypeDefPrimitive>;
+    'Vec<SiTypeDefPrimitive>': Vec<SiTypeDefPrimitive>;
+    SiTypeDefSequence: SiTypeDefSequence;
+    'Option<SiTypeDefSequence>': Option<SiTypeDefSequence>;
+    'Vec<SiTypeDefSequence>': Vec<SiTypeDefSequence>;
+    SiTypeDefTuple: SiTypeDefTuple;
+    'Option<SiTypeDefTuple>': Option<SiTypeDefTuple>;
+    'Vec<SiTypeDefTuple>': Vec<SiTypeDefTuple>;
+    SiVariant: SiVariant;
+    'Option<SiVariant>': Option<SiVariant>;
+    'Vec<SiVariant>': Vec<SiVariant>;
     EthereumAccountId: EthereumAccountId;
     'Option<EthereumAccountId>': Option<EthereumAccountId>;
     'Vec<EthereumAccountId>': Vec<EthereumAccountId>;

@@ -3,16 +3,17 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { memo } from '@polkadot/api-derive/util';
-import { createType, Option } from '@cennznet/types/interfaces/';
 import {
+  createType,
   AccountId,
   Exposure,
   Keys,
   Nominations,
+  Option,
   RewardDestination,
   StakingLedger,
   ValidatorPrefs,
-} from '@cennznet/types/interfaces';
+} from '@cennznet/types';
 import { DerivedStakingInfo } from '../types';
 
 type MultiResultV2 = [
