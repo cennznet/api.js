@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Option } from '@polkadot/types';
-import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@cennznet/types';
+import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs, Option } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
