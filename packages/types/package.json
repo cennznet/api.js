@@ -17,19 +17,16 @@
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
-    "optionalDependencies": {
-        "@plugnet/doughnut-wasm": "^0.2.0"
-    },
     "dependencies": {
         "@cennznet/util": "^1.2.1",
-        "@polkadot/keyring": "2.3.1",
-        "@polkadot/types": "^1.1.1",
-        "@polkadot/util": "^2.3.1",
+        "@polkadot/keyring": "^3.6.1",
+        "@polkadot/types": "^2.3.1",
+        "@polkadot/util": "^3.5.1",
         "memoizee": "^0.4.14",
         "typescript": "^2.9.2"
     },
     "devDependencies": {
-        "@polkadot/api": "^1.1.1",
-        "@polkadot/rpc-provider": "^1.1.1"
+        "@polkadot/api": "^2.3.1",
+        "@polkadot/rpc-provider": "^2.3.1"
     }
 }

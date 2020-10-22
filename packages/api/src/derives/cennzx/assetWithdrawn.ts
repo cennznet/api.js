@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId, AnyNumber } from '@cennznet/types/types';
-import { Hash } from '@cennznet/types/interfaces';
+import { AnyAssetId, AnyNumber, Hash } from '@cennznet/types';
 import BN from 'bn.js';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -27,15 +26,20 @@ import { totalLiquidity, totalLiquidityAt } from './totalLiquidity';
  * @param assetId
  * @param liquidty
  */
-export function assetToWithdraw(api: ApiInterfaceRx) {
+export function assetToWithdraw(instanceId: string, api: ApiInterfaceRx) {
   return (assetId: AnyAssetId, liquidity: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }> => {
     return combineLatest([
-      poolAssetBalance(api)(assetId),
-      poolCoreAssetBalance(api)(assetId),
-      totalLiquidity(api)(assetId),
+      poolAssetBalance(instanceId, api)(assetId),
+      poolCoreAssetBalance(instanceId, api)(assetId),
+      totalLiquidity(instanceId, api)(assetId),
     ]).pipe(
       map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
-        getAssetToWithdraw(new BN(liquidity), coreAssetReserve as any, tradeAssetReserve as any, totalLiquidity as any)
+        getAssetToWithdraw(
+          new BN(liquidity.toString()),
+          new BN(coreAssetReserve.toString()),
+          new BN(tradeAssetReserve.toString()),
+          new BN(totalLiquidity.toString())
+        )
       )
     );
   };
@@ -47,15 +51,20 @@ export function assetToWithdraw(api: ApiInterfaceRx) {
  * @param assetId
  * @param liquidty
  */
-export function assetToWithdrawAt(api: ApiInterfaceRx) {
+export function assetToWithdrawAt(instanceId: string, api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId, liquidity: AnyNumber): Observable<{ coreAmount: BN; assetAmount: BN }> => {
     return combineLatest([
-      poolAssetBalanceAt(api)(hash, assetId),
-      poolCoreAssetBalanceAt(api)(hash, assetId),
-      totalLiquidityAt(api)(hash, assetId),
+      poolAssetBalanceAt(instanceId, api)(hash, assetId),
+      poolCoreAssetBalanceAt(instanceId, api)(hash, assetId),
+      totalLiquidityAt(instanceId, api)(hash, assetId),
     ]).pipe(
       map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
-        getAssetToWithdraw(new BN(liquidity), coreAssetReserve as any, tradeAssetReserve as any, totalLiquidity as any)
+        getAssetToWithdraw(
+          new BN(liquidity.toString()),
+          new BN(coreAssetReserve.toString()),
+          new BN(tradeAssetReserve.toString()),
+          new BN(totalLiquidity.toString())
+        )
       )
     );
   };

@@ -1,5 +1,5 @@
-import { RewardDestination } from '@cennznet/types';
-import { AccountId, EraIndex, Exposure, Keys, StakingLedger, ValidatorPrefs } from '@cennznet/types/interfaces';
+import { AccountId, EraIndex, Exposure, Keys, StakingLedger, ValidatorPrefs, RewardDestination } from '@cennznet/types';
+import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 
 export interface DerivedStakingInfo {
   accountId: AccountId;
@@ -17,4 +17,10 @@ export interface DerivedStakingInfo {
 export interface DerivedSessionKeyInfo {
   nextSessionKeys: AccountId[];
   sessionKeys: AccountId[];
+}
+
+export interface EstimateFeeParams {
+  extrinsic: SubmittableExtrinsic<ApiTypes>;
+  userFeeAssetId: string | number;
+  maxPayment?: string;
 }

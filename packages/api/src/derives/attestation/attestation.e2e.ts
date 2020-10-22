@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { Api } from '@cennznet/api';
-import { AttestationValue, TypeRegistry } from '@cennznet/types';
 import { KeyringPair } from '@polkadot/keyring/types';
 import testKeyring from '@polkadot/keyring/testing';
 import initApiPromise from '../../../../../jest/initApiPromise';
@@ -23,16 +22,9 @@ const issuerUri = '//Alice';
 const issuer2Uri = '//Bob';
 const holderUri = '//Charlie';
 
-const topic = 'passport';
-const registry = new TypeRegistry();
-// hex of string 'identity'
-const attestationValue = new AttestationValue(registry, '0x6964656e74697479');
-
-const topic2 = 'over18';
-const attestationValue2 = new AttestationValue(registry, '0x12121212121234a1');
-
 let api: Api;
 let issuer, issuer2, holder: KeyringPair;
+let attestationValue, attestationValue2, topic, topic2;
 
 beforeAll(async () => {
   await cryptoWaitReady();
@@ -42,6 +34,10 @@ beforeAll(async () => {
   issuer = simpleKeyring.addFromUri(issuerUri);
   issuer2 = simpleKeyring.addFromUri(issuer2Uri);
   holder = simpleKeyring.addFromUri(holderUri);
+  attestationValue = api.registry.createType('AttestationValue', '0x6964656e74697479');
+  attestationValue2 = api.registry.createType('AttestationValue', '0x12121212121234a1');
+  topic = api.registry.createType('AttestationTopic', '0x70617373706f7274'); // hex for passport
+  topic2 = api.registry.createType('AttestationTopic', '0x6f7665723138'); // hex for over18
 });
 
 afterAll(async () => {
@@ -63,7 +59,7 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(topic);
+                expect(data[2].toHex()).toEqual(topic.toHex());
                 expect(data[3].toHex()).toBe(attestationValue.toHex());
                 done();
               }
@@ -73,8 +69,7 @@ describe('Attestation APIs', () => {
     });
 
     it('should create a claim with a u8a', async done => {
-      const otherTopic = 'randomTopic';
-
+      const otherTopic = api.registry.createType('AttestationTopic', '0x72616e646f6d546f706963'); // hex for randomTopic
       await api.tx.attestation
         .setClaim(holder.address, otherTopic, attestationValue.toU8a())
         .signAndSend(issuer, async ({ events, status }) => {
@@ -87,7 +82,7 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(otherTopic);
+                expect(data[2].toHex()).toEqual(otherTopic.toHex());
                 expect(data[3].toHex()).toBe(attestationValue.toHex());
                 done();
               }
@@ -120,7 +115,7 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(topic);
+                expect(data[2].toHex()).toEqual(topic.toHex());
                 expect(data[3].toHex()).toBe(attestationValue.toHex());
                 done();
               }
@@ -142,7 +137,7 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(topic2);
+                expect(data[2].toHex()).toEqual(topic2.toHex());
                 expect(data[3].toHex()).toBe(attestationValue2.toHex());
                 done();
               }
@@ -164,8 +159,8 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer2.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(topic);
-                expect(data[3].toString()).toBe(attestationValue.toHex());
+                expect(data[2].toHex()).toEqual(topic.toHex());
+                expect(data[3].toHex()).toBe(attestationValue.toHex());
                 done();
               }
             }
@@ -186,8 +181,8 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer2.address);
                 // expect topic to match
-                expect(data[2].toString().toString()).toEqual(topic2);
-                expect(data[3].toString()).toBe(attestationValue2.toHex());
+                expect(data[2].toHex()).toEqual(topic2.toHex());
+                expect(data[3].toHex()).toBe(attestationValue2.toHex());
                 done();
               }
             }
@@ -234,7 +229,7 @@ describe('Attestation APIs', () => {
                 // Expect issuers to match
                 expect(data[1].toString()).toBe(issuer.address);
                 // expect topic to match
-                expect(data[2].toString()).toEqual(topic);
+                expect(data[2].toHex()).toEqual(topic.toHex());
                 expect(data[3].toHex()).toBe(attestationValue.toHex());
                 done();
               }
@@ -255,7 +250,7 @@ describe('Attestation APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic);
+              expect(data[2].toHex()).toEqual(topic.toHex());
               done();
             }
           }

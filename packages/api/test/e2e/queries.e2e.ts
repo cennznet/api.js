@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, BalanceLock, Vec, WithdrawReasons } from '@cennznet/types';
+import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
 import testKeyring from '@polkadot/keyring/testing';
-import { Hash } from '@cennznet/types/interfaces';
 import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -57,7 +56,6 @@ describe('e2e queries', () => {
     });
 
     it('Checks transaction payment', async done => {
-
       const assetBalance = await api.query.genericAsset.freeBalance(16001, bob.address);
       console.log('Balance before ', assetBalance.toString());
       const ex = await api.tx.genericAsset
@@ -87,27 +85,16 @@ describe('e2e queries', () => {
       const keyring = testKeyring({ type: 'sr25519' });
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoPair = keyring.getPair(sudoKey.toString());
-
+      const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
+      const option = {initialIssuance : 0, permissions};
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
       await api.tx.sudo
         .sudo(api.tx.genericAsset
           .create(alice.address,
-            new AssetOptions(
-              api.registry,
-              {
-                initialIssuance: 0,
-                permissions: {
-                  update: null,
-                  mint: null,
-                  burn: null,
-                },
-              }),
-            new AssetInfo(
-              api.registry,
-              {
-                symbol: 'SYLO',
-                decimalPlaces: 3
-              }
-            )
+            assetOption,
+            assetInfo
           ))
         .signAndSend(sudoPair);
     }, 12000);
@@ -151,8 +138,11 @@ describe('e2e queries', () => {
       const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
       expect(balanceLocks.isEmpty).toBeFalsy();
       let reasons: WithdrawReasons = balanceLocks[0].reasons;
-      expect(reasons.isAll()).toBeTruthy();
-
+      expect(reasons.isTransactionPayment).toBeTruthy();
+      expect(reasons.isTransfer).toBeTruthy();
+      expect(reasons.isTip).toBeTruthy();
+      expect(reasons.isReserve).toBeTruthy();
+      expect(reasons.isFee).toBeTruthy();
       done();
     });
   });

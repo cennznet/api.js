@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId } from '@cennznet/types/types';
-import { Hash } from '@cennznet/types/interfaces';
+import { AnyAssetId, Hash } from '@cennznet/types';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -25,9 +24,9 @@ import { coreAssetId, coreAssetIdAt } from './shared';
  * Returns the total liqudity in the exchange for the asset
  * @param assetId
  */
-export function totalLiquidity(api: ApiInterfaceRx) {
+export function totalLiquidity(instanceId: string, api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<BN> => {
-    return coreAssetId(api)().pipe(
+    return coreAssetId(instanceId, api)().pipe(
       switchMap(coreAssetId => {
         const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
         return (api.query.cennzx.totalLiquidity(exchangeKey) as unknown) as Observable<BN>;
@@ -41,9 +40,12 @@ export function totalLiquidity(api: ApiInterfaceRx) {
  * @param hash - blockHash
  * @param assetId
  */
-export function totalLiquidityAt(api: ApiInterfaceRx) {
+export function totalLiquidityAt(instanceId: string, api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId): Observable<BN> => {
-    return coreAssetIdAt(api)(hash).pipe(
+    return coreAssetIdAt(
+      instanceId,
+      api
+    )(hash).pipe(
       switchMap(coreAssetId => {
         const exchangeKey = getExchangeKey(api.registry, coreAssetId, assetId);
         return (api.query.cennzx.totalLiquidity.at(hash, exchangeKey) as unknown) as Observable<BN>;

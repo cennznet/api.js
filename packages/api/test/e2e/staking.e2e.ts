@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Option } from '@cennznet/types';
-import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs } from '@cennznet/types/interfaces';
+import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs, Option } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -45,7 +44,7 @@ describe('Staking Operations', () => {
     // Fund stash and controller
     const stakingId = await api.query.genericAsset.stakingAssetId();
     const spendingId = await api.query.genericAsset.spendingAssetId();
-    let nonce = await api.query.system.accountNonce(alice.address);
+    let nonce = await api.rpc.system.accountNextIndex(alice.address);
 
     // How much to fund stash and controller with
     const initialEndowment = 100_000_000;
@@ -183,8 +182,9 @@ describe('Staking Operations', () => {
     // Payee account set to any account
     await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
     // Subscribe to payee changes
-    await api.query.staking.payee(stash.address, (payee: RewardDestination) =>
-      (payee.asAccount.toString() === rewardDestinationAddress) ? done() : null);
+    await api.query.staking.payee(stash.address, (payee: RewardDestination) => {
+      (payee.isAccount && payee.asAccount.toString() === rewardDestinationAddress) ? done() : null
+    });
   });
 
   test('setController changes controller account', async done => {

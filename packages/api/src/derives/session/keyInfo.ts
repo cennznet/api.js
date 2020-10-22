@@ -1,8 +1,6 @@
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { memo } from '@polkadot/api-derive/util';
-import { createType, Option, Vec } from '@cennznet/types';
-import { AccountId, Keys } from '@cennznet/types/interfaces';
-import { ITuple } from '@cennznet/types/types';
+import { createType, ITuple, Option, Vec, AccountId, Keys } from '@cennznet/types';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DerivedSessionKeyInfo } from '../types';
@@ -38,8 +36,12 @@ function retrieveSessionDetails(
 /**
  * @description From a stash and sessions nextKeys, filter session and next session details
  */
-export function queryKeyInfo(api: ApiInterfaceRx): (accountId: Uint8Array) => Observable<DerivedSessionKeyInfo> {
+export function queryKeyInfo(
+  instanceId: string,
+  api: ApiInterfaceRx
+): (accountId: Uint8Array) => Observable<DerivedSessionKeyInfo> {
   return memo(
+    instanceId,
     (accountId: Uint8Array | string): Observable<DerivedSessionKeyInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
       return retrieveSessionDetails(api, stashId).pipe(

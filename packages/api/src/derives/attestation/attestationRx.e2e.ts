@@ -15,7 +15,6 @@
 import { filter, first } from 'rxjs/operators';
 
 import { ApiRx } from '@cennznet/api';
-import { AttestationValue, H256, TypeRegistry } from '@cennznet/types';
 import testKeyring from '@polkadot/keyring/testing';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -26,16 +25,9 @@ const issuerUri = '//Alice';
 const issuer2Uri = '//Bob';
 const holderUri = '//Charlie';
 
-const topic = 'passport';
-// hex of string 'identity'
-const registry = new TypeRegistry();
-const attestationValue = new AttestationValue(registry, '0x6964656e74697479');
-
-const topic2 = 'over18';
-const attestationValue2 = new AttestationValue(registry, '0x12121212121234a1');
-
 let api: ApiRx;
 let issuer, issuer2, holder: KeyringPair;
+let attestationValue, attestationValue2, topic, topic2;
 
 beforeAll(async () => {
   await cryptoWaitReady();
@@ -46,6 +38,10 @@ beforeAll(async () => {
   issuer = simpleKeyring.addFromUri(issuerUri);
   issuer2 = simpleKeyring.addFromUri(issuer2Uri);
   holder = simpleKeyring.addFromUri(holderUri);
+  attestationValue = api.registry.createType('AttestationValue', '0x6964656e74697479');
+  attestationValue2 = api.registry.createType('AttestationValue', '0x12121212121234a1');
+  topic = api.registry.createType('AttestationTopic', '0x70617373706f7274'); // hex for passport
+  topic2 = api.registry.createType('AttestationTopic', '0x6f7665723138'); // hex for over18
 });
 
 afterAll(async () => {
@@ -74,8 +70,8 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic);
-              expect(data[3].toString()).toBe(attestationValue.toHex());
+              expect(data[2].toHex()).toEqual(topic.toHex());
+              expect(data[3].toHex()).toBe(attestationValue.toHex());
               done();
             }
           }
@@ -116,8 +112,8 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic);
-              expect(data[3].toString()).toBe(attestationValue.toHex());
+              expect(data[2].toHex()).toEqual(topic.toHex());
+              expect(data[3].toHex()).toBe(attestationValue.toHex());
               done();
             }
           }
@@ -143,8 +139,8 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic2);
-              expect(data[3].toString()).toBe(attestationValue2.toHex());
+              expect(data[2].toHex()).toEqual(topic2.toHex());
+              expect(data[3].toHex()).toBe(attestationValue2.toHex());
               done();
             }
           }
@@ -170,8 +166,8 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer2.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic);
-              expect(data[3].toString()).toBe(attestationValue.toHex());
+              expect(data[2].toHex()).toEqual(topic.toHex());
+              expect(data[3].toHex()).toBe(attestationValue.toHex());
               done();
             }
           }
@@ -197,8 +193,8 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer2.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic2);
-              expect(data[3].toString()).toBe(attestationValue2.toHex());
+              expect(data[2].toHex()).toEqual(topic2.toHex());
+              expect(data[3].toHex()).toBe(attestationValue2.toHex());
               done();
             }
           }
@@ -255,7 +251,7 @@ describe('AttestationRx APIs', () => {
               // Expect issuers to match
               expect(data[1].toString()).toBe(issuer.address);
               // expect topic to match
-              expect(data[2].toString()).toEqual(topic);
+              expect(data[2].toHex()).toEqual(topic.toHex());
               done();
             }
           }

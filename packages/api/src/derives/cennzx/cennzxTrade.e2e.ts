@@ -50,19 +50,14 @@ describe('Cennzx Operations', () => {
       // Create a new Asset 'A' and add liquidity to it
       // Amount of test asset - 'A' to create
       const initialIssuance = 900_000_000_000;
+      const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
+      const option = { initialIssuance, permissions };
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'A', decimalPlaces: 18 });
+      const createAssetTx1 = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
-      const createAssetTx1 = api.tx.genericAsset.create(
-        alice.address,
-        new AssetOptions(api.registry, {
-          initialIssuance,
-          permissions: {
-            update: alice.address,
-          },
-        }),
-        new AssetInfo(api.registry, { symbol: 'A', decimalPlaces: 18 })
-      );
-
-      nonce = await api.query.system.accountNonce(sudoKeypair.address);
+      nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
       // when the new asset is created it will have this ID.
       assetA = await api.query.genericAsset.nextAssetId();
       // Create new asset
@@ -101,11 +96,12 @@ describe('Cennzx Operations', () => {
     it("Add liquidity for tradeAsset 'B' to the pool", async done => {
       // Amount of test asset - 'B' to create
       const initialIssuance = 900_000_000_00;
-      const createAssetTx2 = api.tx.genericAsset.create(
-        bob.address,
-        new AssetOptions(api.registry, { initialIssuance, permissions: { update: bob.address } }),
-        new AssetInfo(api.registry, { symbol: 'B', decimalPlaces: 18 })
-      );
+      const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
+      const option = { initialIssuance, permissions };
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'B', decimalPlaces: 18 });
+      const createAssetTx2 = api.tx.genericAsset.create(bob.address, assetOption, assetInfo);
       // when the new asset is created it will have this ID.
       assetB = await api.query.genericAsset.nextAssetId();
       // Create new asset
@@ -157,7 +153,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedPrice)).toBeTruthy();
@@ -181,7 +177,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedPrice)).toBeTruthy();
@@ -204,7 +200,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedAssetPrice)).toBeTruthy();
@@ -228,7 +224,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedPrice)).toBeTruthy();
@@ -255,7 +251,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedCorePrice)).toBeTruthy();
@@ -279,7 +275,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedPrice)).toBeTruthy();
@@ -308,7 +304,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedAssetPrice)).toBeTruthy();
@@ -337,7 +333,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedPrice)).toBeTruthy();
@@ -365,7 +361,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedPrice)).toBeTruthy();
@@ -390,7 +386,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
                 expect(price.eq(expectedPrice)).toBeTruthy();
@@ -417,7 +413,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedPrice)).toBeTruthy();
@@ -441,7 +437,7 @@ describe('Cennzx Operations', () => {
         .signAndSend(alice, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
-              if (event.method === 'AssetPurchase') {
+              if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
                 expect(sellValue.eq(expectedPrice)).toBeTruthy();

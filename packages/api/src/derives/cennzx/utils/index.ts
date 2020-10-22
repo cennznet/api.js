@@ -11,9 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-import { AssetId, createType, Tuple, u64 } from '@cennznet/types';
-import { AnyAssetId, AnyNumber, Registry } from '@cennznet/types/types';
+import { createType, Tuple, u64, u32, AnyAssetId, AnyNumber, Registry } from '@cennznet/types';
 import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
 import BN from 'bn.js';
 
@@ -38,7 +36,7 @@ export function generateExchangeAddress(registry: Registry, coreAssetId: AnyNumb
  * @param assetId
  */
 export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, assetId: AnyNumber): Tuple {
-  return new Tuple(registry, [AssetId, AssetId], [coreAssetId, assetId]);
+  return new Tuple(registry, [u32, u32], [coreAssetId, assetId]);
 }
 
 /**
@@ -48,7 +46,12 @@ export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, asse
  * @param assetReserve
  * @param totalLiquidity
  */
-export function getAssetToWithdraw(liquidity: BN, coreReserve: BN, assetReserve: BN, totalLiquidity: BN) {
+export function getAssetToWithdraw(
+  liquidity: BN,
+  coreReserve: BN,
+  assetReserve: BN,
+  totalLiquidity: BN
+): { coreAmount: BN; assetAmount: BN } {
   if (liquidity.gt(totalLiquidity)) {
     throw new Error('Tried to overdraw liquidity');
   }

@@ -3,15 +3,17 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { memo } from '@polkadot/api-derive/util';
-import { createType, Option, RewardDestination } from '@cennznet/types';
 import {
+  createType,
   AccountId,
   Exposure,
   Keys,
   Nominations,
+  Option,
+  RewardDestination,
   StakingLedger,
   ValidatorPrefs,
-} from '@cennznet/types/interfaces';
+} from '@cennznet/types';
 import { DerivedStakingInfo } from '../types';
 
 type MultiResultV2 = [
@@ -38,9 +40,11 @@ function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId):
  * @description From a stash, retrieve the controller account ID and all relevant details
  */
 export function queryStakingAccountInfo(
+  instanceId: string,
   api: ApiInterfaceRx
 ): (accountId: Uint8Array | string) => Observable<DerivedStakingInfo> {
   return memo(
+    instanceId,
     (accountId: Uint8Array | string): Observable<DerivedStakingInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
 

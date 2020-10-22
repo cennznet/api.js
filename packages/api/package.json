@@ -20,18 +20,14 @@
   },
   "dependencies": {
     "@cennznet/types": "^1.2.1",
-    "@polkadot/api": "^1.1.1",
-    "@polkadot/metadata": "1.1.1",
-    "@polkadot/rpc-core": "^1.1.1",
-    "@polkadot/rpc-provider": "^1.1.1",
-    "@polkadot/types": "^1.1.1",
+    "@polkadot/api": "^2.3.1",
+    "@polkadot/metadata": "^2.3.1",
+    "@polkadot/rpc-core": "^2.3.1",
+    "@polkadot/rpc-provider": "^2.3.1",
+    "@polkadot/types": "^2.3.1",
     "eventemitter3": "^4.0.0"
   },
-  "resolution": {
-    "@polkadot/keyring": "2.3.1"
-  },
   "devDependencies": {
-    "@cennznet/cennznut-wasm": "^0.0.1-dev.0",
     "@types/jest": "^23.3.5",
     "jest": "24.1.0",
     "rimraf": "^2.6.2",

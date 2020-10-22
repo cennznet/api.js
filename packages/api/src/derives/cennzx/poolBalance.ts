@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId } from '@cennznet/types/types';
+import { AnyAssetId, Balance, Hash } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { Hash } from '@cennznet/types/interfaces';
 import { combineLatest, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { exchangeAddress } from './exchangeAddress';
@@ -24,9 +23,12 @@ import { exchangeAddress } from './exchangeAddress';
  * Returns the amount of asset in the exchange
  * @param assetId
  */
-export function poolAssetBalance(api: ApiInterfaceRx) {
-  return (assetId: AnyAssetId): Observable<any> => {
-    return exchangeAddress(api)(assetId).pipe(
+export function poolAssetBalance(instanceId: string, api: ApiInterfaceRx) {
+  return (assetId: AnyAssetId): Observable<Balance> => {
+    return exchangeAddress(
+      instanceId,
+      api
+    )(assetId).pipe(
       switchMap(exchangeAddress => api.query.genericAsset.freeBalance(assetId, exchangeAddress)),
       drr()
     );
@@ -37,9 +39,9 @@ export function poolAssetBalance(api: ApiInterfaceRx) {
  * Returns the amount of core asset in the exchange for the asset
  * @param assetId
  */
-export function poolCoreAssetBalance(api: ApiInterfaceRx) {
-  return (assetId: AnyAssetId): Observable<any> => {
-    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
+export function poolCoreAssetBalance(instanceId: string, api: ApiInterfaceRx) {
+  return (assetId: AnyAssetId): Observable<Balance> => {
+    return combineLatest([exchangeAddress(instanceId, api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
       switchMap(([exchangeAddress, coreAssetId]) => api.query.genericAsset.freeBalance(coreAssetId, exchangeAddress)),
       drr()
     );
@@ -51,9 +53,12 @@ export function poolCoreAssetBalance(api: ApiInterfaceRx) {
  * @param hash - blockHash
  * @param assetId
  */
-export function poolAssetBalanceAt(api: ApiInterfaceRx) {
-  return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
-    return exchangeAddress(api)(assetId).pipe(
+export function poolAssetBalanceAt(instanceId: string, api: ApiInterfaceRx) {
+  return (hash: Hash, assetId: AnyAssetId): Observable<Balance> => {
+    return exchangeAddress(
+      instanceId,
+      api
+    )(assetId).pipe(
       switchMap(exchangeAddress => api.query.genericAsset.freeBalance.at(hash, assetId, exchangeAddress)),
       drr()
     );
@@ -65,9 +70,9 @@ export function poolAssetBalanceAt(api: ApiInterfaceRx) {
  * @param hash - blockHash
  * @param assetId
  */
-export function poolCoreAssetBalanceAt(api: ApiInterfaceRx) {
-  return (hash: Hash, assetId: AnyAssetId): Observable<any> => {
-    return combineLatest([exchangeAddress(api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
+export function poolCoreAssetBalanceAt(instanceId: string, api: ApiInterfaceRx) {
+  return (hash: Hash, assetId: AnyAssetId): Observable<Balance> => {
+    return combineLatest([exchangeAddress(instanceId, api)(assetId), api.query.cennzx.coreAssetId()]).pipe(
       switchMap(([exchangeAddress, coreAssetId]) =>
         api.query.genericAsset.freeBalance.at(hash, coreAssetId, exchangeAddress)
       ),

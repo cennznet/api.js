@@ -75,7 +75,6 @@ module.exports = {
         ],
         "import/no-extraneous-dependencies": "off",
         "import/order": "error",
-        "no-console": "error",
         "no-duplicate-imports": "error",
         // "no-magic-numbers": "error",
         "no-return-await": "error",

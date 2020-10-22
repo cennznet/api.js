@@ -26,10 +26,10 @@ import { getClaim } from './getClaim';
  * @param issuers  A list of claim issuer addresses to include
  * @param topics  A list of claim topics to include
  */
-export function getClaims(api: ApiInterfaceRx) {
+export function getClaims(instanceId: string, api: ApiInterfaceRx) {
   return (holder: string, issuers: Array<string>, topics: Array<string>): Observable<Claim[]> => {
     const observables = issuers.reduce((prev, issuer) => {
-      prev.push(...topics.map(topic => getClaim(api)(holder, issuer, topic)));
+      prev.push(...topics.map(topic => getClaim(instanceId, api)(holder, issuer, topic)));
       return prev;
     }, [] as Observable<Claim>[]);
 

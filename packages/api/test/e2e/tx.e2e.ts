@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions } from '@cennznet/types';
+import { AssetInfo, AssetOptions } from "@cennznet/types";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -45,7 +45,7 @@ describe('e2e transactions', () => {
   describe('Send', () => {
 
     it('Makes a tx using immortal era', async done => {
-      const nonce = await api.query.system.accountNonce(bob.address);
+      const nonce = await api.rpc.system.accountNextIndex(bob.address);
       await api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 100)
         .signAndSend(bob, { nonce },
@@ -59,7 +59,7 @@ describe('e2e transactions', () => {
     });
 
     it('Makes a tx via send', async done => {
-      const nonce = await api.query.system.accountNonce(bob.address);
+      const nonce = await api.rpc.system.accountNextIndex(bob.address);
       const tx = api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 1)
         .sign(bob, { nonce });
@@ -73,7 +73,7 @@ describe('e2e transactions', () => {
     });
 
     it('Makes a tx', async done => {
-      const nonce = await api.query.system.accountNonce(bob.address);
+      const nonce = await api.rpc.system.accountNextIndex(bob.address);
       await api.tx.genericAsset
         .transfer(stakingAssetId, alice.address, 1)
         .signAndSend(bob, { nonce }, async ({ events, status }: SubmittableResult) => {
@@ -102,37 +102,24 @@ describe('e2e transactions', () => {
 
       // Amount of test asset to create
       const initialIssuance = 900_000_000_000_000;
-
-      let createAssetTx = api.tx.genericAsset.create(
-        assetOwner.address,
-        new AssetOptions(
-          api.registry,
-          {
-            initialIssuance,
-            permissions: {
-              update: assetOwner.address,
-            },
-          }),
-        new AssetInfo(
-          api.registry,
-          {
-            symbol: 'TEST',
-            decimalPlaces: 4
-          }
-        )
-      );
+      const owner = api.registry.createType('Owner', assetOwner.address, 1); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
+      const option = {initialIssuance , permissions};
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'TEST', decimalPlaces: 4});
+      let createAssetTx = api.tx.genericAsset.create(assetOwner.address, assetOption, assetInfo);
 
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoAddress = await api.query.sudo.key();
       const sudoKeypair = keyring.getPair(sudoAddress.toString());
 
       // when the new asset is created it will have this ID.
-      feeAssetId = (await api.query.genericAsset.nextAssetId());
+      feeAssetId = await api.query.genericAsset.nextAssetId();
 
       // 1) Create the new fee asset
       // 2) Mint CPAY to assetOwner to fund subsequent pool liquidity and further transactions.
       const assetCreated = new Promise(async (resolve, reject) => {
-        let nonce = (await api.query.system.accountNonce(sudoAddress));
+        let nonce = await api.rpc.system.accountNextIndex(sudoAddress);
         await api.tx.sudo.sudo(createAssetTx).signAndSend(sudoKeypair, { nonce: nonce++ });
         await api.tx.genericAsset.mint(spendingAssetId, assetOwner.address, initialIssuance).signAndSend(
           sudoKeypair, { nonce: nonce++ }, ({ status }) => status.isInBlock ? resolve() : null
@@ -147,23 +134,18 @@ describe('e2e transactions', () => {
 
         await api.tx.cennzx
           .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
-          .signAndSend(assetOwner, ({ status }) => status.isInBlock ? done() : null);
+          .signAndSend(assetOwner, ({ events, status }) => status.isInBlock ? done() :null );
+
       });
 
     });
 
     it('Uses keypair to sign', async done => {
-      const feeExchange = {
-        FeeExchangeV1: {
-          assetId: feeAssetId,
-          maxPayment: 50_000_000_000,
-        }
-      };
-      const transactionPayment = {
-        tip: 2,
-        feeExchange
-      };
-      const nonce = await api.query.system.accountNonce(assetOwner.address);
+      const maxPayment = 50_000_000_000;
+      const assetId = api.registry.createType('AssetId', feeAssetId);
+      const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
+      const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
+      const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
       await api.tx.genericAsset
         .transfer(spendingAssetId, bob.address, 100)
         .signAndSend(
@@ -173,18 +155,13 @@ describe('e2e transactions', () => {
         );
     });
 
-    it('Use signer', async done => {
-      const feeExchange = {
-        FeeExchangeV1: {
-          assetId: feeAssetId,
-          maxPayment: 50_000_000_000,
-        }
-      };
-      const transactionPayment = {
-        tip: 2,
-        feeExchange,
-      };
-      const nonce = await api.query.system.accountNonce(assetOwner.address);
+    it('Use tip along with fee exchange', async done => {
+
+      const maxPayment = 50_000_000_000;
+      const assetId = api.registry.createType('AssetId', feeAssetId);
+      const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
+      const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 2, feeExchange});
+      const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
       const tx = api.tx.genericAsset.transfer(spendingAssetId, bob.address, 100);
       await tx.signAndSend(
         assetOwner,
@@ -194,17 +171,9 @@ describe('e2e transactions', () => {
     });
 
     it('Update asset info', async done => {
-      const nonce = await api.query.system.accountNonce(assetOwner.address);
-      await api.tx.genericAsset.updateAssetInfo(
-        feeAssetId,
-        new AssetInfo(
-          api.registry,
-          {
-            symbol: 'NEW_ASSET_ID',
-            decimalPlaces: 5
-          }
-        )
-      ).signAndSend(assetOwner, { nonce }, async ({ events, status }) => {
+      const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'NEW_ASSET_ID', decimalPlaces: 5});
+      await api.tx.genericAsset.updateAssetInfo( feeAssetId, assetInfo).signAndSend(assetOwner, { nonce }, async ({ events, status }) => {
         if (status.isInBlock) {
           for (const { event: { method, section, data } } of events) {
             if (section === 'genericAsset' && method == 'AssetInfoUpdated') {

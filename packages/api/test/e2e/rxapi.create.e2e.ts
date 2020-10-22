@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,14 @@ import {ApiRx} from '../../src/ApiRx';
 import initApiRx from '../../../../jest/initApiRx';
 
 describe('e2e rx api create', () => {
-  let apiRx;
-  let incorrectApiRx;
-
-  beforeAll(async () => {
-    const incorrectEndPoint = 'wss://rimu.centrality.cloud/';
-
-    apiRx = await initApiRx();
-    incorrectApiRx = await ApiRx.create({provider: incorrectEndPoint});
-  });
+  const incorrectEndPoint = 'wss://rimu.centrality.cloud/';
 
   afterAll(async done => {
-    apiRx = null;
-    incorrectApiRx = null;
     done();
   });
+
   it('Should create an Api instance with the timeout option', async done => {
+    const apiRx = await initApiRx();
     const api = await apiRx.toPromise();
 
     api.rpc.chain.getBlockHash().subscribe(hash => {
@@ -41,6 +33,7 @@ describe('e2e rx api create', () => {
   });
 
   it('Should create Api without timeout if timeout is 0', async done => {
+    const apiRx = await initApiRx();
     const api = await apiRx.toPromise();
     api.rpc.chain.getBlockHash().subscribe(hash => {
       expect(hash).toBeDefined();
@@ -49,12 +42,12 @@ describe('e2e rx api create', () => {
   });
 
   it('Should get error if the connection fails', async () => {
+    const incorrectApiRx = await ApiRx.create({provider: incorrectEndPoint});
     await expect(incorrectApiRx.toPromise()).rejects.toThrow(/Connection fail/);
   });
 
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
-    incorrectApiRx = await ApiRx.create({timeout: -1});
-
+    const incorrectApiRx = await ApiRx.create({timeout: -1});
     await expect(incorrectApiRx.toPromise()).rejects.toThrow(/Timeout has occurred/);
   });
 });

@@ -13,9 +13,8 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAddress, AnyAssetId } from '@cennznet/types/types';
+import { AnyAddress, AnyAssetId, Balance, Hash } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { Balance, Hash } from '@cennznet/types/interfaces';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -27,9 +26,9 @@ import { coreAssetId, coreAssetIdAt } from './shared';
  * @param assetId
  * @param address
  */
-export function liquidityBalance(api: ApiInterfaceRx) {
+export function liquidityBalance(instanceId: string, api: ApiInterfaceRx) {
   return (assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-    return coreAssetId(api)().pipe(
+    return coreAssetId(instanceId, api)().pipe(
       switchMap(
         coreAssetId =>
           api.query.cennzx.liquidityBalance(getExchangeKey(api.registry, coreAssetId, assetId), address) as Observable<
@@ -47,9 +46,12 @@ export function liquidityBalance(api: ApiInterfaceRx) {
  * @param assetId
  * @param address
  */
-export function liquidityBalanceAt(api: ApiInterfaceRx) {
+export function liquidityBalanceAt(instanceId: string, api: ApiInterfaceRx) {
   return (hash: Hash, assetId: AnyAssetId, address: AnyAddress): Observable<BN> => {
-    return coreAssetIdAt(api)(hash).pipe(
+    return coreAssetIdAt(
+      instanceId,
+      api
+    )(hash).pipe(
       switchMap(
         coreAssetId =>
           api.query.cennzx.liquidityBalance.at(

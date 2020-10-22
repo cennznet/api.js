@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Types from '@cennznet/types/injects';
+import Types from '@cennznet/types/interfaces/injects';
 import { ApiPromise } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
+import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
 import derives from './derives';
-import rpc from './rpc';
 import staticMetadata from './staticMetadata';
-import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
-
-export const DEFAULT_TIMEOUT = 10000;
+import rpc from './rpc';
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
     const api = new Api(options);
     return withTimeout(
       new Promise((resolve, reject) => {
-        const rejectError = err => {
+        const rejectError = () => {
           // Disconnect provider if API initialization fails
           api.disconnect();
 
@@ -40,7 +38,7 @@ export class Api extends ApiPromise {
 
         api.isReady.then(res => {
           //  Remove error listener if API initialization success.
-          (api as any)._eventemitter.removeListener('error', rejectError);
+          (api as ApiPromise).off('error', rejectError);
           resolve((res as unknown) as Api);
         }, reject);
 
@@ -67,13 +65,13 @@ export class Api extends ApiPromise {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
-    options.rpc = { ...(rpc as any), ...options.rpc };
+    options.rpc = { ...rpc, ...options.rpc };
 
     super(options as ApiOptionsBase);
   }
 }
 
-async function withTimeout(promise: Promise<Api>, timeoutMs: number = DEFAULT_TIMEOUT): Promise<Api> {
+async function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
   if (timeoutMs === 0) {
     return promise;
   }

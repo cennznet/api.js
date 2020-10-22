@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,41 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { mergeDeriveOptions } from '@cennznet/api/util/derives';
-import Types from '@cennznet/types/injects';
+import Types from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
-import { fromEvent, Observable, race, throwError } from 'rxjs';
-import { switchMap, timeout } from 'rxjs/operators';
+import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
+import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
+import { mergeDeriveOptions } from './util/derives';
 
-import rpc from '@cennznet/api/rpc';
-import { DEFAULT_TIMEOUT } from './Api';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-import { ApiOptions, Derives, SubmittableExtrinsics } from './types';
+import { ApiOptions, Derives } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
+import rpc from './rpc';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
     const apiRx = new ApiRx(options);
 
-    const timeoutMs = getTimeout(options);
+    const observable: Observable<ApiRx> = new Observable(x => {
+      apiRx.on('error', (): void => {
+        x.error(new Error('Connection fail'));
+      });
+      apiRx.on('disconnected', (): void => {
+        x.error(new Error('Disconnected'));
+      });
+      apiRx.on('connected', (): void => {
+        console.info('API has been connected to the endpoint');
+      });
+      apiRx.once('ready', (): void => {
+        x.next(apiRx);
+        x.complete();
+      });
+    });
 
-    const rejectError = fromEvent((apiRx as any)._eventemitter, 'error').pipe(
-      switchMap(err => {
-        // Disconnect provider if API initialization fails
-        apiRx.disconnect();
-
-        return throwError(new Error('Connection fail'));
-      })
-    );
-    const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
-    // api$.subscribe(api => api.decorateCennznetExtrinsics());
-
-    return timeoutMs === 0
-      ? race(api$, rejectError)
-      : race(api$.pipe(timeout(timeoutMs || DEFAULT_TIMEOUT)), rejectError);
+    return observable.pipe(timeout(getTimeout(options)));
   }
 
   get tx(): SubmittableExtrinsics<'rxjs'> {
@@ -64,8 +64,8 @@ export class ApiRx extends ApiRxBase {
     }
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
-    options.derives = mergeDeriveOptions(derives as any, options.derives);
-    options.rpc = { ...(rpc as any), ...options.rpc };
+    options.derives = mergeDeriveOptions(derives, options.derives);
+    options.rpc = { ...rpc, ...options.rpc };
 
     super(options as ApiOptionsBase);
   }

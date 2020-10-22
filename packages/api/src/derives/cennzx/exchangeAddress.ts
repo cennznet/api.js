@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AnyAssetId } from '@cennznet/types/types';
+import { AnyAssetId } from '@cennznet/types';
 import { drr } from '@polkadot/rpc-core/rxjs';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -24,9 +24,9 @@ import { coreAssetId } from './shared';
  * Returns the exchange address for a given assetId
  @param assetId
  */
-export function exchangeAddress(api: ApiInterfaceRx) {
+export function exchangeAddress(instanceId: string, api: ApiInterfaceRx) {
   return (assetId: AnyAssetId): Observable<string> =>
-    coreAssetId(api)().pipe(
+    coreAssetId(instanceId, api)().pipe(
       map(coreAssetId => generateExchangeAddress(api.registry, coreAssetId, assetId)),
       first(),
       drr()

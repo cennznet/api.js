@@ -1,19 +1,32 @@
-// Running this file with ~ node scripts/updateStaticMetadata.js will create a staticMetadata.ts on root directory which can used/copied
-const Api = require('@cennznet/api').Api;
-const fs = require('fs');
-const staticMetadata = require('@cennznet/api/staticMetadata');
-const Metadata  = require('@cennznet/types').Metadata;
-async function updateMeta() {
-    const provider = 'wss://cennznet.unfrastructure.io/public/ws'; // Use Azalea
-    const api = await Api.create({provider});
-    const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
-    const staticMeta = new Metadata(api.registry, meta).toJSON();
-    if (api.runtimeMetadata.toJSON() !== staticMeta) {
-        const newMeta = {};
-        newMeta[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`] = api.runtimeMetadata.toHex();
-        const data = `export default ${JSON.stringify(newMeta, null, '\n')};`;
-        fs.writeFileSync('staticMetadata.ts', data, 'utf-8');
-        process.exit()
-    }
-}
-updateMeta();
+#!/usr/bin/env node
+// Copyright 2019-2020 Centrality Investments Limited
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+require('@babel/register')({
+  extensions: ['.js', '.ts'],
+  plugins: [
+    [
+      'module-resolver',
+      {
+        alias: {
+          '^@cennznet/api(.*)': './packages/api/src\\1',
+          '^@cennznet/types(.*)': './packages/types/src\\1',
+          '^@cennznet/util(.*)': './packages/util/src\\1',
+        },
+      },
+    ],
+  ],
+});
+
+require('./updateStaticMetadata.ts');

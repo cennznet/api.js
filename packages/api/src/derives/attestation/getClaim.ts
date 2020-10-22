@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AttestationValue } from '@cennznet/types';
+import { AttestationValue } from '@cennznet/types/interfaces/attestation';
 import { drr } from '@polkadot/rpc-core/rxjs';
 
 import { Claim } from './types';
@@ -30,7 +30,7 @@ import { Claim } from './types';
  *
  *  @returns the claim
  */
-export function getClaim(api: ApiInterfaceRx) {
+export function getClaim(instanceId: string, api: ApiInterfaceRx) {
   return (holder: string, issuer: string, topic: string): Observable<Claim> =>
     api.query.attestation
       .values<AttestationValue>([holder, issuer, topic])
