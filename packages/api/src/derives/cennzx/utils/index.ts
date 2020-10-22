@@ -46,7 +46,12 @@ export function getExchangeKey(registry: Registry, coreAssetId: AnyAssetId, asse
  * @param assetReserve
  * @param totalLiquidity
  */
-export function getAssetToWithdraw(liquidity: BN, coreReserve: BN, assetReserve: BN, totalLiquidity: BN) {
+export function getAssetToWithdraw(
+  liquidity: BN,
+  coreReserve: BN,
+  assetReserve: BN,
+  totalLiquidity: BN
+): { coreAmount: BN; assetAmount: BN } {
   if (liquidity.gt(totalLiquidity)) {
     throw new Error('Tried to overdraw liquidity');
   }

@@ -36,9 +36,9 @@ export function assetToWithdraw(instanceId: string, api: ApiInterfaceRx) {
       map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
         getAssetToWithdraw(
           new BN(liquidity.toString()),
-          coreAssetReserve as any,
-          tradeAssetReserve as any,
-          totalLiquidity as any
+          new BN(coreAssetReserve.toString()),
+          new BN(tradeAssetReserve.toString()),
+          new BN(totalLiquidity.toString())
         )
       )
     );
@@ -61,9 +61,9 @@ export function assetToWithdrawAt(instanceId: string, api: ApiInterfaceRx) {
       map(([tradeAssetReserve, coreAssetReserve, totalLiquidity]) =>
         getAssetToWithdraw(
           new BN(liquidity.toString()),
-          coreAssetReserve as any,
-          tradeAssetReserve as any,
-          totalLiquidity as any
+          new BN(coreAssetReserve.toString()),
+          new BN(tradeAssetReserve.toString()),
+          new BN(totalLiquidity.toString())
         )
       )
     );

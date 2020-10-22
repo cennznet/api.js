@@ -29,7 +29,7 @@ export class Api extends ApiPromise {
     const api = new Api(options);
     return withTimeout(
       new Promise((resolve, reject) => {
-        const rejectError = err => {
+        const rejectError = () => {
           // Disconnect provider if API initialization fails
           api.disconnect();
 
@@ -65,7 +65,7 @@ export class Api extends ApiPromise {
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
-    options.rpc = { ...(rpc as any), ...options.rpc };
+    options.rpc = { ...rpc, ...options.rpc };
 
     super(options as ApiOptionsBase);
   }
