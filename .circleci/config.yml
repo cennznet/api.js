@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Package
           command: |
+            yarn && yarn build
             npm install cpx
             npx lerna exec -- 'cpx package.json build/'
             npx lerna exec -- 'cpx README.md build/'
@@ -51,7 +52,7 @@ jobs:
           name: Publish
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
-            echo 'Publishing to npmjs.org'
+            echo 'Publishing to npmjs.org.'
             npx lerna exec -- 'cd build && npm publish --access public'
 workflows:
   version: 2
