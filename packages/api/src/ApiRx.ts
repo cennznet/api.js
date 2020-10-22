@@ -32,10 +32,12 @@ export class ApiRx extends ApiRxBase {
 
     const observable: Observable<ApiRx> = new Observable(x => {
       apiRx.on('error', (): void => {
-        x.error(new Error('Connection fail'));
+        apiRx.disconnect().finally(() => {
+          x.error(new Error('Connection fail'));
+        });
       });
       apiRx.on('disconnected', (): void => {
-        x.error(new Error('Disconnected'));
+        console.info('API has been disconnected from the endpoint');
       });
       apiRx.on('connected', (): void => {
         console.info('API has been connected to the endpoint');
