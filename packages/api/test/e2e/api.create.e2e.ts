@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Metadata from "@polkadot/metadata/Metadata";
+import { Metadata } from '@cennznet/types';
 import {Api} from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';

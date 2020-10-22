@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { EstimateFeeParams } from '@cennznet/api/derives/types';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
 import { drr } from '@polkadot/rpc-core/rxjs';
-import { TypeRegistry, RuntimeDispatchInfo, SignatureOptions } from '@cennznet/types';
+import { TypeRegistry, RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -40,7 +41,7 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
-  return ({ extrinsic, userFeeAssetId, maxPayment }): Observable<any> => {
+  return ({ extrinsic, userFeeAssetId, maxPayment }: EstimateFeeParams): Observable<Balance | Error> => {
     return combineLatest([
       api.rpc.state.getRuntimeVersion(),
       api.rpc.chain.getBlockHash(),
@@ -49,7 +50,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
     ]).pipe(
       first(),
       switchMap(
-        ([runtimeVersion, blockHash, genesisHash, networkFeeAssetId]): Observable<[RuntimeDispatchInfo, any]> => {
+        ([runtimeVersion, blockHash, genesisHash, networkFeeAssetId]): Observable<[RuntimeDispatchInfo, AssetId]> => {
           const registry = new TypeRegistry();
           const era = new ExtrinsicEra(registry, {
             current: 1,
