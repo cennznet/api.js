@@ -45,13 +45,14 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
-  it('Should get rejected if the connection fails', async () => {
+  it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
     await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
       'Connection fail');
+    done();
   });
 
-  // FIXME later
+  // FIXME later - works well as a single test, but fails when part of whole group
   it.skip('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(

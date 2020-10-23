@@ -104,8 +104,8 @@ describe('e2e queries', () => {
     it('Gets generic asset registeredAssets through RPC call', async done => {
       const registeredAsset = await api.rpc.genericAsset.registeredAssets();
       expect(registeredAsset.length).toBeGreaterThan(0);
-      const hasCpayAsset = ([assetId, meta]) => assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '0';
-      const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '0';
+      const hasCpayAsset = ([assetId, meta]) => assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '2';
+      const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '1';
       expect(registeredAsset.some(hasCpayAsset)).toBe(true);
       expect(registeredAsset.some(hasCennzAsset)).toBe(true);
       done();
