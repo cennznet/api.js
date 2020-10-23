@@ -19,7 +19,6 @@ import config from '../../../../config';
 
 describe('e2e api create', () => {
   let api;
-  let incorrectApi;
 
   it('For local chain - checking if static metadata is same as latest', async () => {
     const provider = 'ws://localhost:9944'; // Use local dev chain
@@ -31,13 +30,9 @@ describe('e2e api create', () => {
 
   afterEach(async () => {
     try {
-      if (api) {
+      if (api && api.connected) {
         await api.disconnect();
       }
-      if (incorrectApi) {
-        await incorrectApi.disconnect();
-      }
-      incorrectApi = null;
     } catch (e) {}
   });
 
