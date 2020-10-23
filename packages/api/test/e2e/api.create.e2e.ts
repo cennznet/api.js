@@ -30,7 +30,7 @@ describe('e2e api create', () => {
 
   afterEach(async () => {
     try {
-      if (api && api.connected) {
+      if (api.isConnected) {
         await api.disconnect();
       }
     } catch (e) {}
