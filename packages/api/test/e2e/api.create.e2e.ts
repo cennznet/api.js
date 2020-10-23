@@ -21,7 +21,7 @@ describe('e2e api create', () => {
   let api;
 
   it('For local chain - checking if static metadata is same as latest', async () => {
-    const provider = 'ws://localhost:9944'; // Use local dev chain
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
@@ -51,7 +51,8 @@ describe('e2e api create', () => {
       'Connection fail');
   });
 
-  it('Should get rejected if it is not resolved in a specific period of time', async () => {
+  // FIXME later
+  it.skip('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
       'Timed out in 1 ms.');
