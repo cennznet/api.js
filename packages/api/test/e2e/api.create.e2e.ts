@@ -20,6 +20,12 @@ import config from '../../../../config';
 describe('e2e api create', () => {
   let api;
 
+  it('Should get rejected if it is not resolved in a specific period of time', async () => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
+        'Timed out in 1 ms.');
+  });
+
   it('For local chain - checking if static metadata is same as latest', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
@@ -50,13 +56,6 @@ describe('e2e api create', () => {
     await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
       'Connection fail');
     done();
-  });
-
-  // FIXME later - works well as a single test, but fails when part of whole group
-  it.skip('Should get rejected if it is not resolved in a specific period of time', async () => {
-    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
-      'Timed out in 1 ms.');
   });
 
   // TODO - enable and update this test after runtime upgrade on Azalea
