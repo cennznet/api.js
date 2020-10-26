@@ -31,8 +31,9 @@ export class Api extends ApiPromise {
       new Promise((resolve, reject) => {
         const rejectError = () => {
           // Disconnect provider if API initialization fails
-          api.disconnect();
-
+          if (api.isConnected) {
+            api.disconnect();
+          }
           reject(new Error('Connection fail'));
         };
 

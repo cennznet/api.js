@@ -19,10 +19,15 @@ import config from '../../../../config';
 
 describe('e2e api create', () => {
   let api;
-  let incorrectApi;
+
+  it('Should get rejected if it is not resolved in a specific period of time', async () => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
+        'Timed out in 1 ms.');
+  });
 
   it('For local chain - checking if static metadata is same as latest', async () => {
-    const provider = 'ws://localhost:9944'; // Use local dev chain
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
@@ -31,13 +36,9 @@ describe('e2e api create', () => {
 
   afterEach(async () => {
     try {
-      if (api) {
+      if (api.isConnected) {
         await api.disconnect();
       }
-      if (incorrectApi) {
-        await incorrectApi.disconnect();
-      }
-      incorrectApi = null;
     } catch (e) {}
   });
 
@@ -50,16 +51,11 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
-  it('Should get rejected if the connection fails', async () => {
+  it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
     await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
       'Connection fail');
-  });
-
-  it('Should get rejected if it is not resolved in a specific period of time', async () => {
-    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
-      'Timed out in 1 ms.');
+    done();
   });
 
   // TODO - enable and update this test after runtime upgrade on Azalea
