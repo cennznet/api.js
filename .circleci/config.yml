@@ -44,17 +44,6 @@ jobs:
           name: Package
           command: |
             npm install cpx
-            COPY lerna.json package.json yarn.lock tslint.json .prettierignore .prettierrc ./
-            npm install -g yarn
-            yarn install -q
-            # install dependecies for packages
-            COPY ./packages/api/package.json ./packages/api/
-            COPY ./packages/util/package.json ./packages/util/
-            COPY ./packages/types/package.json ./packages/types/
-            npx lerna bootstrap
-            # copy source code
-            COPY . .
-            yarn build
             npx lerna exec -- 'cpx package.json build/'
             npx lerna exec -- 'cpx README.md build/'
             npx lerna exec -- 'cpx ../../LICENSE build/'
