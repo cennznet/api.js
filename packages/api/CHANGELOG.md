@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+## [1.3.0-alpha.1](https://github.com/cennznet/api.js/compare/release/1.2.1...prerelease/1.3.0-alpha.1) (23/10/2020)
+Polkadot's changelog at [2.3.1](https://github.com/polkadot-js/api/blob/master/CHANGELOG.md#231-oct-19-2020)
+### Added:
+    - Bump http-proxy from 1.18.0 to 1.18.1
+### Changed:
+    - Updated the codebase to use the current latest polkadot dependencies (^2.3.1 as of now)
+    - Used eslint over tslint
+### Removed:
+    - Removed wallet support and all crml packages
+    - Removed doughnut support
+### Fixed:
+    - Fixed forceUnbond test race condition
+    - Fixed yarn lint command
 
 ## [1.2.1](https://github.com/cennznet/api.js/compare/release/1.2.0...release/1.2.1) (18/08/2020)
 ### Fixed:

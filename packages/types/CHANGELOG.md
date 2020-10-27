@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [1.3.0-alpha.1](https://github.com/cennznet/api.js/compare/release/1.2.1...prerelease/1.3.0-alpha.1) (23/10/2020)
+Polkadot's changelog at [2.3.1](https://github.com/polkadot-js/api/blob/master/CHANGELOG.md#231-oct-19-2020)
+### Changed:
+    - Changed the repo to generate types from polkadot script.
+### Added:
+    - Definition types for all supported types
 
 ## [1.2.0](https://github.com/cennznet/api.js/compare/release/1.1.2...release/1.2.0) (17/08/2020)
 ### Added:
