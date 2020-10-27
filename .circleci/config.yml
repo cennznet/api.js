@@ -50,6 +50,7 @@ jobs:
       - run:
           name: Publish
           command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
             echo 'Publishing to npmjs.org'
             npx lerna exec -- 'cd build && npm publish --access public'
 workflows:
