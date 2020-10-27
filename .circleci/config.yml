@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Package
           command: |
+            yarn && yarn build
             npm install cpx
             npx lerna exec -- 'cpx package.json build/'
             npx lerna exec -- 'cpx README.md build/'
@@ -51,12 +52,8 @@ jobs:
           name: Publish
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
-            echo 'Publishing to npmjs.org'
-            npm deprecate -f '@cennznet/api@1.3.0-alpha.1' 'Package no longer supported'
-            npm deprecate -f '@cennznet/util@1.3.0-alpha.1' 'Package no longer supported'
-            npm deprecate -f '@cennznet/types@1.3.0-alpha.1' 'Package no longer supported'
-            # commenting the following command for now to unpublish the earlier version
-            # npx lerna exec -- 'cd build && npm publish --access public'
+            echo 'Publishing to npmjs.org.'
+            npx lerna exec -- 'cd build && npm publish --access public'
 workflows:
   version: 2
   run-build:
