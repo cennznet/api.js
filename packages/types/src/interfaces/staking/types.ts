@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import { Enum } from '@polkadot/types/codec';
+import { Enum, Vec } from '@polkadot/types/codec';
 import { AccountId, Balance } from '@polkadot/types/interfaces/runtime';
 
 /** @name RewardBalance */
@@ -17,5 +17,8 @@ export interface RewardDestination extends Enum {
   readonly isAccount: boolean;
   readonly asAccount: AccountId;
 }
+
+/** @name VecDeque */
+export interface VecDeque extends Vec<any> {}
 
 export type PHANTOM_STAKING = 'staking';

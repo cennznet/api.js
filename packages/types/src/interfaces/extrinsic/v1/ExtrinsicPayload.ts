@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes, Compact, Struct, u32 } from '@polkadot/types';
+import { Bytes, Compact, Option, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
 import { IKeyringPair, Registry } from '@polkadot/types/types';
