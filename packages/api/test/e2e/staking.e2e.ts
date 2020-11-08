@@ -69,7 +69,9 @@ describe('Staking Operations', () => {
     await api.tx.staking.bond(controller.address, bond, 'controller').signAndSend(stash, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.bonded(stash.address)).toString()).toEqual(controller.address);
-        expect((await api.query.staking.payee(stash.address)).isController).toBeTruthy();
+        const payee = await api.query.staking.payee(stash.address);
+        expect(payee.isAccount).toBeTruthy();
+        expect(payee.asAccount.toString()).toEqual(controller.address);
         const ledger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
         expect(ledger.active.toString()).toEqual(bond);
         expect(ledger.total.toString()).toEqual(bond);
@@ -169,7 +171,9 @@ describe('Staking Operations', () => {
 
   test('setPayee changes reward destination', async done => {
     // Payee account should be set to controller after prior bond() test.
-    expect((await api.query.staking.payee(stash.address)).isController).toBeTruthy();
+    const payee = await api.query.staking.payee(stash.address);
+    expect(payee.isAccount).toBeTruthy();
+    expect(payee.asAccount.toString()).toEqual(controller.address);
 
     // Subscribe to payee changes
     await api.query.staking.payee(stash.address, (payee: RewardDestination) => payee.isStash ? done() : null);
@@ -263,6 +267,9 @@ describe('Staking Governance (Sudo Required)', () => {
   });
 
   test('Force new era', async done => {
+    const transactionFeePot = await api.query.rewards.transactionFeePotHistory();
+    expect(transactionFeePot).toBeDefined();
+    expect(transactionFeePot.length).toEqual(1);
     await api.query.staking.forceEra(
       (forcing: Forcing) => {
         if (forcing.isForceNew) done();
