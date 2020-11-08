@@ -3,6 +3,8 @@
 
 import { Enum, Vec } from '@polkadot/types/codec';
 import { AccountId, Balance } from '@polkadot/types/interfaces/runtime';
+// import VecAny from "@polkadot/types/codec/VecAny";
+import { Codec } from '@polkadot/types/types';
 
 /** @name RewardBalance */
 export interface RewardBalance extends Balance {}
@@ -17,8 +19,5 @@ export interface RewardDestination extends Enum {
   readonly isAccount: boolean;
   readonly asAccount: AccountId;
 }
-
-/** @name VecDeque */
-export interface VecDeque extends Vec<any> {}
 
 export type PHANTOM_STAKING = 'staking';

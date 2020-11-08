@@ -10,6 +10,5 @@ export default {
         Account: 'AccountId',
       },
     },
-    VecDeque: 'Vec<any>',
   },
 };

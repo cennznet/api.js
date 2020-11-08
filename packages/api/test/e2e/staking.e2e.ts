@@ -267,6 +267,9 @@ describe('Staking Governance (Sudo Required)', () => {
   });
 
   test('Force new era', async done => {
+    const transactionFeePot = await api.query.rewards.transactionFeePotHistory();
+    expect(transactionFeePot).toBeDefined();
+    expect(transactionFeePot.length).toEqual(1);
     await api.query.staking.forceEra(
       (forcing: Forcing) => {
         if (forcing.isForceNew) done();

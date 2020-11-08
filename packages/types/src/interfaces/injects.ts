@@ -14,6 +14,7 @@
 
 // CENNZnet types for injection into a polkadot API session
 
+import VecAny from '@polkadot/types/codec/VecAny';
 import { CENNZnetExtrinsicSignatureV1, SignerPayload } from './extrinsic';
 import * as definitions from './definitions';
 
@@ -24,6 +25,7 @@ const _types = {
   other: {
     types: {
       ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
+      VecDeque: VecAny,
       SignerPayload,
     },
   },
