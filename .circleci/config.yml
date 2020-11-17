@@ -35,6 +35,8 @@ jobs:
       - run:
           name: Run integration tests
           command: ./scripts/circleci/run_automation_test.sh -t integration
+          environment:
+          API_KEY: ${API_KEY}
   publish:
     docker:
       - image: circleci/node:10.16.3

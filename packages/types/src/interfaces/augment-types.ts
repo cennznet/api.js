@@ -50,6 +50,7 @@ import {
   VaultValue,
   WithdrawnPreKeyBundle,
 } from './sylo';
+import { doughnut } from './system';
 import { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from './transactionPayment';
 import { BlockAttestations, IncludedBlocks, MoreAttestations } from '@polkadot/types/interfaces/attestations';
 import { RawAuraPreDigest } from '@polkadot/types/interfaces/aura';
@@ -2047,6 +2048,9 @@ declare module '@polkadot/types/types/registry' {
     Message: Message;
     'Option<Message>': Option<Message>;
     'Vec<Message>': Vec<Message>;
+    doughnut: doughnut;
+    'Option<doughnut>': Option<doughnut>;
+    'Vec<doughnut>': Vec<doughnut>;
     FeeExchangeV1: FeeExchangeV1;
     'Option<FeeExchangeV1>': Option<FeeExchangeV1>;
     'Vec<FeeExchangeV1>': Vec<FeeExchangeV1>;

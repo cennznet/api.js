@@ -14,6 +14,10 @@
 import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types'
 import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
+import {Api} from "@cennznet/api";
+import {SignedBlock} from "@polkadot/types/interfaces/runtime";
+import {Extrinsic} from "@polkadot/types/interfaces";
+import {Vec} from "@polkadot/types";
 
 describe('e2e api calls', () => {
   let api;
@@ -34,6 +38,25 @@ describe('e2e api calls', () => {
   it('Get correct block', async () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     expect(block.header.hash.toString()).toEqual(blockHash.toString());
+  });
+
+  it('Query historical block from runtime version 36', async () => {
+    const blockNumber = 3759962; // old Azalea block at runtime version 36
+    const API_KEY = process.env.API_KEY;
+
+    const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
+    const apiV36 = await Api.create({provider});
+    const bHash = await apiV36.rpc.chain.getBlockHash(blockNumber);
+    const block: SignedBlock = await apiV36.rpc.chain.getBlock(bHash);
+    const extrinsicList: Vec<Extrinsic> = block.block.extrinsics;
+    expect(extrinsicList[0].method.section).toEqual('timestamp');
+    expect(extrinsicList[0].method.method).toEqual('set');
+    expect(extrinsicList[1].method.section).toEqual('finalityTracker');
+    expect(extrinsicList[1].method.method).toEqual('finalHint');
+    expect(extrinsicList[2].method.section).toEqual('syloE2Ee');
+    expect(extrinsicList[2].method.method).toEqual('replenishPkbs');
+    expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
+    expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
   });
 
   it('Get correct validators', async () => {
