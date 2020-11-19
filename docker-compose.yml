@@ -20,6 +20,8 @@ services:
 
   api_test:
     container_name: api_test
+    environment:
+      - API_KEY=$API_KEY
     build:
       context: .
       dockerfile: api_test.Dockerfile

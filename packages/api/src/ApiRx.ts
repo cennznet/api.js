@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Types from '@cennznet/types/interfaces/injects';
+import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
@@ -68,6 +68,7 @@ export class ApiRx extends ApiRxBase {
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
     options.rpc = { ...rpc, ...options.rpc };
+    options.typesBundle = typesBundle;
 
     super(options as ApiOptionsBase);
   }
