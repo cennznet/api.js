@@ -1,21 +1,32 @@
 export default {
   types: {
-    Meta: '(Text, Text)',
+    Meta: 'Vec<(Text, Text)>',
     MemberRoles: {
       _enum: ['AdminRole', 'MemberRole'],
     },
     Member: {
+      _alias: {
+        userId: 'user_id',
+      },
       userId: 'AccountId',
       roles: 'Vec<MemberRoles>',
       meta: 'Meta',
     },
     Group: {
+      _alias: {
+        groupId: 'group_id',
+      },
       groupId: 'H256',
       members: 'Vec<Member>',
       invites: 'Vec<PendingInvite>',
       meta: 'Meta',
     },
     Invite: {
+      _alias: {
+        peerId: 'peer_id',
+        inviteData: 'invite_data',
+        inviteKey: 'invite_key',
+      },
       peerId: 'AccountId',
       inviteData: 'Bytes',
       inviteKey: 'H256',
@@ -23,6 +34,9 @@ export default {
       roles: 'Vec<MemberRoles>',
     },
     PendingInvite: {
+      _alias: {
+        inviteKey: 'invite_key',
+      },
       inviteKey: 'H256',
       meta: 'Meta',
       roles: 'Vec<MemberRoles>',
