@@ -40,7 +40,7 @@ describe('e2e SYLO operations', () => {
 
     describe('Groups', () => {
 
-        it('Create Sylo group', async done => {
+        it('Create Sylo group with empty invite', async done => {
             const nonce = await api.rpc.system.accountNextIndex(bob.address);
             const meta: Meta = api.registry.createType('Meta', ['GroupRole1', 'GroupRole2']);
             const groupId: H256 = api.registry.createType('H256', 'G12');
@@ -61,7 +61,7 @@ describe('e2e SYLO operations', () => {
         });
 
 
-        it('Create Sylo group2', async done => {
+        it('Create Sylo group with invite', async done => {
             const nonce = await api.rpc.system.accountNextIndex(bob.address);
             const memberRoles: MemberRoles = api.registry.createType('MemberRoles', 0);
             const meta: Meta = api.registry.createType('Meta', ['GroupRole1', 'GroupRole2']);
