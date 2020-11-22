@@ -54,7 +54,7 @@ export interface Message extends Bytes {}
 export interface MessageId extends u32 {}
 
 /** @name Meta */
-export interface Meta extends ITuple<[Text, Text]> {}
+export interface Meta extends Vec<ITuple<[Text, Text]>> {}
 
 /** @name PendingInvite */
 export interface PendingInvite extends Struct {

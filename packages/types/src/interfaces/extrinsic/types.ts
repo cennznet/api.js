@@ -30,6 +30,7 @@ export interface ExtrinsicPayloadValue extends ExtrinsicPayloadValueBase {
 export interface SignatureOptions extends SignatureOptionsBase {
   transactionPayment?: AnyU8a | ChargeTransactionPayment;
 }
+
 export interface ExtrinsicV0SignatureOptions extends SignatureOptionsBase {
   doughnut?: Option<doughnut>;
   transactionPayment?: ChargeTransactionPayment;
