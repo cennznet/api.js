@@ -47,7 +47,6 @@ async function main() {
     const bobPair = keyring.addFromUri('//Bob');
 
     // get the nonce for the admin key
-    // const nonce = await api.query.system.accountNonce(ALICE).pipe(first()).toPromise();
     const nonce = await api.rpc.system.accountNextIndex(alicePair.address).pipe(first()).toPromise();;
 
     // create a new random recipient
