@@ -1,5 +1,5 @@
 {
-    "name": "10_chose_fee_asset_to_pay_tx_fee",
+    "name": "09_chose_fee_asset_to_pay_tx_fee",
     "version": "0.2.0",
     "description": "Example showing how to make a transfer",
     "main": "index.js",

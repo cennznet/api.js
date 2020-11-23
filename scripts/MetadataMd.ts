@@ -302,7 +302,7 @@ function writeFile (name: string, ...chunks: any[]): void {
 
 export default function main(): void {
     const registry = new TypeRegistry();
-    const meta = Object.values(staticMetadata)[0];
+    const meta = Object.values(staticMetadata)[0]; // Get the static metadata
     const metadata = new Metadata(registry, meta).asLatest;
     writeFile('docs/cennznet/rpc.md', addRpc());
     writeFile('docs/cennznet/constants.md', addConstants(metadata));
