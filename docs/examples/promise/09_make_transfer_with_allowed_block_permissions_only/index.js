@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-var-requires */
 // Import the API, Keyring and some utility functions
-const { Api } = require('@cennznet/api');
-const testKeyring = require('@polkadot/keyring/testing');
-const { createType } = require('@cennznet/types');
 
+// const ExtrinsicEra = require( '@polkadot/types/primitive/Extrinsic/ExtrinsicEra');
+
+const { Api } = require('@cennznet/api');
+const { Keyring } = require('@polkadot/keyring');
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
 // Asset Id for CENNZ in Rimu
@@ -17,14 +18,14 @@ async function main () {
   // the API has connected to the node and completed the initialisation process
   const api = await Api.create(); // default provider
 
-  // Constuct the keying after the API (crypto has an async init)
-  const keyring = testKeyring.default();
+  // Construct the keying after the API (crypto has an async init)
+  const keyring = new Keyring({ type: 'sr25519' });
 
   // Add alice to our keyring with a hard-derived path (empty phrase, so uses dev)
   const alice = keyring.addFromUri('//Alice');
 
   // Get nonce for account
-  const nonce = await api.query.system.accountNonce(alice.address);
+  const nonce = await api.rpc.system.accountNextIndex(alice.address);
 
   // get current block
   const signedBlock = await api.rpc.chain.getBlock();
@@ -36,8 +37,7 @@ async function main () {
   // NOTE By default the API will send mortal transactions, only explicitly construct
   // if you wish to override the defaults
   // construct a mortal era
-  const era = createType('ExtrinsicEra', { current: currentHeight, period: 10 });
-
+  const era = api.registry.createType('ExtrinsicEra', { current: currentHeight, period: 10 });
   // Create an extrinsic, transferring 12345 units to Bob
   const transfer = api.tx.genericAsset.transfer(CENNZ, BOB, 12345);
 

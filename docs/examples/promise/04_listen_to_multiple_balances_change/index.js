@@ -22,7 +22,7 @@ async function main () {
 
   // Subscribe and listen to several balance changes
   api.query.genericAsset.freeBalance.multi([[CENNZ, ALICE], [CENNZ, BOB]], (balances) => {
-    console.log('Change detected, new balances: ', balances);
+    console.log('Change detected, new balances: ', balances.toString());
   });
 }
 

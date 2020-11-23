@@ -3,7 +3,7 @@
 const {ApiRx} = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
+const { Keyring } = require('@polkadot/keyring');
 
 // utility function for random values
 const {randomAsU8a} = require('@cennznet/util');
@@ -11,11 +11,6 @@ const {randomAsU8a} = require('@cennznet/util');
 const {combineLatest, of} = require('rxjs');
 const {first, switchMap, tap} = require('rxjs/operators');
 
-// some constants we are using in this sample
-const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-
-// BOB is pool liquidity provider
-const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 const AMOUNT = 10000;
 const FEE_ASSET_ID = 16000;
 const MIN_REQUIRED_POOL_BALANCE = 1000000;
@@ -26,8 +21,8 @@ const CENNZ = 16000;
 function queryPoolBalance(api) {
     // query and supplement liquidity
     return combineLatest([
-        api.derive.cennzxSpot.poolAssetBalance(FEE_ASSET_ID),
-        api.derive.cennzxSpot.poolCoreAssetBalance(FEE_ASSET_ID)])
+        api.derive.cennzx.poolAssetBalance(FEE_ASSET_ID),
+        api.derive.cennzx.poolCoreAssetBalance(FEE_ASSET_ID)])
         .pipe(
             tap(([poolAssetBalance, poolCoreAssetBalance]) => {
                 console.log('Pool balance: assetId: 16000, amount: ', poolAssetBalance.toString(),
@@ -45,14 +40,16 @@ async function main() {
     // create an instance of our testing keyring
     // If you're using ES6 module imports instead of require, just change this line to:
     // const keyring = testKeyring();
-    const keyring = testKeyring.default();
+    const keyring = new Keyring({ type: 'sr25519' });
+
+    // Add alice to our keyring with a hard-derived path (empty phrase, so uses dev)
+    const alicePair = keyring.addFromUri('//Alice');
+    const bobPair = keyring.addFromUri('//Bob');
 
     // get the nonce for the admin key
-    const nonce = await api.query.system.accountNonce(ALICE).pipe(first()).toPromise();
+    // const nonce = await api.query.system.accountNonce(ALICE).pipe(first()).toPromise();
+    const nonce = await api.rpc.system.accountNextIndex(alicePair.address).pipe(first()).toPromise();;
 
-    // find the actual keypair in the keyring
-    const alicePair = keyring.getPair(ALICE);
-    const bobPair = keyring.getPair(BOB);
     // create a new random recipient
     const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
 
@@ -60,7 +57,7 @@ async function main() {
         switchMap(([poolAssetBalance, poolCoreAssetBalance])=>{
             if (poolCoreAssetBalance.eqn(0)) {
                 console.log('This exchange pool is empty, adding some liquidity');
-                return api.tx.cennzxSpot.addLiquidity(FEE_ASSET_ID, 0, MIN_REQUIRED_POOL_BALANCE * 2, MIN_REQUIRED_POOL_BALANCE)
+                return api.tx.cennzx.addLiquidity(FEE_ASSET_ID, 0, MIN_REQUIRED_POOL_BALANCE * 2, MIN_REQUIRED_POOL_BALANCE)
                     .signAndSend(bobPair, ({events = [], status}) => {
                         console.log('Transaction status:', status.type);
 
@@ -83,7 +80,6 @@ async function main() {
             const feeExchange = {assetId: FEE_ASSET_ID, maxPayment: '1000000000000'};
             return api.tx.genericAsset
                 .transfer(CENNZ, recipient, AMOUNT)
-                .addFeeExchangeOpt(feeExchange)
                 .signAndSend(alicePair, {nonce, feeExchange});
         })
     ).subscribe(({events = [], status}) => {

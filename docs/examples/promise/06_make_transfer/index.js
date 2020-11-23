@@ -1,8 +1,7 @@
 // @ts-check
 // Import the API, Keyring and some utility functions
 const { Api } = require('@cennznet/api');
-const testKeyring = require('@polkadot/keyring/testing');
-
+const { Keyring } = require('@polkadot/keyring');
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
 // Asset Id for CENNZ in Rimu
@@ -14,8 +13,8 @@ async function main () {
   // the API has connected to the node and completed the initialisation process
   const api = await Api.create();
 
-  // Constuct the keying after the API (crypto has an async init)
-  const keyring = testKeyring.default();
+  // Construct the keying after the API (crypto has an async init)
+  const keyring = new Keyring({ type: 'sr25519' });
 
   // Add alice to our keyring with a hard-deived path (empty phrase, so uses dev)
   const alice = keyring.addFromUri('//Alice');

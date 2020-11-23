@@ -5,8 +5,7 @@
 const { Api } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
-
+const { Keyring } = require('@polkadot/keyring');
 const fs = require('fs');
 
 async function main () {
@@ -22,12 +21,14 @@ async function main () {
   // find the actual keypair in the keyring (if this is an changed value, the key
   // needs to be added to the keyring before - this assumes we have defaults, i.e.
   // Alice as the key - and this already exists on the test keyring)
-  const keyring = testKeyring.default();
-  const adminPair = keyring.getPair(adminId.toString());
+  const keyring = new Keyring({ type: 'sr25519' });
+  const adminPair = keyring.addFromUri('//Alice'); // Alice is sudo on dev chain
 
   // retrieve the runtime to upgrade to
   const code = fs.readFileSync('./test.wasm').toString('hex');
-  const proposal = api.tx.consensus.setCode(`0x${code}`);
+  const proposal = api.tx.system && api.tx.system.setCode
+      ? api.tx.system.setCode(`0x${code}`) // For newer versions of Substrate
+      : api.tx.consensus.setCode(`0x${code}`); // For previous versions
 
   console.log(`Upgrading from ${adminId}, ${code.length / 2} bytes`);
 

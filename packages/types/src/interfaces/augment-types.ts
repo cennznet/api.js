@@ -29,7 +29,7 @@ import {
 } from '@polkadot/types/primitive';
 import { AttestationTopic, AttestationValue } from './attestation';
 import { ExchangeKey, FeeRate } from './cennzx';
-import { AssetInfo } from './ga';
+import { AssetInfo } from './genericAsset';
 import { RewardBalance, RewardBalanceOf, RewardDestination } from './staking';
 import {
   AcceptPayload,

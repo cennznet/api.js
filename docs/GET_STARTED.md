@@ -12,23 +12,8 @@ Here are the preparatory steps before you create your first project to interact 
 NodeJs projects have a file called package.json in which the dependent libraries and their right versions are specified. The simplest project that you create would depend on "@cennznet/api". 
 You are here browsing the source code of this library. 
 The library as a package is published at: https://www.npmjs.com/package/@cennznet/api which you would need to check to figure out which version of the library is the right one for you given the version of the cennznet node that you want to connect to. 
-cennznet/api is internally dependant on polkadot. 
-At the moment a breaking change in the recent versions of polkadot has prevented us from updating with the recent versions. 
-That's why in package.json there should be a resolution set so we can make sure the right version of polkadot packages are fetched. 
-Therefore you need to have the following lines in your package.json:
-```json
-"dependencies": {
-  "@cennznet/api": "^1.0.3"
-},
-"resolutions": {
-    "@polkadot/types": "1.2.1",
-    "@polkadot/metadata": "1.2.1",
-    "@polkadot/api": "1.2.1",
-    "@polkadot/api-derive": "1.2.1",
-    "@polkadot/rpc-core": "1.2.1",
-    "@polkadot/rpc-provider": "1.2.1",
-    "@polkadot/jsonrpc": "1.2.1",
-}
+cennznet/api is internally dependent on polkadot. 
+
 ``` 
 The next step for your project is that you import @cennznet/api in your js code. The best way to do that is through a line such as:
 ```js
@@ -71,7 +56,7 @@ Where to keep those keys and how to use them?
 Keyring is the answer to this need. 
 In order to use @polkadot/keyring in your project you should add the following dependency to your package.json:
 ```json 
-"@polkadot/keyring": "^2.18.1"
+"@polkadot/keyring": "^3.6.1"
 ```
 Then in your js code you may do:
 ```js
@@ -95,9 +80,8 @@ const hash = await extrinsic.signAndSend(alice);
 ## FAQ
 > What is the difference between @cennznet/types and @polkadot/types?
 
-We have custom types needed to interact with our specific modules such as Doughnut, CENNZxSpot, Generic Asset, Attestation and etc which you can only find in @cennznet/types. 
+We have custom types needed to interact with our specific modules such as CENNZxSpot, Generic Asset, Attestation and etc which you can only find in @cennznet/types. 
 @cennznet/types also exposes some of the basic polkadot types. If you are connecting to a cennznet node, for most of the use cases you would only need to import @cennznet/types. 
-However if a polkadot type is not in our package and you need to import polkadot/types as well, make sure to set the right dependency resolution as shown in this document.
 
 > What is the difference between @cennznet/api and @polkadot/api?
 

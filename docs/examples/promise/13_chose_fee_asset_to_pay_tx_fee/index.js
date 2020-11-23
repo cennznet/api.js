@@ -3,7 +3,7 @@
 const {Api} = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
+const { Keyring } = require('@polkadot/keyring');
 
 // utility function for random values
 const {randomAsU8a} = require('@cennznet/util');
@@ -23,8 +23,8 @@ const CENNZ = 16000;
 async function queryPoolBalance(api) {
     // query and supplement liquidity
     const [poolAssetBalance, poolCoreAssetBalance] = [
-        await api.derive.cennzxSpot.poolAssetBalance(FEE_ASSET_ID),
-        await api.derive.cennzxSpot.poolCoreAssetBalance(FEE_ASSET_ID),
+        await api.derive.cennzx.poolAssetBalance(FEE_ASSET_ID),
+        await api.derive.cennzx.poolCoreAssetBalance(FEE_ASSET_ID),
     ];
 
     console.log('Pool balance: assetId: 16000, amount: ', poolAssetBalance.toString(),
@@ -42,14 +42,13 @@ async function main() {
     // create an instance of our testing keyring
     // If you're using ES6 module imports instead of require, just change this line to:
     // const keyring = testKeyring();
-    const keyring = testKeyring.default();
+    const keyring = new Keyring({ type: 'sr25519' });
+    const alicePair = keyring.addFromUri('//Alice');
+    const bobPair = keyring.addFromUri('//Bob');
 
     // get the nonce for the admin key
-    const nonce = await api.query.system.accountNonce(ALICE);
+    const nonce = await api.rpc.system.accountNextIndex(alicePair.address);
 
-    // find the actual keypair in the keyring
-    const alicePair = keyring.getPair(ALICE);
-    const bobPair = keyring.getPair(BOB);
     // create a new random recipient
     const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
 
@@ -58,7 +57,7 @@ async function main() {
     if (poolCoreAssetBalance.ltn(MIN_REQUIRED_POOL_BALANCE)) {
         console.log('Pool core asset balance is lower than min requirement, adding some');
         await new Promise((resolve => {
-            api.tx.cennzxSpot.addLiquidity(FEE_ASSET_ID, 0, MIN_REQUIRED_POOL_BALANCE * 2, MIN_REQUIRED_POOL_BALANCE)
+            api.tx.cennzx.addLiquidity(FEE_ASSET_ID, 0, MIN_REQUIRED_POOL_BALANCE * 2, MIN_REQUIRED_POOL_BALANCE)
                 .signAndSend(bobPair, ({events = [], status}) => {
                     console.log('Transaction status:', status.type);
 
@@ -81,7 +80,6 @@ async function main() {
     // Do the transfer and track the actual status
     api.tx.genericAsset
         .transfer(CENNZ, recipient, AMOUNT)
-        .addFeeExchangeOpt(feeExchangeOpt)
         .sign(alicePair, {nonce, feeExchange: feeExchangeOpt})
         .send(({events = [], status}) => {
             console.log('Transaction status:', status.type);

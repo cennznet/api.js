@@ -29,17 +29,17 @@ async function main () {
         // We're combining the results together with the emitted value 'validators',
         // which we're turning back into an observable using of()
         return combineLatest(
-          api.query.system.accountNonce(Alice).pipe(first()),
-          api.query.staking.currentEraDuration().pipe(first()),
+          api.rpc.system.accountNextIndex(Alice).pipe(first()),
+          api.query.staking.currentEraStart().pipe(first()),
           of(validators),
           balances
         );
       })
     )
     // Then we're subscribing to the emitted results
-    .subscribe(([accountNonce, minimumPeriod, validators, validatorBalances]) => {
+    .subscribe(([accountNonce, eraStartedAt, validators, validatorBalances]) => {
       console.log(`accountNonce(${Alice}) ${accountNonce}`);
-      console.log(`minimumPeriod ${minimumPeriod.toNumber()} seconds`);
+      console.log(`Current era started at ${eraStartedAt.toNumber()} `);
 
       if (validatorBalances) {
         // And lastly we print out the authorityIds and balances of all validators

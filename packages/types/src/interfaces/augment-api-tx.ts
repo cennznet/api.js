@@ -5,7 +5,7 @@ import { AnyNumber, ITuple } from '@polkadot/types/types';
 import { Compact, Option, U8aFixed, Vec } from '@polkadot/types/codec';
 import { Bytes, Data, bool, u16, u32, u64 } from '@polkadot/types/primitive';
 import { FeeRate } from './cennzx';
-import { AssetInfo } from './ga';
+import { AssetInfo } from './genericAsset';
 import { AcceptPayload, DeviceId, Invite, Message, MessageId, Meta, PreKeyBundle, VaultKey, VaultValue } from './sylo';
 import { BabeEquivocationProof } from '@polkadot/types/interfaces/babe';
 import { ProposalIndex } from '@polkadot/types/interfaces/collective';

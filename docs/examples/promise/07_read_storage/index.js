@@ -15,7 +15,7 @@ async function main () {
 
   // Make our basic chain state/storage queries, all in one go
   const [accountNonce, now, validators] = await Promise.all([
-    api.query.system.accountNonce(ALICE),
+    api.rpc.system.accountNextIndex(ALICE),
     api.query.timestamp.now(),
     api.query.session.validators()
   ]);
