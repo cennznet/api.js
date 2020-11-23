@@ -56,7 +56,7 @@ Where to keep those keys and how to use them?
 Keyring is the answer to this need. 
 In order to use @polkadot/keyring in your project you should add the following dependency to your package.json:
 ```json 
-"@polkadot/keyring": "^3.6.1"
+"@polkadot/keyring": "^4.1.1"
 ```
 Then in your js code you may do:
 ```js
