@@ -80,7 +80,8 @@ const hash = await extrinsic.signAndSend(alice);
 ## FAQ
 > What is the difference between @cennznet/types and @polkadot/types?
 
-We have custom types needed to interact with our specific modules such as CENNZxSpot, Generic Asset, Attestation and etc which you can only find in @cennznet/types. 
+This project has custom types needed to interact with CENNZnet specific modules such as CENNZX, Generic Asset, Attestation etc. see @cennznet/types.
+There are also CENNZnet only RPC methods and extrinsic customizations provided by @cennznet/api
 @cennznet/types also exposes some of the basic polkadot types. If you are connecting to a cennznet node, for most of the use cases you would only need to import @cennznet/types. 
 
 > What is the difference between @cennznet/api and @polkadot/api?
