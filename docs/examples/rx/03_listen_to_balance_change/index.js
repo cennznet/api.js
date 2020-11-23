@@ -30,7 +30,12 @@ async function main () {
         return;
       }
 
-      const change = balance[0].sub(balance[1]);
+      let change;
+      if (balance[0].gtn(balance[1])) { // When CENNZ amount is transferred from Alice
+        change = balance[0].sub(balance[1]);
+      } else { // When CENNZ amount is sent to Alice
+        change = balance[1].sub(balance[0]);
+      }
       // Only display value changes
       if (!change.isZero()) {
         console.log(`New balance change of: ${change}`);
