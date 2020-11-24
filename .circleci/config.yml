@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:10.18.0
+      - image: circleci/node:10.19.0
     steps:
       - checkout
       - restore_cache:
@@ -37,7 +37,7 @@ jobs:
           command: ./scripts/circleci/run_automation_test.sh -t integration
   publish:
     docker:
-      - image: circleci/node:10.18.0
+      - image: circleci/node:10.19.0
     steps:
       - checkout
       - run:
