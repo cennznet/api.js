@@ -17,6 +17,7 @@ import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+import * as definitions from '@cennznet/types/interfaces/definitions';
 import { mergeDeriveOptions } from './util/derives';
 
 import derives from './derives';
@@ -24,7 +25,6 @@ import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
-import rpc from './rpc';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
@@ -64,6 +64,14 @@ export class ApiRx extends ApiRxBase {
     if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
+    const rpc = {};
+    const sectionsList = Object.keys(definitions);
+    Object.values(definitions).forEach((value: { rpc; types }, index) => {
+      const section = sectionsList[index];
+      if (value.rpc) {
+        rpc[section] = value.rpc;
+      }
+    });
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
