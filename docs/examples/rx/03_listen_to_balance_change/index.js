@@ -30,7 +30,8 @@ async function main () {
         return;
       }
 
-      const change = balance[1].sub(balance[0]);
+      const change = balance[1].sub(balance[0]).abs();
+
       // Only display value changes
       if (!change.isZero()) {
         console.log(`New balance change of: ${change}`);

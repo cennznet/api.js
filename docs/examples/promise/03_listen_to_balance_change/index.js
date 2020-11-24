@@ -24,7 +24,7 @@ async function main () {
   // Here we subscribe to any balance changes and update the on-screen value
   api.query.genericAsset.freeBalance(CENNZ, Alice, (current) => {
     // Calculate the delta
-    const change = current.sub(previous);
+    const change = current.sub(previous).abs();
 
     // Only display positive value changes (Since we are pulling `previous` above already,
     // the initial balance change will also be zero)

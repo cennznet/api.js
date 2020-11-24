@@ -25,12 +25,12 @@ async function main () {
   // the format is always `.at(<blockhash>, ...params)`
   const balance = await api.query.genericAsset.freeBalance.at(parentHash, STAKING_ASSET, ALICE);
 
-  console.log(`Alice's balance at ${parentHash.toHex()} was ${balance}`);
+  console.log(`Alice's staking asset balance at ${parentHash.toHex()} was ${balance}`);
 
   // now perform a multi query, returning multiple balances at once
   const balances = await api.query.genericAsset.freeBalance.multi([[STAKING_ASSET,ALICE], [STAKING_ASSET,BOB]]);
 
-  console.log(`Current balances for Alice and Bob are ${balances[0]} and ${balances[1]}`);
+  console.log(`Current staking asset balances for Alice and Bob are ${balances[0]} and ${balances[1]}`);
 }
 
 main().catch(console.error).finally(() => process.exit());

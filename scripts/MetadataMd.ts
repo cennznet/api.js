@@ -1,20 +1,17 @@
 // Copyright 2017-2020 @polkadot/typegen authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-// import {Api} from "@cennznet/api";
-import staticMetadata from "@cennznet/api/staticMetadata";
 import {Metadata} from "@polkadot/types";
 import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
 import { Codec } from '@polkadot/types/types';
-
+import staticMetadata from "@cennznet/api/staticMetadata";
 import fs from 'fs';
-import Decorated from '@polkadot/metadata/Decorated';
-import rpcdata from '@polkadot/metadata/Metadata/static';
 import Call from '@polkadot/types/generic/Call';
 import { unwrapStorageType } from '@polkadot/types/primitive/StorageKey';
 import { TypeRegistry } from '@polkadot/types/create';
 import { Vec } from '@polkadot/types/codec';
-import * as definitions from '@polkadot/types/interfaces/definitions';
+import * as substrateDefinitions from '@polkadot/types/interfaces/definitions';
+import * as cennznetDefinitions from '@cennznet/types/interfaces/definitions';
 import { Text } from '@polkadot/types/primitive';
 import { stringCamelCase, stringLowerFirst } from '@polkadot/util';
 
@@ -74,25 +71,26 @@ function renderPage (page: Page): string {
     // contents
     page.sections.forEach((section) => {
         md += `\n___\n\n\n## ${section.name}\n`;
-
         if (section.description) {
             md += `\n_${section.description}_\n`;
         }
 
-        section.items.forEach((item) => {
-            md += ` \n### ${item.name}`;
+        if (section.items) {
+            section.items.forEach((item) => {
+                md += ` \n### ${item.name}`;
 
-            Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
-                md += `\n- **${bullet}**: ${
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    item[bullet] instanceof Vec
-                        ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
-                        : item[bullet]
-                }`;
+                Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
+                    md += `\n- **${bullet}**: ${
+                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                        item[bullet] instanceof Vec
+                            ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
+                            : item[bullet]
+                    }`;
+                });
+
+                md += '\n';
             });
-
-            md += '\n';
-        });
+        }
     });
 
     return md;
@@ -106,6 +104,7 @@ function sortByName<T extends { name: Codec | string }> (a: T, b: T): number {
 
 /** @internal */
 function addRpc (): string {
+    const definitions = {...substrateDefinitions, ...cennznetDefinitions};
     const sections = Object
         .keys(definitions)
         .filter((key) => Object.keys(definitions[key as 'babe'].rpc || {}).length !== 0);
@@ -203,7 +202,7 @@ function addStorage (metadata: MetadataLatest): string {
         });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const knownSection: any = JSON.parse(fs.readFileSync('docs/substrate/storage-known-section.json', 'utf8'));
+    const knownSection: any = JSON.parse(fs.readFileSync('docs/cennznet/storage-known-section.json', 'utf8'));
     return renderPage({
         description: DESC_STORAGE,
         sections: moduleSections.concat([knownSection]),
@@ -303,14 +302,14 @@ function writeFile (name: string, ...chunks: any[]): void {
 
 export default function main(): void {
     const registry = new TypeRegistry();
-    const staticMeta = new Metadata(registry, rpcdata);
-    const metadata = new Decorated(registry, staticMeta).metadata.asLatest;
-    writeFile('docs/substrate/rpc.md', addRpc());
-    writeFile('docs/substrate/constants.md', addConstants(metadata));
-    writeFile('docs/substrate/storage.md', addStorage(metadata));
-    writeFile('docs/substrate/extrinsics.md', addExtrinsics(metadata));
-    writeFile('docs/substrate/events.md', addEvents(metadata));
-    writeFile('docs/substrate/errors.md', addErrors(metadata));
+    const meta = Object.values(staticMetadata)[0]; // Get the static metadata
+    const metadata = new Metadata(registry, meta).asLatest;
+    writeFile('docs/cennznet/rpc.md', addRpc());
+    writeFile('docs/cennznet/constants.md', addConstants(metadata));
+    writeFile('docs/cennznet/storage.md', addStorage(metadata));
+    writeFile('docs/cennznet/extrinsics.md', addExtrinsics(metadata));
+    writeFile('docs/cennznet/events.md', addEvents(metadata));
+    writeFile('docs/cennznet/errors.md', addErrors(metadata));
 }
 
 main();

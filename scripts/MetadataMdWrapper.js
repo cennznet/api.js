@@ -9,7 +9,8 @@ require('@babel/register')({
     ['module-resolver', {
       alias: {
         '^@cennznet/util(.*)': './packages/util/src\\1',
-        '^@cennznet/types(.*)': './packages/types/src\\1'
+        '^@cennznet/types(.*)': './packages/types/src\\1',
+        '^@cennznet/api(.*)': './packages/api/src\\1'
       }
     }]
   ]

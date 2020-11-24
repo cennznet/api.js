@@ -2,13 +2,12 @@
 const { ApiRx } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
-const testKeyring = require('@polkadot/keyring/testing');
+const { Keyring } = require('@polkadot/keyring');
 
 // utility function for random values
 const { randomAsU8a } = require('@cennznet/util');
 
 // some constants we are using in this sample
-const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 const AMOUNT = 10000;
 
 // Asset Id for CENNZ in Rimu
@@ -21,11 +20,10 @@ async function main () {
 
   // create an instance of our testign keyring
   // If you're using ES6 module imports instead of require, just change this line to:
-  // const keyring = testKeyring();
-  const keyring = testKeyring.default();
+  const keyring = new Keyring({ type: 'sr25519' });
 
-  // find the actual keypair in the keyring
-  const alicePair = keyring.getPair(ALICE);
+  // Add alice to our keyring with a hard-derived path (empty phrase, so uses dev)
+  const alicePair = keyring.addFromUri('//Alice');
 
   // create a new random recipient
   const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
