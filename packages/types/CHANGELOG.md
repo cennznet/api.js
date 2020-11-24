@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [1.3.0](https://github.com/cennznet/api.js/compare/release/1.3.0-alpha.1...prerelease/1.3.0) (24/11/2020)
+### Fixed:
+    - Fixed types for sylo module
+### Added:
+    - Added typesBundle to support 'runtime version' specific types to make it backward compatibile.
+    - Added VecDeque type  
 ## [1.3.0-alpha.1](https://github.com/cennznet/api.js/compare/release/1.2.1...prerelease/1.3.0-alpha.1) (23/10/2020)
 Polkadot's changelog at [2.3.1](https://github.com/polkadot-js/api/blob/master/CHANGELOG.md#231-oct-19-2020)
 ### Changed:
