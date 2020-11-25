@@ -16,13 +16,13 @@ import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
+import * as definitions from '@cennznet/types/interfaces/definitions';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
-import rpc from './rpc';
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
@@ -63,6 +63,14 @@ export class Api extends ApiPromise {
     if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
+    const rpc = {};
+    const sectionsList = Object.keys(definitions);
+    Object.values(definitions).forEach((value: { rpc; types }, index) => {
+      const section = sectionsList[index];
+      if (value.rpc) {
+        rpc[section] = value.rpc;
+      }
+    });
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
