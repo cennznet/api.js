@@ -9,7 +9,7 @@ const { randomAsU8a } = require('@cennznet/util');
 
 const AMOUNT = 10000;
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {

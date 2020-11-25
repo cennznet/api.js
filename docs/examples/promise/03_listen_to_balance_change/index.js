@@ -5,7 +5,7 @@ const { Api } = require('@cennznet/api');
 // Known account we want to use (available on dev chain, with funds)
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {

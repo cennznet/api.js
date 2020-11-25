@@ -21,7 +21,7 @@ async function main () {
 
   console.log(`last header hash ${hash.toHex()}`);
 
-  // retrieve the balance at the preceding block for Alice. For at queries
+  // retrieve the balance at the preceding block for Alice. For 'at queries'
   // the format is always `.at(<blockhash>, ...params)`
   const balance = await api.query.genericAsset.freeBalance.at(parentHash, STAKING_ASSET, ALICE);
 

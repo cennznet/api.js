@@ -7,7 +7,7 @@ const { first, switchMap } = require('rxjs/operators');
 // Our address for Alice on the dev chain
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {

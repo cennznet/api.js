@@ -8,17 +8,12 @@ const { Keyring } = require('@polkadot/keyring');
 // utility function for random values
 const {randomAsU8a} = require('@cennznet/util');
 
-// some constants we are using in this sample
-const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-
-// BOB is pool liquidity provider
-const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 const AMOUNT = 10000;
 const FEE_ASSET_ID = 16000;
 const MIN_REQUIRED_POOL_BALANCE = 1000000;
 
-// Asset Id for CENNZ in Rimu
-const CENNZ = 16000;
+// Asset Id for CENNZ in Nikau
+const CPAY = 16001;
 
 async function queryPoolBalance(api) {
     // query and supplement liquidity
@@ -76,12 +71,15 @@ async function main() {
         await queryPoolBalance(api);
     }
 
-    const feeExchangeOpt = {assetId: FEE_ASSET_ID, maxPayment: '1000000000000'};
+    const maxPayment = 50_000; // maximum in fee asset Alice is willing to pay
+    const feeExchange = api.registry.createType('FeeExchange', {assetId:FEE_ASSET_ID, maxPayment}, 0);
+    const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange}); // transaction payment object to be sent as payload
     // Do the transfer and track the actual status
-    api.tx.genericAsset
-        .transfer(CENNZ, recipient, AMOUNT)
-        .sign(alicePair, {nonce, feeExchange: feeExchangeOpt})
-        .send(({events = [], status}) => {
+    const tx = api.tx.genericAsset.transfer(CPAY, recipient, AMOUNT);
+    await tx.signAndSend(
+        alicePair,
+        {nonce, transactionPayment},
+        ({events, status}) => {
             console.log('Transaction status:', status.type);
 
             if (status.isFinalized) {

@@ -10,7 +10,7 @@ const { randomAsU8a } = require('@cennznet/util');
 // some constants we are using in this sample
 const AMOUNT = 10000;
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 
@@ -18,7 +18,7 @@ async function main () {
   // Create our API with a connection to the node
   const api = await ApiRx.create().toPromise();
 
-  // create an instance of our testign keyring
+  // create an instance of keyring
   // If you're using ES6 module imports instead of require, just change this line to:
   const keyring = new Keyring({ type: 'sr25519' });
 
