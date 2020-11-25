@@ -15,7 +15,7 @@ const AMOUNT = 10000;
 const FEE_ASSET_ID = 16000;
 const MIN_REQUIRED_POOL_BALANCE = 1000000;
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 function queryPoolBalance(api) {
@@ -37,9 +37,8 @@ async function main() {
     // Create the API and wait until ready
     const api = await ApiRx.create().toPromise();
 
-    // create an instance of our testing keyring
+    // create an instance of keyring
     // If you're using ES6 module imports instead of require, just change this line to:
-    // const keyring = testKeyring();
     const keyring = new Keyring({ type: 'sr25519' });
 
     // Add alice to our keyring with a hard-derived path (empty phrase, so uses dev)
@@ -76,10 +75,12 @@ async function main() {
             }
         }),
         switchMap(() => {
-            const feeExchange = {assetId: FEE_ASSET_ID, maxPayment: '1000000000000'};
+            const maxPayment = 50_000; // maximum in fee asset Alice is willing to pay
+            const feeExchange = api.registry.createType('FeeExchange', {assetId:FEE_ASSET_ID, maxPayment}, 0);
+            const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange}); // transaction payment object to be sent as payload
             return api.tx.genericAsset
                 .transfer(CENNZ, recipient, AMOUNT)
-                .signAndSend(alicePair, {nonce, feeExchange});
+                .signAndSend(alicePair, {nonce, transactionPayment});
         })
     ).subscribe(({events = [], status}) => {
         console.log('Transaction status:', status.type);

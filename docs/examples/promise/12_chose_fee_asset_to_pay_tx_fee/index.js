@@ -12,7 +12,7 @@ const AMOUNT = 10000;
 const FEE_ASSET_ID = 16000;
 const MIN_REQUIRED_POOL_BALANCE = 1000000;
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CPAY = 16001;
 
 async function queryPoolBalance(api) {

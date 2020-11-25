@@ -4,7 +4,7 @@ const { Keyring } = require('@polkadot/keyring');
 
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {
@@ -21,7 +21,7 @@ async function main () {
   api.tx.genericAsset
     // create transfer
     .transfer(CENNZ, BOB, 12345)
-    // Sign and send the transcation
+    // Sign and send the transaction
     .signAndSend(alice)
     // Subscribe to the status updates of the transfer
     .subscribe(({ status }) => {
@@ -29,7 +29,7 @@ async function main () {
         console.log(`Successful transfer of 12345 from Alice to Bob with hash ${status.asFinalized.toHex()}`);
         process.exit()
       } else {
-        console.log(`Staus of transfer: ${status.type}`);
+        console.log(`Status of transfer: ${status.type}`);
       }
     });
 }

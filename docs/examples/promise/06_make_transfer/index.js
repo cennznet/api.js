@@ -4,7 +4,7 @@ const { Api } = require('@cennznet/api');
 const { Keyring } = require('@polkadot/keyring');
 const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {
