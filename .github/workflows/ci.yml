@@ -1,0 +1,74 @@
+name: PR builder
+
+on:
+  pull_request:
+    branches:
+    - develop
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: styfle/cancel-workflow-action@0.6.0
+      with:
+        access_token: ${{ github.token }}
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.19'
+    - name: cache node modules
+      id: cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('package-lock.json') }}
+    - name: install
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn
+    - name: lint
+      run: yarn lint
+    - name: build
+      run: yarn build
+    - name: unit tests
+      run: yarn test --coverage
+  e2e:
+    needs: ci
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-suite:
+          # grouped test runs
+          - "[api|rxapi].*.e2e.ts"
+          - queries.e2e.ts
+          - tx.e2e.ts
+          - attestation*.e2e.ts
+          - cennzx*.e2e.ts
+          - staking.e2e.ts
+          - sylo.e2e.ts
+    steps:
+    - uses: styfle/cancel-workflow-action@0.6.0
+      with:
+        access_token: ${{ github.token }}
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.19'
+    - name: cache node modules
+      id: cache
+      uses: actions/cache@v2
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('package-lock.json') }}
+    - name: install
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn
+    - name: start test node
+      run: docker run --network=host -d cennznet/cennznet:1.2.0 --dev --tmp --ws-external --rpc-external
+    - name: test
+      env:
+        TEST_TYPE: ""
+        API_KEY: ${{ secrets.GITHUB_TOKEN }}
+        # arbitrary value to disable internal API logs in test output
+        NODE_ENV: disable-logging
+      run: |
+        npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand

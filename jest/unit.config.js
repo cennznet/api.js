@@ -2,7 +2,6 @@ module.exports = {
   rootDir: '../',
   collectCoverageFrom: ['packages/**/*.js', '!src/**/*.test.js', '!src/**/*.spec.js', '!src/**/*.e2e.js'],
   cacheDirectory: '<rootDir>/jest_cache',
-  // testRegex: '__tests__/.*\\.test\\.js$',
   moduleFileExtensions: ['ts', 'js', 'node', 'json'],
   transform: {
     '^.+\\.(js|jsx)$': 'babel-jest',
@@ -20,7 +19,4 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
-  setupFilesAfterEnv: ['<rootDir>/jest/jest.init.js'],
-  // globalSetup: '<rootDir>/jest/jest.setup.js',
-  // globalTeardown: '<rootDir>/jest/jest.teardown.js',
 };
