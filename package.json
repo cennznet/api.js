@@ -62,7 +62,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern 'packages/**/src/**/*' && npx eslint . --ext .ts"
+      "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts"
     }
   },
   "dependencies": {
