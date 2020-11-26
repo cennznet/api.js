@@ -16,7 +16,6 @@
 
 import { OverrideBundleType } from '@polkadot/types/types/registry';
 import VecAny from '@polkadot/types/codec/VecAny';
-import {Enum, u32} from "@polkadot/types";
 import { CENNZnetExtrinsicSignatureV1, CENNZnetExtrinsicSignatureV0, SignerPayload } from './extrinsic';
 import * as definitions from './definitions';
 
