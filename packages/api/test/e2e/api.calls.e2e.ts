@@ -43,8 +43,8 @@ describe('e2e api calls', () => {
   it('Query historical block from runtime version 36', async () => {
     const blockNumber = 3759962; // old Azalea block at runtime version 36
     const API_KEY = process.env.API_KEY;
-    const provider = 'wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=57eebed1-6b87-4fcf-8bb7-3d285e3eabff';
-    // const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
+
+    const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
     const apiV36 = await Api.create({provider});
     const bHash = await apiV36.rpc.chain.getBlockHash(blockNumber);
     const block: SignedBlock = await apiV36.rpc.chain.getBlock(bHash);
