@@ -27,10 +27,17 @@ import {
   u8,
   usize,
 } from '@polkadot/types/primitive';
-import { AttestationTopic, AttestationValue } from './attestation';
-import { ExchangeKey, FeeRate } from './cennzx';
-import { AssetInfo } from './genericAsset';
-import { RewardBalance, RewardBalanceOf, RewardDestination } from './staking';
+import { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
+import { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
+import {
+  AssetInfo,
+  AssetOptions,
+  Owner,
+  PermissionLatest,
+  PermissionVersions,
+  PermissionsV1,
+} from '@cennznet/types/interfaces/genericAsset';
+import { RewardBalance, RewardBalanceOf, RewardDestination } from '@cennznet/types/interfaces/staking';
 import {
   AcceptPayload,
   DeviceId,
@@ -49,9 +56,9 @@ import {
   VaultKey,
   VaultValue,
   WithdrawnPreKeyBundle,
-} from './sylo';
-import { doughnut } from './system';
-import { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from './transactionPayment';
+} from '@cennznet/types/interfaces/sylo';
+import { doughnut } from '@cennznet/types/interfaces/system';
+import { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from '@cennznet/types/interfaces/transactionPayment';
 import { BlockAttestations, IncludedBlocks, MoreAttestations } from '@polkadot/types/interfaces/attestations';
 import { RawAuraPreDigest } from '@polkadot/types/interfaces/aura';
 import { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
@@ -196,13 +203,6 @@ import {
   SignerPayload,
   Sr25519Signature,
 } from '@polkadot/types/interfaces/extrinsics';
-import {
-  AssetOptions,
-  Owner,
-  PermissionLatest,
-  PermissionVersions,
-  PermissionsV1,
-} from '@polkadot/types/interfaces/genericAsset';
 import {
   AuthorityIndex,
   AuthorityList,
@@ -1151,21 +1151,6 @@ declare module '@polkadot/types/types/registry' {
     Sr25519Signature: Sr25519Signature;
     'Option<Sr25519Signature>': Option<Sr25519Signature>;
     'Vec<Sr25519Signature>': Vec<Sr25519Signature>;
-    AssetOptions: AssetOptions;
-    'Option<AssetOptions>': Option<AssetOptions>;
-    'Vec<AssetOptions>': Vec<AssetOptions>;
-    Owner: Owner;
-    'Option<Owner>': Option<Owner>;
-    'Vec<Owner>': Vec<Owner>;
-    PermissionsV1: PermissionsV1;
-    'Option<PermissionsV1>': Option<PermissionsV1>;
-    'Vec<PermissionsV1>': Vec<PermissionsV1>;
-    PermissionVersions: PermissionVersions;
-    'Option<PermissionVersions>': Option<PermissionVersions>;
-    'Vec<PermissionVersions>': Vec<PermissionVersions>;
-    PermissionLatest: PermissionLatest;
-    'Option<PermissionLatest>': Option<PermissionLatest>;
-    'Vec<PermissionLatest>': Vec<PermissionLatest>;
     AuthorityIndex: AuthorityIndex;
     'Compact<AuthorityIndex>': Compact<AuthorityIndex>;
     'Option<AuthorityIndex>': Option<AuthorityIndex>;
@@ -1980,9 +1965,27 @@ declare module '@polkadot/types/types/registry' {
     'Compact<FeeRate>': Compact<FeeRate>;
     'Option<FeeRate>': Option<FeeRate>;
     'Vec<FeeRate>': Vec<FeeRate>;
+    // @ts-ignore - As AssetOptions is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'AssetOptions' must be of type 'AssetOptions', but here has type 'AssetOptions'
+    AssetOptions: AssetOptions;
+    // @ts-ignore - As AssetOptions is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'AssetOptions' must be of type 'AssetOptions', but here has type 'AssetOptions'
+    'Option<AssetOptions>': Option<AssetOptions>;
+    // @ts-ignore - As AssetOptions is also available in polkadot's type.. Subsequent property declarations must have the same type. Property 'AssetOptions' must be of type 'AssetOptions', but here has type 'AssetOptions'
+    'Vec<AssetOptions>': Vec<AssetOptions>;
     AssetInfo: AssetInfo;
     'Option<AssetInfo>': Option<AssetInfo>;
     'Vec<AssetInfo>': Vec<AssetInfo>;
+    Owner: Owner;
+    'Option<Owner>': Option<Owner>;
+    'Vec<Owner>': Vec<Owner>;
+    PermissionsV1: PermissionsV1;
+    'Option<PermissionsV1>': Option<PermissionsV1>;
+    'Vec<PermissionsV1>': Vec<PermissionsV1>;
+    PermissionVersions: PermissionVersions;
+    'Option<PermissionVersions>': Option<PermissionVersions>;
+    'Vec<PermissionVersions>': Vec<PermissionVersions>;
+    PermissionLatest: PermissionLatest;
+    'Option<PermissionLatest>': Option<PermissionLatest>;
+    'Vec<PermissionLatest>': Vec<PermissionLatest>;
     RewardBalance: RewardBalance;
     'Option<RewardBalance>': Option<RewardBalance>;
     'Vec<RewardBalance>': Vec<RewardBalance>;

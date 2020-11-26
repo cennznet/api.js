@@ -57,6 +57,7 @@ describe('e2e api calls', () => {
     expect(extrinsicList[2].method.method).toEqual('replenishPkbs');
     expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
     expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
+    await apiV36.disconnect();
   });
 
   it('Get correct validators', async () => {

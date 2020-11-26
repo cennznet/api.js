@@ -56,4 +56,4 @@ export interface WithdrawReasons extends Set {
   readonly isTip: boolean;
 }
 
-export type PHANTOM_GA = 'ga';
+export type PHANTOM_GENERICASSET = 'genericAsset';
