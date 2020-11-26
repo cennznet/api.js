@@ -1,13 +1,23 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Vec, u16, u32, u64 } from '@polkadot/types';
-import type { Codec } from '@polkadot/types/types';
-import type { BalanceOf, BlockNumber, ModuleId, Moment, Percent, Permill, RuntimeDbWeight, Weight } from '@polkadot/types/interfaces/runtime';
-import type { SessionIndex } from '@polkadot/types/interfaces/session';
-import type { EraIndex } from '@polkadot/types/interfaces/staking';
-import type { WeightToFeeCoefficient } from '@polkadot/types/interfaces/support';
-import type { ApiTypes } from '@polkadot/api/types';
+import { Codec } from '@polkadot/types/types';
+import { Vec } from '@polkadot/types/codec';
+import { u16, u32, u64 } from '@polkadot/types/primitive';
+import {
+  BalanceOf,
+  BlockNumber,
+  ModuleId,
+  Moment,
+  Percent,
+  Permill,
+  RuntimeDbWeight,
+  Weight,
+} from '@polkadot/types/interfaces/runtime';
+import { SessionIndex } from '@polkadot/types/interfaces/session';
+import { EraIndex } from '@polkadot/types/interfaces/staking';
+import { WeightToFeeCoefficient } from '@polkadot/types/interfaces/support';
+import { ApiTypes } from '@polkadot/api/types';
 
 declare module '@polkadot/api/types/consts' {
   export interface AugmentedConsts<ApiType> {
