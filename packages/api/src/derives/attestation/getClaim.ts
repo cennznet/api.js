@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AttestationValue } from '@cennznet/types/interfaces/attestation';
-import { drr } from '@polkadot/rpc-core/rxjs';
+import { drr } from '@polkadot/rpc-core/util';
 
 import { Claim } from './types';
 

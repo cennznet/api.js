@@ -14,8 +14,7 @@
 
 import { EstimateFeeParams } from '@cennznet/api/derives/types';
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
-import { drr } from '@polkadot/rpc-core/rxjs';
+import { drr } from '@polkadot/rpc-core/util';
 import { TypeRegistry, RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
 import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
 import BN from 'bn.js';
