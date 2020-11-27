@@ -61,8 +61,10 @@ describe('e2e api calls', () => {
   });
 
   it('Subscribe system events for runtime version 36', async done => {
-    const provider = 'wss://cennznet.unfrastructure.io/public/ws';
-    const apiV36 = await Api.create({provider});
+    const API_KEY = process.env.API_KEY;
+
+    const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
+    const apiV36 = await Api.create({ provider });
     let eventCount = 0;
     // subscribe to system events via storage and show the next 7 events on Azalea
     apiV36.query.system.events((events) => {
