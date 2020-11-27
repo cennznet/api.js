@@ -64,6 +64,7 @@
     }
   },
   "dependencies": {
+    "@polkadot/rpc-core": "2.8.1",
     "typedoc-plugin-markdown": "^2.2.17"
   }
 }
