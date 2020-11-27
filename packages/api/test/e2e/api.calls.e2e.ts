@@ -60,6 +60,42 @@ describe('e2e api calls', () => {
     await apiV36.disconnect();
   });
 
+  it('Subscribe system events for runtime version 36', async done => {
+    const provider = 'wss://cennznet.unfrastructure.io/public/ws';
+    const apiV36 = await Api.create({provider});
+    let eventCount = 0;
+    // subscribe to system events via storage and show the next 14 events on Azalea
+    apiV36.query.system.events((events) => {
+      if (eventCount === 14 ) {
+        done();
+      }
+      const totalEvents = events.length;
+      console.log(`\nReceived ${totalEvents} events:`);
+      // loop through the Vec<EventRecord>
+      events.forEach((record : EventRecord) => {
+        eventCount++;
+
+        // extract the phase, event and the event types
+        const { event, phase } = record;
+        const types = event.typeDef;
+        const phaseIndex = phase.asApplyExtrinsic.toNumber();
+
+        expect(phaseIndex).toBeLessThan(totalEvents);
+
+        // Display event method and phase
+        console.log(`\t${event.section}:${event.method}:: (phase=${phase.toString()})`);
+        if (event.meta) {
+          console.log(`\t\t${event.meta.documentation.toString()}`);
+        }
+
+        // loop through each of the parameters, displaying the type and data
+        event.section &&  event.data.forEach((data, index) => {
+          console.log(`\t\t\t${types[index].type}: ${data.toString()}`);
+        });
+      });
+    });
+  });
+
   it('Get correct validators', async () => {
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
     expect(validators.length).toBeGreaterThan(0);

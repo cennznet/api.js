@@ -57,7 +57,13 @@ import {
   VaultValue,
   WithdrawnPreKeyBundle,
 } from '@cennznet/types/interfaces/sylo';
-import { doughnut } from '@cennznet/types/interfaces/system';
+import {
+  DispatchClassTo36,
+  DispatchInfoTo36,
+  PhaseTo36,
+  WeightTo36,
+  doughnut,
+} from '@cennznet/types/interfaces/system';
 import { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from '@cennznet/types/interfaces/transactionPayment';
 import { BlockAttestations, IncludedBlocks, MoreAttestations } from '@polkadot/types/interfaces/attestations';
 import { RawAuraPreDigest } from '@polkadot/types/interfaces/aura';
@@ -2054,6 +2060,19 @@ declare module '@polkadot/types/types/registry' {
     doughnut: doughnut;
     'Option<doughnut>': Option<doughnut>;
     'Vec<doughnut>': Vec<doughnut>;
+    PhaseTo36: PhaseTo36;
+    'Option<PhaseTo36>': Option<PhaseTo36>;
+    'Vec<PhaseTo36>': Vec<PhaseTo36>;
+    DispatchClassTo36: DispatchClassTo36;
+    'Option<DispatchClassTo36>': Option<DispatchClassTo36>;
+    'Vec<DispatchClassTo36>': Vec<DispatchClassTo36>;
+    WeightTo36: WeightTo36;
+    'Compact<WeightTo36>': Compact<WeightTo36>;
+    'Option<WeightTo36>': Option<WeightTo36>;
+    'Vec<WeightTo36>': Vec<WeightTo36>;
+    DispatchInfoTo36: DispatchInfoTo36;
+    'Option<DispatchInfoTo36>': Option<DispatchInfoTo36>;
+    'Vec<DispatchInfoTo36>': Vec<DispatchInfoTo36>;
     FeeExchangeV1: FeeExchangeV1;
     'Option<FeeExchangeV1>': Option<FeeExchangeV1>;
     'Vec<FeeExchangeV1>': Vec<FeeExchangeV1>;
