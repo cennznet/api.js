@@ -18,6 +18,7 @@ import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { Decorate } from '@polkadot/api/base/Decorate';
 
 export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOptionsBase, 'provider'>> {
   /**
@@ -33,5 +34,5 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
   timeout?: number;
 }
 
-export type Derives<ApiType extends ApiTypes> = ReturnType<ApiBase<ApiType>['_decorateDerive']> &
+export type Derives<ApiType extends ApiTypes> = ReturnType<Decorate<ApiType>['_decorateDerive']> &
   DecoratedCennznetDerive<ApiType>;

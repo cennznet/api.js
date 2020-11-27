@@ -15,7 +15,6 @@
 // CENNZnet types for injection into a polkadot API session
 
 import { OverrideBundleType } from '@polkadot/types/types/registry';
-import VecAny from '@polkadot/types/codec/VecAny';
 import { CENNZnetExtrinsicSignatureV1, CENNZnetExtrinsicSignatureV0, SignerPayload } from './extrinsic';
 import * as definitions from './definitions';
 
@@ -26,7 +25,6 @@ const _types = {
   other: {
     types: {
       SignerPayload,
-      VecDeque: VecAny,
     },
   },
 };

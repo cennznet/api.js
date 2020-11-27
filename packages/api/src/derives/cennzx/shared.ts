@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { drr } from '@polkadot/rpc-core/rxjs';
+import { drr } from '@polkadot/rpc-core/util';
 import { u32, Hash, Permill } from '@cennznet/types';
 import { Observable } from 'rxjs';
 

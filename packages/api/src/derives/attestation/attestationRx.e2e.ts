@@ -15,7 +15,7 @@
 import { filter, first } from 'rxjs/operators';
 
 import { ApiRx } from '@cennznet/api';
-import testKeyring from '@polkadot/keyring/testing';
+import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -34,10 +34,10 @@ beforeAll(async () => {
   const apiRx = await initApiRx();
   api = await apiRx.toPromise();
 
-  const simpleKeyring = testKeyring({ type: 'sr25519' });
-  issuer = simpleKeyring.addFromUri(issuerUri);
-  issuer2 = simpleKeyring.addFromUri(issuer2Uri);
-  holder = simpleKeyring.addFromUri(holderUri);
+  const keyring = new Keyring({ type: 'sr25519' });
+  issuer = keyring.addFromUri(issuerUri);
+  issuer2 = keyring.addFromUri(issuer2Uri);
+  holder = keyring.addFromUri(holderUri);
   attestationValue = api.registry.createType('AttestationValue', '0x6964656e74697479');
   attestationValue2 = api.registry.createType('AttestationValue', '0x12121212121234a1');
   topic = api.registry.createType('AttestationTopic', '0x70617373706f7274'); // hex for passport

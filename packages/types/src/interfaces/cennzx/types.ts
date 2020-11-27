@@ -1,9 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import { ITuple } from '@polkadot/types/types';
-import { u128 } from '@polkadot/types/primitive';
-import { AssetId } from '@polkadot/types/interfaces/runtime';
+import type { u128 } from '@polkadot/types';
+import type { ITuple } from '@polkadot/types/types';
+import type { AssetId } from '@polkadot/types/interfaces/runtime';
 
 /** @name ExchangeKey */
 export interface ExchangeKey extends ITuple<[AssetId, AssetId]> {}

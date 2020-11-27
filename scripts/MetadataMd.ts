@@ -1,12 +1,13 @@
 // Copyright 2017-2020 @polkadot/typegen authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import {Metadata} from "@polkadot/types";
 import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
-import { Codec } from '@polkadot/types/types';
-import staticMetadata from "@cennznet/api/staticMetadata";
+import { Codec, DefinitionRpcParam } from '@polkadot/types/types';
+
 import fs from 'fs';
-import Call from '@polkadot/types/generic/Call';
+import { Metadata } from '@polkadot/metadata';
+import staticMetadata from "@cennznet/api/staticMetadata";
+import { GenericCall as Call } from '@polkadot/types/generic';
 import { unwrapStorageType } from '@polkadot/types/primitive/StorageKey';
 import { TypeRegistry } from '@polkadot/types/create';
 import { Vec } from '@polkadot/types/codec';
@@ -46,18 +47,18 @@ function documentationVecToMarkdown (docLines: Vec<Text>, indent = 0): string {
                     ? `${md}\n\n` // empty line
                     : /^[*-]/.test(docLine.trimStart()) && !md.endsWith('\n\n')
                     ? `${md}\n\n${docLine}` // line calling for a preceding linebreak
-                    : `${md}${docLine // line continuing the preceding line
-                        .replace(/^# <weight>$/g, '\\# \\<weight>\n\n')
-                        .replace(/^# <\/weight>$/g, '\n\n\\# \\</weight>')
-                        .replace(/^#{1,3} /, '#### ')} `
-            , '');
+                    : `${md}${docLine.replace(/^#{1,3} /, '#### ')} `
+            , '')
+        .replace(/#### <weight>/g, '<weight>')
+        .replace(/<weight>(.|\n)*?<\/weight>/g, '')
+        .replace(/#### Weight:/g, 'Weight:');
 
     // prefix each line with indentation
     return md && md.split('\n\n').map((line) => `${' '.repeat(indent)}${line}`).join('\n\n');
 }
 
 function renderPage (page: Page): string {
-    let md = `## ${page.title}\n\n`;
+    let md = `---\ntitle: ${page.title}\n---\n\n`;
 
     if (page.description) {
         md += `${page.description}\n\n`;
@@ -65,32 +66,33 @@ function renderPage (page: Page): string {
 
     // index
     page.sections.forEach((section) => {
-        md += `- **[${stringCamelCase(section.name)}](#${stringCamelCase(section.name).toLowerCase()})**\n\n`;
+        if (section.name) {
+            md += `- **[${stringCamelCase(section.name)}](#${stringCamelCase(section.name).toLowerCase()})**\n\n`;
+        }
     });
 
     // contents
     page.sections.forEach((section) => {
         md += `\n___\n\n\n## ${section.name}\n`;
+
         if (section.description) {
             md += `\n_${section.description}_\n`;
         }
 
-        if (section.items) {
-            section.items.forEach((item) => {
-                md += ` \n### ${item.name}`;
+        section.items && section.items.forEach((item) => {
+            md += ` \n### ${item.name}`;
 
-                Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
-                    md += `\n- **${bullet}**: ${
-                        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        item[bullet] instanceof Vec
-                            ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
-                            : item[bullet]
-                    }`;
-                });
-
-                md += '\n';
+            Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
+                md += `\n- **${bullet}**: ${
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    item[bullet] instanceof Vec
+                        ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
+                        : item[bullet]
+                }`;
             });
-        }
+
+            md += '\n';
+        });
     });
 
     return md;
@@ -122,7 +124,7 @@ function addRpc (): string {
                         .sort()
                         .map((methodName) => {
                             const method = section.rpc[methodName];
-                            const args = method.params.map(({ isOptional, name, type }: any): string => {
+                            const args = method.params.map(({ isOptional, name, type }: DefinitionRpcParam): string => {
                                 // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
                                 return name + (isOptional ? '?' : '') + ': `' + type + '`';
                             }).join(', ');
@@ -130,7 +132,7 @@ function addRpc (): string {
 
                             return {
                                 interface: '`' + `api.rpc.${sectionName}.${methodName}` + '`',
-                                jsonrpc: '`' + `${sectionName}_${methodName}` + '`',
+                                jsonrpc: '`' + (method.endpoint || `${sectionName}_${methodName}`) + '`',
                                 name: `${methodName}(${args}): ${type}`,
                                 ...(method.description && { summary: method.description })
                             };
@@ -150,13 +152,13 @@ function addConstants (metadata: MetadataLatest): string {
             .sort(sortByName)
             .filter((moduleMetadata) => !moduleMetadata.constants.isEmpty)
             .map((moduleMetadata) => {
-                const sectionName = stringLowerFirst(moduleMetadata.name.toString());
+                const sectionName = stringLowerFirst(moduleMetadata.name);
 
                 return {
                     items: moduleMetadata.constants
                         .sort(sortByName)
                         .map((func) => {
-                            const methodName = stringCamelCase(func.name.toString());
+                            const methodName = stringCamelCase(func.name);
 
                             return {
                                 interface: '`' + `api.consts.${sectionName}.${methodName}` + '`',
@@ -177,7 +179,7 @@ function addStorage (metadata: MetadataLatest): string {
         .sort(sortByName)
         .filter((moduleMetadata) => !moduleMetadata.storage.isNone)
         .map((moduleMetadata) => {
-            const sectionName = stringLowerFirst(moduleMetadata.name.toString());
+            const sectionName = stringLowerFirst(moduleMetadata.name);
 
             return {
                 items: moduleMetadata.storage.unwrap().items
@@ -188,7 +190,7 @@ function addStorage (metadata: MetadataLatest): string {
                             : func.type.isDoubleMap
                                 ? ('`' + func.type.asDoubleMap.key1.toString() + ', ' + func.type.asDoubleMap.key2.toString() + '`')
                                 : '';
-                        const methodName = stringLowerFirst(func.name.toString());
+                        const methodName = stringLowerFirst(func.name);
                         const outputType = unwrapStorageType(func.type, func.modifier.isOptional);
 
                         return {
@@ -203,6 +205,7 @@ function addStorage (metadata: MetadataLatest): string {
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const knownSection: any = JSON.parse(fs.readFileSync('docs/cennznet/storage-known-section.json', 'utf8'));
+
     return renderPage({
         description: DESC_STORAGE,
         sections: moduleSections.concat([knownSection]),
@@ -218,13 +221,13 @@ function addExtrinsics (metadata: MetadataLatest): string {
             .sort(sortByName)
             .filter((meta) => !meta.calls.isNone && meta.calls.unwrap().length !== 0)
             .map((meta) => {
-                const sectionName = stringCamelCase(meta.name.toString());
+                const sectionName = stringCamelCase(meta.name);
 
                 return {
                     items: meta.calls.unwrap()
                         .sort(sortByName)
                         .map((func) => {
-                            const methodName = stringCamelCase(func.name.toString());
+                            const methodName = stringCamelCase(func.name);
                             const args = Call.filterOrigin(func).map(({ name, type }) => `${name.toString()}: ` + '`' + type.toString() + '`').join(', ');
 
                             return {
@@ -259,7 +262,7 @@ function addEvents (metadata: MetadataLatest): string {
                             ...(func.documentation.length && { summary: func.documentation })
                         };
                     }),
-                name: stringCamelCase(meta.name.toString())
+                name: stringCamelCase(meta.name)
             })),
         title: 'Events'
     });
@@ -279,7 +282,7 @@ function addErrors (metadata: MetadataLatest): string {
                         name: error.name.toString(),
                         ...(error.documentation.length && { summary: error.documentation })
                     })),
-                name: stringLowerFirst(moduleMetadata.name.toString())
+                name: stringLowerFirst(moduleMetadata.name)
             })),
         title: 'Errors'
     });
@@ -300,16 +303,20 @@ function writeFile (name: string, ...chunks: any[]): void {
     writeStream.end();
 }
 
-export default function main(): void {
+function main (): void {
     const registry = new TypeRegistry();
     const meta = Object.values(staticMetadata)[0]; // Get the static metadata
-    const metadata = new Metadata(registry, meta).asLatest;
+    const metadata = new Metadata(registry, meta);
+    registry.setMetadata(metadata);
+
+    const latest = metadata.asLatest;
+
     writeFile('docs/cennznet/rpc.md', addRpc());
-    writeFile('docs/cennznet/constants.md', addConstants(metadata));
-    writeFile('docs/cennznet/storage.md', addStorage(metadata));
-    writeFile('docs/cennznet/extrinsics.md', addExtrinsics(metadata));
-    writeFile('docs/cennznet/events.md', addEvents(metadata));
-    writeFile('docs/cennznet/errors.md', addErrors(metadata));
-}
+    writeFile('docs/cennznet/constants.md', addConstants(latest));
+    writeFile('docs/cennznet/storage.md', addStorage(latest));
+    writeFile('docs/cennznet/extrinsics.md', addExtrinsics(latest));
+    writeFile('docs/cennznet/events.md', addEvents(latest));
+    writeFile('docs/cennznet/errors.md', addErrors(latest));
+};
 
 main();

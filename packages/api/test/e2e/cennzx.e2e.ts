@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import testKeyring from '@polkadot/keyring/testing';
+import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Balance } from '@cennznet/types';
@@ -26,7 +26,7 @@ describe('CENNZX RPC calls testing', () => {
   beforeAll(async () => {
     await cryptoWaitReady();
     api = await initApiPromise();
-    const keyring = testKeyring({ type: 'sr25519' });
+    const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
   });

@@ -1,4 +1,6 @@
-## JSON-RPC
+---
+title: JSON-RPC
+---
 
 The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit.
 
@@ -27,6 +29,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 - **[rpc](#rpc)**
 
 - **[state](#state)**
+
+- **[syncstate](#syncstate)**
 
 
 ___
@@ -368,3 +372,13 @@ ___
 - **interface**: `api.rpc.state.subscribeStorage`
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
+
+___
+
+
+## syncstate
+ 
+### genSyncSpec(raw: `bool`): `Json`
+- **interface**: `api.rpc.syncstate.genSyncSpec`
+- **jsonrpc**: `sync_state_genSyncSpec`
+- **summary**: Returns the json-serialized chainspec running the node, with a sync state.

@@ -14,10 +14,8 @@
 
 import { EstimateFeeParams } from '@cennznet/api/derives/types';
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import Extrinsic from '@polkadot/types/extrinsic/Extrinsic';
-import { drr } from '@polkadot/rpc-core/rxjs';
-import { TypeRegistry, RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
-import ExtrinsicEra from '@polkadot/types/extrinsic/ExtrinsicEra';
+import { drr } from '@polkadot/rpc-core/util';
+import { RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';
@@ -51,11 +49,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
       first(),
       switchMap(
         ([runtimeVersion, blockHash, genesisHash, networkFeeAssetId]): Observable<[RuntimeDispatchInfo, AssetId]> => {
-          const registry = new TypeRegistry();
-          const era = new ExtrinsicEra(registry, {
-            current: 1,
-            period: 1,
-          });
+          const era = api.registry.createType('ExtrinsicEra', { current: 1, period: 10 });
           const nonce = null;
           const fake_sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
           let payload;
@@ -67,7 +61,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
             const transactionPayment = api.registry.createType('ChargeTransactionPayment', { tip: 0, feeExchange });
             payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
           }
-          (extrinsic as Extrinsic).signFake(fake_sender, payload as SignatureOptions);
+          extrinsic.signFake(fake_sender, payload as SignatureOptions);
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }
       ),

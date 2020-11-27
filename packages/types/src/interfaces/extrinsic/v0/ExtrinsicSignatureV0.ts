@@ -14,7 +14,6 @@
 
 // tslint:disable member-ordering no-magic-numbers
 import { Compact, createType, Struct } from '@polkadot/types';
-import Option from '@polkadot/types/codec/Option';
 import {
   Address,
   Balance,
@@ -31,7 +30,7 @@ import { IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/typ
 import { u8aConcat } from '@polkadot/util';
 import { ExtrinsicSignatureOptions } from '@polkadot/types/extrinsic/types';
 import { ExtrinsicV0SignatureOptions } from '../types';
-import { ChargeTransactionPayment, doughnut } from '../../types';
+import { ChargeTransactionPayment } from '../../types';
 import ExtrinsicPayloadV0, { ExtrinsicPayloadValueV0 } from './ExtrinsicPayloadV0';
 
 /**
@@ -102,8 +101,8 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   /**
    * @description The [[Doughnut]]
    */
-  get doughnut(): Option<doughnut> {
-    return this.get('doughnut') as Option<doughnut>;
+  get doughnut() {
+    return this.get('doughnut');
   }
 
   /**

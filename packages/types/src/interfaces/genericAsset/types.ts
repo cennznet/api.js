@@ -1,9 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import { Compact, Enum, Set, Struct } from '@polkadot/types/codec';
-import { Bytes, u8 } from '@polkadot/types/primitive';
-import { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
+import type { Bytes, Compact, Enum, Set, Struct, u8 } from '@polkadot/types';
+import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
 
 /** @name AssetInfo */
 export interface AssetInfo extends Struct {

@@ -13,11 +13,10 @@
 // limitations under the License.
 
 // tslint:disable member-ordering no-magic-numbers
-import { Bytes, Compact, Raw, Struct, u32 } from '@polkadot/types';
+import { Bytes, Compact, Option, Raw, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
 import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
-import Option from '@polkadot/types/codec/Option';
 import { ChargeTransactionPayment, doughnut, Index } from '../../types';
 
 export interface ExtrinsicPayloadValueV0 {

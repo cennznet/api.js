@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
-import testKeyring from '@polkadot/keyring/testing';
+import { Keyring } from '@polkadot/keyring';
 import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -24,7 +24,7 @@ describe('e2e queries', () => {
 
   beforeAll(async () => {
     await cryptoWaitReady();
-    const keyring = testKeyring({ type: 'sr25519' });
+    const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     aliceStash = keyring.addFromUri('//Alice//stash')
     bob = keyring.addFromUri('//Bob');
@@ -82,7 +82,8 @@ describe('e2e queries', () => {
         }
       });
       const sudoKey = await api.query.sudo.key();
-      const keyring = testKeyring({ type: 'sr25519' });
+      const keyring = new Keyring({ type: 'sr25519' });
+      keyring.addFromUri('//Alice');
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoPair = keyring.getPair(sudoKey.toString());
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
