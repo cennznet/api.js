@@ -64,9 +64,9 @@ describe('e2e api calls', () => {
     const provider = 'wss://cennznet.unfrastructure.io/public/ws';
     const apiV36 = await Api.create({provider});
     let eventCount = 0;
-    // subscribe to system events via storage and show the next 14 events on Azalea
+    // subscribe to system events via storage and show the next 7 events on Azalea
     apiV36.query.system.events((events) => {
-      if (eventCount === 14 ) {
+      if (eventCount === 7 ) {
         done();
       }
       const totalEvents = events.length;
