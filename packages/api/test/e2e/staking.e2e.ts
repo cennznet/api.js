@@ -289,7 +289,7 @@ describe('Staking Governance (Sudo Required)', () => {
 
   test('Force unstake', async done => {
     const bobStash = keyring.addFromUri('//Bob//stash');
-    new Promise(async (resolve) => {
+    new Promise<void>(async (resolve) => {
       // bond bob's stash account.
       await api.tx.staking.bond(bob.address, 10_000, 'controller')
           .signAndSend( bobStash, async ({ status }) => {
