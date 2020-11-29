@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   # dev node with runtime v37 and client 1.2.0
   testnet_node_alice:

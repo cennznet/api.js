@@ -15,13 +15,13 @@ jobs:
         access_token: ${{ github.token }}
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.19'
+        node-version: '15.3'
     - name: cache node modules
       id: cache
       uses: actions/cache@v2
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('package-lock.json') }}
+        key: node-modules-${{ hashFiles('yarn.lock') }}
     - name: install
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn
@@ -38,13 +38,12 @@ jobs:
       matrix:
         test-suite:
           # grouped test runs
-          - "[api|rxapi].*.e2e.ts"
-          - queries.e2e.ts
-          - tx.e2e.ts
-          - attestation*.e2e.ts
-          - cennzx*.e2e.ts
-          - staking.e2e.ts
-          - sylo.e2e.ts
+          - "create|call|queries"
+          - tx
+          - attestation.*
+          - cennzx.*
+          - staking
+          - sylo
     steps:
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
@@ -58,7 +57,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('package-lock.json') }}
+        key: node-modules-${{ hashFiles('yarn.lock') }}
     - name: install
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn
@@ -66,9 +65,9 @@ jobs:
       run: docker run --network=host -d cennznet/cennznet:1.2.0 --dev --tmp --ws-external --rpc-external
     - name: test
       env:
-        TEST_TYPE: ""
-        API_KEY: ${{ secrets.GITHUB_TOKEN }}
-        # arbitrary value to disable internal API logs in test output
+        TEST_TYPE: e2e
+        API_KEY: ${{ secrets.API_KEY }}
+        # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand

@@ -24,7 +24,7 @@ jobs:
     needs:
     - merge-release-branch
     runs-on: ubuntu-latest
-    container: node:10.19-jessie
+    container: node:15.3-buster
     steps:
     - uses: actions/checkout@v2
     - run: |
