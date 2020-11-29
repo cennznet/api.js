@@ -51,9 +51,10 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
-  it('Should get rejected if the connection fails', async () => {
+  it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
-    expect(Api.create({ provider: incorrectEndPoint })).rejects.toThrow('Connection fail');
+    await expect(Api.create({ provider: incorrectEndPoint })).rejects.toThrow('Connection fail');
+    done();
   });
 
   // TODO - enable and update this test after runtime upgrade on Azalea
