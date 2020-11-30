@@ -38,6 +38,9 @@ export const typesBundle: OverrideBundleType = {
         {
           minmax: [0, 36],
           types: {
+            DispatchClass: 'DispatchClassTo36',
+            Phase: 'PhaseTo36',
+            DispatchInfo: 'DispatchInfoTo36',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
           },
         },
