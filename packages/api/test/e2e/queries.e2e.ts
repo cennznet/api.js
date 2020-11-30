@@ -86,6 +86,7 @@ describe('e2e queries', () => {
       keyring.addFromUri('//Alice');
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
       const sudoPair = keyring.getPair(sudoKey.toString());
+      const nonce = await api.rpc.system.accountNextIndex(sudoPair.address);
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
       const option = {initialIssuance : 0, permissions};
@@ -97,7 +98,7 @@ describe('e2e queries', () => {
             assetOption,
             assetInfo
           ))
-        .signAndSend(sudoPair);
+        .signAndSend(sudoPair, { nonce });
     }, 12000);
   });
 
