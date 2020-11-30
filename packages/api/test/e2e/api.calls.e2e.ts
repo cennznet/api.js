@@ -66,9 +66,9 @@ describe('e2e api calls', () => {
     const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
     const apiV36 = await Api.create({ provider });
     let eventCount = 0;
-    // subscribe to system events via storage and show the next 7 events on Azalea
+    // subscribe to system events via storage and show the next 3 events on Azalea
     apiV36.query.system.events((events) => {
-      if (eventCount === 7 ) {
+      if (eventCount === 3 ) {
         done();
       }
       const totalEvents = events.length;
