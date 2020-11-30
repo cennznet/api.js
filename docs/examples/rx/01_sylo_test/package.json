@@ -1,0 +1,30 @@
+{
+  "name": "rx_01_sylo_resr",
+  "version": "0.2.0",
+  "description": "Example showing how to connect using a WebSocket",
+  "main": "index.js",
+  "author": "Stefie",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "resolutions": {
+    "@polkadot/types": "1.2.1",
+    "@polkadot/metadata": "1.2.1",
+    "@polkadot/api": "1.2.1",
+    "@polkadot/api-derive": "1.2.1",
+    "@polkadot/rpc-core": "1.2.1",
+    "@polkadot/rpc-provider": "1.2.1",
+    "@polkadot/jsonrpc": "1.2.1",
+    "@polkadot/util-crypto": "^2.3.1",
+    "@cennznet/types": "1.1.2"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.0",
+    "@cennznet/api": "1.1.2"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}
