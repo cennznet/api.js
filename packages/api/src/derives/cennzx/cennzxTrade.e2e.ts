@@ -146,10 +146,11 @@ describe('Cennzx Operations', () => {
       const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum of assetA willing to pay for the exchange
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       // sell assetA to buy coreAsset
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -170,10 +171,11 @@ describe('Cennzx Operations', () => {
       const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       // sell assetA to buy coreAsset
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -194,9 +196,10 @@ describe('Cennzx Operations', () => {
       const sellAmount = 50;
       const expectedAssetPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -217,10 +220,11 @@ describe('Cennzx Operations', () => {
       const sellAmount = 50;
       const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -243,11 +247,12 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const expectedCorePrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -266,12 +271,13 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -297,10 +303,11 @@ describe('Cennzx Operations', () => {
       const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const maxAmountSold = expectedAssetPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -326,10 +333,11 @@ describe('Cennzx Operations', () => {
       const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -354,10 +362,11 @@ describe('Cennzx Operations', () => {
       const amountBought = 50;
       const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -378,11 +387,12 @@ describe('Cennzx Operations', () => {
       const amountBought = 50;
       const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
@@ -407,9 +417,10 @@ describe('Cennzx Operations', () => {
       const sellAmount = 50;
       const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -430,10 +441,11 @@ describe('Cennzx Operations', () => {
       const sellAmount = 50;
       const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
@@ -469,9 +481,10 @@ describe('Cennzx Operations', () => {
       const { coreAmount, assetAmount } = await api.derive.cennzx.assetToWithdraw(assetA, removeLiquidity);
       const minAssetWithdraw = 1;
       const minCoreWithdraw = 1;
+      nonce = await api.rpc.system.accountNextIndex(alice.address);
       await api.tx.cennzx
         .removeLiquidity(assetA, removeLiquidity, minAssetWithdraw, minCoreWithdraw)
-        .signAndSend(alice, async ({ events, status }) => {
+        .signAndSend(alice, { nonce }, async ({ events, status }) => {
           if (status.isFinalized && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'RemoveLiquidity') {
