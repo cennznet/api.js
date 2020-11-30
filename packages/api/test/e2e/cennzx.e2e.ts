@@ -41,19 +41,21 @@ describe('CENNZX RPC calls testing', () => {
         const amount = 3_000_000;
         const coreAmount = amount;
         const minLiquidity = 1;
+        const nonce = await api.rpc.system.accountNextIndex(alice.address);
       // Add Liquidity for the first time in the pool.
         await api.tx.cennzx
           .addLiquidity(CENNZ, minLiquidity, amount, coreAmount)
-          .signAndSend(alice, async ({events, status}) => {
+          .signAndSend(alice, { nonce }, async ({events, status}) => {
             if (status.isFinalized) {
               for (const {event} of events) {
                 if (event.method === 'AddLiquidity') {
                   let amount = 20000;
                   const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
+                  const nonce = await api.rpc.system.accountNextIndex(alice.address);
                   // Deposit liquidity in existing pool
                   await api.tx.cennzx
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
-                      .signAndSend(alice, async ({events, status}) => {
+                      .signAndSend(alice, { nonce }, async ({events, status}) => {
                         if (status.isFinalized) {
                           for (const {event} of events) {
                             if (event.method === 'AddLiquidity') {
@@ -106,8 +108,9 @@ describe('CENNZX RPC calls testing', () => {
           const extrinsic = api.tx.genericAsset
             .transfer(CENNZ, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId:CENTRAPAY});
+          const nonce = await api.rpc.system.accountNextIndex(alice.address);
 
-          await extrinsic.signAndSend(alice,  async ({events, status}) => {
+          await extrinsic.signAndSend(alice, { nonce }, async ({events, status}) => {
             if (status.isFinalized) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
@@ -125,9 +128,10 @@ describe('CENNZX RPC calls testing', () => {
           const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
           const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
           const extrinsic = api.tx.treasury.reportAwesome('Fantastic Work', alice.address);
+          const nonce = await api.rpc.system.accountNextIndex(alice.address);
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
-          await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
+          await extrinsic.signAndSend(alice, { nonce, transactionPayment }, async ({events, status}) => {
             if (status.isFinalized) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 if (method === 'AssetBought') {
