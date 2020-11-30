@@ -50,11 +50,11 @@ afterAll(async () => {
 
 describe('AttestationRx APIs', () => {
   describe('Set Claims', () => {
-    it('should create a claim', done => {
+    it('should create a claim', async done => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
-
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address).toPromise();
       claim
-        .signAndSend(issuer)
+        .signAndSend(issuer, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
@@ -93,11 +93,11 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Create Multiple Claims', () => {
-    it('should create a claim with issuer 1 and topic 1', done => {
+    it('should create a claim with issuer 1 and topic 1', async done => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
-
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address).toPromise();
       claim
-        .signAndSend(issuer)
+        .signAndSend(issuer, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
@@ -120,11 +120,11 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 1 and topic 2', done => {
+    it('should create a claim with issuer 1 and topic 2', async done => {
       const claim = api.tx.attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
-
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address).toPromise();
       claim
-        .signAndSend(issuer)
+        .signAndSend(issuer, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
@@ -147,11 +147,11 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 1', done => {
+    it('should create a claim with issuer 2 and topic 1', async done => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
-
+      const nonce = await api.rpc.system.accountNextIndex(issuer2.address).toPromise();
       claim
-        .signAndSend(issuer2)
+        .signAndSend(issuer2, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
@@ -174,11 +174,12 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 2', done => {
+    it('should create a claim with issuer 2 and topic 2', async done => {
       const claim = api.tx.attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
+      const nonce = await api.rpc.system.accountNextIndex(issuer2.address).toPromise();
 
       claim
-        .signAndSend(issuer2)
+        .signAndSend(issuer2, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
@@ -231,12 +232,12 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Remove Claims', () => {
-    it('should remove a claim', done => {
+    it('should remove a claim', async done => {
       const claim = api.tx.attestation.removeClaim(holder.address, topic);
-
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address).toPromise();
       // Expect holders to match
       claim
-        .signAndSend(issuer)
+        .signAndSend(issuer, { nonce })
         .pipe(
           filter(({ events, status }) => {
             return status.isInBlock && events !== undefined;
