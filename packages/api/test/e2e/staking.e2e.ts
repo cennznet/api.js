@@ -94,8 +94,8 @@ describe('Staking Operations', () => {
         done();
       }
     });
-
-    await api.tx.staking.bondExtra(additionalBond).signAndSend(stash);
+    const nonce = await api.rpc.system.accountNextIndex(stash.address);
+    await api.tx.staking.bondExtra(additionalBond).signAndSend(stash, { nonce });
   });
 
   test('Unbond schedules some funds to unlock', async done => {
@@ -125,12 +125,13 @@ describe('Staking Operations', () => {
         done();
       }
     });
-
-    await api.tx.staking.rebond(rebondAmount).signAndSend(controller);
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
+    await api.tx.staking.rebond(rebondAmount).signAndSend(controller, { nonce });
   });
 
   test('Withdraw unbonded', async done => {
-    await api.tx.staking.withdrawUnbonded().signAndSend(controller, ({ status, events }) => {
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
+    await api.tx.staking.withdrawUnbonded().signAndSend(controller, { nonce }, ({ status, events }) => {
       if (status.isInBlock) {
         expect(
           events.find(wrapper => wrapper.event.method === 'ExtrinsicSuccess')
@@ -152,8 +153,8 @@ describe('Staking Operations', () => {
         done();
       };
     };
-
-    await api.tx.staking.validate({ commission }).signAndSend(controller, checkCommission);
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
+    await api.tx.staking.validate({ commission }).signAndSend(controller, { nonce }, checkCommission);
   });
 
   test('Chill removes stash from validator candidacy', async done => {
@@ -165,8 +166,8 @@ describe('Staking Operations', () => {
         done();
       };
     };
-
-    await api.tx.staking.chill().signAndSend(controller, checkCommission);
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
+    await api.tx.staking.chill().signAndSend(controller, { nonce }, checkCommission);
   });
 
   test('setPayee changes reward destination', async done => {
@@ -177,14 +178,15 @@ describe('Staking Operations', () => {
 
     // Subscribe to payee changes
     await api.query.staking.payee(stash.address, (payee: RewardDestination) => payee.isStash ? done() : null);
-
-    await api.tx.staking.setPayee('stash').signAndSend(controller);
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
+    await api.tx.staking.setPayee('stash').signAndSend(controller, { nonce });
   });
 
   test('Payout to any account', async done => {
     const rewardDestinationAddress = '5FEe8Ht1ZTzNjQcvrxbLxnykA2EXfqN5LMog2gaNPus4tfZR';
+    const nonce = await api.rpc.system.accountNextIndex(controller.address);
     // Payee account set to any account
-    await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
+    await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller, { nonce });
     // Subscribe to payee changes
     await api.query.staking.payee(stash.address, (payee: RewardDestination) => {
       (payee.isAccount && payee.asAccount.toString() === rewardDestinationAddress) ? done() : null
@@ -194,7 +196,7 @@ describe('Staking Operations', () => {
   test('setController changes controller account', async done => {
     // NB: ensure to run this test last as it changes the controller account.
     const newController = keyring.addFromUri('//NewController');
-
+    const nonce = await api.rpc.system.accountNextIndex(stash.address);
     // Subscribe to controller account value changes
     await api.query.staking.bonded(stash.address, (controllerOpt: Option<AccountId>) => {
       const controllerAddress = keyring.encodeAddress(controllerOpt.unwrap());
@@ -203,7 +205,7 @@ describe('Staking Operations', () => {
       }
     });
 
-    await api.tx.staking.setController(newController.address).signAndSend(stash);
+    await api.tx.staking.setController(newController.address).signAndSend(stash, { nonce });
   });
 
 });
@@ -211,16 +213,17 @@ describe('Staking Operations', () => {
 describe('Staking Governance (Sudo Required)', () => {
 
   afterAll(async done => {
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
     // Ensure era forcing is disabled
     await api.tx.sudo.sudo(api.tx.staking.forceNewEra())
-      .signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
+      .signAndSend(alice, { nonce }, ({ status }) => status.isInBlock ? done() : null);
   });
 
   test('Set target validator count', async done => {
     const validatorCount = 15;
     const setValidatorTx = api.tx.staking.setValidatorCount(validatorCount);
-
-    await api.tx.sudo.sudo(setValidatorTx).signAndSend(alice, async ({ status }) => {
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(setValidatorTx).signAndSend(alice, { nonce }, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.validatorCount()).toString()).toEqual(validatorCount.toString());
         done();
@@ -231,8 +234,8 @@ describe('Staking Governance (Sudo Required)', () => {
   test('Set minimum bond', async done => {
     const minimumBond = 1_234;
     const setMinimumBondTx = api.tx.staking.setMinimumBond(minimumBond);
-
-    await api.tx.sudo.sudo(setMinimumBondTx).signAndSend(alice, async ({ status }) => {
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(setMinimumBondTx).signAndSend(alice, { nonce }, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.minimumBond()).toString()).toEqual(minimumBond.toString());
         done();
@@ -244,8 +247,8 @@ describe('Staking Governance (Sudo Required)', () => {
   test('Set invulnerable validators', async done => {
     const invulnerables: AccountId[] = keyring.getPairs().map(p => p.publicKey as AccountId);
     const setInvulnerablesTx = api.tx.staking.setInvulnerables(invulnerables);
-
-    await api.tx.sudo.sudo(setInvulnerablesTx).signAndSend(alice, async ({ status }) => {
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(setInvulnerablesTx).signAndSend(alice, { nonce }, async ({ status }) => {
       if (status.isInBlock) {
         expect(
           (await api.query.staking.invulnerables()).map(k => keyring.encodeAddress(k))
@@ -263,7 +266,8 @@ describe('Staking Governance (Sudo Required)', () => {
         if (forcing.isForceNone) done();
       }
     );
-    await api.tx.sudo.sudo(api.tx.staking.forceNoEras()).signAndSend(alice);
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(api.tx.staking.forceNoEras()).signAndSend(alice, { nonce });
   });
 
   test('Force new era', async done => {
@@ -275,7 +279,8 @@ describe('Staking Governance (Sudo Required)', () => {
         if (forcing.isForceNew) done();
       }
     );
-    await api.tx.sudo.sudo(api.tx.staking.forceNewEra()).signAndSend(alice);
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(api.tx.staking.forceNewEra()).signAndSend(alice, { nonce });
   });
 
   test('Force new era always', async done => {
@@ -284,7 +289,8 @@ describe('Staking Governance (Sudo Required)', () => {
         if (forcing.isForceAlways) done();
       }
     );
-    await api.tx.sudo.sudo(api.tx.staking.forceNewEraAlways()).signAndSend(alice);
+    const nonce = await api.rpc.system.accountNextIndex(alice.address);
+    await api.tx.sudo.sudo(api.tx.staking.forceNewEraAlways()).signAndSend(alice, { nonce });
   });
 
   test('Force unstake', async done => {
@@ -301,7 +307,8 @@ describe('Staking Governance (Sudo Required)', () => {
           });
     }).then(async () => {
       const unstake = api.tx.staking.forceUnstake(bobStash.address);
-      await api.tx.sudo.sudo(unstake).signAndSend(alice);
+      const nonce = await api.rpc.system.accountNextIndex(alice.address);
+      await api.tx.sudo.sudo(unstake).signAndSend(alice, { nonce });
         // bob stash is removed / unbonded
       await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
         (controller.unwrapOr(null) === null) ? done() : null);
