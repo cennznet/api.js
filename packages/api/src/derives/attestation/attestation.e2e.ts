@@ -46,9 +46,10 @@ afterAll(async () => {
 describe('Attestation APIs', () => {
   describe('Set Claims', () => {
     it('should create a claim', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
-        .signAndSend(issuer, async ({ events, status }) => {
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -68,10 +69,11 @@ describe('Attestation APIs', () => {
     });
 
     it('should create a claim with a u8a', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       const otherTopic = api.registry.createType('AttestationTopic', '0x72616e646f6d546f706963'); // hex for randomTopic
       await api.tx.attestation
         .setClaim(holder.address, otherTopic, attestationValue.toU8a())
-        .signAndSend(issuer, async ({ events, status }) => {
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -102,9 +104,10 @@ describe('Attestation APIs', () => {
 
   describe('Create Multiple Claims', () => {
     it('should create a claim with issuer 1 and topic 1', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
-        .signAndSend(issuer, async ({ events, status }) => {
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -124,9 +127,10 @@ describe('Attestation APIs', () => {
     });
 
     it('should create a claim with issuer 1 and topic 2', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       await api.tx.attestation
         .setClaim(holder.address, topic2, attestationValue2.toHex())
-        .signAndSend(issuer, async ({ events, status }) => {
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -146,9 +150,10 @@ describe('Attestation APIs', () => {
     });
 
     it('should create a claim with issuer 2 and topic 1', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer2.address);
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
-        .signAndSend(issuer2, async ({ events, status }) => {
+        .signAndSend(issuer2, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -168,9 +173,10 @@ describe('Attestation APIs', () => {
     });
 
     it('should create a claim with issuer 2 and topic 2', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer2.address);
       await api.tx.attestation
         .setClaim(holder.address, topic2, attestationValue2.toHex())
-        .signAndSend(issuer2, async ({ events, status }) => {
+        .signAndSend(issuer2, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -216,9 +222,10 @@ describe('Attestation APIs', () => {
 
   describe('Remove Claims', () => {
     it('should create a claim', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
-        .signAndSend(issuer, async ({ events, status }) => {
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
           if (status.isInBlock && events !== undefined) {
             for (const {
               event: { method, data },
@@ -238,23 +245,26 @@ describe('Attestation APIs', () => {
     });
 
     it('should remove a claim', async done => {
+      const nonce = await api.rpc.system.accountNextIndex(issuer.address);
       // Expect holders to match
-      await api.tx.attestation.removeClaim(holder.address, topic).signAndSend(issuer, async ({ events, status }) => {
-        if (status.isInBlock && events !== undefined) {
-          for (const {
-            event: { method, data },
-          } of events) {
-            if (method === 'ClaimRemoved') {
-              expect(data[0].toString()).toBe(holder.address);
-              // Expect issuers to match
-              expect(data[1].toString()).toBe(issuer.address);
-              // expect topic to match
-              expect(data[2].toHex()).toEqual(topic.toHex());
-              done();
+      await api.tx.attestation
+        .removeClaim(holder.address, topic)
+        .signAndSend(issuer, { nonce }, async ({ events, status }) => {
+          if (status.isInBlock && events !== undefined) {
+            for (const {
+              event: { method, data },
+            } of events) {
+              if (method === 'ClaimRemoved') {
+                expect(data[0].toString()).toBe(holder.address);
+                // Expect issuers to match
+                expect(data[1].toString()).toBe(issuer.address);
+                // expect topic to match
+                expect(data[2].toHex()).toEqual(topic.toHex());
+                done();
+              }
             }
           }
-        }
-      });
+        });
     });
   });
 });
