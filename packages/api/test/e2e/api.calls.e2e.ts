@@ -40,7 +40,7 @@ describe('e2e api calls', () => {
     expect(block.header.hash.toString()).toEqual(blockHash.toString());
   });
 
-  it('Query historical block from runtime version 36', async () => {
+  it.skip('Query historical block from runtime version 36', async () => {
     const blockNumber = 3759962; // old Azalea block at runtime version 36
     const API_KEY = process.env.API_KEY;
 
@@ -60,42 +60,25 @@ describe('e2e api calls', () => {
     await apiV36.disconnect();
   });
 
-  it('Subscribe system events for runtime version 36', async done => {
+  it.skip('Subscribe system events for runtime version 36', async done => {
     const API_KEY = process.env.API_KEY;
 
     const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
     const apiV36 = await Api.create({ provider });
-    let eventCount = 0;
-    // subscribe to system events via storage and show the next 3 events on Azalea
-    apiV36.query.system.events((events) => {
-      if (eventCount === 3 ) {
-        done();
-      }
-      const totalEvents = events.length;
-      console.log(`\nReceived ${totalEvents} events:`);
-      // loop through the Vec<EventRecord>
-      events.forEach((record : EventRecord) => {
-        eventCount++;
-
-        // extract the phase, event and the event types
-        const { event, phase } = record;
-        const types = event.typeDef;
-        const phaseIndex = phase.asApplyExtrinsic.toNumber();
-
-        expect(phaseIndex).toBeLessThan(totalEvents);
-
-        // Display event method and phase
-        console.log(`\t${event.section}:${event.method}:: (phase=${phase.toString()})`);
-        if (event.meta) {
-          console.log(`\t\t${event.meta.documentation.toString()}`);
-        }
-
-        // loop through each of the parameters, displaying the type and data
-        event.section &&  event.data.forEach((data, index) => {
-          console.log(`\t\t\t${types[index].type}: ${data.toString()}`);
-        });
-      });
-    });
+    const blockHash = '0xcc1f072b8e76e330a9eb00315ad0bc7022623ffc02954b47d316e98dbba7fd64';
+    const events = await apiV36.query.system.events.at(blockHash);
+    console.log('Events:', events.toJSON());
+    const totalEvents = events.length;
+    expect(totalEvents).toEqual(4);
+    expect(events[0].event.section).toEqual('system');
+    expect(events[0].event.method).toEqual('ExtrinsicSuccess');
+    expect(events[1].event.section).toEqual('genericAsset');
+    expect(events[1].event.method).toEqual('Transferred');
+    expect(events[2].event.section).toEqual('system');
+    expect(events[2].event.method).toEqual('ExtrinsicSuccess');
+    expect(events[3].event.section).toEqual('system');
+    expect(events[3].event.method).toEqual('ExtrinsicSuccess');
+    done();
   });
 
   it('Get correct validators', async () => {
