@@ -1,23 +1,29 @@
 version: '3'
 services:
+  # dev node with runtime v37 and client 1.2.0
   testnet_node_alice:
     container_name: testnet_node_alice
     image: cennznet/cennznet:1.2.0
     command:
-      - --chain=dev
-      - --base-path=/mnt/node
-      - --alice
-      - --validator
+      - --dev
+      - --tmp
+      - --no-mdns
       - --unsafe-ws-external
       - --unsafe-rpc-external
-      - --rpc-cors=all
     ports:
       - '9933:9933'
       - '9944:9944'
-      - '30333:30333'
-    networks:
-      - api_testnet
-
+  # dev node with runtime v36 and client 1.1.1
+  v36_node:
+    container_name: v36_node
+    image: cennznet/cennznet:1.1.1
+    command:
+      - --dev
+      - --no-mdns
+      - --unsafe-ws-external
+    ports:
+      - '9945:9944'
+  # a node environment to run api / e2e test scripts
   api_test:
     container_name: api_test
     environment:
@@ -25,10 +31,4 @@ services:
     build:
       context: .
       dockerfile: api_test.Dockerfile
-    networks:
-      - api_testnet
     command: ['tail', '-f', '/dev/null']
-networks:
-  api_testnet:
-    external:
-      name: apijs_default

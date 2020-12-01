@@ -21,10 +21,11 @@ import * as cennzx from './cennzx';
 import * as fees from './fees';
 import * as session from './session';
 import * as staking from './staking';
+import * as balances from './balances';
 
 export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = { attestation, cennzx, fees, staking, session };
+export const derive = { attestation, balances, cennzx, fees, staking, session };
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,

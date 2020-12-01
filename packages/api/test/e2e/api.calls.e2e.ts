@@ -40,7 +40,7 @@ describe('e2e api calls', () => {
     expect(block.header.hash.toString()).toEqual(blockHash.toString());
   });
 
-  it.skip('Query historical block from runtime version 36', async () => {
+  it('Query historical block from runtime version 36', async () => {
     const blockNumber = 3759962; // old Azalea block at runtime version 36
     const API_KEY = process.env.API_KEY;
 
@@ -60,14 +60,13 @@ describe('e2e api calls', () => {
     await apiV36.disconnect();
   });
 
-  it.skip('Subscribe system events for runtime version 36', async done => {
+  it('Subscribe system events for runtime version 36', async done => {
     const API_KEY = process.env.API_KEY;
 
     const provider = `wss://node-6711773975684325376.jm.onfinality.io/ws?apikey=${API_KEY}`;
     const apiV36 = await Api.create({ provider });
     const blockHash = '0xcc1f072b8e76e330a9eb00315ad0bc7022623ffc02954b47d316e98dbba7fd64';
     const events = await apiV36.query.system.events.at(blockHash);
-    console.log('Events:', events.toJSON());
     const totalEvents = events.length;
     expect(totalEvents).toEqual(4);
     expect(events[0].event.section).toEqual('system');
@@ -78,6 +77,7 @@ describe('e2e api calls', () => {
     expect(events[2].event.method).toEqual('ExtrinsicSuccess');
     expect(events[3].event.section).toEqual('system');
     expect(events[3].event.method).toEqual('ExtrinsicSuccess');
+    await apiV36.disconnect();
     done();
   });
 
