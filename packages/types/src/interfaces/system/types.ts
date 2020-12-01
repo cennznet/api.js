@@ -1,9 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import { Enum, Raw, Struct } from '@polkadot/types/codec';
-import { bool, u32, u64 } from '@polkadot/types/primitive';
-import { AccountId } from '@polkadot/types/interfaces/runtime';
+import type { Enum, Raw, Struct, bool, u32, u64 } from '@polkadot/types';
+import type { AccountId } from '@polkadot/types/interfaces/runtime';
 
 /** @name Address */
 export interface Address extends AccountId {}

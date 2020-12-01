@@ -1,6 +1,6 @@
 // Running this file with ~ yarn generate-slim-metadata 'wss://cennznet.unfrastructure.io/public/ws' will create slim metadata
 import { Api } from '../packages/api/src/Api';
-import MetadataVersioned from '@polkadot/metadata/Metadata/MetadataVersioned';
+import { MetadataVersioned } from "@polkadot/metadata/MetadataVersioned";
 
 // Metadata is slimmed as follows:
 // This function will remove all the documentation for each module in the chain.

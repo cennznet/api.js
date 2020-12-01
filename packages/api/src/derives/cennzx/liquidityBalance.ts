@@ -14,7 +14,7 @@
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AnyAddress, AnyAssetId, Balance, Hash } from '@cennznet/types';
-import { drr } from '@polkadot/rpc-core/rxjs';
+import { drr } from '@polkadot/rpc-core/util';
 import BN from 'bn.js';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

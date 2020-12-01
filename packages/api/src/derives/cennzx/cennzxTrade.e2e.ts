@@ -14,13 +14,12 @@
 
 import BN from 'bn.js';
 import { AssetInfo, AssetOptions } from '@cennznet/types';
-import testKeyring from '@polkadot/keyring/testing';
+import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../../jest/initApiPromise';
 
-const keyring = testKeyring({ type: 'sr25519' });
-
+const keyring = new Keyring({ type: 'sr25519' });
 describe('Cennzx Operations', () => {
   let api;
   let alice, bob, charlie, sudoKeypair, nonce;

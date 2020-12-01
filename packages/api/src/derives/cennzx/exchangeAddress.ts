@@ -14,7 +14,7 @@
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { AnyAssetId } from '@cennznet/types';
-import { drr } from '@polkadot/rpc-core/rxjs';
+import { drr } from '@polkadot/rpc-core/util';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { generateExchangeAddress } from './utils';

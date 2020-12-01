@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Compact, Struct, u8, Vec } from '@polkadot/types';
-import Text from '@polkadot/types/primitive/Text';
+import { Text } from '@polkadot/types/primitive/Text';
 import { Balance, BlockNumber, Call, ExtrinsicEra, Hash, RuntimeVersion } from '@polkadot/types/interfaces';
 import {
   Codec,

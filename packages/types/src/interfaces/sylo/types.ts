@@ -1,10 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import { ITuple } from '@polkadot/types/types';
-import { Enum, Struct, Vec } from '@polkadot/types/codec';
-import { Bytes, Text, u32 } from '@polkadot/types/primitive';
-import { AccountId, H256 } from '@polkadot/types/interfaces/runtime';
+import type { Bytes, Enum, Struct, Text, Vec, u32 } from '@polkadot/types';
+import type { ITuple } from '@polkadot/types/types';
+import type { AccountId, H256 } from '@polkadot/types/interfaces/runtime';
 
 /** @name AcceptPayload */
 export interface AcceptPayload extends Struct {
