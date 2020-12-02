@@ -21,14 +21,17 @@ services:
       - --dev
       - --no-mdns
       - --unsafe-ws-external
+      - --ws-port=9945
     ports:
-      - '9945:9944'
+      - '9945:9945'
   # a node environment to run api / e2e test scripts
-  api_test:
-    container_name: api_test
+  api-test-runner:
+    image: node:10.19.0-stretch
+    volumes:
+      - .:/code
     environment:
       - API_KEY=$API_KEY
-    build:
-      context: .
-      dockerfile: api_test.Dockerfile
-    command: ['tail', '-f', '/dev/null']
+    command: 
+      - 'sh'
+      - '-c'
+      - 'cd /code && yarn && yarn --dev && yarn test:e2e'

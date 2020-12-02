@@ -60,7 +60,7 @@ describe('Cennzx Operations', () => {
       // when the new asset is created it will have this ID.
       assetA = await api.query.genericAsset.nextAssetId();
       // Create new asset
-      const assetCreated = new Promise(async resolve => {
+      const assetCreated = new Promise<void>(async resolve => {
         await api.tx.sudo
           .sudo(createAssetTx1)
           .signAndSend(sudoKeypair, { nonce: nonce++ }, async ({ status }) => (status.isInBlock ? resolve() : null));
@@ -104,7 +104,7 @@ describe('Cennzx Operations', () => {
       // when the new asset is created it will have this ID.
       assetB = await api.query.genericAsset.nextAssetId();
       // Create new asset
-      const assetCreated = new Promise(async (resolve, reject) => {
+      const assetCreated = new Promise<void>(async (resolve, reject) => {
         await api.tx.sudo
           .sudo(createAssetTx2)
           .signAndSend(sudoKeypair, { nonce: nonce++ }, async ({ status }) => (status.isInBlock ? resolve() : null));

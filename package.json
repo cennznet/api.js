@@ -11,7 +11,6 @@
   "scripts": {
     "build": "polkadot-dev-build-ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
-    "test:integration": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
     "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
     "make-docs": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
@@ -37,7 +36,7 @@
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.1",
     "husky": "^1.1.1",
-    "jest": "^26.5.3",
+    "jest": "^26.6.3",
     "jest-environment-node": "^26.5.2",
     "lerna": "^3.13.1",
     "prettier": "^1.13.5",

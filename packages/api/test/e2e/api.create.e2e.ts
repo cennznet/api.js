@@ -53,8 +53,7 @@ describe('e2e api create', () => {
 
   it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
-    await expect(Api.create({provider: incorrectEndPoint})).rejects.toThrow(
-      'Connection fail');
+    await expect(Api.create({ provider: incorrectEndPoint })).rejects.toThrow('Connection fail');
     done();
   });
 

@@ -118,7 +118,7 @@ describe('e2e transactions', () => {
 
       // 1) Create the new fee asset
       // 2) Mint CPAY to assetOwner to fund subsequent pool liquidity and further transactions.
-      const assetCreated = new Promise(async (resolve, reject) => {
+      const assetCreated = new Promise<void>(async (resolve, reject) => {
         let nonce = await api.rpc.system.accountNextIndex(sudoAddress);
         await api.tx.sudo.sudo(createAssetTx).signAndSend(sudoKeypair, { nonce: nonce++ });
         await api.tx.genericAsset.mint(spendingAssetId, assetOwner.address, initialIssuance).signAndSend(

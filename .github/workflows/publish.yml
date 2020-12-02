@@ -1,0 +1,60 @@
+name: Release Pipeline
+
+on:
+  pull_request:
+    types:
+      - labeled
+    check_suite:
+      types:
+      - completed
+
+jobs:
+  merge-release-branch:
+    # only run if prechecks pass and the source branch is named 'prerelease/*'
+    if: ${{ startsWith(github.head_ref, 'prerelease/') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Automerge
+      uses: "pascalgn/automerge-action@v0.12.0"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MERGE_LABELS: automerge
+        MERGE_METHOD: squash
+  release-to-github:
+    needs:
+    - merge-release-branch
+    runs-on: ubuntu-latest
+    container: node:15.3-buster
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+       # ensure we checkout latest merge
+        git fetch origin && get reset --hard origin/develop
+    - name: find release version
+      id: find_version
+      run: |
+        echo ::set-output name=tag_name::=$(cat packages/api/package.json \
+        | grep version \
+        | head -1 \
+        | awk -F: '{ print $2 }' \
+        | sed 's/[",]//g')
+    - name: make release branch
+      uses: peterjgrainger/action-create-branch@v2.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        branch: "release/${{ steps.find_version.outputs.tag_name }}"
+    - name: package
+      run: |
+        yarn && yarn build
+        npm install cpx
+        npx lerna exec -- 'cpx package.json build/'
+        npx lerna exec -- 'cpx README.md build/'
+        npx lerna exec -- 'cpx ../../LICENSE build/'
+    - name: publish to npm
+      env:
+        NPM_KEY: ${{ secrets.NPM_KEY }}
+      run: |
+        echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
+        echo 'Publishing to npmjs.org.'
+        npx lerna exec -- 'cd build && npm publish --access public'
