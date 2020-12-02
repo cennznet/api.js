@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
+### Added:
+    -  Bump highlight.js from 9.18.1 to 9.18.5
+### Changed:
+    - Update polkadot dependencies to 2.7.1.
+### Fixed:
+    - Fixed 'chosing fee asset to pay tx' example.
+### Removed:
+    - Removed rpc folder from API as rpc definitions is available through types/interface/definition.
 ## [1.3.0](https://github.com/cennznet/api.js/compare/1.3.0-alpha.1.../1.3.0) (24/11/2020)
 ### Added:
     -  Bump semantic-release from 15.14.0 to 17.2.3
