@@ -58,11 +58,8 @@ workflows:
   version: 2
   run-build:
     jobs:
-      - build
       - publish:
-          requires:
-            - build
           filters:
             branches:
               only:
-                - /^[0-9]+[.][0-9]+[.][0-9](-[a-zA-Z].+)?$/
+                - /^release/[0-9]+[.][0-9]+[.][0-9](-[a-zA-Z].+)?$/
