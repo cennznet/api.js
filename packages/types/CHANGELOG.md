@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
+### Added:
+    - Added events types which are compatible with runtime version v36 i.e DispatchInfoTo36, WeightTo36, DispatchClassTo36
+### Changed:
+    - Use polkadot type generation script to generate types from metadata
+### Fixed:
+    - Fixed event decoding with rv36
 ## [1.3.0](https://github.com/cennznet/api.js/compare/1.3.0-alpha.1.../1.3.0) (24/11/2020)
 ### Fixed:
     - Fixed types for sylo module
