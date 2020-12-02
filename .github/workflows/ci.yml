@@ -38,6 +38,7 @@ jobs:
       matrix:
         test-suite:
           # grouped test runs
+          - "v36-compat"
           - "create|call|queries"
           - tx
           - attestation.*
@@ -61,11 +62,16 @@ jobs:
     - name: install
       if: steps.cache.outputs.cache-hit != 'true'
       run: yarn
-    - name: start test node
-      run: docker run --network=host -d cennznet/cennznet:1.2.0 --dev --tmp --ws-external --rpc-external
+    - name: start v36 test node
+      if: contains(${{ matrix['test-suite'] }}, 'v36')
+      run: |
+        docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
+    - name: start latest test node
+      run: |
+        docker run --network=host -d cennznet/cennznet:1.2.0 --dev --tmp --ws-external --rpc-external --no-mdns
     - name: test
       env:
-        TEST_TYPE: e2e
+        TEST_TYPE: integration
         API_KEY: ${{ secrets.API_KEY }}
         # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
