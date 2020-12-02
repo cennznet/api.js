@@ -6,7 +6,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [UNRELEASED]
 ## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
 ### Added:
-    -  Bump highlight.js from 9.18.1 to 9.18.5
+    - Backwards compatible with v36
+    - Bump highlight.js from 9.18.1 to 9.18.5
 ### Changed:
     - Update polkadot dependencies to 2.7.1.
 ### Fixed:
