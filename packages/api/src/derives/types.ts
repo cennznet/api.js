@@ -1,4 +1,13 @@
-import { AccountId, EraIndex, Exposure, Keys, StakingLedger, ValidatorPrefs, RewardDestination } from '@cennznet/types';
+import {
+  AccountId,
+  EraIndex,
+  Exposure,
+  Keys,
+  StakingLedger,
+  ValidatorPrefs,
+  RewardDestination,
+  Index,
+} from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 
 export interface DerivedStakingInfo {
@@ -23,4 +32,9 @@ export interface EstimateFeeParams {
   extrinsic: SubmittableExtrinsic<ApiTypes>;
   userFeeAssetId: string | number;
   maxPayment?: string;
+}
+
+export interface DeriveBalancesAccount {
+  accountId: AccountId;
+  accountNonce: Index;
 }
