@@ -18,8 +18,6 @@ import { DeriveBalancesAccount } from '@cennznet/api/derives/types';
 import { map, switchMap } from 'rxjs/operators';
 import { memo } from '@polkadot/api-derive/util';
 import { AccountId, Index } from '@cennznet/types';
-import { AccountData, AccountInfo } from '@polkadot/types/interfaces';
-import { ITuple } from '@polkadot/types/types';
 import { isFunction } from '@polkadot/util';
 
 function calcBalances(api: ApiInterfaceRx, [accountId, accountNonce]: [AccountId, Index]): DeriveBalancesAccount {

@@ -7,7 +7,6 @@ import {
   ValidatorPrefs,
   RewardDestination,
   Index,
-  Balance,
 } from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 
