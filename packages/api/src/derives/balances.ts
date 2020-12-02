@@ -34,14 +34,7 @@ function queryOldNonce(api: ApiInterfaceRx, accountId: AccountId): Observable<In
 }
 
 function queryCurrentNonce(api: ApiInterfaceRx, accountId: AccountId): Observable<Index> {
-  return api.query.system.account<AccountInfo | ITuple<[Index, AccountData]>>(accountId).pipe(
-    map(
-      (infoOrTuple): Index => {
-        const accountNonce = (infoOrTuple as AccountInfo).nonce || (infoOrTuple as [Index, AccountData])[0];
-        return accountNonce;
-      }
-    )
-  );
+  return api.rpc.system.accountNextIndex<Index>(accountId).pipe(map((accountNonce): Index => accountNonce));
 }
 
 export function account(
