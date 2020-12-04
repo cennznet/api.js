@@ -1,5 +1,4 @@
-# CENNZNet API
-
+# CENNZnet API ![ci status badge](https://github.com/cennznet/api.js/workflows/PR%20builder/badge.svg)
 The CENNZnet JavaScript API library for browsers and Node.js.
 
 ## Quick Start
