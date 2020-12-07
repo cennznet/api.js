@@ -9083,7 +9083,7 @@ highlight.js@^10.2.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.3.1.tgz#3ca6bf007377faae347e8135ff25900aac734b9a"
   integrity sha512-jeW8rdPdhshYKObedYg5XGbpVgb1/DT4AHvDFXhkU7UnGSIjy9kkJ7zHG7qplhFHMitTSzh5/iClKQk3Kb2RFQ==
 
-highlight.js@^9.0.0, highlight.js@^9.15.6, highlight.js@^9.17.1:
+highlight.js@^9.0.0, highlight.js@^9.17.1:
   version "9.18.5"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
   integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
@@ -11710,11 +11710,6 @@ marked@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
-
-marked@^0.6.1:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.3.tgz#79babad78af638ba4d522a9e715cdfdd2429e946"
-  integrity sha512-Fqa7eq+UaxfMriqzYLayfqAE40WN03jf+zHjT18/uXNuzjq3TY0XTbrAoPeqSJrAmPz11VuUA+kBPYOhHt9oOQ==
 
 marked@^0.8.0:
   version "0.8.2"
@@ -16026,13 +16021,6 @@ typedoc-plugin-markdown@^2.2.6:
   dependencies:
     fs-extra "^9.0.1"
     handlebars "^4.7.6"
-
-"typedoc-plugin-monorepo@https://github.com/ianhe8x/typedoc-plugin-monorepo":
-  version "0.3.0"
-  resolved "https://github.com/ianhe8x/typedoc-plugin-monorepo#6c2937609767ac4685f65c1352e585148bb69be0"
-  dependencies:
-    highlight.js "^9.15.6"
-    marked "^0.6.1"
 
 typedoc-plugin-no-inherit@^1.1.10:
   version "1.2.0"
