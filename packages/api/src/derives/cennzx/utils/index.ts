@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { createType, Tuple, u64, u32, AnyAssetId, AnyNumber, Registry } from '@cennznet/types';
-import { blake2AsU8a, stringToU8a, u8aConcat } from '@cennznet/util';
+import { stringToU8a, u8aConcat } from '@polkadot/util';
 import BN from 'bn.js';
+import { blake2AsU8a } from '@polkadot/util-crypto';
 
 /**
  * Generate the key of the balance storage
