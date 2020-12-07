@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     container: node:15.3-buster
     steps:
+    # checkout merged branch
     - uses: actions/checkout@v2
-    - run: |
-       # ensure we checkout latest merge
-        git fetch origin && get reset --hard origin/develop
+      with:
+        ref: develop
     - name: find release version
       id: find_version
       run: |
