@@ -44,7 +44,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        branch: "release/${{ steps.find_version.outputs.tag_name }}"
+        branch: "release/${{steps.find_version.outputs.tag_name}}"
     - name: package
       run: |
         yarn && yarn build
