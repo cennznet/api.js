@@ -1,9 +1,6 @@
 name: Release Pipeline
 
 on:
-  push:
-    brances:
-      - 'test/publish-pipeline'
   pull_request:
     types:
       - labeled
@@ -12,20 +9,20 @@ on:
       - completed
 
 jobs:
-  # merge-release-branch:
-  #   # only run if prechecks pass and the source branch is named 'prerelease/*'
-  #   if: ${{ startsWith(github.head_ref, 'prerelease/') }} && ${{ github.event.label.name == 'automerge' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Automerge
-  #     uses: "pascalgn/automerge-action@v0.12.0"
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       MERGE_LABELS: automerge
-  #       MERGE_METHOD: squash
+  merge-release-branch:
+    # only run if prechecks pass and the source branch is named 'prerelease/*'
+    if: ${{ startsWith(github.head_ref, 'prerelease/') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Automerge
+      uses: "pascalgn/automerge-action@v0.12.0"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MERGE_LABELS: automerge
+        MERGE_METHOD: squash
   release-to-github:
-    # needs:
-    # - merge-release-branch
+    needs:
+    - merge-release-branch
     runs-on: ubuntu-latest
     steps:
     # checkout merged branch
@@ -42,16 +39,15 @@ jobs:
         | grep version \
         | head -1 \
         | grep -E -o '[0-9|\.]+')
-    # - name: make release branch
-    #   uses: peterjgrainger/action-create-branch@v2.0.1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     branch: "release/${{ steps.find_version.outputs.tag_name }}"
+    - name: make release branch
+      uses: peterjgrainger/action-create-branch@v2.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        branch: "release/${{ steps.find_version.outputs.tag_name }}"
     - name: package
       run: |
         yarn && yarn build
-        ls -al
         npx lerna exec -- 'cp package.json build/'
         npx lerna exec -- 'cp README.md build/'
         npx lerna exec -- 'cp ../../LICENSE build/'
@@ -61,4 +57,4 @@ jobs:
       run: |
         echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
         echo 'Publishing to npmjs.org.'
-        npx lerna exec -- 'cd build && npm publish --dry-run --access public'
+        npx lerna exec -- 'cd build && npm publish --access public'
