@@ -24,12 +24,14 @@ jobs:
     needs:
     - merge-release-branch
     runs-on: ubuntu-latest
-    container: node:15.3-buster
     steps:
     # checkout merged branch
     - uses: actions/checkout@v2
       with:
         ref: develop
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '15.3'
     - name: find release version
       id: find_version
       run: |
@@ -46,10 +48,9 @@ jobs:
     - name: package
       run: |
         yarn && yarn build
-        npm install cpx
-        npx lerna exec -- 'cpx package.json build/'
-        npx lerna exec -- 'cpx README.md build/'
-        npx lerna exec -- 'cpx ../../LICENSE build/'
+        npx lerna exec -- 'cp package.json build/'
+        npx lerna exec -- 'cp README.md build/'
+        npx lerna exec -- 'cp ../../LICENSE build/'
     - name: publish to npm
       env:
         NPM_KEY: ${{ secrets.NPM_KEY }}
