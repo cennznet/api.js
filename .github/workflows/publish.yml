@@ -33,7 +33,7 @@ jobs:
     - name: find release version
       id: find_version
       run: |
-        echo ::set-output name=tag_name::=$(cat packages/api/package.json \
+        echo ::set-output name=tag_name::$(cat packages/api/package.json \
         | grep version \
         | head -1 \
         | awk -F: '{ print $2 }' \
