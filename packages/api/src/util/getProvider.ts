@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { assert } from '@cennznet/util';
 import { HttpProvider, WsProvider } from '@polkadot/rpc-provider';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { assert } from '@polkadot/util';
 
 const REGEX = /^(wss?|https?):\/\//;
 
