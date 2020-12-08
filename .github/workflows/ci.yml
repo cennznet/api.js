@@ -92,6 +92,8 @@ jobs:
     - run: pwd
     - run: ls
     - run: cd docs/examples/rx/10_subscription_response
+    - run: pwd
+    - run: ls
     - run: cat package.json
     - name: install
       run: yarn
