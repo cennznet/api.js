@@ -85,6 +85,8 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     steps:
+    - run: pwd
+    - run: ls
     - run: cd docs/examples/rx
     - name: install
       run: yarn
