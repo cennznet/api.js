@@ -87,8 +87,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
-        with:
-          node-version: '10.19'
+      with:
+        node-version: '10.19'
     - run: pwd
     - run: ls
     - run: cd docs/examples/rx/10_subscription_response
