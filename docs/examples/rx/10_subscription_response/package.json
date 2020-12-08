@@ -1,7 +1,7 @@
 {
   "name": "rx_10_subscription_response",
   "version": "0.2.0",
-  "description": "Example showing how to connect using a WebSocket",
+  "description": "Example showing how to subscribe using a WebSocket",
   "main": "index.js",
   "author": "Stefie",
   "license": "MIT",
