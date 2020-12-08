@@ -92,8 +92,9 @@ jobs:
     - run: pwd
     - run: ls
     - run: cd docs/examples/rx/10_subscription_response
+    - run: cat package.json
     - name: install
       run: yarn
     - name: run subscriber script at rpc-provider (2.7.1)
       run: |
-        node index.js
+        yarn start
