@@ -89,12 +89,11 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.19'
-      working-directory: ./docs/examples/rx/10_subscription_response
-    - run: pwd
-    - run: ls
-    - run: cat package.json
-    - name: install
-      run: yarn
     - name: run subscriber script at rpc-provider (2.7.1)
+      working-directory: ./docs/examples/rx/10_subscription_response
       run: |
+        pwd
+        ls
+        cat package.json
+        yarn
         yarn start
