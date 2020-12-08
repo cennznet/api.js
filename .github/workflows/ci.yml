@@ -80,3 +80,6 @@ jobs:
         NODE_ENV: disable-logging
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand
+    - name: run subscriber script at rpc-provider (2.7.1)
+      run: |
+        node docs/examples/rx/10_subscription_response/index.js
