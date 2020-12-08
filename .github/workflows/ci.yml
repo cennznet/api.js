@@ -86,11 +86,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+        with:
+          node-version: '10.19'
     - run: pwd
     - run: ls
-    - run: cd docs/examples/rx
+    - run: cd docs/examples/rx/10_subscription_response
     - name: install
       run: yarn
     - name: run subscriber script at rpc-provider (2.7.1)
       run: |
-        node docs/examples/rx/10_subscription_response/index.js
+        node index.js
