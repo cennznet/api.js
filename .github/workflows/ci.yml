@@ -89,9 +89,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.19'
-    - run: pwd
-    - run: ls
-    - run: cd docs/examples/rx/10_subscription_response
+      working-directory: ./docs/examples/rx/10_subscription_response
     - run: pwd
     - run: ls
     - run: cat package.json
