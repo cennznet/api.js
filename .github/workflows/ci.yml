@@ -91,9 +91,8 @@ jobs:
         node-version: '10.19'
     - name: run subscriber script at rpc-provider (2.7.1)
       working-directory: ./docs/examples/rx/10_subscription_response
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
       run: |
-        pwd
-        ls
-        cat package.json
         yarn
         yarn start
