@@ -48,6 +48,8 @@ jobs:
           - cennzx.*
           - staking
           - sylo
+          - rpc.decodeResponse
+          - send
     steps:
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
@@ -80,3 +82,19 @@ jobs:
         NODE_ENV: disable-logging
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand
+  subscribe:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '15.3'
+    - name: start latest test node
+      run: |
+        docker run --network=host -d cennznet/cennznet:1.2.0 --dev --tmp --ws-external --rpc-external --no-mdns
+    - name: run subscriber script at polkadot/rpc-provider version (2.7.1)
+      working-directory: ./test
+      run: |
+        yarn
+        yarn start
