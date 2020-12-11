@@ -2,10 +2,9 @@ const {zip} = require('rxjs');
 const {ApiRx} = require('@cennznet/api');
 const {Keyring} = require('@polkadot/keyring');
 const assert = require('assert').strict;
-// This test is pinned at "@polkadot/rpc-provider": "2.7.1" to see how subscriber works
+// check the oldest supported @polkadot/rpc-provider@2.7.1 is compatible
+// we don't control the RPC details from @cennznet/api but require that they don't change to provide LTS for users
 async function main() {
-    // Initialise the provider to connect to the Azalea node
-    const API_KEY = process.env.API_KEY;
 
     // Create the API and wait until ready
     const api = await ApiRx.create().toPromise();
