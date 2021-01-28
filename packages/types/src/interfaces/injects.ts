@@ -15,7 +15,13 @@
 // CENNZnet types for injection into a polkadot API session
 
 import { OverrideBundleType } from '@polkadot/types/types/registry';
-import { CENNZnetExtrinsicSignatureV1, CENNZnetExtrinsicSignatureV0, SignerPayload } from './extrinsic';
+import {
+  CENNZnetExtrinsicSignatureV1,
+  CENNZnetExtrinsicSignatureV0,
+  SignerPayload,
+  CENNZnetExtrinsicPayloadV1,
+  CENNZnetExtrinsicPayloadV0
+} from './extrinsic';
 import * as definitions from './definitions';
 
 const _types = {
@@ -39,12 +45,14 @@ export const typesBundle: OverrideBundleType = {
             DispatchClass: 'DispatchClassTo36',
             DispatchInfo: 'DispatchInfoTo36',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
+            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0
           },
         },
         {
           minmax: [37, undefined],
           types: {
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
+            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1
           },
         },
       ],

@@ -16,6 +16,7 @@ import { Compact, Struct, u8, Vec } from '@polkadot/types';
 import { Text } from '@polkadot/types/primitive/Text';
 import { Balance, BlockNumber, Call, ExtrinsicEra, Hash, RuntimeVersion } from '@polkadot/types/interfaces';
 import {
+  AnyJson,
   Codec,
   Constructor,
   ISignerPayload,
@@ -26,9 +27,10 @@ import { u8aToHex } from '@polkadot/util';
 
 import { Address, Index } from '../types';
 import { ChargeTransactionPayment } from '../transactionPayment';
+import {defaultExtensions, findUnknownExtensions} from "./signedExtensions";
 
 export interface SignerPayloadJSON extends SignerPayloadJSONBase {
-  transactionPayment?: string;
+  transactionPayment?: Record<string, AnyJson>;
 }
 
 export interface SignerPayloadType extends Codec {
@@ -81,12 +83,25 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       method,
       nonce,
       runtimeVersion: { specVersion, transactionVersion },
-      signedExtensions,
+      transactionPayment,
       version,
+      signedExtensions,
+      tip
     } = this;
 
+    if (signedExtensions) {
+      const unknown = findUnknownExtensions(signedExtensions.map(e => e.toString()));
+
+      if (unknown.length) {
+        console.warn(`Unknown signed extensions ${unknown.join(', ')} found, treating them as no-effect`);
+      }
+    }
+
+    if (tip) {
+      console.warn(`Unknown tip found, treating them as no-effect`);
+    }
+
     return {
-      signedExtensions: signedExtensions.map(e => e.toString()),
       address: address.toString(),
       blockHash: blockHash.toHex(),
       blockNumber: blockNumber.toHex(),
@@ -98,7 +113,9 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       // [[tip]] is contained within [[transactionPayment]]
       tip: null,
       transactionVersion: transactionVersion.toHex(),
+      transactionPayment: transactionPayment.toJSON(),
       version: version.toNumber(),
+      signedExtensions: defaultExtensions
     };
   }
 

@@ -51,6 +51,54 @@ describe('e2e api create', () => {
     expect(hash).toBeDefined();
   });
 
+  it('Creating extrinsic payload via registry with no transaction payment', async () => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    api = await Api.create({provider});
+    const payload = {
+      address: "5FWnYjJEKK9Kxi34XZBAT1WYNKuRw6mmwD9DsonBu3eaBUp3",
+      blockHash: "0x6614a99d9046da1f9588c5766f3eb5d5bf561081cd3a7990fc1e3e269f35367e",
+      blockNumber: "0x00000a3b",
+      era: "0xb603",
+      genesisHash: "0xb492b8652211d9982a7475d1a4dd0c4790d8ba1a55f69515e4270ed94528e5a2",
+      method: "0x040105fabe5ddb1579b72e84524fc29e78609e3caf42e85aa118ebfe0b0ad404b5bdd25f419c",
+      nonce: "0x0000000000000000",
+      signedExtensions: ["CheckSpecVersion", "CheckTxVersion", "CheckGenesis", "CheckMortality", "CheckNonce", "CheckWeight", "ChargeTransactionPayment"],
+      specVersion: "0x00000026",
+      tip: null,
+      transactionPayment: {tip: 0, feeExchange: null},
+      transactionVersion: "0x00000005",
+      version: 4
+    };
+    const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
+    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
+  });
+
+  it('Creating extrinsic payload via registry with transaction payment option', async () => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    api = await Api.create({provider});
+    const maxPayment = 50_000_000_000;
+    const assetId = api.registry.createType('AssetId', 16000);
+    const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
+    const payload = {
+      address: "5FWnYjJEKK9Kxi34XZBAT1WYNKuRw6mmwD9DsonBu3eaBUp3",
+      blockHash: "0x6614a99d9046da1f9588c5766f3eb5d5bf561081cd3a7990fc1e3e269f35367e",
+      blockNumber: "0x00000a3b",
+      era: "0xb603",
+      genesisHash: "0xb492b8652211d9982a7475d1a4dd0c4790d8ba1a55f69515e4270ed94528e5a2",
+      method: "0x040105fabe5ddb1579b72e84524fc29e78609e3caf42e85aa118ebfe0b0ad404b5bdd25f419c",
+      nonce: "0x0000000000000000",
+      signedExtensions: ["CheckSpecVersion", "CheckTxVersion", "CheckGenesis", "CheckMortality", "CheckNonce", "CheckWeight", "ChargeTransactionPayment"],
+      specVersion: "0x00000026",
+      tip: null,
+      transactionPayment: {tip: 0, feeExchange},
+      transactionVersion: "0x00000005",
+      version: 4
+    };
+    const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
+    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+  });
+
+
   it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';
     await expect(Api.create({ provider: incorrectEndPoint })).rejects.toThrow('Connection fail');
