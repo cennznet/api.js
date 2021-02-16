@@ -19,7 +19,7 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
-  testTimeout: 30000,
+  testTimeout: 60000,
   globals: {
     // Enable doughnut wasm package while running integration tests
     DOUGHNUT_SUPPORT: true

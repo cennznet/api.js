@@ -13,19 +13,17 @@ async function main() {
 
     // Add Alice to our keyring (with the known seed for the account)
     const alice = keyring.addFromUri('//Alice');
+    const bob = keyring.addFromUri('//Bob');
 
-    const deviceId = 940896872;
-    api.tx.syloE2Ee.registerDevice(deviceId, []).signAndSend(alice)
+    api.tx.genericAsset.transfer(16001, bob.address, 1000).signAndSend(alice)
         .subscribe(({status}) => {
             if (status.isFinalized) {
                 zip(
                     api.query.genericAsset.stakingAssetId(),
                     api.query.genericAsset.spendingAssetId(),
-                    api.query.syloDevice.devices(alice.address)
                 ).subscribe(([stakingAssetId, spendingAssetId, devices]) => {
                     assert.deepEqual(stakingAssetId.toString(), "16000");
                     assert.deepEqual(spendingAssetId.toString(), "16001");
-                    assert.deepEqual(devices[0].toNumber(), deviceId);
                     process.exit()
                 });
             }

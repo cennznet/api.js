@@ -95,7 +95,7 @@ describe('runtime v36 compatibility', () => {
             expect(api.tx).toBeDefined();
             expect(api.derive).toBeDefined();
         });
-    
+
         it('Queries correct balance', async () => {
             const nextAssetId = await api.query.genericAsset.nextAssetId();
             const blockHash = (await api.rpc.chain.getBlockHash()) as Hash;
