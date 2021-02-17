@@ -3,10 +3,10 @@
 export default {
   rpc: {
     accruedPayout: {
-      description: 'Retrieves the currently accrued reward for the specified payee (validator or nominator)',
+      description: 'Retrieves the currently accrued reward for the specified stash',
       params: [
         {
-          payee: 'payee',
+          stash: 'stash',
           type: 'AccountId',
         },
       ],
