@@ -69,9 +69,8 @@ describe('Staking Operations', () => {
     await api.tx.staking.bond(controller.address, bond, 'controller').signAndSend(stash, async ({ status }) => {
       if (status.isInBlock) {
         expect((await api.query.staking.bonded(stash.address)).toString()).toEqual(controller.address);
-        const payee = await api.query.staking.payee(stash.address);
-        expect(payee.isAccount).toBeTruthy();
-        expect(payee.asAccount.toString()).toEqual(controller.address);
+        const payee = await api.query.rewards.payee(stash.address);
+        expect(payee.toString()).toEqual(controller.address);
         const ledger = ((await api.query.staking.ledger(controller.address)) as Option<StakingLedger>).unwrap();
         expect(ledger.active.toString()).toEqual(bond);
         expect(ledger.total.toString()).toEqual(bond);
@@ -171,12 +170,13 @@ describe('Staking Operations', () => {
 
   test('setPayee changes reward destination', async done => {
     // Payee account should be set to controller after prior bond() test.
-    const payee = await api.query.staking.payee(stash.address);
-    expect(payee.isAccount).toBeTruthy();
-    expect(payee.asAccount.toString()).toEqual(controller.address);
+    const payee = await api.query.rewards.payee(stash.address);
+    expect(payee.toString()).toEqual(controller.address);
 
     // Subscribe to payee changes
-    await api.query.staking.payee(stash.address, (payee: RewardDestination) => payee.isStash ? done() : null);
+    await api.query.rewards.payee(stash.address, (payee) => {
+      payee.toString() === stash.address ? done() : null
+    });
 
     await api.tx.staking.setPayee('stash').signAndSend(controller);
   });
@@ -186,8 +186,8 @@ describe('Staking Operations', () => {
     // Payee account set to any account
     await api.tx.staking.setPayee({ account: rewardDestinationAddress }).signAndSend(controller);
     // Subscribe to payee changes
-    await api.query.staking.payee(stash.address, (payee: RewardDestination) => {
-      (payee.isAccount && payee.asAccount.toString() === rewardDestinationAddress) ? done() : null
+    await api.query.rewards.payee(stash.address, (payee: RewardDestination) => {
+      (payee.toString() === rewardDestinationAddress) ? done() : null
     });
   });
 
@@ -204,6 +204,13 @@ describe('Staking Operations', () => {
     });
 
     await api.tx.staking.setController(newController.address).signAndSend(stash);
+  });
+
+  test('Calculate accruedPayout via RPC', async done => {
+    const aliceStash = keyring.addFromUri('//Alice//stash');
+    const accruedPayout = await api.rpc.staking.accruedPayout(aliceStash.address);
+    expect(accruedPayout.toNumber()).toBeGreaterThan(0);
+    done();
   });
 
 });

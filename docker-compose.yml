@@ -3,7 +3,7 @@ services:
   # dev node with runtime v37 and client 1.2.0
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:1.2.0
+    image: cennznet/cennznet:develop-4ff509
     command:
       - --dev
       - --tmp
@@ -31,7 +31,7 @@ services:
       - .:/code
     environment:
       - API_KEY=$API_KEY
-    command: 
+    command:
       - 'sh'
       - '-c'
       - 'cd /code && yarn && yarn --dev && yarn test:e2e'

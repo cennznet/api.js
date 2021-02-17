@@ -45,7 +45,7 @@ describe('CENNZX RPC calls testing', () => {
         await api.tx.cennzx
           .addLiquidity(CENNZ, minLiquidity, amount, coreAmount)
           .signAndSend(alice, async ({events, status}) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               for (const {event} of events) {
                 if (event.method === 'AddLiquidity') {
                   let amount = 20000;

@@ -48,7 +48,7 @@ describe('Cennzx Operations', () => {
     it("Add liquidity for tradeAsset 'A' to the pool", async done => {
       // Create a new Asset 'A' and add liquidity to it
       // Amount of test asset - 'A' to create
-      const initialIssuance = 900_000_000_000;
+      const initialIssuance = 900_000_000;
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
@@ -94,7 +94,7 @@ describe('Cennzx Operations', () => {
 
     it("Add liquidity for tradeAsset 'B' to the pool", async done => {
       // Amount of test asset - 'B' to create
-      const initialIssuance = 900_000_000_00;
+      const initialIssuance = 900_000_000;
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };

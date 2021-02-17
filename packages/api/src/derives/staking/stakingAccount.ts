@@ -30,7 +30,7 @@ function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId):
   return api.queryMulti([
     [api.query.staking.bonded, stashId],
     [api.query.staking.nominators, stashId],
-    [api.query.staking.payee, stashId],
+    [api.query.rewards.payee, stashId],
     [api.query.staking.stakers, stashId],
     [api.query.staking.validators, stashId],
   ]) as Observable<MultiResultV2>;

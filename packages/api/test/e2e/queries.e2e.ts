@@ -120,7 +120,7 @@ describe('e2e queries', () => {
       expect(stakingAccount.accountId.toString()).toBe(stashId);
       expect(stakingAccount.controllerId.toString()).toBe(alice.address);
       expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
-      expect(stakingAccount.rewardDestination.isStash).toBeTruthy();
+      expect(stakingAccount.rewardDestination.toString()).toBe(stashId);
       expect(stakingAccount.stakers).toBeDefined();
       expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
       expect(stakingAccount.validatorPrefs[0]).toBe('commission');
