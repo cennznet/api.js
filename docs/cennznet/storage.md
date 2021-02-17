@@ -48,8 +48,6 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[syloInbox](#syloinbox)**
 
-- **[syloPayment](#sylopayment)**
-
 - **[syloResponse](#syloresponse)**
 
 - **[syloVault](#sylovault)**
@@ -384,13 +382,41 @@ ___
 
 ## rewards
  
+### baseInflationRate(): `FixedU128`
+- **interface**: `api.query.rewards.baseInflationRate`
+- **summary**:   Inflation rate % to apply on reward payouts 
+ 
+### currentEraRewardPoints(): `EraRewardPoints`
+- **interface**: `api.query.rewards.currentEraRewardPoints`
+- **summary**:   Authorship rewards for the current active era. 
+ 
 ### developmentFundTake(): `Perbill`
 - **interface**: `api.query.rewards.developmentFundTake`
 - **summary**:   Development fund % take for reward payouts, parts-per-billion 
  
-### inflationRate(): `FixedI128`
-- **interface**: `api.query.rewards.inflationRate`
-- **summary**:   Inflation rate % to apply on reward payouts, it may be negative 
+### fiscalEraEpoch(): `EraIndex`
+- **interface**: `api.query.rewards.fiscalEraEpoch`
+- **summary**:   The staking era index that specifies the start of a fiscal era based on which we can calculate the start of other fiscal eras. This is either 0 or forced by SUDO to another value. Have a look at force_new_fiscal_era for more info. 
+ 
+### forceFiscalEra(): `bool`
+- **interface**: `api.query.rewards.forceFiscalEra`
+- **summary**:   When true the next staking era will become the start of a new fiscal era. 
+ 
+### payee(`AccountId`): `AccountId`
+- **interface**: `api.query.rewards.payee`
+- **summary**:   Where the reward payment should be made. Keyed by stash. 
+ 
+### payouts(): `VecDeque`
+- **interface**: `api.query.rewards.payouts`
+- **summary**:   Hold the latest not processed payouts and the era when each is accrued 
+ 
+### queuedEraRewards(): `VecDeque`
+- **interface**: `api.query.rewards.queuedEraRewards`
+- **summary**:   Remaining reward amount of the eras which are not fully processed yet 
+ 
+### targetInflationPerStakingEra(): `BalanceOf`
+- **interface**: `api.query.rewards.targetInflationPerStakingEra`
+- **summary**:   The amount of new reward tokens that will be minted on every staking era in order to approximate the inflation rate. We calculate the target inflation based on T::CurrencyToReward::TotalIssuance() at the beginning of a fiscal era. 
  
 ### transactionFeePot(): `BalanceOf`
 - **interface**: `api.query.rewards.transactionFeePot`
@@ -459,10 +485,6 @@ ___
 
 ## staking
  
-### blockBonding(): `bool`
-- **interface**: `api.query.staking.blockBonding`
-- **summary**:   Used to toggle the bonding functionality off/on 
- 
 ### bonded(`AccountId`): `Option<AccountId>`
 - **interface**: `api.query.staking.bonded`
 - **summary**:   Map from all locked "stash" accounts to the controller account. 
@@ -482,10 +504,6 @@ ___
 ### currentEra(): `EraIndex`
 - **interface**: `api.query.staking.currentEra`
 - **summary**:   The current era index. 
- 
-### currentEraPointsEarned(): `EraPoints`
-- **interface**: `api.query.staking.currentEraPointsEarned`
-- **summary**:   Rewards for the current era. Using indices of current elected set. 
  
 ### currentEraStart(): `MomentOf`
 - **interface**: `api.query.staking.currentEraStart`
@@ -519,6 +537,10 @@ ___
 - **interface**: `api.query.staking.minimumValidatorCount`
 - **summary**:   Minimum number of staking participants before emergency conditions are imposed. 
  
+### nextEraBlockNumber(): `BlockNumber`
+- **interface**: `api.query.staking.nextEraBlockNumber`
+- **summary**:   The starting block number of the next era. 
+ 
 ### nominators(`AccountId`): `Option<Nominations>`
 - **interface**: `api.query.staking.nominators`
 - **summary**:   The map from nominator stash key to the set of stash keys of all validators to nominate. 
@@ -528,10 +550,6 @@ ___
 ### nominatorSlashInEra(`EraIndex, AccountId`): `Option<BalanceOf>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:   All slashing events on nominators, mapped by era to the highest slash value of the era. 
- 
-### payee(`AccountId`): `RewardDestination`
-- **interface**: `api.query.staking.payee`
-- **summary**:   Where the reward payment should be made. Keyed by stash. 
  
 ### slashingSpans(`AccountId`): `Option<SlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
@@ -561,7 +579,9 @@ ___
  
 ### storageVersion(): `u32`
 - **interface**: `api.query.staking.storageVersion`
-- **summary**:   The version of storage for upgrade. 
+- **summary**:   True if network has been upgraded to this version. Storage version of the pallet. 
+
+  This is set to v1 for new networks. 
  
 ### unappliedSlashes(`EraIndex`): `Vec<UnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
@@ -630,15 +650,6 @@ ___
  
 ### values(`AccountId`): `Vec<(MessageId,Message)>`
 - **interface**: `api.query.syloInbox.values`
-
-___
-
-
-## syloPayment
- 
-### authorisedPayers(): `Vec<AccountId>`
-- **interface**: `api.query.syloPayment.authorisedPayers`
-- **summary**:   Accounts which have authority to pay for Sylo fees on behalf of the users 
 
 ___
 

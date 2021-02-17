@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+## [1.3.3-alpha.1](https://github.com/cennznet/api.js/compare/release/1.3.2...prerelease/1.3.3-alpha.1) (18/02/2021)
+### Added:
+    - Added RPC calls for staking(accruedPayout) and grandpa(restartVoter)
+    - Bump ini from 1.3.5 to 1.3.7
+### Removed:
+    - Sylo extrinsics are removed in v38 runtime    
 ## [1.3.2](https://github.com/cennznet/api.js/compare/1.3.1.../1.3.2) (07/12/2020)
 ### Added:
     - Adds auto scheduled job to test upstream @polkadot packages for breaking changes

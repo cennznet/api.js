@@ -36,18 +36,6 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[sudo](#sudo)**
 
-- **[syloE2Ee](#syloe2ee)**
-
-- **[syloGroups](#sylogroups)**
-
-- **[syloInbox](#syloinbox)**
-
-- **[syloPayment](#sylopayment)**
-
-- **[syloResponse](#syloresponse)**
-
-- **[syloVault](#sylovault)**
-
 - **[system](#system)**
 
 - **[timestamp](#timestamp)**
@@ -486,13 +474,17 @@ ___
 
 ## rewards
  
+### forceNewFiscalEra()
+- **interface**: `api.tx.rewards.forceNewFiscalEra`
+- **summary**:   Force a new fiscal era to start as soon as the next staking era. 
+ 
 ### setDevelopmentFundTake(new_take_percent: `u32`)
 - **interface**: `api.tx.rewards.setDevelopmentFundTake`
 - **summary**:   Set the development fund take %, capped at 100%. 
  
-### setInflationRate(numerator: `i64`, denominator: `i64`)
+### setInflationRate(numerator: `u64`, denominator: `u64`)
 - **interface**: `api.tx.rewards.setInflationRate`
-- **summary**:   Set the per payout inflation rate (`numerator` / `denominator`) (it may be negative) 
+- **summary**:   Set the per payout inflation rate (`numerator` / `denominator`) (it may be negative) Please be advised that a newly set inflation rate would only affect the next fiscal year. 
 
 ___
 
@@ -749,134 +741,6 @@ ___
   The dispatch origin for this call must be _Signed_. 
 
    
-
-___
-
-
-## syloE2Ee
- 
-### registerDevice(device_id: `DeviceId`, pkbs: `Vec<PreKeyBundle>`)
-- **interface**: `api.tx.syloE2Ee.registerDevice`
-- **summary**:   Register a new device for a user 
-
-  weight: O(g) where g is the number of groups the user is in Multiple reads and writes depending on the user states. 
- 
-### replenishPkbs(device_id: `DeviceId`, pkbs: `Vec<PreKeyBundle>`)
-- **interface**: `api.tx.syloE2Ee.replenishPkbs`
-- **summary**:   Add a new PreKey bundle for a given user's device. 
-
-  weight: O(1) 1 write. 
- 
-### withdrawPkbs(request_id: `Hash`, wanted_pkbs: `Vec<(AccountId,DeviceId)>`)
-- **interface**: `api.tx.syloE2Ee.withdrawPkbs`
-- **summary**:   Retrieve and remove the Prekey bundles of a given list of user accounts and devices 
-
-  weight: O(n * k) where n is the size of input `wanted_pkbs`, and k is the number existing PKBS in the storage Number of read and write scaled by size of input 
-
-___
-
-
-## syloGroups
- 
-### acceptInvite(group_id: `Hash`, payload: `AcceptPayload`, invite_key: `H256`, inbox_id: `u32`, signature: `Signature`, group_data: `(VaultKey,VaultValue)`)
-- **interface**: `api.tx.syloGroups.acceptInvite`
-- **summary**:   Accept the invitation and add a user to the group 
-
-  weight: O(n + m) where n is the number of groups, and m is the number of members in the group Limited number of read and writes to multiple tables 
- 
-### createGroup(group_id: `Hash`, meta: `Meta`, invites: `Vec<Invite>`, group_data: `(VaultKey,VaultValue)`)
-- **interface**: `api.tx.syloGroups.createGroup`
-- **summary**:   Creates a group with all invitees, set the caller as admin 
-
-  weight: O(1). Note: number of member invitee is capped at 15, so equivalent to O(1). Limited number of storage writes. 
- 
-### createInvites(group_id: `Hash`, invites: `Vec<Invite>`)
-- **interface**: `api.tx.syloGroups.createInvites`
-- **summary**:   Send invites out to all the invitee 
-
-  weight: O(n) where n is the number of invitee Limited number of read and writes 
- 
-### leaveGroup(group_id: `Hash`, group_key: `Option<VaultKey>`)
-- **interface**: `api.tx.syloGroups.leaveGroup`
-- **summary**:   Leaves a group. If no one is left at the group, delete the group 
-
-  weight: O(m) where m is the number of members in that group Limited number of read and maximum of 2 storage writes. 
- 
-### revokeInvites(group_id: `Hash`, invite_keys: `Vec<H256>`)
-- **interface**: `api.tx.syloGroups.revokeInvites`
-- **summary**:   Revoke an invitation 
-
-  weight: O(n) where n the number of existing invitation Limited number of read and writes 
- 
-### updateMember(group_id: `Hash`, meta: `Meta`)
-- **interface**: `api.tx.syloGroups.updateMember`
-- **summary**:   Update the metadata for the caller in a group 
-
-  weight: O(m) where m is the number of members in that group Limited number of read and 1 write. 
- 
-### upsertGroupMeta(group_id: `Hash`, meta: `Meta`)
-- **interface**: `api.tx.syloGroups.upsertGroupMeta`
-- **summary**:   Merge/update/remove metadata for the group 
-
-  weight: O(n) where n is the number of metadata key in the input Number of read and writes depending on input data 
-
-___
-
-
-## syloInbox
- 
-### addValue(peer_id: `AccountId`, value: `Message`)
-- **interface**: `api.tx.syloInbox.addValue`
-- **summary**:   Add a new value into storage 
-
-  weight: O(1) 1 write 
- 
-### deleteValues(value_ids: `Vec<MessageId>`)
-- **interface**: `api.tx.syloInbox.deleteValues`
-- **summary**:   Delete a value from storage 
-
-  weight: O(n) where n is number of values in the storage 1 write 
-
-___
-
-
-## syloPayment
- 
-### revokePaymentAccountSelf()
-- **interface**: `api.tx.syloPayment.revokePaymentAccountSelf`
-- **summary**:   If the origin of the call is an authorised payer, revoke its authorisation. NOTE: This may halt all Sylo operations if there are no other payers. 
- 
-### setPaymentAccount(account_id: `AccountId`)
-- **interface**: `api.tx.syloPayment.setPaymentAccount`
-- **summary**:   Add `account_id` as an authorized Sylo fee payer. Only Sudo can set a payment account. 
-
-___
-
-
-## syloResponse
- 
-### removeResponse(request_id: `Hash`)
-- **interface**: `api.tx.syloResponse.removeResponse`
-- **summary**:   Removes a response from a request. 
-
-  weight: O(1) 1 write 
-
-___
-
-
-## syloVault
- 
-### deleteValues(keys: `Vec<VaultKey>`)
-- **interface**: `api.tx.syloVault.deleteValues`
-- **summary**:   Removes a vault key 
-
-  weight: O(1) 1 write 
- 
-### upsertValue(key: `VaultKey`, value: `VaultValue`)
-- **interface**: `api.tx.syloVault.upsertValue`
-- **summary**:   Insert or update a vault Key 
-
-  weight: O(1) 1 write 
 
 ___
 

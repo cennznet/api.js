@@ -183,8 +183,14 @@ ___
 
 ## rewards
  
-### RewardPayout(`Balance`, `Balance`)
-- **summary**:   A reward payout happened (payout, remainder) 
+### AllRewardsPaidOut(`EraIndex`, `Balance`)
+- **summary**:   All the rewards of the specified era is now processed with an unallocated `remainder` that went to treasury 
+ 
+### NewFiscalEra(`Balance`)
+- **summary**:   A fiscal era has begun with the parameter (target_inflation_per_staking_era) 
+ 
+### RewardPayout(`AccountId`, `Balance`, `EraIndex`)
+- **summary**:   A reward payout happened (nominator/validator account id, amount, era in which the reward was accrued) 
 
 ___
 
