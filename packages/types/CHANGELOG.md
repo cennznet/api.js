@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [1.3.3-alpha.1](https://github.com/cennznet/api.js/compare/release/1.3.2...prerelease/1.3.3-alpha.1) (18/02/2021)
+### Added:
+    - Added RPC calls for staking(accruedPayout) and grandpa(restartVoter)
 ## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
 ### Added:
     - Added events types which are compatible with runtime version v36 i.e DispatchInfoTo36, WeightTo36, DispatchClassTo36

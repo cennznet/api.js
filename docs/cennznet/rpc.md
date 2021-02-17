@@ -28,6 +28,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[rpc](#rpc)**
 
+- **[staking](#staking)**
+
 - **[state](#state)**
 
 - **[syncstate](#syncstate)**
@@ -228,20 +230,10 @@ ___
 
 ## grandpa
  
-### proveFinality(begin: `BlockHash`, end: `BlockHash`, authoritiesSetId?: `u64`): `Option<EncodedFinalityProofs>`
-- **interface**: `api.rpc.grandpa.proveFinality`
-- **jsonrpc**: `grandpa_proveFinality`
-- **summary**: Prove finality for the range (begin; end] hash.
- 
-### roundState(): `ReportedRoundStates`
-- **interface**: `api.rpc.grandpa.roundState`
-- **jsonrpc**: `grandpa_roundState`
-- **summary**: Returns the state of the current best round state as well as the ongoing background rounds
- 
-### subscribeJustifications(): `JustificationNotification`
-- **interface**: `api.rpc.grandpa.subscribeJustifications`
-- **jsonrpc**: `grandpa_subscribeJustifications`
-- **summary**: Subscribes to grandpa justifications
+### restartVoter(): `any`
+- **interface**: `api.rpc.grandpa.restartVoter`
+- **jsonrpc**: `grandpa_restartVoter`
+- **summary**: Restarts the grandpa voter future
 
 ___
 
@@ -277,6 +269,16 @@ ___
 - **interface**: `api.rpc.rpc.methods`
 - **jsonrpc**: `rpc_methods`
 - **summary**: Retrieves the list of RPC methods that are exposed by the node
+
+___
+
+
+## staking
+ 
+### accruedPayout(undefined: `AccountId`): `u64`
+- **interface**: `api.rpc.staking.accruedPayout`
+- **jsonrpc**: `staking_accruedPayout`
+- **summary**: Retrieves the currently accrued reward for the specified stash
 
 ___
 

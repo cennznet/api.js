@@ -30,12 +30,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[sudo](#sudo)**
 
-- **[syloDevice](#sylodevice)**
-
-- **[syloInbox](#syloinbox)**
-
-- **[syloVault](#sylovault)**
-
 - **[system](#system)**
 
 - **[treasury](#treasury)**
@@ -345,8 +339,6 @@ ___
 ### AlreadyPaired
 - **summary**:   Controller is already paired. 
  
-### BondingNotEnabled
- 
 ### DuplicateNominee
 - **summary**:   Cannot nominate the same account multiple times 
  
@@ -384,48 +376,6 @@ ___
  
 ### RequireSudo
 - **summary**:   Sender must be the Sudo account 
-
-___
-
-
-## syloDevice
- 
-### DeviceIdExists
-- **summary**:   Device is already registered to user (device_id is already in use) 
- 
-### MaxDeviceLimitReached
-- **summary**:   A user can't have more than MAX_DEVICES registered devices 
- 
-### UserIdNotRegistered
-- **summary**:   There are no devices registered for user (missing user_id in Devices) 
-
-___
-
-
-## syloInbox
- 
-### MaxDeleteMessage
-- **summary**:   Cannot delete more than MAX_DELETE_MESSAGES at a time 
- 
-### MaxMessageLength
-- **summary**:   A message cannot be greater than MAX_MESSAGE_LENGTH 
- 
-### MessageIdOverflow
-- **summary**:   Cannot assign any more ids to message due to overflow 
-
-___
-
-
-## syloVault
- 
-### MaxDeleteKeys
-- **summary**:   Cannot delete more than MAX_DELETE_KEYS at a time 
- 
-### MaxKeys
-- **summary**:   Cannot store more than MAX_KEYS 
- 
-### MaxValueLength
-- **summary**:   Cannot store value larger than MAX_VALUE_LENGTH 
 
 ___
 
