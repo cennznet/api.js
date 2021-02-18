@@ -20,11 +20,11 @@
   },
   "dependencies": {
     "@cennznet/types": "^1.3.3",
-    "@polkadot/api": "2.7.1",
-    "@polkadot/metadata": "2.7.1",
-    "@polkadot/rpc-core": "2.7.1",
-    "@polkadot/rpc-provider": "2.7.1",
-    "@polkadot/types": "2.7.1",
+    "@polkadot/api": "3.9.3",
+    "@polkadot/metadata": "3.9.3",
+    "@polkadot/rpc-core": "3.9.3",
+    "@polkadot/rpc-provider": "3.9.3",
+    "@polkadot/types": "3.9.3",
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {

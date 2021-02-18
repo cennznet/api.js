@@ -97,6 +97,7 @@ declare module '@polkadot/api/types/consts' {
        **/
       sessionsPerEra: SessionIndex & AugmentedConst<ApiType>;
     };
+    // @ts-ignore
     system: {
       [key: string]: Codec;
       /**
@@ -145,6 +146,7 @@ declare module '@polkadot/api/types/consts' {
        **/
       weightToFee: Vec<WeightToFeeCoefficient> & AugmentedConst<ApiType>;
     };
+    // @ts-ignore
     treasury: {
       [key: string]: Codec;
       /**
