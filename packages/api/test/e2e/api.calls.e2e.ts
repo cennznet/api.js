@@ -101,14 +101,18 @@ describe('e2e api calls', () => {
 
   describe('Get session info', () => {
     it('Get correct session information (length, last length, era, current index, session per era', async () => {
-      const currentSession = await api.derive.session.info();
-      expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.isEpoch).toBe(true);
-      expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
+      const currentEra = await api.query.staking.currentEra();
+      expect(currentEra.toNumber()).toBeGreaterThanOrEqual(0);
+      const currentIndex = await api.query.session.currentIndex();
+      expect(currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
+      const sessionLength = api.consts.babe.epochDuration;
+      expect(sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
+      const sessionsPerEra = api.consts.staking.sessionsPerEra;
+      expect(sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
+      const validatorCount = await api.query.staking.validatorCount();
+      expect(validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
+      const eraLength = sessionsPerEra.mul(sessionLength);
+      expect(eraLength.toNumber()).toBeGreaterThanOrEqual(0);
     });
   });
 
