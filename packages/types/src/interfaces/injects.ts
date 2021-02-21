@@ -16,6 +16,7 @@
 
 import { OverrideBundleType } from '@polkadot/types/types/registry';
 import { CENNZnetExtrinsicSignatureV1, CENNZnetExtrinsicSignatureV0, SignerPayload } from './extrinsic';
+import { cennznetExtensions } from "./extrinsic/signedExtensions/cennznet";
 import * as definitions from './definitions';
 
 const _types = {
@@ -48,6 +49,7 @@ export const typesBundle: OverrideBundleType = {
           },
         },
       ],
+      signedExtensions: cennznetExtensions
     },
   },
 };

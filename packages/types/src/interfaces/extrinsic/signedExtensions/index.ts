@@ -14,7 +14,7 @@
 
 import { ExtDef, ExtInfo, ExtTypes } from './types';
 
-import cennznetExtensions from './cennznet';
+import { cennznetExtensions } from './cennznet';
 
 // A mapping of the known signed extensions to the extra fields that they contain. Unlike in the actual extensions,
 // we define the extra fields not as a Tuple, but rather as a struct so they can be named. These will be expanded

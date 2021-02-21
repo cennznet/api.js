@@ -33,8 +33,8 @@ export default class CENNZnetExtrinsicPayloadV1 extends Struct {
       registry,
       {
         method: 'Bytes',
-        ...expandExtensionTypes(defaultExtensions as string[], 'types'),
-        ...expandExtensionTypes(defaultExtensions as string[], 'extra'),
+        ...expandExtensionTypes(defaultExtensions as string[], 'extrinsic'),
+        ...expandExtensionTypes(defaultExtensions as string[], 'payload'),
       },
       value
     );

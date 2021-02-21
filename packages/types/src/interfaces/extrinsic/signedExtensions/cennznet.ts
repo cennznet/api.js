@@ -1,44 +1,44 @@
 import { ExtDef } from './types';
 
 const CheckMortality = {
-  extra: {
+  payload: {
     blockHash: 'Hash',
   },
-  types: {
+  extrinsic: {
     era: 'ExtrinsicEra',
   },
 };
 
-export default {
+export const cennznetExtensions: ExtDef = {
   ChargeTransactionPayment: {
-    extra: {},
-    types: {
+    payload: {},
+    extrinsic: {
       transactionPayment: 'ChargeTransactionPayment',
     },
   },
   CheckEra: CheckMortality,
   CheckGenesis: {
-    extra: {
+    payload: {
       genesisHash: 'Hash',
     },
-    types: {},
+    extrinsic: {},
   },
   CheckNonce: {
-    extra: {},
-    types: {
+    payload: {},
+    extrinsic: {
       nonce: 'Compact<Index>',
     },
   },
   CheckSpecVersion: {
-    extra: {
+    payload: {
       specVersion: 'u32',
     },
-    types: {},
+    extrinsic: {},
   },
   CheckTxVersion: {
-    extra: {
+    payload: {
       transactionVersion: 'u32',
     },
-    types: {},
+    extrinsic: {},
   },
 } as ExtDef;
