@@ -21,7 +21,7 @@
         "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @cennznet/types/interfaces --endpoint ./cennznet.json --output ./src/interfaces"
     },
     "dependencies": {
-        "@polkadot/keyring": "^4.2.1",
+        "@polkadot/keyring": "5.6.3",
         "@polkadot/types": "3.9.3",
         "@polkadot/util": "^4.2.1",
         "@polkadot/util-crypto": "^4.2.1",
@@ -32,6 +32,6 @@
         "@polkadot/typegen": "3.9.3",
         "@polkadot/rpc-provider": "3.9.3",
         "@polkadot/types": "3.9.3",
-        "@polkadot/util": "^3.5.1"
+        "@polkadot/util": "5.6.3"
     }
 }
