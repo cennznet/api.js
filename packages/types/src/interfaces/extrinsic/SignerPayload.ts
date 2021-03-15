@@ -97,8 +97,8 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
       }
     }
 
-    if (tip) {
-      console.warn(`Unknown tip found, treating them as no-effect`);
+    if (!tip.isEmpty) {
+      console.warn(`Unknown tip: ${tip} found, treating them as no-effect`);
     }
 
     return {
