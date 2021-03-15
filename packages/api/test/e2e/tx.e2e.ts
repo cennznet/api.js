@@ -18,8 +18,8 @@ import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { stringToHex } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-
 import initApiPromise from '../../../../jest/initApiPromise';
+import { SingleAccountSigner } from "./util/SingleAccountSigner";
 
 const keyring = new Keyring({ type: 'sr25519' });
 
@@ -190,7 +190,24 @@ describe('e2e transactions', () => {
         }
       });
     });
+  });
 
+
+  describe('Signed via signer', () => {
+    it('should sign with a signer', async done => {
+      const dave = keyring.addFromUri('//Dave');
+      const signer = new SingleAccountSigner(api.registry, dave);
+      const transfer = api.tx.genericAsset.transfer(spendingAssetId, alice.address, 54121);
+      await transfer.signAndSend(dave.address, { signer }, async ({events, status}) => {
+        if (status.isInBlock) {
+          for (const {event: { method, section } } of events) {
+            if (section === 'genericAsset' && method == 'Transferred') {
+              done();
+            }
+          }
+        }
+      });
+    });
   });
 
 });
