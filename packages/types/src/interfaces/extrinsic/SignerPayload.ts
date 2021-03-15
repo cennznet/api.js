@@ -27,7 +27,7 @@ import { u8aToHex } from '@polkadot/util';
 
 import { Address, Index } from '../types';
 import { ChargeTransactionPayment } from '../transactionPayment';
-import {defaultExtensions, findUnknownExtensions} from "./signedExtensions";
+import { defaultExtensions } from "./signedExtensions";
 
 export interface SignerPayloadJSON extends SignerPayloadJSONBase {
   transactionPayment?: Record<string, AnyJson>;
