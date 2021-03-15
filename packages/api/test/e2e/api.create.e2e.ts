@@ -90,12 +90,12 @@ describe('e2e api create', () => {
       signedExtensions: ["CheckSpecVersion", "CheckTxVersion", "CheckGenesis", "CheckMortality", "CheckNonce", "CheckWeight", "ChargeTransactionPayment"],
       specVersion: "0x00000026",
       tip: null,
-      transactionPayment: {tip: 0, feeExchange},
+      transactionPayment: {tip: 2, feeExchange},
       transactionVersion: "0x00000005",
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
   });
 
 

@@ -90,15 +90,11 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
     } = this;
 
     if (signedExtensions) {
-      const unknown = findUnknownExtensions(signedExtensions.map(e => e.toString()));
-
-      if (unknown.length) {
-        console.warn(`Unknown signed extensions ${unknown.join(', ')} found, treating them as no-effect`);
-      }
+      console.warn(`custom signed extensions will be ignored`);
     }
 
     if (!tip.isEmpty) {
-      console.warn(`Unknown tip: ${tip} found, treating them as no-effect`);
+      console.warn(`ignoring tip. use transactionPayment.tip`);
     }
 
     return {
