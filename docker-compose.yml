@@ -3,7 +3,7 @@ services:
   # dev node with runtime v37 and client 1.2.0
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:1.3.0
+    image: cennznet/cennznet:develop-57c46b
     command:
       - --dev
       - --tmp
