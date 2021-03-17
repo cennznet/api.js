@@ -14,8 +14,6 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[cennzx](#cennzx)**
 
-- **[finalityTracker](#finalitytracker)**
-
 - **[genericAsset](#genericasset)**
 
 - **[grandpa](#grandpa)**
@@ -112,15 +110,6 @@ ___
 ### setFeeRate(new_fee_rate: `FeeRate`)
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
-
-___
-
-
-## finalityTracker
- 
-### finalHint(hint: `Compact<BlockNumber>`)
-- **interface**: `api.tx.finalityTracker.finalHint`
-- **summary**:   Hint that the author of this block thinks the best finalized block is the given number. 
 
 ___
 
@@ -561,6 +550,8 @@ ___
 
   The dispatch origin for this call must be _Signed_ by the stash account. 
 
+  Emits `Bonded`. 
+
    
  
 ### bondExtra(max_additional: `Compact<BalanceOf>`)
@@ -569,13 +560,17 @@ ___
 
   Use this if there are additional funds in your stash account that you wish to bond. Unlike [`bond`] or [`unbond`] this function does not impose any limitation on the amount that can be added. 
 
-  The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
+  The dispatch origin for this call must be _Signed_ by the stash, not the controller and it can be only called when [`EraElectionStatus`] is `Closed`. 
+
+  Emits `Bonded`. 
 
    
  
 ### cancelDeferredSlash(era: `EraIndex`, slash_indices: `Vec<u32>`)
 - **interface**: `api.tx.staking.cancelDeferredSlash`
-- **summary**:   Cancel enactment of a deferred slash. Can be called by root origin passing the era and indices of the slashes for that era to kill. 
+- **summary**:   Cancel enactment of a deferred slash. 
+
+  Parameters: era and indices of the slashes for that era to kill. 
 
    
  
@@ -585,7 +580,7 @@ ___
 
   Effects will be felt at the beginning of the next era. 
 
-  The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. 
 
    
  
@@ -599,6 +594,8 @@ ___
 - **interface**: `api.tx.staking.forceNewEraAlways`
 - **summary**:   Force there to be a new era at the end of sessions indefinitely. 
 
+  The dispatch origin must be Root. 
+
    
  
 ### forceNoEras()
@@ -610,14 +607,26 @@ ___
 ### forceUnstake(stash: `AccountId`)
 - **interface**: `api.tx.staking.forceUnstake`
 - **summary**:   Force a current staker to become completely unstaked, immediately. 
+
+  The dispatch origin must be Root. 
+
+   
+ 
+### increaseValidatorCount(additional: `Compact<u32>`)
+- **interface**: `api.tx.staking.increaseValidatorCount`
+- **summary**:   Increments the ideal number of validators. 
+
+  The dispatch origin must be Root. 
+
+   
  
 ### nominate(targets: `Vec<AccountId>`)
 - **interface**: `api.tx.staking.nominate`
 - **summary**:   Declare the desire to nominate `targets` for the origin controller. 
 
-  Effects will be felt at the beginning of the next era. 
+  Effects will be felt at the beginning of the next era. This can only be called when [`EraElectionStatus`] is `Closed`. 
 
-  The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. 
 
    
  
@@ -635,6 +644,8 @@ ___
 - **interface**: `api.tx.staking.rebond`
 - **summary**:   Rebond a portion of the stash scheduled to be unlocked. 
 
+  The dispatch origin must be signed by the controller, and it can be only called when [`EraElectionStatus`] is `Closed`. 
+
    
  
 ### setController(controller: `AccountId`)
@@ -644,6 +655,20 @@ ___
   Effects will be felt at the beginning of the next era. 
 
   The dispatch origin for this call must be _Signed_ by the stash, not the controller. 
+
+   
+ 
+### setHistoryDepth(new_history_depth: `Compact<EraIndex>`, _era_items_deleted: `Compact<u32>`)
+- **interface**: `api.tx.staking.setHistoryDepth`
+- **summary**:   Set `HistoryDepth` value. This function will delete any history information when `HistoryDepth` is reduced. 
+
+  Parameters: 
+
+  - `new_history_depth`: The new history depth you would like to set.
+
+  - `era_items_deleted`: The number of items that will be deleted by this dispatch.   This should report all the storage items that will be deleted by clearing old    era history. Needed to report an accurate weight for the dispatch. Trusted by    `Root` to report an accurate number. 
+
+  Origin must be root. 
 
    
  
@@ -667,7 +692,49 @@ ___
  
 ### setValidatorCount(new: `Compact<u32>`)
 - **interface**: `api.tx.staking.setValidatorCount`
-- **summary**:   The ideal number of validators. 
+- **summary**:   Sets the ideal number of validators. 
+
+  The dispatch origin must be Root. 
+
+   
+ 
+### submitElectionSolution(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
+- **interface**: `api.tx.staking.submitElectionSolution`
+- **summary**:   Submit an election result to the chain. If the solution: 
+
+  1. is valid. 2. has a better score than a potentially existing solution on chain. 
+
+  then, it will be _put_ on chain. 
+
+  A solution consists of two pieces of data: 
+
+  1. `winners`: a flat vector of all the winners of the round. 2. `assignments`: the compact version of an assignment vector that encodes the edge    weights. 
+
+  Both of which may be computed using _phragmen_, or any other algorithm. 
+
+  Additionally, the submitter must provide: 
+
+  - The `score` that they claim their solution has. 
+
+  Both validators and nominators will be represented by indices in the solution. The indices should respect the corresponding types ([`ValidatorIndex`] and [`NominatorIndex`]). Moreover, they should be valid when used to index into [`SnapshotValidators`] and [`SnapshotNominators`]. Any invalid index will cause the solution to be rejected. These two storage items are set during the election window and may be used to determine the indices. 
+
+  A solution is valid if: 
+
+  0. It is submitted when [`EraElectionStatus`] is `Open`. 1. Its claimed score is equal to the score computed on-chain. 2. Presents the correct number of winners. 3. All indexes must be value according to the snapshot vectors. All edge values must    also be correct and should not overflow the granularity of the ratio type (i.e. 256    or billion). 4. For each edge, all targets are actually nominated by the voter. 5. Has correct self-votes. 
+
+  A solutions score is consisted of 3 parameters: 
+
+  1. `min { support.total }` for each support of a winner. This value should be maximized. 2. `sum { support.total }` for each support of a winner. This value should be minimized. 3. `sum { support.total^2 }` for each support of a winner. This value should be    minimized (to ensure less variance) 
+
+   
+ 
+### submitElectionSolutionUnsigned(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
+- **interface**: `api.tx.staking.submitElectionSolutionUnsigned`
+- **summary**:   Unsigned version of `submit_election_solution`. 
+
+  Note that this must pass the [`ValidateUnsigned`] check which only allows transactions from the local node to be included. In other words, only the block author can include a transaction in the block. 
+
+   
  
 ### unbond(value: `Compact<BalanceOf>`)
 - **interface**: `api.tx.staking.unbond`
@@ -677,7 +744,9 @@ ___
 
   No more than a limited number of unlocking chunks (see `MAX_UNLOCKING_CHUNKS`) can co-exists at the same time. In that case, [`Call::withdraw_unbonded`] need to be called first to remove some of the chunks (if possible). 
 
-  The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. 
+
+  Emits `Unbonded`. 
 
   See also [`Call::withdraw_unbonded`]. 
 
@@ -689,7 +758,7 @@ ___
 
   Effects will be felt at the beginning of the next era. 
 
-  The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. 
 
    
  
@@ -699,7 +768,9 @@ ___
 
   This essentially frees up that balance to be used by the stash account to do whatever it wants. 
 
-  The dispatch origin for this call must be _Signed_ by the controller, not the stash. 
+  The dispatch origin for this call must be _Signed_ by the controller, not the stash. And, it can be only called when [`EraElectionStatus`] is `Closed`. 
+
+  Emits `Withdrawn`. 
 
   See also [`Call::unbond`]. 
 
