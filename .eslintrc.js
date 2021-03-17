@@ -6,7 +6,7 @@ It represents the closest reasonable ESLint configuration to this
 project's original TSLint configuration.
 
 We recommend eventually switching this configuration to extend from
-the recommended rulesets in typescript-eslint. 
+the recommended rulesets in typescript-eslint.
 https://github.com/typescript-eslint/tslint-to-eslint-config/blob/master/docs/FAQs.md
 
 Happy linting! 💖
@@ -75,7 +75,7 @@ module.exports = {
         ],
         "import/no-extraneous-dependencies": "off",
         "import/order": "error",
-        "no-duplicate-imports": "error",
+        "import/no-duplicates": ["error", {"considerQueryString": true}],
         // "no-magic-numbers": "error",
         "no-return-await": "error",
         "no-undef-init": "error",
