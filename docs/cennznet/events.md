@@ -183,14 +183,17 @@ ___
 
 ## rewards
  
-### AllRewardsPaidOut(`EraIndex`, `Balance`)
-- **summary**:   All the rewards of the specified era is now processed with an unallocated `remainder` that went to treasury 
+### EraPayout(`Balance`, `Balance`)
+- **summary**:   Era reward payout the total (amount to treasury, amount to stakers) 
+ 
+### EraPayoutDeferred(`Balance`)
+- **summary**:   Era ended abruptly e.g. due to early re-election, this amount will be deferred to the next full era 
+ 
+### EraStakerPayout(`AccountId`, `Balance`)
+- **summary**:   Staker payout (nominator/validator account, amount) 
  
 ### NewFiscalEra(`Balance`)
 - **summary**:   A fiscal era has begun with the parameter (target_inflation_per_staking_era) 
- 
-### RewardPayout(`AccountId`, `Balance`, `EraIndex`)
-- **summary**:   A reward payout happened (nominator/validator account id, amount, era in which the reward was accrued) 
 
 ___
 
@@ -219,6 +222,11 @@ ___
 
 ## staking
  
+### Bonded(`AccountId`, `Balance`)
+- **summary**:   An account has bonded this amount. \[stash, amount\] 
+
+  NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably, it will not be emitted for staking rewards when they are added to stake. 
+ 
 ### InvulnerableNotSlashed(`AccountId`, `Perbill`)
 - **summary**:   The validator is invulnerable, so it has NOT been slashed. 
  
@@ -233,6 +241,18 @@ ___
  
 ### Slash(`AccountId`, `Balance`)
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. 
+ 
+### SolutionStored(`ElectionCompute`)
+- **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
+ 
+### StakingElection(`ElectionCompute`)
+- **summary**:   A new set of stakers was elected with the given \[compute\]. 
+ 
+### Unbonded(`AccountId`, `Balance`)
+- **summary**:   An account has unbonded this amount. \[stash, amount\] 
+ 
+### Withdrawn(`AccountId`, `Balance`)
+- **summary**:   An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance` from the unlocking queue. \[stash, amount\] 
 
 ___
 

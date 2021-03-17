@@ -10,8 +10,6 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[cennzx](#cennzx)**
 
-- **[finalityTracker](#finalitytracker)**
-
 - **[genericAsset](#genericasset)**
 
 - **[grandpa](#grandpa)**
@@ -101,17 +99,6 @@ ___
 ### MinimumTradeAssetRequirementNotMet
  
 ### Overflow
-
-___
-
-
-## finalityTracker
- 
-### AlreadyUpdated
-- **summary**:   Final hint must be updated only once in the block 
- 
-### BadHint
-- **summary**:   Finalized height above block number 
 
 ___
 
@@ -302,11 +289,14 @@ ___
 
 ## scheduler
  
-### FailedToCancel
-- **summary**:   Failed to cancel a scheduled call 
- 
 ### FailedToSchedule
 - **summary**:   Failed to schedule a call 
+ 
+### NotFound
+- **summary**:   Cannot find the scheduled call. 
+ 
+### RescheduleNoChange
+- **summary**:   Reschedule failed because it does not change scheduled time. 
  
 ### TargetBlockNumberInPast
 - **summary**:   Given target block number is in the past. 
@@ -339,6 +329,9 @@ ___
 ### AlreadyPaired
 - **summary**:   Controller is already paired. 
  
+### CallNotAllowed
+- **summary**:   The call is not allowed at the given time due to restrictions of election period. 
+ 
 ### DuplicateNominee
 - **summary**:   Cannot nominate the same account multiple times 
  
@@ -348,8 +341,14 @@ ___
 ### FundedTarget
 - **summary**:   Attempting to target a stash that still has funds. 
  
+### IncorrectHistoryDepth
+- **summary**:   Incorrect previous history depth input provided. 
+ 
 ### InsufficientBond
 - **summary**:   Can not bond with value less than minimum balance. 
+ 
+### InsufficientFreeBalance
+- **summary**:   User does not have enough free balance to bond this amount 
  
 ### InvalidSlashIndex
 - **summary**:   Slash record index out of bounds. 
@@ -368,6 +367,45 @@ ___
  
 ### NoUnlockChunk
 - **summary**:   Can not rebond without unlocking chunks. 
+ 
+### OffchainElectionBogusCompact
+- **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
+ 
+### OffchainElectionBogusEdge
+- **summary**:   The submitted result has unknown edges that are not among the presented winners. 
+ 
+### OffchainElectionBogusElectionSize
+- **summary**:   The election size is invalid. 
+ 
+### OffchainElectionBogusNomination
+- **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
+ 
+### OffchainElectionBogusNominator
+- **summary**:   One of the submitted nominators is not an active nominator on chain. 
+ 
+### OffchainElectionBogusScore
+- **summary**:   The claimed score does not match with the one computed from the data. 
+ 
+### OffchainElectionBogusSelfVote
+- **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
+ 
+### OffchainElectionBogusWinner
+- **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
+ 
+### OffchainElectionBogusWinnerCount
+- **summary**:   Incorrect number of winners were presented. 
+ 
+### OffchainElectionEarlySubmission
+- **summary**:   The submitted result is received out of the open window. 
+ 
+### OffchainElectionSlashedNomination
+- **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
+ 
+### OffchainElectionWeakSubmission
+- **summary**:   The submitted result is not as good as the one stored on chain. 
+ 
+### SnapshotUnavailable
+- **summary**:   The snapshot data of the current window is missing. 
 
 ___
 
