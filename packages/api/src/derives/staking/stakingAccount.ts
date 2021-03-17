@@ -13,6 +13,7 @@ import {
   RewardDestination,
   StakingLedger,
   ValidatorPrefs,
+  EraIndex,
 } from '@cennznet/types';
 import { DerivedStakingInfo } from '../types';
 
@@ -26,12 +27,16 @@ type MultiResultV2 = [
   Option<StakingLedger>
 ];
 
-function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId): Observable<MultiResultV2> {
+function retrieveStakingAccountDetails(
+  api: ApiInterfaceRx,
+  stashId: AccountId,
+  activeEra: EraIndex
+): Observable<MultiResultV2> {
   return api.queryMulti([
     [api.query.staking.bonded, stashId],
     [api.query.staking.nominators, stashId],
     [api.query.rewards.payee, stashId],
-    [api.query.staking.stakers, stashId],
+    [api.query.staking.erasStakers, [activeEra, stashId]],
     [api.query.staking.validators, stashId],
   ]) as Observable<MultiResultV2>;
 }
@@ -42,13 +47,13 @@ function retrieveStakingAccountDetails(api: ApiInterfaceRx, stashId: AccountId):
 export function queryStakingAccountInfo(
   instanceId: string,
   api: ApiInterfaceRx
-): (accountId: Uint8Array | string) => Observable<DerivedStakingInfo> {
+): (accountId: Uint8Array | string, activeEra: EraIndex) => Observable<DerivedStakingInfo> {
   return memo(
     instanceId,
-    (accountId: Uint8Array | string): Observable<DerivedStakingInfo> => {
+    (accountId: Uint8Array | string, activeEra: EraIndex): Observable<DerivedStakingInfo> => {
       const stashId = createType(api.registry, 'AccountId', accountId);
 
-      return retrieveStakingAccountDetails(api, stashId).pipe(
+      return retrieveStakingAccountDetails(api, stashId, activeEra).pipe(
         switchMap(
           ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs]]): Observable<
             DerivedStakingInfo
