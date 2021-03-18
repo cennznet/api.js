@@ -137,14 +137,11 @@ export function query(
     instanceId,
     (accountId: Uint8Array | string, flags: QueryFlags): Observable<DeriveStakingQuery> =>
       // @ts-ignore
-      api.derive.staking.queryMulti([accountId], flags).pipe(
-        // @ts-ignore
-        map(([first]) => first)
-      )
+      api.derive.staking.queryMulti([accountId], flags).pipe(map(([first]) => first))
   );
 }
 
-export function queryMulti(
+export function queryMulti1(
   instanceId: string,
   api: ApiInterfaceRx
 ): (accountIds: (Uint8Array | string)[], flags: QueryFlags) => Observable<DeriveStakingQuery[]> {

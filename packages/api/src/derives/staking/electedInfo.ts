@@ -20,24 +20,22 @@ export function electedInfo(instanceId: string, api: ApiInterfaceRx): () => Obse
     (): Observable<DeriveStakingElected> =>
       api.derive.staking.validators().pipe(
         switchMap(
-          ({ nextElected, validators }): Observable<DeriveStakingElected> =>
+          ({ nextElected, validators }): Observable<DeriveStakingElected> => {
+            const allAccounts = combineAccounts(nextElected, validators);
+
             // @ts-ignore
-            api.derive.staking
-              .queryMulti(combineAccounts(nextElected, validators), {
-                withExposure: true,
-                withLedger: true,
-                withPrefs: true,
-              })
+            return api.derive.staking
+              .queryMulti(allAccounts, { withExposure: true, withLedger: true, withPrefs: true })
               .pipe(
                 map(
                   (info): DeriveStakingElected => ({
-                    // @ts-ignore
                     info,
                     nextElected,
                     validators,
                   })
                 )
-              )
+              );
+          }
         )
       )
   );
