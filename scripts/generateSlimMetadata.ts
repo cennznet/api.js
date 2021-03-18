@@ -20,16 +20,10 @@ async function generateSlimMeta() {
     'Timestamp',
     'TransactionPayment',
     'GenericAsset',
-    'SyloGroups',
-    'SyloE2EE',
-    'SyloDevice',
-    'SyloInbox',
-    'SyloResponse',
-    'SyloVault',
     'Cennzx',
   ];
   let magicNumber = metadata.magicNumber;
-  let modules = api.runtimeMetadata.asLatest.modules;
+  let modules = metadata.asLatest.modules;
   let newModules = [];
   for (const m of modules) {
     if (KEEP.indexOf(m.name.toJSON()) >= 0) {
@@ -40,20 +34,49 @@ async function generateSlimMeta() {
       newModules.push(modifiedModule);
     } else {
       // Push an empty module
-      newModules.push({ name: m.name, calls: m.calls, events: m.events });
+      newModules.push({ name: m.name, calls: m.calls, events: m.events, index: m.index });
     }
   }
   let extrinsic = metadata.asLatest.extrinsic;
   let filteredModule = api.registry.createType('Vec<ModuleMetadataLatest>', newModules);
-  let filteredMetaLatest = api.registry.createType('MetadataLatest', { modules: filteredModule, extrinsic });
-  const filteredMetadataAll = api.registry.createType('MetadataAll', filteredMetaLatest, 12);
-  const mVersionedNew = new MetadataVersioned(api.registry, {
+  // metadataSlim is created using the same mechanism as asCallsOnly from MetadataVersioned.js (with additional storage)
+  // reducing the total length of metadata to 16236 from earlier around 100000
+  const metadataSlim = api.registry.createType('MetadataLatest', {
+    extrinsic,
+    modules: filteredModule.map(({
+                            storage,
+                            calls,
+                            index,
+                            name
+                          }) => ({
+      storage,
+      calls: mapCalls(api.registry, calls),
+      index,
+      name
+    }))
+  }).toJSON();
+  const mVersionedSlim = new MetadataVersioned(api.registry, {
     magicNumber: magicNumber,
-    metadata: filteredMetadataAll,
+    metadata: api.registry.createType('MetadataAll', metadataSlim, 12)
   });
-  console.log('metadata hex:', mVersionedNew.toHex());
+
+  console.log('metadata hex:', mVersionedSlim.toHex());
 
   process.exit();
+}
+
+function mapCalls(registry, _calls) {
+  const calls = _calls.unwrapOr(null);
+
+  return registry.createType('Option<Vec<FunctionMetadataLatest>>', calls ?
+    calls.map(({
+                 args,
+                 name
+    }) => registry.createType('FunctionMetadataLatest', {
+    args,
+    documentation: '',
+    name
+  })) : null);
 }
 
 function removeKeys(obj, keys) {
