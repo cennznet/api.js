@@ -11,6 +11,9 @@ on:
 jobs:
   merge-release-branch:
     # only run if prechecks pass and the source branch is named 'prerelease/*'
+    echo 'checking...'
+    echo github.head_ref
+    echo github.event.label.name
     if: ${{ startsWith(github.head_ref, 'prerelease/') }} && ${{ github.event.label.name == 'automerge' }}
     runs-on: ubuntu-latest
     steps:
