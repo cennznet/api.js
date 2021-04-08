@@ -13,8 +13,6 @@ async function main () {
   const api = await Api.create();
 
   // create an instance of our testing keyring
-  // If you're using ES6 module imports instead of require, just change this line to:
-  // const keyring = testKeyring();
   const keyring = new Keyring({ type: 'sr25519' });
 
   // Add alice to our keyring with a hard-derived path (empty phrase, so uses dev)
