@@ -31,6 +31,7 @@ async function main () {
   const transaction3 = api.tx.genericAsset.transfer(dataList[2].assetId, dataList[2].recipient, dataList[2].amount);
   const transaction4 = api.tx.genericAsset.transfer(dataList[3].assetId, dataList[3].recipient, dataList[3].amount);
 
+  // user ('Alice') authorises multiple transfers from her account using a single batch transaction
   const ex = api.tx.utility.batch([
     transaction1,
     transaction2,
