@@ -6,6 +6,7 @@ const { randomAsU8a } = require('@polkadot/util-crypto');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const { Keyring } = require('@polkadot/keyring');
 
+// user ('Alice') authorises multiple transfers from her account using a single batch transaction
 async function main () {
 
   const api = await Api.create('ws://localhost:9944');
@@ -31,7 +32,6 @@ async function main () {
   const transaction3 = api.tx.genericAsset.transfer(dataList[2].assetId, dataList[2].recipient, dataList[2].amount);
   const transaction4 = api.tx.genericAsset.transfer(dataList[3].assetId, dataList[3].recipient, dataList[3].amount);
 
-  // user ('Alice') authorises multiple transfers from her account using a single batch transaction
   const ex = api.tx.utility.batch([
     transaction1,
     transaction2,
