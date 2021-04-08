@@ -1,5 +1,5 @@
-# Transfer events
+# Batch Transfer events
 
-Display the events that occur during a transfer by sending a value to a random account
+Display the events that occur during a batch extrinsic
 
-<<< @/docs/examples/promise/09_transfer_events/index.js
+<<< @/docs/examples/promise/13_batch_all_transfer/index.js
