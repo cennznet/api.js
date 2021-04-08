@@ -7,10 +7,8 @@ const { randomAsU8a } = require('@polkadot/util-crypto');
 const { Keyring } = require('@polkadot/keyring');
 
 async function main () {
-  // Here we don't pass the (optional) provider, connecting directly to the default
-  // node/port, i.e. `ws://127.0.0.1:9944`. Await for the isReady promise to ensure
-  // the API has connected to the node and completed the initialisation process
-  const api = await Api.create();
+
+  const api = await Api.create('ws://localhost:9944');
 
   // create an instance of our testing keyring
   const keyring = new Keyring({ type: 'sr25519' });
@@ -28,13 +26,17 @@ async function main () {
     {assetId: 16001, amount: 1002, recipient: keyring.addFromSeed(randomAsU8a(32)).address},
   ]
 
-  let txs = [];
-  dataList.forEach(data => {
-    const tx = api.tx.genericAsset.transfer(data.assetId, data.recipient, data.amount);
-    txs.push(tx);
-  });
+  const transaction1 = api.tx.genericAsset.transfer(dataList[0].assetId, dataList[0].recipient, dataList[0].amount);
+  const transaction2 = api.tx.genericAsset.transfer(dataList[1].assetId, dataList[1].recipient, dataList[1].amount);
+  const transaction3 = api.tx.genericAsset.transfer(dataList[2].assetId, dataList[2].recipient, dataList[2].amount);
+  const transaction4 = api.tx.genericAsset.transfer(dataList[3].assetId, dataList[3].recipient, dataList[3].amount);
 
-  const ex = api.tx.utility.batch(txs);
+  const ex = api.tx.utility.batch([
+    transaction1,
+    transaction2,
+    transaction3,
+    transaction4
+  ]);
   ex.signAndSend(alicePair, {nonce}, async ({events, status}) => {
     if (status.isFinalized) {
       console.log('Completed at block hash', status.asFinalized.toHex());
