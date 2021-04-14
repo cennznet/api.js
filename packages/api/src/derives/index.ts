@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import { ApiTypes } from '@cennznet/api/types';
-import { AnyFunction } from '@cennznet/types';
 import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
+import { AnyFunction } from '@polkadot/types/types';
 import { Observable } from 'rxjs';
 import * as attestation from './attestation';
 import * as cennzx from './cennzx';

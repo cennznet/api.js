@@ -24,7 +24,6 @@ export function electedInfo(instanceId: string, api: ApiInterfaceRx): () => Obse
             const allAccounts = combineAccounts(nextElected, validators);
             const flags = { withExposure: true, withLedger: true, withPrefs: true };
 
-            // @ts-ignore
             return api.derive.staking.queryMulti(allAccounts, flags).pipe(
               map(
                 (info): DeriveStakingElected => ({

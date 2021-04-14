@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
         if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
           return of(feeInBaseCurrency);
         } else {
-          return (api.rpc as any).cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
+          return api.rpc.cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
         }
       }),
       map((price: BN) => price),

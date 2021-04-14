@@ -11,17 +11,12 @@ module.exports = {
   testEnvironment: '<rootDir>/jest/env.js',
   moduleNameMapper: {
     '@cennznet/api(.*)$': '<rootDir>/packages/api/src/$1',
-    '@cennznet/types(.*)$': '<rootDir>/packages/types/src/$1',
-    '@cennznet/util(.*)$': '<rootDir>/packages/util/src/$1',
+    '@cennznet/types(.*)$': '<rootDir>/packages/types/src/$1'
   },
   modulePathIgnorePatterns: [
     '<rootDir>/packages/api/build',
-    '<rootDir>/packages/types/build',
-    '<rootDir>/packages/util/build',
+    '<rootDir>/packages/types/build'
   ],
+  transformIgnorePatterns: ['/node_modules/(?!@polkadot|@babel/runtime/helpers/esm/)'],
   testTimeout: 30000,
-  globals: {
-    // Enable doughnut wasm package while running integration tests
-    DOUGHNUT_SUPPORT: true
-  }
 };

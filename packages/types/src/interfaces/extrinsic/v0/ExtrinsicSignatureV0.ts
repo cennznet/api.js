@@ -101,7 +101,7 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   /**
    * @description The [[Doughnut]]
    */
-  get doughnut() {
+  get doughnut(): unknown {
     return this.get('doughnut');
   }
 
@@ -213,7 +213,6 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
       nonce,
       doughnut,
       runtimeVersion: { specVersion },
-      tip,
       transactionPayment,
     }: ExtrinsicV0SignatureOptions
   ): IExtrinsicSignature {

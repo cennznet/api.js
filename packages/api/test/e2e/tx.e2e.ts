@@ -130,7 +130,7 @@ describe('e2e transactions', () => {
       assetCreated.then(async () => {
         const desiredLiquidity = 30_000_000_000_000;
         const minimumLiquidity = 1;
-        const [coreInvestment, feeInvestment] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
+        const [coreInvestment, feeInvestment] = await api.rpc.cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
 
         await api.tx.cennzx
           .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)

@@ -25,38 +25,6 @@ import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class Api extends ApiPromise {
-  static async create(options: ApiOptions = {}): Promise<Api> {
-    const api = new Api(options);
-    return withTimeout(
-      new Promise((resolve, reject) => {
-        const rejectError = () => {
-          // Disconnect provider if API initialization fails
-          if (api.isConnected) {
-            void api.disconnect();
-          }
-          reject(new Error('Connection fail'));
-        };
-
-        api.isReady.then(res => {
-          //  Remove error listener if API initialization success.
-          (api as ApiPromise).off('error', rejectError);
-          resolve((res as unknown) as Api);
-        }, reject);
-
-        api.once('error', rejectError);
-      }),
-      getTimeout(options)
-    );
-  }
-
-  get tx(): SubmittableExtrinsics<'promise'> {
-    return super.tx as SubmittableExtrinsics<'promise'>;
-  }
-
-  get derive(): Derives<'promise'> {
-    return super.derive as Derives<'promise'>;
-  }
-
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
 
@@ -78,19 +46,8 @@ export class Api extends ApiPromise {
     options.typesBundle = typesBundle;
     super(options as ApiOptionsBase);
   }
-}
 
-async function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
-  if (timeoutMs === 0) {
-    return promise;
+  get derive(): Derives<'promise'> {
+    return super.derive as Derives<'promise'>;
   }
-
-  return Promise.race<Api>([
-    promise,
-    new Promise<Api>((_, reject) => {
-      setTimeout(() => {
-        reject(new Error(`Timed out in ${timeoutMs} ms.`));
-      }, timeoutMs);
-    }),
-  ]);
 }

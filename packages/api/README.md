@@ -1,6 +1,6 @@
 # CENNZNet Api
 
-The CENNZNet JavaScript SDK for browsers, RN and Node.js.
+The CENNZnet JavaScript API for browsers, RN and Node.js.
 
 ## Install
 

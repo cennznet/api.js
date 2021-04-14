@@ -10,29 +10,18 @@
   ],
   "scripts": {
     "build": "polkadot-dev-build-ts",
-    "test": "jest -c ./jest/unit.config.js --coverage",
-    "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
-    "make-docs": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
-    "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
+    "docs:meta": "node ./scripts/metadataMdWrapper.js",
+    "docs:ts": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "generate-slim-metadata": "node ./scripts/generateSlimMetadataWrapper.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "jest -c ./jest/unit.config.js --coverage",
+    "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.11.6",
-    "@babel/helper-skip-transparent-expression-wrappers": "^7.11.0",
-    "@babel/helper-validator-identifier": "^7.10.4",
-    "@babel/plugin-proposal-numeric-separator": "^7.10.4",
-    "@babel/preset-env": "^7.7.6",
-    "@babel/runtime-corejs3": "^7.7.6",
-    "@polkadot/dev": "0.31.1",
-    "@polkadot/ts": "^0.1.86",
+    "@polkadot/dev": "0.62.7",
     "@types/jest": "^26.0.14",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
-    "babel-jest": "^26.5.2",
-    "babel-plugin-conditional-compile": "^0.0.5",
-    "core-js": "^3.4.8",
     "eslint": "^7.11.0",
     "eslint-plugin-import": "^2.22.1",
     "husky": "^1.1.1",
@@ -46,15 +35,6 @@
     "tsconfig-paths": "^3.8.0",
     "typedoc": "^0.19.2",
     "typescript": "^4.0.3"
-  },
-  "resolutions": {
-    "babel-core": "^7.0.0-bridge.0",
-    "typescript": "^4.0.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-lerna-changelog"
-    }
   },
   "husky": {
     "hooks": {

@@ -85,7 +85,6 @@ declare module '@polkadot/api/types/consts' {
        **/
       maxSignatories: u16 & AugmentedConst<ApiType>;
     };
-    // @ts-ignore
     staking: {
       [key: string]: Codec;
       /**

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { DecoratedCennznetDerive } from '@cennznet/api/derives';
-import ApiBase from '@polkadot/api/base';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';

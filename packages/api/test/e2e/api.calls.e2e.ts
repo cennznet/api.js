@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types'
-import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Api} from "@cennznet/api";
 import {SignedBlock} from "@polkadot/types/interfaces/runtime";
@@ -81,21 +80,21 @@ describe('e2e api calls', () => {
   });
 
   it('Get correct validators', async () => {
-    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
+    const validators: AccountId[] = (await api.query.session.validators.at(blockHash));
     expect(validators.length).toBeGreaterThan(0);
   });
 
   it('Expect author is in validators', async () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     const header = block.header;
-    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-    const extHeader = new HeaderExtended(api.registry, header, validators);
+    const validators: AccountId[] = (await api.query.session.validators.at(blockHash));
+    const extHeader = api.registry.createType('HeaderExtended', header, validators);
     const author: AccountId = extHeader.author;
     expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
   });
 
   it('Expect at least one event', async () => {
-    const events: EventRecord[] = (await api.query.system.events.at(blockHash)) as any;
+    const events: EventRecord[] = (await api.query.system.events.at(blockHash));
     expect(events.length).toBeGreaterThan(0);
   });
 
