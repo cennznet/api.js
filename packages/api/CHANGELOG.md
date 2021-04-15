@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+- Add NFT module support
+
 ## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
 ### Changed:
     - Bump version elliptic from 6.5.3 to 6.5.4
