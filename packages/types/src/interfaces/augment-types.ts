@@ -5,6 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { AuctionClosureReason, AuctionListing, CollectionId, DirectListing, Listing, NFTAttributeName, NFTAttributeTypeId, NFTAttributeValue, NFTSchema, Reason, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -1513,11 +1514,8 @@ declare module '@polkadot/types/types/registry' {
     'Compact<FeeRate>': Compact<FeeRate>;
     'Option<FeeRate>': Option<FeeRate>;
     'Vec<FeeRate>': Vec<FeeRate>;
-    // @ts-ignore
     AssetOptions: AssetOptions;
-    // @ts-ignore
     'Option<AssetOptions>': Option<AssetOptions>;
-    // @ts-ignore
     'Vec<AssetOptions>': Vec<AssetOptions>;
     AssetInfo: AssetInfo;
     'Option<AssetInfo>': Option<AssetInfo>;
@@ -1534,6 +1532,43 @@ declare module '@polkadot/types/types/registry' {
     PermissionLatest: PermissionLatest;
     'Option<PermissionLatest>': Option<PermissionLatest>;
     'Vec<PermissionLatest>': Vec<PermissionLatest>;
+    CollectionId: CollectionId;
+    'Option<CollectionId>': Option<CollectionId>;
+    'Vec<CollectionId>': Vec<CollectionId>;
+    TokenId: TokenId;
+    'Compact<TokenId>': Compact<TokenId>;
+    'Option<TokenId>': Option<TokenId>;
+    'Vec<TokenId>': Vec<TokenId>;
+    NFTAttributeValue: NFTAttributeValue;
+    'Option<NFTAttributeValue>': Option<NFTAttributeValue>;
+    'Vec<NFTAttributeValue>': Vec<NFTAttributeValue>;
+    NFTAttributeName: NFTAttributeName;
+    'Option<NFTAttributeName>': Option<NFTAttributeName>;
+    'Vec<NFTAttributeName>': Vec<NFTAttributeName>;
+    NFTAttributeTypeId: NFTAttributeTypeId;
+    'Option<NFTAttributeTypeId>': Option<NFTAttributeTypeId>;
+    'Vec<NFTAttributeTypeId>': Vec<NFTAttributeTypeId>;
+    NFTSchema: NFTSchema;
+    'Option<NFTSchema>': Option<NFTSchema>;
+    'Vec<NFTSchema>': Vec<NFTSchema>;
+    RoyaltiesSchedule: RoyaltiesSchedule;
+    'Option<RoyaltiesSchedule>': Option<RoyaltiesSchedule>;
+    'Vec<RoyaltiesSchedule>': Vec<RoyaltiesSchedule>;
+    Listing: Listing;
+    'Option<Listing>': Option<Listing>;
+    'Vec<Listing>': Vec<Listing>;
+    AuctionListing: AuctionListing;
+    'Option<AuctionListing>': Option<AuctionListing>;
+    'Vec<AuctionListing>': Vec<AuctionListing>;
+    DirectListing: DirectListing;
+    'Option<DirectListing>': Option<DirectListing>;
+    'Vec<DirectListing>': Vec<DirectListing>;
+    AuctionClosureReason: AuctionClosureReason;
+    'Option<AuctionClosureReason>': Option<AuctionClosureReason>;
+    'Vec<AuctionClosureReason>': Vec<AuctionClosureReason>;
+    Reason: Reason;
+    'Option<Reason>': Option<Reason>;
+    'Vec<Reason>': Vec<Reason>;
     RewardBalance: RewardBalance;
     'Compact<RewardBalance>': Compact<RewardBalance>;
     'Option<RewardBalance>': Option<RewardBalance>;
@@ -1542,11 +1577,8 @@ declare module '@polkadot/types/types/registry' {
     'Compact<RewardBalanceOf>': Compact<RewardBalanceOf>;
     'Option<RewardBalanceOf>': Option<RewardBalanceOf>;
     'Vec<RewardBalanceOf>': Vec<RewardBalanceOf>;
-    // @ts-ignore
     RewardDestination: RewardDestination;
-    // @ts-ignore
     'Option<RewardDestination>': Option<RewardDestination>;
-    // @ts-ignore
     'Vec<RewardDestination>': Vec<RewardDestination>;
     VecDeque: VecDeque;
     'Option<VecDeque>': Option<VecDeque>;
