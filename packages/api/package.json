@@ -1,9 +1,9 @@
 {
   "name": "@cennznet/api",
-  "version": "1.3.4",
+  "version":"1.3.5-alpha.0",
   "description": "cennznet's javascript client",
   "keywords": [
-    "CENNZNet"
+    "CENNZnet"
   ],
   "author": "Centrality Developers <support@centrality.ai>",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
@@ -19,7 +19,7 @@
     "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
   },
   "dependencies": {
-    "@cennznet/types": "^1.3.4",
+    "@cennznet/types": "^1.3.5-alpha.0",
     "@polkadot/api": "2.7.1",
     "@polkadot/metadata": "2.7.1",
     "@polkadot/rpc-core": "2.7.1",
