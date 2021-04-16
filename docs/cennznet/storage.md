@@ -24,6 +24,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[multisig](#multisig)**
 
+- **[nft](#nft)**
+
 - **[offences](#offences)**
 
 - **[randomnessCollectiveFlip](#randomnesscollectiveflip)**
@@ -320,6 +322,63 @@ ___
 ### multisigs(`AccountId, [u8;32]`): `Option<Multisig>`
 - **interface**: `api.query.multisig.multisigs`
 - **summary**:   The set of open multisig operations. 
+
+___
+
+
+## nft
+ 
+### collectedTokens(`CollectionId, AccountId`): `Vec<TokenId>`
+- **interface**: `api.query.nft.collectedTokens`
+- **summary**:   Map from (collection, account id) to tokens collected 
+ 
+### collectionOwner(`CollectionId`): `Option<AccountId>`
+- **interface**: `api.query.nft.collectionOwner`
+- **summary**:   Map from collection to owner address 
+ 
+### collectionRoyalties(`CollectionId`): `Option<RoyaltiesSchedule>`
+- **interface**: `api.query.nft.collectionRoyalties`
+- **summary**:   Map from collection to it's defacto royalty schedule 
+ 
+### collectionSchema(`CollectionId`): `Option<NFTSchema>`
+- **interface**: `api.query.nft.collectionSchema`
+- **summary**:   Map from collection to its schema definition 
+ 
+### listingEndSchedule(`BlockNumber`): `Vec<(CollectionId,TokenId)>`
+- **interface**: `api.query.nft.listingEndSchedule`
+- **summary**:   Map from block numbers to listings scheduled to close 
+ 
+### listings(`CollectionId, TokenId`): `Option<Listing>`
+- **interface**: `api.query.nft.listings`
+- **summary**:   NFT sale/auction listings. keyed by collection id and token id 
+ 
+### listingWinningBid(`CollectionId, TokenId`): `Option<(AccountId,Balance)>`
+- **interface**: `api.query.nft.listingWinningBid`
+- **summary**:   Winning bids on open listings. keyed by collection id and token id 
+ 
+### nextTokenId(`CollectionId`): `TokenId`
+- **interface**: `api.query.nft.nextTokenId`
+- **summary**:   The next available token Id for an NFT collection 
+ 
+### tokenIssuance(`CollectionId`): `TokenId`
+- **interface**: `api.query.nft.tokenIssuance`
+- **summary**:   The total amount of an NFT collection in existence 
+ 
+### tokenOwner(`CollectionId, TokenId`): `AccountId`
+- **interface**: `api.query.nft.tokenOwner`
+- **summary**:   The total amount of an NFT collection in existence Map from (collection, token) to it's owner 
+ 
+### tokenRoyalties(`CollectionId, TokenId`): `Option<RoyaltiesSchedule>`
+- **interface**: `api.query.nft.tokenRoyalties`
+- **summary**:   Map from a token to it's royalty schedule 
+ 
+### tokens(`CollectionId, TokenId`): `Vec<NFTAttributeValue>`
+- **interface**: `api.query.nft.tokens`
+- **summary**:   Map from (collection, token) to it's attributes (as defined by schema) 
+ 
+### tokensBurnt(`CollectionId`): `TokenId`
+- **interface**: `api.query.nft.tokensBurnt`
+- **summary**:   The total amount of an NFT collection burned 
 
 ___
 

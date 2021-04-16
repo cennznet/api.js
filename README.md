@@ -5,7 +5,7 @@ The CENNZnet JavaScript API library for browsers and Node.js.
 
 See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/examples), or the [wiki](https://github.com/cennznet/cennznet/wiki/Javascript-API-Reference) to get started.
 
-# Components
+## Components
 
 | Name                                | Description                                                |
 | ----------------------------------- | ---------------------------------------------------------- |
@@ -13,3 +13,10 @@ See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/ex
 | [@cennznet/types](packages/types)   | CENNZnet specific type definitions                         |
 | [@cennznet/util](packages/util)     | CENNZnet specific utility functions                        |
 
+## Making a Release
+
+1) Create a branch `prerelease/<semver>`
+e.g. `prerelease/1.5.0` for an ordinary release or `prerelease/1.5.0-alpha.0` for a release candidate.  
+Bump package versions, ensure static metadata updated and docs regenerated
+2) Open a PR, passing CI and review
+3) label it 'automerge' and the release will be published to npm
