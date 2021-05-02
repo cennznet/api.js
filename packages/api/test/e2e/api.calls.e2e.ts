@@ -40,46 +40,6 @@ describe('e2e api calls', () => {
     expect(block.header.hash.toString()).toEqual(blockHash.toString());
   });
 
-  it('Query historical block from runtime version 36', async () => {
-    const blockNumber = 3759962; // old Azalea block at runtime version 36
-    const API_KEY = process.env.API_KEY;
-    const provider = `wss://node-6745087231505551360.jm.onfinality.io/ws?apikey=${API_KEY}`;
-    const apiV36 = await Api.create({provider});
-    const bHash = await apiV36.rpc.chain.getBlockHash(blockNumber);
-    const block: SignedBlock = await apiV36.rpc.chain.getBlock(bHash);
-    const extrinsicList: Vec<Extrinsic> = block.block.extrinsics;
-    expect(extrinsicList[0].method.section).toEqual('timestamp');
-    expect(extrinsicList[0].method.method).toEqual('set');
-    expect(extrinsicList[1].method.section).toEqual('finalityTracker');
-    expect(extrinsicList[1].method.method).toEqual('finalHint');
-    expect(extrinsicList[2].method.section).toEqual('syloE2Ee');
-    expect(extrinsicList[2].method.method).toEqual('replenishPkbs');
-    expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
-    expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
-    await apiV36.disconnect();
-  });
-
-  it('Subscribe system events for runtime version 36', async done => {
-    const API_KEY = process.env.API_KEY;
-
-    const provider = `wss://node-6745087231505551360.jm.onfinality.io/ws?apikey=${API_KEY}`;
-    const apiV36 = await Api.create({ provider });
-    const blockHash = '0xcc1f072b8e76e330a9eb00315ad0bc7022623ffc02954b47d316e98dbba7fd64';
-    const events = await apiV36.query.system.events.at(blockHash);
-    const totalEvents = events.length;
-    expect(totalEvents).toEqual(4);
-    expect(events[0].event.section).toEqual('system');
-    expect(events[0].event.method).toEqual('ExtrinsicSuccess');
-    expect(events[1].event.section).toEqual('genericAsset');
-    expect(events[1].event.method).toEqual('Transferred');
-    expect(events[2].event.section).toEqual('system');
-    expect(events[2].event.method).toEqual('ExtrinsicSuccess');
-    expect(events[3].event.section).toEqual('system');
-    expect(events[3].event.method).toEqual('ExtrinsicSuccess');
-    await apiV36.disconnect();
-    done();
-  });
-
   it('Get correct validators', async () => {
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
     expect(validators.length).toBeGreaterThan(0);
