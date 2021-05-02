@@ -24,14 +24,3 @@ services:
       - --ws-port=9945
     ports:
       - '9945:9945'
-  # a node environment to run api / e2e test scripts
-  api-test-runner:
-    image: node:10.19.0-stretch
-    volumes:
-      - .:/code
-    environment:
-      - API_KEY=$API_KEY
-    command:
-      - 'sh'
-      - '-c'
-      - 'cd /code && yarn && yarn --dev && yarn test:e2e'

@@ -76,7 +76,6 @@ jobs:
     - name: test
       env:
         TEST_TYPE: integration
-        API_KEY: ${{ secrets.API_KEY }}
         # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
       run: |
