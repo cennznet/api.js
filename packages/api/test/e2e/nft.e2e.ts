@@ -75,9 +75,9 @@ describe('NFTs', () => {
 
   it('create token', async done => {
     const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
+      {'text': 'hello world'},
+      {'hash': blake2AsHex(stringToU8a('hello world'))},
+      {'timestamp': 12345}
     ];
 
     await api.tx.nft.createToken(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {

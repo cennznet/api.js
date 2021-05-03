@@ -70,7 +70,7 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
         if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
           return of(feeInBaseCurrency);
         } else {
-          return (api.rpc as any).cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
+          return api.rpc.cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
         }
       }),
       map((price: BN) => price),

@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import {
   SignatureOptions as SignatureOptionsBase,
 } from '@polkadot/types/types';
 import { Option } from '@polkadot/types';
-import { ChargeTransactionPayment } from '../transactionPayment';
+import { ChargeTransactionPayment, FeeExchange } from '../transactionPayment';
 import { doughnut } from '../types';
 
 export interface ExtrinsicPayloadValue extends ExtrinsicPayloadValueBase {
@@ -34,5 +34,5 @@ export interface SignatureOptions extends SignatureOptionsBase {
 export interface ExtrinsicV0SignatureOptions extends SignatureOptionsBase {
   doughnut?: Option<doughnut>;
   transactionPayment?: ChargeTransactionPayment;
-  feeExchange?: any;
+  feeExchange?: FeeExchange;
 }

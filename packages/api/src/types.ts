@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { DecoratedCennznetDerive } from '@cennznet/api/derives';
-import ApiBase from '@polkadot/api/base';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';

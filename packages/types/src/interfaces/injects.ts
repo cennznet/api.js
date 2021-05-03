@@ -60,4 +60,4 @@ export const typesBundle: OverrideBundleType = {
   },
 };
 // Unwind the nested type definitions into a flat map
-export default Object.values(_types).reduce((res, { types }): object => ({ ...res, ...types }), {});
+export default Object.values(_types).reduce((res, { types }): Record<string, unknown> => ({ ...res, ...types }), {});

@@ -21,7 +21,6 @@ export function waitingInfo(instanceId: string, api: ApiInterfaceRx): () => Obse
             const elected = nextElected.map((a) => a.toString());
             const waiting = stashes.filter((v) => !elected.includes(v.toString()));
 
-            // @ts-ignore
             return api.derive.staking.queryMulti(waiting, { withLedger: true, withPrefs: true }).pipe(
               map(
                 (info: DeriveStakingQuery[]): DeriveStakingWaiting => ({
