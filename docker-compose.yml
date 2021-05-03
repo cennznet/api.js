@@ -1,3 +1,6 @@
+# Runs local CENNZnet nodes for integration tests
+# `docker-compose up`
+# `yarn test:e2e`
 version: '3'
 services:
   # dev node with runtime v37 and client 1.2.0
