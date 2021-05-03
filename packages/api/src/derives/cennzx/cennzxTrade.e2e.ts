@@ -25,7 +25,7 @@ describe('Cennzx Operations', () => {
   let alice, bob, charlie, sudoKeypair, nonce;
   let coreAssetId, assetA, assetB;
 
-  beforeAll(async done => {
+  beforeAll(async (done) => {
     await cryptoWaitReady();
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
@@ -45,7 +45,7 @@ describe('Cennzx Operations', () => {
   });
 
   describe('Liquidity Operations', () => {
-    it("Add liquidity for tradeAsset 'A' to the pool", async done => {
+    it("Add liquidity for tradeAsset 'A' to the pool", async (done) => {
       // Create a new Asset 'A' and add liquidity to it
       // Amount of test asset - 'A' to create
       const initialIssuance = 900_000_000;
@@ -60,7 +60,7 @@ describe('Cennzx Operations', () => {
       // when the new asset is created it will have this ID.
       assetA = await api.query.genericAsset.nextAssetId();
       // Create new asset
-      const assetCreated = new Promise<void>(async resolve => {
+      const assetCreated = new Promise<void>(async (resolve) => {
         await api.tx.sudo
           .sudo(createAssetTx1)
           .signAndSend(sudoKeypair, { nonce: nonce++ }, async ({ status }) => (status.isInBlock ? resolve() : null));
@@ -74,7 +74,7 @@ describe('Cennzx Operations', () => {
         await api.tx.cennzx
           .addLiquidity(assetA, minLiquidity, investmentAmount, coreAmount)
           .signAndSend(alice, { nonce: nonce++ }, async ({ events, status }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               for (const { event } of events) {
                 if (event.method === 'AddLiquidity') {
                   const [account, coreInvestAmount, assetIdFromChain, targetInvestAmount] = event.data;
@@ -92,7 +92,7 @@ describe('Cennzx Operations', () => {
       });
     });
 
-    it("Add liquidity for tradeAsset 'B' to the pool", async done => {
+    it("Add liquidity for tradeAsset 'B' to the pool", async (done) => {
       // Amount of test asset - 'B' to create
       const initialIssuance = 900_000_000;
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
@@ -118,7 +118,7 @@ describe('Cennzx Operations', () => {
         await api.tx.cennzx
           .addLiquidity(assetB, minLiquidity, investmentAmount, coreAmount)
           .signAndSend(bob, async ({ events, status }) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               for (const { event } of events) {
                 if (event.method === 'AddLiquidity') {
                   const [account, coreInvestAmount, assetIdFromChain, targetInvestAmount] = event.data;
@@ -138,7 +138,7 @@ describe('Cennzx Operations', () => {
   });
 
   describe('Trading Operations', () => {
-    it('Can trade from asset to core for exact core asset amount', async done => {
+    it('Can trade from asset to core for exact core asset amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
@@ -150,7 +150,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -162,7 +162,7 @@ describe('Cennzx Operations', () => {
           }
         });
     });
-    it('Can trade from core to asset for exact trade asset amount', async done => {
+    it('Can trade from core to asset for exact trade asset amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
@@ -174,7 +174,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -187,7 +187,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from core to asset for exact core asset amount', async done => {
+    it('Can trade from core to asset for exact core asset amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
@@ -197,7 +197,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
@@ -210,7 +210,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Get core asset from seller and transfer trade asset to charlie for exact trade asset amount', async done => {
+    it('Get core asset from seller and transfer trade asset to charlie for exact trade asset amount', async (done) => {
       const recipient = charlie.address; // in which case the bob receives the exchanged amount
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
@@ -221,7 +221,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
@@ -238,7 +238,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from asset to core for exact trade asset amount', async done => {
+    it('Can trade from asset to core for exact trade asset amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
@@ -248,7 +248,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
@@ -261,7 +261,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Get trade asset from seller and transfer core asset to charlie for exact trade asset amount', async done => {
+    it('Get trade asset from seller and transfer core asset to charlie for exact trade asset amount', async (done) => {
       const recipient = charlie.address; // in which case the charlie receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
@@ -272,7 +272,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
@@ -289,7 +289,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Get trade asset from buyer and transfer core asset to charlie for exact core asset amount', async done => {
+    it('Get trade asset from buyer and transfer core asset to charlie for exact core asset amount', async (done) => {
       const recipient = charlie.address; // in which case bob receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
@@ -301,7 +301,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -318,7 +318,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Get core asset from buyer and transfer trade asset to charlie for exact trade asset amount', async done => {
+    it('Get core asset from buyer and transfer trade asset to charlie for exact trade asset amount', async (done) => {
       const recipient = charlie.address; // in which case charlie receives the exchanged amount
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
@@ -330,7 +330,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -347,7 +347,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount', async done => {
+    it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = assetB;
@@ -358,7 +358,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -371,7 +371,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to charlie', async done => {
+    it('Can trade from asset "A" to asset "B" with exact asset B amount and max A amount and transfer asset "B" to charlie', async (done) => {
       const recipient = charlie.address; // in which case the charlie receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = assetB;
@@ -383,7 +383,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
@@ -400,7 +400,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from asset "A" to asset "B" with exact asset A amount and min B amount', async done => {
+    it('Can trade from asset "A" to asset "B" with exact asset A amount and min B amount', async (done) => {
       const recipient = null; // in which case the caller receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = assetB;
@@ -410,7 +410,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
@@ -423,7 +423,7 @@ describe('Cennzx Operations', () => {
         });
     });
 
-    it('Can trade from asset "A" to asset "B" with exact asset A amount and min B amount and transfer asset "B" to charlie', async done => {
+    it('Can trade from asset "A" to asset "B" with exact asset A amount and min B amount and transfer asset "B" to charlie', async (done) => {
       const recipient = charlie.address; // in which case the charlie receives the exchanged amount
       const assetToSell = assetA;
       const assetToBuy = assetB;
@@ -434,7 +434,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
@@ -462,7 +462,7 @@ describe('Cennzx Operations', () => {
   });
 
   describe('Remove liquidity', () => {
-    it("Remove liquidity and receive 'RemoveLiquidity' event", async done => {
+    it("Remove liquidity and receive 'RemoveLiquidity' event", async (done) => {
       const totalLiquidityBefore = await api.derive.cennzx.totalLiquidity(assetA);
       const removeLiquidity = 10;
       expect(totalLiquidityBefore.gtn(removeLiquidity)).toBeTruthy();
@@ -472,7 +472,7 @@ describe('Cennzx Operations', () => {
       await api.tx.cennzx
         .removeLiquidity(assetA, removeLiquidity, minAssetWithdraw, minCoreWithdraw)
         .signAndSend(alice, async ({ events, status }) => {
-          if (status.isFinalized && events !== undefined) {
+          if (status.isInBlock && events !== undefined) {
             for (const { event } of events) {
               if (event.method === 'RemoveLiquidity') {
                 const totalLiquidity = await api.derive.cennzx.totalLiquidity(assetA);

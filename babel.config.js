@@ -7,6 +7,7 @@ module.exports = {
         "DOUGHNUT_SUPPORT": false
       }
     }],
-    "@babel/plugin-proposal-numeric-separator"
+    "@babel/plugin-proposal-numeric-separator",
+    ["@babel/plugin-proposal-private-methods", { "loose": true }]
   ]
 };

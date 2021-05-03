@@ -11,7 +11,7 @@
   "scripts": {
     "build": "polkadot-dev-build-ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
-    "test:e2e": "TEST_TYPE=e2e jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
+    "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
     "make-docs": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
     "generate-slim-metadata": "node ./scripts/generateSlimMetadataWrapper.js",
