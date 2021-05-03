@@ -19,4 +19,5 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
+  transformIgnorePatterns: ['/node_modules/(?!@polkadot|@babel/runtime/helpers/esm/)']
 };

@@ -54,7 +54,7 @@ describe('CENNZX RPC calls testing', () => {
                   await api.tx.cennzx
                       .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
                       .signAndSend(alice, async ({events, status}) => {
-                        if (status.isFinalized) {
+                        if (status.isInBlock) {
                           for (const {event} of events) {
                             if (event.method === 'AddLiquidity') {
                               done();
@@ -108,7 +108,7 @@ describe('CENNZX RPC calls testing', () => {
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId:CENTRAPAY});
 
           await extrinsic.signAndSend(alice,  async ({events, status}) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
@@ -128,7 +128,7 @@ describe('CENNZX RPC calls testing', () => {
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
           await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
-            if (status.isFinalized) {
+            if (status.isInBlock) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 if (method === 'AssetBought') {
                   const price = data[3];

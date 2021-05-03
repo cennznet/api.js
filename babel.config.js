@@ -1,13 +1,6 @@
 module.exports = {
-  extends: '@polkadot/dev/config/babel',
-  /* Condition compile plugin to exclude the wasm package for doughnuts */
-  "plugins": [
-    ["conditional-compile", {
-      "define": {
-        "DOUGHNUT_SUPPORT": false
-      }
-    }],
-    "@babel/plugin-proposal-numeric-separator",
-    ["@babel/plugin-proposal-private-methods", { "loose": true }]
+  extends: '@polkadot/dev/config/babel-config-cjs.cjs',
+  plugins: [
+    '@babel/plugin-proposal-numeric-separator'
   ]
 };

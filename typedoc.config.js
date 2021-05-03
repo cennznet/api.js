@@ -17,8 +17,7 @@ module.exports = {
   "externalPattern": "**/node_modules/**",
   "external-modulemap": [
     ["@cennznet/api", "(.*packages\/api\/.*|node_modules\/@cennznet\/api\/.*)", "packages/api/README.md"],
-    ["@cennznet/types", "(.*packages\/types\/.*|node_modules\/@cennznet\/types\/.*)", "packages/types/README.md"],
-    ["@cennznet/util", "(.*packages\/util\/.*|node_modules\/@cennznet\/util\/.*)", "packages/util/README.md"],
+    ["@cennznet/types", "(.*packages\/types\/.*|node_modules\/@cennznet\/types\/.*)", "packages/types/README.md"]
   ],
   "excludePrivate": true,
   "excludeProtected": true,
