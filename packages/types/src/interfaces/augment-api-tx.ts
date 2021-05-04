@@ -6,7 +6,7 @@ import type { AnyNumber, ITuple } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
 import type { BabeEquivocationProof } from '@polkadot/types/interfaces/babe';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { Extrinsic, Signature } from '@polkadot/types/interfaces/extrinsics';
@@ -676,7 +676,7 @@ declare module '@polkadot/api/types/submittable' {
        * `schema` - for the collection
        * `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default.
        **/
-      createCollection: AugmentedSubmittable<(collectionId: CollectionId | string, schema: NFTSchema, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      createCollection: AugmentedSubmittable<(collectionId: CollectionId | string, schema: NFTSchema, metadataUri: Option<MetadataURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Issue a new NFT
        * `owner` - the token owner
@@ -694,9 +694,15 @@ declare module '@polkadot/api/types/submittable' {
        * `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase
        * `asset_id` fungible asset Id to receive as payment for the NFT
        * `fixed_price` ask price
+       * `duration` listing duration time in blocks
        * Caller must be the token owner
        **/
-      directSale: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      directSale: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Set the owner of a collection
+       * Caller must be the current collection owner
+       **/
+      setOwner: AugmentedSubmittable<(collectionId: CollectionId | string, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Transfer ownership of an NFT
        * Caller must be the token owner

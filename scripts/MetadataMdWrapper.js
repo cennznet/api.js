@@ -16,4 +16,4 @@ require('@babel/register')({
   ]
 });
 
-require('./MetadataMd.ts');
+require('./metadataMd.ts');

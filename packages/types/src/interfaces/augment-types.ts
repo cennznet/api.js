@@ -5,7 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
-import type { AuctionClosureReason, AuctionListing, CollectionId, DirectListing, Listing, NFTAttributeName, NFTAttributeTypeId, NFTAttributeValue, NFTSchema, Reason, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, DirectListing, Listing, MetadataURI, NFTAttributeName, NFTAttributeTypeId, NFTAttributeValue, NFTSchema, Reason, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -1535,6 +1535,9 @@ declare module '@polkadot/types/types/registry' {
     CollectionId: CollectionId;
     'Option<CollectionId>': Option<CollectionId>;
     'Vec<CollectionId>': Vec<CollectionId>;
+    MetadataURI: MetadataURI;
+    'Option<MetadataURI>': Option<MetadataURI>;
+    'Vec<MetadataURI>': Vec<MetadataURI>;
     TokenId: TokenId;
     'Compact<TokenId>': Compact<TokenId>;
     'Option<TokenId>': Option<TokenId>;

@@ -1,6 +1,23 @@
 export default {
+    rpc: {
+        collectedTokens: {
+            description: 'Get the tokens owned by an address in a certain collection',
+            params: [
+              {
+                name: 'collection',
+                type: 'CollectionId'
+              },
+              {
+                name: 'address',
+                type: 'Address',
+              }
+            ],
+            type: 'Vec<TokenId>',
+          },
+    },
     types: {
         'CollectionId': 'String',
+        'MetadataURI': 'String',
         'TokenId': 'u32',
         'NFTAttributeValue': {
             '_enum': {
@@ -14,7 +31,7 @@ export default {
                 'Bytes': 'Bytes',
                 'String': 'String',
                 'Hash': '[u8; 32]',
-                'Timestamp': 'Moment',
+                'Timestamp': 'u64',
                 'Url': 'String'
             }
         },
