@@ -38,6 +38,9 @@ export interface Listing extends Enum {
   readonly asAuctionListing: AuctionListing;
 }
 
+/** @name MetadataURI */
+export interface MetadataURI extends Text {}
+
 /** @name NFTAttributeName */
 export interface NFTAttributeName extends Text {}
 

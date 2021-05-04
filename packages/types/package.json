@@ -30,8 +30,6 @@
     "devDependencies": {
         "@polkadot/api": "2.7.1",
         "@polkadot/typegen": "2.7.1",
-        "@polkadot/rpc-provider": "2.7.1",
-        "@polkadot/types": "2.7.1",
-        "@polkadot/util": "^3.5.1"
+        "@polkadot/rpc-provider": "2.7.1"
     }
 }

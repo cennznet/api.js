@@ -6,7 +6,7 @@ import type { AnyNumber, ITuple, Observable } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, Listing, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, Listing, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
 import type { VecDeque } from '@cennznet/types/interfaces/staking';
 import type { DeviceId, Group, Message, MessageId, PreKeyBundle, Response, VaultKey, VaultValue } from '@cennznet/types/interfaces/sylo';
 import type { UncleEntryItem } from '@polkadot/types/interfaces/authorship';
@@ -302,6 +302,10 @@ declare module '@polkadot/api/types/storage' {
     nft: {
       [key: string]: QueryableStorageEntry<ApiType>;
       /**
+       * Map from collection to a base metadata URI for its token's offchain attributes
+       **/
+      collectionMetadataUri: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<MetadataURI>> & QueryableStorageEntry<ApiType>;
+      /**
        * Map from collection to owner address
        **/
       collectionOwner: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<Option<AccountId>>> & QueryableStorageEntry<ApiType>;
@@ -310,7 +314,7 @@ declare module '@polkadot/api/types/storage' {
        **/
       collectionRoyalties: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<Option<RoyaltiesSchedule>>> & QueryableStorageEntry<ApiType>;
       /**
-       * Map from collection to its schema definition
+       * Map from collection to its onchain schema definition
        **/
       collectionSchema: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<Option<NFTSchema>>> & QueryableStorageEntry<ApiType>;
       /**
@@ -330,6 +334,10 @@ declare module '@polkadot/api/types/storage' {
        **/
       nextTokenId: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<TokenId>> & QueryableStorageEntry<ApiType>;
       /**
+       * Map from (collection, token) to it's attributes (as defined by schema)
+       **/
+      tokenAttributes: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | string, key2: TokenId | AnyNumber | Uint8Array) => Observable<Vec<NFTAttributeValue>>> & QueryableStorageEntry<ApiType>;
+      /**
        * The total number an NFT collection in circulation (excludes burnt tokens)
        **/
       tokenIssuance: AugmentedQuery<ApiType, (arg: CollectionId | string) => Observable<TokenId>> & QueryableStorageEntry<ApiType>;
@@ -341,10 +349,6 @@ declare module '@polkadot/api/types/storage' {
        * Map from a token to it's royalty scheme
        **/
       tokenRoyalties: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | string, key2: TokenId | AnyNumber | Uint8Array) => Observable<Option<RoyaltiesSchedule>>> & QueryableStorageEntry<ApiType>;
-      /**
-       * Map from (collection, token) to it's attributes (as defined by schema)
-       **/
-      tokens: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | string, key2: TokenId | AnyNumber | Uint8Array) => Observable<Vec<NFTAttributeValue>>> & QueryableStorageEntry<ApiType>;
     };
     offences: {
       [key: string]: QueryableStorageEntry<ApiType>;

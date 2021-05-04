@@ -62,7 +62,7 @@ describe('NFTs', () => {
   });
 
   it('creates a collection', async done => {
-    await api.tx.nft.createCollection(collectionId, schema, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    await api.tx.nft.createCollection(collectionId, schema, "https://example.com/nft/metadata", null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
@@ -86,8 +86,8 @@ describe('NFTs', () => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
         });
         // first token has id 0
-        let token = (await api.query.nft.tokens(collectionId, 0));
-        expect(token.toJSON()).toEqual(attributes);
+        let tokenAttributes = (await api.query.nft.tokenAttributes(collectionId, 0));
+        expect(tokenAttributes.toJSON()).toEqual(attributes);
         expect((await api.query.nft.tokenOwner(collectionId, 0)).toString()).toBe(tokenOwner.address);
         done();
       }

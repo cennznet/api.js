@@ -3,10 +3,10 @@
 # `yarn test:e2e`
 version: '3'
 services:
-  # dev node with runtime v37 and client 1.2.0
+  # dev node with runtime v40 and client 1.4.0
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:develop-57c46b
+    image: cennznet/cennznet:latest
     command:
       - --dev
       - --tmp
