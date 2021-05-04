@@ -62,7 +62,11 @@ describe('NFTs', () => {
   });
 
   it('creates a collection', async done => {
+<<<<<<< HEAD
     await api.tx.nft.createCollection(collectionId, schema, "https://example.com/nft/metadata", null).signAndSend(collectionOwner, async ({ status, events }) => {
+=======
+    await api.tx.nft.createCollection(collectionId, schema, null).signAndSend(collectionOwner, async ({ status, events }) => {
+>>>>>>> Update NFT metadata and add some e2e tests
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
