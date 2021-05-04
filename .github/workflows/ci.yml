@@ -46,6 +46,7 @@ jobs:
           - tx
           - attestation.*
           - cennzx.*
+          - nft.*
           - staking
           - rpc.decodeResponse
           - send

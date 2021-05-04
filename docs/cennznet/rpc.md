@@ -22,6 +22,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[grandpa](#grandpa)**
 
+- **[nft](#nft)**
+
 - **[offchain](#offchain)**
 
 - **[payment](#payment)**
@@ -234,6 +236,16 @@ ___
 - **interface**: `api.rpc.grandpa.restartVoter`
 - **jsonrpc**: `grandpa_restartVoter`
 - **summary**: Restarts the grandpa voter future
+
+___
+
+
+## nft
+ 
+### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<TokenId>`
+- **interface**: `api.rpc.nft.collectedTokens`
+- **jsonrpc**: `nft_collectedTokens`
+- **summary**: Get the tokens owned by an address in a certain collection
 
 ___
 

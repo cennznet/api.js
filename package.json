@@ -9,13 +9,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "polkadot-dev-build-ts",
+    "clean": "polkadot-dev-clean-build",
+    "docs:meta": "node ./scripts/metadataMdWrapper.js",
+    "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
+    "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
+    "meta:update": "node ./scripts/updateStaticMetadata packages/api/src packages/types && pushd packages/types && yarn build && popd && yarn docs:meta",
+    "lint": "eslint . --ext .ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
-    "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
-    "make-docs": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
-    "metadata-docs": "node ./scripts/MetadataMdWrapper.js",
-    "generate-slim-metadata": "node ./scripts/generateSlimMetadataWrapper.js",
-    "lint": "eslint . --ext .ts"
+    "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",

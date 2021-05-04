@@ -3,7 +3,7 @@
 
 import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
 import type { ITuple } from '@polkadot/types/types';
-import type { AccountId, AssetId, Balance, BlockNumber, Moment, Permill } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
 
 /** @name AuctionClosureReason */
 export interface AuctionClosureReason extends Enum {
@@ -80,7 +80,7 @@ export interface NFTAttributeValue extends Enum {
   readonly isHash: boolean;
   readonly asHash: U8aFixed;
   readonly isTimestamp: boolean;
-  readonly asTimestamp: Moment;
+  readonly asTimestamp: u64;
   readonly isUrl: boolean;
   readonly asUrl: Text;
 }
