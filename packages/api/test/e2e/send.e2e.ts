@@ -1,4 +1,4 @@
-import WebSocket from '@polkadot/x-ws';
+import { WebSocket } from '@polkadot/x-ws';
 import { RpcCoder } from "@polkadot/rpc-provider/coder";
 
 describe('send', (): void => {

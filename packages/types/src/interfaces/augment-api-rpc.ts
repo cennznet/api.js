@@ -328,12 +328,14 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       registeredAssets: AugmentedRpc<() => Observable<Vec<ITuple<[AssetId, AssetInfo]>>>>;
     };
+    // @ts-ignore
     grandpa: {
       /**
        * Restarts the grandpa voter future
        **/
       restartVoter: AugmentedRpc<() => Observable<any>>;
     };
+    // @ts-ignore
     grandpa: {
       /**
        * Prove finality for the range (begin; end] hash.
