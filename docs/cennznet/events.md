@@ -20,6 +20,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[multisig](#multisig)**
 
+- **[nft](#nft)**
+
 - **[offences](#offences)**
 
 - **[rewards](#rewards)**
@@ -169,6 +171,47 @@ ___
  
 ### NewMultisig(`AccountId`, `AccountId`, `CallHash`)
 - **summary**:   A new multisig operation has begun. \[approving, multisig, call_hash\] 
+
+___
+
+
+## nft
+ 
+### AuctionClosed(`CollectionId`, `TokenId`, `Reason`)
+- **summary**:   An auction has closed without selling (collection, token, reason) 
+ 
+### AuctionOpen(`CollectionId`, `TokenId`, `AssetId`, `Balance`)
+- **summary**:   An auction has opened (collection, token, payment asset, reserve price) 
+ 
+### AuctionSold(`CollectionId`, `TokenId`, `AssetId`, `Balance`, `AccountId`)
+- **summary**:   An auction has sold (collection, token, payment asset, bid, new owner) 
+ 
+### Bid(`CollectionId`, `TokenId`, `Balance`)
+- **summary**:   A new highest bid was placed (collection, token, amount) 
+ 
+### Burn(`CollectionId`, `TokenId`)
+- **summary**:   An NFT was burned 
+ 
+### CreateCollection(`CollectionId`, `AccountId`)
+- **summary**:   A new NFT collection was created, (collection, owner) 
+ 
+### CreateToken(`CollectionId`, `TokenId`, `AccountId`)
+- **summary**:   A new NFT was created, (collection, token, owner) 
+ 
+### DirectSaleClosed(`CollectionId`, `TokenId`)
+- **summary**:   A direct sale has closed without selling 
+ 
+### DirectSaleComplete(`CollectionId`, `TokenId`, `AccountId`, `AssetId`, `Balance`)
+- **summary**:   A direct sale has completed (collection, token, new owner, payment asset, fixed price) 
+ 
+### DirectSaleListed(`CollectionId`, `TokenId`, `Option<AccountId>`, `AssetId`, `Balance`)
+- **summary**:   A direct sale has been listed (collection, token, authorised buyer, payment asset, fixed price) 
+ 
+### Transfer(`CollectionId`, `TokenId`, `AccountId`)
+- **summary**:   An NFT was transferred (collection, token, new owner) 
+ 
+### Update(`CollectionId`, `TokenId`)
+- **summary**:   An NFT's data was updated 
 
 ___
 
