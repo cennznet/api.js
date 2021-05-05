@@ -24,9 +24,6 @@ describe('e2e api create', () => {
     const api = Api.create({provider, timeout: 1})
     await expect(api).rejects.toThrow(
         'Timed out in 1 ms.');
-    if (api.isConnected) {
-      await api.disconnect();
-    }
   });
 
   it('For local chain - checking if static metadata is same as latest', async () => {
@@ -79,7 +76,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
+    expect((extPayload.toHuman() as any).transactionPayment).toEqual({tip: '0', feeExchange: null});
     if (api.isConnected) {
       await api.disconnect();
     };
@@ -107,7 +104,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+    expect((extPayload.toHuman() as any).transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
     if (api.isConnected) {
       await api.disconnect();
     }
