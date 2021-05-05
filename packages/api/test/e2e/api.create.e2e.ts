@@ -31,18 +31,7 @@ let api;
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
-    // if (api.isConnected) {
-    //   await api.disconnect();
-    // }
   });
-
-  // afterEach(async () => {
-  //   try {
-  //     if (api.isConnected) {
-  //       await api.disconnect();
-  //     }
-  //   } catch (e) {}
-  // });
 
   it('Should create an Api instance with the timeout option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
@@ -51,9 +40,6 @@ let api;
     const hash = await api.rpc.chain.getBlockHash();
 
     expect(hash).toBeDefined();
-    // if (api.isConnected) {
-    //   await api.disconnect();
-    // }
   });
 
   it('Creating extrinsic payload via registry with no transaction payment', async () => {
@@ -76,9 +62,6 @@ let api;
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect((extPayload.toHuman() as any).transactionPayment).toEqual({tip: '0', feeExchange: null});
-    // if (api.isConnected) {
-    //   await api.disconnect();
-    // };
   });
 
   it('Creating extrinsic payload via registry with transaction payment option', async () => {
@@ -104,9 +87,6 @@ let api;
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect((extPayload.toHuman() as any).transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
-    // if (api.isConnected) {
-    //   await api.disconnect();
-    // }
   });
 
 
