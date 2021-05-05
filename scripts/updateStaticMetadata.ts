@@ -21,11 +21,12 @@ async function updateMeta(staticOutputDir, jsonOutputDir) {
     let replaceKey = Object.keys(metaMap).filter(v => v.includes(`-${targetVersion}`))[0];
     if (replaceKey) {
         console.log(`Replacing metadata for version: ${targetVersion}`)
+        delete metaMap[replaceKey];
         metaMap[replaceKey] = newMeta;
     } else {
         console.log(`Adding metadata for version: ${targetVersion}`)
-        metaMap[`${api.genesisHash.toHex()}-${targetVersion}`] = newMeta;
     }
+    metaMap[`${api.genesisHash.toHex()}-${targetVersion}`] = newMeta;
     const data = `export default ${JSON.stringify(metaMap, null, '\n')};`;
 
     const staticOutputPath = path.join(staticOutputDir, 'staticMetadata.ts');
