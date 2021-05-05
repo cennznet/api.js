@@ -75,9 +75,9 @@ describe('NFTs', () => {
 
   it('creates a token', async done => {
     const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
+      {'text': 'hello world'},
+      {'hash': blake2AsHex(stringToU8a('hello world'))},
+      {'timestamp': 12345}
     ];
 
     await api.tx.nft.createToken(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
@@ -97,6 +97,11 @@ describe('NFTs', () => {
   it('finds collected tokens', async () => {
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
     expect(ownedTokens.toString()).toEqual('[0]');
+  });
+
+  it('gets balance of tokens', async () => {
+    let ownedBalance = (await api.derive.nft.balanceOf(collectionId, tokenOwner.address));
+    expect(ownedBalance).toBe(1);
   });
 
 });

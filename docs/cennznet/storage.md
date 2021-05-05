@@ -400,7 +400,7 @@ ___
 - **interface**: `api.query.rewards.transactionFeePot`
 - **summary**:   Accumulated transaction fees for reward payout 
  
-### transactionFeePotHistory(): `VecDeque`
+### transactionFeePotHistory(): `Vec<BalanceOf>`
 - **interface**: `api.query.rewards.transactionFeePotHistory`
 - **summary**:   Historic accumulated transaction fees on reward payout 
 

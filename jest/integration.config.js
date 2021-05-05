@@ -19,6 +19,7 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
+  transformIgnorePatterns: ['/node_modules/(?!@polkadot|@babel/runtime/helpers/esm/)'],
   testTimeout: 30000,
   globals: {
     // Enable doughnut wasm package while running integration tests
