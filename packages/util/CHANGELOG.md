@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [UNRELEASED]
+- Update to @polkadot/types 4.5.1, @polkadot/util,keyring 6.3.1
+
 # [0.14.4](https://github.com/cennznet/api.js/compare/v0.14.0...v0.14.4) (2019-06-18)
 
 ### Bug Fixes

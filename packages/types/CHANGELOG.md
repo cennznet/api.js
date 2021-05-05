@@ -5,6 +5,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [Unreleased]
 - Add NFT module support
+- Add rpc type definitions
+- Update to @polkadot/types 4.5.1, @polkadot/util,keyring 6.3.1
 
 ## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
 ### Added:
