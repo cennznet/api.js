@@ -16,10 +16,10 @@ import { Api } from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';
 import { Metadata } from '@polkadot/metadata';
+import ExtrinsicPayload from "@cennznet/types/interfaces/extrinsic/v1/ExtrinsicPayload";
 
 describe('e2e api create', () => {
-  let api;
-
+let api;
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
@@ -32,14 +32,6 @@ describe('e2e api create', () => {
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
-  });
-
-  afterEach(async () => {
-    try {
-      if (api.isConnected) {
-        await api.disconnect();
-      }
-    } catch (e) {}
   });
 
   it('Should create an Api instance with the timeout option', async () => {
@@ -70,7 +62,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
+    expect((extPayload.toHuman() as unknown as ExtrinsicPayload).transactionPayment).toEqual({tip: '0', feeExchange: null});
   });
 
   it('Creating extrinsic payload via registry with transaction payment option', async () => {
@@ -95,7 +87,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+    expect((extPayload.toHuman() as unknown as ExtrinsicPayload).transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
   });
 
 

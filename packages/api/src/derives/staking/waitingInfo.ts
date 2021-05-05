@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/api-derive authors & contributors
+// Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Observable } from 'rxjs';
@@ -21,7 +21,6 @@ export function waitingInfo(instanceId: string, api: ApiInterfaceRx): () => Obse
             const elected = nextElected.map((a) => a.toString());
             const waiting = stashes.filter((v) => !elected.includes(v.toString()));
 
-            // @ts-ignore
             return api.derive.staking.queryMulti(waiting, { withLedger: true, withPrefs: true }).pipe(
               map(
                 (info: DeriveStakingQuery[]): DeriveStakingWaiting => ({

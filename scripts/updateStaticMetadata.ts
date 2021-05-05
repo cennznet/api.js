@@ -14,8 +14,19 @@ async function updateMeta(staticOutputDir, jsonOutputDir) {
     const provider = 'ws://localhost:9944';
     const api = await Api.create({provider});
     const metaMap = staticMetadata;
+    const targetVersion = api.runtimeVersion.specVersion.toNumber();
     const newMeta = (await api.rpc.state.getMetadata()).toHex();
-    metaMap[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`] = newMeta;
+    console.log('Known metadata keys', Object.keys(metaMap));
+    // if the runtimeVersion is in our known map we don't want to add a new entry
+    let replaceKey = Object.keys(metaMap).filter(v => v.includes(`-${targetVersion}`))[0];
+    if (replaceKey) {
+        console.log(`Replacing metadata for version: ${targetVersion}`)
+        delete metaMap[replaceKey];
+        metaMap[replaceKey] = newMeta;
+    } else {
+        console.log(`Adding metadata for version: ${targetVersion}`)
+    }
+    metaMap[`${api.genesisHash.toHex()}-${targetVersion}`] = newMeta;
     const data = `export default ${JSON.stringify(metaMap, null, '\n')};`;
 
     const staticOutputPath = path.join(staticOutputDir, 'staticMetadata.ts');

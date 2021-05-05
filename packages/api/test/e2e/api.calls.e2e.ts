@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,12 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types'
-import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
-import {Api} from "@cennznet/api";
-import {SignedBlock} from "@polkadot/types/interfaces/runtime";
-import {Extrinsic} from "@polkadot/types/interfaces";
-import {Vec} from "@polkadot/types";
+import { createHeaderExtended } from '@polkadot/api-derive/type';
 
 describe('e2e api calls', () => {
   let api;
@@ -49,7 +45,7 @@ describe('e2e api calls', () => {
     const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
     const header = block.header;
     const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-    const extHeader = new HeaderExtended(api.registry, header, validators);
+    const extHeader = createHeaderExtended(api.registry, header, validators);
     const author: AccountId = extHeader.author;
     expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
   });

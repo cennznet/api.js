@@ -24,6 +24,8 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[multisig](#multisig)**
 
+- **[nft](#nft)**
+
 - **[rewards](#rewards)**
 
 - **[scheduler](#scheduler)**
@@ -457,6 +459,59 @@ ___
   - `call_hash`: The hash of the call to be executed.
 
    
+
+___
+
+
+## nft
+ 
+### auction(collection_id: `CollectionId`, token_id: `TokenId`, payment_asset: `AssetId`, reserve_price: `Balance`, duration: `Option<BlockNumber>`)
+- **interface**: `api.tx.nft.auction`
+- **summary**:   Sell NFT on the open market to the highest bidder Caller must be the token owner 
+
+  - `reserve_price` winning bid must be over this threshold
+
+  - `payment_asset` fungible asset Id to receive payment with
+
+  - `duration` length of the auction (in blocks), uses default duration if unspecified
+ 
+### bid(collection_id: `CollectionId`, token_id: `TokenId`, amount: `Balance`)
+- **interface**: `api.tx.nft.bid`
+- **summary**:   Place a bid on an open auction 
+
+  - `amount` to bid (in the seller's requested payment asset)
+ 
+### burn(collection_id: `CollectionId`, token_id: `TokenId`)
+- **interface**: `api.tx.nft.burn`
+- **summary**:   Burn an NFT 🔥 Caller must be the token owner 
+ 
+### cancelSale(collection_id: `CollectionId`, token_id: `TokenId`)
+- **interface**: `api.tx.nft.cancelSale`
+- **summary**:   Close a sale or auction Requires no successful bids have been made for the auction. Caller must be the token owner 
+ 
+### createCollection(collection_id: `CollectionId`, schema: `NFTSchema`, metadata_uri: `Option<MetadataURI>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
+- **interface**: `api.tx.nft.createCollection`
+- **summary**:   Create a new NFT collection The caller will be come the collection' owner `collection_id`- 32 byte utf-8 string `schema` - for the collection `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default. 
+ 
+### createToken(collection_id: `CollectionId`, owner: `AccountId`, attributes: `Vec<NFTAttributeValue>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
+- **interface**: `api.tx.nft.createToken`
+- **summary**:   Issue a new NFT `owner` - the token owner `attributes` - initial values according to the NFT collection/schema `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config Caller must be the collection owner 
+ 
+### directPurchase(collection_id: `CollectionId`, token_id: `TokenId`)
+- **interface**: `api.tx.nft.directPurchase`
+- **summary**:   Buy an NFT for its listed price, must be listed for sale 
+ 
+### directSale(collection_id: `CollectionId`, token_id: `TokenId`, buyer: `Option<AccountId>`, payment_asset: `AssetId`, fixed_price: `Balance`, duration: `Option<BlockNumber>`)
+- **interface**: `api.tx.nft.directSale`
+- **summary**:   Sell an NFT to specific account at a fixed price `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase `asset_id` fungible asset Id to receive as payment for the NFT `fixed_price` ask price `duration` listing duration time in blocks Caller must be the token owner 
+ 
+### setOwner(collection_id: `CollectionId`, new_owner: `AccountId`)
+- **interface**: `api.tx.nft.setOwner`
+- **summary**:   Set the owner of a collection Caller must be the current collection owner 
+ 
+### transfer(collection_id: `CollectionId`, token_id: `TokenId`, new_owner: `AccountId`)
+- **interface**: `api.tx.nft.transfer`
+- **summary**:   Transfer ownership of an NFT Caller must be the token owner 
 
 ___
 
