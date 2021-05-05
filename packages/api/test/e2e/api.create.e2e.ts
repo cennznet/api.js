@@ -73,7 +73,7 @@ describe('e2e api create', () => {
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
   });
 
-  it('Creating extrinsic payload via registry with transaction payment option', async () => {
+  it.skip('Creating extrinsic payload via registry with transaction payment option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     const maxPayment = 50_000_000_000;
