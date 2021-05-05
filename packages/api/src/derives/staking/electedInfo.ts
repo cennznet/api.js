@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/api-derive authors & contributors
+// Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Observable } from 'rxjs';
@@ -24,7 +24,6 @@ export function electedInfo(instanceId: string, api: ApiInterfaceRx): () => Obse
             const allAccounts = combineAccounts(nextElected, validators);
             const flags = { withExposure: true, withLedger: true, withPrefs: true };
 
-            // @ts-ignore
             return api.derive.staking.queryMulti(allAccounts, flags).pipe(
               map(
                 (info): DeriveStakingElected => ({
