@@ -18,25 +18,26 @@ import config from '../../../../config';
 import { Metadata } from '@polkadot/metadata';
 
 describe('e2e api create', () => {
-  let api;
 
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    api = Api.create({provider, timeout: 1})
+    const api = Api.create({provider, timeout: 1})
     await expect(api).rejects.toThrow(
         'Timed out in 1 ms.');
     if (api.isConnected) {
-            await api.disconnect();
+      await api.disconnect();
     }
   });
 
   it('For local chain - checking if static metadata is same as latest', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    api = await Api.create({provider});
+    const api = await Api.create({provider});
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
-    await api.disconnect();
+    if (api.isConnected) {
+      await api.disconnect();
+    }
   });
 
   // afterEach(async () => {
@@ -49,17 +50,19 @@ describe('e2e api create', () => {
 
   it('Should create an Api instance with the timeout option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    api = await Api.create({provider, timeout: 1000000});
+    const api = await Api.create({provider, timeout: 1000000});
 
     const hash = await api.rpc.chain.getBlockHash();
 
     expect(hash).toBeDefined();
-    await api.disconnect();
+    if (api.isConnected) {
+      await api.disconnect();
+    }
   });
 
   it('Creating extrinsic payload via registry with no transaction payment', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    api = await Api.create({provider});
+    const api = await Api.create({provider});
     const payload = {
       address: "5FWnYjJEKK9Kxi34XZBAT1WYNKuRw6mmwD9DsonBu3eaBUp3",
       blockHash: "0x6614a99d9046da1f9588c5766f3eb5d5bf561081cd3a7990fc1e3e269f35367e",
@@ -77,12 +80,14 @@ describe('e2e api create', () => {
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
-    await api.disconnect();
+    if (api.isConnected) {
+      await api.disconnect();
+    };
   });
 
   it('Creating extrinsic payload via registry with transaction payment option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    api = await Api.create({provider});
+    const api = await Api.create({provider});
     const maxPayment = 50_000_000_000;
     const assetId = api.registry.createType('AssetId', 16000);
     const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
@@ -103,7 +108,9 @@ describe('e2e api create', () => {
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
-    await api.disconnect();
+    if (api.isConnected) {
+      await api.disconnect();
+    }
   });
 
 
@@ -120,7 +127,7 @@ describe('e2e api create', () => {
     const genesisHash_runtimeVersion = '0x0d0971c150a9741b8719b3c6c9c2e96ec5b2e3fb83641af868e6650f3e263ef0-39';
     let metadata = {};
     metadata[genesisHash_runtimeVersion] = meta;
-    api = await Api.create({provider, metadata});
+    const api = await Api.create({provider, metadata});
     // expect(api.runtimeMetadata.toHex()).toEqual(new Metadata(api.registry, meta).toHex());
     console.log('API query::', api.query.genericAsset);
     console.log('API tx::', api.tx.genericAsset);
