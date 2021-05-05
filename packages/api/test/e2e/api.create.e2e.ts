@@ -22,8 +22,12 @@ describe('e2e api create', () => {
 
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
-    await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
+    api = Api.create({provider, timeout: 1})
+    await expect(api).rejects.toThrow(
         'Timed out in 1 ms.');
+    if (api.isConnected) {
+            await api.disconnect();
+    }
   });
 
   it('For local chain - checking if static metadata is same as latest', async () => {
@@ -32,15 +36,16 @@ describe('e2e api create', () => {
     const meta = staticMetadata[`${api.genesisHash.toHex()}-${api.runtimeVersion.specVersion.toNumber()}`];
     expect(meta).toBeDefined();
     expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
+    await api.disconnect();
   });
 
-  afterEach(async () => {
-    try {
-      if (api.isConnected) {
-        await api.disconnect();
-      }
-    } catch (e) {}
-  });
+  // afterEach(async () => {
+  //   try {
+  //     if (api.isConnected) {
+  //       await api.disconnect();
+  //     }
+  //   } catch (e) {}
+  // });
 
   it('Should create an Api instance with the timeout option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
@@ -49,6 +54,7 @@ describe('e2e api create', () => {
     const hash = await api.rpc.chain.getBlockHash();
 
     expect(hash).toBeDefined();
+    await api.disconnect();
   });
 
   it('Creating extrinsic payload via registry with no transaction payment', async () => {
@@ -71,9 +77,10 @@ describe('e2e api create', () => {
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
+    await api.disconnect();
   });
 
-  it.skip('Creating extrinsic payload via registry with transaction payment option', async () => {
+  it('Creating extrinsic payload via registry with transaction payment option', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     const maxPayment = 50_000_000_000;
@@ -96,6 +103,7 @@ describe('e2e api create', () => {
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+    await api.disconnect();
   });
 
 

@@ -9,7 +9,6 @@ const initApiPromise = async () => {
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
   const api = await ApiPromise.create({provider: providerUrl});
-  await api.isReady;
   return api;
 };
 
