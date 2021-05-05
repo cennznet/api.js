@@ -8,7 +8,9 @@ const initApiPromise = async () => {
   console.log('providerUrl', providerUrl);
   console.log('process.env.TEST_TYPE: ', process.env.TEST_TYPE);
 
-  return await ApiPromise.create({provider: providerUrl});
+  const api = await ApiPromise.create({provider: providerUrl});
+  await api.isReady;
+  return api;
 };
 
 export default initApiPromise;
