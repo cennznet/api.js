@@ -25,7 +25,7 @@ import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class Api extends ApiPromise {
-  static async create(options: ApiOptions = {}): Promise<Api> {
+  static create(options: ApiOptions = {}): Promise<Api> {
     const api = new Api(options);
     return withTimeout(
       new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ export class Api extends ApiPromise {
           reject(new Error('Connection fail'));
         };
 
-        api.isReady.then(res => {
+        api.isReady.then((res) => {
           //  Remove error listener if API initialization success.
           (api as ApiPromise).off('error', rejectError);
           resolve((res as unknown) as Api);
@@ -80,7 +80,7 @@ export class Api extends ApiPromise {
   }
 }
 
-async function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
+function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
   if (timeoutMs === 0) {
     return promise;
   }
