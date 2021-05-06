@@ -9,8 +9,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "polkadot-dev-build-ts",
-    "clean": "polkadot-dev-clean-build",
+    "build": "tsc",
+    "build:release": "sh scripts/build-release.sh",
+    "clean": "rm -rf **/build",
     "docs:meta": "node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",

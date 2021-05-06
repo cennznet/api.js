@@ -37,7 +37,7 @@ export class Api extends ApiPromise {
           reject(new Error('Connection fail'));
         };
 
-        api.isReady.then(res => {
+        api.isReady.then((res) => {
           //  Remove error listener if API initialization success.
           (api as ApiPromise).off('error', rejectError);
           resolve((res as unknown) as Api);

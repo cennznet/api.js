@@ -47,12 +47,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         branch: "release/${{steps.find_version.outputs.tag_name}}"
-    - name: package
+    - name: package 📦
       run: |
-        yarn && yarn build
-        npx lerna exec -- 'cp package.json build/'
-        npx lerna exec -- 'cp README.md build/'
-        npx lerna exec -- 'cp ../../LICENSE build/'
+        yarn && yarn build:release
     - name: publish to npm
       env:
         NPM_KEY: ${{ secrets.NPM_KEY }}

@@ -1,21 +1,18 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "baseUrl": ".",
     "target": "es2017",
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "outDir": "build",
-    "baseUrl": ".",
-    "types": ["node", "jest"],
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "lib": ["ES2017","es2018", "es2019"
-    ],
-    "emitDecoratorMetadata": true,
+    // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true,
-    "sourceMap": true,
-    "inlineSources": true,
+    "emitDeclarationOnly": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2017","ES2018", "ES2019", "ES2020"],
+    // Ensure that Babel can safely transpile files in the TypeScript project
+    "isolatedModules": true,
     "paths": {
       "@cennznet/api/*": ["packages/api/src/*"],
       "@cennznet/api": ["packages/api/src/index"],
