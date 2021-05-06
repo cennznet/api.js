@@ -22,7 +22,7 @@ export class SingleAccountSigner implements Signer {
     this.#signDelay = signDelay;
   }
 
-  signPayload (payload: SignerPayloadJSON): Promise<SignerResult> {
+  async signPayload (payload: SignerPayloadJSON): Promise<SignerResult> {
     assert(payload.address === this.#keyringPair.address, 'Signer does not have the keyringPair');
 
     return new Promise((resolve): void => {
@@ -37,7 +37,7 @@ export class SingleAccountSigner implements Signer {
     });
   }
 
-  signRaw ({ address, data }: SignerPayloadRaw): Promise<SignerResult> {
+  async signRaw ({ address, data }: SignerPayloadRaw): Promise<SignerResult> {
     assert(address === this.#keyringPair.address, 'Signer does not have the keyringPair');
 
     return new Promise((resolve): void => {

@@ -25,7 +25,7 @@ import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class Api extends ApiPromise {
-  static create(options: ApiOptions = {}): Promise<Api> {
+  static async create(options: ApiOptions = {}): Promise<Api> {
     const api = new Api(options);
     return withTimeout(
       new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ export class Api extends ApiPromise {
   }
 }
 
-function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
+async function withTimeout(promise: Promise<Api>, timeoutMs: number): Promise<Api> {
   if (timeoutMs === 0) {
     return promise;
   }
