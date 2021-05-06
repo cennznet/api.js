@@ -48,6 +48,7 @@ jobs:
       with:
         branch: "release/${{steps.find_version.outputs.tag_name}}"
     - name: package 📦
+      shell: bash
       run: |
         yarn && yarn build:release
     - name: publish to npm ✨
