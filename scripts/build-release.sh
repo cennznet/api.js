@@ -13,8 +13,8 @@ for d in $(pwd)/packages/* ; do
     # copy in essential files for publishing to npm
     cp LICENSE $d/build/LICENSE
     ls $d
-    cp $d/{README.md} $d/build
-    cp $d/{package.json} $d/build
+    cp $d/README.md $d/build/README.md
+    cp $d/package.json $d/build/package.json
 done
 
 printf '\n\ndone ✨\n\n'
