@@ -5,3 +5,4 @@
 **/*.spec.*
 /scripts/*
 packages/**/build/**
+**/*.d.ts

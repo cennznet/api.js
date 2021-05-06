@@ -49,7 +49,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts --ignore-path *.d.ts"
+      "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts"
     }
   },
   "dependencies": {
