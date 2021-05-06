@@ -50,7 +50,7 @@ jobs:
     - name: package 📦
       run: |
         yarn && yarn build:release
-    - name: publish to npm
+    - name: publish to npm ✨
       env:
         NPM_KEY: ${{ secrets.NPM_KEY }}
       run: |
