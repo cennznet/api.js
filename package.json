@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "build:release": "sh scripts/build-release.sh",
-    "clean": "rm -rf **/build",
+    "build:release": "yarn clean && sh scripts/build-release.sh",
+    "clean": "rm -rf build && npx lerna exec -- rm -rf build",
     "docs:meta": "node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
