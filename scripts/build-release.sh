@@ -9,7 +9,7 @@ tsc --outDir $BUILD_DIR
 for d in $(pwd)/packages/* ; do
     PACKAGE=$(basename $d)
     printf "\n\nBuilding @cennznet/$PACKAGE...\n\n"
-    npx babel -f babel.config.js --ignore='**/*.d.ts,**/*.e2e.ts,**/*.spec.ts' --extensions='.ts' --out-file-extension='.js' -d "$d/build" "$d/src"
+    npx babel -f babel.config.js --ignore='**/*.d.ts,**/*.e2e.ts,**/*.spec.ts' --extensions='.ts' --out-file-extension='.cjs' -d "$d/build" "$d/src"
     # copy in *d.ts definitions. ignore tests
     rsync \
     --exclude '**/*.e2e.d.ts' \
