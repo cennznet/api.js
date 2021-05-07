@@ -25,5 +25,5 @@
   },
   "include": ["packages/**/*", "scripts/*.ts", "config"],
   "exclude": ["**/node_modules/**"],
-  "typeRoots": ["./node_modules/@types"]
+  "typeRoots": ["./node_modules/@types", "@polkadot/ts"]
 }

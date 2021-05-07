@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.1",
     "description": "Additional type definitions for the CENNZnet runtime",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
@@ -10,6 +10,7 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "types": "index.d.ts",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/cennznet/api.js.git"
