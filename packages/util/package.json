@@ -4,7 +4,7 @@
     "description": "utils for cennznet sdk",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
-        "CENNZNet"
+        "CENNZnet"
     ],
     "homepage": "https://github.com/cennznet/api.js/tree/master/packages/util",
     "license": "Apache-2.0",

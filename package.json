@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "build:release": "sh scripts/build-release.sh",
-    "clean": "rm -rf **/build",
+    "build:release": "yarn clean && sh scripts/build-release.sh",
+    "clean": "rm -rf build && npx lerna exec -- rm -rf build",
     "docs:meta": "node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
@@ -21,7 +21,15 @@
     "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
   },
   "devDependencies": {
-    "@polkadot/dev": "0.62.7",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
+    "@babel/plugin-proposal-private-methods": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-typescript": "^7.13.0",
+    "@babel/core": "^7.0.0-0",
     "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",

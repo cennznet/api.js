@@ -6,7 +6,7 @@ build
 node_modules
 .DS_Store
 coverage
-packages/**/*.d.ts
+**/*.d.ts
 .vscode
 .iml
 api_docs
