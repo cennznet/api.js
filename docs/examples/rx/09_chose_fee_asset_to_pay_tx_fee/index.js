@@ -5,9 +5,6 @@ const {ApiRx} = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const { Keyring } = require('@polkadot/keyring');
 
-// utility function for random values
-const {randomAsU8a} = require('@cennznet/util');
-
 const {combineLatest, of} = require('rxjs');
 const {first, switchMap, tap} = require('rxjs/operators');
 
@@ -49,7 +46,7 @@ async function main() {
     const nonce = await api.rpc.system.accountNextIndex(alicePair.address).pipe(first()).toPromise();;
 
     // create a new random recipient
-    const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
+    const recipient = keyring.addFromUri('//ChoseAssetToPayFee').address;
 
     queryPoolBalance(api).pipe(
         switchMap(([poolAssetBalance, poolCoreAssetBalance])=>{

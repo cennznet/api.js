@@ -4,8 +4,6 @@ const { Api } = require('@cennznet/api');
 
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const { Keyring } = require('@polkadot/keyring');
-// utility function for random values
-const { randomAsU8a } = require('@cennznet/util');
 
 const AMOUNT = 10000;
 
@@ -29,8 +27,8 @@ async function main () {
   // get the nonce for the admin key
   const nonce = await api.rpc.system.accountNextIndex(alicePair.address);
 
-  // create a new random recipient
-  const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
+  // create a new recipient
+  const recipient = keyring.createFromUri('//TransferEventsTest').address;
 
   console.log('Sending', AMOUNT, 'from', alicePair.address, 'to', recipient, 'with nonce', nonce.toString());
 
