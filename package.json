@@ -53,8 +53,5 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts"
     }
-  },
-  "dependencies": {
-    "typedoc-plugin-markdown": "^3.8.0"
   }
 }
