@@ -8,6 +8,9 @@
   "author": "Centrality Developers <support@centrality.ai>",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "type": "module",
@@ -21,19 +24,14 @@
   },
   "dependencies": {
     "@cennznet/types": "^2.0.0-alpha.1",
-    "@polkadot/api": "4.5.1",
-    "@polkadot/metadata": "4.5.1",
-    "@polkadot/rpc-core": "4.5.1",
-    "@polkadot/rpc-provider": "4.5.1",
-    "@polkadot/types": "4.5.1",
+    "@polkadot/api": "^4.6.0",
+    "@polkadot/metadata": "^4.6.0",
+    "@polkadot/rpc-core": "^4.6.0",
+    "@polkadot/rpc-provider": "^4.6.0",
+    "@polkadot/types": "^4.6.0",
     "eventemitter3": "^4.0.0"
   },
-  "devDependencies": {
-    "@types/jest": "^23.3.5",
-    "jest": "24.1.0",
-    "rimraf": "^2.6.2",
-    "ts-mockito": "^2.3.1",
-    "typedoc": "^0.13.0",
-    "typedoc-plugin-markdown": "^1.1.19"
+  "resolutions": {
+    "rxjs": "7.0.0"
   }
 }

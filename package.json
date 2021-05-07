@@ -10,7 +10,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --outDir build",
     "build:release": "node ./scripts/polkadot-dev-build-ts.cjs",
     "clean": "rm -rf build && npx lerna exec -- rm -rf build",
     "docs:meta": "node ./scripts/metadataMdWrapper.js",

@@ -8,6 +8,9 @@
     ],
     "homepage": "https://github.com/cennznet/api.js/tree/master/packages/types",
     "license": "Apache-2.0",
+    "engines": {
+        "node": ">=14.0.0"
+    },
     "main": "index.js",
     "types": "index.d.ts",
     "type": "module",
@@ -23,14 +26,11 @@
     },
     "dependencies": {
         "@polkadot/keyring": "^6.3.1",
-        "@polkadot/types": "4.5.1",
+        "@polkadot/types": "^4.6.0",
         "@polkadot/util": "^6.3.1",
-        "@polkadot/util-crypto": "^6.3.1",
-        "memoizee": "^0.4.14"
+        "@polkadot/util-crypto": "^6.3.1"
     },
     "devDependencies": {
-        "@polkadot/api": "4.5.1",
-        "@polkadot/typegen": "4.5.1",
-        "@polkadot/rpc-provider": "4.5.1"
+        "@polkadot/typegen": "^4.6.0"
     }
 }
