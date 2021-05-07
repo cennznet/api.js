@@ -11,7 +11,7 @@ for d in $(pwd)/packages/* ; do
     printf "\n\nBuilding @cennznet/$PACKAGE...\n\n"
     npx babel -f babel.config.js --ignore='**/*.d.ts' --extensions='.ts' --out-file-extension='.js' --copy-files -d "$d/build" "$d/src"
     # copy in *d.ts definitions
-    rsync -a "$BUILD_DIR/packages/$PACKAGE/src/" "$d/build/"ls
+    rsync -a "$BUILD_DIR/packages/$PACKAGE/src/" "$d/build/"
     # copy in essential files for publishing to npm
     cp LICENSE $d/build/LICENSE
     ls $d
