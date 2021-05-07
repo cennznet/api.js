@@ -34,7 +34,7 @@ export interface ExtrinsicPayloadValueV0 {
 // The base of an extrinsic payload
 export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
   method: 'Bytes',
-  doughnut: 'Option<Bytes>',
+  doughnut: 'Option<doughnut>',
   era: 'ExtrinsicEra',
   nonce: 'Compact<Index>',
   transactionPayment: 'ChargeTransactionPayment',
