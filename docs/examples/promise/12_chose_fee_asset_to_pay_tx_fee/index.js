@@ -5,9 +5,6 @@ const {Api} = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const { Keyring } = require('@polkadot/keyring');
 
-// utility function for random values
-const {randomAsU8a} = require('@cennznet/util');
-
 const AMOUNT = 10000;
 const FEE_ASSET_ID = 16000;
 const MIN_REQUIRED_POOL_BALANCE = 1000000;
@@ -44,8 +41,8 @@ async function main() {
     // get the nonce for the admin key
     const nonce = await api.rpc.system.accountNextIndex(alicePair.address);
 
-    // create a new random recipient
-    const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
+    // create a new recipient
+    const recipient = keyring.addFromUri('//ChooseFeeAssetToPayTest').address;
 
     const [poolAssetBalance, poolCoreAssetBalance] = await queryPoolBalance(api);
 

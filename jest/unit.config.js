@@ -12,12 +12,10 @@ module.exports = {
   moduleNameMapper: {
     '@cennznet/api(.*)$': '<rootDir>/packages/api/src/$1',
     '@cennznet/types(.*)$': '<rootDir>/packages/types/src/$1',
-    '@cennznet/util(.*)$': '<rootDir>/packages/util/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/packages/api/build',
     '<rootDir>/packages/types/build',
-    '<rootDir>/packages/util/build',
   ],
   transformIgnorePatterns: ['/node_modules/(?!@polkadot|@babel/runtime/helpers/esm/)']
 };
