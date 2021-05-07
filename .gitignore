@@ -13,4 +13,4 @@ api_docs
 .tmp
 tmp
 jest_cache
-**/*.packageInfo.ts
+**/*/packageInfo.ts
