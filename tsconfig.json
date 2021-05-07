@@ -18,8 +18,6 @@
       "@cennznet/api": ["packages/api/src/index"],
       "@cennznet/types/*": ["packages/types/src/*"],
       "@cennznet/types": ["packages/types/src/index"],
-      "@cennznet/util/*": ["packages/util/src/*"],
-      "@cennznet/util": ["packages/util/src/index"],
       "@polkadot/api/augment": ["packages/types/src/interfaces/augment-api.ts"],
       "@polkadot/types/augment": ["packages/types/src/interfaces/augment-types.ts"]
     },

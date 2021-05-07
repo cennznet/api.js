@@ -4,9 +4,6 @@ const { ApiRx } = require('@cennznet/api');
 // import the test keyring (already has dev keys for Alice, Bob, Charlie, Eve & Ferdie)
 const { Keyring } = require('@polkadot/keyring');
 
-// utility function for random values
-const { randomAsU8a } = require('@cennznet/util');
-
 // some constants we are using in this sample
 const AMOUNT = 10000;
 
@@ -26,7 +23,7 @@ async function main () {
   const alicePair = keyring.addFromUri('//Alice');
 
   // create a new random recipient
-  const recipient = keyring.addFromSeed(randomAsU8a(32)).address;
+  const recipient = keyring.addFromSeed('//TransferEventsTest').address;
 
   console.log('Sending', AMOUNT, 'from', alicePair.address, 'to', recipient);
 
