@@ -7,6 +7,7 @@ import {
   ValidatorPrefs,
   RewardDestination,
   Index,
+  Codec,
 } from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 
@@ -28,7 +29,7 @@ export interface DerivedSessionKeyInfo {
   sessionKeys: AccountId[];
 }
 
-export interface EstimateFeeParams {
+export interface EstimateFeeParams extends Codec {
   extrinsic: SubmittableExtrinsic<ApiTypes>;
   userFeeAssetId: string | number;
   maxPayment?: string;

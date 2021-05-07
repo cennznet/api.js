@@ -16,7 +16,7 @@
 import { Bytes, Compact, Option, Raw, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
-import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, InterfaceTypes, Registry } from '@polkadot/types/types';
 import { ChargeTransactionPayment, doughnut, Index } from '../../types';
 
 export interface ExtrinsicPayloadValueV0 {
@@ -32,9 +32,9 @@ export interface ExtrinsicPayloadValueV0 {
 }
 
 // The base of an extrinsic payload
-export const BasePayloadV0: Record<string, any> = {
+export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
   method: 'Bytes',
-  doughnut: 'Option<Doughnut>',
+  doughnut: 'Option<Bytes>',
   era: 'ExtrinsicEra',
   nonce: 'Compact<Index>',
   transactionPayment: 'ChargeTransactionPayment',
@@ -44,7 +44,7 @@ export const BasePayloadV0: Record<string, any> = {
 // the final extrinsic payload itself.
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
-export const PayloadImplicitAddonsV0: Record<string, any> = {
+export const PayloadImplicitAddonsV0: Record<string, keyof InterfaceTypes> = {
   specVersion: 'u32',
   genesisHash: 'Hash',
   blockHash: 'Hash',
@@ -52,7 +52,7 @@ export const PayloadImplicitAddonsV0: Record<string, any> = {
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
-export const FullPayloadV0: Record<string, any> = {
+export const FullPayloadV0: Record<string, keyof InterfaceTypes> = {
   ...BasePayloadV0,
   ...PayloadImplicitAddonsV0,
 };

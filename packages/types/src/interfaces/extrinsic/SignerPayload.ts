@@ -116,7 +116,7 @@ export default class SignerPayload extends _Payload implements ISignerPayload {
   }
 
   /**
-   * @description Creates a representation of the payload in raw Exrinsic form
+   * @description Creates a representation of the payload in raw Extrinsic form
    */
   toRaw(): SignerPayloadRaw {
     const payload = this.toPayload();

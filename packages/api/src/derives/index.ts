@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { ApiTypes } from '@cennznet/api/types';
-import { AnyFunction } from '@cennznet/types';
+import { AnyFunction, CodecArg } from '@cennznet/types';
 import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import * as attestation from './attestation';
@@ -24,7 +24,7 @@ import * as session from './session';
 import * as staking from './staking';
 import * as balances from './balances';
 
-export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
+export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: CodecArg[]) => Observable<any>;
 
 export const derive = { attestation, balances, cennzx, fees, nft, staking, session };
 
