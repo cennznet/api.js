@@ -22,7 +22,7 @@ import config from '../../../../config';
 
 const keyring = new Keyring({ type: 'sr25519' });
 
-describe.skip('runtime v36 compatibility', () => {
+describe('runtime v36 compatibility', () => {
   let api;
   let alice, bob;
   let stakingAssetId;
