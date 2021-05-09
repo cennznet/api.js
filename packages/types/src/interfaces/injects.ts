@@ -44,6 +44,7 @@ export const typesBundle: OverrideBundleType = {
           types: {
             DispatchClass: 'DispatchClassTo36',
             DispatchInfo: 'DispatchInfoTo36',
+            StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0
           },
@@ -51,6 +52,7 @@ export const typesBundle: OverrideBundleType = {
         {
           minmax: [37, undefined],
           types: {
+            StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1
           },
