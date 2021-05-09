@@ -49,7 +49,7 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
       {
         signer: 'Address',
         signature: 'MultiSignature',
-        doughnut: 'Option<Bytes>',
+        doughnut: 'Option<doughnut>',
         era: 'ExtrinsicEra',
         nonce: 'Compact<Index>',
         transactionPayment: 'ChargeTransactionPayment',
