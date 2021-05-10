@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "@cennznet/types": "^2.0.0-alpha.1",
-    "@polkadot/api": "4.9.0",
-    "@polkadot/metadata": "4.9.0",
-    "@polkadot/rpc-core": "4.9.0",
-    "@polkadot/rpc-provider": "4.9.0",
-    "@polkadot/types": "4.9.0",
+    "@polkadot/api": "4.9.2",
+    "@polkadot/metadata": "4.9.2",
+    "@polkadot/rpc-core": "4.9.2",
+    "@polkadot/rpc-provider": "4.9.2",
+    "@polkadot/types": "4.9.2",
     "eventemitter3": "^4.0.0"
   },
   "resolutions": {

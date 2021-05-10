@@ -2202,7 +2202,7 @@
     "@polkadot/x-rxjs" "^6.3.1"
     bn.js "^4.11.9"
 
-"@polkadot/api@4.9.2", "@polkadot/api@^4.6.0":
+"@polkadot/api@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-4.9.2.tgz#2cec0330e812dcfa20741efc1a04822968fca089"
   integrity sha512-PdtJc8YYWwaYsco1CrEIl5tMi2/f95AtfjXxGnFbd2aJwriU2qV0rjEm4IWEkzN/A7lMQhktUCDojjECP83TJw==
@@ -2294,7 +2294,7 @@
     "@polkadot/util" "6.3.1"
     "@polkadot/util-crypto" "6.3.1"
 
-"@polkadot/metadata@4.9.2", "@polkadot/metadata@^4.6.0":
+"@polkadot/metadata@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/metadata/-/metadata-4.9.2.tgz#4fe69f3a67ade102ff167a62c6a18f5359571967"
   integrity sha512-9TPRd4DeSABOAryj0wsH653DoRSfqfyccw/kxl+Z0ls5HpAMMGSlj/tOFZaDNfp2FmyIlBf6EBk7/AWZrEC59A==
@@ -2313,7 +2313,7 @@
   dependencies:
     "@babel/runtime" "^7.13.17"
 
-"@polkadot/rpc-core@4.9.2", "@polkadot/rpc-core@^4.6.0":
+"@polkadot/rpc-core@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/rpc-core/-/rpc-core-4.9.2.tgz#97a1fa376cf2d54b65971405f0f35d0eacc26e86"
   integrity sha512-zE76F1JOz33StkIU/8veloLJJbjcSAcANG7UIlZoHL9H5LY77n+bJ9R4dYiU+TdnXfq6+IKUp8ThNfLCuVAsng==
@@ -2325,7 +2325,7 @@
     "@polkadot/util" "^6.3.1"
     "@polkadot/x-rxjs" "^6.3.1"
 
-"@polkadot/rpc-provider@4.9.2", "@polkadot/rpc-provider@^4.6.0":
+"@polkadot/rpc-provider@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/rpc-provider/-/rpc-provider-4.9.2.tgz#6154226b5e97a5d468d0e231a34152b259674340"
   integrity sha512-Z+uAgQRlR4LxoPK1yexafwqDGlyEcCt5RFy6qNC1zOAYMaizpoxEQHPoLOa0myKElmgfGutssQ7lD0xJn/uHZA==
@@ -2347,7 +2347,7 @@
   dependencies:
     "@types/chrome" "^0.0.136"
 
-"@polkadot/typegen@^4.6.0":
+"@polkadot/typegen@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/typegen/-/typegen-4.9.2.tgz#cc48ccb9fe868dc0ace42b544ef4f3b4237b6e2d"
   integrity sha512-tzIip8zosTrW3zLl9SuecGL+ncsK1AMWLvbq9cujZUOw0I7vVLiCcANYRCBJvm6xvBzyKT241xofqd28hNp7fQ==
@@ -2375,7 +2375,7 @@
     "@polkadot/util" "^6.3.1"
     bn.js "^4.11.9"
 
-"@polkadot/types@4.9.2", "@polkadot/types@^4.6.0":
+"@polkadot/types@4.9.2":
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-4.9.2.tgz#5e76ec04bbc66e92e714f606943c9e14c90357e4"
   integrity sha512-xwxtRgoR2yBYs1FtRTFkoeufE+QrAvVU5ZM/iHr/gtvXQ/zFq5sy1tFQrO6KRhkbJM+eF42AqEzZJubZQbocwQ==
