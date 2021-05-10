@@ -305,7 +305,13 @@ function writeFile (name: string, ...chunks: any[]): void {
 
 function main (): void {
     const registry = new TypeRegistry();
-    const meta = Object.values(staticMetadata)[0]; // Get the static metadata
+    // use the latest runtime metadata we know about
+    const [key, meta] = Object.entries(staticMetadata).pop();
+
+    console.log();
+    console.log(`Generating docs for: ${key}`);
+    console.log();
+
     const metadata = new Metadata(registry, meta);
     registry.setMetadata(metadata);
 
