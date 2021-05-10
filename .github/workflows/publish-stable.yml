@@ -1,9 +1,10 @@
-name: Release Pipeline (stable/1.0)
+name: Release Pipeline (master/1.0)
 
 on:
   pull_request:
     branches:
-      - stable
+      # stable/1.0
+      - master
     types:
       - labeled
     check_suite:
@@ -32,7 +33,7 @@ jobs:
     # checkout merged branch
     - uses: actions/checkout@v2
       with:
-        ref: stable
+        ref: master
     - uses: actions/setup-node@v1
       with:
         node-version: '15.3'
