@@ -33,7 +33,7 @@ describe('e2e api create', () => {
     let matchingVersions = Object.keys(staticMetadata).filter(v => v.includes(targetVersion));
     // only one metadata per protocol version
     expect(matchingVersions.length).toEqual(1);
-    let meta = matchingVersions[0];
+    let meta = staticMetadata[matchingVersions[0]];
     expect(meta).toBeDefined();
     expect(new Metadata(api.registry, meta).asLatest).toEqual(api.runtimeMetadata.asLatest);
   });
