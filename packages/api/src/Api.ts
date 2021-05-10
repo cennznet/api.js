@@ -71,7 +71,6 @@ export class Api extends ApiPromise {
         rpc[section] = value.rpc;
       }
     });
-    console.log('rpc:::', rpc);
     options.metadata = Object.assign(staticMetadata, options.metadata);
     options.types = { ...options.types, ...Types };
     options.derives = mergeDeriveOptions(derives, options.derives);
