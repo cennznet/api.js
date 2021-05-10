@@ -29,7 +29,7 @@ import { TokenId } from '@cennznet/types';
  */
 export function balanceOf(instanceId: string, api: ApiInterfaceRx) {
   return (collection: string, address: string): Observable<number> =>
-    api.rpc.nft
+    (api.rpc as any).nft
       .collectedTokens(collection, address)
       .pipe(drr())
       .pipe(map((collectedTokens: Array<TokenId>) => collectedTokens.length));
