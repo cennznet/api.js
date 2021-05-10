@@ -1,10 +1,10 @@
-name: Release Pipeline (develop/2.0)
+name: Release Pipeline (stable/1.0)
 
 on:
   pull_request:
     branches:
-      # bleeding-edge (2.0)
-      - develop 
+      # stable 1.0
+      - "trunk/stable"
     types:
       - labeled
     check_suite:
@@ -14,7 +14,7 @@ on:
 jobs:
   merge-release-branch:
     # only run if prechecks pass and the source branch is named 'prerelease/*'
-    if: ${{ startsWith(github.head_ref, 'prerelease/2') }} && ${{ github.event.label.name == 'automerge' }}
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
     runs-on: ubuntu-latest
     steps:
     - name: Automerge
@@ -33,7 +33,7 @@ jobs:
     # checkout merged branch
     - uses: actions/checkout@v2
       with:
-        ref: develop
+        ref: "trunk/stable"
     - uses: actions/setup-node@v1
       with:
         node-version: '15.3'
