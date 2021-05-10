@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+## [2.0.0-alpha.2](https://github.com/cennznet/api.js/compare/release/1.4.0-alpha.0...prerelease/2.0.0-alpha.2) (11/05/2021)
+### Changed:
+   - Use polkadots latest beta version (4.9.3-11) for api and (6.3.2-9) for util
+## [1.4.0-alpha.0](https://github.com/cennznet/api.js/compare/release/1.3.4...prerelease/1.4.0-alpha.0) (10/05/2021)
 - Add NFT module support
 - Update to @polkadot/types 4.5.1, @polkadot/util,keyring 6.3.1
 
