@@ -26,15 +26,18 @@ yarn test:e2e
 ```
 
 ## Update Metadata
+
 Fetch latest metadata from local node and regenerate dynamic type definitions + docs
 ```
 yarn meta:update
 ```
 
 ## Making a Release (requires maintainer permission)
-PR target develop branch for 2.0 or master for 1.0 release
+Target `develop` branch for `2.x` release versions
+Target  `master` for `1.x` release versions
+
 1) Create a branch `prerelease/<semver>`
 e.g. `prerelease/1.5.0` for an ordinary release or `prerelease/1.5.0-alpha.0` for a release candidate.  
 Bump package versions, ensure static metadata updated and docs regenerated
-2) Open a PR for develop, passing CI and review
+2) Open a PR for `[develop|master]`, passing CI and review
 3) label it 'automerge' and the release will be published to npm
