@@ -66,7 +66,7 @@ export default {
             'paymentAsset': 'AssetId',
             'reservePrice': 'Balance',
             'close': 'BlockNumber',
-        },        
+        },
         'DirectListing': {
             'paymentAsset': 'AssetId',
             'fixedPrice': 'Balance',

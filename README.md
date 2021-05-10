@@ -37,3 +37,9 @@ e.g. `prerelease/1.5.0` for an ordinary release or `prerelease/1.5.0-alpha.0` fo
 Bump package versions, ensure static metadata updated and docs regenerated
 2) Open a PR, passing CI and review
 3) label it 'automerge' and the release will be published to npm
+
+## Viewing Docs
+Generate typedocs
+```
+yarn docs:src
+```

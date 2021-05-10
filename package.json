@@ -10,11 +10,11 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --outDir build",
     "build:release": "node ./scripts/polkadot-dev-build-ts.cjs",
     "clean": "rm -rf build && npx lerna exec -- rm -rf build",
     "docs:meta": "node ./scripts/metadataMdWrapper.js",
-    "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
+    "docs:src": "rm -rf api_docs && typedoc --out api_docs --exclude '**/*+(index|.spec|.e2e).ts' packages/api/src",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
     "meta:update": "node ./scripts/updateStaticMetadata packages/api/src packages/types && pushd packages/types && yarn build && popd && yarn docs:meta",
     "lint": "eslint . --ext .ts",
@@ -38,7 +38,7 @@
     "ts-jest": "^26.4.1",
     "ts-node": "^8.0.3",
     "tsconfig-paths": "^3.8.0",
-    "typedoc": "^0.19.2",
+    "typedoc": "^0.20.0",
     "typescript": "^4.0.3"
   },
   "resolutions": {
@@ -53,8 +53,5 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts"
     }
-  },
-  "dependencies": {
-    "typedoc-plugin-markdown": "^2.2.17"
   }
 }

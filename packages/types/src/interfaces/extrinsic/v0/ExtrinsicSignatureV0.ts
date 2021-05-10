@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited & @polkadot/types authors & contributors
+// Copyright 2019-2021 Centrality Investments Limited & @polkadot/types authors & contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -101,12 +101,12 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   /**
    * @description The [[Doughnut]]
    */
-  get doughnut() {
+  get doughnut(): unknown {
     return this.get('doughnut');
   }
 
   /**
-   * @description The actuall [[Signature]] hash
+   * @description The actual [[Signature]] hash
    */
   //  get signature(): EcdsaSignature | Ed25519Signature | Sr25519Signature {
   get signature(): EcdsaSignature | Ed25519Signature | Sr25519Signature {
@@ -201,7 +201,7 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   }
 
   /**
-   * @description Generate a payload and pplies the signature from a keypair
+   * @description Generate a payload and applies the signature from a keypair
    */
   sign(
     method: Call,
@@ -213,6 +213,7 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
       nonce,
       doughnut,
       runtimeVersion: { specVersion },
+      // @ts-ignore
       tip,
       transactionPayment,
     }: ExtrinsicV0SignatureOptions

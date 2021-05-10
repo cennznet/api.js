@@ -44,6 +44,8 @@ export const typesBundle: OverrideBundleType = {
           types: {
             DispatchClass: 'DispatchClassTo36',
             DispatchInfo: 'DispatchInfoTo36',
+            // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
+            StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0
           },
@@ -51,6 +53,8 @@ export const typesBundle: OverrideBundleType = {
         {
           minmax: [37, undefined],
           types: {
+            // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
+            StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1
           },

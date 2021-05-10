@@ -1,4 +1,4 @@
-// Copyright 2019-2020 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 import { ApiRx as ApiRxBase } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
+
 import * as definitions from '@cennznet/types/interfaces/definitions';
-import { mergeDeriveOptions } from './util/derives';
+import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
+import { mergeDeriveOptions } from './util/derives';
 import { getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
@@ -30,7 +31,7 @@ export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
     const apiRx = new ApiRx(options);
 
-    const observable: Observable<ApiRx> = new Observable(x => {
+    const observable: Observable<ApiRx> = new Observable((x) => {
       apiRx.on('error', (): void => {
         apiRx.disconnect().finally(() => {
           x.error(new Error('Connection fail'));

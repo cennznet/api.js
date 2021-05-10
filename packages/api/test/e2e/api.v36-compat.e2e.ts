@@ -167,7 +167,7 @@ describe('runtime v36 compatibility', () => {
       expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
       expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
     });
-  
+
     it('Queries historical block events', async done => {
       // This will make a tx to generate some events, then request the block events after the fact.
 
