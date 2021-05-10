@@ -24,6 +24,6 @@
     "skipLibCheck": true
   },
   "include": ["packages/**/*", "scripts/*.ts", "config"],
-  "exclude": ["**/node_modules/**"],
+  "exclude": ["**/node_modules/**", "scripts/*"],
   "typeRoots": ["./node_modules/@types", "@polkadot/ts"]
 }
