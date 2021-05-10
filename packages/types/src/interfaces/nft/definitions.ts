@@ -1,20 +1,20 @@
 export default {
-    // rpc: {
-    //     collectedTokens: {
-    //         description: 'Get the tokens owned by an address in a certain collection',
-    //         params: [
-    //           {
-    //             name: 'collection',
-    //             type: 'CollectionId'
-    //           },
-    //           {
-    //             name: 'address',
-    //             type: 'Address',
-    //           }
-    //         ],
-    //         type: 'Vec<TokenId>',
-    //     },
-    // },
+    rpc: {
+        collectedTokens: {
+            description: 'Get the tokens owned by an address in a certain collection',
+            params: [
+              {
+                name: 'collection',
+                type: 'CollectionId'
+              },
+              {
+                name: 'address',
+                type: 'Address',
+              }
+            ],
+            type: 'Vec<TokenId>',
+        },
+    },
     types: {
         'CollectionId': 'String',
         'MetadataURI': 'String',
