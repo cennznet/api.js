@@ -5,11 +5,13 @@ const { Api } = require('@cennznet/api');
 // Known account we want to use (available on dev chain, with funds)
 const Alice = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
-// Asset Id for CENNZ in Rimu
+// Asset Id for CENNZ in Nikau
 const CENNZ = 16000;
 
 async function main () {
-  // Create an await for the API
+  // Here we don't pass the (optional) provider, connecting directly to the default
+  // node/port, i.e. `ws://127.0.0.1:9944`. Await for the isReady promise to ensure
+  // the API has connected to the node and completed the initialisation process
   const api = await Api.create();
 
   // Retrieve the initial balance. Since the call has no callback, it is simply a promise
@@ -22,7 +24,7 @@ async function main () {
   // Here we subscribe to any balance changes and update the on-screen value
   api.query.genericAsset.freeBalance(CENNZ, Alice, (current) => {
     // Calculate the delta
-    const change = current.sub(previous);
+    const change = current.sub(previous).abs();
 
     // Only display positive value changes (Since we are pulling `previous` above already,
     // the initial balance change will also be zero)

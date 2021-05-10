@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {assert, isUndefined} from '@plugnet/util';
+import { assert, isUndefined } from '@polkadot/util';
 
 const STRIP_ZERO = /^(.*?)(0*)$/;
 
@@ -20,7 +20,7 @@ const STRIP_ZERO = /^(.*?)(0*)$/;
  * trim all trailing zeros. return '' if only zero is passed in.
  * @param value
  */
-export function stripEndZero(value: string) {
-    assert(!isUndefined(value), 'must not be undefined');
-    return STRIP_ZERO.exec(value)[1];
+export default function stripEndZero(value: string) {
+  assert(!isUndefined(value), 'must not be undefined');
+  return STRIP_ZERO.exec(value)[1];
 }

@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,65 +12,71 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ApiInterfaceRx} from '@cennznet/api/types';
-import {Fee} from '@cennznet/types';
-import {UNMASK_VERSION} from '@cennznet/types/extrinsic/constants';
-import {IExtrinsic} from '@cennznet/types/types';
-import {drr} from '@plugnet/api-derive/util/drr';
-import {createType} from '@plugnet/types';
-import {Address, Index} from '@plugnet/types/interfaces';
+import { EstimateFeeParams } from '@cennznet/api/derives/types';
+import { ApiInterfaceRx } from '@cennznet/api/types';
+import { drr } from '@polkadot/rpc-core/util';
+import { RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
 import BN from 'bn.js';
-import {combineLatest, Observable, of} from 'rxjs';
-import {first, map} from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 
-// section -> method -> fee
-const FEE_MAP = {
-    genericAsset: {
-        transfer: Fee.GenericAssetFee.TransferFee,
-    },
-};
+// This interface is to determine fee estimate for any transaction that is going to be executed..
+// The estimate can be in any currency(userFeeAssetId) provided there is enough liquidity in the exchange pool for that currency.
+// In case user wants to know estimated fee in different currency, the interface also needs the maxPayment that can used from currency as fee.
+// Scenarios when this function can be useful
+// 1. DAPP creator wants to show price the extrinsic will cost in default currency
+//   const extrinsic = api.tx.genericAsset
+//             .transfer(assetId, address, amount);
+//   const userFeeAssetId = '16001' // default spending asset
+//   const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId})
+// 2. DAPP user desire to pay fee in different asset(not the default fee asset)
+//    const extrinsic = api.tx.genericAsset
+//              .transfer(assetId, address, amount);
+//    const userFeeAssetId = '16005' // asset to pay fee in
+//    const maxPayment = 'xxx' // Max amount user is ok to pay in 'fee asset'
+//    const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId, maxPayment}) // this will only be successful if their is enough liquidity of users asset in exchange pool
 
-export function estimateFee(api: ApiInterfaceRx) {
-    return (extrinsic: IExtrinsic, sender: Address): Observable<BN> => {
-        const methodFeeEntry = (FEE_MAP[extrinsic.method.sectionName] || {})[extrinsic.method.methodName];
-        const methodFee$ = methodFeeEntry ? api.query.fees.feeRegistry(methodFeeEntry) : of(new BN(0));
-        return combineLatest([
-            api.query.fees.feeRegistry(Fee.FeesFee.BaseFee),
-            api.query.fees.feeRegistry(Fee.FeesFee.BytesFee),
-            methodFee$,
-            api.query.system.accountNonce(sender),
-        ]).pipe(
-            first(),
-            map(([baseFee, byteFee, methodFee, nonce]) =>
-                calcFee(
-                    baseFee as any,
-                    byteFee as any,
-                    methodFee,
-                    nonce as any,
-                    createType('Address', sender),
-                    extrinsic
-                )
-            ),
-            drr()
-        );
-    };
-}
-
-const SIGNED_VERSION = 129;
-function calcFee(baseFee: BN, byteFee: BN, methodFee, nonce: Index, sender: Address, extrinsic: IExtrinsic) {
-    const clone = createType('Extrinsic', extrinsic.toU8a(), true) as IExtrinsic;
-    if ((clone.version & UNMASK_VERSION) === 1) {
-        const signature = (clone as any).raw.get('signature');
-        signature.set('signer', sender);
-        signature.set('nonce', createType('Compact<Index>', nonce));
-        signature.set('version', createType('u8', SIGNED_VERSION));
-        // to avoid isEmpty check
-        signature.set('signature', createType('Signature', [1]));
-        return byteFee
-            .muln(clone.encodedLength)
-            .add(baseFee)
-            .add(methodFee);
-    }
-    //FIXME: to support Extrinsic v2
-    throw new Error('Extrinsic v2 fee estimation is not supported');
+export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
+  // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
+  // This is because fees are currently based on the byte length of the extrinsic
+  return ({ extrinsic, userFeeAssetId, maxPayment }: EstimateFeeParams): Observable<Balance | Error> => {
+    return combineLatest([
+      api.rpc.state.getRuntimeVersion(),
+      api.rpc.chain.getBlockHash(),
+      api.rpc.chain.getBlockHash(0),
+      api.query.genericAsset.spendingAssetId(),
+    ]).pipe(
+      first(),
+      switchMap(
+        ([runtimeVersion, blockHash, genesisHash, networkFeeAssetId]): Observable<[RuntimeDispatchInfo, AssetId]> => {
+          const era = api.registry.createType('ExtrinsicEra', { current: 1, period: 10 });
+          const nonce = null;
+          const fake_sender = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+          let payload;
+          if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
+            payload = { runtimeVersion, era, blockHash, genesisHash, nonce };
+          } else {
+            const assetId = api.registry.createType('AssetId', userFeeAssetId);
+            const feeExchange = api.registry.createType('FeeExchange', { assetId, maxPayment }, 0);
+            const transactionPayment = api.registry.createType('ChargeTransactionPayment', { tip: 0, feeExchange });
+            payload = { runtimeVersion, era, blockHash, genesisHash, nonce, transactionPayment };
+          }
+          extrinsic.signFake(fake_sender, payload as SignatureOptions);
+          return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
+        }
+      ),
+      switchMap(([paymentInfo, networkFeeAssetId]) => {
+        const feeInBaseCurrency = paymentInfo.partialFee;
+        if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
+          return of(feeInBaseCurrency);
+        } else {
+          return (api.rpc as any).cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
+        }
+      }),
+      map((price: BN) => price),
+      catchError((err: Error) => of(err)),
+      map((err: Error) => err),
+      drr()
+    );
+  };
 }

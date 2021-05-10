@@ -1,224 +1,296 @@
-// Copyright 2017-2019 @polkadot/types authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2020 @polkadot/typegen authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import '@plugnet/types/injector';
+import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
+import { Codec, DefinitionRpcParam } from '@polkadot/types/types';
 
 import fs from 'fs';
-import {stringCamelCase, stringLowerFirst} from '@plugnet/util';
+import { Metadata } from '@polkadot/metadata';
+import staticMetadata from "@cennznet/api/staticMetadata";
+import { GenericCall as Call } from '@polkadot/types/generic';
+import { unwrapStorageType } from '@polkadot/types/primitive/StorageKey';
+import { TypeRegistry } from '@polkadot/types/create';
+import { Vec } from '@polkadot/types/codec';
+import * as substrateDefinitions from '@polkadot/types/interfaces/definitions';
+import * as cennznetDefinitions from '@cennznet/types/interfaces/definitions';
+import { Text } from '@polkadot/types/primitive';
+import { stringCamelCase, stringLowerFirst } from '@polkadot/util';
 
-import interfaces from '@plugnet/jsonrpc';
-import Call from '@plugnet/types/primitive/Generic/Call';
-import Metadata from '@plugnet/types/Metadata';
-import rpcdata from '@plugnet/types/Metadata/static';
-import MetadataV7, {ModuleMetadataV7} from '@plugnet/types/Metadata/v7';
-
-const ANCHOR_TOP = '';
-const LINK_BACK_TO_TOP = '';
-
-const DESC_CONSTANTS = '\n\n_The following sections contain the module constants, also known as parameter types.\n';
-const DESC_EXTRINSICS =
-    '\n\n_The following sections contain Extrinsics methods are part of the default Substrate runtime._\n';
-const DESC_EVENTS =
-    '\n\nEvents are emitted for certain operations on the runtime. The following sections describe the events that are part of the default Substrate runtime.\n';
-const DESC_RPC =
-    '\n\n_The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit. The RPCs are provided by Substrate itself._';
-const DESC_STORAGE =
-    '\n\n_The following sections contain Storage methods are part of the default Substrate runtime._\n';
-
-function sectionLink(sectionName: string): string {
-    return `- **[${stringCamelCase(sectionName)}](#${stringCamelCase(sectionName)})**\n\n`;
+interface Page {
+    title: string;
+    description: string;
+    sections: {
+        name: string;
+        description?: string;
+        items: {
+            name: string;
+            [bullet: string]: string | Vec<Text>;
+        }[];
+    }[];
 }
 
-function generateSectionHeader(md: string, sectionName: string): string {
-    const alink = `<a name=${sectionName}></a>\n`;
-    return `${md} \n___\n ${alink} ${LINK_BACK_TO_TOP}\n\n### ${sectionName}\n`;
+const STATIC_TEXT = '\n\n(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)';
+
+const DESC_CONSTANTS = `The following sections contain the module constants, also known as parameter types. These can only be changed as part of a runtime upgrade. On the api, these are exposed via \`api.consts.<module>.<method>\`. ${STATIC_TEXT}`;
+const DESC_EXTRINSICS = `The following sections contain Extrinsics methods are part of the default Substrate runtime. On the api, these are exposed via \`api.tx.<module>.<method>\`. ${STATIC_TEXT}`;
+const DESC_ERRORS = `This page lists the errors that can be encountered in the different modules. ${STATIC_TEXT}`;
+const DESC_EVENTS = `Events are emitted for certain operations on the runtime. The following sections describe the events that are part of the default Substrate runtime. ${STATIC_TEXT}`;
+const DESC_RPC = 'The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit.';
+const DESC_STORAGE = `The following sections contain Storage methods are part of the default Substrate runtime. On the api, these are exposed via \`api.query.<module>.<method>\`. ${STATIC_TEXT}`;
+
+/** @internal */
+function documentationVecToMarkdown (docLines: Vec<Text>, indent = 0): string {
+    const md = docLines
+        .map((docLine) => docLine && docLine.substring(1)) // trim the leading space
+        .reduce((md, docLine): string => // generate paragraphs
+                !docLine.trim().length
+                    ? `${md}\n\n` // empty line
+                    : /^[*-]/.test(docLine.trimStart()) && !md.endsWith('\n\n')
+                    ? `${md}\n\n${docLine}` // line calling for a preceding linebreak
+                    : `${md}${docLine.replace(/^#{1,3} /, '#### ')} `
+            , '')
+        .replace(/#### <weight>/g, '<weight>')
+        .replace(/<weight>(.|\n)*?<\/weight>/g, '')
+        .replace(/#### Weight:/g, 'Weight:');
+
+    // prefix each line with indentation
+    return md && md.split('\n\n').map((line) => `${' '.repeat(indent)}${line}`).join('\n\n');
 }
 
-function addRpc(): string {
-    const renderHeading = `## ${ANCHOR_TOP}JSON-RPC${DESC_RPC}\n`;
-    const orderedSections = Object.keys(interfaces).sort();
-    const renderAnchors = Object.keys(interfaces)
-        .sort()
-        .map((sectionName): string => sectionLink(sectionName))
-        .join('');
+function renderPage (page: Page): string {
+    let md = `---\ntitle: ${page.title}\n---\n\n`;
 
-    return orderedSections.reduce((md, sectionName): string => {
-        const section = interfaces[sectionName];
-        const renderSection = generateSectionHeader(md, sectionName) + `\n_${section.description}_\n`;
-        const orderedMethods = Object.keys(section.methods).sort();
+    if (page.description) {
+        md += `${page.description}\n\n`;
+    }
 
-        return orderedMethods.reduce((md, methodName): string => {
-            const method = section.methods[methodName];
-            const args = method.params
-                .map(({name, isOptional, type}): string => {
-                    return name + (isOptional ? '?' : '') + ': `' + type + '`';
-                })
-                .join(', ');
-            const type = '`' + method.type + '`';
-            // const isSub = method.isSubscription;
-            const renderMethod = `${md}\n▸ **${methodName}**(${args})`;
-            const renderReturnType = `: ${type}`;
-            const renderSignature = `${renderMethod}${renderReturnType}`;
-            const renderSummary = `${
-                method && method.description ? `\n- **summary**: ${method.description}\n` : `\n\n`
-            }`;
+    // index
+    page.sections.forEach((section) => {
+        if (section.name) {
+            md += `- **[${stringCamelCase(section.name)}](#${stringCamelCase(section.name).toLowerCase()})**\n\n`;
+        }
+    });
 
-            return `${renderSignature}${renderSummary}`;
-        }, renderSection);
-    }, renderHeading + renderAnchors);
-}
+    // contents
+    page.sections.forEach((section) => {
+        md += `\n___\n\n\n## ${section.name}\n`;
 
-/**
- * Sort object by their `.name`
- */
-function sortByName<T extends {name: any}>(a: T, b: T): number {
-    // ignore upper and lowercase
-    const nameA = a.name.toString().toUpperCase();
-    const nameB = b.name.toString().toUpperCase();
-
-    return nameA.localeCompare(nameB);
-}
-
-function addConstants(metadata: MetadataV7): string {
-    const renderHeading = `## ${ANCHOR_TOP}Constants${DESC_CONSTANTS}`;
-    const orderedSections = metadata.modules.sort(sortByName);
-    let renderAnchors = '';
-    const sections = orderedSections.reduce((md, moduleMetadata): string => {
-        if (moduleMetadata.constants.isEmpty) {
-            return md;
+        if (section.description) {
+            md += `\n_${section.description}_\n`;
         }
 
-        const sectionName = stringLowerFirst(moduleMetadata.name.toString());
+        section.items && section.items.forEach((item) => {
+            md += ` \n### ${item.name}`;
 
-        renderAnchors += sectionLink(sectionName);
+            Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
+                md += `\n- **${bullet}**: ${
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    item[bullet] instanceof Vec
+                        ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
+                        : item[bullet]
+                }`;
+            });
 
-        const renderSection = generateSectionHeader(md, sectionName);
-        const orderedConstants = moduleMetadata.constants.sort(sortByName);
+            md += '\n';
+        });
+    });
 
-        return orderedConstants.reduce((md, func): string => {
-            const methodName = stringCamelCase(func.name.toString());
-            const doc = func.documentation.reduce((md, doc): string => `${md} ${doc}`, '');
-            const type = func.type;
-            const renderSignature = `${md}\n▸ **${methodName}**: ` + '`' + type + '`';
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
-
-            return renderSignature + renderSummary;
-        }, renderSection);
-    }, '');
-
-    return renderHeading + renderAnchors + sections;
+    return md;
 }
 
-function addEvents(metadata: MetadataV7): string {
-    const renderHeading = `## ${ANCHOR_TOP}Events${DESC_EVENTS}`;
-    const orderedSections = metadata.modules.sort(sortByName);
-    let renderAnchors = '';
-    const sections = orderedSections.reduce((md, meta): string => {
-        if (meta.events.isNone || !meta.events.unwrap().length) {
-            return md;
-        }
-
-        const events = meta.events.unwrap();
-        const sectionName = stringCamelCase(meta.name.toString());
-
-        renderAnchors += sectionLink(sectionName);
-
-        const renderSection = generateSectionHeader(md, sectionName);
-        const orderedMethods = events.sort(sortByName);
-
-        return orderedMethods.reduce((md, func): string => {
-            const methodName = func.name.toString();
-            const args = func.args.map((type): string => '`' + type + '`').join(', ');
-            const doc = func.documentation.reduce((md, doc): string => `${md} ${doc}`, '');
-            const renderSignature = `${md}\n▸ **${methodName}**(${args})`;
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
-
-            return renderSignature + renderSummary;
-        }, renderSection);
-    }, '');
-
-    return renderHeading + renderAnchors + sections;
+function sortByName<T extends { name: Codec | string }> (a: T, b: T): number {
+    // case insensitive (all-uppercase) sorting
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+    return a.name.toString().toUpperCase().localeCompare(b.name.toString().toUpperCase());
 }
 
-function addExtrinsics(metadata: MetadataV7): string {
-    const renderHeading = `## ${ANCHOR_TOP}Extrinsics${DESC_EXTRINSICS}`;
-    const orderedSections = metadata.modules.map((i): ModuleMetadataV7 => i).sort(sortByName);
-    let renderAnchors = '';
-    const sections = orderedSections.reduce((md, meta): string => {
-        if (meta.calls.isNone || !meta.calls.unwrap().length) {
-            return md;
-        }
+/** @internal */
+function addRpc (): string {
+    const definitions = {...substrateDefinitions, ...cennznetDefinitions};
+    const sections = Object
+        .keys(definitions)
+        .filter((key) => Object.keys(definitions[key as 'babe'].rpc || {}).length !== 0);
 
-        const calls = meta.calls.unwrap();
-        const sectionName = stringCamelCase(meta.name.toString());
+    return renderPage({
+        description: DESC_RPC,
+        sections: sections
+            .sort()
+            .map((sectionName) => {
+                const section = definitions[sectionName as 'babe'];
 
-        renderAnchors += sectionLink(sectionName);
+                return {
+                    // description: section.description,
+                    items: Object.keys(section.rpc)
+                        .sort()
+                        .map((methodName) => {
+                            const method = section.rpc[methodName];
+                            const args = method.params.map(({ isOptional, name, type }: DefinitionRpcParam): string => {
+                                // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+                                return name + (isOptional ? '?' : '') + ': `' + type + '`';
+                            }).join(', ');
+                            const type = '`' + method.type + '`';
 
-        const renderSection = generateSectionHeader(md, sectionName);
-        const orderedMethods = calls.sort(sortByName);
-
-        return orderedMethods.reduce((md, func): string => {
-            const methodName = stringCamelCase(func.name.toString());
-            const args = Call.filterOrigin(func)
-                .map(({name, type}): string => `${name}: ` + '`' + type + '`')
-                .join(', ');
-            const doc = func.documentation.reduce((md, doc): string => `${md} ${doc}`, '');
-            const renderSignature = `${md}\n▸ **${methodName}**(${args})`;
-            const renderSummary = `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`;
-
-            return renderSignature + renderSummary;
-        }, renderSection);
-    }, '');
-
-    return renderHeading + renderAnchors + sections;
+                            return {
+                                interface: '`' + `api.rpc.${sectionName}.${methodName}` + '`',
+                                jsonrpc: '`' + (method.endpoint || `${sectionName}_${methodName}`) + '`',
+                                name: `${methodName}(${args}): ${type}`,
+                                ...(method.description && { summary: method.description })
+                            };
+                        }),
+                    name: sectionName
+                };
+            }),
+        title: 'JSON-RPC'
+    });
 }
 
-function addStorage(metadata: MetadataV7): string {
-    const renderHeading = `## ${ANCHOR_TOP}Storage${DESC_STORAGE}`;
-    const orderedSections = metadata.modules.sort(sortByName);
-    let renderAnchors = '';
-    const sections = orderedSections.reduce((md, moduleMetadata): string => {
-        if (moduleMetadata.storage.isNone) {
-            return md;
-        }
+/** @internal */
+function addConstants (metadata: MetadataLatest): string {
+    return renderPage({
+        description: DESC_CONSTANTS,
+        sections: metadata.modules
+            .sort(sortByName)
+            .filter((moduleMetadata) => !moduleMetadata.constants.isEmpty)
+            .map((moduleMetadata) => {
+                const sectionName = stringLowerFirst(moduleMetadata.name);
 
-        const sectionName = stringLowerFirst(moduleMetadata.name.toString());
+                return {
+                    items: moduleMetadata.constants
+                        .sort(sortByName)
+                        .map((func) => {
+                            const methodName = stringCamelCase(func.name);
 
-        renderAnchors += sectionLink(sectionName);
-
-        const renderSection = generateSectionHeader(md, sectionName);
-        const orderedMethods = moduleMetadata.storage.unwrap().items.sort(sortByName);
-
-        return orderedMethods.reduce((md, func): string => {
-            const arg = func.type.isMap
-                ? '`' + func.type.asMap.key.toString() + '`'
-                : func.type.isDoubleMap
-                ? '`' + func.type.asDoubleMap.key1.toString() + ', ' + func.type.asDoubleMap.key2.toString() + '`'
-                : '';
-            const doc = func.documentation.reduce((md, doc): string => `${md} ${doc}`, '');
-            let result = (func.type.isDoubleMap ? func.type.asDoubleMap.value : func.type).toString();
-
-            if (func.modifier.isOptional) {
-                result = `Option<${result}>`;
-            }
-
-            return (
-                `${md}\n▸ **${stringLowerFirst(func.name.toString())}**(${arg}): ` +
-                '`' +
-                result +
-                '`' +
-                `${doc ? `\n- **summary**: ${doc}\n` : '\n'}`
-            );
-        }, renderSection);
-    }, '');
-
-    return renderHeading + renderAnchors + sectionLink('substrate') + sections;
+                            return {
+                                interface: '`' + `api.consts.${sectionName}.${methodName}` + '`',
+                                name: `${methodName}: ` + '`' + func.type.toString() + '`',
+                                ...(func.documentation.length && { summary: func.documentation })
+                            };
+                        }),
+                    name: sectionName
+                };
+            }),
+        title: 'Constants'
+    });
 }
 
-function writeFile(name: string, ...chunks: any[]): void {
-    const options = {flags: 'w', encoding: 'utf8'};
-    const writeStream = fs.createWriteStream(name, options);
+/** @internal */
+function addStorage (metadata: MetadataLatest): string {
+    const moduleSections = metadata.modules
+        .sort(sortByName)
+        .filter((moduleMetadata) => !moduleMetadata.storage.isNone)
+        .map((moduleMetadata) => {
+            const sectionName = stringLowerFirst(moduleMetadata.name);
+
+            return {
+                items: moduleMetadata.storage.unwrap().items
+                    .sort(sortByName)
+                    .map((func) => {
+                        const arg = func.type.isMap
+                            ? ('`' + func.type.asMap.key.toString() + '`')
+                            : func.type.isDoubleMap
+                                ? ('`' + func.type.asDoubleMap.key1.toString() + ', ' + func.type.asDoubleMap.key2.toString() + '`')
+                                : '';
+                        const methodName = stringLowerFirst(func.name);
+                        const outputType = unwrapStorageType(func.type, func.modifier.isOptional);
+
+                        return {
+                            interface: '`' + `api.query.${sectionName}.${methodName}` + '`',
+                            name: `${methodName}(${arg}): ` + '`' + outputType + '`',
+                            ...(func.documentation.length && { summary: func.documentation })
+                        };
+                    }),
+                name: sectionName
+            };
+        });
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const knownSection: any = JSON.parse(fs.readFileSync('docs/cennznet/storage-known-section.json', 'utf8'));
+
+    return renderPage({
+        description: DESC_STORAGE,
+        sections: moduleSections.concat([knownSection]),
+        title: 'Storage'
+    });
+}
+
+/** @internal */
+function addExtrinsics (metadata: MetadataLatest): string {
+    return renderPage({
+        description: DESC_EXTRINSICS,
+        sections: metadata.modules
+            .sort(sortByName)
+            .filter((meta) => !meta.calls.isNone && meta.calls.unwrap().length !== 0)
+            .map((meta) => {
+                const sectionName = stringCamelCase(meta.name);
+
+                return {
+                    items: meta.calls.unwrap()
+                        .sort(sortByName)
+                        .map((func) => {
+                            const methodName = stringCamelCase(func.name);
+                            const args = Call.filterOrigin(func).map(({ name, type }) => `${name.toString()}: ` + '`' + type.toString() + '`').join(', ');
+
+                            return {
+                                interface: '`' + `api.tx.${sectionName}.${methodName}` + '`',
+                                name: `${methodName}(${args})`,
+                                ...(func.documentation.length && { summary: func.documentation })
+                            };
+                        }),
+                    name: sectionName
+                };
+            }),
+        title: 'Extrinsics'
+    });
+}
+
+/** @internal */
+function addEvents (metadata: MetadataLatest): string {
+    return renderPage({
+        description: DESC_EVENTS,
+        sections: metadata.modules
+            .sort(sortByName)
+            .filter((meta) => !meta.events.isNone && meta.events.unwrap().length !== 0)
+            .map((meta) => ({
+                items: meta.events.unwrap()
+                    .sort(sortByName)
+                    .map((func) => {
+                        const methodName = func.name.toString();
+                        const args = func.args.map((type): string => '`' + type.toString() + '`').join(', ');
+
+                        return {
+                            name: `${methodName}(${args})`,
+                            ...(func.documentation.length && { summary: func.documentation })
+                        };
+                    }),
+                name: stringCamelCase(meta.name)
+            })),
+        title: 'Events'
+    });
+}
+
+/** @internal */
+function addErrors (metadata: MetadataLatest): string {
+    return renderPage({
+        description: DESC_ERRORS,
+        sections: metadata.modules
+            .sort(sortByName)
+            .filter((moduleMetadata) => !moduleMetadata.errors.isEmpty)
+            .map((moduleMetadata) => ({
+                items: moduleMetadata.errors
+                    .sort(sortByName)
+                    .map((error) => ({
+                        name: error.name.toString(),
+                        ...(error.documentation.length && { summary: error.documentation })
+                    })),
+                name: stringLowerFirst(moduleMetadata.name)
+            })),
+        title: 'Errors'
+    });
+}
+
+/** @internal */
+function writeFile (name: string, ...chunks: any[]): void {
+    const writeStream = fs.createWriteStream(name, { encoding: 'utf8', flags: 'w' });
 
     writeStream.on('finish', (): void => {
         console.log(`Completed writing ${name}`);
@@ -231,33 +303,26 @@ function writeFile(name: string, ...chunks: any[]): void {
     writeStream.end();
 }
 
-function writeToRpcMd(): void {
-    writeFile('docs/METHODS_RPC.md', addRpc());
-}
+function main (): void {
+    const registry = new TypeRegistry();
+    // use the latest runtime metadata we know about
+    const [key, meta] = Object.entries(staticMetadata).pop();
 
-function writeToConstantsMd(metadata: MetadataV7): void {
-    writeFile('docs/METHODS_CONSTANTS.md', addConstants(metadata));
-}
+    console.log();
+    console.log(`Generating docs for: ${key}`);
+    console.log();
 
-function writeToStorageMd(metadata: MetadataV7): void {
-    const options = {flags: 'r', encoding: 'utf8'};
-    const data = fs.readFileSync('packages/types/src/scripts/METHODS_STORAGE_SUBSTRATE.md', options);
+    const metadata = new Metadata(registry, meta);
+    registry.setMetadata(metadata);
 
-    writeFile('docs/METHODS_STORAGE.md', addStorage(metadata), data);
-}
+    const latest = metadata.asLatest;
 
-function writeToExtrinsicsMd(metadata: MetadataV7): void {
-    writeFile('docs/METHODS_EXTRINSICS.md', addExtrinsics(metadata));
-}
+    writeFile('docs/cennznet/rpc.md', addRpc());
+    writeFile('docs/cennznet/constants.md', addConstants(latest));
+    writeFile('docs/cennznet/storage.md', addStorage(latest));
+    writeFile('docs/cennznet/extrinsics.md', addExtrinsics(latest));
+    writeFile('docs/cennznet/events.md', addEvents(latest));
+    writeFile('docs/cennznet/errors.md', addErrors(latest));
+};
 
-function writeToEventsMd(metadata: MetadataV7): void {
-    writeFile('docs/METHODS_EVENTS.md', addEvents(metadata));
-}
-
-const metadata = new Metadata(rpcdata).asLatest;
-
-writeToRpcMd();
-writeToConstantsMd(metadata);
-writeToStorageMd(metadata);
-writeToExtrinsicsMd(metadata);
-writeToEventsMd(metadata);
+main();

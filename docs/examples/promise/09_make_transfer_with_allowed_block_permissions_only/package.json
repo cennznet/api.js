@@ -1,0 +1,19 @@
+{
+  "name": "09_make_transfer_with_allowed_block_permissions_only",
+  "version": "0.1.0",
+  "description": "Example showing how to make a transfer with allowed block permissions",
+  "main": "index.js",
+  "author": "Jesse",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@cennznet/api": "^1.3.2",
+    "@polkadot/keyring": "^4.1.1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

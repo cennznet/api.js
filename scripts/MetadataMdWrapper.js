@@ -1,18 +1,27 @@
 #!/usr/bin/env node
-// Copyright 2017-2019 @polkadot/types authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2021 @polkadot/typegen authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-require('@babel/register')({
-  extensions: ['.js', '.ts'],
-  plugins: [
-    ['module-resolver', {
-      alias: {
-        '^@cennznet/util(.*)': './packages/util/src\\1',
-        '^@cennznet/types(.*)': './packages/types/src\\1'
-      }
-    }]
-  ]
-});
+/* eslint-disable sort-keys */
 
-require('./MetadataMd.ts');
+let main;
+
+try {
+  main = require('../metadataMd.cjs').main;
+} catch (error) {
+  process.env.JEST_WORKER_ID = '123';
+
+  require('@babel/register')({
+    extensions: ['.js', '.ts'],
+    plugins: [
+      ['module-resolver', {
+        alias: {
+          '^@cennznet/api(.*)': './packages/api/src\\1',
+          '^@cennznet/types(.*)': './packages/types/src\\1'
+        }
+      }]
+    ]
+  });
+
+  main = require('./metadataMd.ts').main;
+}

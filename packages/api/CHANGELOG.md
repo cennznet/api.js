@@ -3,6 +3,97 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [UNRELEASED]
+- Add NFT module support
+
+## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
+### Changed:
+    - Bump version elliptic from 6.5.3 to 6.5.4
+    - Bump version prismjs from 1.22.0 to 1.23.0
+## [1.3.3](https://github.com/cennznet/api.js/compare/release/1.3.3-alpha.1...prerelease/1.3.3) (18/02/2021)
+### Changed:
+    - Bump version
+### Fixed:
+    - Updated @cennznet/types dependency to 1.3.3
+## [1.3.3-alpha.1](https://github.com/cennznet/api.js/compare/release/1.3.2...prerelease/1.3.3-alpha.1) (18/02/2021)
+### Added:
+    - Added RPC calls for staking(accruedPayout) and grandpa(restartVoter)
+    - Bump ini from 1.3.5 to 1.3.7
+### Removed:
+    - Sylo extrinsics are removed in v38 runtime    
+## [1.3.2](https://github.com/cennznet/api.js/compare/1.3.1.../1.3.2) (07/12/2020)
+### Added:
+    - Adds auto scheduled job to test upstream @polkadot packages for breaking changes
+### Removed:
+    - Removed @cennznet/util dependency from @cennznet/api
+## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
+### Added:
+    - Backwards compatible with v36
+    - Bump highlight.js from 9.18.1 to 9.18.5
+### Changed:
+    - Update polkadot dependencies to 2.7.1.
+### Fixed:
+    - Fixed 'chosing fee asset to pay tx' example.
+### Removed:
+    - Removed rpc folder from API as rpc definitions is available through types/interface/definition.
+## [1.3.0](https://github.com/cennznet/api.js/compare/1.3.0-alpha.1.../1.3.0) (24/11/2020)
+### Added:
+    -  Bump semantic-release from 15.14.0 to 17.2.3
+    -  Metadata documentation added at docs/cennznet, including the output of errors from metadata.
+### Changed:
+    - Update all examples to use latest system.account queries (instead of system.accountNonce), latest dependency packages and removed resolution.
+## [1.3.0-alpha.1](https://github.com/cennznet/api.js/compare/release/1.2.1.../1.3.0-alpha.1) (23/10/2020)
+Polkadot's changelog at [2.3.1](https://github.com/polkadot-js/api/blob/master/CHANGELOG.md#231-oct-19-2020)
+### Added:
+    - Bump http-proxy from 1.18.0 to 1.18.1
+### Changed:
+    - Updated the codebase to use the current latest polkadot dependencies (^2.3.1 as of now)
+    - Used eslint over tslint
+### Removed:
+    - Removed wallet support and all crml packages
+    - Removed doughnut support
+### Fixed:
+    - Fixed forceUnbond test race condition
+    - Fixed yarn lint command
+
+## [1.2.1](https://github.com/cennznet/api.js/compare/release/1.2.0...release/1.2.1) (18/08/2020)
+### Fixed:
+    - Fix API initialisation issue by moving derived types(interfaces) to a separate file
+
+## [1.2.0](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.2.0) (17/08/2020)
+### Added:
+    - Bump prismjs from 1.19.0 to 1.21.0
+    - Support for derived staking query (api.derive.staking.accountInfo)
+    - Support for derived session query (api.derive.session.keyInfo)
+### Fixed:
+    - Fix GA lock query when an account is staked
+
+## [1.1.1](https://github.com/cennznet/api.js/compare/release/1.1.0...release/1.1.1) (03/08/2020)
+### Changed
+- bump elliptic from 6.5.2 to 6.5.3
+
+## [1.1.0](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.1.0) (31/07/2020)
+  Add doughnut + CENNZnut support and e2e tests
+
+## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)
+
+**Note:** Version bump only
+
+## [1.0.2](https://github.com/cennznet/api.js/compare/release/1.0.1...release/1.0.2) (15/05/2020)
+
+**Note:** Version bump only
+
+## [1.0.1](https://github.com/cennznet/api.js/compare/release/1.0.0...release/1.0.1) (27/03/2020)
+
+**Note:** Version bump only
+
+## [1.0.0](https://github.com/cennznet/api.js/compare/v0.20.5...release/1.0.0) (27/03/2020)
+  Discontinued support for pre-1.0.0 CENNZnet chains
+  Changed (breaking):
+    - Replaced @plugnet/* dependencies with @polkadot/api@0.96.1 directly
+    - Disabled plugins
+    - Use @polkadot/api 1.1.1
+
 # [0.20.6](https://github.com/cennznet/api.js/compare/v20.3...v0.20.6) (2019-09-10)
 ### Feature
 * migrate crml-attestation into monorepo

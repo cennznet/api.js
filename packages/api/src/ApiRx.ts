@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2020 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,106 +12,72 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AttestationRx} from '@cennznet/crml-attestation';
-import {CennzxSpotRx} from '@cennznet/crml-cennzx-spot';
-import {GenericAssetRx} from '@cennznet/crml-generic-asset';
-import Types from '@cennznet/types/injects';
-import {ApiRx as ApiRxBase} from '@plugnet/api';
-import {ApiOptions as ApiOptionsBase} from '@plugnet/api/types';
-import {fromEvent, Observable, race, throwError} from 'rxjs';
-import {switchMap, timeout} from 'rxjs/operators';
-import getPlugins from './plugins';
-import {decorateExtrinsics} from './util/customDecorators';
-import {mergeDeriveOptions} from './util/derives';
-import {injectOption, injectPlugins, mergePlugins} from './util/injectPlugin';
+import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
+import { ApiRx as ApiRxBase } from '@polkadot/api';
+import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
+import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
+import * as definitions from '@cennznet/types/interfaces/definitions';
+import { mergeDeriveOptions } from './util/derives';
 
-import {DEFAULT_TIMEOUT} from './Api';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
-import {ApiOptions, Derives, IPlugin, SubmittableExtrinsics} from './types';
-import {getProvider} from './util/getProvider';
-import {getTimeout} from './util/getTimeout';
-import logger from './util/logging';
+import { ApiOptions, Derives } from './types';
+import { getProvider } from './util/getProvider';
+import { getTimeout } from './util/getTimeout';
 
 export class ApiRx extends ApiRxBase {
-    static create(options: ApiOptions = {}): Observable<ApiRx> {
-        const apiRx = new ApiRx(options);
+  static create(options: ApiOptions = {}): Observable<ApiRx> {
+    const apiRx = new ApiRx(options);
 
-        const timeoutMs = getTimeout(options);
+    const observable: Observable<ApiRx> = new Observable(x => {
+      apiRx.on('error', (): void => {
+        apiRx.disconnect().finally(() => {
+          x.error(new Error('Connection fail'));
+        });
+      });
+      apiRx.on('disconnected', (): void => {
+        console.info('API has been disconnected from the endpoint');
+      });
+      apiRx.on('connected', (): void => {
+        console.info('API has been connected to the endpoint');
+      });
+      apiRx.once('ready', (): void => {
+        x.next(apiRx);
+        x.complete();
+      });
+    });
 
-        const rejectError = fromEvent((apiRx as any)._eventemitter, 'error').pipe(
-            switchMap(err => {
-                // Disconnect provider if API initialization fails
-                apiRx.disconnect();
+    return observable.pipe(timeout(getTimeout(options)));
+  }
 
-                return throwError(new Error('Connection fail'));
-            })
-        );
-        const api$ = (apiRx.isReady as unknown) as Observable<ApiRx>;
-        api$.subscribe(api => api.decorateCennznetExtrinsics());
+  get tx(): SubmittableExtrinsics<'rxjs'> {
+    return super.tx as SubmittableExtrinsics<'rxjs'>;
+  }
 
-        return timeoutMs === 0
-            ? race(api$, rejectError)
-            : race(api$.pipe(timeout(timeoutMs || DEFAULT_TIMEOUT)), rejectError);
+  get derive(): Derives<'rxjs'> {
+    return super.derive as Derives<'rxjs'>;
+  }
+
+  constructor(_options: ApiOptions = {}) {
+    const options = { ..._options };
+    if (typeof options.provider === 'string') {
+      options.provider = getProvider(options.provider);
     }
+    const rpc = {};
+    const sectionsList = Object.keys(definitions);
+    Object.values(definitions).forEach((value: { rpc; types }, index) => {
+      const section = sectionsList[index];
+      if (value.rpc) {
+        rpc[section] = value.rpc;
+      }
+    });
+    options.metadata = Object.assign(staticMetadata, options.metadata);
+    options.types = { ...options.types, ...Types };
+    options.derives = mergeDeriveOptions(derives, options.derives);
+    options.rpc = { ...rpc, ...options.rpc };
+    options.typesBundle = typesBundle;
 
-    get tx(): SubmittableExtrinsics<'rxjs'> {
-        return super.tx as SubmittableExtrinsics<'rxjs'>;
-    }
-
-    get derive(): Derives<'rxjs'> {
-        return super.derive as Derives<'rxjs'>;
-    }
-
-    /**
-     * Attestation CRML extention
-     */
-    get attestation(): AttestationRx {
-        // `injectPlugins` will override this getter.
-        throw new Error('Attestation plugin has not been injected.');
-    }
-
-    /**
-     * Generic Asset CRML extention
-     */
-    get genericAsset(): GenericAssetRx {
-        // `injectPlugins` will override this getter.
-        throw new Error('Generic Asset plugin has not been injected.');
-    }
-
-    /**
-     * Cennzx Spot CRML extention
-     */
-    get cennzxSpot(): CennzxSpotRx {
-        // `injectPlugins` will override this getter.
-        throw new Error('Cennzx Spot plugin has not been injected.');
-    }
-
-    constructor(_options: ApiOptions = {}) {
-        const options = {..._options};
-        if (typeof options.provider === 'string') {
-            options.provider = getProvider(options.provider);
-        }
-        options.metadata = Object.assign(staticMetadata, options.metadata);
-        let plugins: IPlugin[] = options.plugins || [];
-        try {
-            plugins = mergePlugins(plugins, getPlugins());
-            injectOption(options, plugins);
-        } catch (e) {
-            logger.error('plugin loading failed');
-        }
-
-        options.types = {...Types, ...options.types};
-        options.derives = mergeDeriveOptions(derives, options.derives);
-
-        super(options as ApiOptionsBase);
-
-        if (plugins) {
-            injectPlugins(this, plugins);
-        }
-    }
-
-    decorateCennznetExtrinsics(): void {
-        decorateExtrinsics(this);
-    }
+    super(options as ApiOptionsBase);
+  }
 }

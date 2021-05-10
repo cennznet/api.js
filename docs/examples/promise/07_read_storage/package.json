@@ -1,0 +1,18 @@
+{
+  "name": "07_read_storage",
+  "version": "0.2.0",
+  "description": "Example showing how to query storage",
+  "main": "index.js",
+  "author": "chevdor",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@cennznet/api": "^1.3.2"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

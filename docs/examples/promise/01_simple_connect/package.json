@@ -9,12 +9,10 @@
     "clean": "rimraf node_modules",
     "start": "node index.js"
   },
-
   "dependencies": {
-    "@cennznet/api": "^0.10.2",
-    "@cennznet/util": "^0.10.2"
+    "@cennznet/api": "^1.3.2"
   },
   "devDependencies": {
-    "rimraf": "^2.6.2"
+    "rimraf": "^3.0.2"
   }
 }

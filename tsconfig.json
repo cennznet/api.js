@@ -1,37 +1,34 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2017",
-        "noImplicitAny": false,
-        "moduleResolution": "node",
-        "outDir": "build",
-        "baseUrl": ".",
-        "types": ["node", "jest"],
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "lib": ["ES2017"],
-        "emitDecoratorMetadata": true,
-        "declaration": true,
-        "sourceMap": true,
-        "inlineSources": true,
-        "paths": {
-            "@cennznet/api/*": ["packages/api/src/*"],
-            "@cennznet/api": ["packages/api/src/index"],
-            "@cennznet/crml-attestation/*": ["packages/crml-attestation/src/*"],
-            "@cennznet/crml-attestation": ["packages/crml-attestation/src/index"],
-            "@cennznet/crml-cennzx-spot/*": ["packages/crml-cennzx-spot/src/*"],
-            "@cennznet/crml-cennzx-spot": ["packages/crml-cennzx-spot/src/index"],
-            "@cennznet/crml-generic-asset/*": ["packages/crml-generic-asset/src/*"],
-            "@cennznet/crml-generic-asset": ["packages/crml-generic-asset/src/index"],
-            "@cennznet/types/*": ["packages/types/src/*"],
-            "@cennznet/types": ["packages/types/src/index"],
-            "@cennznet/util/*": ["packages/util/src/*"],
-            "@cennznet/util": ["packages/util/src/index"],
-            "@cennznet/wallet/*": ["packages/wallet/src/*"],
-            "@cennznet/wallet": ["packages/wallet/src/index"]
-        }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "outDir": "build",
+    "baseUrl": ".",
+    "types": ["node", "jest"],
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["ES2017","es2018", "es2019"
+    ],
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "paths": {
+      "@cennznet/api/*": ["packages/api/src/*"],
+      "@cennznet/api": ["packages/api/src/index"],
+      "@cennznet/types/*": ["packages/types/src/*"],
+      "@cennznet/types": ["packages/types/src/index"],
+      "@cennznet/util/*": ["packages/util/src/*"],
+      "@cennznet/util": ["packages/util/src/index"],
+      "@polkadot/api/augment": ["packages/types/src/interfaces/augment-api.ts"],
+      "@polkadot/types/augment": ["packages/types/src/interfaces/augment-types.ts"]
     },
-    "include": ["packages/**/*", "scripts/*.ts"],
-    "exclude": ["**/node_modules/**"]
+    "skipLibCheck": true
+  },
+  "include": ["packages/**/*", "scripts/*.ts", "config"],
+  "exclude": ["**/node_modules/**"],
+  "typeRoots": ["./node_modules/@types"]
 }

@@ -12,5 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export {default as formatUnits} from './formatUnits';
-export {default as parseUnits} from './parseUnits';
+export { default as formatUnits } from './formatUnits';
+export { default as parseUnits } from './parseUnits';

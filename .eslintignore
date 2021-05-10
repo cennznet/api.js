@@ -1,0 +1,7 @@
+/build/**
+/api_docs/**
+**/node_modules/**
+**/*.e2e.ts
+**/*.spec.*
+/scripts/*
+packages/**/build/**

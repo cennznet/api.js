@@ -1,0 +1,19 @@
+{
+  "name": "13_batch_all_transfer",
+  "version": "0.1.0",
+  "description": "Example showing how to batch transactions",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@cennznet/api": "1.3.5-alpha.0",
+    "@polkadot/keyring": "^4.1.1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

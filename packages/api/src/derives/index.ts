@@ -1,4 +1,4 @@
-// Copyright 2019 Centrality Investments Limited
+// Copyright 2019-2021 Centrality Investments Limited
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as attestation from '@cennznet/crml-attestation/derives';
-import * as cennzxSpot from '@cennznet/crml-cennzx-spot/derives';
-import * as genericAsset from '@cennznet/crml-generic-asset/derives';
-import {AnyFunction} from '@cennznet/types/types';
-import {ApiInterfaceRx, MethodResult} from '@plugnet/api/types';
-import {Observable} from 'rxjs';
+import { ApiTypes } from '@cennznet/api/types';
+import { AnyFunction } from '@cennznet/types';
+import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
+import { Observable } from 'rxjs';
+import * as attestation from './attestation';
+import * as cennzx from './cennzx';
 import * as fees from './fees';
+import * as nft from './nft';
+import * as session from './session';
+import * as staking from './staking';
+import * as balances from './balances';
 
-export type DeriveFunc = (api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
+export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = {attestation, cennzxSpot, fees, genericAsset};
+export const derive = { attestation, balances, cennzx, fees, nft, staking, session };
 
 export type DecoratedCennznetDerive<
-    ApiType,
-    AllSections extends {[section: string]: {[method: string]: DeriveFunc}} = typeof derive
+  ApiType extends ApiTypes,
+  AllSections extends { [section: string]: { [method: string]: DeriveFunc } } = typeof derive
 > = {
-    [SectionName in keyof AllSections]: {
-        [MethodName in keyof AllSections[SectionName]]: ReturnType<
-            AllSections[SectionName][MethodName]
-        > extends AnyFunction
-            ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
-            : never;
-    };
+  [SectionName in keyof AllSections]: {
+    [MethodName in keyof AllSections[SectionName]]: ReturnType<AllSections[SectionName][MethodName]> extends AnyFunction
+      ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
+      : never;
+  };
 };
 
 export default derive;

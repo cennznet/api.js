@@ -1,25 +1,40 @@
-# `CENNZNet SDK `
+# CENNZnet API ![ci status badge](https://github.com/cennznet/api.js/workflows/PR%20builder/badge.svg)
+The CENNZnet JavaScript API library for browsers and Node.js.
 
-> The Cennznet JavaScript API library for browsers and Node.js.
+## Quick Start
 
-Please read the [documentation](https://cennznetdocs.com/api/latest/tutorials/0_Overview.md) for more.
+See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/examples), or the [wiki](https://wiki.cennz.net) to get started.
 
-# Components
+## Components
 
-| Name                                                       | Description                                                |
-| ---------------------------------------------------------- | ---------------------------------------------------------- |
-| [@cennznet/api](packages/api)       | package that providing the api                             |
-| [@cennznet/wallet](packages/wallet) | a wallet implementation that can be used as signer for api |
-| [@cennznet/util](packages/util)     | cennznet specific utility functions                         |
-| [@cennznet/types](packages/types)   | cennznet specific type definitions                                |
+| Name                                | Description                                                |
+| ----------------------------------- | ---------------------------------------------------------- |
+| [@cennznet/api](packages/api)       | The core API package                                       |
+| [@cennznet/types](packages/types)   | CENNZnet specific type definitions                         |
 
-# Cennznet runtime module libraries 
+---
 
-| Name                                                       | Description                                                |
-| ---------------------------------------------------------- | ---------------------------------------------------------- |
-| [@cennznet/crml-generic-asset](packages/crml-generic-asset)   | A sdk providing additional features for generic asset runtime module            |
-| [@cennznet/crml-cennzx-spot](packages/crml-cennzx-spot)   | A sdk providing additional features for cennzx spot runtime module           |
-| [@cennznet/crml-attestation](packages/crml-attestation)   | A sdk providing additional features for Cennznet's Identity Service.          |
+# Development
 
-# Examples
-[docs/examples](docs/examples)
+## Testing
+
+Running integration tests
+```bash
+# Start test nodes
+docker-compose up
+yarn test:e2e
+```
+
+## Update Metadata
+Fetch latest metadata from local node and regenerate dynamic type definitions + docs
+```
+yarn meta:update
+```
+
+## Making a Release (requires maintainer permission)
+PR target develop branch for 2.0 or master for 1.0 release
+1) Create a branch `prerelease/<semver>`
+e.g. `prerelease/1.5.0` for an ordinary release or `prerelease/1.5.0-alpha.0` for a release candidate.  
+Bump package versions, ensure static metadata updated and docs regenerated
+2) Open a PR for develop, passing CI and review
+3) label it 'automerge' and the release will be published to npm

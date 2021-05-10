@@ -1,0 +1,23 @@
+{
+  "name": "rx_10_subscription_response",
+  "version": "0.2.0",
+  "description": "Example showing how to subscribe using a WebSocket",
+  "main": "index.js",
+  "author": "Stefie",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "start": "node index.js"
+  },
+  "resolutions": {
+    "@polkadot/rpc-provider": "2.7.1"
+  },
+  "dependencies": {
+    "rxjs": "^6.6.0",
+    "@cennznet/api": "^1.3.2",
+    "@polkadot/keyring": "^4.1.1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

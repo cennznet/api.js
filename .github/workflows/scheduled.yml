@@ -1,0 +1,37 @@
+name: scheduled
+
+on:
+  schedule:
+  - cron: 0 0 * * 0
+
+jobs:
+  polkadot-semver-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '15.3'
+    # build new project with @cennznet/api
+    # it will grab the latest semver compatible @polkadot releases
+    # if it fails, we should release a patch for @cennznet/api
+    - name: try fresh project
+      id: new_project
+      run: |
+        mkdir new-project && cd new-project
+        npm init -y
+        yarn add @cennznet/api@latest
+        echo "require('@cennznet/api');" > test.js
+        # run once to capture output
+        node test.js 2> ../issue_details.txt || true
+        echo ::set-output name=issue_details::`cat ../issue_details.txt`
+        # run again to get exit code
+        node test.js
+    - name: create issue
+      uses: JasonEtco/create-an-issue@v2
+      if: ${{ failure() }}
+      env:
+        ISSUE_DETAILS: ${{ steps.new_project.outputs.issue_details }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        filename: .github/templates/polkadot-breaking-change.md

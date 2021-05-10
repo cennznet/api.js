@@ -3,7 +3,96 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
+## [Unreleased]
+- Add NFT module support
+
+## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
+### Added:
+    - Added ExtrinsicPayload in typesBundle.
+## [1.3.3](https://github.com/cennznet/api.js/compare/release/1.3.3-alpha.1...prerelease/1.3.3) (18/02/2021)
+### Changed:
+    - Bump version
+## [1.3.3-alpha.1](https://github.com/cennznet/api.js/compare/release/1.3.2...prerelease/1.3.3-alpha.1) (18/02/2021)
+### Added:
+    - Added RPC calls for staking(accruedPayout) and grandpa(restartVoter)
+## [1.3.1](https://github.com/cennznet/api.js/compare/1.3.0.../1.3.1) (02/12/2020)
+### Added:
+    - Added events types which are compatible with runtime version v36 i.e DispatchInfoTo36, WeightTo36, DispatchClassTo36
+### Changed:
+    - Use polkadot type generation script to generate types from metadata
+### Fixed:
+    - Fixed event decoding with rv36
+## [1.3.0](https://github.com/cennznet/api.js/compare/1.3.0-alpha.1.../1.3.0) (24/11/2020)
+### Fixed:
+    - Fixed types for sylo module
+### Added:
+    - Added typesBundle to support 'runtime version' specific types to make it backward compatibile.
+    - Added VecDeque type  
+## [1.3.0-alpha.1](https://github.com/cennznet/api.js/compare/release/1.2.1.../1.3.0-alpha.1) (23/10/2020)
+Polkadot's changelog at [2.3.1](https://github.com/polkadot-js/api/blob/master/CHANGELOG.md#231-oct-19-2020)
+### Changed:
+    - Changed the repo to generate types from polkadot script.
+### Added:
+    - Definition types for all supported types
+
+## [1.2.0](https://github.com/cennznet/api.js/compare/release/1.1.2...release/1.2.0) (17/08/2020)
+### Added:
+    - Support for staking types
+    - Support for (Generic asset's) balanceLock type
+
+## [1.1.2](https://github.com/cennznet/api.js/compare/release/1.1.1...release/1.1.2) (03/08/2020)
+### Changed
+    - Conditional compile support for @plugnet/doughnut-wasm dependency
+
+## [1.1.1](https://github.com/cennznet/api.js/compare/release/1.1.0...release/1.1.1) (03/08/2020)
+### Fixed
+    - Fix missing @plugnet/doughnut-wasm dependency
+
+## [1.1.0](https://github.com/cennznet/api.js/compare/release/1.0.3...release/1.1.0) (31/07/2020)
+    Changed:
+    - Improve getting started doc (#122)
+    Added:
+    - Fix TS SignerOptions to include doughnut
+    - Phase type to include 'Initialization'
+    - Updated Azalea metadata for runtime version 36 (#122)
+
+## [1.0.3](https://github.com/cennznet/api.js/compare/release/1.0.2...release/1.0.3) (13/07/2020)
+
+    Adds:
+    - Support CENNZX liquidity RPCs (#117)
+    - Slim metadata generation script (#120)
+    - Support on-chain asset registry (#116)
+    Fixes:
+    - Corrected some generated example snippets (#121)
+
+## [1.0.2](https://github.com/cennznet/api.js/compare/release/1.0.1...release/1.0.2) (15/05/2020)
+
+    Patch:
+    - Add null constructor to sylo runtime response enum (#109) 
+
+
+## [1.0.1](https://github.com/cennznet/api.js/compare/release/1.0.0...release/1.0.1) (27/03/2020)
+
+    Patch:
+    - Fix decoding of Sylo pkb response (#104) 
+    - Add Message and MessageId types for Sylo (#105)
+
+## [1.0.0](https://github.com/cennznet/api.js/compare/v0.14.0...release/1.0.0) (27/03/2020)
+    Discontinue support for pre-1.0.0 chains
+
+    Changes:
+    - Updated Extrinsic types to use new "signed extra" / extrinsic v4 format
+        - Added ChargeTransactionPayment type, which contains tip (default 0) and FeeExchange (default None);
+    - New format for fee exchange type
+    - Support MultiSignature and type registry refactors
+    - Replaced @plugnet/* dependencies with @polkadot/api@0.96.1 directly
+
+    Adds:
+    - Derived query for estimating fee is updated
+    - CENNZX rpc calls for price calculation
+
+
+## [0.14.0](https://github.com/cennznet/api.js/compare/v0.13.6...v0.14.0) (2019-06-18)
 
 
 ### Bug Fixes

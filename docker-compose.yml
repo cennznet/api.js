@@ -1,93 +1,29 @@
+# Runs local CENNZnet nodes for integration tests
+# `docker-compose up`
+# `yarn test:e2e`
 version: '3'
 services:
-  node-0:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_0:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
+  # dev node with runtime v40 and client 1.4.0
+  testnet_node_alice:
+    container_name: testnet_node_alice
+    image: cennznet/cennznet:latest
     command:
-      # - --base-path=/tmp/Andrea
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Andrea
-      - --name=‼️${HOSTNAME:-localhost}-0
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000001
-      - --node-key-type=secp256k1
-      - --bootnodes=/dns4/node-1/tcp/30333/p2p/QmTBkfxmXshXdjGD24JvnexC7G6TenPLSpdSPbM4Y9hELM
-      - --bootnodes=/dns4/node-2/tcp/30333/p2p/QmSJ3jN6xa6dNGSvbNmGDdpdW16hB3rZb1PKsfK7ChVhef
-      - --validator
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
+      - --dev
+      - --tmp
+      - --no-mdns
+      - --unsafe-ws-external
+      - --unsafe-rpc-external
     ports:
       - '9933:9933'
       - '9944:9944'
-      - '30334:30333'
-  node-1:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_1:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
+  # dev node with runtime v36 and client 1.1.1
+  v36_node:
+    container_name: v36_node
+    image: cennznet/cennznet:1.1.1
     command:
-      # - --base-path=/tmp/Brooke
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Brooke
-      - --name=❤️${HOSTNAME:-localhost}-1
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000002
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-2/tcp/30333/p2p/QmSJ3jN6xa6dNGSvbNmGDdpdW16hB3rZb1PKsfK7ChVhef
-      - --bootnodes=/dns4/node-3/tcp/30333/p2p/QmSxbF9wtM1krfwMLyxkDR9Tqn4Go2mWezfBTjNWg4RAEa
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
+      - --dev
+      - --no-mdns
+      - --unsafe-ws-external
+      - --ws-port=9945
     ports:
-      - '30335:30333'
-  node-2:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_2:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
-    command:
-      # - --base-path=/tmp/Courtney
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Courtney
-      - --name=☺️${HOSTNAME:-localhost}-2
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000003
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-3/tcp/30333/p2p/QmSxbF9wtM1krfwMLyxkDR9Tqn4Go2mWezfBTjNWg4RAEa
-      - --bootnodes=/dns4/node-0/tcp/30333/p2p/Qme8GBwAdp4SskxYiKeMo9yuX5PnQZBXvfNrVhQzJLTE2v
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
-    ports:
-      - '30336:30333'
-  node-3:
-    image: cennznet/cennznet:0.9.24-beta-639f5f36
-    volumes:
-      - './target/node_3:/mnt/node'
-      - './genesis/:/mnt/genesis:ro'
-    command:
-      # - --base-path=/tmp/Drew
-      - --chain=rimu
-      - --base-path=/mnt/node
-      - --key=//Drew
-      - --name=☺️${HOSTNAME:-localhost}-3
-      - --node-key=0000000000000000000000000000000000000000000000000000000000000004
-      - --node-key-type=secp256k1
-      - --validator
-      - --bootnodes=/dns4/node-0/tcp/30333/p2p/Qme8GBwAdp4SskxYiKeMo9yuX5PnQZBXvfNrVhQzJLTE2v
-      - --bootnodes=/dns4/node-1/tcp/30333/p2p/QmTBkfxmXshXdjGD24JvnexC7G6TenPLSpdSPbM4Y9hELM
-      - --ws-external
-      - --rpc-external
-      - --telemetry-url=ws://telemetry.polkadot.io:1024
-    ports:
-      - '30337:30333'
-volumes:
-  node_0:
-  node_1:
-  node_2:
-  node_3:
+      - '9945:9945'
