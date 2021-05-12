@@ -3,13 +3,12 @@
 
 import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
-import type { DeriveStakingWaiting } from '@polkadot/api-derive/types';
 
 import { combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { memo } from '@polkadot/api-derive/util';
-import { DeriveStakingQuery } from './types';
+import { DeriveStakingQuery, DeriveStakingWaiting } from './types';
 
 export function waitingInfo(instanceId: string, api: ApiInterfaceRx): () => Observable<DeriveStakingWaiting> {
   return memo(
