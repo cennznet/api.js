@@ -33,6 +33,59 @@ afterAll(async () => {
   await api.disconnect();
 });
 
+describe('Staking derived queries', () => {
+
+  it('test elected validators info for local chain', async done =>{
+    const electedValidatorInfo = await api.derive.staking.electedInfo();
+    const {info, nextElected, validators} = electedValidatorInfo;
+    expect(info).toBeDefined();
+    expect(info[0].accountId.toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    expect(info[0].controllerId.toString()).toEqual('5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY');
+    expect(info[0].exposure.total.toNumber()).toEqual(1000000);
+    expect(info[0].exposure.own.toNumber()).toEqual(1000000);
+    expect(info[0].exposure.others.length).toEqual(0);
+    expect(info[0].nominators.length).toEqual(0);
+    expect(info[0].rewardDestination.toString()).toEqual('Stash');
+    expect(info[0].stashId.toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    expect(nextElected.length).toBeGreaterThanOrEqual(1);
+    expect(validators.length).toBeGreaterThanOrEqual(1);
+    done();
+  })
+
+  it('test waiting validators info query', async done =>{
+    const waitingValidatorsToBeElected = await api.derive.staking.waitingInfo();
+    const {info, waiting} = waitingValidatorsToBeElected;
+    expect(info.length).toEqual(0);
+    expect(waiting.length).toEqual(0);
+    done();
+  })
+
+  it('validators info', async done => {
+    const validatorDetails = await api.derive.staking.validators();
+    expect(validatorDetails.nextElected[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    expect(validatorDetails.validators[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    done();
+  })
+
+  it('get all validators', async done => {
+    const validatorList = await api.derive.staking.stashes();
+    expect(validatorList[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    done();
+  })
+
+  it('test staking overview query', async done => {
+    const validatorOverview = await api.derive.staking.overview();
+    expect(validatorOverview.activeEra.toString()).toEqual('0');
+    expect(validatorOverview.activeEraStart.unwrap().toNumber()).toBeGreaterThanOrEqual(0);
+    expect(validatorOverview.currentEra.toString()).toEqual('0');
+    expect(validatorOverview.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
+    expect(validatorOverview.validatorCount.toString()).toEqual('2');
+    expect(validatorOverview.nextElected[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    expect(validatorOverview.validators[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
+    done();
+  })
+});
+
 describe('Staking Operations', () => {
   // Note: order of test execution matters here
   let stash, controller;

@@ -1,8 +1,9 @@
 // Copyright 2017-2020 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { AccountId, Exposure, RewardDestination, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
+import type { AccountId, Exposure, StakingLedger, ValidatorPrefs } from '@cennznet/types';
 import type { DeriveSessionIndexes } from '@polkadot/api-derive/session/types';
+import type { RewardDestination } from '@cennznet/types/interfaces/staking';
 
 export interface DeriveStakingStash {
   controllerId: AccountId | null;
@@ -27,4 +28,9 @@ export interface DeriveStakingElected {
 export interface DeriveStakingOverview extends DeriveSessionIndexes {
   nextElected: AccountId[];
   validators: AccountId[];
+}
+
+export interface DeriveStakingWaiting {
+  info: DeriveStakingQuery[];
+  waiting: AccountId[];
 }
