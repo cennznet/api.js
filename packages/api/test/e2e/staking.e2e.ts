@@ -35,7 +35,7 @@ afterAll(async () => {
 
 describe('Staking derived queries', () => {
 
-  it('test elected validators info for local chain', async done =>{
+  test('test elected validators info for local chain', async done =>{
     const electedValidatorInfo = await api.derive.staking.electedInfo();
     const {info, nextElected, validators} = electedValidatorInfo;
     expect(info).toBeDefined();
@@ -52,7 +52,7 @@ describe('Staking derived queries', () => {
     done();
   })
 
-  it('test waiting validators info query', async done =>{
+  test('test waiting validators info query', async done =>{
     const waitingValidatorsToBeElected = await api.derive.staking.waitingInfo();
     const {info, waiting} = waitingValidatorsToBeElected;
     expect(info.length).toEqual(0);
@@ -60,20 +60,20 @@ describe('Staking derived queries', () => {
     done();
   })
 
-  it('validators info', async done => {
+  test('validators info', async done => {
     const validatorDetails = await api.derive.staking.validators();
     expect(validatorDetails.nextElected[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     expect(validatorDetails.validators[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
-  it('get all validators', async done => {
+  test('get all validators', async done => {
     const validatorList = await api.derive.staking.stashes();
     expect(validatorList[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
-  it('test staking overview query', async done => {
+  test('test staking overview query', async done => {
     const validatorOverview = await api.derive.staking.overview();
     expect(validatorOverview.activeEra.toString()).toEqual('0');
     expect(validatorOverview.activeEraStart.unwrap().toNumber()).toBeGreaterThanOrEqual(0);
