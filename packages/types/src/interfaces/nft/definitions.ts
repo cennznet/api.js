@@ -16,11 +16,40 @@ export default {
           },
     },
     types: {
+        'AuctionClosureReason': {
+            '_enum': {
+                'ExpiredNoBids': null,
+                'SettlementFailed': null,
+                'VendorCancelled': null
+            }
+        },
+        'AuctionListing': {
+            'paymentAsset': 'AssetId',
+            'reservePrice': 'Balance',
+            'close': 'BlockNumber',
+            'tokenId': 'TokenId',
+            'quantity': 'TokenCount',
+            'seller': 'AccountId',
+        },
         'CollectionId': 'String',
-        'MetadataURI': 'String',
-        'TokenId': 'Hash',
+        'FixedPriceListing': {
+            'paymentAsset': 'AssetId',
+            'fixedPrice': 'Balance',
+            'close': 'BlockNumber',
+            'buyer': 'Option<AccountId>',
+            'tokenId': 'TokenId',
+            'quantity': 'TokenCount',
+            'seller': 'AccountId',
+        },
+        'InnerId': 'TokenCount',
+        'Listing': {
+            '_enum': {
+                'FixedPrice': 'FixedPriceListing',
+                'Auction': 'AuctionListing'
+            }
+        },
         'ListingId': 'u128',
-        'TokenCount': 'u32',
+        'MetadataURI': 'String',
         'NFTAttributeValue': {
             '_enum': {
                 'i32': 'i32',
@@ -55,33 +84,11 @@ export default {
             }
         },
         'NFTSchema': 'Vec<(NFTAttributeName, NFTAttributeTypeId)>',
+        'Reason': 'AuctionClosureReason',
         'RoyaltiesSchedule': {
             'entitlements': 'Vec<(AccountId, Permill)>'
         },
-        'Listing': {
-            '_enum': {
-                'DirectListing': 'DirectListing',
-                'AuctionListing': 'AuctionListing'
-            }
-        },
-        'AuctionListing': {
-            'paymentAsset': 'AssetId',
-            'reservePrice': 'Balance',
-            'close': 'BlockNumber',
-        },        
-        'DirectListing': {
-            'paymentAsset': 'AssetId',
-            'fixedPrice': 'Balance',
-            'close': 'BlockNumber',
-            'buyer': 'Option<AccountId>'
-        },
-        'AuctionClosureReason': {
-            '_enum': {
-                'ExpiredNoBids': null,
-                'SettlementFailed': null,
-                'VendorCancelled': null
-            }
-        },
-        'Reason': 'AuctionClosureReason'
+        'TokenCount': 'u32',
+        'TokenId': 'Hash',
     }
 }

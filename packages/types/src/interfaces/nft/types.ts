@@ -17,25 +17,34 @@ export interface AuctionListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly reservePrice: Balance;
   readonly close: BlockNumber;
+  readonly tokenId: TokenId;
+  readonly quantity: TokenCount;
+  readonly seller: AccountId;
 }
 
 /** @name CollectionId */
 export interface CollectionId extends Text {}
 
-/** @name DirectListing */
-export interface DirectListing extends Struct {
+/** @name FixedPriceListing */
+export interface FixedPriceListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly fixedPrice: Balance;
   readonly close: BlockNumber;
   readonly buyer: Option<AccountId>;
+  readonly tokenId: TokenId;
+  readonly quantity: TokenCount;
+  readonly seller: AccountId;
 }
+
+/** @name InnerId */
+export interface InnerId extends TokenCount {}
 
 /** @name Listing */
 export interface Listing extends Enum {
-  readonly isDirectListing: boolean;
-  readonly asDirectListing: DirectListing;
-  readonly isAuctionListing: boolean;
-  readonly asAuctionListing: AuctionListing;
+  readonly isFixedPrice: boolean;
+  readonly asFixedPrice: FixedPriceListing;
+  readonly isAuction: boolean;
+  readonly asAuction: AuctionListing;
 }
 
 /** @name ListingId */

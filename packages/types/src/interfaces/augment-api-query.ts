@@ -6,7 +6,7 @@ import type { AnyNumber, ITuple, Observable } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, Listing, ListingId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, InnerId, Listing, ListingId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { VecDeque } from '@cennznet/types/interfaces/staking';
 import type { DeviceId, Group, Message, MessageId, PreKeyBundle, Response, VaultKey, VaultValue } from '@cennznet/types/interfaces/sylo';
 import type { UncleEntryItem } from '@polkadot/types/interfaces/authorship';
