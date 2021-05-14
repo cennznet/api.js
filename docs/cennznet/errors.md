@@ -306,9 +306,6 @@ ___
 ### MaxAttributeLength
 - **summary**:   Given attirbute value is larger than the configured max. 
  
-### MaxTokensIssued
-- **summary**:   Max tokens issued 
- 
 ### NoAvailableIds
 - **summary**:   No more Ids are available, they've been exhausted 
  
@@ -319,22 +316,19 @@ ___
 - **summary**:   origin does not have permission for the operation 
  
 ### NotForAuction
-- **summary**:   The NFT is not listed for auction sale 
+- **summary**:   The token is not listed for auction sale 
  
-### NotForDirectSale
-- **summary**:   The NFT is not listed for a direct sale 
+### NotForFixedPriceSale
+- **summary**:   The token is not listed for fixed price sale 
  
 ### NoToken
-- **summary**:   The NFT does not exist 
+- **summary**:   The token does not exist 
  
 ### RoyaltiesOvercommitment
 - **summary**:   Total royalties would exceed 100% of sale 
  
 ### SchemaDuplicateAttribute
 - **summary**:   The schema contains a duplicate attribute name 
- 
-### SchemaEmpty
-- **summary**:   The provided attributes or schema cannot be empty 
  
 ### SchemaInvalid
 - **summary**:   The schema contains an invalid type 
@@ -347,9 +341,6 @@ ___
  
 ### TokenListingProtection
 - **summary**:   Cannot operate on a listed NFT 
- 
-### UnknownAttribute
-- **summary**:   Provided attribute is not in the collection schema 
 
 ___
 

@@ -6,7 +6,7 @@ import type { AnyNumber, ITuple } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, ListingId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { BabeEquivocationProof } from '@polkadot/types/interfaces/babe';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { Extrinsic, Signature } from '@polkadot/types/interfaces/extrinsics';
@@ -647,33 +647,57 @@ declare module '@polkadot/api/types/submittable' {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
       /**
        * Sell NFT on the open market to the highest bidder
+       * Tokens are held in escrow until closure of the auction
        * Caller must be the token owner
-       * - `reserve_price` winning bid must be over this threshold
+       * - `quantity` how many of the token to sell
        * - `payment_asset` fungible asset Id to receive payment with
+       * - `reserve_price` winning bid must be over this threshold
        * - `duration` length of the auction (in blocks), uses default duration if unspecified
        **/
-      auction: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      auction: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Issue a batch of NFTs with the same attributes
+       * `quantity` - how many tokens to mint
+       * `owner` - the token owner
+       * `attributes` - initial values according to the NFT collection/schema
+       * `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config
+       * Caller must be the collection owner
+       * -----------
+       * Weight is O(1) regardless of quantity
+       **/
+      batchCreateToken: AugmentedSubmittable<(collectionId: CollectionId | string, quantity: TokenCount | AnyNumber | Uint8Array, owner: AccountId | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Transfer ownership of a batch of NFTs (atomic)
+       * Tokens be in the same collection
+       * Caller must be the token owner
+       **/
+      batchTransfer: AugmentedSubmittable<(tokens: Vec<ITuple<[Hash, TokenCount]>> | ([Hash | string | Uint8Array, TokenCount | AnyNumber | Uint8Array])[], newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Place a bid on an open auction
        * - `amount` to bid (in the seller's requested payment asset)
        **/
-      bid: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, amount: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      bid: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array, amount: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Burn an NFT 🔥
        * Caller must be the token owner
        **/
-      burn: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      burn: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Close a sale or auction
-       * Requires no successful bids have been made for the auction.
-       * Caller must be the token owner
+       * Buy an NFT for its listed price, must be listed for sale
        **/
-      cancelSale: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      buy: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Close a sale or auction returning tokens
+       * Requires no successful bids have been made for an auction.
+       * Caller must be the listed seller
+       **/
+      cancelSale: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Create a new NFT collection
        * The caller will be come the collection' owner
        * `collection_id`- 32 byte utf-8 string
-       * `schema` - for the collection
+       * `schema` - onchain attributes for tokens in this collection
+       * `metdata_uri` - offchain metadata uri for tokens in this collection
        * `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default.
        **/
       createCollection: AugmentedSubmittable<(collectionId: CollectionId | string, schema: NFTSchema, metadataUri: Option<MetadataURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
@@ -686,18 +710,16 @@ declare module '@polkadot/api/types/submittable' {
        **/
       createToken: AugmentedSubmittable<(collectionId: CollectionId | string, owner: AccountId | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Buy an NFT for its listed price, must be listed for sale
-       **/
-      directPurchase: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
-      /**
-       * Sell an NFT to specific account at a fixed price
+       * Sell an NFT at a fixed price
+       * Tokens are held in escrow until closure of the sale
+       * `quantity` how many of the token to sell
        * `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase
        * `asset_id` fungible asset Id to receive as payment for the NFT
        * `fixed_price` ask price
-       * `duration` listing duration time in blocks
+       * `duration` listing duration time in blocks from now
        * Caller must be the token owner
        **/
-      directSale: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      sell: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Set the owner of a collection
        * Caller must be the current collection owner
@@ -707,7 +729,7 @@ declare module '@polkadot/api/types/submittable' {
        * Transfer ownership of an NFT
        * Caller must be the token owner
        **/
-      transfer: AugmentedSubmittable<(collectionId: CollectionId | string, tokenId: TokenId | AnyNumber | Uint8Array, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      transfer: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
     };
     rewards: {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;

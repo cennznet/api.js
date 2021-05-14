@@ -18,7 +18,9 @@ export default {
     types: {
         'CollectionId': 'String',
         'MetadataURI': 'String',
-        'TokenId': 'u32',
+        'TokenId': 'Hash',
+        'ListingId': 'u128',
+        'TokenCount': 'u32',
         'NFTAttributeValue': {
             '_enum': {
                 'i32': 'i32',

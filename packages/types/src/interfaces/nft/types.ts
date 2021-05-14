@@ -3,7 +3,7 @@
 
 import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
 import type { ITuple } from '@polkadot/types/types';
-import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BlockNumber, Hash, Permill } from '@polkadot/types/interfaces/runtime';
 
 /** @name AuctionClosureReason */
 export interface AuctionClosureReason extends Enum {
@@ -37,6 +37,9 @@ export interface Listing extends Enum {
   readonly isAuctionListing: boolean;
   readonly asAuctionListing: AuctionListing;
 }
+
+/** @name ListingId */
+export interface ListingId extends u128 {}
 
 /** @name MetadataURI */
 export interface MetadataURI extends Text {}
@@ -99,7 +102,10 @@ export interface RoyaltiesSchedule extends Struct {
   readonly entitlements: Vec<ITuple<[AccountId, Permill]>>;
 }
 
+/** @name TokenCount */
+export interface TokenCount extends u32 {}
+
 /** @name TokenId */
-export interface TokenId extends u32 {}
+export interface TokenId extends Hash {}
 
 export type PHANTOM_NFT = 'nft';
