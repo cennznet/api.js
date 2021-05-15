@@ -4,7 +4,7 @@ module.exports = {
   cacheDirectory: '<rootDir>/jest_cache',
   moduleFileExtensions: ['ts', 'js', 'node', 'json'],
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(js|jsx)$': ["babel-jest", { rootMode: "upward" }],
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   testMatch: ['<rootDir>/packages/api/**/?(*.)+(e2e).[jt]s?(x)'],

@@ -36,7 +36,7 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 //    const maxPayment = 'xxx' // Max amount user is ok to pay in 'fee asset'
 //    const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId, maxPayment}) // this will only be successful if their is enough liquidity of users asset in exchange pool
 
-export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
+export function estimateFee(instanceId: string, api: ApiInterfaceRx): any {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
   return ({ extrinsic, userFeeAssetId, maxPayment }: EstimateFeeParams): Observable<Balance | Error> => {

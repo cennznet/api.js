@@ -141,33 +141,38 @@ describe('e2e transactions', () => {
     });
 
     it('Uses keypair to sign', async done => {
-      const maxPayment = 50_000_000_000;
-      const assetId = api.registry.createType('AssetId', feeAssetId);
-      const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
-      const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
       const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
       await api.tx.genericAsset
         .transfer(spendingAssetId, bob.address, 100)
+        .setPaymentOpts(api, {feeAssetId: feeAssetId, slippage: 0, tip: 0})
         .signAndSend(
           assetOwner,
-          { nonce, transactionPayment },
+          { nonce },
           ({ status }) => status.isInBlock ? done() : null
         );
     });
 
     it('Use tip along with fee exchange', async done => {
-
-      const maxPayment = 50_000_000_000;
-      const assetId = api.registry.createType('AssetId', feeAssetId);
-      const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
-      const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 2, feeExchange});
       const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
-      const tx = api.tx.genericAsset.transfer(spendingAssetId, bob.address, 100);
-      await tx.signAndSend(
-        assetOwner,
-        { nonce, transactionPayment },
-        ({ status }) => (status.isInBlock) ? done() : null
+      await api.tx.genericAsset
+        .transfer(spendingAssetId, bob.address, 100)
+        .setPaymentOpts(api, { feeAssetId: feeAssetId, slippage: 0, tip: 2})
+        .signAndSend(
+          assetOwner,
+          { nonce },
+          ({ status }) => (status.isInBlock) ? done() : null
       );
+    });
+
+    it('Use slippage along with setting nonce in extrinsic', async done => {
+      await api.tx.genericAsset
+        .transfer(spendingAssetId, bob.address, 100)
+        .setNonce(11)
+        .setPaymentOpts(api, { feeAssetId: feeAssetId, slippage: 0.03})
+        .signAndSend(
+          assetOwner,
+          ({ status }) => (status.isInBlock) ? done() : null
+        );
     });
 
     it('Update asset info', async done => {

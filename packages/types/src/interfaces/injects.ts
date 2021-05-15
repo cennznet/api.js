@@ -20,7 +20,8 @@ import {
   CENNZnetExtrinsicSignatureV0,
   SignerPayload,
   CENNZnetExtrinsicPayloadV1,
-  CENNZnetExtrinsicPayloadV0
+  CENNZnetExtrinsicPayloadV0,
+  CENNZnetExtrinsic
 } from './extrinsic';
 import * as definitions from './definitions';
 
@@ -55,6 +56,7 @@ export const typesBundle: OverrideBundleType = {
           types: {
             // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
             StakingLedger: 'StakingLedgerTo223',
+            GenericExtrinsic: CENNZnetExtrinsic,
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1
           },
