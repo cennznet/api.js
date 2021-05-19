@@ -62,9 +62,9 @@ describe('NFTs', () => {
       ['created', 'timestamp']
     ];
     attributes = [
-      {'text': 'hello world'},
-      {'hash': blake2AsHex(stringToU8a('hello world'))},
-      {'timestamp': 12345}
+      {'Text': 'hello world'},
+      {'Hash': blake2AsHex(stringToU8a('hello world'))},
+      {'Timestamp': 12345}
     ];
   });
 
