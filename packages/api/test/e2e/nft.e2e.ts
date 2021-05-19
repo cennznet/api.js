@@ -17,6 +17,7 @@ import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
 import { stringToU8a } from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
+import {DeriveTokenInfo} from "@cennznet/api/derives/nft/types";
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -50,6 +51,7 @@ afterAll(async () => {
 describe('NFTs', () => {
   let collectionId;
   let schema;
+  let attributes;
 
   beforeAll(() => {
     // setup test collection
@@ -58,6 +60,11 @@ describe('NFTs', () => {
       ['name', 'text'],
       ['fingerprint', 'hash'],
       ['created', 'timestamp']
+    ];
+    attributes = [
+      {'text': 'hello world'},
+      {'hash': blake2AsHex(stringToU8a('hello world'))},
+      {'timestamp': 12345}
     ];
   });
 
@@ -74,11 +81,6 @@ describe('NFTs', () => {
   });
 
   it('creates a token', async done => {
-    const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
-    ];
 
     await api.tx.nft.createToken(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
@@ -102,6 +104,14 @@ describe('NFTs', () => {
   it('gets balance of tokens', async () => {
     let ownedBalance = (await api.derive.nft.balanceOf(collectionId, tokenOwner.address));
     expect(ownedBalance).toBe(1);
+  });
+
+  it('Get all token details in example-collection', async () =>  {
+    const tokenInfos: DeriveTokenInfo[] = await api.derive.nft.tokenInfoForCollection(collectionId);
+    const {tokenId, tokenDetails, owner} = tokenInfos[0];
+    expect(tokenId.toNumber()).toEqual(0);
+    expect(JSON.parse(tokenDetails.toString())).toEqual(attributes);
+    expect(owner.toString()).toEqual(tokenOwner.address);
   });
 
 });
