@@ -328,13 +328,13 @@ ___
 
 ## nft
  
-### balanceOf(`TokenId, AccountId`): `TokenCount`
-- **interface**: `api.query.nft.balanceOf`
-- **summary**:   Map from (token id, address) to balance 
- 
-### collectionMetadataURI(`CollectionId`): `MetadataURI`
-- **interface**: `api.query.nft.collectionMetadataURI`
+### collectionMetadatURI(`CollectionId`): `Option<MetadataBaseURI>`
+- **interface**: `api.query.nft.collectionMetadatURI`
 - **summary**:   Map from collection to a base metadata URI for its token's offchain attributes 
+ 
+### collectionName(`CollectionId`): `CollectionNameType`
+- **interface**: `api.query.nft.collectionName`
+- **summary**:   Map from collection to its human friendly name 
  
 ### collectionOwner(`CollectionId`): `Option<AccountId>`
 - **interface**: `api.query.nft.collectionOwner`
@@ -344,53 +344,57 @@ ___
 - **interface**: `api.query.nft.collectionRoyalties`
 - **summary**:   Map from collection to its defacto royalty scheme 
  
-### collectionSchema(`CollectionId`): `Option<NFTSchema>`
-- **interface**: `api.query.nft.collectionSchema`
-- **summary**:   Map from collection to its onchain schema definition 
- 
-### collectionTokens(`CollectionId, TokenId`): `bool`
-- **interface**: `api.query.nft.collectionTokens`
-- **summary**:   Map from collection to all of its tokens (value is meaningless) 
- 
 ### listingEndSchedule(`BlockNumber, ListingId`): `bool`
 - **interface**: `api.query.nft.listingEndSchedule`
 - **summary**:   Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close. 
  
 ### listings(`ListingId`): `Option<Listing>`
 - **interface**: `api.query.nft.listings`
-- **summary**:   NFT sale/auction listings. keyed by collection id and token id 
+- **summary**:   NFT sale/auction listings keyed by collection id and token id 
  
 ### listingWinningBid(`ListingId`): `Option<(AccountId,Balance)>`
 - **interface**: `api.query.nft.listingWinningBid`
 - **summary**:   Winning bids on open listings. keyed by collection id and token id 
  
-### nextInnerTokenId(`CollectionId`): `InnerId`
-- **interface**: `api.query.nft.nextInnerTokenId`
-- **summary**:   The next sequential integer token Id within an NFT collection It is used as material to generate the global `TokenId` 
+### nextCollectionId(): `CollectionId`
+- **interface**: `api.query.nft.nextCollectionId`
+- **summary**:   The next available collection Id 
  
 ### nextListingId(): `ListingId`
 - **interface**: `api.query.nft.nextListingId`
 - **summary**:   The next available listing Id 
  
-### tokenAttributes(`TokenId`): `Vec<NFTAttributeValue>`
-- **interface**: `api.query.nft.tokenAttributes`
-- **summary**:   Map from (collection, token) to it's attributes (as defined by schema) 
+### nextSerialNumber(`CollectionId, SeriesId`): `SerialNumber`
+- **interface**: `api.query.nft.nextSerialNumber`
+- **summary**:   The next available serial number in a given (colleciton, series) 
  
-### tokenCollection(`TokenId`): `CollectionId`
-- **interface**: `api.query.nft.tokenCollection`
-- **summary**:   Map from token to its collection 
+### nextSeriesId(`CollectionId`): `SeriesId`
+- **interface**: `api.query.nft.nextSeriesId`
+- **summary**:   The next group Id within an NFT collection It is used as material to generate the global `TokenId` 
  
-### tokenIssuance(`TokenId`): `TokenCount`
-- **interface**: `api.query.nft.tokenIssuance`
-- **summary**:   Map from token to its total issuance 
+### openCollectionListings(`CollectionId, ListingId`): `bool`
+- **interface**: `api.query.nft.openCollectionListings`
+- **summary**:   Map from collection to any open listings 
  
-### tokenLocks(`TokenId, AccountId`): `TokenCount`
+### seriesAttributes(`CollectionId, SeriesId`): `Vec<NFTAttributeValue>`
+- **interface**: `api.query.nft.seriesAttributes`
+- **summary**:   Map from (collection, series) to its attributes 
+ 
+### seriesIssuance(`CollectionId, SeriesId`): `TokenCount`
+- **interface**: `api.query.nft.seriesIssuance`
+- **summary**:   Map from a (collection, series) to its total issuance 
+ 
+### seriesMetadataURI(`CollectionId, SeriesId`): `Option<Bytes>`
+- **interface**: `api.query.nft.seriesMetadataURI`
+- **summary**:   Map from a token series to its metadata URI path. This should be joined wih the collection base path 
+ 
+### tokenLocks(`TokenId`): `bool`
 - **interface**: `api.query.nft.tokenLocks`
-- **summary**:   Map of locks on a balance of tokens (token, owner) to locked amount 
+- **summary**:   Map from token to its locked status 
  
-### tokenRoyalties(`TokenId`): `Option<RoyaltiesSchedule>`
-- **interface**: `api.query.nft.tokenRoyalties`
-- **summary**:   Map from a token to it's royalty scheme 
+### tokenOwner(`(CollectionId,SeriesId), SerialNumber`): `AccountId`
+- **interface**: `api.query.nft.tokenOwner`
+- **summary**:   Map from a token to its owner The token Id is split in this map to allow better indexing (collection, series) + (serial number) 
 
 ___
 

@@ -6,7 +6,7 @@ import type { AnyNumber, ITuple } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, ListingId, MetadataURI, NFTAttributeValue, NFTSchema, RoyaltiesSchedule, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { BabeEquivocationProof } from '@polkadot/types/interfaces/babe';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { Extrinsic, Signature } from '@polkadot/types/interfaces/extrinsics';
@@ -646,44 +646,45 @@ declare module '@polkadot/api/types/submittable' {
     nft: {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
       /**
-       * Sell NFT on the open market to the highest bidder
-       * Tokens are held in escrow until closure of the auction
+       * Auction a token on the open market to the highest bidder
+       * 
        * Caller must be the token owner
-       * - `quantity` how many of the token to sell
        * - `payment_asset` fungible asset Id to receive payment with
        * - `reserve_price` winning bid must be over this threshold
        * - `duration` length of the auction (in blocks), uses default duration if unspecified
        **/
-      auction: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      auction: AugmentedSubmittable<(tokenId: TokenId, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Issue a batch of NFTs with the same attributes
-       * `quantity` - how many tokens to mint
-       * `owner` - the token owner
-       * `attributes` - initial values according to the NFT collection/schema
-       * `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config
-       * Caller must be the collection owner
-       * -----------
-       * Weight is O(1) regardless of quantity
-       **/
-      batchCreateToken: AugmentedSubmittable<(collectionId: CollectionId | string, quantity: TokenCount | AnyNumber | Uint8Array, owner: AccountId | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
-      /**
-       * Transfer ownership of a batch of NFTs (atomic)
-       * Tokens be in the same collection
+       * Auction a bundle of tokens on the open market to the highest bidder
+       * - Tokens must be from the same collection
+       * 
        * Caller must be the token owner
+       * - `payment_asset` fungible asset Id to receive payment with
+       * - `reserve_price` winning bid must be over this threshold
+       * - `duration` length of the auction (in blocks), uses default duration if unspecified
        **/
-      batchTransfer: AugmentedSubmittable<(tokens: Vec<ITuple<[Hash, TokenCount]>> | ([Hash | string | Uint8Array, TokenCount | AnyNumber | Uint8Array])[], newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      auctionBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Place a bid on an open auction
        * - `amount` to bid (in the seller's requested payment asset)
        **/
       bid: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array, amount: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Burn an NFT 🔥
+       * Burn a token 🔥
+       * 
        * Caller must be the token owner
        **/
-      burn: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      burn: AugmentedSubmittable<(tokenId: TokenId) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Buy an NFT for its listed price, must be listed for sale
+       * Burn some tokens 🔥
+       * Tokens must be from the same collection and series
+       * 
+       * Caller must be the token owner
+       * Fails on duplicate serials
+       **/
+      burnBatch: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, seriesId: SeriesId | AnyNumber | Uint8Array, serialNumbers: Vec<SerialNumber> | (SerialNumber | AnyNumber | Uint8Array)[]) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Buy a token listing for its specified price
        **/
       buy: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
@@ -693,43 +694,84 @@ declare module '@polkadot/api/types/submittable' {
        **/
       cancelSale: AugmentedSubmittable<(listingId: ListingId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Create a new NFT collection
-       * The caller will be come the collection' owner
+       * Create a new token collection
+       * 
+       * The caller will become the collection owner
        * `collection_id`- 32 byte utf-8 string
-       * `schema` - onchain attributes for tokens in this collection
-       * `metdata_uri` - offchain metadata uri for tokens in this collection
+       * `metdata_base_uri` - Base URI for off-chain metadata for tokens in this collection
        * `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default.
        **/
-      createCollection: AugmentedSubmittable<(collectionId: CollectionId | string, schema: NFTSchema, metadataUri: Option<MetadataURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      createCollection: AugmentedSubmittable<(name: CollectionNameType | string | Uint8Array, metadataBaseUri: Option<MetadataBaseURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Issue a new NFT
-       * `owner` - the token owner
+       * Mint additional tokens to an existing series
+       * 
+       * `quantity` - how many tokens to mint
+       * `owner` - the token owner, defaults to the caller
+       * Caller must be the collection owner
+       * -----------
+       * Weight is O(N) where N is `quantity`
+       **/
+      mintAdditional: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, seriesId: SeriesId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Mint a series of tokens distinguishable only by a serial number (SFT)
+       * 
+       * `quantity` - how many tokens to mint
+       * `owner` - the token owner, defaults to the caller
+       * `is_limited_edition` - signal whether the series is a limited edition or not
+       * `attributes` - all tokens in series will have these values
+       * `metadata_path` - URI path to token offchain metadata relative to the collection base URI
+       * Caller must be the collection owner
+       * -----------
+       * Performs O(N) writes where N is `quantity`
+       **/
+      mintSeries: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Mint a single token (NFT)
+       * 
+       * `owner` - the token owner, defaults to the caller
        * `attributes` - initial values according to the NFT collection/schema
-       * `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config
+       * `metadata_path` - URI path to the offchain metadata relative to the collection base URI
        * Caller must be the collection owner
        **/
-      createToken: AugmentedSubmittable<(collectionId: CollectionId | string, owner: AccountId | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      mintUnique: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
-       * Sell an NFT at a fixed price
-       * Tokens are held in escrow until closure of the sale
-       * `quantity` how many of the token to sell
+       * Sell a single token at a fixed price
+       * 
        * `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase
        * `asset_id` fungible asset Id to receive as payment for the NFT
        * `fixed_price` ask price
        * `duration` listing duration time in blocks from now
        * Caller must be the token owner
        **/
-      sell: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      sell: AugmentedSubmittable<(tokenId: TokenId, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Sell a bundle of tokens at a fixed price
+       * - Tokens must be from the same collection
+       * - Tokens with individual royalties schedules cannot be sold in bundles
+       * 
+       * `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase
+       * `asset_id` fungible asset Id to receive as payment for the NFT
+       * `fixed_price` ask price
+       * `duration` listing duration time in blocks from now
+       * Caller must be the token owner
+       **/
+      sellBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Set the owner of a collection
        * Caller must be the current collection owner
        **/
-      setOwner: AugmentedSubmittable<(collectionId: CollectionId | string, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      setOwner: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Transfer ownership of an NFT
        * Caller must be the token owner
        **/
-      transfer: AugmentedSubmittable<(tokenId: TokenId | string | Uint8Array, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      transfer: AugmentedSubmittable<(tokenId: TokenId, newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      /**
+       * Transfer ownership of a batch of NFTs (atomic)
+       * Tokens must be from the same collection
+       * Caller must be the token owner
+       **/
+      transferBatch: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], newOwner: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
     };
     rewards: {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;

@@ -27,21 +27,21 @@ export default {
             'paymentAsset': 'AssetId',
             'reservePrice': 'Balance',
             'close': 'BlockNumber',
-            'tokenId': 'TokenId',
+            'tokens': 'Vec<TokenId>',
             'quantity': 'TokenCount',
             'seller': 'AccountId',
         },
-        'CollectionId': 'String',
+        'CollectionId': 'u32',
+        'CollectionNameType': 'Vec<u8>',
         'FixedPriceListing': {
             'paymentAsset': 'AssetId',
             'fixedPrice': 'Balance',
             'close': 'BlockNumber',
             'buyer': 'Option<AccountId>',
-            'tokenId': 'TokenId',
+            'tokens': 'Vec<TokenId>',
             'quantity': 'TokenCount',
             'seller': 'AccountId',
         },
-        'InnerId': 'TokenCount',
         'Listing': {
             '_enum': {
                 'FixedPrice': 'FixedPriceListing',
@@ -49,7 +49,12 @@ export default {
             }
         },
         'ListingId': 'u128',
-        'MetadataURI': 'String',
+        'MetadataBaseURI': {
+            "_enum": {
+                "Ipfs": null,
+                "Https": "Vec<u8>",
+            }
+        },
         'NFTAttributeValue': {
             '_enum': {
                 'i32': 'i32',
@@ -83,12 +88,13 @@ export default {
                 'Url': null
             }
         },
-        'NFTSchema': 'Vec<(NFTAttributeName, NFTAttributeTypeId)>',
         'Reason': 'AuctionClosureReason',
         'RoyaltiesSchedule': {
             'entitlements': 'Vec<(AccountId, Permill)>'
         },
+        'SeriesId': 'u32',
+        'SerialNumber': 'u32',
         'TokenCount': 'u32',
-        'TokenId': 'Hash',
+        'TokenId': '(CollectionId, SeriesId, SerialNumber)',
     }
 }

@@ -3,7 +3,7 @@
 
 import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
 import type { ITuple } from '@polkadot/types/types';
-import type { AccountId, AssetId, Balance, BlockNumber, Hash, Permill } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
 
 /** @name AuctionClosureReason */
 export interface AuctionClosureReason extends Enum {
@@ -17,13 +17,16 @@ export interface AuctionListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly reservePrice: Balance;
   readonly close: BlockNumber;
-  readonly tokenId: TokenId;
+  readonly tokens: Vec<TokenId>;
   readonly quantity: TokenCount;
   readonly seller: AccountId;
 }
 
 /** @name CollectionId */
-export interface CollectionId extends Text {}
+export interface CollectionId extends u32 {}
+
+/** @name CollectionNameType */
+export interface CollectionNameType extends Bytes {}
 
 /** @name FixedPriceListing */
 export interface FixedPriceListing extends Struct {
@@ -31,13 +34,10 @@ export interface FixedPriceListing extends Struct {
   readonly fixedPrice: Balance;
   readonly close: BlockNumber;
   readonly buyer: Option<AccountId>;
-  readonly tokenId: TokenId;
+  readonly tokens: Vec<TokenId>;
   readonly quantity: TokenCount;
   readonly seller: AccountId;
 }
-
-/** @name InnerId */
-export interface InnerId extends TokenCount {}
 
 /** @name Listing */
 export interface Listing extends Enum {
@@ -50,8 +50,12 @@ export interface Listing extends Enum {
 /** @name ListingId */
 export interface ListingId extends u128 {}
 
-/** @name MetadataURI */
-export interface MetadataURI extends Text {}
+/** @name MetadataBaseURI */
+export interface MetadataBaseURI extends Enum {
+  readonly isIpfs: boolean;
+  readonly isHttps: boolean;
+  readonly asHttps: Bytes;
+}
 
 /** @name NFTAttributeName */
 export interface NFTAttributeName extends Text {}
@@ -100,9 +104,6 @@ export interface NFTAttributeValue extends Enum {
   readonly asUrl: Text;
 }
 
-/** @name NFTSchema */
-export interface NFTSchema extends Vec<ITuple<[NFTAttributeName, NFTAttributeTypeId]>> {}
-
 /** @name Reason */
 export interface Reason extends AuctionClosureReason {}
 
@@ -111,10 +112,16 @@ export interface RoyaltiesSchedule extends Struct {
   readonly entitlements: Vec<ITuple<[AccountId, Permill]>>;
 }
 
+/** @name SerialNumber */
+export interface SerialNumber extends u32 {}
+
+/** @name SeriesId */
+export interface SeriesId extends u32 {}
+
 /** @name TokenCount */
 export interface TokenCount extends u32 {}
 
 /** @name TokenId */
-export interface TokenId extends Hash {}
+export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
 
 export type PHANTOM_NFT = 'nft';

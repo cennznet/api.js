@@ -465,11 +465,11 @@ ___
 
 ## nft
  
-### auction(token_id: `TokenId`, quantity: `TokenCount`, payment_asset: `AssetId`, reserve_price: `Balance`, duration: `Option<BlockNumber>`)
+### auction(token_id: `TokenId`, payment_asset: `AssetId`, reserve_price: `Balance`, duration: `Option<BlockNumber>`)
 - **interface**: `api.tx.nft.auction`
-- **summary**:   Sell NFT on the open market to the highest bidder Tokens are held in escrow until closure of the auction Caller must be the token owner 
+- **summary**:   Auction a token on the open market to the highest bidder 
 
-  - `quantity` how many of the token to sell
+  Caller must be the token owner 
 
   - `payment_asset` fungible asset Id to receive payment with
 
@@ -477,15 +477,19 @@ ___
 
   - `duration` length of the auction (in blocks), uses default duration if unspecified
  
-### batchCreateToken(collection_id: `CollectionId`, quantity: `TokenCount`, owner: `AccountId`, attributes: `Vec<NFTAttributeValue>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
-- **interface**: `api.tx.nft.batchCreateToken`
-- **summary**:   Issue a batch of NFTs with the same attributes `quantity` - how many tokens to mint `owner` - the token owner `attributes` - initial values according to the NFT collection/schema `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config Caller must be the collection owner 
+### auctionBundle(tokens: `Vec<TokenId>`, payment_asset: `AssetId`, reserve_price: `Balance`, duration: `Option<BlockNumber>`)
+- **interface**: `api.tx.nft.auctionBundle`
+- **summary**:   Auction a bundle of tokens on the open market to the highest bidder 
 
-  -----------Weight is O(1) regardless of quantity 
- 
-### batchTransfer(tokens: `Vec<(Hash,TokenCount)>`, new_owner: `AccountId`)
-- **interface**: `api.tx.nft.batchTransfer`
-- **summary**:   Transfer ownership of a batch of NFTs (atomic) Tokens be in the same collection Caller must be the token owner 
+  - Tokens must be from the same collection
+
+  Caller must be the token owner 
+
+  - `payment_asset` fungible asset Id to receive payment with
+
+  - `reserve_price` winning bid must be over this threshold
+
+  - `duration` length of the auction (in blocks), uses default duration if unspecified
  
 ### bid(listing_id: `ListingId`, amount: `Balance`)
 - **interface**: `api.tx.nft.bid`
@@ -493,29 +497,69 @@ ___
 
   - `amount` to bid (in the seller's requested payment asset)
  
-### burn(token_id: `TokenId`, quantity: `TokenCount`)
+### burn(token_id: `TokenId`)
 - **interface**: `api.tx.nft.burn`
-- **summary**:   Burn an NFT 🔥 Caller must be the token owner 
+- **summary**:   Burn a token 🔥 
+
+  Caller must be the token owner 
+ 
+### burnBatch(collection_id: `CollectionId`, series_id: `SeriesId`, serial_numbers: `Vec<SerialNumber>`)
+- **interface**: `api.tx.nft.burnBatch`
+- **summary**:   Burn some tokens 🔥 Tokens must be from the same collection and series 
+
+  Caller must be the token owner Fails on duplicate serials 
  
 ### buy(listing_id: `ListingId`)
 - **interface**: `api.tx.nft.buy`
-- **summary**:   Buy an NFT for its listed price, must be listed for sale 
+- **summary**:   Buy a token listing for its specified price 
  
 ### cancelSale(listing_id: `ListingId`)
 - **interface**: `api.tx.nft.cancelSale`
 - **summary**:   Close a sale or auction returning tokens Requires no successful bids have been made for an auction. Caller must be the listed seller 
  
-### createCollection(collection_id: `CollectionId`, schema: `NFTSchema`, metadata_uri: `Option<MetadataURI>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
+### createCollection(name: `CollectionNameType`, metadata_base_uri: `Option<MetadataBaseURI>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
 - **interface**: `api.tx.nft.createCollection`
-- **summary**:   Create a new NFT collection The caller will be come the collection' owner `collection_id`- 32 byte utf-8 string `schema` - onchain attributes for tokens in this collection `metdata_uri` - offchain metadata uri for tokens in this collection `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default. 
+- **summary**:   Create a new token collection 
+
+  The caller will become the collection owner `collection_id`- 32 byte utf-8 string `metdata_base_uri` - Base URI for off-chain metadata for tokens in this collection `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default. 
  
-### createToken(collection_id: `CollectionId`, owner: `AccountId`, attributes: `Vec<NFTAttributeValue>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
-- **interface**: `api.tx.nft.createToken`
-- **summary**:   Issue a new NFT `owner` - the token owner `attributes` - initial values according to the NFT collection/schema `royalties_schedule` - optional royalty schedule for secondary sales of _this_ token, defaults to the collection config Caller must be the collection owner 
+### mintAdditional(collection_id: `CollectionId`, series_id: `SeriesId`, quantity: `TokenCount`, owner: `Option<AccountId>`)
+- **interface**: `api.tx.nft.mintAdditional`
+- **summary**:   Mint additional tokens to an existing series 
+
+  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller Caller must be the collection owner 
+
+  -----------Weight is O(N) where N is `quantity` 
  
-### sell(token_id: `TokenId`, quantity: `TokenCount`, buyer: `Option<AccountId>`, payment_asset: `AssetId`, fixed_price: `Balance`, duration: `Option<BlockNumber>`)
+### mintSeries(collection_id: `CollectionId`, quantity: `TokenCount`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`)
+- **interface**: `api.tx.nft.mintSeries`
+- **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) 
+
+  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `is_limited_edition` - signal whether the series is a limited edition or not `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
+
+  -----------Performs O(N) writes where N is `quantity` 
+ 
+### mintUnique(collection_id: `CollectionId`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`)
+- **interface**: `api.tx.nft.mintUnique`
+- **summary**:   Mint a single token (NFT) 
+
+  `owner` - the token owner, defaults to the caller `attributes` - initial values according to the NFT collection/schema `metadata_path` - URI path to the offchain metadata relative to the collection base URI Caller must be the collection owner 
+ 
+### sell(token_id: `TokenId`, buyer: `Option<AccountId>`, payment_asset: `AssetId`, fixed_price: `Balance`, duration: `Option<BlockNumber>`)
 - **interface**: `api.tx.nft.sell`
-- **summary**:   Sell an NFT at a fixed price Tokens are held in escrow until closure of the sale `quantity` how many of the token to sell `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase `asset_id` fungible asset Id to receive as payment for the NFT `fixed_price` ask price `duration` listing duration time in blocks from now Caller must be the token owner 
+- **summary**:   Sell a single token at a fixed price 
+
+  `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase `asset_id` fungible asset Id to receive as payment for the NFT `fixed_price` ask price `duration` listing duration time in blocks from now Caller must be the token owner 
+ 
+### sellBundle(tokens: `Vec<TokenId>`, buyer: `Option<AccountId>`, payment_asset: `AssetId`, fixed_price: `Balance`, duration: `Option<BlockNumber>`)
+- **interface**: `api.tx.nft.sellBundle`
+- **summary**:   Sell a bundle of tokens at a fixed price 
+
+  - Tokens must be from the same collection
+
+  - Tokens with individual royalties schedules cannot be sold in bundles
+
+  `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase `asset_id` fungible asset Id to receive as payment for the NFT `fixed_price` ask price `duration` listing duration time in blocks from now Caller must be the token owner 
  
 ### setOwner(collection_id: `CollectionId`, new_owner: `AccountId`)
 - **interface**: `api.tx.nft.setOwner`
@@ -524,6 +568,10 @@ ___
 ### transfer(token_id: `TokenId`, new_owner: `AccountId`)
 - **interface**: `api.tx.nft.transfer`
 - **summary**:   Transfer ownership of an NFT Caller must be the token owner 
+ 
+### transferBatch(tokens: `Vec<TokenId>`, new_owner: `AccountId`)
+- **interface**: `api.tx.nft.transferBatch`
+- **summary**:   Transfer ownership of a batch of NFTs (atomic) Tokens must be from the same collection Caller must be the token owner 
 
 ___
 

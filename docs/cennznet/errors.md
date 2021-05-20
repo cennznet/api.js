@@ -297,14 +297,17 @@ ___
 ### CollectionIdExists
 - **summary**:   A collection with the same ID already exists 
  
-### CollectionIdInvalid
-- **summary**:   Given collection ID is not valid utf-8 
+### CollectionNameInvalid
+- **summary**:   Given collection name is invalid (invalid utf-8, too long, empty) 
  
 ### InternalPayment
 - **summary**:   Internal error during payment 
  
 ### MaxAttributeLength
 - **summary**:   Given attirbute value is larger than the configured max. 
+ 
+### MixedBundleSale
+- **summary**:   Selling tokens from different collections is not allowed 
  
 ### NoAvailableIds
 - **summary**:   No more Ids are available, they've been exhausted 
@@ -313,7 +316,7 @@ ___
 - **summary**:   The NFT collection does not exist 
  
 ### NoPermission
-- **summary**:   origin does not have permission for the operation 
+- **summary**:   origin does not have permission for the operation (the token may not exist) 
  
 ### NotForAuction
 - **summary**:   The token is not listed for auction sale 
@@ -327,17 +330,8 @@ ___
 ### RoyaltiesOvercommitment
 - **summary**:   Total royalties would exceed 100% of sale 
  
-### SchemaDuplicateAttribute
-- **summary**:   The schema contains a duplicate attribute name 
- 
-### SchemaInvalid
-- **summary**:   The schema contains an invalid type 
- 
 ### SchemaMaxAttributes
 - **summary**:   Too many attributes in the provided schema or data 
- 
-### SchemaMismatch
-- **summary**:   Provided attributes do not match the collection schema 
  
 ### TokenListingProtection
 - **summary**:   Cannot operate on a listed NFT 
