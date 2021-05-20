@@ -17,9 +17,8 @@ export interface AuctionListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly reservePrice: Balance;
   readonly close: BlockNumber;
-  readonly tokens: Vec<TokenId>;
-  readonly quantity: TokenCount;
   readonly seller: AccountId;
+  readonly tokens: Vec<TokenId>;
 }
 
 /** @name CollectionId */
@@ -34,9 +33,8 @@ export interface FixedPriceListing extends Struct {
   readonly fixedPrice: Balance;
   readonly close: BlockNumber;
   readonly buyer: Option<AccountId>;
-  readonly tokens: Vec<TokenId>;
-  readonly quantity: TokenCount;
   readonly seller: AccountId;
+  readonly tokens: Vec<TokenId>;
 }
 
 /** @name Listing */
@@ -55,25 +53,6 @@ export interface MetadataBaseURI extends Enum {
   readonly isIpfs: boolean;
   readonly isHttps: boolean;
   readonly asHttps: Bytes;
-}
-
-/** @name NFTAttributeName */
-export interface NFTAttributeName extends Text {}
-
-/** @name NFTAttributeTypeId */
-export interface NFTAttributeTypeId extends Enum {
-  readonly isI32: boolean;
-  readonly isU8: boolean;
-  readonly isU16: boolean;
-  readonly isU32: boolean;
-  readonly isU64: boolean;
-  readonly isU128: boolean;
-  readonly isBytes32: boolean;
-  readonly isBytes: boolean;
-  readonly isText: boolean;
-  readonly isHash: boolean;
-  readonly isTimestamp: boolean;
-  readonly isUrl: boolean;
 }
 
 /** @name NFTAttributeValue */

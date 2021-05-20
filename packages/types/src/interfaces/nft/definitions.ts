@@ -27,9 +27,8 @@ export default {
             'paymentAsset': 'AssetId',
             'reservePrice': 'Balance',
             'close': 'BlockNumber',
-            'tokens': 'Vec<TokenId>',
-            'quantity': 'TokenCount',
             'seller': 'AccountId',
+            'tokens': 'Vec<TokenId>',
         },
         'CollectionId': 'u32',
         'CollectionNameType': 'Vec<u8>',
@@ -38,9 +37,8 @@ export default {
             'fixedPrice': 'Balance',
             'close': 'BlockNumber',
             'buyer': 'Option<AccountId>',
-            'tokens': 'Vec<TokenId>',
-            'quantity': 'TokenCount',
             'seller': 'AccountId',
+            'tokens': 'Vec<TokenId>',
         },
         'Listing': {
             '_enum': {
@@ -69,23 +67,6 @@ export default {
                 'Hash': '[u8; 32]',
                 'Timestamp': 'u64',
                 'Url': 'String'
-            }
-        },
-        'NFTAttributeName': 'String',
-        'NFTAttributeTypeId': {
-            '_enum': {
-                'i32': null,
-                'u8': null,
-                'u16': null,
-                'u32': null,
-                'u64': null,
-                'u128': null,
-                'Bytes32': null,
-                'Bytes': null,
-                'String': null,
-                'Hash': null,
-                'Timestamp': null,
-                'Url': null
             }
         },
         'Reason': 'AuctionClosureReason',

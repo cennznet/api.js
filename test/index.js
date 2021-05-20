@@ -21,7 +21,7 @@ async function main() {
                 zip(
                     api.query.genericAsset.stakingAssetId(),
                     api.query.genericAsset.spendingAssetId(),
-                ).subscribe(([stakingAssetId, spendingAssetId, devices]) => {
+                ).subscribe(([stakingAssetId, spendingAssetId]) => {
                     assert.deepEqual(stakingAssetId.toString(), "16000");
                     assert.deepEqual(spendingAssetId.toString(), "16001");
                     process.exit()

@@ -5,7 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeName, NFTAttributeTypeId, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -1561,12 +1561,6 @@ declare module '@polkadot/types/types/registry' {
     NFTAttributeValue: NFTAttributeValue;
     'Option<NFTAttributeValue>': Option<NFTAttributeValue>;
     'Vec<NFTAttributeValue>': Vec<NFTAttributeValue>;
-    NFTAttributeName: NFTAttributeName;
-    'Option<NFTAttributeName>': Option<NFTAttributeName>;
-    'Vec<NFTAttributeName>': Vec<NFTAttributeName>;
-    NFTAttributeTypeId: NFTAttributeTypeId;
-    'Option<NFTAttributeTypeId>': Option<NFTAttributeTypeId>;
-    'Vec<NFTAttributeTypeId>': Vec<NFTAttributeTypeId>;
     Reason: Reason;
     'Option<Reason>': Option<Reason>;
     'Vec<Reason>': Vec<Reason>;

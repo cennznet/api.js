@@ -14,15 +14,16 @@
 
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import { stringToU8a } from '@polkadot/util'
+import { stringToHex, stringToU8a } from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
-import { Listing } from '@cennznet/types';
+import { Listing, ListingId, Option } from '@cennznet/types';
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
+let spendingAssetId;
 
 beforeAll(async done => {
   await cryptoWaitReady();
@@ -33,14 +34,14 @@ beforeAll(async done => {
   collectionOwner = keyring.addFromUri('//Test//CollectionOwner');
   tokenOwner = keyring.addFromUri('//Test//TokenOwner');
   // Fund accounts
-  const spendingId = await api.query.genericAsset.spendingAssetId();
+  const spendingAssetId = await api.query.genericAsset.spendingAssetId();
   const initialEndowment = 100_000_000;
 
   await api.tx.utility.batch([
       api.tx.genericAsset
-    .mint(spendingId, collectionOwner.address, initialEndowment),
+    .mint(spendingAssetId, collectionOwner.address, initialEndowment),
       api.tx.genericAsset
-    .mint(spendingId, tokenOwner.address, initialEndowment),
+    .mint(spendingAssetId, tokenOwner.address, initialEndowment),
   ]).signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
 });
 
@@ -50,25 +51,24 @@ afterAll(async () => {
 
 describe('NFTs', () => {
   let collectionId;
-  let schema;
-
-  beforeAll(() => {
-    // setup test collection
-    collectionId = 'example-collection';
-    schema = [
-      ['name', 'text'],
-      ['fingerprint', 'hash'],
-      ['created', 'timestamp']
-    ];
-  });
 
   it('creates a collection', async done => {
-    await api.tx.nft.createCollection(collectionId, schema, "https://example.com/nft/metadata", null).signAndSend(collectionOwner, async ({ status, events }) => {
+    let collectionName = 'example-collection';
+    await api.tx.nft.createCollection(
+      collectionName,
+      {"Https": "example.com/nft/metadata" },
+      null,
+    ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          if (method == 'CreateCollection') {
+            collectionId = data[0];
+            console.log(`got collection: ${collectionId}`);
+          }
         });
         expect((await api.query.nft.collectionOwner(collectionId)).toString()).toBe(collectionOwner.address);
+        expect((await api.query.nft.collectionName(collectionId)).toString()).toBe(stringToHex(collectionName));
         done();
       }
     });
@@ -76,120 +76,122 @@ describe('NFTs', () => {
 
   it('creates a token', async done => {
     const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
+      {'Text': '💎🙌'},
     ];
 
     let tokenId;
-    await api.tx.nft.createToken(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
-        events.forEach(({phase, event: {data, method, section}}) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+        events.forEach(({ event: {data, method }}) => {
           if (method == 'CreateToken') {
             tokenId = data[1];
             console.log(`got token: ${tokenId}`);
           }
         });
-        let tokenAttributes = (await api.query.nft.tokenAttributes(tokenId));
-        expect(tokenAttributes.toJSON()).toEqual(attributes);
-        expect((await api.query.nft.balanceOf(tokenId, tokenOwner.address)).toNumber()).toEqual(1);
+        let seriesId = tokenId[1];
+        let seriesAttributes = (await api.query.nft.seriesAttributes(collectionId, seriesId));
+        expect(seriesAttributes.toJSON()).toEqual(attributes);
+        expect((await api.query.nft.tokenOwner([tokenId[0], tokenId[1]], tokenId[2]), tokenOwner.address).toString()).toEqual(tokenOwner.address);
+        done();
+      }
+    });
+  });
+
+  it('creates a series', async done => {
+    const attributes = [
+      {'Text': 'hello world'},
+      {'Hash': blake2AsHex(stringToU8a('hello world'))},
+      {'Timestamp': 12345}
+    ];
+
+    let seriesId;
+    let quantity = 3;
+    let metadataPath = "series/metadata";
+
+    await api.tx.nft
+    .mintSeries(collectionId, quantity, tokenOwner.address, attributes, metadataPath)
+    .signAndSend(collectionOwner, async ({ status, events }) => {
+      if (status.isInBlock) {
+        events.forEach(({ event: {data, method }}) => {
+          if (method == 'CreateSeries') {
+            seriesId = data[1];
+            console.log(`got series: ${seriesId}`);
+          }
+        });
+
+        // TODO: api.derive.nft.tokenInfo(tokenId);
+        // - attributes
+        // - off-chain metadadta URI
+        let seriesAttributes = (await api.query.nft.seriesAttributes(collectionId, seriesId));
+        expect(seriesAttributes.toJSON()).toEqual(attributes);
+        let lastSerialNumber = quantity - 1;
+        // TODO: api.derive.nft.tokenInfo(tokenId);
+        expect((await api.query.nft.tokenOwner([collectionId, seriesId], lastSerialNumber), tokenOwner.address).toString()).toEqual(tokenOwner.address);
         done();
       }
     });
   });
 
   it('finds collected tokens', async () => {
-    let tokenId = '0xd7be5779426046ec6370d5ffd7cf1d4d379393f6efb1cdd5c9f3da4d03bb59a8';
+      // TODO: api.derive.nft.tokensForCollection(tokenId);
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
-    expect(ownedTokens.toString()).toEqual(`[${tokenId}]`);
+    expect(ownedTokens.toJSON()).toEqual([
+      [0,0,0],[0,1,0],[0,1,1],[0,1,2]
+    ]);
   });
 
-  it('creates a batch of tokens', async done => {
-    const attributes = [
-      {'Text': 'hello batch world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 22345}
-    ];
-    const quantity = 10_000;
-
-    let tokenId;
-    await api.tx.nft.batchCreateToken(collectionId, quantity, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
-      if (status.isInBlock) {
-        events.forEach(({phase, event: {data, method, section}}) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-          if (method == 'CreateToken') {
-            tokenId = data[1];
-            console.log(`got token: ${tokenId}`);
-          }
-        });
-        let tokenAttributes = (await api.query.nft.tokenAttributes(tokenId));
-        expect(tokenAttributes.toJSON()).toEqual(attributes);
-        expect((await api.query.nft.balanceOf(tokenId, tokenOwner.address)).toNumber()).toEqual(quantity);
-        done();
-      }
-    });
-  });
-
-  it('lists tokens for fixed price sale', async done => {
-    let tokenId = '0xfa905acd4df10440e9721068ef5ddce67761c2d62d2fcd6d84cf495d0fc73e99';
-    const quantity = 100;
-
-    let spendingAssetId = await api.query.genericAsset.spendingAssetId();
+  it('can list a bundle for fixed price sale', async done => {
+    let buyer = keyring.addFromUri('//Test//TokenBuyer');
     let price = 200 * 10_000; // 200 CPAY
     let duration = 10;
     let block = await api.rpc.chain.getBlock();
-    await api.tx.nft.sell(tokenId, quantity, null, spendingAssetId, price, duration).signAndSend(tokenOwner, async ({ status, events }) => {
-      if (status.isInBlock) {
-        events.forEach(({phase, event: {data, method, section}}) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-        });
+    let tokens = [[0,0,0], [0,1,0]];
+    let listingId = (await api.query.nft.nextListingId());
 
-        // 0 = the first listing id
-        let listing: Listing = await api.query.nft.listings(0);
-        expect(listing.asFixedPrice).toEqual({
-          paymentAsset: spendingAssetId,
-          fixedPrice: price,
-          buyer: null,
-          duration: block.block.header.number.toNumber() + duration,
-          seller: tokenOwner.address,
-          quantity,
-          tokenId,
-        });
+    await api.tx.nft
+      .sellBundle(tokens, buyer.address, spendingAssetId, price, duration)
+      .signAndSend(tokenOwner);
 
-        done();
-      }
+    await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
+      if (!listing) return; // not ready yet
+      expect(listing.unwrapOrDefault().asFixedPrice).toEqual({
+        paymentAsset: spendingAssetId,
+        fixedPrice: price,
+        buyer: buyer.address,
+        close: block.block.header.number.toNumber() + duration,
+        seller: tokenOwner.address,
+        tokens,
+      });
+
+      done();
     });
+
   });
 
-  it('lists tokens for auction', async done => {
-    let tokenId = '0xfa905acd4df10440e9721068ef5ddce67761c2d62d2fcd6d84cf495d0fc73e99';
-    const quantity = 20;
-
-    let spendingAssetId = await api.query.genericAsset.spendingAssetId();
+  it('can list a token for auction', async done => {
     let reservePrice = 200 * 10_000; // 200 CPAY
     let duration = 10;
     let block = await api.rpc.chain.getBlock();
-    await api.tx.nft.auction(tokenId, quantity, spendingAssetId, reservePrice, duration).signAndSend(tokenOwner, async ({ status, events }) => {
-      if (status.isInBlock) {
-        events.forEach(({phase, event: {data, method, section}}) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-        });
+    let token = [0,1,1];
+    let listingId = (await api.query.nft.nextListingId());
 
-        // 1 = the second listing id
-        let listing: Listing = await api.query.nft.listings(1);
-        expect(listing.asAuction).toEqual({
-          paymentAsset: spendingAssetId,
-          reservePrice,
-          duration: block.block.header.number.toNumber() + duration,
-          seller: tokenOwner.address,
-          quantity,
-          tokenId,
-        });
+    await api.tx.nft
+      .auction(token, spendingAssetId, reservePrice, duration)
+      .signAndSend(tokenOwner);
 
-        done();
-      }
+    await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
+      if (!listing) return; // not ready yet
+      expect(listing.unwrapOrDefault().asAuction).toEqual({
+        paymentAsset: spendingAssetId,
+        reservePrice,
+        close: block.block.header.number.toNumber() + duration,
+        seller: tokenOwner.address,
+        tokens: [token],
+      });
+
+      done();
     });
+
   });
 
 });
