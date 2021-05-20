@@ -23,7 +23,6 @@ import {
   CENNZnetExtrinsicPayloadV0
 } from './extrinsic';
 import * as definitions from './definitions';
-import EnhancedTokenId from './nft/token-id';
 
 const _types = {
   ...definitions,
@@ -54,7 +53,6 @@ export const typesBundle: OverrideBundleType = {
           types: {
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
-            TokenId: EnhancedTokenId,
           },
         },
       ],

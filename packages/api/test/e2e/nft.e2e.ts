@@ -150,21 +150,22 @@ describe('NFTs', () => {
 
     await api.tx.nft
       .sellBundle(tokens, buyer.address, spendingAssetId, price, duration)
-      .signAndSend(tokenOwner);
-
-    await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
-      if (!listing) return; // not ready yet
-      expect(listing.unwrapOrDefault().asFixedPrice).toEqual({
-        paymentAsset: spendingAssetId,
-        fixedPrice: price,
-        buyer: buyer.address,
-        close: block.block.header.number.toNumber() + duration,
-        seller: tokenOwner.address,
-        tokens,
+      .signAndSend(tokenOwner, async ({ status }) => {
+          if (status.isInBlock) {
+            await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
+              expect(listing.unwrapOrDefault().asFixedPrice).toEqual({
+                paymentAsset: spendingAssetId,
+                fixedPrice: price,
+                buyer: buyer.address,
+                close: block.block.header.number.toNumber() + duration,
+                seller: tokenOwner.address,
+                tokens,
+              });
+        
+              done();
+            });
+          }
       });
-
-      done();
-    });
 
   });
 
@@ -177,20 +178,22 @@ describe('NFTs', () => {
 
     await api.tx.nft
       .auction(token, spendingAssetId, reservePrice, duration)
-      .signAndSend(tokenOwner);
-
-    await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
-      if (!listing) return; // not ready yet
-      expect(listing.unwrapOrDefault().asAuction).toEqual({
-        paymentAsset: spendingAssetId,
-        reservePrice,
-        close: block.block.header.number.toNumber() + duration,
-        seller: tokenOwner.address,
-        tokens: [token],
-      });
-
-      done();
-    });
+      .signAndSend(tokenOwner, async ({ status }) => {
+        if (status.isInBlock) {
+          await api.query.nft.listings(listingId, (listing: Option<Listing>) => {
+            expect(listing.unwrapOrDefault().asAuction).toEqual({
+              paymentAsset: spendingAssetId,
+              reservePrice,
+              close: block.block.header.number.toNumber() + duration,
+              seller: tokenOwner.address,
+              tokens: [token],
+            });
+      
+            done();
+          });
+        }
+      }
+    );
 
   });
 
