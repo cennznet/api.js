@@ -76,7 +76,9 @@ describe('NFTs', () => {
 
   it('creates a token', async done => {
     const attributes = [
-      {'Text': '💎🙌'},
+      {'Text': 'hello world'},
+      {'Hash': blake2AsHex(stringToU8a('hello world'))},
+      {'Timestamp': 12345}
     ];
 
     let tokenId;
