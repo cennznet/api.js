@@ -25,7 +25,7 @@ let api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
-let spendingAssetId;
+let spendingAssetId, attributes, sftAttributes;
 
 beforeAll(async done => {
   await cryptoWaitReady();
@@ -45,6 +45,17 @@ beforeAll(async done => {
       api.tx.genericAsset
     .mint(spendingAssetId, tokenOwner.address, initialEndowment),
   ]).signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
+
+
+  attributes = [
+    {'Text': '💎🙌'},
+  ];
+
+  sftAttributes = [
+    {'Text': 'hello world'},
+    {'Hash': blake2AsHex(stringToU8a('hello world'))},
+    {'Timestamp': 12345}
+  ];
 });
 
 afterAll(async () => {
@@ -77,11 +88,6 @@ describe('NFTs', () => {
   });
 
   it('creates a token', async done => {
-    const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
-    ];
 
     let tokenId;
     await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
@@ -144,6 +150,27 @@ describe('NFTs', () => {
         done();
       }
     });
+  });
+
+  it('finds collected tokens, their attributes and owners with derived query', async () => {
+    collectionId = 0;
+    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
+    const tokenUnique = tokenInfos[0];
+    expect(tokenUnique.tokenId.toNumber()).toEqual([collectionId, 0,0]);
+    expect(tokenUnique.tokenDetails.toJSON()).toEqual(attributes);
+    expect(tokenUnique.owner.toString()).toEqual(tokenOwner.address);
+    const token1InSeries = tokenInfos[1];
+    expect(token1InSeries.tokenId.toNumber()).toEqual([collectionId, 1,0]);
+    expect(token1InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
+    expect(token1InSeries.owner.toString()).toEqual(tokenOwner.address);
+    const token2InSeries = tokenInfos[2];
+    expect(token2InSeries.tokenId.toNumber()).toEqual([collectionId, 1,1]);
+    expect(token2InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
+    expect(token2InSeries.owner.toString()).toEqual(tokenOwner.address);
+    const token3InSeries = tokenInfos[3];
+    expect(token3InSeries.tokenId.toNumber()).toEqual([collectionId, 1,2]);
+    expect(token3InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
+    expect(token3InSeries.owner.toString()).toEqual(tokenOwner.address);
   });
 
   it('finds collected tokens', async () => {
