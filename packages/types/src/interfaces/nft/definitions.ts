@@ -16,6 +16,7 @@ export default {
           },
     },
     types: {
+        'TokenId': '(CollectionId, SeriesId, SerialNumber)',
         'AuctionClosureReason': {
             '_enum': {
                 'ExpiredNoBids': null,
@@ -76,6 +77,5 @@ export default {
         'SeriesId': 'u32',
         'SerialNumber': 'u32',
         'TokenCount': 'u32',
-        'TokenId': '(CollectionId, SeriesId, SerialNumber)',
     }
 }

@@ -1532,6 +1532,9 @@ declare module '@polkadot/types/types/registry' {
     PermissionLatest: PermissionLatest;
     'Option<PermissionLatest>': Option<PermissionLatest>;
     'Vec<PermissionLatest>': Vec<PermissionLatest>;
+    TokenId: TokenId;
+    'Option<TokenId>': Option<TokenId>;
+    'Vec<TokenId>': Vec<TokenId>;
     AuctionClosureReason: AuctionClosureReason;
     'Option<AuctionClosureReason>': Option<AuctionClosureReason>;
     'Vec<AuctionClosureReason>': Vec<AuctionClosureReason>;
@@ -1579,9 +1582,6 @@ declare module '@polkadot/types/types/registry' {
     'Compact<TokenCount>': Compact<TokenCount>;
     'Option<TokenCount>': Option<TokenCount>;
     'Vec<TokenCount>': Vec<TokenCount>;
-    TokenId: TokenId;
-    'Option<TokenId>': Option<TokenId>;
-    'Vec<TokenId>': Vec<TokenId>;
     RewardBalance: RewardBalance;
     'Compact<RewardBalance>': Compact<RewardBalance>;
     'Option<RewardBalance>': Option<RewardBalance>;
