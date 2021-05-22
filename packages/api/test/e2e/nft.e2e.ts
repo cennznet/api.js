@@ -17,7 +17,9 @@ import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
 import { stringToHex, stringToU8a } from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
-import { Listing, ListingId, Option } from '@cennznet/types';
+import { Listing } from '@cennznet/types';
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
+import { TokenInfo } from '@cennznet/api/derives/nft/tokenInfo';
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -90,10 +92,16 @@ describe('NFTs', () => {
             console.log(`got token: ${tokenId}`);
           }
         });
-        let seriesId = tokenId[1];
-        let seriesAttributes = (await api.query.nft.seriesAttributes(collectionId, seriesId));
-        expect(seriesAttributes.toJSON()).toEqual(attributes);
-        expect((await api.query.nft.tokenOwner([tokenId[0], tokenId[1]], tokenId[2]), tokenOwner.address).toString()).toEqual(tokenOwner.address);
+
+        let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+        expect(tokenInfo ==
+          {
+            owner: tokenOwner.address,
+            attributes,
+            tokenId,
+          }
+        );
+
         done();
       }
     });
@@ -121,14 +129,18 @@ describe('NFTs', () => {
           }
         });
 
-        // TODO: api.derive.nft.tokenInfo(tokenId);
-        // - attributes
-        // - off-chain metadadta URI
-        let seriesAttributes = (await api.query.nft.seriesAttributes(collectionId, seriesId));
-        expect(seriesAttributes.toJSON()).toEqual(attributes);
-        let lastSerialNumber = quantity - 1;
-        // TODO: api.derive.nft.tokenInfo(tokenId);
-        expect((await api.query.nft.tokenOwner([collectionId, seriesId], lastSerialNumber), tokenOwner.address).toString()).toEqual(tokenOwner.address);
+        // this is a new series, the first token will have serial number 0
+        let serialNumber = 0;
+        let tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
+        let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+        expect(tokenInfo ==
+          {
+            owner: tokenOwner.address,
+            attributes,
+            tokenId,
+          }
+        );
+
         done();
       }
     });
@@ -138,7 +150,26 @@ describe('NFTs', () => {
       // TODO: api.derive.nft.tokensForCollection(tokenId);
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
     expect(ownedTokens.toJSON()).toEqual([
-      [0,0,0],[0,1,0],[0,1,1],[0,1,2]
+      {
+        collectionId: 0,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 1,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 2,
+      },
     ]);
   });
 

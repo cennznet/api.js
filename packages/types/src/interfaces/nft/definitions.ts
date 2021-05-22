@@ -12,7 +12,7 @@ export default {
                 type: 'Address',
               }
             ],
-            type: 'Vec<TokenId>',
+            type: 'Vec<EnhancedTokenId>',
           },
     },
     types: {
