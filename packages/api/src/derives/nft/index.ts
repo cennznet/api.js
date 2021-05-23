@@ -1,0 +1,1 @@
+export { tokenInfo } from './tokenInfo';
