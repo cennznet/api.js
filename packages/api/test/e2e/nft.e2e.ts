@@ -156,21 +156,35 @@ describe('NFTs', () => {
     collectionId = 0;
     const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
     const tokenUnique = tokenInfos[0];
-    expect(tokenUnique.tokenId.toNumber()).toEqual([collectionId, 0,0]);
-    expect(tokenUnique.tokenDetails.toJSON()).toEqual(attributes);
-    expect(tokenUnique.owner.toString()).toEqual(tokenOwner.address);
-    const token1InSeries = tokenInfos[1];
-    expect(token1InSeries.tokenId.toNumber()).toEqual([collectionId, 1,0]);
-    expect(token1InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
-    expect(token1InSeries.owner.toString()).toEqual(tokenOwner.address);
-    const token2InSeries = tokenInfos[2];
-    expect(token2InSeries.tokenId.toNumber()).toEqual([collectionId, 1,1]);
-    expect(token2InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
-    expect(token2InSeries.owner.toString()).toEqual(tokenOwner.address);
-    const token3InSeries = tokenInfos[3];
-    expect(token3InSeries.tokenId.toNumber()).toEqual([collectionId, 1,2]);
-    expect(token3InSeries.tokenDetails.toJSON()).toEqual(sftAttributes);
-    expect(token3InSeries.owner.toString()).toEqual(tokenOwner.address);
+    console.log('tokenUnique:::',tokenUnique.tokenId);
+    const hasUniqueToken = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  0
+      && token.tokenId.serialNumber.toNumber() === 0
+      // && token.tokenDetails.toJSON() === attributes
+      && token.owner.toString() === tokenOwner.address);
+    console.log('Has unique token::',hasUniqueToken);
+    const hastoken1InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.serialNumber.toNumber() === 0
+     /*&& token.tokenDetails.toJSON() === sftAttributes*/
+      && token.owner.toString() === tokenOwner.address);
+    const hastoken2InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.serialNumber.toNumber() === 1
+      /*&& token.tokenDetails.toJSON() === sftAttributes*/
+      && token.owner.toString() === tokenOwner.address);
+    const hastoken3InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.serialNumber.toNumber() === 2
+     /*&& token.tokenDetails.toJSON() === sftAttributes*/
+      && token.owner.toString() === tokenOwner.address);
+    console.log('hastoken1InSeries::',hastoken1InSeries);
+    console.log('hastoken2InSeries::',hastoken2InSeries);
+    console.log('hastoken3InSeries::',hastoken3InSeries);
   });
 
   it('finds collected tokens', async () => {
