@@ -20,8 +20,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { memo } from '@polkadot/api-derive/util';
 import { combineLatest } from 'rxjs';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
-import {SerialNumber, SeriesId} from '@cennznet/types';
-import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id";
+import { SerialNumber, SeriesId } from '@cennznet/types';
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 /**
  * @description Retrieve the list of all tokens in a collection
  */
@@ -43,7 +43,7 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
               const queryArgs = seriesIds.map((token, idx) => {
                 const nextSerial = nextSerialNumber[idx];
                 const queryArgsList = [];
-                for (let i = 0; i <= nextSerial.toNumber() - 1; i++) {
+                for (let i = 0; i < nextSerial.toNumber(); i++) {
                   queryArgsList.push([{ seriesId: token.args[1], serialNumber: i }]);
                 }
                 return queryArgsList;

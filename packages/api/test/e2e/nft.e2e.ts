@@ -24,7 +24,7 @@ let api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
-let spendingAssetId, attributes, sftAttributes;
+let spendingAssetId, attributes, series1Attributes;
 
 beforeAll(async done => {
   await cryptoWaitReady();
@@ -50,7 +50,7 @@ beforeAll(async done => {
     {'Text': '💎🙌'},
   ];
 
-  sftAttributes = [
+  series1Attributes = [
     {'Text': 'hello world'},
     {'Hash': blake2AsHex(stringToU8a('hello world'))},
     {'Timestamp': 12345}
@@ -113,18 +113,12 @@ describe('NFTs', () => {
   });
 
   it('creates a series', async done => {
-    const attributes = [
-      {'Text': 'hello world'},
-      {'Hash': blake2AsHex(stringToU8a('hello world'))},
-      {'Timestamp': 12345}
-    ];
-
     let seriesId;
     let quantity = 3;
     let metadataPath = "series/metadata";
 
     await api.tx.nft
-    .mintSeries(collectionId, quantity, tokenOwner.address, attributes, metadataPath)
+    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath)
     .signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
@@ -164,6 +158,7 @@ describe('NFTs', () => {
           events.forEach(({event: {data, method}}) => {
             if (method == 'Burn') {
               console.log(`Burnt token: ${data}`);
+              expect(data).toEqual([0,1,[1]]);
               done();
             }
           });
@@ -187,21 +182,21 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() === 1
       && token.tokenId.serialNumber.toNumber() === 0
     );
-    expect(token1InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token1InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token1InSeries.owner).toEqual(tokenOwner.address);
     const token2InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 1
     );
-    expect(token2InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token2InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token2InSeries.owner).toEqual(null);
     const token3InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 2
     );
-    expect(token3InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token3InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token3InSeries.owner).toEqual(tokenOwner.address);
   });
 
