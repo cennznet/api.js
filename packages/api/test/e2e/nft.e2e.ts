@@ -19,7 +19,6 @@ import { stringToHex, stringToU8a } from '@polkadot/util'
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import {TokenId} from "@cennznet/types/interfaces/nft/types";
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -205,7 +204,6 @@ describe('NFTs', () => {
   });
 
   it('finds collected tokens', async () => {
-      // TODO: api.derive.nft.tokensForCollection(tokenId);
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
     expect(ownedTokens.toJSON()).toEqual([
       {
@@ -217,11 +215,6 @@ describe('NFTs', () => {
         collectionId: 0,
         seriesId: 1,
         serialNumber: 0,
-      },
-      {
-        collectionId: 0,
-        seriesId: 1,
-        serialNumber: 1,
       },
       {
         collectionId: 0,
@@ -261,7 +254,7 @@ describe('NFTs', () => {
   it('can list a token for auction', async done => {
     let reservePrice = 200 * 10_000; // 200 CPAY
     let duration = 10;
-    let token = [0,1,1];
+    let token = [0,1,2];
     let listingId = await api.query.nft.nextListingId();
 
     await api.tx.nft
