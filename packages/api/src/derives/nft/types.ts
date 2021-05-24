@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AccountId, NFTAttributeValue, TokenId } from '@cennznet/types';
+import { AccountId, NFTAttributeValue } from '@cennznet/types';
+import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id";
 
 export interface DeriveTokenInfo {
-  tokenId: TokenId;
-  tokenDetails: NFTAttributeValue[];
-  owner: AccountId;
+  tokenId: EnhancedTokenId;
+  attributes: NFTAttributeValue[];
+  owner: string | undefined;
 }

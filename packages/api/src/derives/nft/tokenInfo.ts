@@ -13,21 +13,12 @@
 // limitations under the License.
 
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { AccountId, AnyJson, CollectionId, TokenId } from '@cennznet/types';
+import { TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-
-/** Info about a token  */
-export interface TokenInfo {
-  /** The token's id */
-  tokenId: EnhancedTokenId;
-  /** The token's owner */
-  owner: string;
-  /** The token's data attributes */
-  attributes: Array<number | string>;
-}
+import {DeriveTokenInfo} from "@cennznet/api/derives/nft/types";
 
 /**
  * Get info on the current token
@@ -37,7 +28,7 @@ export interface TokenInfo {
  * @returns [[TokenInfo]]
  */
 export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
-  return (tokenId: TokenId | EnhancedTokenId): Observable<TokenInfo> => {
+  return (tokenId: TokenId | EnhancedTokenId): Observable<DeriveTokenInfo> => {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
 
     return api
@@ -47,33 +38,16 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
       ])
       .pipe(
         switchMap(
-          ([owner, attributes]): Observable<TokenInfo> => {
+          ([owner, attributes]): Observable<DeriveTokenInfo> => {
             return of(
               new Object({
                 owner: owner.toString(),
                 attributes: attributes.toJSON(),
                 tokenId: tokenId as EnhancedTokenId,
-              }) as TokenInfo
+              }) as DeriveTokenInfo
             );
           }
         )
       );
   };
 }
-
-// /**
-//  * Get the tokens owned by address from the given collection
-//  *
-//  * @param collectionId  The collection Id value
-//  * @param address  The owner of the tokens
-//  *
-//  * @returns The owned token Ids [[EnhancedTokenId]]
-//  */
-//  export function collectedToken(instanceId: string, api: ApiInterfaceRx) {
-//   return (collectionId: CollectionId, address: AccountId): Observable<Array<EnhancedTokenId>> => {
-//     return (api.rpc as any).nft.collectedTokens(collectionId, address)
-//       .pipe(
-//         map((tokenIds: Array<[number, number, number]>) => tokenIds.map(t => new EnhancedTokenId(api.registry, t)))
-//       )
-//   }
-// }

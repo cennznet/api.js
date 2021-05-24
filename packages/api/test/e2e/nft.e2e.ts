@@ -19,7 +19,6 @@ import { stringToHex, stringToU8a } from '@polkadot/util'
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import { TokenInfo } from '@cennznet/api/derives/nft/tokenInfo';
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -152,39 +151,58 @@ describe('NFTs', () => {
     });
   });
 
+  it('burn second token from series', async done => {
+    collectionId = 0;
+    const seriesId = 1;
+    const serialNumber = 1;
+    ///TODO need to fix this
+    // const tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber ])
+    await api.tx.nft
+      .burn([0,1,1])
+      .signAndSend(tokenOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({event: {data, method}}) => {
+            if (method == 'Burn') {
+              console.log(`Burnt token: ${data}`);
+              done();
+            }
+          });
+        }
+      });
+  });
+
   it('finds collected tokens, their attributes and owners with derived query', async () => {
     collectionId = 0;
     const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
-    const tokenUnique = tokenInfos[0];
-    console.log('tokenUnique:::',tokenUnique.tokenId);
-    const hasUniqueToken = tokenInfos.find((token) =>
+    const uniqueToken = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  0
       && token.tokenId.serialNumber.toNumber() === 0
-      // && token.tokenDetails.toJSON() === attributes
-      && token.owner.toString() === tokenOwner.address);
-    console.log('Has unique token::',hasUniqueToken);
-    const hastoken1InSeries = tokenInfos.find((token) =>
+    );
+    expect(uniqueToken.attributes.toJSON()).toEqual(attributes);
+    expect(uniqueToken.owner).toEqual(tokenOwner.address);
+
+    const token1InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
-      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.seriesId.toNumber() === 1
       && token.tokenId.serialNumber.toNumber() === 0
-     /*&& token.tokenDetails.toJSON() === sftAttributes*/
-      && token.owner.toString() === tokenOwner.address);
-    const hastoken2InSeries = tokenInfos.find((token) =>
+    );
+    expect(token1InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token1InSeries.owner).toEqual(tokenOwner.address);
+    const token2InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 1
-      /*&& token.tokenDetails.toJSON() === sftAttributes*/
-      && token.owner.toString() === tokenOwner.address);
-    const hastoken3InSeries = tokenInfos.find((token) =>
+    );
+    expect(token2InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token2InSeries.owner).toEqual(null);
+    const token3InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 2
-     /*&& token.tokenDetails.toJSON() === sftAttributes*/
-      && token.owner.toString() === tokenOwner.address);
-    console.log('hastoken1InSeries::',hastoken1InSeries);
-    console.log('hastoken2InSeries::',hastoken2InSeries);
-    console.log('hastoken3InSeries::',hastoken3InSeries);
+    );
+    expect(token3InSeries.attributes.toJSON()).toEqual(sftAttributes);
+    expect(token3InSeries.owner).toEqual(tokenOwner.address);
   });
 
   it('finds collected tokens', async () => {

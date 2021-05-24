@@ -27,41 +27,42 @@ import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id"
 /**
  * @description Retrieve the list of all tokens in a collection
  */
-export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx): () => Observable<any> {
+export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx): () => Observable<DeriveTokenInfo[]> {
   return memo(
     instanceId,
-    (collectionId: string): Observable<any> =>
+    (collectionId: string): Observable<DeriveTokenInfo[]> =>
       combineLatest([
         api.query.nft.seriesAttributes.entries(collectionId),
         api.query.nft.seriesAttributes.keys(collectionId),
       ]).pipe(
-        switchMap(([entries, tokenIds]) => {
-          const tokenAttributeMap = entries.map((detail, idx) => {
-            const tokenId = tokenIds[idx].args[1];
-            return { tokenId: tokenId, tokenAttribute: detail };
+        switchMap(([entries, seriesIds]) => {
+          const seriesAttributeMap = entries.map((detail, idx) => {
+            const seriesId = seriesIds[idx].args[1];
+            return { id: seriesId, seriesAttribute: detail };
           });
-          return api.query.nft.nextSerialNumber.multi(tokenIds.map((token) => [collectionId, token.args[1]])).pipe(
+          return api.query.nft.nextSerialNumber.multi(seriesIds.map((token) => [collectionId, token.args[1]])).pipe(
             switchMap((nextSerialNumber: SerialNumber[]) => {
-              const queryArgs = tokenIds.map((token, idx) => {
+              const queryArgs = seriesIds.map((token, idx) => {
                 const nextSerial = nextSerialNumber[idx];
                 const queryArgsList = [];
                 for (let i = 0; i <= nextSerial.toNumber() - 1; i++) {
-                  queryArgsList.push([{ tokenId: token.args[1], serialId: i }]);
+                  queryArgsList.push([{ seriesId: token.args[1], serialNumber: i }]);
                 }
                 return queryArgsList;
               });
-              const args: { tokenId: u32; serialId: number }[] = queryArgs.flat().flat();
+              const args: { seriesId: u32; serialNumber: number }[] = queryArgs.flat().flat();
               return api.query.nft.tokenOwner
-                .multi(args.map((arg) => [[collectionId, arg.tokenId.toNumber()], arg.serialId]))
+                .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
                 .pipe(
                   map((allOwners) => {
-                    return args.map(({ tokenId, serialId }, idx) => {
-                      const attribute = tokenAttributeMap.find((token) => token.tokenId === tokenId);
+                    return args.map(({ seriesId, serialNumber }, idx) => {
+                      const attribute = seriesAttributeMap.find((series) => series.id === seriesId);
+                      const emptyAddress = api.registry.createType('AccountId', null);
                       return {
-                        tokenId: new EnhancedTokenId(api.registry, [collectionId, tokenId, serialId]),
-                        tokenDetails: attribute.tokenAttribute[1],
-                        owner: allOwners[idx],
-                      };
+                        tokenId: new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]),
+                        attributes: attribute.seriesAttribute[1],
+                        owner: allOwners[idx].toString() === emptyAddress.toString() ? null : allOwners[idx].toString(),
+                      } as DeriveTokenInfo;
                     });
                   })
                 );
