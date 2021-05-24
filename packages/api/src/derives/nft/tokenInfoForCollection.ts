@@ -47,10 +47,9 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
                 for (let i = 0; i < nextSerial.toNumber(); i++) {
                   queryArgsList.push([{ seriesId: token.args[1], serialNumber: i }]);
                 }
-                return queryArgsList;
+                return queryArgsList.reduce((acc, curr) => acc.concat(curr),[]);
               });
-              console.log('queryArgs::',JSON.stringify(queryArgs));
-              const args: { seriesId: SeriesId; serialNumber: number }[] = queryArgs.flat().flat();
+              const args: { seriesId: SeriesId; serialNumber: number }[] = queryArgs.reduce((acc, curr) => acc.concat(curr),[]);
               return api.query.nft.tokenOwner
                 .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
                 .pipe(
