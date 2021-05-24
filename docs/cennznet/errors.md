@@ -291,6 +291,9 @@ ___
 
 ## nft
  
+### AddToSingleIssue
+- **summary**:   Cannot mint additional tokens in a single issue series 
+ 
 ### BidTooLow
 - **summary**:   Auction bid was lower than reserve or current highest bid 
  

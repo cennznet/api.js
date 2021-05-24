@@ -344,6 +344,10 @@ ___
 - **interface**: `api.query.nft.collectionRoyalties`
 - **summary**:   Map from collection to its defacto royalty scheme 
  
+### isSingleIssue(`CollectionId, SeriesId`): `bool`
+- **interface**: `api.query.nft.isSingleIssue`
+- **summary**:   Demarcates a series limited to exactly one token 
+ 
 ### listingEndSchedule(`BlockNumber, ListingId`): `bool`
 - **interface**: `api.query.nft.listingEndSchedule`
 - **summary**:   Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close. 

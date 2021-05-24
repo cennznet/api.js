@@ -704,6 +704,7 @@ declare module '@polkadot/api/types/submittable' {
       createCollection: AugmentedSubmittable<(name: CollectionNameType | string | Uint8Array, metadataBaseUri: Option<MetadataBaseURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Mint additional tokens to an existing series
+       * It will fail if the series is not semi-fungible
        * 
        * `quantity` - how many tokens to mint
        * `owner` - the token owner, defaults to the caller
@@ -714,6 +715,7 @@ declare module '@polkadot/api/types/submittable' {
       mintAdditional: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, seriesId: SeriesId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Mint a series of tokens distinguishable only by a serial number (SFT)
+       * Series can be issued additional tokens with `mint_additional`
        * 
        * `quantity` - how many tokens to mint
        * `owner` - the token owner, defaults to the caller

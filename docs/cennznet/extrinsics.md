@@ -525,7 +525,7 @@ ___
  
 ### mintAdditional(collection_id: `CollectionId`, series_id: `SeriesId`, quantity: `TokenCount`, owner: `Option<AccountId>`)
 - **interface**: `api.tx.nft.mintAdditional`
-- **summary**:   Mint additional tokens to an existing series 
+- **summary**:   Mint additional tokens to an existing series It will fail if the series is not semi-fungible 
 
   `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller Caller must be the collection owner 
 
@@ -533,7 +533,7 @@ ___
  
 ### mintSeries(collection_id: `CollectionId`, quantity: `TokenCount`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`)
 - **interface**: `api.tx.nft.mintSeries`
-- **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) 
+- **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) Series can be issued additional tokens with `mint_additional` 
 
   `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `is_limited_edition` - signal whether the series is a limited edition or not `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
 

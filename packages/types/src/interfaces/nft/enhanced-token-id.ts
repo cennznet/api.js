@@ -14,9 +14,9 @@ export class EnhancedTokenId extends Struct implements Codec {
       super(
         registry,
         {
-            collectionId: 'u32',
-            seriesId: 'u32',
-            serialNumber: 'u32',
+            collectionId: 'CollectionId',
+            seriesId: 'SeriesId',
+            serialNumber: 'SerialNumber',
         },
         value
       );

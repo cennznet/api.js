@@ -318,6 +318,10 @@ declare module '@polkadot/api/types/storage' {
        **/
       collectionRoyalties: AugmentedQuery<ApiType, (arg: CollectionId | AnyNumber | Uint8Array) => Observable<Option<RoyaltiesSchedule>>> & QueryableStorageEntry<ApiType>;
       /**
+       * Demarcates a series limited to exactly one token
+       **/
+      isSingleIssue: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<bool>> & QueryableStorageEntry<ApiType>;
+      /**
        * Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close.
        **/
       listingEndSchedule: AugmentedQueryDoubleMap<ApiType, (key1: BlockNumber | AnyNumber | Uint8Array, key2: ListingId | AnyNumber | Uint8Array) => Observable<bool>> & QueryableStorageEntry<ApiType>;

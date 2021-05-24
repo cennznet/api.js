@@ -242,7 +242,7 @@ ___
 
 ## nft
  
-### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<TokenId>`
+### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<EnhancedTokenId>`
 - **interface**: `api.rpc.nft.collectedTokens`
 - **jsonrpc**: `nft_collectedTokens`
 - **summary**: Get the tokens owned by an address in a certain collection
