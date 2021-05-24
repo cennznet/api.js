@@ -19,6 +19,7 @@ import { stringToHex, stringToU8a } from '@polkadot/util'
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
+import {TokenId} from "@cennznet/types/interfaces/nft/types";
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
@@ -149,18 +150,16 @@ describe('NFTs', () => {
     collectionId = 0;
     const seriesId = 1;
     const serialNumber = 1;
-    ///TODO need to fix this
-    // const tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber ])
-    await api.tx.nft
-      .burn([0,1,1])
+    const tokenId = api.registry.createType('TokenId', [collectionId, seriesId, serialNumber]);
+    await api.tx.nft.burn(tokenId)
       .signAndSend(tokenOwner, async ({ status, events }) => {
         if (status.isInBlock) {
           events.forEach(({event: {data, method}}) => {
             if (method == 'Burn') {
-              console.log(`Burnt token: ${data}`);
-              expect(data[0].toNumber()).toEqual(0);
-              expect(data[1].toNumber()).toEqual(1);
-              expect(data[2][0].toNumber()).toEqual(1);
+              const [collId, sId, [serialNo] ] = data;
+              expect(collId.toNumber()).toEqual(collectionId);
+              expect(sId.toNumber()).toEqual(seriesId);
+              expect(serialNo.toNumber()).toEqual(serialNumber);
               done();
             }
           });
