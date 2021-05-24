@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AccountId, NFTAttributeValue } from '@cennznet/types';
+import { NFTAttributeValue } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 export interface DeriveTokenInfo {
