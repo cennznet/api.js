@@ -150,7 +150,7 @@ describe('NFTs', () => {
     collectionId = 0;
     const seriesId = 1;
     const serialNumber = 1;
-    const tokenId = api.registry.createType('TokenId', [collectionId, seriesId, serialNumber ]);
+    const tokenId = api.registry.createType('TokenId', [collectionId, seriesId, serialNumber]);
     await api.tx.nft.burn(tokenId)
       .signAndSend(tokenOwner, async ({ status, events }) => {
         if (status.isInBlock) {
