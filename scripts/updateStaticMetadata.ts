@@ -22,7 +22,6 @@ async function updateMeta(staticOutputDir, jsonOutputDir) {
     if (replaceKey) {
         console.log(`Replacing metadata for version: ${targetVersion}`)
         delete metaMap[replaceKey];
-        metaMap[replaceKey] = newMeta;
     } else {
         console.log(`Adding metadata for version: ${targetVersion}`)
     }
