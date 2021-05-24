@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import { AccountId, NFTAttributeValue } from '@cennznet/types';
-import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id";
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 export interface DeriveTokenInfo {
   tokenId: EnhancedTokenId;
   attributes: NFTAttributeValue[];
-  owner: string | undefined;
+  owner: string | undefined; // undefined when token is burnt
 }

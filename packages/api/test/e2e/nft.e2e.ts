@@ -158,7 +158,9 @@ describe('NFTs', () => {
           events.forEach(({event: {data, method}}) => {
             if (method == 'Burn') {
               console.log(`Burnt token: ${data}`);
-              expect(data).toEqual([0,1,[1]]);
+              expect(data[0].toNumber()).toEqual(0);
+              expect(data[1].toNumber()).toEqual(1);
+              expect(data[2][0].toNumber()).toEqual(1);
               done();
             }
           });
@@ -184,6 +186,7 @@ describe('NFTs', () => {
     );
     expect(token1InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token1InSeries.owner).toEqual(tokenOwner.address);
+
     const token2InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
@@ -191,6 +194,7 @@ describe('NFTs', () => {
     );
     expect(token2InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token2InSeries.owner).toEqual(null);
+
     const token3InSeries = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
       && token.tokenId.seriesId.toNumber() ===  1
@@ -198,6 +202,7 @@ describe('NFTs', () => {
     );
     expect(token3InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token3InSeries.owner).toEqual(tokenOwner.address);
+
   });
 
   it('finds collected tokens', async () => {

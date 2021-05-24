@@ -34,10 +34,11 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
         api.query.nft.seriesAttributes.keys(collectionId),
       ]).pipe(
         switchMap(([entries, seriesIds]) => {
-          const seriesAttributeMap = entries.map((detail, idx) => {
-            const seriesId = seriesIds[idx].args[1];
-            return { id: seriesId, seriesAttribute: detail };
-          });
+          const seriesAttributeMap = entries.reduce((acc, detail, idx) => {
+            const index = seriesIds[idx].args[1].toString();
+            acc[index] = detail;
+            return acc;
+          }, {});
           return api.query.nft.nextSerialNumber.multi(seriesIds.map((token) => [collectionId, token.args[1]])).pipe(
             switchMap((nextSerialNumber: SerialNumber[]) => {
               const queryArgs = seriesIds.map((token, idx) => {
@@ -53,12 +54,12 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
                 .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
                 .pipe(
                   map((allOwners) => {
+                    const emptyAddress = api.registry.createType('AccountId', null);
                     return args.map(({ seriesId, serialNumber }, idx) => {
-                      const attribute = seriesAttributeMap.find((series) => series.id === seriesId);
-                      const emptyAddress = api.registry.createType('AccountId', null);
+                      const attribute = seriesAttributeMap[seriesId.toString()];
                       return {
                         tokenId: new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]),
-                        attributes: attribute.seriesAttribute[1],
+                        attributes: attribute[1],
                         owner: allOwners[idx].toString() === emptyAddress.toString() ? null : allOwners[idx].toString(),
                       } as DeriveTokenInfo;
                     });
