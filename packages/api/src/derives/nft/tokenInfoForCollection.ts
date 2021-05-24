@@ -49,6 +49,7 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
                 }
                 return queryArgsList;
               });
+              console.log('queryArgs::',JSON.stringify(queryArgs));
               const args: { seriesId: SeriesId; serialNumber: number }[] = queryArgs.flat().flat();
               return api.query.nft.tokenOwner
                 .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
