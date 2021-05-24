@@ -15,14 +15,12 @@
 import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { memo } from '@polkadot/api-derive/util';
-import { combineLatest, EMPTY } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
-import { flatMap, uniq } from 'lodash';
-import { u32 } from '@polkadot/types';
-import { SerialNumber } from '@cennznet/types';
+import {SerialNumber, SeriesId} from '@cennznet/types';
 import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id";
 /**
  * @description Retrieve the list of all tokens in a collection
@@ -50,7 +48,7 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
                 }
                 return queryArgsList;
               });
-              const args: { seriesId: u32; serialNumber: number }[] = queryArgs.flat().flat();
+              const args: { seriesId: SeriesId; serialNumber: number }[] = queryArgs.flat().flat();
               return api.query.nft.tokenOwner
                 .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
                 .pipe(
