@@ -291,8 +291,8 @@ ___
 
 ## nft
  
-### AddToSingleIssue
-- **summary**:   Cannot mint additional tokens in a single issue series 
+### AddToUniqueIssue
+- **summary**:   Cannot mint additional tokens in a unique issue series 
  
 ### BidTooLow
 - **summary**:   Auction bid was lower than reserve or current highest bid 
@@ -332,6 +332,9 @@ ___
  
 ### RoyaltiesOvercommitment
 - **summary**:   Total royalties would exceed 100% of sale 
+ 
+### RoyaltiesProtection
+- **summary**:   Tokens with different individual royalties cannot be sold together 
  
 ### SchemaMaxAttributes
 - **summary**:   Too many attributes in the provided schema or data 

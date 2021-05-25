@@ -483,6 +483,8 @@ ___
 
   - Tokens must be from the same collection
 
+  - Tokens with individual royalties schedules cannot be sold in bundles
+
   Caller must be the token owner 
 
   - `payment_asset` fungible asset Id to receive payment with
@@ -521,7 +523,7 @@ ___
 - **interface**: `api.tx.nft.createCollection`
 - **summary**:   Create a new token collection 
 
-  The caller will become the collection owner `collection_id`- 32 byte utf-8 string `metdata_base_uri` - Base URI for off-chain metadata for tokens in this collection `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default. 
+  The caller will become the collection owner `collection_id`- 32 byte utf-8 string `metadata_base_uri` - Base URI for off-chain metadata for tokens in this collection `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default. 
  
 ### mintAdditional(collection_id: `CollectionId`, series_id: `SeriesId`, quantity: `TokenCount`, owner: `Option<AccountId>`)
 - **interface**: `api.tx.nft.mintAdditional`
@@ -531,7 +533,7 @@ ___
 
   -----------Weight is O(N) where N is `quantity` 
  
-### mintSeries(collection_id: `CollectionId`, quantity: `TokenCount`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`)
+### mintSeries(collection_id: `CollectionId`, quantity: `TokenCount`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
 - **interface**: `api.tx.nft.mintSeries`
 - **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) Series can be issued additional tokens with `mint_additional` 
 
@@ -539,7 +541,7 @@ ___
 
   -----------Performs O(N) writes where N is `quantity` 
  
-### mintUnique(collection_id: `CollectionId`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`)
+### mintUnique(collection_id: `CollectionId`, owner: `Option<AccountId>`, attributes: `Vec<NFTAttributeValue>`, metadata_path: `Option<Bytes>`, royalties_schedule: `Option<RoyaltiesSchedule>`)
 - **interface**: `api.tx.nft.mintUnique`
 - **summary**:   Mint a single token (NFT) 
 
@@ -557,7 +559,7 @@ ___
 
   - Tokens must be from the same collection
 
-  - Tokens with individual royalties schedules cannot be sold in bundles
+  - Tokens with individual royalties schedules cannot be sold with this method
 
   `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase `asset_id` fungible asset Id to receive as payment for the NFT `fixed_price` ask price `duration` listing duration time in blocks from now Caller must be the token owner 
  

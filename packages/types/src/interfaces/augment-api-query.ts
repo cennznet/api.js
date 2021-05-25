@@ -304,7 +304,7 @@ declare module '@polkadot/api/types/storage' {
       /**
        * Map from collection to a base metadata URI for its token's offchain attributes
        **/
-      collectionMetadatUri: AugmentedQuery<ApiType, (arg: CollectionId | AnyNumber | Uint8Array) => Observable<Option<MetadataBaseURI>>> & QueryableStorageEntry<ApiType>;
+      collectionMetadataUri: AugmentedQuery<ApiType, (arg: CollectionId | AnyNumber | Uint8Array) => Observable<Option<MetadataBaseURI>>> & QueryableStorageEntry<ApiType>;
       /**
        * Map from collection to its human friendly name
        **/
@@ -342,7 +342,7 @@ declare module '@polkadot/api/types/storage' {
        **/
       nextListingId: AugmentedQuery<ApiType, () => Observable<ListingId>> & QueryableStorageEntry<ApiType>;
       /**
-       * The next available serial number in a given (colleciton, series)
+       * The next available serial number in a given (collection, series)
        **/
       nextSerialNumber: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<SerialNumber>> & QueryableStorageEntry<ApiType>;
       /**
@@ -366,6 +366,10 @@ declare module '@polkadot/api/types/storage' {
        * Map from a token series to its metadata URI path. This should be joined wih the collection base path
        **/
       seriesMetadataUri: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<Option<Bytes>>> & QueryableStorageEntry<ApiType>;
+      /**
+       * Map from (collection, series) to configured royalties schedule
+       **/
+      seriesRoyalties: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<Option<RoyaltiesSchedule>>> & QueryableStorageEntry<ApiType>;
       /**
        * Map from token to its locked status
        **/

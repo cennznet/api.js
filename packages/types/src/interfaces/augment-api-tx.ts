@@ -657,6 +657,7 @@ declare module '@polkadot/api/types/submittable' {
       /**
        * Auction a bundle of tokens on the open market to the highest bidder
        * - Tokens must be from the same collection
+       * - Tokens with individual royalties schedules cannot be sold in bundles
        * 
        * Caller must be the token owner
        * - `payment_asset` fungible asset Id to receive payment with
@@ -698,7 +699,7 @@ declare module '@polkadot/api/types/submittable' {
        * 
        * The caller will become the collection owner
        * `collection_id`- 32 byte utf-8 string
-       * `metdata_base_uri` - Base URI for off-chain metadata for tokens in this collection
+       * `metadata_base_uri` - Base URI for off-chain metadata for tokens in this collection
        * `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default.
        **/
       createCollection: AugmentedSubmittable<(name: CollectionNameType | string | Uint8Array, metadataBaseUri: Option<MetadataBaseURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
@@ -726,7 +727,7 @@ declare module '@polkadot/api/types/submittable' {
        * -----------
        * Performs O(N) writes where N is `quantity`
        **/
-      mintSeries: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      mintSeries: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Mint a single token (NFT)
        * 
@@ -735,7 +736,7 @@ declare module '@polkadot/api/types/submittable' {
        * `metadata_path` - URI path to the offchain metadata relative to the collection base URI
        * Caller must be the collection owner
        **/
-      mintUnique: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
+      mintUnique: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>>;
       /**
        * Sell a single token at a fixed price
        * 
@@ -749,7 +750,7 @@ declare module '@polkadot/api/types/submittable' {
       /**
        * Sell a bundle of tokens at a fixed price
        * - Tokens must be from the same collection
-       * - Tokens with individual royalties schedules cannot be sold in bundles
+       * - Tokens with individual royalties schedules cannot be sold with this method
        * 
        * `buyer` optionally, the account to receive the NFT. If unspecified, then any account may purchase
        * `asset_id` fungible asset Id to receive as payment for the NFT
