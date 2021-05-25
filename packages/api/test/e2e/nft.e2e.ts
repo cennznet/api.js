@@ -62,7 +62,7 @@ afterAll(async () => {
 });
 
 describe('NFTs', () => {
-  let collectionId;
+  let collectionId: number;
 
   it('creates a collection', async done => {
     let collectionName = 'example-collection';
@@ -75,7 +75,7 @@ describe('NFTs', () => {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
           if (method == 'CreateCollection') {
-            collectionId = data[0];
+            collectionId = data[0].toNumber();
             console.log(`got collection: ${collectionId}`);
           }
         });
@@ -89,7 +89,7 @@ describe('NFTs', () => {
   it('creates a token', async done => {
 
     let tokenId;
-    await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
           if (method == 'CreateToken') {
@@ -118,7 +118,7 @@ describe('NFTs', () => {
     let metadataPath = "series/metadata";
 
     await api.tx.nft
-    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath)
+    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
     .signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
@@ -146,10 +146,10 @@ describe('NFTs', () => {
   });
 
   it('burn second token from series', async done => {
-    collectionId = 0;
     const seriesId = 1;
     const serialNumber = 1;
-    const tokenId = api.registry.createType('TokenId', [collectionId, seriesId, serialNumber]);
+    const tokenId = [collectionId, seriesId, serialNumber];
+
     await api.tx.nft.burn(tokenId)
       .signAndSend(tokenOwner, async ({ status, events }) => {
         if (status.isInBlock) {
@@ -167,7 +167,6 @@ describe('NFTs', () => {
   });
 
   it('finds collected tokens, their attributes and owners with derived query', async () => {
-    collectionId = 0;
     const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
     const uniqueToken = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === 0
@@ -244,6 +243,7 @@ describe('NFTs', () => {
                 close: blockNumber + duration,
                 seller: tokenOwner.address,
                 tokens,
+                royaltiesSchedule: { entitlements: [] },
               });
 
             done();
@@ -269,6 +269,7 @@ describe('NFTs', () => {
               close: blockNumber + duration,
               seller: tokenOwner.address,
               tokens: [token],
+              royaltiesSchedule: { entitlements: [] }
             });
 
           done();
