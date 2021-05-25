@@ -30,6 +30,7 @@ export default {
             'close': 'BlockNumber',
             'seller': 'AccountId',
             'tokens': 'Vec<TokenId>',
+            'royaltiesSchedule': 'RoyaltiesSchedule',
         },
         'CollectionId': 'u32',
         'CollectionNameType': 'Vec<u8>',
@@ -40,6 +41,7 @@ export default {
             'buyer': 'Option<AccountId>',
             'seller': 'AccountId',
             'tokens': 'Vec<TokenId>',
+            'royaltiesSchedule': 'RoyaltiesSchedule',
         },
         'Listing': {
             '_enum': {

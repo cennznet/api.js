@@ -328,8 +328,8 @@ ___
 
 ## nft
  
-### collectionMetadatURI(`CollectionId`): `Option<MetadataBaseURI>`
-- **interface**: `api.query.nft.collectionMetadatURI`
+### collectionMetadataURI(`CollectionId`): `Option<MetadataBaseURI>`
+- **interface**: `api.query.nft.collectionMetadataURI`
 - **summary**:   Map from collection to a base metadata URI for its token's offchain attributes 
  
 ### collectionName(`CollectionId`): `CollectionNameType`
@@ -370,7 +370,7 @@ ___
  
 ### nextSerialNumber(`CollectionId, SeriesId`): `SerialNumber`
 - **interface**: `api.query.nft.nextSerialNumber`
-- **summary**:   The next available serial number in a given (colleciton, series) 
+- **summary**:   The next available serial number in a given (collection, series) 
  
 ### nextSeriesId(`CollectionId`): `SeriesId`
 - **interface**: `api.query.nft.nextSeriesId`
@@ -391,6 +391,10 @@ ___
 ### seriesMetadataURI(`CollectionId, SeriesId`): `Option<Bytes>`
 - **interface**: `api.query.nft.seriesMetadataURI`
 - **summary**:   Map from a token series to its metadata URI path. This should be joined wih the collection base path 
+ 
+### seriesRoyalties(`CollectionId, SeriesId`): `Option<RoyaltiesSchedule>`
+- **interface**: `api.query.nft.seriesRoyalties`
+- **summary**:   Map from (collection, series) to configured royalties schedule 
  
 ### tokenLocks(`TokenId`): `bool`
 - **interface**: `api.query.nft.tokenLocks`

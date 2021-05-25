@@ -19,6 +19,7 @@ export interface AuctionListing extends Struct {
   readonly close: BlockNumber;
   readonly seller: AccountId;
   readonly tokens: Vec<TokenId>;
+  readonly royaltiesSchedule: RoyaltiesSchedule;
 }
 
 /** @name CollectionId */
@@ -35,6 +36,7 @@ export interface FixedPriceListing extends Struct {
   readonly buyer: Option<AccountId>;
   readonly seller: AccountId;
   readonly tokens: Vec<TokenId>;
+  readonly royaltiesSchedule: RoyaltiesSchedule;
 }
 
 /** @name Listing */

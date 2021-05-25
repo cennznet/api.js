@@ -25,6 +25,7 @@ async function updateMeta(staticOutputDir, jsonOutputDir) {
     } else {
         console.log(`Adding metadata for version: ${targetVersion}`)
     }
+    // azalea genesis hash: 0x0d0971c150a9741b8719b3c6c9c2e96ec5b2e3fb83641af868e6650f3e263ef0
     metaMap[`${api.genesisHash.toHex()}-${targetVersion}`] = newMeta;
     const data = `export default ${JSON.stringify(metaMap, null, '\n')};`;
 
