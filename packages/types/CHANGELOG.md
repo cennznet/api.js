@@ -3,8 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [Unreleased]
-- Add NFT module support
+## [1.4.0](https://github.com/cennznet/api.js/compare/release/1.3.4...prerelease/1.4.0) (25/05/2021)
+### Added:
+- NFT module types
 
 ## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
 ### Added:
