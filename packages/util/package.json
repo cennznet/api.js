@@ -1,7 +1,7 @@
 {
     "name": "@cennznet/util",
-    "version": "1.4.0-alpha.0",
-    "description": "utils for cennznet sdk",
+    "version": "1.4.0",
+    "description": "utils for CENNZnet api",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
         "CENNZNet"
