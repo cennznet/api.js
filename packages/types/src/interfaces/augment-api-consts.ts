@@ -12,7 +12,6 @@ import type { ApiTypes } from '@polkadot/api/types';
 declare module '@polkadot/api/types/consts' {
   export interface AugmentedConsts<ApiType> {
     babe: {
-      [key: string]: Codec;
       /**
        * The number of **slots** that an epoch takes. We couple sessions to
        * epochs, i.e. we start a new session once the new epoch begins.
@@ -26,9 +25,12 @@ declare module '@polkadot/api/types/consts' {
        * the probability of a slot being empty).
        **/
       expectedBlockTime: Moment & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     identity: {
-      [key: string]: Codec;
       /**
        * The amount held on deposit for a registered identity.
        **/
@@ -57,9 +59,12 @@ declare module '@polkadot/api/types/consts' {
        * another trie item whose value is the size of an account ID plus 32 bytes.
        **/
       subAccountDeposit: BalanceOf & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     multisig: {
-      [key: string]: Codec;
       /**
        * The base amount of currency needed to reserve for creating a multisig execution or to store
        * a dispatch call for later.
@@ -73,9 +78,12 @@ declare module '@polkadot/api/types/consts' {
        * The maximum amount of signatories allowed for a given multisig.
        **/
       maxSignatories: u16 & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     staking: {
-      [key: string]: Codec;
       /**
        * Number of eras that staked funds must remain bonded for.
        **/
@@ -119,9 +127,12 @@ declare module '@polkadot/api/types/consts' {
        * intervention.
        **/
       slashDeferDuration: EraIndex & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     system: {
-      [key: string]: Codec;
       /**
        * The base weight of executing a block, independent of the transactions in the block.
        **/
@@ -146,9 +157,12 @@ declare module '@polkadot/api/types/consts' {
        * The maximum weight of a block.
        **/
       maximumBlockWeight: Weight & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     timestamp: {
-      [key: string]: Codec;
       /**
        * The minimum period between blocks. Beware that this is different to the *expected* period
        * that the block production apparatus provides. Your chosen consensus system will generally
@@ -156,9 +170,12 @@ declare module '@polkadot/api/types/consts' {
        * period on default settings.
        **/
       minimumPeriod: Moment & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     transactionPayment: {
-      [key: string]: Codec;
       /**
        * The fee to be paid for making a transaction; the per-byte portion.
        **/
@@ -167,9 +184,12 @@ declare module '@polkadot/api/types/consts' {
        * The polynomial that is applied in order to derive fee from weight.
        **/
       weightToFee: Vec<WeightToFeeCoefficient> & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
     treasury: {
-      [key: string]: Codec;
       /**
        * Percentage of the curator fee that will be reserved upfront as deposit for bounty curator.
        **/
@@ -224,6 +244,10 @@ declare module '@polkadot/api/types/consts' {
        * The amount held on deposit for placing a tip report.
        **/
       tipReportDepositBase: BalanceOf & AugmentedConst<ApiType>;
+      /**
+       * Generic const
+       **/
+      [key: string]: Codec;
     };
   }
 

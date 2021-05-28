@@ -177,41 +177,44 @@ ___
 
 ## nft
  
-### AuctionClosed(`CollectionId`, `TokenId`, `Reason`)
-- **summary**:   An auction has closed without selling (collection, token, reason) 
+### AuctionClosed(`CollectionId`, `ListingId`, `Reason`)
+- **summary**:   An auction has closed without selling (collection, listing, reason) 
  
-### AuctionOpen(`CollectionId`, `TokenId`, `AssetId`, `Balance`)
-- **summary**:   An auction has opened (collection, token, payment asset, reserve price) 
+### AuctionOpen(`CollectionId`, `ListingId`)
+- **summary**:   An auction has opened (collection, listing) 
  
-### AuctionSold(`CollectionId`, `TokenId`, `AssetId`, `Balance`, `AccountId`)
-- **summary**:   An auction has sold (collection, token, payment asset, bid, new owner) 
+### AuctionSold(`CollectionId`, `ListingId`, `AssetId`, `Balance`, `AccountId`)
+- **summary**:   An auction has sold (collection, listing, payment asset, bid, new owner) 
  
-### Bid(`CollectionId`, `TokenId`, `Balance`)
-- **summary**:   A new highest bid was placed (collection, token, amount) 
+### Bid(`CollectionId`, `ListingId`, `Balance`)
+- **summary**:   A new highest bid was placed (collection, listing, amount) 
  
-### Burn(`CollectionId`, `TokenId`)
-- **summary**:   An NFT was burned 
+### Burn(`CollectionId`, `SeriesId`, `Vec<SerialNumber>`)
+- **summary**:   Tokens were burned (collection, series id, serial numbers) 
  
-### CreateCollection(`CollectionId`, `AccountId`)
-- **summary**:   A new NFT collection was created, (collection, owner) 
+### CreateAdditional(`CollectionId`, `SeriesId`, `TokenCount`, `AccountId`)
+- **summary**:   Additional tokens were added to a series (collection, series id, quantity, owner) 
+ 
+### CreateCollection(`CollectionId`, `CollectionNameType`, `AccountId`)
+- **summary**:   A new token collection was created (collection, name, owner) 
+ 
+### CreateSeries(`CollectionId`, `SeriesId`, `TokenCount`, `AccountId`)
+- **summary**:   A new series of tokens was created (collection, series id, quantity, owner) 
  
 ### CreateToken(`CollectionId`, `TokenId`, `AccountId`)
-- **summary**:   A new NFT was created, (collection, token, owner) 
+- **summary**:   A unique token was created (collection, series id, serial number, owner) 
  
-### DirectSaleClosed(`CollectionId`, `TokenId`)
-- **summary**:   A direct sale has closed without selling 
+### FixedPriceSaleClosed(`CollectionId`, `ListingId`)
+- **summary**:   A fixed price sale has closed without selling (collection, listing) 
  
-### DirectSaleComplete(`CollectionId`, `TokenId`, `AccountId`, `AssetId`, `Balance`)
-- **summary**:   A direct sale has completed (collection, token, new owner, payment asset, fixed price) 
+### FixedPriceSaleComplete(`CollectionId`, `ListingId`, `AccountId`)
+- **summary**:   A fixed price sale has completed (collection, listing, buyer)) 
  
-### DirectSaleListed(`CollectionId`, `TokenId`, `Option<AccountId>`, `AssetId`, `Balance`)
-- **summary**:   A direct sale has been listed (collection, token, authorised buyer, payment asset, fixed price) 
+### FixedPriceSaleListed(`CollectionId`, `ListingId`)
+- **summary**:   A fixed price sale has been listed (collection, listing) 
  
-### Transfer(`CollectionId`, `TokenId`, `AccountId`)
-- **summary**:   An NFT was transferred (collection, token, new owner) 
- 
-### Update(`CollectionId`, `TokenId`)
-- **summary**:   An NFT's data was updated 
+### Transfer(`AccountId`, `Vec<TokenId>`, `AccountId`)
+- **summary**:   Token(s) were transferred (previous owner, token Ids, new owner) 
 
 ___
 

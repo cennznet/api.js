@@ -8,6 +8,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[babe](#babe)**
 
+- **[beefy](#beefy)**
+
 - **[cennzx](#cennzx)**
 
 - **[chain](#chain)**
@@ -95,6 +97,16 @@ ___
 - **interface**: `api.rpc.babe.epochAuthorship`
 - **jsonrpc**: `babe_epochAuthorship`
 - **summary**: Returns data about which slots (primary or secondary) can be claimed in the current epoch with the keys in the keystore
+
+___
+
+
+## beefy
+ 
+### subscribeJustifications(): `BeefySignedCommitment`
+- **interface**: `api.rpc.beefy.subscribeJustifications`
+- **jsonrpc**: `beefy_subscribeJustifications`
+- **summary**: Returns the block most recently finalized by BEEFY, alongside side its justification.
 
 ___
 
@@ -200,6 +212,11 @@ ___
 - **interface**: `api.rpc.contracts.getStorage`
 - **jsonrpc**: `contracts_getStorage`
 - **summary**: Returns the value under a specified storage key in a contract
+ 
+### instantiate(request: `InstantiateRequest`, at?: `BlockHash`): `ContractInstantiateResult`
+- **interface**: `api.rpc.contracts.instantiate`
+- **jsonrpc**: `contracts_instantiate`
+- **summary**: Instantiate a new contract
  
 ### rentProjection(address: `AccountId`, at?: `BlockHash`): `Option<BlockNumber>`
 - **interface**: `api.rpc.contracts.rentProjection`
@@ -491,7 +508,7 @@ ___
 
 ## nft
  
-### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<TokenId>`
+### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<EnhancedTokenId>`
 - **interface**: `api.rpc.nft.collectedTokens`
 - **jsonrpc**: `nft_collectedTokens`
 - **summary**: Get the tokens owned by an address in a certain collection
@@ -560,6 +577,11 @@ ___
 - **interface**: `api.rpc.state.getChildKeys`
 - **jsonrpc**: `state_getChildKeys`
 - **summary**: Retrieves the keys with prefix of a specific child storage
+ 
+### getChildReadProof(childStorageKey: `PrefixedStorageKey`, keys: `Vec<StorageKey>`, at?: `BlockHash`): `ReadProof`
+- **interface**: `api.rpc.state.getChildReadProof`
+- **jsonrpc**: `state_getChildReadProof`
+- **summary**: Returns proof of storage for child key entries at a specific block state.
  
 ### getChildStorage(childStorageKey: `StorageKey`, childDefinition: `StorageKey`, childType: `u32`, key: `StorageKey`, at?: `BlockHash`): `StorageData`
 - **interface**: `api.rpc.state.getChildStorage`
@@ -640,6 +662,11 @@ ___
 - **interface**: `api.rpc.state.subscribeStorage`
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
+ 
+### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`): `TraceBlockResponse`
+- **interface**: `api.rpc.state.traceBlock`
+- **jsonrpc**: `state_traceBlock`
+- **summary**: Provides a way to trace the re-execution of a single block
 
 ___
 

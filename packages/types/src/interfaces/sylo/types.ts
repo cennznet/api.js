@@ -49,9 +49,6 @@ export interface MemberRoles extends Enum {
 /** @name Message */
 export interface Message extends Bytes {}
 
-/** @name MessageId */
-export interface MessageId extends u32 {}
-
 /** @name Meta */
 export interface Meta extends Vec<ITuple<[Text, Text]>> {}
 
@@ -75,6 +72,9 @@ export interface Response extends Enum {
   readonly isPreKeyBundlesResponse: boolean;
   readonly asPreKeyBundlesResponse: PreKeyBundlesResponse;
 }
+
+/** @name SyloMessageId */
+export interface SyloMessageId extends u32 {}
 
 /** @name VaultKey */
 export interface VaultKey extends Bytes {}
