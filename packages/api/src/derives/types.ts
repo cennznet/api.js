@@ -9,6 +9,7 @@ import {
   Index,
 } from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
+import CENNZnetExtrinsic from '@cennznet/types/interfaces/extrinsic/v1/Extrinsic';
 
 export interface DerivedStakingInfo {
   accountId: AccountId;
@@ -29,7 +30,7 @@ export interface DerivedSessionKeyInfo {
 }
 
 export interface EstimateFeeParams {
-  extrinsic: SubmittableExtrinsic<ApiTypes>;
+  extrinsic: SubmittableExtrinsic<ApiTypes> | CENNZnetExtrinsic;
   userFeeAssetId: string | number;
   maxPayment?: string;
 }
@@ -37,4 +38,10 @@ export interface EstimateFeeParams {
 export interface DeriveBalancesAccount {
   accountId: AccountId;
   accountNonce: Index;
+}
+
+export interface PaymentOptions {
+  feeAssetId: number | string;
+  slippage?: number;
+  tip?: number;
 }
