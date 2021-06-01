@@ -1,18 +1,17 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { CollectionNameType } from '@cennznet/types';
+import { CollectionMap } from '@cennznet/api/derives/nft/types';
 
 /**
- * Get info on the current token
+ * Get map of collection id to collection name
  *
- * @param tokenId  The token Id value
- *
- * @returns [[TokenInfo]]
+ * @returns [id: name]
  */
 export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
-  return (): Observable<any> => {
+  return (): Observable<CollectionMap> => {
     return api.query.nft.nextCollectionId().pipe(
       switchMap(
         (nextCollectionId): Observable<any> => {
@@ -26,7 +25,7 @@ export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
                 acc[idx] = name.toHuman();
                 return acc;
               }, {});
-              return of(collectionMap);
+              return collectionMap;
             })
           );
         }

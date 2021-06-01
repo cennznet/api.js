@@ -86,6 +86,35 @@ describe('NFTs', () => {
     });
   });
 
+  it('creates a collection', async done => {
+    let collectionName = 'Digital Art';
+    await api.tx.nft.createCollection(
+      collectionName,
+      {"Https": "example.com/nft/metadata" },
+      null,
+    ).signAndSend(collectionOwner, async ({ status, events }) => {
+      if (status.isInBlock) {
+        events.forEach(({phase, event: {data, method, section}}) => {
+          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          if (method == 'CreateCollection') {
+            collectionId = data[0].toNumber();
+            console.log(`got collection: ${collectionId}`);
+          }
+        });
+        expect((await api.query.nft.collectionOwner(collectionId)).toString()).toBe(collectionOwner.address);
+        expect((await api.query.nft.collectionName(collectionId)).toString()).toBe(stringToHex(collectionName));
+        done();
+      }
+    });
+  });
+
+  it('collection Map ', async done => {
+    const collectionMap = await api.derive.nft.collectionInfo();
+    expect(collectionMap[collectionId.toString()]).toEqual('example-collection');
+    expect(collectionMap['1']).toEqual('Digital Art');
+    done();
+  });
+
   it('creates a token', async done => {
 
     let tokenId;
@@ -113,6 +142,7 @@ describe('NFTs', () => {
   });
 
   it('creates a series', async done => {
+    collectionId = 0;
     let seriesId;
     let quantity = 3;
     let metadataPath = "series/metadata";
@@ -164,6 +194,14 @@ describe('NFTs', () => {
           });
         }
       });
+  });
+
+  it('Find tokens with owner ', async done => {
+    const tokens = await api.derive.nft.allTokenWithOwner(tokenOwner.address);
+    console.log('Tokens::::',tokens);
+    // expect(collectionMap[collectionId.toString()]).toEqual('example-collection');
+    // expect(collectionMap['1']).toEqual('Digital Art');
+    done();
   });
 
   it('finds collected tokens, their attributes and owners with derived query', async () => {

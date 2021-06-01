@@ -13,12 +13,13 @@
 // limitations under the License.
 
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import {DeriveTokenInfo} from "@cennznet/api/derives/nft/types";
+import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { AccountId } from '@polkadot/types/interfaces';
 
 /**
  * Get info on the current token
@@ -49,5 +50,35 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
           }
         )
       );
+  };
+}
+
+/**
+ * Get info on the current token
+ *
+ * @param owner  The owner address
+ *
+ * @returns [[TokenInfo]]
+ */
+export function allTokenWithOwner(instanceId: string, api: ApiInterfaceRx) {
+  return (owner: AccountId | string): Observable<DeriveTokenInfo> => {
+    return api.query.nft.nextCollectionId().pipe(
+      switchMap(
+        (nextCollectionId): Observable<any> => {
+          const list = [];
+          for (let i = 0; i < nextCollectionId.toNumber(); i++) {
+            const collectionId = i.toString();
+            api.rpc.nft.collectedTokens(collectionId, owner).pipe(
+              map((ownedTokens) => {
+                console.log('Owned tokens::', ownedTokens);
+                return list.push(ownedTokens);
+              })
+            );
+          }
+          console.log('List::', list);
+          return of(list);
+        }
+      )
+    );
   };
 }
