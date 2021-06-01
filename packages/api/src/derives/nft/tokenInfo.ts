@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable, from, of, EMPTY } from 'rxjs';
+import { switchMap, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { TokenId } from '@cennznet/types';
@@ -65,18 +65,21 @@ export function allTokenWithOwner(instanceId: string, api: ApiInterfaceRx) {
     return api.query.nft.nextCollectionId().pipe(
       switchMap(
         (nextCollectionId): Observable<any> => {
-          const list = [];
+          const args = [];
           for (let i = 0; i < nextCollectionId.toNumber(); i++) {
             const collectionId = i.toString();
-            api.rpc.nft.collectedTokens(collectionId, owner).pipe(
-              map((ownedTokens) => {
-                console.log('Owned tokens::', ownedTokens);
-                return list.push(ownedTokens);
-              })
-            );
+            args.push(collectionId);
           }
-          console.log('List::', list);
-          return of(list);
+          if (args.length === 0) return EMPTY;
+          return from(args).pipe(
+            mergeMap((collectionId) =>
+              api.rpc.nft.collectedTokens(collectionId, owner).pipe(
+                map((ownedTokens) => ownedTokens),
+                catchError((err: Error) => of(err))
+              )
+            ),
+            reduce((a, i) => [...a, i], [])
+          );
         }
       )
     );

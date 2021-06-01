@@ -86,11 +86,11 @@ describe('NFTs', () => {
     });
   });
 
-  it('creates a collection', async done => {
+  it('creates another collection', async done => {
     let collectionName = 'Digital Art';
     await api.tx.nft.createCollection(
       collectionName,
-      {"Https": "example.com/nft/metadata" },
+      {"Https": "new.com/nft/metadata" },
       null,
     ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
@@ -98,7 +98,7 @@ describe('NFTs', () => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
           if (method == 'CreateCollection') {
             collectionId = data[0].toNumber();
-            console.log(`got collection: ${collectionId}`);
+            console.log(`got second collection: ${collectionId}`);
           }
         });
         expect((await api.query.nft.collectionOwner(collectionId)).toString()).toBe(collectionOwner.address);
@@ -116,7 +116,6 @@ describe('NFTs', () => {
   });
 
   it('creates a token', async done => {
-
     let tokenId;
     await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
@@ -141,7 +140,7 @@ describe('NFTs', () => {
     });
   });
 
-  it('creates a series', async done => {
+  it('creates a series in first collection', async done => {
     collectionId = 0;
     let seriesId;
     let quantity = 3;
@@ -175,6 +174,40 @@ describe('NFTs', () => {
     });
   });
 
+  it('creates a series of 5 in second collection', async done => {
+    collectionId = 1;
+    let seriesId;
+    let quantity = 5;
+    let metadataPath = "series/metadata";
+
+    await api.tx.nft
+      .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+      .signAndSend(collectionOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({ event: {data, method }}) => {
+            if (method == 'CreateSeries') {
+              seriesId = data[1];
+              console.log(`got series: ${seriesId}`);
+            }
+          });
+
+          // this is a new series, the first token will have serial number 0
+          let serialNumber = 0;
+          let tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
+          let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+          expect(tokenInfo ==
+            {
+              owner: tokenOwner.address,
+              attributes,
+              tokenId,
+            }
+          );
+
+          done();
+        }
+      });
+  });
+
   it('burn second token from series', async done => {
     const seriesId = 1;
     const serialNumber = 1;
@@ -198,9 +231,52 @@ describe('NFTs', () => {
 
   it('Find tokens with owner ', async done => {
     const tokens = await api.derive.nft.allTokenWithOwner(tokenOwner.address);
-    console.log('Tokens::::',tokens);
-    // expect(collectionMap[collectionId.toString()]).toEqual('example-collection');
-    // expect(collectionMap['1']).toEqual('Digital Art');
+    const tokensInFirstCollection = tokens[0];
+    const tokensInSecondCollection = tokens[1];
+    expect(tokensInFirstCollection.toJSON()).toEqual([
+      {
+        collectionId: 0,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 2,
+      },
+    ]);
+    expect(tokensInSecondCollection.toJSON()).toEqual([
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 1,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 2,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 3,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 4,
+      },
+    ]);
     done();
   });
 

@@ -17,7 +17,7 @@ export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
         (nextCollectionId): Observable<any> => {
           const queryArgsList = [];
           for (let i = 0; i < nextCollectionId.toNumber(); i++) {
-            queryArgsList.push([{ collectionId: i }]);
+            queryArgsList.push({ collectionId: i });
           }
           return api.query.nft.collectionName.multi(queryArgsList.map((arg) => [arg.collectionId])).pipe(
             map((collectionNames: CollectionNameType[]) => {
