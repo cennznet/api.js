@@ -62,7 +62,7 @@ afterAll(async () => {
 });
 
 describe('NFTs', () => {
-  let collectionId: number;
+  let collectionId: number, collectionId2: number;
 
   it('creates a collection', async done => {
     let collectionName = 'example-collection';
@@ -97,7 +97,7 @@ describe('NFTs', () => {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
           if (method == 'CreateCollection') {
-            collectionId = data[0].toNumber();
+            collectionId2 = data[0].toNumber();
             console.log(`got second collection: ${collectionId}`);
           }
         });
@@ -111,7 +111,7 @@ describe('NFTs', () => {
   it('collection Map ', async done => {
     const collectionMap = await api.derive.nft.collectionInfo();
     expect(collectionMap[collectionId.toString()]).toEqual('example-collection');
-    expect(collectionMap['1']).toEqual('Digital Art');
+    expect(collectionMap[collectionId2.toString()]).toEqual('Digital Art');
     done();
   });
 

@@ -58,7 +58,7 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
  *
  * @param owner  The owner address
  *
- * @returns [[TokenInfo]]
+ * @returns [[EnchanceTokenId]]
  */
 export function allTokenWithOwner(instanceId: string, api: ApiInterfaceRx) {
   return (owner: AccountId | string): Observable<DeriveTokenInfo> => {
