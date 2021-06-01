@@ -5,7 +5,8 @@ import type { Metadata } from '@polkadot/metadata';
 import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId } from '@cennznet/types/interfaces/nft';
+import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
 import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
 import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
 import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
@@ -386,7 +387,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Get the tokens owned by an address in a certain collection
        **/
-      collectedTokens: AugmentedRpc<(collection: CollectionId | string, address: Address | string | Uint8Array) => Observable<Vec<TokenId>>>;
+      collectedTokens: AugmentedRpc<(collection: CollectionId | AnyNumber | Uint8Array, address: Address | string | Uint8Array) => Observable<Vec<EnhancedTokenId>>>;
     };
     offchain: {
       /**
@@ -429,6 +430,10 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        * Retrieves the keys with prefix of a specific child storage
        **/
       getChildKeys: AugmentedRpc<(childStorageKey: StorageKey | string | Uint8Array | any, childDefinition: StorageKey | string | Uint8Array | any, childType: u32 | AnyNumber | Uint8Array, key: StorageKey | string | Uint8Array | any, at?: BlockHash | string | Uint8Array) => Observable<Vec<StorageKey>>>;
+      /**
+       * Returns proof of storage for child key entries at a specific block state.
+       **/
+      getChildReadProof: AugmentedRpc<(childStorageKey: PrefixedStorageKey | string | Uint8Array, keys: Vec<StorageKey> | (StorageKey | string | Uint8Array | any)[], at?: BlockHash | string | Uint8Array) => Observable<ReadProof>>;
       /**
        * Retrieves the child storage for a key
        **/

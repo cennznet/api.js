@@ -1,1 +1,2 @@
-export { balanceOf } from './balanceOf';
+export { tokenInfo } from './tokenInfo';
+export { tokenInfoForCollection } from './tokenInfoForCollection';

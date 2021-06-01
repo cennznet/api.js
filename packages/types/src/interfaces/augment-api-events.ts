@@ -4,7 +4,7 @@
 import type { Bytes, Option, Vec, bool, u32 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { CollectionId, Reason, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/genericAsset';
@@ -23,13 +23,15 @@ import type { ApiTypes } from '@polkadot/api/types';
 declare module '@polkadot/api/types/events' {
   export interface AugmentedEvents<ApiType> {
     attestation: {
-      [key: string]: AugmentedEvent<ApiType>;
       ClaimCreated: AugmentedEvent<ApiType, [AccountId, AccountId, AttestationTopic, AttestationValue]>;
       ClaimRemoved: AugmentedEvent<ApiType, [AccountId, AccountId, AttestationTopic]>;
       ClaimUpdated: AugmentedEvent<ApiType, [AccountId, AccountId, AttestationTopic, AttestationValue]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     cennzx: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Provider, core asset amount, trade asset id, trade asset amount
        **/
@@ -46,9 +48,12 @@ declare module '@polkadot/api/types/events' {
        * Provider, core asset amount, trade asset id, trade asset amount
        **/
       RemoveLiquidity: AugmentedEvent<ApiType, [AccountId, Balance, AssetId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     genericAsset: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Asset info updated (asset_id, asset_info).
        **/
@@ -73,9 +78,12 @@ declare module '@polkadot/api/types/events' {
        * Asset transfer succeeded (asset_id, from, to, amount).
        **/
       Transferred: AugmentedEvent<ApiType, [AssetId, AccountId, AccountId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     grandpa: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * New authority set has been applied. \[authority_set\]
        **/
@@ -88,9 +96,12 @@ declare module '@polkadot/api/types/events' {
        * Current authority set has been resumed.
        **/
       Resumed: AugmentedEvent<ApiType, []>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     identity: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * A name was cleared, and the given balance returned. \[who, deposit\]
        **/
@@ -133,9 +144,12 @@ declare module '@polkadot/api/types/events' {
        * main identity account to the sub-identity account. \[sub, main, deposit\]
        **/
       SubIdentityRevoked: AugmentedEvent<ApiType, [AccountId, AccountId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     imOnline: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * At the end of the session, no offence was committed.
        **/
@@ -148,9 +162,12 @@ declare module '@polkadot/api/types/events' {
        * At the end of the session, at least one validator was found to be \[offline\].
        **/
       SomeOffline: AugmentedEvent<ApiType, [Vec<IdentificationTuple>]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     multisig: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * A multisig operation has been approved by someone.
        * \[approving, timepoint, multisig, call_hash\]
@@ -168,60 +185,70 @@ declare module '@polkadot/api/types/events' {
        * A new multisig operation has begun. \[approving, multisig, call_hash\]
        **/
       NewMultisig: AugmentedEvent<ApiType, [AccountId, AccountId, CallHash]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     nft: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
-       * An auction has closed without selling (collection, token, reason)
+       * An auction has closed without selling (collection, listing, reason)
        **/
-      AuctionClosed: AugmentedEvent<ApiType, [CollectionId, TokenId, Reason]>;
+      AuctionClosed: AugmentedEvent<ApiType, [CollectionId, ListingId, Reason]>;
       /**
-       * An auction has opened (collection, token, payment asset, reserve price)
+       * An auction has opened (collection, listing)
        **/
-      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, TokenId, AssetId, Balance]>;
+      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
       /**
-       * An auction has sold (collection, token, payment asset, bid, new owner)
+       * An auction has sold (collection, listing, payment asset, bid, new owner)
        **/
-      AuctionSold: AugmentedEvent<ApiType, [CollectionId, TokenId, AssetId, Balance, AccountId]>;
+      AuctionSold: AugmentedEvent<ApiType, [CollectionId, ListingId, AssetId, Balance, AccountId]>;
       /**
-       * A new highest bid was placed (collection, token, amount)
+       * A new highest bid was placed (collection, listing, amount)
        **/
-      Bid: AugmentedEvent<ApiType, [CollectionId, TokenId, Balance]>;
+      Bid: AugmentedEvent<ApiType, [CollectionId, ListingId, Balance]>;
       /**
-       * An NFT was burned
+       * Tokens were burned (collection, series id, serial numbers)
        **/
-      Burn: AugmentedEvent<ApiType, [CollectionId, TokenId]>;
+      Burn: AugmentedEvent<ApiType, [CollectionId, SeriesId, Vec<SerialNumber>]>;
       /**
-       * A new NFT collection was created, (collection, owner)
+       * Additional tokens were added to a series (collection, series id, quantity, owner)
        **/
-      CreateCollection: AugmentedEvent<ApiType, [CollectionId, AccountId]>;
+      CreateAdditional: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, AccountId]>;
       /**
-       * A new NFT was created, (collection, token, owner)
+       * A new token collection was created (collection, name, owner)
+       **/
+      CreateCollection: AugmentedEvent<ApiType, [CollectionId, CollectionNameType, AccountId]>;
+      /**
+       * A new series of tokens was created (collection, series id, quantity, owner)
+       **/
+      CreateSeries: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, AccountId]>;
+      /**
+       * A unique token was created (collection, series id, serial number, owner)
        **/
       CreateToken: AugmentedEvent<ApiType, [CollectionId, TokenId, AccountId]>;
       /**
-       * A direct sale has closed without selling
+       * A fixed price sale has closed without selling (collection, listing)
        **/
-      DirectSaleClosed: AugmentedEvent<ApiType, [CollectionId, TokenId]>;
+      FixedPriceSaleClosed: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
       /**
-       * A direct sale has completed (collection, token, new owner, payment asset, fixed price)
+       * A fixed price sale has completed (collection, listing, buyer))
        **/
-      DirectSaleComplete: AugmentedEvent<ApiType, [CollectionId, TokenId, AccountId, AssetId, Balance]>;
+      FixedPriceSaleComplete: AugmentedEvent<ApiType, [CollectionId, ListingId, AccountId]>;
       /**
-       * A direct sale has been listed (collection, token, authorised buyer, payment asset, fixed price)
+       * A fixed price sale has been listed (collection, listing)
        **/
-      DirectSaleListed: AugmentedEvent<ApiType, [CollectionId, TokenId, Option<AccountId>, AssetId, Balance]>;
+      FixedPriceSaleListed: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
       /**
-       * An NFT was transferred (collection, token, new owner)
+       * Token(s) were transferred (previous owner, token Ids, new owner)
        **/
-      Transfer: AugmentedEvent<ApiType, [CollectionId, TokenId, AccountId]>;
+      Transfer: AugmentedEvent<ApiType, [AccountId, Vec<TokenId>, AccountId]>;
       /**
-       * An NFT's data was updated
+       * Generic event
        **/
-      Update: AugmentedEvent<ApiType, [CollectionId, TokenId]>;
+      [key: string]: AugmentedEvent<ApiType>;
     };
     offences: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * There is an offence reported of the given `kind` happened at the `session_index` and
        * (kind-specific) time slot. This event is not deposited for duplicate slashes. last
@@ -229,9 +256,12 @@ declare module '@polkadot/api/types/events' {
        * \[kind, timeslot, applied\].
        **/
       Offence: AugmentedEvent<ApiType, [Kind, OpaqueTimeSlot, bool]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     rewards: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Era reward payout the total (amount to treasury, amount to stakers)
        **/
@@ -248,9 +278,12 @@ declare module '@polkadot/api/types/events' {
        * A fiscal era has begun with the parameter (target_inflation_per_staking_era)
        **/
       NewFiscalEra: AugmentedEvent<ApiType, [Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     scheduler: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Canceled some task. \[when, index\]
        **/
@@ -263,17 +296,23 @@ declare module '@polkadot/api/types/events' {
        * Scheduled some task. \[when, index\]
        **/
       Scheduled: AugmentedEvent<ApiType, [BlockNumber, u32]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     session: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * New session has happened. Note that the argument is the \[session_index\], not the block
        * number as the type might suggest.
        **/
       NewSession: AugmentedEvent<ApiType, [SessionIndex]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     staking: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * An account has bonded this amount. \[stash, amount\]
        * 
@@ -319,9 +358,12 @@ declare module '@polkadot/api/types/events' {
        * from the unlocking queue. \[stash, amount\]
        **/
       Withdrawn: AugmentedEvent<ApiType, [AccountId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     sudo: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * The \[sudoer\] just switched identity; the old key is supplied.
        **/
@@ -334,9 +376,12 @@ declare module '@polkadot/api/types/events' {
        * A sudo just took place. \[result\]
        **/
       SudoAsDone: AugmentedEvent<ApiType, [bool]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     system: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * `:code` was updated.
        **/
@@ -357,9 +402,12 @@ declare module '@polkadot/api/types/events' {
        * A new \[account\] was created.
        **/
       NewAccount: AugmentedEvent<ApiType, [AccountId]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     treasury: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Some funds have been allocated. \[proposal_index, award, beneficiary\]
        **/
@@ -433,9 +481,12 @@ declare module '@polkadot/api/types/events' {
        * A tip suggestion has been retracted. \[tip_hash\]
        **/
       TipRetracted: AugmentedEvent<ApiType, [Hash]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
     utility: {
-      [key: string]: AugmentedEvent<ApiType>;
       /**
        * Batch of dispatches completed fully with no error.
        **/
@@ -445,6 +496,10 @@ declare module '@polkadot/api/types/events' {
        * well as the error. \[index, error\]
        **/
       BatchInterrupted: AugmentedEvent<ApiType, [u32, DispatchError]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
     };
   }
 

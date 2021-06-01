@@ -6,7 +6,6 @@ import type { ApiTypes } from '@polkadot/api/types';
 declare module '@polkadot/api/types/errors' {
   export interface AugmentedErrors<ApiType> {
     authorship: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * The uncle is genesis.
        **/
@@ -35,9 +34,12 @@ declare module '@polkadot/api/types/errors' {
        * Uncles already set in the block.
        **/
       UnclesAlreadySet: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     cennzx: {
-      [key: string]: AugmentedError<ApiType>;
       AssetCannotSwapForItself: AugmentedError<ApiType>;
       CannotAddLiquidityWithZero: AugmentedError<ApiType>;
       CannotTradeZero: AugmentedError<ApiType>;
@@ -56,9 +58,12 @@ declare module '@polkadot/api/types/errors' {
       MinimumLiquidityRequirementNotMet: AugmentedError<ApiType>;
       MinimumTradeAssetRequirementNotMet: AugmentedError<ApiType>;
       Overflow: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     genericAsset: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * No new assets id available.
        **/
@@ -115,9 +120,12 @@ declare module '@polkadot/api/types/errors' {
        * Cannot transfer zero amount.
        **/
       ZeroAmount: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     grandpa: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Attempt to signal GRANDPA change with one already pending.
        **/
@@ -148,9 +156,12 @@ declare module '@polkadot/api/types/errors' {
        * Cannot signal forced change so soon after last.
        **/
       TooSoon: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     identity: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Account ID is already named.
        **/
@@ -215,9 +226,12 @@ declare module '@polkadot/api/types/errors' {
        * Too many subs-accounts.
        **/
       TooManySubAccounts: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     imOnline: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Duplicated heartbeat.
        **/
@@ -226,9 +240,12 @@ declare module '@polkadot/api/types/errors' {
        * Non existent public key.
        **/
       InvalidKey: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     multisig: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Call is already approved by this signatory.
        **/
@@ -285,9 +302,16 @@ declare module '@polkadot/api/types/errors' {
        * A different timepoint was given to the multisig operation that is underway.
        **/
       WrongTimepoint: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     nft: {
-      [key: string]: AugmentedError<ApiType>;
+      /**
+       * Cannot mint additional tokens in a unique issue series
+       **/
+      AddToUniqueIssue: AugmentedError<ApiType>;
       /**
        * Auction bid was lower than reserve or current highest bid
        **/
@@ -297,9 +321,9 @@ declare module '@polkadot/api/types/errors' {
        **/
       CollectionIdExists: AugmentedError<ApiType>;
       /**
-       * Given collection ID is not valid utf-8
+       * Given collection name is invalid (invalid utf-8, too long, empty)
        **/
-      CollectionIdInvalid: AugmentedError<ApiType>;
+      CollectionNameInvalid: AugmentedError<ApiType>;
       /**
        * Internal error during payment
        **/
@@ -309,9 +333,9 @@ declare module '@polkadot/api/types/errors' {
        **/
       MaxAttributeLength: AugmentedError<ApiType>;
       /**
-       * Max tokens issued
+       * Selling tokens from different collections is not allowed
        **/
-      MaxTokensIssued: AugmentedError<ApiType>;
+      MixedBundleSale: AugmentedError<ApiType>;
       /**
        * No more Ids are available, they've been exhausted
        **/
@@ -321,19 +345,19 @@ declare module '@polkadot/api/types/errors' {
        **/
       NoCollection: AugmentedError<ApiType>;
       /**
-       * origin does not have permission for the operation
+       * origin does not have permission for the operation (the token may not exist)
        **/
       NoPermission: AugmentedError<ApiType>;
       /**
-       * The NFT is not listed for auction sale
+       * The token is not listed for auction sale
        **/
       NotForAuction: AugmentedError<ApiType>;
       /**
-       * The NFT is not listed for a direct sale
+       * The token is not listed for fixed price sale
        **/
-      NotForDirectSale: AugmentedError<ApiType>;
+      NotForFixedPriceSale: AugmentedError<ApiType>;
       /**
-       * The NFT does not exist
+       * The token does not exist
        **/
       NoToken: AugmentedError<ApiType>;
       /**
@@ -341,36 +365,23 @@ declare module '@polkadot/api/types/errors' {
        **/
       RoyaltiesOvercommitment: AugmentedError<ApiType>;
       /**
-       * The schema contains a duplicate attribute name
+       * Tokens with different individual royalties cannot be sold together
        **/
-      SchemaDuplicateAttribute: AugmentedError<ApiType>;
-      /**
-       * The provided attributes or schema cannot be empty
-       **/
-      SchemaEmpty: AugmentedError<ApiType>;
-      /**
-       * The schema contains an invalid type
-       **/
-      SchemaInvalid: AugmentedError<ApiType>;
+      RoyaltiesProtection: AugmentedError<ApiType>;
       /**
        * Too many attributes in the provided schema or data
        **/
       SchemaMaxAttributes: AugmentedError<ApiType>;
       /**
-       * Provided attributes do not match the collection schema
-       **/
-      SchemaMismatch: AugmentedError<ApiType>;
-      /**
        * Cannot operate on a listed NFT
        **/
       TokenListingProtection: AugmentedError<ApiType>;
       /**
-       * Provided attribute is not in the collection schema
+       * Generic error
        **/
-      UnknownAttribute: AugmentedError<ApiType>;
+      [key: string]: AugmentedError<ApiType>;
     };
     scheduler: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Failed to schedule a call
        **/
@@ -387,9 +398,12 @@ declare module '@polkadot/api/types/errors' {
        * Given target block number is in the past.
        **/
       TargetBlockNumberInPast: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     session: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Registered duplicate key.
        **/
@@ -406,9 +420,12 @@ declare module '@polkadot/api/types/errors' {
        * No keys are associated with this account.
        **/
       NoKeys: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     staking: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Stash is already bonded.
        **/
@@ -524,16 +541,22 @@ declare module '@polkadot/api/types/errors' {
        * The snapshot data of the current window is missing.
        **/
       SnapshotUnavailable: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     sudo: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Sender must be the Sudo account
        **/
       RequireSudo: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     system: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * Failed to extract the runtime version from the new runtime.
        * 
@@ -558,9 +581,12 @@ declare module '@polkadot/api/types/errors' {
        * and the new runtime.
        **/
       SpecVersionNeedsToIncrease: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
     treasury: {
-      [key: string]: AugmentedError<ApiType>;
       /**
        * The tip was already found/started.
        **/
@@ -614,6 +640,10 @@ declare module '@polkadot/api/types/errors' {
        * The tip hash is unknown.
        **/
       UnknownTip: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
     };
   }
 

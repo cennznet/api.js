@@ -291,14 +291,17 @@ ___
 
 ## nft
  
+### AddToUniqueIssue
+- **summary**:   Cannot mint additional tokens in a unique issue series 
+ 
 ### BidTooLow
 - **summary**:   Auction bid was lower than reserve or current highest bid 
  
 ### CollectionIdExists
 - **summary**:   A collection with the same ID already exists 
  
-### CollectionIdInvalid
-- **summary**:   Given collection ID is not valid utf-8 
+### CollectionNameInvalid
+- **summary**:   Given collection name is invalid (invalid utf-8, too long, empty) 
  
 ### InternalPayment
 - **summary**:   Internal error during payment 
@@ -306,8 +309,8 @@ ___
 ### MaxAttributeLength
 - **summary**:   Given attirbute value is larger than the configured max. 
  
-### MaxTokensIssued
-- **summary**:   Max tokens issued 
+### MixedBundleSale
+- **summary**:   Selling tokens from different collections is not allowed 
  
 ### NoAvailableIds
 - **summary**:   No more Ids are available, they've been exhausted 
@@ -316,40 +319,28 @@ ___
 - **summary**:   The NFT collection does not exist 
  
 ### NoPermission
-- **summary**:   origin does not have permission for the operation 
+- **summary**:   origin does not have permission for the operation (the token may not exist) 
  
 ### NotForAuction
-- **summary**:   The NFT is not listed for auction sale 
+- **summary**:   The token is not listed for auction sale 
  
-### NotForDirectSale
-- **summary**:   The NFT is not listed for a direct sale 
+### NotForFixedPriceSale
+- **summary**:   The token is not listed for fixed price sale 
  
 ### NoToken
-- **summary**:   The NFT does not exist 
+- **summary**:   The token does not exist 
  
 ### RoyaltiesOvercommitment
 - **summary**:   Total royalties would exceed 100% of sale 
  
-### SchemaDuplicateAttribute
-- **summary**:   The schema contains a duplicate attribute name 
- 
-### SchemaEmpty
-- **summary**:   The provided attributes or schema cannot be empty 
- 
-### SchemaInvalid
-- **summary**:   The schema contains an invalid type 
+### RoyaltiesProtection
+- **summary**:   Tokens with different individual royalties cannot be sold together 
  
 ### SchemaMaxAttributes
 - **summary**:   Too many attributes in the provided schema or data 
  
-### SchemaMismatch
-- **summary**:   Provided attributes do not match the collection schema 
- 
 ### TokenListingProtection
 - **summary**:   Cannot operate on a listed NFT 
- 
-### UnknownAttribute
-- **summary**:   Provided attribute is not in the collection schema 
 
 ___
 

@@ -17,47 +17,44 @@ export interface AuctionListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly reservePrice: Balance;
   readonly close: BlockNumber;
+  readonly seller: AccountId;
+  readonly tokens: Vec<TokenId>;
+  readonly royaltiesSchedule: RoyaltiesSchedule;
 }
 
 /** @name CollectionId */
-export interface CollectionId extends Text {}
+export interface CollectionId extends u32 {}
 
-/** @name DirectListing */
-export interface DirectListing extends Struct {
+/** @name CollectionNameType */
+export interface CollectionNameType extends Bytes {}
+
+/** @name FixedPriceListing */
+export interface FixedPriceListing extends Struct {
   readonly paymentAsset: AssetId;
   readonly fixedPrice: Balance;
   readonly close: BlockNumber;
   readonly buyer: Option<AccountId>;
+  readonly seller: AccountId;
+  readonly tokens: Vec<TokenId>;
+  readonly royaltiesSchedule: RoyaltiesSchedule;
 }
 
 /** @name Listing */
 export interface Listing extends Enum {
-  readonly isDirectListing: boolean;
-  readonly asDirectListing: DirectListing;
-  readonly isAuctionListing: boolean;
-  readonly asAuctionListing: AuctionListing;
+  readonly isFixedPrice: boolean;
+  readonly asFixedPrice: FixedPriceListing;
+  readonly isAuction: boolean;
+  readonly asAuction: AuctionListing;
 }
 
-/** @name MetadataURI */
-export interface MetadataURI extends Text {}
+/** @name ListingId */
+export interface ListingId extends u128 {}
 
-/** @name NFTAttributeName */
-export interface NFTAttributeName extends Text {}
-
-/** @name NFTAttributeTypeId */
-export interface NFTAttributeTypeId extends Enum {
-  readonly isI32: boolean;
-  readonly isU8: boolean;
-  readonly isU16: boolean;
-  readonly isU32: boolean;
-  readonly isU64: boolean;
-  readonly isU128: boolean;
-  readonly isBytes32: boolean;
-  readonly isBytes: boolean;
-  readonly isText: boolean;
-  readonly isHash: boolean;
-  readonly isTimestamp: boolean;
-  readonly isUrl: boolean;
+/** @name MetadataBaseURI */
+export interface MetadataBaseURI extends Enum {
+  readonly isIpfs: boolean;
+  readonly isHttps: boolean;
+  readonly asHttps: Bytes;
 }
 
 /** @name NFTAttributeValue */
@@ -88,9 +85,6 @@ export interface NFTAttributeValue extends Enum {
   readonly asUrl: Text;
 }
 
-/** @name NFTSchema */
-export interface NFTSchema extends Vec<ITuple<[NFTAttributeName, NFTAttributeTypeId]>> {}
-
 /** @name Reason */
 export interface Reason extends AuctionClosureReason {}
 
@@ -99,7 +93,16 @@ export interface RoyaltiesSchedule extends Struct {
   readonly entitlements: Vec<ITuple<[AccountId, Permill]>>;
 }
 
+/** @name SerialNumber */
+export interface SerialNumber extends u32 {}
+
+/** @name SeriesId */
+export interface SeriesId extends u32 {}
+
+/** @name TokenCount */
+export interface TokenCount extends u32 {}
+
 /** @name TokenId */
-export interface TokenId extends u32 {}
+export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
 
 export type PHANTOM_NFT = 'nft';

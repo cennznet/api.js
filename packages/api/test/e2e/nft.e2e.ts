@@ -14,14 +14,17 @@
 
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import { stringToU8a } from '@polkadot/util'
+import { stringToHex, stringToU8a } from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
+import { Listing } from '@cennznet/types';
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 let api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
+let spendingAssetId, attributes, series1Attributes;
 
 beforeAll(async done => {
   await cryptoWaitReady();
@@ -32,15 +35,26 @@ beforeAll(async done => {
   collectionOwner = keyring.addFromUri('//Test//CollectionOwner');
   tokenOwner = keyring.addFromUri('//Test//TokenOwner');
   // Fund accounts
-  const spendingId = await api.query.genericAsset.spendingAssetId();
+  spendingAssetId = (await api.query.genericAsset.spendingAssetId()).toNumber();
   const initialEndowment = 100_000_000;
 
   await api.tx.utility.batch([
       api.tx.genericAsset
-    .mint(spendingId, collectionOwner.address, initialEndowment),
+    .mint(spendingAssetId, collectionOwner.address, initialEndowment),
       api.tx.genericAsset
-    .mint(spendingId, tokenOwner.address, initialEndowment),
+    .mint(spendingAssetId, tokenOwner.address, initialEndowment),
   ]).signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
+
+
+  attributes = [
+    {'text': '💎🙌'},
+  ];
+
+  series1Attributes = [
+    {'text': 'hello world'},
+    {'hash': blake2AsHex(stringToU8a('hello world'))},
+    {'timestamp': 12345}
+  ];
 });
 
 afterAll(async () => {
@@ -48,60 +62,221 @@ afterAll(async () => {
 });
 
 describe('NFTs', () => {
-  let collectionId;
-  let schema;
-
-  beforeAll(() => {
-    // setup test collection
-    collectionId = 'example-collection';
-    schema = [
-      ['name', 'text'],
-      ['fingerprint', 'hash'],
-      ['created', 'timestamp']
-    ];
-  });
+  let collectionId: number;
 
   it('creates a collection', async done => {
-    await api.tx.nft.createCollection(collectionId, schema, "https://example.com/nft/metadata", null).signAndSend(collectionOwner, async ({ status, events }) => {
+    let collectionName = 'example-collection';
+    await api.tx.nft.createCollection(
+      collectionName,
+      {"Https": "example.com/nft/metadata" },
+      null,
+    ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          if (method == 'CreateCollection') {
+            collectionId = data[0].toNumber();
+            console.log(`got collection: ${collectionId}`);
+          }
         });
         expect((await api.query.nft.collectionOwner(collectionId)).toString()).toBe(collectionOwner.address);
+        expect((await api.query.nft.collectionName(collectionId)).toString()).toBe(stringToHex(collectionName));
         done();
       }
     });
   });
 
   it('creates a token', async done => {
-    const attributes = [
-      {'text': 'hello world'},
-      {'hash': blake2AsHex(stringToU8a('hello world'))},
-      {'timestamp': 12345}
-    ];
 
-    await api.tx.nft.createToken(collectionId, tokenOwner.address, attributes, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    let tokenId;
+    await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
-        events.forEach(({phase, event: {data, method, section}}) => {
-          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+        events.forEach(({ event: {data, method }}) => {
+          if (method == 'CreateToken') {
+            tokenId = data[1];
+            console.log(`got token: ${tokenId}`);
+          }
         });
-        // first token has id 0
-        let tokenAttributes = (await api.query.nft.tokenAttributes(collectionId, 0));
-        expect(tokenAttributes.toJSON()).toEqual(attributes);
-        expect((await api.query.nft.tokenOwner(collectionId, 0)).toString()).toBe(tokenOwner.address);
+
+        let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+        expect(tokenInfo ==
+          {
+            owner: tokenOwner.address,
+            attributes,
+            tokenId,
+          }
+        );
+
         done();
       }
     });
   });
 
-  it('finds collected tokens', async () => {
-    let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
-    expect(ownedTokens.toString()).toEqual('[0]');
+  it('creates a series', async done => {
+    let seriesId;
+    let quantity = 3;
+    let metadataPath = "series/metadata";
+
+    await api.tx.nft
+    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+    .signAndSend(collectionOwner, async ({ status, events }) => {
+      if (status.isInBlock) {
+        events.forEach(({ event: {data, method }}) => {
+          if (method == 'CreateSeries') {
+            seriesId = data[1];
+            console.log(`got series: ${seriesId}`);
+          }
+        });
+
+        // this is a new series, the first token will have serial number 0
+        let serialNumber = 0;
+        let tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
+        let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+        expect(tokenInfo ==
+          {
+            owner: tokenOwner.address,
+            attributes,
+            tokenId,
+          }
+        );
+
+        done();
+      }
+    });
   });
 
-  it('gets balance of tokens', async () => {
-    let ownedBalance = (await api.derive.nft.balanceOf(collectionId, tokenOwner.address));
-    expect(ownedBalance).toBe(1);
+  it('burn second token from series', async done => {
+    const seriesId = 1;
+    const serialNumber = 1;
+    const tokenId = [collectionId, seriesId, serialNumber];
+
+    await api.tx.nft.burn(tokenId)
+      .signAndSend(tokenOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({event: {data, method}}) => {
+            if (method == 'Burn') {
+              const [collId, sId, [serialNo] ] = data;
+              expect(collId.toNumber()).toEqual(collectionId);
+              expect(sId.toNumber()).toEqual(seriesId);
+              expect(serialNo.toNumber()).toEqual(serialNumber);
+              done();
+            }
+          });
+        }
+      });
+  });
+
+  it('finds collected tokens, their attributes and owners with derived query', async () => {
+    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
+    const uniqueToken = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  0
+      && token.tokenId.serialNumber.toNumber() === 0
+    );
+    expect(uniqueToken.attributes.toJSON()).toEqual(attributes);
+    expect(uniqueToken.owner).toEqual(tokenOwner.address);
+
+    const token1InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() === 1
+      && token.tokenId.serialNumber.toNumber() === 0
+    );
+    expect(token1InSeries.attributes.toJSON()).toEqual(series1Attributes);
+    expect(token1InSeries.owner).toEqual(tokenOwner.address);
+
+    const token2InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.serialNumber.toNumber() === 1
+    );
+    expect(token2InSeries.attributes.toJSON()).toEqual(series1Attributes);
+    expect(token2InSeries.owner).toEqual(null);
+
+    const token3InSeries = tokenInfos.find((token) =>
+      token.tokenId.collectionId.toNumber() === 0
+      && token.tokenId.seriesId.toNumber() ===  1
+      && token.tokenId.serialNumber.toNumber() === 2
+    );
+    expect(token3InSeries.attributes.toJSON()).toEqual(series1Attributes);
+    expect(token3InSeries.owner).toEqual(tokenOwner.address);
+
+  });
+
+  it('finds collected tokens', async () => {
+    let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
+    expect(ownedTokens.toJSON()).toEqual([
+      {
+        collectionId: 0,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 2,
+      },
+    ]);
+  });
+
+  it('can list a bundle for fixed price sale', async done => {
+    let buyer = keyring.addFromUri('//Test//TokenBuyer');
+    let price = 200 * 10_000; // 200 CPAY
+    let duration = 10;
+    let tokens = [[0,0,0], [0,1,0]];
+    let listingId = await api.query.nft.nextListingId();
+
+    await api.tx.nft
+      .sellBundle(tokens, buyer.address, spendingAssetId, price, duration)
+      .signAndSend(tokenOwner, async ({ status }) => {
+          if (status.isInBlock) {
+            let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
+            let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
+              expect(listing.asFixedPrice.toJSON()).toEqual({
+                paymentAsset: spendingAssetId,
+                fixedPrice: price,
+                buyer: buyer.address,
+                close: blockNumber + duration,
+                seller: tokenOwner.address,
+                tokens,
+                royaltiesSchedule: { entitlements: [] },
+              });
+
+            done();
+          }
+      });
+  });
+
+  it('can list a token for auction', async done => {
+    let reservePrice = 200 * 10_000; // 200 CPAY
+    let duration = 10;
+    let token = [0,1,2];
+    let listingId = await api.query.nft.nextListingId();
+
+    await api.tx.nft
+      .auction(token, spendingAssetId, reservePrice, duration)
+      .signAndSend(tokenOwner, async ({ status }) => {
+        if (status.isInBlock) {
+          let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
+          let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
+          expect(listing.asAuction.toJSON()).toEqual({
+              paymentAsset: spendingAssetId,
+              reservePrice,
+              close: blockNumber + duration,
+              seller: tokenOwner.address,
+              tokens: [token],
+              royaltiesSchedule: { entitlements: [] }
+            });
+
+          done();
+        }
+      }
+    );
+
   });
 
 });

@@ -23,6 +23,7 @@ import {
   CENNZnetExtrinsicPayloadV0
 } from './extrinsic';
 import * as definitions from './definitions';
+import { EnhancedTokenId } from './nft/enhanced-token-id';
 
 const _types = {
   ...definitions,
@@ -56,7 +57,9 @@ export const typesBundle: OverrideBundleType = {
             // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
-            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1
+            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
+            MessageId: 'SyloMessageId',
+            EnhancedTokenId: EnhancedTokenId
           },
         },
       ],

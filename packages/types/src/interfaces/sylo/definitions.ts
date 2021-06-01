@@ -57,7 +57,8 @@ export default {
     },
     VaultKey: 'Bytes',
     VaultValue: 'Bytes',
-    MessageId: 'u32',
+    // Updated MessageId here to SyloMessageId as a runtime (Cumulus as similar type) - export interface MessageId extends U8aFixed
+    SyloMessageId: 'u32',
     Message: 'Bytes',
   },
 };
