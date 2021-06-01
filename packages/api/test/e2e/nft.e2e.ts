@@ -98,11 +98,11 @@ describe('NFTs', () => {
           console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
           if (method == 'CreateCollection') {
             collectionId2 = data[0].toNumber();
-            console.log(`got second collection: ${collectionId}`);
+            console.log(`got second collection: ${collectionId2}`);
           }
         });
-        expect((await api.query.nft.collectionOwner(collectionId)).toString()).toBe(collectionOwner.address);
-        expect((await api.query.nft.collectionName(collectionId)).toString()).toBe(stringToHex(collectionName));
+        expect((await api.query.nft.collectionOwner(collectionId2)).toString()).toBe(collectionOwner.address);
+        expect((await api.query.nft.collectionName(collectionId2)).toString()).toBe(stringToHex(collectionName));
         done();
       }
     });
