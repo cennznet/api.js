@@ -141,7 +141,6 @@ describe('NFTs', () => {
   });
 
   it('creates a series in first collection', async done => {
-    collectionId = 0;
     let seriesId;
     let quantity = 3;
     let metadataPath = "series/metadata";
@@ -175,13 +174,12 @@ describe('NFTs', () => {
   });
 
   it('creates a series of 5 in second collection', async done => {
-    collectionId = 1;
     let seriesId;
     let quantity = 5;
     let metadataPath = "series/metadata";
 
     await api.tx.nft
-      .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+      .mintSeries(collectionId2, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
       .signAndSend(collectionOwner, async ({ status, events }) => {
         if (status.isInBlock) {
           events.forEach(({ event: {data, method }}) => {
@@ -193,7 +191,7 @@ describe('NFTs', () => {
 
           // this is a new series, the first token will have serial number 0
           let serialNumber = 0;
-          let tokenId = new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
+          let tokenId = new EnhancedTokenId(api.registry, [collectionId2, seriesId, serialNumber]);
           let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
           expect(tokenInfo ==
             {
