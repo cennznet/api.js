@@ -14,7 +14,7 @@ export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
   return (): Observable<CollectionMap> => {
     return api.query.nft.nextCollectionId().pipe(
       switchMap(
-        (nextCollectionId): Observable<any> => {
+        (nextCollectionId): Observable<CollectionMap> => {
           const queryArgsList = [];
           for (let i = 0; i < nextCollectionId.toNumber(); i++) {
             queryArgsList.push({ collectionId: i });
@@ -25,7 +25,7 @@ export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
                 acc[idx] = name.toHuman();
                 return acc;
               }, {});
-              return collectionMap;
+              return collectionMap as CollectionMap;
             })
           );
         }
