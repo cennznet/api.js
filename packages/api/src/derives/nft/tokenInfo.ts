@@ -61,10 +61,10 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
  * @returns [[EnchanceTokenId]]
  */
 export function allTokenWithOwner(instanceId: string, api: ApiInterfaceRx) {
-  return (owner: AccountId | string): Observable<DeriveTokenInfo> => {
+  return (owner: AccountId | string): Observable<EnhancedTokenId[]> => {
     return api.query.nft.nextCollectionId().pipe(
       switchMap(
-        (nextCollectionId): Observable<any> => {
+        (nextCollectionId): Observable<EnhancedTokenId[]> => {
           const args = [];
           for (let i = 0; i < nextCollectionId.toNumber(); i++) {
             const collectionId = i.toString();
