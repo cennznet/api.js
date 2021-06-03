@@ -8,7 +8,7 @@ import { CollectionInfo } from '@cennznet/api/derives/nft/types';
 /**
  * Get map of collection id to collection name
  *
- * @returns [id: name]
+ * @returns [[CollectionInfo]]
  */
 export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
   return (): Observable<CollectionInfo[]> => {
