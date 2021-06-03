@@ -57,6 +57,7 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
  * Get info on the current token
  *
  * @param owner  The owner address
+ * @param collectionIds - list of collectionIds [0,1,2..] (if not specified returns all the tokens in all the collections)
  *
  * @returns [[EnchanceTokenId]]
  */
