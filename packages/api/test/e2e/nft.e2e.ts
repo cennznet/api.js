@@ -110,9 +110,17 @@ describe('NFTs', () => {
 
   it('collection Map ', async done => {
     const collectionMap = await api.derive.nft.collectionInfo();
-    expect(collectionMap[collectionId.toString()]).toEqual('example-collection');
-    expect(collectionMap[collectionId2.toString()]).toEqual('Digital Art');
-    done();
+    expect(collectionMap).toEqual([
+      {
+        id: 0,
+        name: 'example-collection'
+      },
+      {
+        id: 1,
+        name: 'Digital Art',
+      },
+    ]);
+   done();
   });
 
   it('creates a token', async done => {
@@ -228,7 +236,7 @@ describe('NFTs', () => {
   });
 
   it('Find tokens with owner ', async done => {
-    const tokens = await api.derive.nft.allTokenWithOwner(tokenOwner.address);
+    const tokens = await api.derive.nft.tokensOf(tokenOwner.address);
     const tokensInFirstCollection = tokens[0];
     const tokensInSecondCollection = tokens[1];
     expect(tokensInFirstCollection.toJSON()).toEqual([
@@ -249,6 +257,40 @@ describe('NFTs', () => {
       },
     ]);
     expect(tokensInSecondCollection.toJSON()).toEqual([
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 1,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 2,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 3,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 4,
+      },
+    ]);
+    done();
+  });
+
+  it('Find tokens in second collection for owner ', async done => {
+    const collectionIds = [1];
+    const tokens = await api.derive.nft.tokensOf(tokenOwner.address, collectionIds);
+    const tokensInCollection = tokens[0];
+    expect(tokensInCollection.toJSON()).toEqual([
       {
         collectionId: 1,
         seriesId: 0,

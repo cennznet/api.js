@@ -22,7 +22,7 @@ export interface DeriveTokenInfo {
   owner: string | undefined;
 }
 
-export interface CollectionMap {
-  //[id: name]
-  string: string;
+export interface CollectionInfo {
+  id: number;
+  name: string;
 }

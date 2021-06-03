@@ -16,7 +16,7 @@ import { Observable, from, of, EMPTY } from 'rxjs';
 import { switchMap, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { TokenId } from '@cennznet/types';
+import { CollectionId, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { AccountId } from '@polkadot/types/interfaces';
@@ -60,15 +60,19 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
  *
  * @returns [[EnchanceTokenId]]
  */
-export function allTokenWithOwner(instanceId: string, api: ApiInterfaceRx) {
-  return (owner: AccountId | string): Observable<EnhancedTokenId[]> => {
+export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
+  return (owner: AccountId | string, collectionIds?: CollectionId[]): Observable<EnhancedTokenId[]> => {
     return api.query.nft.nextCollectionId().pipe(
       switchMap(
         (nextCollectionId): Observable<EnhancedTokenId[]> => {
-          const args = [];
-          for (let i = 0; i < nextCollectionId.toNumber(); i++) {
-            const collectionId = i.toString();
-            args.push(collectionId);
+          let args = [];
+          if (collectionIds && collectionIds.length > 0) {
+            args = collectionIds;
+          } else {
+            for (let i = 0; i < nextCollectionId.toNumber(); i++) {
+              const collectionId = i.toString();
+              args.push(collectionId);
+            }
           }
           if (args.length === 0) return EMPTY;
           return from(args).pipe(
