@@ -62,7 +62,7 @@ afterAll(async () => {
 });
 
 describe('NFTs', () => {
-  let collectionId: number;
+  let collectionId: number, collectionId2: number;
 
   it('creates a collection', async done => {
     let collectionName = 'example-collection';
@@ -86,8 +86,44 @@ describe('NFTs', () => {
     });
   });
 
-  it('creates a token', async done => {
+  it('creates another collection', async done => {
+    let collectionName = 'Digital Art';
+    await api.tx.nft.createCollection(
+      collectionName,
+      {"Https": "new.com/nft/metadata" },
+      null,
+    ).signAndSend(collectionOwner, async ({ status, events }) => {
+      if (status.isInBlock) {
+        events.forEach(({phase, event: {data, method, section}}) => {
+          console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+          if (method == 'CreateCollection') {
+            collectionId2 = data[0].toNumber();
+            console.log(`got second collection: ${collectionId2}`);
+          }
+        });
+        expect((await api.query.nft.collectionOwner(collectionId2)).toString()).toBe(collectionOwner.address);
+        expect((await api.query.nft.collectionName(collectionId2)).toString()).toBe(stringToHex(collectionName));
+        done();
+      }
+    });
+  });
 
+  it('collection Map ', async done => {
+    const collectionMap = await api.derive.nft.collectionInfo();
+    expect(collectionMap).toEqual([
+      {
+        id: 0,
+        name: 'example-collection'
+      },
+      {
+        id: 1,
+        name: 'Digital Art',
+      },
+    ]);
+   done();
+  });
+
+  it('creates a token', async done => {
     let tokenId;
     await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
@@ -112,7 +148,7 @@ describe('NFTs', () => {
     });
   });
 
-  it('creates a series', async done => {
+  it('creates a series in first collection', async done => {
     let seriesId;
     let quantity = 3;
     let metadataPath = "series/metadata";
@@ -145,6 +181,39 @@ describe('NFTs', () => {
     });
   });
 
+  it('creates a series of 5 in second collection', async done => {
+    let seriesId;
+    let quantity = 5;
+    let metadataPath = "series/metadata";
+
+    await api.tx.nft
+      .mintSeries(collectionId2, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+      .signAndSend(collectionOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({ event: {data, method }}) => {
+            if (method == 'CreateSeries') {
+              seriesId = data[1];
+              console.log(`got series: ${seriesId}`);
+            }
+          });
+
+          // this is a new series, the first token will have serial number 0
+          let serialNumber = 0;
+          let tokenId = new EnhancedTokenId(api.registry, [collectionId2, seriesId, serialNumber]);
+          let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+          expect(tokenInfo ==
+            {
+              owner: tokenOwner.address,
+              attributes,
+              tokenId,
+            }
+          );
+
+          done();
+        }
+      });
+  });
+
   it('burn second token from series', async done => {
     const seriesId = 1;
     const serialNumber = 1;
@@ -164,6 +233,91 @@ describe('NFTs', () => {
           });
         }
       });
+  });
+
+  it('Find tokens with owner ', async done => {
+    const tokens = await api.derive.nft.tokensOf(tokenOwner.address);
+    const tokensInFirstCollection = tokens[0];
+    const tokensInSecondCollection = tokens[1];
+    expect(tokensInFirstCollection.toJSON()).toEqual([
+      {
+        collectionId: 0,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 0,
+        seriesId: 1,
+        serialNumber: 2,
+      },
+    ]);
+    expect(tokensInSecondCollection.toJSON()).toEqual([
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 1,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 2,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 3,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 4,
+      },
+    ]);
+    done();
+  });
+
+  it('Find tokens in second collection for owner ', async done => {
+    const collectionIds = [1];
+    const tokens = await api.derive.nft.tokensOf(tokenOwner.address, collectionIds);
+    const tokensInCollection = tokens[0];
+    expect(tokensInCollection.toJSON()).toEqual([
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 0,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 1,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 2,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 3,
+      },
+      {
+        collectionId: 1,
+        seriesId: 0,
+        serialNumber: 4,
+      },
+    ]);
+    done();
   });
 
   it('finds collected tokens, their attributes and owners with derived query', async () => {

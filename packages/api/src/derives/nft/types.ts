@@ -21,3 +21,8 @@ export interface DeriveTokenInfo {
   /* Token owner address. It is undefined if the token is burnt */
   owner: string | undefined;
 }
+
+export interface CollectionInfo {
+  id: number;
+  name: string;
+}

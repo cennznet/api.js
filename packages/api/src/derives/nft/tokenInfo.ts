@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, from, of, EMPTY } from 'rxjs';
+import { switchMap, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { TokenId } from '@cennznet/types';
+import { CollectionId, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import {DeriveTokenInfo} from "@cennznet/api/derives/nft/types";
+import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { AccountId } from '@polkadot/types/interfaces';
 
 /**
  * Get info on the current token
@@ -49,5 +50,43 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
           }
         )
       );
+  };
+}
+
+/**
+ * Get info on the current token
+ *
+ * @param owner  The owner address
+ * @param collectionIds - list of collectionIds [0,1,2..] (if not specified returns all the tokens in all the collections)
+ *
+ * @returns [[EnchanceTokenId]]
+ */
+export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
+  return (owner: AccountId | string, collectionIds?: CollectionId[]): Observable<EnhancedTokenId[]> => {
+    return api.query.nft.nextCollectionId().pipe(
+      switchMap(
+        (nextCollectionId): Observable<EnhancedTokenId[]> => {
+          let args = [];
+          if (collectionIds && collectionIds.length > 0) {
+            args = collectionIds;
+          } else {
+            for (let i = 0; i < nextCollectionId.toNumber(); i++) {
+              const collectionId = i.toString();
+              args.push(collectionId);
+            }
+          }
+          if (args.length === 0) return EMPTY;
+          return from(args).pipe(
+            mergeMap((collectionId) =>
+              (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
+                map((ownedTokens) => ownedTokens),
+                catchError((err: Error) => of(err))
+              )
+            ),
+            reduce((a, i) => [...a, i], [])
+          );
+        }
+      )
+    );
   };
 }
