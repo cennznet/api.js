@@ -492,7 +492,7 @@ describe('NFTs', () => {
                     serialNumber: 1,
                   }
                 ]);
-                //Ensure Listing Id correctly matches token Id
+                // Ensure Listing Id correctly matches token Id
                 const firstReceivedListing: Listing = (await api.query.nft.listings(allTokens[0].listingId)).unwrapOrDefault();
                 const expectedTokenID: TokenId = firstReceivedListing.isAuction
                   ? firstReceivedListing.asAuction.toJSON().tokens[0]
