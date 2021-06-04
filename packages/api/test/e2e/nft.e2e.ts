@@ -296,19 +296,19 @@ describe('NFTs', () => {
     ]);
     expect(tokensInSecondCollection.toJSON()).toEqual([
       {
-        "collectionId": 1,
-        "serialNumber": 0,
-        "seriesId": 0
+        collectionId: 1,
+        serialNumber: 0,
+        seriesId: 0
       },
       {
-        "collectionId": 1,
-        "serialNumber": 0,
-        "seriesId": 1
+        collectionId: 1,
+        serialNumber: 0,
+        seriesId: 1
       },
       {
-        "collectionId": 1,
-        "serialNumber": 2,
-        "seriesId": 1
+        collectionId: 1,
+        serialNumber: 2,
+        seriesId: 1
       }
     ]);
     done();
@@ -320,19 +320,19 @@ describe('NFTs', () => {
     const tokensInCollection = tokens[0];
     expect(tokensInCollection.toJSON()).toEqual([
       {
-        "collectionId": 1,
-        "serialNumber": 0,
-        "seriesId": 0
+        collectionId: 1,
+        serialNumber: 0,
+        seriesId: 0
       },
       {
-        "collectionId": 1,
-        "serialNumber": 0,
-        "seriesId": 1
+        collectionId: 1,
+        serialNumber: 0,
+        seriesId: 1
       },
       {
-        "collectionId": 1,
-        "serialNumber": 2,
-        "seriesId": 1
+        collectionId: 1,
+        serialNumber: 2,
+        seriesId: 1
       }
     ]);
     done();
