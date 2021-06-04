@@ -378,7 +378,7 @@ describe('NFTs', () => {
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
     expect(ownedTokens.toJSON()).toEqual([
       {
-        collectionId: collectionId,
+        collectionId,
         seriesId: 0,
         serialNumber: 0,
       },
