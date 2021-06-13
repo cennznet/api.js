@@ -15,7 +15,8 @@
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
-import { Balance } from '@cennznet/types';
+import {Balance, LiquidityPriceResponse, LiquidityValueResponse} from '@cennznet/types';
+import {U256} from "@polkadot/types";
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
@@ -48,11 +49,11 @@ describe('CENNZX RPC calls testing', () => {
             if (status.isInBlock) {
               for (const {event} of events) {
                 if (event.method === 'AddLiquidity') {
-                  let amount = 20000;
-                  const [coreAmount, investmentAmount] = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
+                  let amount = 2000;
+                  const liquidityPrice: LiquidityPriceResponse = await api.rpc.cennzx.liquidityPrice(CENNZ, amount);
                   // Deposit liquidity in existing pool
                   await api.tx.cennzx
-                      .addLiquidity(CENNZ, minLiquidity, investmentAmount, coreAmount)
+                      .addLiquidity(CENNZ, minLiquidity, liquidityPrice.asset, liquidityPrice.core)
                       .signAndSend(alice, async ({events, status}) => {
                         if (status.isFinalized) {
                           for (const {event} of events) {
@@ -69,10 +70,10 @@ describe('CENNZX RPC calls testing', () => {
     });
 
     it("Get the liquidity value for CENNZ asset in Alice's account", async done => {
-      const [liquidityVolume, coreValue, assetValue] = await api.rpc.cennzx.liquidityValue(alice.address, CENNZ);
-      expect(liquidityVolume.isZero()).toBe(false);
-      expect(coreValue.isZero()).toBe(false);
-      expect(assetValue.isZero()).toBe(false);
+      const liqudityValue: LiquidityValueResponse= await api.rpc.cennzx.liquidityValue(alice.address, CENNZ);
+      expect(liqudityValue.liquidity.isZero()).toBe(false);
+      expect(liqudityValue.core.isZero()).toBe(false);
+      expect(liqudityValue.asset.isZero()).toBe(false);
       done();
     });
 
@@ -86,7 +87,7 @@ describe('CENNZX RPC calls testing', () => {
         // How much CENTRAPAY will it cost to buy 100 (amount) CENNZ
         const buyPrice = await api.rpc.cennzx.buyPrice(CENTRAPAY, amount, CENNZ);
         console.log('Buy price:', buyPrice.toString());
-        expect(buyPrice.toNumber()).toBeGreaterThan(0);
+        expect(buyPrice.price.toNumber()).toBeGreaterThan(0);
         done();
       });
 
@@ -95,8 +96,7 @@ describe('CENNZX RPC calls testing', () => {
         // when I sell 1000(amount) CENNZ, how much of CENTRAPAY will I get in return
         const sellPrice = await api.rpc.cennzx
           .sellPrice(CENNZ, amount, CENTRAPAY);
-        console.log('Sell price:', sellPrice.toString());
-        expect(sellPrice.toNumber()).toBeGreaterThan(0);
+        expect(sellPrice.price.toNumber()).toBeGreaterThan(0);
         done();
       });
 

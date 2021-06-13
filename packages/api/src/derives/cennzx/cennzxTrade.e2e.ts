@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import BN from 'bn.js';
-import { AssetInfo, AssetOptions } from '@cennznet/types';
+import { AssetInfo, AssetOptions, PriceResponse } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -143,9 +143,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
-      const maxAmountSold = expectedPrice.addn(buffer); // Maximum of assetA willing to pay for the exchange
+      const maxAmountSold = expectedPrice.price.addn(buffer); // Maximum of assetA willing to pay for the exchange
       // sell assetA to buy coreAsset
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
@@ -155,7 +155,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -167,9 +167,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
-      const maxAmountSold = expectedPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
+      const maxAmountSold = expectedPrice.price.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       // sell assetA to buy coreAsset
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
@@ -179,7 +179,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -192,7 +192,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const sellAmount = 50;
-      const expectedAssetPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedAssetPrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -202,7 +202,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedAssetPrice)).toBeTruthy();
+                expect(sellValue.eq(expectedAssetPrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -215,7 +215,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const sellAmount = 50;
-      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
@@ -226,7 +226,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                expect(sellValue.eq(expectedPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
@@ -243,7 +243,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
-      const expectedCorePrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedCorePrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -253,7 +253,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedCorePrice)).toBeTruthy();
+                expect(sellValue.eq(expectedCorePrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -266,7 +266,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const sellAmount = 50;
-      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const minSale = 1;
       await api.tx.cennzx
@@ -277,7 +277,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 // check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                expect(sellValue.eq(expectedPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
@@ -294,10 +294,10 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = coreAssetId;
       const amountBought = 50;
-      const expectedAssetPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedAssetPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
-      const maxAmountSold = expectedAssetPrice.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
+      const maxAmountSold = expectedAssetPrice.price.addn(buffer); // Maximum of coreAsset willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -306,7 +306,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedAssetPrice)).toBeTruthy();
+                expect(price.eq(expectedAssetPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
@@ -323,10 +323,10 @@ describe('Cennzx Operations', () => {
       const assetToSell = coreAssetId;
       const assetToBuy = assetA;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       const buffer = 100;
-      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
+      const maxAmountSold = expectedPrice.price.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -335,7 +335,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
@@ -352,9 +352,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
-      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
+      const maxAmountSold = expectedPrice.price.addn(buffer); // Maximum willing to pay for the exchange
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
         .signAndSend(alice, async ({ events, status }) => {
@@ -363,7 +363,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -376,9 +376,9 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const amountBought = 50;
-      const expectedPrice = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.buyPrice(assetToBuy, amountBought, assetToSell);
       const buffer = 100;
-      const maxAmountSold = expectedPrice.addn(buffer); // Maximum willing to pay for the exchange
+      const maxAmountSold = expectedPrice.price.addn(buffer); // Maximum willing to pay for the exchange
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
         .buyAsset(recipient, assetToSell, assetToBuy, amountBought, maxAmountSold)
@@ -388,7 +388,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetBought') {
                 // check if ExtrinsicFailed or successful
                 const price = event.data[3];
-                expect(price.eq(expectedPrice)).toBeTruthy();
+                expect(price.eq(expectedPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(amountBought)).eq(new BN(recipientBalaneAfter))
@@ -405,7 +405,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const sellAmount = 50;
-      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       await api.tx.cennzx
         .sellAsset(recipient, assetToSell, assetToBuy, sellAmount, minSale)
@@ -415,7 +415,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                expect(sellValue.eq(expectedPrice.price)).toBeTruthy();
                 done();
               }
             }
@@ -428,7 +428,7 @@ describe('Cennzx Operations', () => {
       const assetToSell = assetA;
       const assetToBuy = assetB;
       const sellAmount = 50;
-      const expectedPrice = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
+      const expectedPrice: PriceResponse = await api.rpc.cennzx.sellPrice(assetToSell, sellAmount, assetToBuy);
       const minSale = 1;
       const recipientBalaneBefore = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
       await api.tx.cennzx
@@ -439,7 +439,7 @@ describe('Cennzx Operations', () => {
               if (event.method === 'AssetSold') {
                 //check if ExtrinsicFailed or successful
                 const sellValue = event.data[4];
-                expect(sellValue.eq(expectedPrice)).toBeTruthy();
+                expect(sellValue.eq(expectedPrice.price)).toBeTruthy();
                 const recipientBalaneAfter = await api.query.genericAsset.freeBalance(assetToBuy, recipient);
                 expect(
                   new BN(recipientBalaneBefore).add(new BN(sellValue)).eq(new BN(recipientBalaneAfter))
