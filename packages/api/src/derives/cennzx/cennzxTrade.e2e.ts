@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import BN from 'bn.js';
-import { AssetInfo, AssetOptions, PriceResponse } from '@cennznet/types';
+import {AssetInfo, AssetOptions, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse} from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -23,7 +23,7 @@ const keyring = new Keyring({ type: 'sr25519' });
 describe('Cennzx Operations', () => {
   let api;
   let alice, bob, charlie, sudoKeypair, nonce;
-  let coreAssetId, assetA, assetB;
+  let coreAssetId, assetA, assetB, cUSDAsset;
 
   beforeAll(async (done) => {
     await cryptoWaitReady();
@@ -486,6 +486,72 @@ describe('Cennzx Operations', () => {
             }
           }
         });
+    });
+  });
+
+  describe('Test liquidity operation with asset with 18dp using balance > 53 bit', () => {
+    it("Add liquidity for 'cUSD' to the pool", async (done) => {
+      // Create a new Asset 'cUSD' and add liquidity to it
+      // Amount of test asset - 'cUSD' to create
+      const initialIssuance = new BN('9000000000000000000000');
+      const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
+      const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
+      const option = { initialIssuance, permissions };
+      const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'cUSD', decimalPlaces: 18 });
+      const createAsset = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
+
+      nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
+      // when the new asset is created it will have this ID.
+      cUSDAsset = await api.query.genericAsset.nextAssetId();
+      // Create new asset
+      const assetCreated = new Promise<void>(async (resolve) => {
+        await api.tx.sudo
+          .sudo(createAsset)
+          .signAndSend(sudoKeypair, { nonce: nonce++ }, async ({ status }) => (status.isInBlock ? resolve() : null));
+      });
+      // AddLiquidity for the 'cUSD' asset
+      assetCreated.then(async () => {
+        const investmentAmount = new BN('9000000000000000000');
+        const coreAmount = new BN('90000'); // Initial investment - core amount same as invested amount
+        const minLiquidity = 1;
+        await api.tx.cennzx
+          .addLiquidity(cUSDAsset, minLiquidity, investmentAmount, coreAmount)
+          .signAndSend(alice, { nonce: nonce++ }, async ({ events, status }) => {
+            if (status.isInBlock) {
+              for (const { event } of events) {
+                if (event.method === 'AddLiquidity') {
+                  const [account, coreInvestAmount, assetIdFromChain, targetInvestAmount] = event.data;
+                  expect(account.toString()).toEqual(alice.address);
+                  expect(assetIdFromChain.toString()).toEqual(cUSDAsset.toString());
+                  expect(coreInvestAmount.toString()).toEqual(coreAmount.toString());
+                  expect(new BN(targetInvestAmount).lte(new BN(investmentAmount))).toBeTruthy();
+                  const liquidity = await api.derive.cennzx.liquidityBalance(cUSDAsset, alice.address);
+                  expect(liquidity.gtn(0)).toBeTruthy();
+                  done();
+                }
+              }
+            }
+          });
+      });
+    });
+    it("Test all rpc calls", async (done) => {
+      let amount = 2_000;
+      const liquidityPrice: LiquidityPriceResponse = await api.rpc.cennzx.liquidityPrice(cUSDAsset, amount);
+      expect(liquidityPrice.asset.gtn(0)).toBe(true);
+      expect(liquidityPrice.core.gtn(0)).toBe(true);
+      const liquidityValue: LiquidityValueResponse = await api.rpc.cennzx.liquidityValue(alice.address, cUSDAsset);
+      expect(liquidityValue.liquidity.gtn(0)).toBe(true);
+      expect(liquidityValue.core.gtn(0)).toBe(true);
+      expect(liquidityValue.asset.gtn(0)).toBe(true);
+      const buyPrice = await api.rpc.cennzx.buyPrice(coreAssetId, amount, cUSDAsset);
+      console.log('Buy price:', buyPrice.price.toBn().toString());
+      expect(buyPrice.price.toBn().gtn(0)).toBeTruthy();
+      const sellPrice = await api.rpc.cennzx
+        .sellPrice(coreAssetId, amount, cUSDAsset);
+      console.log('Sell price:', sellPrice.price.toBn().toString());
+      expect(buyPrice.price.toBn().gtn(0)).toBeTruthy();
+      done();
     });
   });
 });
