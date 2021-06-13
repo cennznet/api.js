@@ -513,7 +513,7 @@ describe('Cennzx Operations', () => {
       // AddLiquidity for the 'cUSD' asset
       assetCreated.then(async () => {
         const investmentAmount = new BN('9000000000000000000');
-        const coreAmount = new BN('90000'); // Initial investment - core amount same as invested amount
+        const coreAmount = new BN('90000'); // Initial core investment for this pool
         const minLiquidity = 1;
         await api.tx.cennzx
           .addLiquidity(cUSDAsset, minLiquidity, investmentAmount, coreAmount)
