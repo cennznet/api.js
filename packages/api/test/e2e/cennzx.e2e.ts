@@ -16,7 +16,6 @@ import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance, LiquidityPriceResponse, LiquidityValueResponse} from '@cennznet/types';
-import {U256} from "@polkadot/types";
 const CENNZ = '16000';
 const CENTRAPAY = '16001';
 const PLUG = '16003';
@@ -70,10 +69,10 @@ describe('CENNZX RPC calls testing', () => {
     });
 
     it("Get the liquidity value for CENNZ asset in Alice's account", async done => {
-      const liqudityValue: LiquidityValueResponse= await api.rpc.cennzx.liquidityValue(alice.address, CENNZ);
-      expect(liqudityValue.liquidity.isZero()).toBe(false);
-      expect(liqudityValue.core.isZero()).toBe(false);
-      expect(liqudityValue.asset.isZero()).toBe(false);
+      const liquidityValue: LiquidityValueResponse = await api.rpc.cennzx.liquidityValue(alice.address, CENNZ);
+      expect(liquidityValue.liquidity.isZero()).toBe(false);
+      expect(liquidityValue.core.isZero()).toBe(false);
+      expect(liquidityValue.asset.isZero()).toBe(false);
       done();
     });
 
