@@ -10,7 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@cennznet/api": "^1.4.0",
+    "@cennznet/api": "^1.4.1",
     "@polkadot/keyring": "^4.1.1"
   },
   "devDependencies": {
