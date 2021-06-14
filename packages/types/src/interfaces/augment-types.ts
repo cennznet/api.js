@@ -3,7 +3,7 @@
 
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
-import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
+import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
@@ -1514,6 +1514,15 @@ declare module '@polkadot/types/types/registry' {
     'Compact<FeeRate>': Compact<FeeRate>;
     'Option<FeeRate>': Option<FeeRate>;
     'Vec<FeeRate>': Vec<FeeRate>;
+    LiquidityValueResponse: LiquidityValueResponse;
+    'Option<LiquidityValueResponse>': Option<LiquidityValueResponse>;
+    'Vec<LiquidityValueResponse>': Vec<LiquidityValueResponse>;
+    PriceResponse: PriceResponse;
+    'Option<PriceResponse>': Option<PriceResponse>;
+    'Vec<PriceResponse>': Vec<PriceResponse>;
+    LiquidityPriceResponse: LiquidityPriceResponse;
+    'Option<LiquidityPriceResponse>': Option<LiquidityPriceResponse>;
+    'Vec<LiquidityPriceResponse>': Vec<LiquidityPriceResponse>;
     AssetOptions: AssetOptions;
     'Option<AssetOptions>': Option<AssetOptions>;
     'Vec<AssetOptions>': Vec<AssetOptions>;
