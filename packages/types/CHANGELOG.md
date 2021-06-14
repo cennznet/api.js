@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/cennznet/api.js/compare/release/1.4.0...prerelease/1.4.1) (15/06/2021)
+### Changed:
+- RPC types for CENNZX
 ## [1.4.0](https://github.com/cennznet/api.js/compare/release/1.3.4...prerelease/1.4.0) (25/05/2021)
 ### Added:
 - NFT module types
