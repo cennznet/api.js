@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "additional types for CENNZnet api",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
