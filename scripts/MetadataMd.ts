@@ -29,6 +29,39 @@ interface Page {
     }[];
 }
 
+interface ModulePage {
+  title: string;
+  description: string;
+  sections: {
+    name: string;
+    description?: string;
+      constant: {
+        name: string;
+        [bullet: string]: string | Vec<Text>;
+      }[]
+      storage: {
+        name: string;
+        [bullet: string]: string | Vec<Text>;
+      }[]
+    extrinsics: {
+        name: string;
+        [bullet: string]: string | Vec<Text>;
+      }[]
+    errors: {
+      name: string;
+      [bullet: string]: string | Vec<Text>;
+    }[]
+    events: {
+      name: string;
+      [bullet: string]: string | Vec<Text>;
+    }[]
+    rpc: {
+      name: string;
+      [bullet: string]: string | Vec<Text>;
+    }[]
+  }[];
+}
+
 const STATIC_TEXT = '\n\n(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)';
 
 const DESC_CONSTANTS = `The following sections contain the module constants, also known as parameter types. These can only be changed as part of a runtime upgrade. On the api, these are exposed via \`api.consts.<module>.<method>\`. ${STATIC_TEXT}`;
@@ -37,6 +70,7 @@ const DESC_ERRORS = `This page lists the errors that can be encountered in the d
 const DESC_EVENTS = `Events are emitted for certain operations on the runtime. The following sections describe the events that are part of the default Substrate runtime. ${STATIC_TEXT}`;
 const DESC_RPC = 'The following sections contain RPC methods that are Remote Calls available by default and allow you to interact with the actual node, query, and submit.';
 const DESC_STORAGE = `The following sections contain Storage methods are part of the default Substrate runtime. On the api, these are exposed via \`api.query.<module>.<method>\`. ${STATIC_TEXT}`;
+const DESC = `The following sections contain the module details. `;
 
 /** @internal */
 function documentationVecToMarkdown (docLines: Vec<Text>, indent = 0): string {
@@ -98,6 +132,64 @@ function renderPage (page: Page): string {
     return md;
 }
 
+
+function extractData(data: {
+  name: string;
+  [bullet: string]: string | Vec<Text>;
+}[], md: string) {
+  data && data.forEach((item) => {
+    md += ` \n### ${item.name}`;
+
+    Object.keys(item).filter((i) => i !== 'name').forEach((bullet) => {
+      md += `\n- **${bullet}**: ${
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        item[bullet] instanceof Vec
+          ? documentationVecToMarkdown(item[bullet] as Vec<Text>, 2).toString()
+          : item[bullet]
+      }`;
+    });
+
+    md += '\n';
+  });
+  return md;
+}
+
+function renderModulePage (page: ModulePage): string {
+  let md = `---\n ${page.title}\n---\n\n`;
+
+  if (page.description) {
+    md += `${page.description}\n\n`;
+  }
+
+  // contents
+  page.sections.forEach((section) => {
+
+    if (section.constant.length > 0) {
+      md += ' \n#Constant\n';
+    }
+
+    md = extractData(section.constant, md);
+
+    md +=' \n#Storage\n';
+    md = extractData(section.storage, md);
+
+    md +=' \n#Extrinsic\n';
+    md = extractData(section.extrinsics, md);
+
+    md +=' \n#Errors\n';
+    md = extractData(section.errors, md);
+
+    md +=' \n#Events\n';
+    md = extractData(section.events, md);
+
+    md +=' \n#RPC\n';
+    md = extractData(section.rpc, md);
+
+  });
+
+  return md;
+}
+
 function sortByName<T extends { name: Codec | string }> (a: T, b: T): number {
     // case insensitive (all-uppercase) sorting
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
@@ -142,6 +234,101 @@ function addRpc (): string {
             }),
         title: 'JSON-RPC'
     });
+}
+
+function addModule(metadata: MetadataLatest, name, displayName): string {
+  const definitions = {...substrateDefinitions, ...cennznetDefinitions};
+
+  return renderModulePage({
+    description: DESC,
+    sections: metadata.modules
+      .sort(sortByName)
+      .filter((moduleMetadata) => moduleMetadata.name.toString() === name)
+      .map((moduleMetadata) => {
+        const sectionName = stringLowerFirst(moduleMetadata.name);
+        const section = definitions[sectionName];
+
+        return {
+          constant: moduleMetadata.constants
+            .sort(sortByName)
+            .map((func) => {
+              const methodName = stringCamelCase(func.name);
+              if (!moduleMetadata.constants.isEmpty) {
+                 return  {
+                  interface: '`' + `api.consts.${sectionName}.${methodName}` + '`',
+                  name: `${methodName}: ` + '`' + func.type.toString() + '`',
+                  ...(func.documentation.length && {summary: func.documentation})
+                };
+              }
+
+            }),
+          storage: moduleMetadata.storage.unwrap().items
+            .sort(sortByName)
+            .map((func) => {
+              const arg = func.type.isMap
+                ? ('`' + func.type.asMap.key.toString() + '`')
+                : func.type.isDoubleMap
+                  ? ('`' + func.type.asDoubleMap.key1.toString() + ', ' + func.type.asDoubleMap.key2.toString() + '`')
+                  : '';
+              const methodName = stringLowerFirst(func.name);
+              const outputType = unwrapStorageType(func.type, func.modifier.isOptional);
+              return {
+                interface: '`' + `api.query.${sectionName}.${methodName}` + '`',
+                name: `${methodName}(${arg}): ` + '`' + outputType + '`',
+                ...(func.documentation.length && { summary: func.documentation })
+              };
+            }),
+          extrinsics: moduleMetadata.calls.unwrap()
+          .sort(sortByName)
+          .map((func) => {
+            const methodName = stringCamelCase(func.name);
+            const args = Call.filterOrigin(func).map(({ name, type }) => `${name.toString()}: ` + '`' + type.toString() + '`').join(', ');
+
+            return {
+              interface: '`' + `api.tx.${sectionName}.${methodName}` + '`',
+              name: `${methodName}(${args})`,
+              ...(func.documentation.length && { summary: func.documentation })
+            };
+          }),
+          errors: moduleMetadata.errors
+            .sort(sortByName)
+            .map((error) => ({
+              name: error.name.toString(),
+              ...(error.documentation.length && { summary: error.documentation })
+            })),
+          events: moduleMetadata.events.unwrap()
+            .sort(sortByName)
+            .map((func) => {
+              const methodName = func.name.toString();
+              const args = func.args.map((type): string => '`' + type.toString() + '`').join(', ');
+
+              return {
+                name: `${methodName}(${args})`,
+                ...(func.documentation.length && { summary: func.documentation })
+              };
+            }),
+            rpc: Object.keys(section.rpc)
+              .sort()
+              .map((methodName) => {
+                const method = section.rpc[methodName];
+                const args = method.params.map(({ isOptional, name, type }: DefinitionRpcParam): string => {
+                  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+                  return name + (isOptional ? '?' : '') + ': `' + type + '`';
+                }).join(', ');
+                const type = '`' + method.type + '`';
+
+                return {
+                  interface: '`' + `api.rpc.${sectionName}.${methodName}` + '`',
+                  jsonrpc: '`' + (method.endpoint || `${sectionName}_${methodName}`) + '`',
+                  name: `${methodName}(${args}): ${type}`,
+                  ...(method.description && { summary: method.description })
+                };
+              }),
+          name: sectionName
+        };
+      }),
+    title: displayName
+  });
 }
 
 /** @internal */
@@ -316,7 +503,10 @@ function main (): void {
     registry.setMetadata(metadata);
 
     const latest = metadata.asLatest;
-
+    writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
+    writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
+    writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));
+    writeFile('docs/cennznet/nft.md', addModule(latest, 'Nft', 'Nft'));
     writeFile('docs/cennznet/rpc.md', addRpc());
     writeFile('docs/cennznet/constants.md', addConstants(latest));
     writeFile('docs/cennznet/storage.md', addStorage(latest));

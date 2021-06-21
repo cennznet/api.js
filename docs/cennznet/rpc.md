@@ -97,22 +97,22 @@ ___
 
 ## cennzx
  
-### buyPrice(AssetToBuy: `AssetId`, Amount: `Balance`, AssetToPay: `AssetId`): `u64`
+### buyPrice(AssetToBuy: `AssetId`, Amount: `Balance`, AssetToPay: `AssetId`): `PriceResponse`
 - **interface**: `api.rpc.cennzx.buyPrice`
 - **jsonrpc**: `cennzx_buyPrice`
 - **summary**: Retrieves the spot exchange buy price
  
-### liquidityPrice(AssetId: `AssetId`, liquidityToBuy: `Balance`): `(u64, u64)`
+### liquidityPrice(AssetId: `AssetId`, liquidityToBuy: `Balance`): `LiquidityPriceResponse`
 - **interface**: `api.rpc.cennzx.liquidityPrice`
 - **jsonrpc**: `cennzx_liquidityPrice`
 - **summary**: Get the price of liquidity for the given asset ID
  
-### liquidityValue(AccountId: `Address`, AssetId: `AssetId`): `(u64, u64, u64)`
+### liquidityValue(AccountId: `Address`, AssetId: `AssetId`): `LiquidityValueResponse`
 - **interface**: `api.rpc.cennzx.liquidityValue`
 - **jsonrpc**: `cennzx_liquidityValue`
 - **summary**: Get the value of an account's liquidity for the given asset
  
-### sellPrice(AssetToSell: `AssetId`, Amount: `Balance`, AssetToPayout: `AssetId`): `u64`
+### sellPrice(AssetToSell: `AssetId`, Amount: `Balance`, AssetToPayout: `AssetId`): `PriceResponse`
 - **interface**: `api.rpc.cennzx.sellPrice`
 - **jsonrpc**: `cennzx_sellPrice`
 - **summary**: Retrieves the spot exchange sell price
