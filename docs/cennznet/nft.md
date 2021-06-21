@@ -4,8 +4,18 @@
 
 The following sections contain the module details. 
 
+- **[Storage](#Storage)**
+
+- **[Extrinsic](#Extrinsic)**
+
+- **[Errors](#Error)**
+
+- **[Events](#Events)**
+
+- **[RPC](#RPC)**
+
  
-#Storage
+# Storage
  
 ### collectionMetadataURI(`CollectionId`): `Option<MetadataBaseURI>`
 - **interface**: `api.query.nft.collectionMetadataURI`
@@ -83,7 +93,7 @@ The following sections contain the module details.
 - **interface**: `api.query.nft.tokenOwner`
 - **summary**:   Map from a token to its owner The token Id is split in this map to allow better indexing (collection, series) + (serial number) 
  
-#Extrinsic
+# Extrinsic
  
 ### auction(token_id: `TokenId`, payment_asset: `AssetId`, reserve_price: `Balance`, duration: `Option<BlockNumber>`)
 - **interface**: `api.tx.nft.auction`
@@ -195,7 +205,7 @@ The following sections contain the module details.
 - **interface**: `api.tx.nft.transferBatch`
 - **summary**:   Transfer ownership of a batch of NFTs (atomic) Tokens must be from the same collection Caller must be the token owner 
  
-#Errors
+# Error
  
 ### AddToUniqueIssue
 - **summary**:   Cannot mint additional tokens in a unique issue series 
@@ -248,7 +258,7 @@ The following sections contain the module details.
 ### TokenListingProtection
 - **summary**:   Cannot operate on a listed NFT 
  
-#Events
+# Events
  
 ### AuctionClosed(`CollectionId`, `ListingId`, `Reason`)
 - **summary**:   An auction has closed without selling (collection, listing, reason) 
@@ -289,7 +299,7 @@ The following sections contain the module details.
 ### Transfer(`AccountId`, `Vec<TokenId>`, `AccountId`)
 - **summary**:   Token(s) were transferred (previous owner, token Ids, new owner) 
  
-#RPC
+# RPC
  
 ### collectedTokens(collection: `CollectionId`, address: `Address`): `Vec<EnhancedTokenId>`
 - **interface**: `api.rpc.nft.collectedTokens`

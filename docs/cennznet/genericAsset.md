@@ -4,8 +4,18 @@
 
 The following sections contain the module details. 
 
+- **[Storage](#Storage)**
+
+- **[Extrinsic](#Extrinsic)**
+
+- **[Errors](#Error)**
+
+- **[Events](#Events)**
+
+- **[RPC](#RPC)**
+
  
-#Storage
+# Storage
  
 ### assetMeta(`AssetId`): `AssetInfo`
 - **interface**: `api.query.genericAsset.assetMeta`
@@ -51,7 +61,7 @@ The following sections contain the module details.
 
   TWOX-NOTE: `AssetId` is trusted. 
  
-#Extrinsic
+# Extrinsic
  
 ### burn(asset_id: `Compact<AssetId>`, target: `AccountId`, amount: `Balance`)
 - **interface**: `api.tx.genericAsset.burn`
@@ -103,7 +113,7 @@ The following sections contain the module details.
 
   weights: O(1) limited number of read and writes Expected to not be called frequently 
  
-#Errors
+# Error
  
 ### AssetIdExhausted
 - **summary**:   No new assets id available. 
@@ -147,7 +157,7 @@ The following sections contain the module details.
 ### ZeroAmount
 - **summary**:   Cannot transfer zero amount. 
  
-#Events
+# Events
  
 ### AssetInfoUpdated(`AssetId`, `AssetInfo`)
 - **summary**:   Asset info updated (asset_id, asset_info). 
@@ -167,7 +177,7 @@ The following sections contain the module details.
 ### Transferred(`AssetId`, `AccountId`, `AccountId`, `Balance`)
 - **summary**:   Asset transfer succeeded (asset_id, from, to, amount). 
  
-#RPC
+# RPC
  
 ### registeredAssets(): `Vec<(AssetId, AssetInfo)>`
 - **interface**: `api.rpc.genericAsset.registeredAssets`

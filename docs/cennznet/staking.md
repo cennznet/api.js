@@ -4,8 +4,20 @@
 
 The following sections contain the module details. 
 
+- **[Constant](#Constant)**
+
+- **[Storage](#Storage)**
+
+- **[Extrinsic](#Extrinsic)**
+
+- **[Errors](#Error)**
+
+- **[Events](#Events)**
+
+- **[RPC](#RPC)**
+
  
-#Constant
+# Constant
  
 ### bondingDuration: `EraIndex`
 - **interface**: `api.consts.staking.bondingDuration`
@@ -45,7 +57,7 @@ The following sections contain the module details.
 
   This should be less than the bonding duration. Set to 0 if slashes should be applied immediately, without opportunity for intervention. 
  
-#Storage
+# Storage
  
 ### activeEra(): `Option<ActiveEraInfo>`
 - **interface**: `api.query.staking.activeEra`
@@ -205,7 +217,7 @@ The following sections contain the module details.
 - **interface**: `api.query.staking.wasEndEraForced`
 - **summary**:   Same as `will_era_be_forced()` but persists to `end_era` 
  
-#Extrinsic
+# Extrinsic
  
 ### bond(controller: `AccountId`, value: `Compact<BalanceOf>`, payee: `RewardDestination`)
 - **interface**: `api.tx.staking.bond`
@@ -441,7 +453,7 @@ The following sections contain the module details.
 
    
  
-#Errors
+# Error
  
 ### AlreadyBonded
 - **summary**:   Stash is already bonded. 
@@ -527,7 +539,7 @@ The following sections contain the module details.
 ### SnapshotUnavailable
 - **summary**:   The snapshot data of the current window is missing. 
  
-#Events
+# Events
  
 ### Bonded(`AccountId`, `Balance`)
 - **summary**:   An account has bonded this amount. \[stash, amount\] 
@@ -561,7 +573,7 @@ The following sections contain the module details.
 ### Withdrawn(`AccountId`, `Balance`)
 - **summary**:   An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance` from the unlocking queue. \[stash, amount\] 
  
-#RPC
+# RPC
  
 ### accruedPayout(undefined: `AccountId`): `u64`
 - **interface**: `api.rpc.staking.accruedPayout`

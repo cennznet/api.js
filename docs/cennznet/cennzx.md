@@ -4,8 +4,18 @@
 
 The following sections contain the module details. 
 
+- **[Storage](#Storage)**
+
+- **[Extrinsic](#Extrinsic)**
+
+- **[Errors](#Error)**
+
+- **[Events](#Events)**
+
+- **[RPC](#RPC)**
+
  
-#Storage
+# Storage
  
 ### coreAssetId(): `AssetId`
 - **interface**: `api.query.cennzx.coreAssetId`
@@ -23,7 +33,7 @@ The following sections contain the module details.
 - **interface**: `api.query.cennzx.totalLiquidity`
 - **summary**:   Total liquidity holdings of all investors in an exchange. ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
  
-#Extrinsic
+# Extrinsic
  
 ### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<BalanceOf>`, max_asset_amount: `Compact<BalanceOf>`, core_amount: `Compact<BalanceOf>`)
 - **interface**: `api.tx.cennzx.addLiquidity`
@@ -53,7 +63,7 @@ The following sections contain the module details.
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
  
-#Errors
+# Error
  
 ### AssetCannotSwapForItself
  
@@ -91,7 +101,7 @@ The following sections contain the module details.
  
 ### Overflow
  
-#Events
+# Events
  
 ### AddLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
@@ -105,7 +115,7 @@ The following sections contain the module details.
 ### RemoveLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
  
-#RPC
+# RPC
  
 ### buyPrice(AssetToBuy: `AssetId`, Amount: `Balance`, AssetToPay: `AssetId`): `PriceResponse`
 - **interface**: `api.rpc.cennzx.buyPrice`

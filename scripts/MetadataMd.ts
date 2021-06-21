@@ -165,24 +165,35 @@ function renderModulePage (page: ModulePage): string {
   page.sections.forEach((section) => {
 
     if (section.constant.length > 0) {
-      md += ' \n#Constant\n';
+      md += `- **[Constant](#Constant)**\n\n`;
+    }
+    md += `- **[Storage](#Storage)**\n\n`;
+    md += `- **[Extrinsic](#Extrinsic)**\n\n`;
+    md += `- **[Errors](#Error)**\n\n`;
+    md += `- **[Events](#Events)**\n\n`;
+    if (section.rpc.length > 0) {
+      md += `- **[RPC](#RPC)**\n\n`;
+    }
+
+    if (section.constant.length > 0) {
+      md += ' \n# Constant\n';
     }
 
     md = extractData(section.constant, md);
 
-    md +=' \n#Storage\n';
+    md +=' \n# Storage\n';
     md = extractData(section.storage, md);
 
-    md +=' \n#Extrinsic\n';
+    md +=' \n# Extrinsic\n';
     md = extractData(section.extrinsics, md);
 
-    md +=' \n#Errors\n';
+    md +=' \n# Error\n';
     md = extractData(section.errors, md);
 
-    md +=' \n#Events\n';
+    md +=' \n# Events\n';
     md = extractData(section.events, md);
 
-    md +=' \n#RPC\n';
+    md +=' \n# RPC\n';
     md = extractData(section.rpc, md);
 
   });
