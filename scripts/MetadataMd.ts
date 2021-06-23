@@ -164,18 +164,18 @@ function renderModulePage (page: ModulePage): string {
   // contents
   page.sections.forEach((section) => {
 
-    if (section.constant.length > 0) {
+    if (section.constant && section.constant.length > 0) {
       md += `- **[Constant](#Constant)**\n\n`;
     }
     md += `- **[Storage](#Storage)**\n\n`;
     md += `- **[Extrinsic](#Extrinsic)**\n\n`;
     md += `- **[Errors](#Error)**\n\n`;
     md += `- **[Events](#Events)**\n\n`;
-    if (section.rpc.length > 0) {
+    if (section.rpc && section.rpc.length > 0) {
       md += `- **[RPC](#RPC)**\n\n`;
     }
 
-    if (section.constant.length > 0) {
+    if (section.constant && section.constant.length > 0) {
       md += ' \n# Constant\n';
     }
 
@@ -318,7 +318,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                 ...(func.documentation.length && { summary: func.documentation })
               };
             }),
-            rpc: Object.keys(section.rpc)
+            rpc: section.rpc ? Object.keys(section.rpc)
               .sort()
               .map((methodName) => {
                 const method = section.rpc[methodName];
@@ -334,7 +334,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                   name: `${methodName}(${args}): ${type}`,
                   ...(method.description && { summary: method.description })
                 };
-              }),
+              }) : null,
           name: sectionName
         };
       }),
@@ -514,6 +514,7 @@ function main (): void {
     registry.setMetadata(metadata);
 
     const latest = metadata.asLatest;
+    writeFile('docs/cennznet/attestation.md', addModule(latest, 'Attestation', 'Attestation'));
     writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
     writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
     writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));

@@ -3,7 +3,10 @@ The CENNZnet JavaScript API library for browsers and Node.js.
 
 ## Quick Start
 
-See the [getting started guide](docs/GET_STARTED.md), [example snippets](docs/examples), or the [wiki](https://wiki.cennz.net) to get started.
+See the [Getting started guide on the wiki](https://wiki.cennz.net/#/Dapp-development/Guides/Getting-started-with-the-CENNZnet-API) for an introduction to the API.
+
+Then head to the [docs](docs/GET_STARTED.md) and try the [example snippets](docs/examples) to get started.
+
 
 ## Components
 
