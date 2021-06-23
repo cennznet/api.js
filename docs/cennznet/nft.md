@@ -14,6 +14,8 @@ The following sections contain the module details.
 
 - **[RPC](#RPC)**
 
+- **[Derive queries](#derive-queries)**
+
  
 # Storage
  
@@ -305,3 +307,203 @@ The following sections contain the module details.
 - **interface**: `api.rpc.nft.collectedTokens`
 - **jsonrpc**: `nft_collectedTokens`
 - **summary**: Get the tokens owned by an address in a certain collection
+ 
+# Derive queries
+
+- **interface**: api.derive.nft.function_name
+# Module: nft/collectionInfo
+
+## Table of contents
+
+## Functions
+
+### collectionInfo
+
+▸ **collectionInfo**(`instanceId`, `api`): () => `Observable`<[`CollectionInfo`](../interfaces/nft_types.collectioninfo.md)[]\>
+
+Get map of collection id to collection name
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+[CollectionInfo](../interfaces/nft_types.collectioninfo.md)
+
+▸ (): `Observable`<[`CollectionInfo`](../interfaces/nft_types.collectioninfo.md)[]\>
+
+##### Returns
+
+`Observable`<[`CollectionInfo`](../interfaces/nft_types.collectioninfo.md)[]\>
+
+#### Defined in
+
+[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/nft/collectionInfo.ts#L13)
+
+# Module: nft/openCollectionListings
+
+## Table of contents
+
+## Functions
+
+### openCollectionListings
+
+▸ **openCollectionListings**(`instanceId`, `api`): (`collectionId`: `string`) => `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+Gets all tokens in a collection that have an open listing
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+List of tokens that have open listings in given collection
+
+▸ (`collectionId`): `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `collectionId` | `string` | The collection Id value |
+
+##### Returns
+
+`Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+#### Defined in
+
+[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/nft/openCollectionListings.ts#L30)
+
+# Module: nft/tokenInfo
+
+## Table of contents
+
+## Functions
+
+### tokenInfo
+
+▸ **tokenInfo**(`instanceId`, `api`): (`tokenId`: `TokenId` \| `EnhancedTokenId`) => `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)\>
+
+Get info on the current token
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+[[TokenInfo]]
+
+▸ (`tokenId`): `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)\>
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `tokenId` | `TokenId` \| `EnhancedTokenId` | The token Id value |
+
+##### Returns
+
+`Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)\>
+
+#### Defined in
+
+[packages/api/src/derives/nft/tokenInfo.ts:31](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/nft/tokenInfo.ts#L31)
+
+___
+
+### tokensOf
+
+▸ **tokensOf**(`instanceId`, `api`): (`owner`: `string` \| `AccountId`, `collectionIds?`: `CollectionId`[]) => `Observable`<`EnhancedTokenId`[]\>
+
+Get info on the current token
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+[[EnchanceTokenId]]
+
+▸ (`owner`, `collectionIds?`): `Observable`<`EnhancedTokenId`[]\>
+
+##### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `owner` | `string` \| `AccountId` | The owner address |
+| `collectionIds?` | `CollectionId`[] | list of collectionIds [0,1,2..] (if not specified returns all the tokens in all the collections) |
+
+##### Returns
+
+`Observable`<`EnhancedTokenId`[]\>
+
+#### Defined in
+
+[packages/api/src/derives/nft/tokenInfo.ts:64](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/nft/tokenInfo.ts#L64)
+
+# Module: nft/tokenInfoForCollection
+
+## Table of contents
+
+## Functions
+
+### tokenInfoForCollection
+
+▸ **tokenInfoForCollection**(`instanceId`, `api`): () => `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+**`description`** Retrieve the list of all tokens in a collection
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+##### Returns
+
+`Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+
+#### Defined in
+
+[packages/api/src/derives/nft/tokenInfoForCollection.ts:28](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/nft/tokenInfoForCollection.ts#L28)
+
+# Module: nft/types
+
+## Table of contents
+
+### Interfaces
+
+- [CollectionInfo](../interfaces/nft_types.collectioninfo.md)
+- [DeriveTokenInfo](../interfaces/nft_types.derivetokeninfo.md)

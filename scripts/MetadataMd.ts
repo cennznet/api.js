@@ -3,7 +3,6 @@
 
 import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
 import { Codec, DefinitionRpcParam } from '@polkadot/types/types';
-
 import fs from 'fs';
 import { Metadata } from '@polkadot/metadata';
 import staticMetadata from "@cennznet/api/staticMetadata";
@@ -60,6 +59,7 @@ interface ModulePage {
       [bullet: string]: string | Vec<Text>;
     }[]
   }[];
+  deriveQuery: boolean
 }
 
 const STATIC_TEXT = '\n\n(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)';
@@ -174,6 +174,9 @@ function renderModulePage (page: ModulePage): string {
     if (section.rpc && section.rpc.length > 0) {
       md += `- **[RPC](#RPC)**\n\n`;
     }
+    if (page.deriveQuery) {
+      md += `- **[Derive queries](#derive-queries)**\n\n`;
+    }
 
     if (section.constant && section.constant.length > 0) {
       md += ' \n# Constant\n';
@@ -249,8 +252,12 @@ function addRpc (): string {
 
 function addModule(metadata: MetadataLatest, name, displayName): string {
   const definitions = {...substrateDefinitions, ...cennznetDefinitions};
+  const basePath = 'deriveDocs';
+  const deriveModules = fs.readFileSync(`${basePath}/modules.md`, 'utf8');
+  const deriveModuleList = deriveModules.split('\n');
+  const filterDeriveList = deriveModuleList.filter(list => list.includes(name.toLowerCase()));
 
-  return renderModulePage({
+  let moduleContent = renderModulePage({
     description: DESC,
     sections: metadata.modules
       .sort(sortByName)
@@ -334,12 +341,33 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                   name: `${methodName}(${args}): ${type}`,
                   ...(method.description && { summary: method.description })
                 };
-              }) : null,
+              }),
           name: sectionName
         };
       }),
-    title: displayName
+    title: displayName,
+    deriveQuery: filterDeriveList.length > 0
   });
+
+  if (filterDeriveList.length > 0) {
+    moduleContent += ' \n# Derive queries\n';
+    moduleContent += `\n- **interface**: api.derive.${stringCamelCase(name)}.function_name`;
+  }
+  // Add the content from derive queries in the Module specific markdown file
+  filterDeriveList.map( list => {
+    const regExp = /\(([^)]+)\)/;
+    const fileName = regExp.exec(list);
+    const deriveModulesSection = fs.readFileSync(`${basePath}/${fileName[1]}`, 'utf8').toString().split('\n');
+    deriveModulesSection.shift(); // remove the the first element from array
+    // Remove unwanted stuff
+    const index = deriveModulesSection.findIndex(text => text === '### Functions');
+    const index2 = deriveModulesSection.findIndex(text => text === '## Functions');
+    deriveModulesSection.splice(index, index2 - index);
+    const deriveData = deriveModulesSection.join('\n'); // convert array back to string
+    moduleContent += deriveData;
+  })
+
+  return moduleContent;
 }
 
 /** @internal */

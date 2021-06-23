@@ -16,6 +16,8 @@ The following sections contain the module details.
 
 - **[RPC](#RPC)**
 
+- **[Derive queries](#derive-queries)**
+
  
 # Constant
  
@@ -579,3 +581,245 @@ The following sections contain the module details.
 - **interface**: `api.rpc.staking.accruedPayout`
 - **jsonrpc**: `staking_accruedPayout`
 - **summary**: Retrieves the currently accrued reward for the specified stash
+ 
+# Derive queries
+
+- **interface**: api.derive.staking.function_name
+# Module: staking/electedInfo
+
+## Table of contents
+
+## Functions
+
+### electedInfo
+
+▸ **electedInfo**(`instanceId`, `api`): () => `Observable`<[`DeriveStakingElected`](../interfaces/staking_types.derivestakingelected.md)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<[`DeriveStakingElected`](../interfaces/staking_types.derivestakingelected.md)\>
+
+##### Returns
+
+`Observable`<[`DeriveStakingElected`](../interfaces/staking_types.derivestakingelected.md)\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/electedInfo.ts#L17)
+
+# Module: staking/overview
+
+## Table of contents
+
+## Functions
+
+### overview
+
+▸ **overview**(`instanceId`, `api`): () => `Observable`<`DeriveStakingOverview`\>
+
+**`description`** Retrieve the staking overview, including elected and points earned
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<`DeriveStakingOverview`\>
+
+##### Returns
+
+`Observable`<`DeriveStakingOverview`\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/overview.ts#L16)
+
+# Module: staking/stakingAccount
+
+## Table of contents
+
+## Functions
+
+### queryStakingAccountInfo
+
+▸ **queryStakingAccountInfo**(`instanceId`, `api`): (`accountId`: `Uint8Array` \| `string`, `activeEra`: `EraIndex`) => `Observable`<[`DerivedStakingInfo`](../interfaces/types.derivedstakinginfo.md)\>
+
+**`description`** From a stash, retrieve the controller account ID and all relevant details
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (`accountId`, `activeEra`): `Observable`<[`DerivedStakingInfo`](../interfaces/types.derivedstakinginfo.md)\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `Uint8Array` \| `string` |
+| `activeEra` | `EraIndex` |
+
+##### Returns
+
+`Observable`<[`DerivedStakingInfo`](../interfaces/types.derivedstakinginfo.md)\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/stakingAccount.ts#L47)
+
+# Module: staking/stashes
+
+## Table of contents
+
+## Functions
+
+### stashes
+
+▸ **stashes**(`instanceId`, `api`): () => `Observable`<`AccountId`[]\>
+
+**`description`** Retrieve the list of all validator stashes
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<`AccountId`[]\>
+
+##### Returns
+
+`Observable`<`AccountId`[]\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/stashes.ts#L15)
+
+# Module: staking/types
+
+## Table of contents
+
+### Interfaces
+
+- [DeriveStakingElected](../interfaces/staking_types.derivestakingelected.md)
+- [DeriveStakingOverview](../interfaces/staking_types.derivestakingoverview.md)
+- [DeriveStakingQuery](../interfaces/staking_types.derivestakingquery.md)
+- [DeriveStakingStash](../interfaces/staking_types.derivestakingstash.md)
+
+# Module: staking/validators
+
+## Table of contents
+
+## Functions
+
+### nextElected
+
+▸ **nextElected**(`instanceId`, `api`): () => `Observable`<`AccountId`[]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<`AccountId`[]\>
+
+##### Returns
+
+`Observable`<`AccountId`[]\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/validators.ts#L14)
+
+___
+
+### validators
+
+▸ **validators**(`instanceId`, `api`): () => `Observable`<`DeriveStakingValidators`\>
+
+**`description`** Retrieve latest list of validators
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<`DeriveStakingValidators`\>
+
+##### Returns
+
+`Observable`<`DeriveStakingValidators`\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/validators.ts#L32)
+
+# Module: staking/waitingInfo
+
+## Table of contents
+
+## Functions
+
+### waitingInfo
+
+▸ **waitingInfo**(`instanceId`, `api`): () => `Observable`<`DeriveStakingWaiting`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `instanceId` | `string` |
+| `api` | `ApiInterfaceRx` |
+
+#### Returns
+
+`fn`
+
+▸ (): `Observable`<`DeriveStakingWaiting`\>
+
+##### Returns
+
+`Observable`<`DeriveStakingWaiting`\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/waitingInfo.ts#L14)
