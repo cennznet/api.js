@@ -341,7 +341,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                   name: `${methodName}(${args}): ${type}`,
                   ...(method.description && { summary: method.description })
                 };
-              }),
+              }) : null,
           name: sectionName
         };
       }),

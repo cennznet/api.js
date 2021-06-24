@@ -614,7 +614,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/electedInfo.ts#L17)
+[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/electedInfo.ts#L17)
 
 # Module: staking/overview
 
@@ -647,7 +647,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/overview.ts#L16)
+[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/overview.ts#L16)
 
 # Module: staking/stakingAccount
 
@@ -687,7 +687,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/stakingAccount.ts#L47)
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/stakingAccount.ts#L47)
 
 # Module: staking/stashes
 
@@ -720,7 +720,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/stashes.ts#L15)
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/stashes.ts#L15)
 
 # Module: staking/types
 
@@ -762,7 +762,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/validators.ts#L14)
+[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/validators.ts#L14)
 
 ___
 
@@ -791,7 +791,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/validators.ts#L32)
+[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/validators.ts#L32)
 
 # Module: staking/waitingInfo
 
@@ -822,4 +822,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/7367fb0/packages/api/src/derives/staking/waitingInfo.ts#L14)
+[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/staking/waitingInfo.ts#L14)
