@@ -250,6 +250,12 @@ function addRpc (): string {
     });
 }
 
+function spliceArrayFor(startText, endText: string | number, deriveModulesSection: string[]) {
+  const index = typeof startText === "number" ? startText : deriveModulesSection.findIndex(text => text === startText);
+  const index2 = typeof endText === "number" ? endText + index : deriveModulesSection.findIndex(text => text === endText);
+  deriveModulesSection.splice(index, index2 - index);
+}
+
 function addModule(metadata: MetadataLatest, name, displayName): string {
   const definitions = {...substrateDefinitions, ...cennznetDefinitions};
   const basePath = 'deriveDocs';
@@ -357,12 +363,34 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
   filterDeriveList.map( list => {
     const regExp = /\(([^)]+)\)/;
     const fileName = regExp.exec(list);
-    const deriveModulesSection = fs.readFileSync(`${basePath}/${fileName[1]}`, 'utf8').toString().split('\n');
+    let deriveModulesSection = fs.readFileSync(`${basePath}/${fileName[1]}`, 'utf8').toString().split('\n');
     deriveModulesSection.shift(); // remove the the first element from array
     // Remove unwanted stuff
-    const index = deriveModulesSection.findIndex(text => text === '### Functions');
-    const index2 = deriveModulesSection.findIndex(text => text === '## Functions');
-    deriveModulesSection.splice(index, index2 - index);
+    spliceArrayFor('### Functions', '## Functions', deriveModulesSection);
+    let countOccurence = 0;
+    deriveModulesSection = deriveModulesSection
+      .filter(text => text !== '## Table of contents')
+      .map((line, index) => {
+        if (line.includes('`instanceId`, `api`')) {
+          line = line.replace('(`instanceId`, `api`): ','');
+          countOccurence++;
+        }
+        return line;
+    });
+    for (let i =0; i <= countOccurence; i++) {
+      const idx = deriveModulesSection.findIndex(text => text.includes('| `api` | `ApiInterfaceRx` |'));
+      if (idx !== -1) {
+        /*Remove
+         #### Parameters
+
+            | Name | Type |
+            | :------ | :------ |
+            | `instanceId` | `string` |
+            | `api` | `ApiInterfaceRx` |
+        */
+        spliceArrayFor(idx - 5, 14, deriveModulesSection);
+      }
+    }
     const deriveData = deriveModulesSection.join('\n'); // convert array back to string
     moduleContent += deriveData;
   })

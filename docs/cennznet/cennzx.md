@@ -144,30 +144,15 @@ The following sections contain the module details.
 - **interface**: api.derive.cennzx.function_name
 # Module: cennzx/assetWithdrawn
 
-## Table of contents
 
 ## Functions
 
 ### assetToWithdraw
 
-▸ **assetToWithdraw**(`instanceId`, `api`): (`assetId`: `AnyNumber`, `liquidity`: `AnyNumber`) => `Observable`<`Object`\>
+▸ **assetToWithdraw**(`assetId`: `AnyNumber`, `liquidity`: `AnyNumber`) => `Observable`<`Object`\>
 
 Given an asset Id and liquidity amount, the function returns the core and asset that can be withdrawn from exchange
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`, `liquidity`): `Observable`<`Object`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -180,30 +165,16 @@ Given an asset Id and liquidity amount, the function returns the core and asset 
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/assetWithdrawn.ts:29](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/assetWithdrawn.ts#L29)
+[packages/api/src/derives/cennzx/assetWithdrawn.ts:29](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/assetWithdrawn.ts#L29)
 
 ___
 
 ### assetToWithdrawAt
 
-▸ **assetToWithdrawAt**(`instanceId`, `api`): (`hash`: `Hash`, `assetId`: `AnyNumber`, `liquidity`: `AnyNumber`) => `Observable`<`Object`\>
+▸ **assetToWithdrawAt**(`hash`: `Hash`, `assetId`: `AnyNumber`, `liquidity`: `AnyNumber`) => `Observable`<`Object`\>
 
 Given an asset Id and liquidity amount, the function returns the core and asset that can be withdrawn from exchange at a blockHash
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`, `assetId`, `liquidity`): `Observable`<`Object`\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -217,34 +188,19 @@ Given an asset Id and liquidity amount, the function returns the core and asset 
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/assetWithdrawn.ts:54](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/assetWithdrawn.ts#L54)
+[packages/api/src/derives/cennzx/assetWithdrawn.ts:54](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/assetWithdrawn.ts#L54)
 
 # Module: cennzx/exchangeAddress
 
-## Table of contents
 
 ## Functions
 
 ### exchangeAddress
 
-▸ **exchangeAddress**(`instanceId`, `api`): (`assetId`: `AnyNumber`) => `Observable`<`string`\>
+▸ **exchangeAddress**(`assetId`: `AnyNumber`) => `Observable`<`string`\>
 
 Returns the exchange address for a given assetId
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`): `Observable`<`string`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -256,34 +212,19 @@ Returns the exchange address for a given assetId
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/exchangeAddress.ts:27](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/exchangeAddress.ts#L27)
+[packages/api/src/derives/cennzx/exchangeAddress.ts:27](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/exchangeAddress.ts#L27)
 
 # Module: cennzx/liquidityBalance
 
-## Table of contents
 
 ## Functions
 
 ### liquidityBalance
 
-▸ **liquidityBalance**(`instanceId`, `api`): (`assetId`: `AnyNumber`, `address`: `AnyAddress`) => `Observable`<`BN`\>
+▸ **liquidityBalance**(`assetId`: `AnyNumber`, `address`: `AnyAddress`) => `Observable`<`BN`\>
 
 Gets the liquidity balance for an asset Id
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`, `address`): `Observable`<`BN`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -296,30 +237,16 @@ Gets the liquidity balance for an asset Id
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/liquidityBalance.ts:29](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/liquidityBalance.ts#L29)
+[packages/api/src/derives/cennzx/liquidityBalance.ts:29](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/liquidityBalance.ts#L29)
 
 ___
 
 ### liquidityBalanceAt
 
-▸ **liquidityBalanceAt**(`instanceId`, `api`): (`hash`: `Hash`, `assetId`: `AnyNumber`, `address`: `AnyAddress`) => `Observable`<`BN`\>
+▸ **liquidityBalanceAt**(`hash`: `Hash`, `assetId`: `AnyNumber`, `address`: `AnyAddress`) => `Observable`<`BN`\>
 
 Gets the liquidity balance for an asset Id at a given blockhash
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`, `assetId`, `address`): `Observable`<`BN`\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -333,34 +260,19 @@ Gets the liquidity balance for an asset Id at a given blockhash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/liquidityBalance.ts:49](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/liquidityBalance.ts#L49)
+[packages/api/src/derives/cennzx/liquidityBalance.ts:49](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/liquidityBalance.ts#L49)
 
 # Module: cennzx/poolBalance
 
-## Table of contents
 
 ## Functions
 
 ### poolAssetBalance
 
-▸ **poolAssetBalance**(`instanceId`, `api`): (`assetId`: `AnyNumber`) => `Observable`<`Balance`\>
+▸ **poolAssetBalance**(`assetId`: `AnyNumber`) => `Observable`<`Balance`\>
 
 Returns the amount of asset in the exchange
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`): `Observable`<`Balance`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -372,30 +284,16 @@ Returns the amount of asset in the exchange
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:26](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/poolBalance.ts#L26)
+[packages/api/src/derives/cennzx/poolBalance.ts:26](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/poolBalance.ts#L26)
 
 ___
 
 ### poolAssetBalanceAt
 
-▸ **poolAssetBalanceAt**(`instanceId`, `api`): (`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`Balance`\>
+▸ **poolAssetBalanceAt**(`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`Balance`\>
 
 Returns the amount of asset in the exchange at a blockHash
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`, `assetId`): `Observable`<`Balance`\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -408,30 +306,16 @@ Returns the amount of asset in the exchange at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:56](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/poolBalance.ts#L56)
+[packages/api/src/derives/cennzx/poolBalance.ts:56](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/poolBalance.ts#L56)
 
 ___
 
 ### poolCoreAssetBalance
 
-▸ **poolCoreAssetBalance**(`instanceId`, `api`): (`assetId`: `AnyNumber`) => `Observable`<`Balance`\>
+▸ **poolCoreAssetBalance**(`assetId`: `AnyNumber`) => `Observable`<`Balance`\>
 
 Returns the amount of core asset in the exchange for the asset
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`): `Observable`<`Balance`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -443,30 +327,16 @@ Returns the amount of core asset in the exchange for the asset
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:42](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/poolBalance.ts#L42)
+[packages/api/src/derives/cennzx/poolBalance.ts:42](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/poolBalance.ts#L42)
 
 ___
 
 ### poolCoreAssetBalanceAt
 
-▸ **poolCoreAssetBalanceAt**(`instanceId`, `api`): (`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`Balance`\>
+▸ **poolCoreAssetBalanceAt**(`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`Balance`\>
 
 Returns the amount of core asset in the exchange for the asset at a blockHash
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`, `assetId`): `Observable`<`Balance`\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -479,59 +349,30 @@ Returns the amount of core asset in the exchange for the asset at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:73](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/poolBalance.ts#L73)
+[packages/api/src/derives/cennzx/poolBalance.ts:73](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/poolBalance.ts#L73)
 
 # Module: cennzx/shared
 
-## Table of contents
 
 ## Functions
 
 ### coreAssetId
 
-▸ **coreAssetId**(`instanceId`, `api`): () => `Observable`<`u32`\>
+▸ **coreAssetId**() => `Observable`<`u32`\>
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (): `Observable`<`u32`\>
-
-##### Returns
 
 `Observable`<`u32`\>
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:20](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/shared.ts#L20)
+[packages/api/src/derives/cennzx/shared.ts:20](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/shared.ts#L20)
 
 ___
 
 ### coreAssetIdAt
 
-▸ **coreAssetIdAt**(`instanceId`, `api`): (`hash`: `Hash`) => `Observable`<`u32`\>
+▸ **coreAssetIdAt**(`hash`: `Hash`) => `Observable`<`u32`\>
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`): `Observable`<`u32`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -543,55 +384,27 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:24](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/shared.ts#L24)
+[packages/api/src/derives/cennzx/shared.ts:24](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/shared.ts#L24)
 
 ___
 
 ### defaultFeeRate
 
-▸ **defaultFeeRate**(`instanceId`, `api`): () => `Observable`<`Permill`\>
+▸ **defaultFeeRate**() => `Observable`<`Permill`\>
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (): `Observable`<`Permill`\>
-
-##### Returns
 
 `Observable`<`Permill`\>
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:28](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/shared.ts#L28)
+[packages/api/src/derives/cennzx/shared.ts:28](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/shared.ts#L28)
 
 ___
 
 ### defaultFeeRateAt
 
-▸ **defaultFeeRateAt**(`instanceId`, `api`): (`hash`: `Hash`) => `Observable`<`Permill`\>
+▸ **defaultFeeRateAt**(`hash`: `Hash`) => `Observable`<`Permill`\>
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`): `Observable`<`Permill`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -603,34 +416,19 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:32](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/shared.ts#L32)
+[packages/api/src/derives/cennzx/shared.ts:32](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/shared.ts#L32)
 
 # Module: cennzx/totalLiquidity
 
-## Table of contents
 
 ## Functions
 
 ### totalLiquidity
 
-▸ **totalLiquidity**(`instanceId`, `api`): (`assetId`: `AnyNumber`) => `Observable`<`BN`\>
+▸ **totalLiquidity**(`assetId`: `AnyNumber`) => `Observable`<`BN`\>
 
 Returns the total liqudity in the exchange for the asset
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`assetId`): `Observable`<`BN`\>
-
-##### Parameters
 
 | Name | Type |
 | :------ | :------ |
@@ -642,30 +440,16 @@ Returns the total liqudity in the exchange for the asset
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/totalLiquidity.ts:27](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/totalLiquidity.ts#L27)
+[packages/api/src/derives/cennzx/totalLiquidity.ts:27](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/totalLiquidity.ts#L27)
 
 ___
 
 ### totalLiquidityAt
 
-▸ **totalLiquidityAt**(`instanceId`, `api`): (`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`BN`\>
+▸ **totalLiquidityAt**(`hash`: `Hash`, `assetId`: `AnyNumber`) => `Observable`<`BN`\>
 
 Returns the total liqudity in the exchange for the asset at a blockHash
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`hash`, `assetId`): `Observable`<`BN`\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -678,4 +462,4 @@ Returns the total liqudity in the exchange for the asset at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/totalLiquidity.ts:43](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/cennzx/totalLiquidity.ts#L43)
+[packages/api/src/derives/cennzx/totalLiquidity.ts:43](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/cennzx/totalLiquidity.ts#L43)

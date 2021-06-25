@@ -56,30 +56,15 @@ The following sections contain the module details.
 - **interface**: api.derive.attestation.function_name
 # Module: attestation/getClaim
 
-## Table of contents
 
 ## Functions
 
 ### getClaim
 
-▸ **getClaim**(`instanceId`, `api`): (`holder`: `string`, `issuer`: `string`, `topic`: `string`) => `Observable`<[`Claim`](attestation_types.md#claim)\>
+▸ **getClaim**(`holder`: `string`, `issuer`: `string`, `topic`: `string`) => `Observable`<[`Claim`](attestation_types.md#claim)\>
 
 Retrieve a single claim made about a holder by the given issuer on a given topic.
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-the claim
-
-▸ (`holder`, `issuer`, `topic`): `Observable`<[`Claim`](attestation_types.md#claim)\>
 
 ##### Parameters
 
@@ -95,34 +80,19 @@ the claim
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/attestation/getClaim.ts#L33)
+[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/attestation/getClaim.ts#L33)
 
 # Module: attestation/getClaims
 
-## Table of contents
 
 ## Functions
 
 ### getClaims
 
-▸ **getClaims**(`instanceId`, `api`): (`holder`: `string`, `issuers`: `string`[], `topics`: `string`[]) => `Observable`<[`Claim`](attestation_types.md#claim)[]\>
+▸ **getClaims**(`holder`: `string`, `issuers`: `string`[], `topics`: `string`[]) => `Observable`<[`Claim`](attestation_types.md#claim)[]\>
 
 Get all claims made about a holder by the given issuers on the given topics.
 
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `instanceId` | `string` |
-| `api` | `ApiInterfaceRx` |
-
-#### Returns
-
-`fn`
-
-▸ (`holder`, `issuers`, `topics`): `Observable`<[`Claim`](attestation_types.md#claim)[]\>
-
-##### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
@@ -136,11 +106,10 @@ Get all claims made about a holder by the given issuers on the given topics.
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/attestation/getClaims.ts#L29)
+[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/attestation/getClaims.ts#L29)
 
 # Module: attestation/types
 
-## Table of contents
 
 ### Type aliases
 
@@ -167,4 +136,4 @@ An alias for `AttestationValue`
 
 #### Defined in
 
-[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/1844291/packages/api/src/derives/attestation/types.ts#L22)
+[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/attestation/types.ts#L22)
