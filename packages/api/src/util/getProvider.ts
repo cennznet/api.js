@@ -15,6 +15,7 @@
 import { HttpProvider, WsProvider } from '@polkadot/rpc-provider';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { assert } from '@polkadot/util';
+import { CENNZNetNetwork } from '@cennznet/api/types';
 
 const REGEX = /^(wss?|https?):\/\//;
 
@@ -34,4 +35,14 @@ export function getProvider(providerString: string): ProviderInterface {
 
   // All cases should be handled above, but if not, throw an error
   throw new Error(`Invalid URL: ${providerString}`);
+}
+
+export function getCENNZNetProvider(networkName: CENNZNetNetwork): ProviderInterface {
+  const cennznetNetworkEndpoints = {
+    azalea: 'wss://cennznet.unfrastructure.io/public/ws',
+    nikau: 'wss://nikau.centrality.me/public/ws',
+    rata: 'wss://kong2.centrality.me/public/rata/ws',
+    local: 'ws://127.0.0.1:9944',
+  };
+  return getProvider(cennznetNetworkEndpoints[networkName]);
 }
