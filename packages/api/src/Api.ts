@@ -21,7 +21,7 @@ import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
-import { getProvider } from './util/getProvider';
+import { getCENNZNetProvider, getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class Api extends ApiPromise {
@@ -59,8 +59,9 @@ export class Api extends ApiPromise {
 
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
-
-    if (typeof options.provider === 'string') {
+    if (options.network) {
+      options.provider = getCENNZNetProvider(options.network);
+    } else if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
     const rpc = {};
