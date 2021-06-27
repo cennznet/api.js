@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { DecoratedCennznetDerive } from '@cennznet/api/derives';
-import ApiBase from '@polkadot/api/base';
 import { ApiOptions as ApiOptionsBase } from '@polkadot/api/types';
 export * from '@polkadot/api/types';
 export type ApiTypes = 'promise' | 'rxjs';
@@ -28,6 +27,11 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
    */
   provider?: ProviderInterface | string;
   /**
+   * network is all network names available on cennznet
+   * and should be used if provider not provided
+   */
+  network?: CENNZNetNetwork;
+  /**
    * timeout for Api.create
    * default 10000 ms, 0 indicates no limit
    */
@@ -36,3 +40,5 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
 
 export type Derives<ApiType extends ApiTypes> = ReturnType<Decorate<ApiType>['_decorateDerive']> &
   DecoratedCennznetDerive<ApiType>;
+
+export type CENNZNetNetwork = 'azalea' | 'nikau' | 'rata' | 'local';

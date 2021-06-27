@@ -102,6 +102,25 @@ describe('e2e api create', () => {
     expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
   });
 
+  it('Should connect to all available networks on cennznet via network name', async done => {
+    const networkNames = ['azalea', 'nikau', 'rata', 'local'] as const;
+    const connectionPromises = networkNames.map(async networkName => {
+      api = await Api.create({network: networkName, timeout: 10000});
+      return api.rpc.chain.getBlockHash();
+    });
+    const networkHashes = await Promise.all(connectionPromises);
+    networkHashes.forEach(hash => {
+      expect(hash).toBeDefined();
+    })
+    done();
+  });
+
+  it('Should connect to use network name and not provider', async done => {
+    api = await Api.create({network: 'local', provider: 'wss://should/not/use/this/provider.io', timeout: 10000});
+    const hash = await api.rpc.chain.getBlockHash();
+    expect(hash).toBeDefined();
+    done();
+  });
 
   it('Should get rejected if the connection fails', async done => {
     const incorrectEndPoint = 'wss://rimu.unfrastructure.io/private/ws';

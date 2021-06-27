@@ -23,14 +23,14 @@ import { mergeDeriveOptions } from './util/derives';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
-import { getProvider } from './util/getProvider';
+import { getCENNZNetProvider, getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class ApiRx extends ApiRxBase {
   static create(options: ApiOptions = {}): Observable<ApiRx> {
     const apiRx = new ApiRx(options);
 
-    const observable: Observable<ApiRx> = new Observable(x => {
+    const observable: Observable<ApiRx> = new Observable((x) => {
       apiRx.on('error', (): void => {
         apiRx.disconnect().finally(() => {
           x.error(new Error('Connection fail'));
@@ -61,7 +61,9 @@ export class ApiRx extends ApiRxBase {
 
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
-    if (typeof options.provider === 'string') {
+    if (options.network) {
+      options.provider = getCENNZNetProvider(options.network);
+    } else if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
     }
     const rpc = {};
