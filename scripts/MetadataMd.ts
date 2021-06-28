@@ -3,7 +3,6 @@
 
 import { MetadataLatest } from '@polkadot/types/interfaces/metadata';
 import { Codec, DefinitionRpcParam } from '@polkadot/types/types';
-
 import fs from 'fs';
 import { Metadata } from '@polkadot/metadata';
 import staticMetadata from "@cennznet/api/staticMetadata";
@@ -60,6 +59,7 @@ interface ModulePage {
       [bullet: string]: string | Vec<Text>;
     }[]
   }[];
+  deriveQuery: boolean
 }
 
 const STATIC_TEXT = '\n\n(NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)';
@@ -174,6 +174,9 @@ function renderModulePage (page: ModulePage): string {
     if (section.rpc && section.rpc.length > 0) {
       md += `- **[RPC](#RPC)**\n\n`;
     }
+    if (page.deriveQuery) {
+      md += `- **[Derive queries](#derive-queries)**\n\n`;
+    }
 
     if (section.constant && section.constant.length > 0) {
       md += ' \n# Constant\n';
@@ -247,10 +250,20 @@ function addRpc (): string {
     });
 }
 
+function spliceArrayFor(startText, endText: string | number, deriveModulesSection: string[]) {
+  const index = typeof startText === "number" ? startText : deriveModulesSection.findIndex(text => text === startText);
+  const index2 = typeof endText === "number" ? endText + index : deriveModulesSection.findIndex(text => text === endText);
+  deriveModulesSection.splice(index, index2 - index);
+}
+
 function addModule(metadata: MetadataLatest, name, displayName): string {
   const definitions = {...substrateDefinitions, ...cennznetDefinitions};
+  const basePath = 'deriveDocs';
+  const deriveModules = fs.readFileSync(`${basePath}/modules.md`, 'utf8');
+  const deriveModuleList = deriveModules.split('\n');
+  const filterDeriveList = deriveModuleList.filter(list => list.includes(name.toLowerCase()));
 
-  return renderModulePage({
+  let moduleContent = renderModulePage({
     description: DESC,
     sections: metadata.modules
       .sort(sortByName)
@@ -338,8 +351,51 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
           name: sectionName
         };
       }),
-    title: displayName
+    title: displayName,
+    deriveQuery: filterDeriveList.length > 0
   });
+
+  if (filterDeriveList.length > 0) {
+    moduleContent += ' \n# Derive queries\n';
+    moduleContent += `\n- **interface**: api.derive.${stringCamelCase(name)}.function_name`;
+  }
+  // Add the content from derive queries in the Module specific markdown file
+  filterDeriveList.map( list => {
+    const regExp = /\(([^)]+)\)/;
+    const fileName = regExp.exec(list);
+    let deriveModulesSection = fs.readFileSync(`${basePath}/${fileName[1]}`, 'utf8').toString().split('\n');
+    deriveModulesSection.shift(); // remove the the first element from array
+    // Remove unwanted stuff
+    spliceArrayFor('### Functions', '## Functions', deriveModulesSection);
+    let countOccurence = 0;
+    deriveModulesSection = deriveModulesSection
+      .filter(text => text !== '## Table of contents')
+      .map((line, index) => {
+        if (line.includes('`instanceId`, `api`')) {
+          line = line.replace('(`instanceId`, `api`): ','');
+          countOccurence++;
+        }
+        return line;
+    });
+    for (let i =0; i <= countOccurence; i++) {
+      const idx = deriveModulesSection.findIndex(text => text.includes('| `api` | `ApiInterfaceRx` |'));
+      if (idx !== -1) {
+        /*Remove
+         #### Parameters
+
+            | Name | Type |
+            | :------ | :------ |
+            | `instanceId` | `string` |
+            | `api` | `ApiInterfaceRx` |
+        */
+        spliceArrayFor(idx - 5, 14, deriveModulesSection);
+      }
+    }
+    const deriveData = deriveModulesSection.join('\n'); // convert array back to string
+    moduleContent += deriveData;
+  })
+
+  return moduleContent;
 }
 
 /** @internal */
