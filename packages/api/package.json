@@ -25,6 +25,7 @@
     "@polkadot/rpc-core": "2.7.1",
     "@polkadot/rpc-provider": "2.7.1",
     "@polkadot/types": "2.7.1",
+    "@polkadot/extension-dapp": "^0.36.1",
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {
