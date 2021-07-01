@@ -11,7 +11,7 @@
   "scripts": {
     "build": "polkadot-dev-build-ts",
     "clean": "polkadot-dev-clean-build",
-    "docs:meta": "yarn run docs:derive && cp -rf deriveDocs/interfaces docs && node ./scripts/metadataMdWrapper.js",
+    "docs:meta": "node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "docs:derive": "npx typedoc packages/api/src/derives/ --out deriveDocs  --exclude  '**/*+(index|.e2e|balances).ts'",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
@@ -48,7 +48,9 @@
     "ts-node": "^8.0.3",
     "tsconfig-paths": "^3.8.0",
     "typedoc": "0.21.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "fs-remote": "^0.1.9",
+    "git-repo-watch": "^1.0.0"
   },
   "resolutions": {
     "babel-core": "^7.0.0-bridge.0",

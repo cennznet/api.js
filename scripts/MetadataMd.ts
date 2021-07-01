@@ -14,6 +14,8 @@ import * as substrateDefinitions from '@polkadot/types/interfaces/definitions';
 import * as cennznetDefinitions from '@cennznet/types/interfaces/definitions';
 import { Text } from '@polkadot/types/primitive';
 import { stringCamelCase, stringLowerFirst } from '@polkadot/util';
+import {GitWatcher} from "git-repo-watch";
+const createClient = require("fs-remote/createClient");
 
 interface Page {
     title: string;
@@ -556,31 +558,80 @@ function writeFile (name: string, ...chunks: any[]): void {
 
     writeStream.end();
 }
-
+// const https = require("https");
 function main (): void {
-    const registry = new TypeRegistry();
-    // use the latest runtime metadata we know about
-    const [key, meta] = Object.entries(staticMetadata).pop();
+  const gw = new GitWatcher();
 
-    console.log();
-    console.log(`Generating docs for: ${key}`);
-    console.log();
+// Use Sync Fork to check for changes in the upstream an update.
+  gw.watch({
+    path: '/repos/cennznet/api.js',
+    remote: 'origin',
+    branch: 'master',
+    strict: true,
+    sync: {
+      remote: 'upstream',
+      branch: 'master',
+      // rebase: true,
+      // push: true
+    }
+  });
 
-    const metadata = new Metadata(registry, meta);
-    registry.setMetadata(metadata);
-
-    const latest = metadata.asLatest;
-    writeFile('docs/cennznet/attestation.md', addModule(latest, 'Attestation', 'Attestation'));
-    writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
-    writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
-    writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));
-    writeFile('docs/cennznet/nft.md', addModule(latest, 'Nft', 'Nft'));
-    writeFile('docs/cennznet/rpc.md', addRpc());
-    writeFile('docs/cennznet/constants.md', addConstants(latest));
-    writeFile('docs/cennznet/storage.md', addStorage(latest));
-    writeFile('docs/cennznet/extrinsics.md', addExtrinsics(latest));
-    writeFile('docs/cennznet/events.md', addEvents(latest));
-    writeFile('docs/cennznet/errors.md', addErrors(latest));
+  gw.check$.subscribe( info => {
+    // will fire every check.
+    console.log('info::', info);
+  });
+  // Pass in the URL to the server you created
+  // const fs = createClient("https://github.com/cennznet/api.js/blob/test1/packages/api/src/staticMetadata.ts");
+  // const buttonPressesLogFile = './packages/api/src/staticMetadata.ts';
+  //
+  // // https.get("https://github.com/cennznet/api.js/blob/test1/packages/api/src/staticMetadata.ts")
+  // //   .on('response', function (response) {
+  // //     var body = '';
+  // //     var i = 0;
+  // //     response.on('data', function (chunk) {
+  // //       i++;
+  // //       body += chunk;
+  // //       console.log('BODY Part: ' + i);
+  // //     });
+  // //     response.on('end', function () {
+  // //
+  // //       console.log(body);
+  // //       console.log('Finished');
+  // //     });
+  // //   });
+  // // console.log(fs.readFileSync("."));
+  //
+  // console.log(`Watching for file changes on ${buttonPressesLogFile}`);
+  // console.log('Fs::', fs);
+  // console.log('Fs::', fs?.watch);
+  // fs.watch(buttonPressesLogFile, (event: any, filename: any) => {
+  //   if (filename) {
+  //     console.log(`${filename} file Changed`);
+  //   }
+  // });
+    // const registry = new TypeRegistry();
+    // // use the latest runtime metadata we know about
+    // const [key, meta] = Object.entries(staticMetadata).pop();
+    //
+    // console.log();
+    // console.log(`Generating docs for: ${key}`);
+    // console.log();
+    //
+    // const metadata = new Metadata(registry, meta);
+    // registry.setMetadata(metadata);
+    //
+    // const latest = metadata.asLatest;
+    // writeFile('docs/cennznet/attestation.md', addModule(latest, 'Attestation', 'Attestation'));
+    // writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
+    // writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
+    // writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));
+    // writeFile('docs/cennznet/nft.md', addModule(latest, 'Nft', 'Nft'));
+    // writeFile('docs/cennznet/rpc.md', addRpc());
+    // writeFile('docs/cennznet/constants.md', addConstants(latest));
+    // writeFile('docs/cennznet/storage.md', addStorage(latest));
+    // writeFile('docs/cennznet/extrinsics.md', addExtrinsics(latest));
+    // writeFile('docs/cennznet/events.md', addEvents(latest));
+    // writeFile('docs/cennznet/errors.md', addErrors(latest));
 };
 
 main();
