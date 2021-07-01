@@ -14,6 +14,5 @@
 
 export { Api } from './Api';
 export { ApiRx } from './ApiRx';
-
 export { SubmittableResult } from '@polkadot/api';
 export { WsProvider, HttpProvider } from '@polkadot/rpc-provider';
