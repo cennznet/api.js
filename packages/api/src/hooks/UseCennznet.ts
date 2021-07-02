@@ -24,11 +24,11 @@ import { cennznetExtensions } from '../util/cennznetExtensions';
 export async function UseCennznet(
   dAppName: string,
   options: ApiOptions
-): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[] }> {
+): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
   const api = await Api.create(options);
   const extensions = await web3Enable(dAppName);
   if (extensions.length === 0) {
-    return { api: api, accounts: null };
+    return { api: api, accounts: null, isExtensionInstalled: false };
   }
   const polkadotExtension = extensions.find((ext) => ext.name === 'polkadot-js');
   const metadata = polkadotExtension.metadata;
@@ -39,7 +39,7 @@ export async function UseCennznet(
     localStorage.setItem(`EXTENSION_META_UPDATED-${options.network}`, 'true');
   }
   const allAccounts = await web3Accounts();
-  return { api: api, accounts: allAccounts };
+  return { api: api, accounts: allAccounts, isExtensionInstalled: true };
 }
 
 async function extractMeta(api) {

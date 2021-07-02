@@ -30,17 +30,18 @@ describe('UseCennznet()', () => {
     done();
   });
 
-  it('Should connect to correct chain and return null Accounts', async () => {
+  it('Should connect to correct chain, return null Accounts, and extension not installed', async () => {
     web3EnableMocked.mockImplementation(() => {
       return [];
     });
-    const { api, accounts } = await UseCennznet('test_dapp', { network: 'azalea' });
+    const { api, accounts, isExtensionInstalled } = await UseCennznet('test_dapp', { network: 'azalea' });
     const systemChain = await api.rpc.system.chain();
     expect(accounts).toBe(null);
+    expect(isExtensionInstalled).toBe(false);
     expect(systemChain.toString()).toBe('CENNZnet Azalea');
   });
 
-  it('Should return API and Dummy account when metadata already set', async () => {
+  it('Should return API, Dummy account, and extension installed when metadata already set', async () => {
     const fakeInjectedExtension = {
       name: 'polkadot-js',
     };
@@ -55,9 +56,10 @@ describe('UseCennznet()', () => {
     });
     localStorage.setItem(`EXTENSION_META_UPDATED-azalea`, 'true');
 
-    const { api, accounts } = await UseCennznet('test_dapp', { network: 'azalea' });
+    const { api, accounts, isExtensionInstalled } = await UseCennznet('test_dapp', { network: 'azalea' });
 
     expect(api).toBeDefined();
+    expect(isExtensionInstalled).toBe(true);
     expect(accounts[0].address).toBe(fakeAccount.address);
   });
 
