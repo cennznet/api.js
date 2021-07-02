@@ -53,7 +53,7 @@ describe('UseCennznet()', () => {
     web3AccountsMocked.mockImplementation(() => {
       return [fakeAccount];
     });
-    localStorage.setItem(`EXTENSION_META_UPDATED`, 'true');
+    localStorage.setItem(`EXTENSION_META_UPDATED-azalea`, 'true');
 
     const { api, accounts } = await UseCennznet('test_dapp', { network: 'azalea' });
 
@@ -89,5 +89,40 @@ describe('UseCennznet()', () => {
       '0x4d9337089848aa1aac7f6db23118c3844cfd99972c394521f62341ef1b657612'
     );
     expect(fakeInjectedExtension.metadata.data.chain.toString()).toBe('CENNZnet Nikau');
+  });
+
+  it('Should be able to connect to multiple chains and update metadata', async () => {
+    const fakeInjectedExtension = {
+      name: 'polkadot-js',
+      metadata: {
+        provide: (metadata: MetadataDef) => {
+          return (fakeInjectedExtension.metadata[metadata.genesisHash] = metadata);
+        },
+      },
+    };
+    const fakeAccount = {
+      address: 'random_account_hash',
+    };
+    web3EnableMocked.mockImplementation(() => {
+      return [fakeInjectedExtension];
+    });
+    web3AccountsMocked.mockImplementation(() => {
+      return [fakeAccount];
+    });
+
+    // Update extension with azalea metadata
+    await UseCennznet('test_dapp', { network: 'azalea' });
+    const azaleaGenHash = '0x0d0971c150a9741b8719b3c6c9c2e96ec5b2e3fb83641af868e6650f3e263ef0';
+    expect(fakeInjectedExtension.metadata[azaleaGenHash].chain.toString()).toBe('CENNZnet Azalea');
+
+    // Update extension with nikau metadata
+    await UseCennznet('test_dapp', { network: 'nikau' });
+    const nikauGenHash = '0x4d9337089848aa1aac7f6db23118c3844cfd99972c394521f62341ef1b657612';
+    expect(fakeInjectedExtension.metadata[nikauGenHash].chain.toString()).toBe('CENNZnet Nikau');
+
+    // Empty azalea metadata and ensure it isn't updated because extension should already have it stored
+    fakeInjectedExtension.metadata[azaleaGenHash] = undefined;
+    await UseCennznet('test_dapp', { network: 'azalea' });
+    expect(fakeInjectedExtension.metadata[azaleaGenHash]).toBeUndefined();
   });
 });

@@ -32,11 +32,11 @@ export async function UseCennznet(
   }
   const polkadotExtension = extensions.find((ext) => ext.name === 'polkadot-js');
   const metadata = polkadotExtension.metadata;
-  const checkIfMetaUpdated = localStorage.getItem(`EXTENSION_META_UPDATED`);
+  const checkIfMetaUpdated = localStorage.getItem(`EXTENSION_META_UPDATED-${options.network}`);
   if (!checkIfMetaUpdated) {
     const metadataDef = await extractMeta(api);
     await metadata.provide(metadataDef);
-    localStorage.setItem(`EXTENSION_META_UPDATED`, 'true');
+    localStorage.setItem(`EXTENSION_META_UPDATED-${options.network}`, 'true');
   }
   const allAccounts = await web3Accounts();
   return { api: api, accounts: allAccounts };
