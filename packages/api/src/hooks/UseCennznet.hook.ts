@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { useCennznet } from '@cennznet/api/util/useCennznet';
+import { UseCennznet } from '@cennznet/api/hooks/UseCennznet';
 import { web3Enable, web3Accounts } from '@polkadot/extension-dapp';
 import { MetadataDef } from '@polkadot/extension-inject/types';
 
@@ -24,8 +24,8 @@ jest.mock('@polkadot/extension-dapp', () => ({
 const web3EnableMocked = web3Enable as any;
 const web3AccountsMocked = web3Accounts as any;
 
-describe('useCennznet()', () => {
-  beforeEach(async (done) => {
+describe('UseCennznet()', () => {
+  beforeEach((done) => {
     localStorage.clear();
     done();
   });
@@ -34,7 +34,7 @@ describe('useCennznet()', () => {
     web3EnableMocked.mockImplementation(() => {
       return [];
     });
-    const { api, accounts } = await useCennznet('test_dapp', { network: 'azalea' });
+    const { api, accounts } = await UseCennznet('test_dapp', { network: 'azalea' });
     const systemChain = await api.rpc.system.chain();
     expect(accounts).toBe(null);
     expect(systemChain.toString()).toBe('CENNZnet Azalea');
@@ -55,7 +55,7 @@ describe('useCennznet()', () => {
     });
     localStorage.setItem(`EXTENSION_META_UPDATED`, 'true');
 
-    const { api, accounts } = await useCennznet('test_dapp', { network: 'azalea' });
+    const { api, accounts } = await UseCennznet('test_dapp', { network: 'azalea' });
 
     expect(api).toBeDefined();
     expect(accounts[0].address).toBe(fakeAccount.address);
@@ -81,7 +81,7 @@ describe('useCennznet()', () => {
       return [fakeAccount];
     });
 
-    const { api, accounts } = await useCennznet('test_dapp', { network: 'nikau' });
+    const { api, accounts } = await UseCennznet('test_dapp', { network: 'nikau' });
 
     expect(api).toBeDefined();
     expect(accounts[0].address).toBe(fakeAccount.address);

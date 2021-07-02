@@ -19,9 +19,9 @@ import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defau
 
 import { ApiOptions } from '../types';
 import { Api, Api as ApiPromise } from '../Api';
-import { cennznetExtensions } from './cennznetExtensions';
+import { cennznetExtensions } from '../util/cennznetExtensions';
 
-export async function useCennznet(
+export async function UseCennznet(
   dAppName: string,
   options: ApiOptions
 ): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[] }> {

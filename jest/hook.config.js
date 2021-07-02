@@ -7,7 +7,7 @@ module.exports = {
     '^.+\\.(js|jsx)$': ["babel-jest", { rootMode: "upward" }],
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  testMatch: ['<rootDir>/packages/api/**/?(*.)+(spec).[jt]s?(x)'],
+  testMatch: ['<rootDir>/packages/api/**/?(*.)+(hook).[jt]s?(x)'],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '@cennznet/api(.*)$': '<rootDir>/packages/api/src/$1',
@@ -19,9 +19,5 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
-  testTimeout: 30000,
-  globals: {
-    // Enable doughnut wasm package while running integration tests
-    DOUGHNUT_SUPPORT: true
-  }
+  testTimeout: 30000
 };
