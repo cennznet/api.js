@@ -14,6 +14,8 @@
 
 import {ApiRx} from '../../src/ApiRx';
 import initApiRx from '../../../../jest/initApiRx';
+import {Api} from "@cennznet/api";
+import config from '../../../../config';
 
 describe('e2e rx api create', () => {
   const incorrectEndPoint = 'wss://rimu.centrality.cloud/';
@@ -30,6 +32,24 @@ describe('e2e rx api create', () => {
       expect(hash).toBeDefined();
       done();
     });
+  });
+
+  it ('Should create rx api instance with slim metadata', async done => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    const api = await Api.create({provider, fullMeta: false});
+    const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+    expect(stakingAssetId.toNumber()).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+  it ('Should create rx api instance with custom metadata', async done => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    const api = await Api.create({provider, modules:['TransactionPayment', 'GenericAsset']});
+    const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+    expect(stakingAssetId.toNumber()).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
   });
 
   it('Should connect to all available networks on cennznet via network name', async done => {

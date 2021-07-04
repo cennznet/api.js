@@ -17,6 +17,7 @@ import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/a
 
 import * as definitions from '@cennznet/types/interfaces/definitions';
 import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
+import { getMetadata } from '@cennznet/api/util/getMetadata';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
@@ -26,6 +27,13 @@ import { getTimeout } from './util/getTimeout';
 
 export class Api extends ApiPromise {
   static async create(options: ApiOptions = {}): Promise<Api> {
+    if (options.fullMeta === false) {
+      // Don't use fullMetadata
+      options.metadata = await getMetadata(options.provider);
+    } else if (options.modules !== undefined) {
+      // Use custom metadata for modules
+      options.metadata = await getMetadata(options.provider, options.modules);
+    }
     const api = new Api(options);
     return withTimeout(
       new Promise((resolve, reject) => {

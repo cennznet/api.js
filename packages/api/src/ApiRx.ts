@@ -19,6 +19,7 @@ import { timeout } from 'rxjs/operators';
 
 import * as definitions from '@cennznet/types/interfaces/definitions';
 import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
+import { getMetadata } from '@cennznet/api/util/getMetadata';
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
@@ -66,6 +67,13 @@ export class ApiRx extends ApiRxBase {
       options.provider = getCENNZNetProvider(options.network);
     } else if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
+    }
+    if (options.fullMeta === false) {
+      // Don't use fullMetadata
+      getMetadata(options.provider).then((metadata) => (options.metadata = metadata));
+    } else if (options.modules !== undefined) {
+      // Use custom metadata for modules
+      getMetadata(options.provider, options.modules).then((metadata) => (options.metadata = metadata));
     }
     const rpc = {};
     const sectionsList = Object.keys(definitions);
