@@ -57,6 +57,8 @@ export const typesBundle: OverrideBundleType = {
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
             EnhancedTokenId,
+            // CENNZnet lookup source is 1:1 with address
+            LookupSource: 'Address',
           },
         },
       ],
