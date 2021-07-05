@@ -72,6 +72,8 @@ async function extractMeta(api) {
   }
   const DEFAULT_SS58 = api.registry.createType('u32', addressDefaults.prefix);
   const DEFAULT_DECIMALS = api.registry.createType('u32', 4);
+  renameNestedKeys(cennznetExtensions, 'extra', 'payload');
+  renameNestedKeys(cennznetExtensions, 'types', 'extrinsic');
   const metadata = {
     chain: systemChain,
     color: '#191a2e',
@@ -86,4 +88,17 @@ async function extractMeta(api) {
     userExtensions: cennznetExtensions,
   };
   return metadata as MetadataDef;
+}
+
+function renameNestedKeys(obj, oldKey, newKey) {
+  Object.keys(obj).map((key) => {
+    if (typeof obj[key] === 'object') {
+      renameNestedKeys(obj[key], oldKey, newKey);
+    }
+    if (key === oldKey) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+    }
+  });
+  return obj;
 }
