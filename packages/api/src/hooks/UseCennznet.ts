@@ -16,27 +16,38 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta, MetadataDef } from '@polkadot/extension-inject/types';
 import { getSpecTypes } from '@polkadot/types-known';
 import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defaults';
+import { default as cennznetExtensions } from '@cennznet/types/interfaces/extrinsic/signedExtensions/cennznet';
+import { ApiRx } from '@cennznet/api';
 
 import { ApiOptions } from '../types';
 import { Api, Api as ApiPromise } from '../Api';
-import { cennznetExtensions } from '../util/cennznetExtensions';
 
 export async function UseCennznet(
   dAppName: string,
-  options: ApiOptions
-): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
-  const api = await Api.create(options);
+  options: ApiOptions,
+  apiRx: boolean = false
+): Promise<{ api: ApiPromise | ApiRx; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
+  let api;
+  if (!apiRx) api = await Api.create(options);
+  else api = await ApiRx.create(options).toPromise();
+
   const extensions = await web3Enable(dAppName);
   if (extensions.length === 0) {
     return { api: api, accounts: null, isExtensionInstalled: false };
   }
   const polkadotExtension = extensions.find((ext) => ext.name === 'polkadot-js');
   const metadata = polkadotExtension.metadata;
-  const checkIfMetaUpdated = localStorage.getItem(`EXTENSION_META_UPDATED-${options.network}`);
+
+  const checkIfMetaUpdated = localStorage.getItem(
+    `cennznet-ext-meta-${options.network}-${api.runtimeVersion.specName}-${api.runtimeVersion.specVersion}`
+  );
   if (!checkIfMetaUpdated) {
     const metadataDef = await extractMeta(api);
     await metadata.provide(metadataDef);
-    localStorage.setItem(`EXTENSION_META_UPDATED-${options.network}`, 'true');
+    localStorage.setItem(
+      `cennznet-ext-meta-${options.network}-${api.runtimeVersion.specName}-${api.runtimeVersion.specVersion}`,
+      'true'
+    );
   }
   const allAccounts = await web3Accounts();
   return { api: api, accounts: allAccounts, isExtensionInstalled: true };

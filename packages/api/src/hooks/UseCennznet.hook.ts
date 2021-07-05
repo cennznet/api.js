@@ -15,6 +15,7 @@
 import { UseCennznet } from '@cennznet/api/hooks/UseCennznet';
 import { web3Enable, web3Accounts } from '@polkadot/extension-dapp';
 import { MetadataDef } from '@polkadot/extension-inject/types';
+import { Api, ApiRx } from '@cennznet/api';
 
 jest.mock('@polkadot/extension-dapp', () => ({
   web3Enable: jest.fn(),
@@ -54,7 +55,11 @@ describe('UseCennznet()', () => {
     web3AccountsMocked.mockImplementation(() => {
       return [fakeAccount];
     });
-    localStorage.setItem(`EXTENSION_META_UPDATED-azalea`, 'true');
+    const api1 = await Api.create({ network: 'azalea' });
+    localStorage.setItem(
+      `cennznet-ext-meta-azalea-${api1.runtimeVersion.specName}-${api1.runtimeVersion.specVersion}`,
+      'true'
+    );
 
     const { api, accounts, isExtensionInstalled } = await UseCennznet('test_dapp', { network: 'azalea' });
 
@@ -88,7 +93,7 @@ describe('UseCennznet()', () => {
     expect(api).toBeDefined();
     expect(accounts[0].address).toBe(fakeAccount.address);
     expect(fakeInjectedExtension.metadata.data.genesisHash).toBe(
-      '0x4d9337089848aa1aac7f6db23118c3844cfd99972c394521f62341ef1b657612'
+      '0xc65170707265757d8a1fb8e039062286b8f0092f2984f5938588bd8e0f21ca2e'
     );
     expect(fakeInjectedExtension.metadata.data.chain.toString()).toBe('CENNZnet Nikau');
   });
@@ -119,12 +124,37 @@ describe('UseCennznet()', () => {
 
     // Update extension with nikau metadata
     await UseCennznet('test_dapp', { network: 'nikau' });
-    const nikauGenHash = '0x4d9337089848aa1aac7f6db23118c3844cfd99972c394521f62341ef1b657612';
+    const nikauGenHash = '0xc65170707265757d8a1fb8e039062286b8f0092f2984f5938588bd8e0f21ca2e';
     expect(fakeInjectedExtension.metadata[nikauGenHash].chain.toString()).toBe('CENNZnet Nikau');
 
     // Empty azalea metadata and ensure it isn't updated because extension should already have it stored
     fakeInjectedExtension.metadata[azaleaGenHash] = undefined;
     await UseCennznet('test_dapp', { network: 'azalea' });
     expect(fakeInjectedExtension.metadata[azaleaGenHash]).toBeUndefined();
+  });
+
+  it('Should return API RX instance', async (done) => {
+    const fakeInjectedExtension = {
+      name: 'polkadot-js',
+      metadata: {
+        provide: (metadata: MetadataDef) => {
+          return (fakeInjectedExtension.metadata[metadata.genesisHash] = metadata);
+        },
+      },
+    };
+    const fakeAccount = {
+      address: 'random_account_hash',
+    };
+    web3EnableMocked.mockImplementation(() => {
+      return [fakeInjectedExtension];
+    });
+    web3AccountsMocked.mockImplementation(() => {
+      return [fakeAccount];
+    });
+    const { api } = await UseCennznet('test_dapp', { network: 'azalea' }, true);
+    (api as ApiRx).rpc.chain.getBlockHash().subscribe((hash) => {
+      expect(hash).toBeDefined();
+      done();
+    });
   });
 });
