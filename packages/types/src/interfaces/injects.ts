@@ -62,6 +62,8 @@ export const typesBundle: OverrideBundleType = {
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
             MessageId: 'SyloMessageId',
             EnhancedTokenId,
+            // CENNZnet lookup source is 1:1 with address
+            LookupSource: 'Address',
           },
         },
       ],
