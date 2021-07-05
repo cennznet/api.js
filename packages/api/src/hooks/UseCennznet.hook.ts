@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { UseCennznet } from '@cennznet/api/hooks/UseCennznet';
+import { UseCennznet, UseCennznetRx } from '@cennznet/api/hooks/UseCennznet';
 import { web3Enable, web3Accounts } from '@polkadot/extension-dapp';
 import { MetadataDef } from '@polkadot/extension-inject/types';
 import { Api, ApiRx } from '@cennznet/api';
@@ -151,7 +151,7 @@ describe('UseCennznet()', () => {
     web3AccountsMocked.mockImplementation(() => {
       return [fakeAccount];
     });
-    const { api } = await UseCennznet('test_dapp', { network: 'azalea' }, true);
+    const { api } = await UseCennznetRx('test_dapp', { network: 'azalea' });
     (api as ApiRx).rpc.chain.getBlockHash().subscribe((hash) => {
       expect(hash).toBeDefined();
       done();

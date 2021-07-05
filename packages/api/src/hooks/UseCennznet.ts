@@ -22,15 +22,39 @@ import { ApiRx } from '@cennznet/api';
 import { ApiOptions } from '../types';
 import { Api, Api as ApiPromise } from '../Api';
 
+export async function UseCennznetRx(
+  dAppName: string,
+  options: ApiOptions
+): Promise<{ api: ApiRx; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
+  const api = await ApiRx.create(options).toPromise();
+  return updateExtensionMetadataRetrieveAccounts(api, options, dAppName);
+}
+
 export async function UseCennznet(
   dAppName: string,
-  options: ApiOptions,
-  apiRx: boolean = false
-): Promise<{ api: ApiPromise | ApiRx; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
-  let api;
-  if (!apiRx) api = await Api.create(options);
-  else api = await ApiRx.create(options).toPromise();
+  options: ApiOptions
+): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
+  const api = await Api.create(options);
+  return updateExtensionMetadataRetrieveAccounts(api, options, dAppName);
+}
 
+async function updateExtensionMetadataRetrieveAccounts(
+  api: ApiPromise,
+  options: ApiOptions,
+  dAppName: string
+): Promise<{ api: ApiPromise; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }>;
+
+async function updateExtensionMetadataRetrieveAccounts(
+  api: ApiRx,
+  options: ApiOptions,
+  dAppName: string
+): Promise<{ api: ApiRx; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }>;
+
+async function updateExtensionMetadataRetrieveAccounts(
+  api: ApiPromise | ApiRx,
+  options: ApiOptions,
+  dAppName: string
+): Promise<{ api: ApiPromise | ApiRx; accounts: InjectedAccountWithMeta[]; isExtensionInstalled: boolean }> {
   const extensions = await web3Enable(dAppName);
   if (extensions.length === 0) {
     return { api: api, accounts: null, isExtensionInstalled: false };
