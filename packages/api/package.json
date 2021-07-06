@@ -8,7 +8,7 @@
   "author": "Centrality Developers <support@centrality.ai>",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "@polkadot/rpc-core": "2.7.1",
     "@polkadot/rpc-provider": "2.7.1",
     "@polkadot/types": "2.7.1",
+    "@polkadot/extension-dapp": "^0.36.1",
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {
