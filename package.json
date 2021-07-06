@@ -18,7 +18,7 @@
     "meta:update": "node ./scripts/updateStaticMetadata packages/api/src packages/types && pushd packages/types && yarn build && popd && yarn docs:meta",
     "lint": "eslint . --ext .ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
-    "test:hooks": "jest -c ./jest/hook.config.js --forceExit",
+    "test:hooks": "jest -c ./jest/hook.config.js --bail --detectOpenHandles --forceExit --runInBand",
     "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
   },
   "devDependencies": {
