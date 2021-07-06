@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["ES2017","ES2018", "ES2019", "ES2020"],
+    "lib": ["ES2017","ES2018", "ES2019", "ES2020", "dom"],
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true,
     "paths": {

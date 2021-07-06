@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "main": "index.js",
+  "main": "src/index.ts",
   "types": "index.d.ts",
   "type": "module",
   "repository": {
@@ -29,6 +29,7 @@
     "@polkadot/rpc-core": "^4.9.3-11",
     "@polkadot/rpc-provider": "^4.9.3-11",
     "@polkadot/types": "^4.9.3-11",
+    "@polkadot/extension-dapp": "^0.36.1",
     "eventemitter3": "^4.0.0"
   },
   "resolutions": {
