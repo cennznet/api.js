@@ -5,11 +5,16 @@ import * as fs from 'fs';
 import process from "process";
 
 async function getMetaCalls(apiList: Api[]) {
-  let metaMapObject = apiList.reduce(function (accumulator, currentApi) {
-    let specVersion = currentApi.runtimeVersion.specVersion.toString();
+  let specVersion;
+  let metaCalls;
+  let metaMapObject = apiList.reduce(function (accumulator, currentApi,currentIndex ) {
+    // At index 0 is the locally running chain, get metaCalls and specVersion for the chain running with latest docker image.
+    if (currentIndex === 0) {
+      specVersion = currentApi.runtimeVersion.specVersion.toString();
+      const metaFetched = new Metadata(currentApi.registry, currentApi.runtimeMetadata.toHex());
+      metaCalls = Buffer.from(metaFetched.asCallsOnly.toU8a()).toString('base64');
+    }
     let genesisHash = currentApi.genesisHash.toString();
-    const metaFetched = new Metadata(currentApi.registry, currentApi.runtimeMetadata.toHex());
-    const metaCalls = Buffer.from(metaFetched.asCallsOnly.toU8a()).toString('base64');
     accumulator[`${genesisHash}-${specVersion}`] = metaCalls;
     return accumulator;
   }, {});
@@ -28,7 +33,7 @@ async function generateMetaCallsForExtensionReleases() {
   const providerRata = 'wss://kong2.centrality.me/public/rata/ws';
   const apiRata = await Api.create({provider: providerRata, types: Types});
   const apiLocal = await Api.create({types: Types});
-  await getMetaCalls([apiAzalea, apiNikau, apiRata, apiLocal]);
+  await getMetaCalls([apiLocal, apiAzalea, apiNikau, apiRata]);
 }
 
 generateMetaCallsForExtensionReleases();
