@@ -26,6 +26,8 @@ const web3EnableMocked = web3Enable as any;
 const web3AccountsMocked = web3Accounts as any;
 
 describe('UseCennznet()', () => {
+  let apiGlobal;
+
   beforeEach((done) => {
     localStorage.clear();
     done();
@@ -36,6 +38,7 @@ describe('UseCennznet()', () => {
       return [];
     });
     const { api, accounts, isExtensionInstalled } = await UseCennznet('test_dapp', { network: 'azalea' });
+    apiGlobal = api;
     const systemChain = await api.rpc.system.chain();
     expect(accounts).toBe(null);
     expect(isExtensionInstalled).toBe(false);
@@ -55,14 +58,14 @@ describe('UseCennznet()', () => {
     web3AccountsMocked.mockImplementation(() => {
       return [fakeAccount];
     });
-    const api1 = await Api.create({ network: 'azalea' });
+    apiGlobal = await Api.create({ network: 'azalea' });
     localStorage.setItem(
-      `cennznet-ext-meta-azalea-${api1.runtimeVersion.specName}-${api1.runtimeVersion.specVersion}`,
+      `cennznet-ext-meta-azalea-${apiGlobal.runtimeVersion.specName}-${apiGlobal.runtimeVersion.specVersion}`,
       'true'
     );
-
+    await apiGlobal.disconnect();
     const { api, accounts, isExtensionInstalled } = await UseCennznet('test_dapp', { network: 'azalea' });
-
+    apiGlobal = api;
     expect(api).toBeDefined();
     expect(isExtensionInstalled).toBe(true);
     expect(accounts[0].address).toBe(fakeAccount.address);
@@ -89,7 +92,7 @@ describe('UseCennznet()', () => {
     });
 
     const { api, accounts } = await UseCennznet('test_dapp', { network: 'nikau' });
-
+    apiGlobal = api;
     expect(api).toBeDefined();
     expect(accounts[0].address).toBe(fakeAccount.address);
     expect(fakeInjectedExtension.metadata.data.genesisHash).toBe(
@@ -118,19 +121,22 @@ describe('UseCennznet()', () => {
     });
 
     // Update extension with azalea metadata
-    await UseCennznet('test_dapp', { network: 'azalea' });
+    let res = await UseCennznet('test_dapp', { network: 'azalea' });
     const azaleaGenHash = '0x0d0971c150a9741b8719b3c6c9c2e96ec5b2e3fb83641af868e6650f3e263ef0';
     expect(fakeInjectedExtension.metadata[azaleaGenHash].chain.toString()).toBe('CENNZnet Azalea');
+    await res.api.disconnect();
 
     // Update extension with nikau metadata
-    await UseCennznet('test_dapp', { network: 'nikau' });
+    res = await UseCennznet('test_dapp', { network: 'nikau' });
     const nikauGenHash = '0xc65170707265757d8a1fb8e039062286b8f0092f2984f5938588bd8e0f21ca2e';
     expect(fakeInjectedExtension.metadata[nikauGenHash].chain.toString()).toBe('CENNZnet Nikau');
+    await res.api.disconnect();
 
     // Empty azalea metadata and ensure it isn't updated because extension should already have it stored
     fakeInjectedExtension.metadata[azaleaGenHash] = undefined;
-    await UseCennznet('test_dapp', { network: 'azalea' });
+    res = await UseCennznet('test_dapp', { network: 'azalea' });
     expect(fakeInjectedExtension.metadata[azaleaGenHash]).toBeUndefined();
+    await res.api.disconnect();
   });
 
   it('Should return API RX instance', async (done) => {
@@ -152,9 +158,20 @@ describe('UseCennznet()', () => {
       return [fakeAccount];
     });
     const { api } = await UseCennznetRx('test_dapp', { network: 'azalea' });
+    apiGlobal = api;
     (api as ApiRx).rpc.chain.getBlockHash().subscribe((hash) => {
       expect(hash).toBeDefined();
       done();
     });
+  });
+
+  afterEach(async () => {
+    try {
+      if (apiGlobal.isConnected) {
+        await apiGlobal.disconnect();
+      }
+    } catch (e) {
+      console.error(e);
+    }
   });
 });
