@@ -26,6 +26,7 @@
     "@polkadot/rpc-provider": "3.7.1",
     "@polkadot/types": "3.7.1",
     "@polkadot/extension-dapp": "^0.36.1",
+    "@polkadot/wasm-crypto": "0.20.1",
     "eventemitter3": "^4.0.0"
   },
   "devDependencies": {
