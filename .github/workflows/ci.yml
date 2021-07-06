@@ -37,7 +37,7 @@ jobs:
     - name: unit tests
       run: yarn test --coverage
     - name: hooks tests
-      run: yarn test:hooks --coverage
+      run: yarn test:hooks
   e2e:
     needs: ci
     runs-on: ubuntu-latest

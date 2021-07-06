@@ -7,7 +7,7 @@ module.exports = {
     '^.+\\.(js|jsx)$': ["babel-jest", { rootMode: "upward" }],
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
-  testMatch: ['<rootDir>/packages/api/**/?(*.)+(hook).[jt]s?(x)'],
+  testMatch: ['/**/?(*.)+(hook).[jt]s?(x)'],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     '@cennznet/api(.*)$': '<rootDir>/packages/api/src/$1',
@@ -19,5 +19,5 @@ module.exports = {
     '<rootDir>/packages/types/build',
     '<rootDir>/packages/util/build',
   ],
-  testTimeout: 30000
+  testTimeout: 15000,
 };
