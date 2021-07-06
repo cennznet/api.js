@@ -85,15 +85,14 @@ async function extractMeta(api) {
     api.runtimeVersion.specName,
     api.runtimeVersion.specVersion
   );
-  if (specTypes.ExtrinsicSignatureV4) {
-    delete specTypes.ExtrinsicSignatureV4;
-  }
-  if (specTypes.SignerPayload) {
-    delete specTypes.SignerPayload;
-  }
-  if (specTypes.ExtrinsicPayloadV4) {
-    delete specTypes.ExtrinsicPayloadV4;
-  }
+  const filteredSpecTypes = Object.keys(specTypes)
+    .filter((key) => {
+      return typeof specTypes[key] !== 'function';
+    })
+    .reduce((obj, key) => {
+      obj[key] = specTypes[key];
+      return obj;
+    }, {});
   const DEFAULT_SS58 = api.registry.createType('u32', addressDefaults.prefix);
   const DEFAULT_DECIMALS = api.registry.createType('u32', 4);
   renameNestedKeys(cennznetExtensions, 'extra', 'payload');
@@ -108,7 +107,7 @@ async function extractMeta(api) {
     ss58Format: DEFAULT_SS58.toNumber(),
     tokenDecimals: DEFAULT_DECIMALS.toNumber(),
     tokenSymbol: 'CENNZ',
-    types: specTypes,
+    types: filteredSpecTypes,
     userExtensions: cennznetExtensions,
   };
   return metadata as MetadataDef;
