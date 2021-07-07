@@ -20,7 +20,9 @@ import {SubmittableResult} from "@polkadot/api";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 //import { waitReady } from '@polkadot/wasm-crypto';
-import {WsProvider} from "@polkadot/rpc-provider";
+import { WsProvider } from "@polkadot/rpc-provider";
+
+const keyring = new Keyring({ type: 'sr25519' });
 
 describe('e2e api create', () => {
   let api;
@@ -28,10 +30,6 @@ describe('e2e api create', () => {
 
   beforeAll(async () => {
     await cryptoWaitReady();
-   // await waitReady();
-    const keyring = new Keyring({ type: 'sr25519' });
-    alice = keyring.addFromUri('//Alice');
-    bob = keyring.addFromUri('//Bob');
   });
 
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
@@ -140,6 +138,8 @@ describe('e2e api create', () => {
   it ('Should create api instance with custom metadata and execute transfer extrinsic', async done => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider, modules:[' TransactionPayment', 'GenericAsset', 'UnKnown']});
+    alice = keyring.addFromUri('//Alice');
+    bob = keyring.addFromUri('//Bob');
     const stakingAssetId = await api.query.genericAsset.stakingAssetId();
     const nonce = await api.rpc.system.accountNextIndex(bob.address);
     const tx = api.tx.genericAsset
