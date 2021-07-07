@@ -6,7 +6,6 @@ import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, V
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
-import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
 import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
 import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
 import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
@@ -25,6 +24,7 @@ import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
 import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
 import type { ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
 import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
+import { EnhancedTokenId } from './nft/enhanced-token-id';
 
 declare module '@polkadot/rpc-core/types.jsonrpc' {
   export interface RpcInterface {
@@ -128,6 +128,10 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       getKeys: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, prefix: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Vec<StorageKey>>>;
       /**
+       * Returns the keys with prefix from a child storage with pagination support
+       **/
+      getKeysPaged: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, prefix: StorageKey | string | Uint8Array | any, count: u32 | AnyNumber | Uint8Array, startKey?: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Vec<StorageKey>>>;
+      /**
        * Returns a child storage entry at a specific block state
        **/
       getStorage: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, key: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Option<StorageData>>>;
@@ -174,7 +178,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       accounts: AugmentedRpc<() => Observable<Vec<H160>>>;
       /**
-       * Returns balance of the given account.
+       * Returns the blockNumber
        **/
       blockNumber: AugmentedRpc<() => Observable<U256>>;
       /**
@@ -340,15 +344,6 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       registeredAssets: AugmentedRpc<() => Observable<Vec<ITuple<[AssetId, AssetInfo]>>>>;
     };
-    // NOTE: need some way to merge during generation, ignore for now
-    // @ts-ignore
-    grandpa: {
-      /**
-       * Restarts the grandpa voter future
-       **/
-      restartVoter: AugmentedRpc<() => Observable<any>>;
-    };
-    // @ts-ignore
     grandpa: {
       /**
        * Prove finality for the range (begin; end] hash.
@@ -421,7 +416,6 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       accruedPayout: AugmentedRpc<(undefined: AccountId | string | Uint8Array) => Observable<u64>>;
     };
-    // @ts-ignore
     state: {
       /**
        * Perform a call to a builtin on the chain

@@ -3,6 +3,7 @@
 
 export * from './attestation/types';
 export * from './cennzx/types';
+export * from './ethBridge/types';
 export * from './genericAsset/types';
 export * from './grandpa/types';
 export * from './nft/types';

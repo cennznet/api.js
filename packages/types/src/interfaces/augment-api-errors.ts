@@ -5,6 +5,13 @@ import type { ApiTypes } from '@polkadot/api/types';
 
 declare module '@polkadot/api/types/errors' {
   export interface AugmentedErrors<ApiType> {
+    attestation: {
+      TopicNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     authorship: {
       /**
        * The uncle is genesis.
@@ -39,6 +46,24 @@ declare module '@polkadot/api/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    babe: {
+      /**
+       * A given equivocation report is valid but already previously reported.
+       **/
+      DuplicateOffenceReport: AugmentedError<ApiType>;
+      /**
+       * An equivocation proof provided as part of an equivocation report is invalid.
+       **/
+      InvalidEquivocationProof: AugmentedError<ApiType>;
+      /**
+       * A key ownership proof provided as part of an equivocation report is invalid.
+       **/
+      InvalidKeyOwnershipProof: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     cennzx: {
       AssetCannotSwapForItself: AugmentedError<ApiType>;
       CannotAddLiquidityWithZero: AugmentedError<ApiType>;
@@ -63,7 +88,61 @@ declare module '@polkadot/api/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    electionProviderMultiPhase: {
+      /**
+       * The call is not allowed at this point.
+       **/
+      CallNotAllowed: AugmentedError<ApiType>;
+      /**
+       * `Self::insert_submission` returned an invalid index.
+       **/
+      InvalidSubmissionIndex: AugmentedError<ApiType>;
+      /**
+       * Snapshot metadata should exist but didn't.
+       **/
+      MissingSnapshotMetadata: AugmentedError<ApiType>;
+      /**
+       * OCW submitted solution for wrong round
+       **/
+      OcwCallWrongEra: AugmentedError<ApiType>;
+      /**
+       * Submission was too early.
+       **/
+      PreDispatchEarlySubmission: AugmentedError<ApiType>;
+      /**
+       * Submission was too weak, score-wise.
+       **/
+      PreDispatchWeakSubmission: AugmentedError<ApiType>;
+      /**
+       * Wrong number of winners presented.
+       **/
+      PreDispatchWrongWinnerCount: AugmentedError<ApiType>;
+      /**
+       * The origin failed to pay the deposit.
+       **/
+      SignedCannotPayDeposit: AugmentedError<ApiType>;
+      /**
+       * Witness data to dispatchable is invalid.
+       **/
+      SignedInvalidWitness: AugmentedError<ApiType>;
+      /**
+       * The queue was full, and the solution was not better than any of the existing ones.
+       **/
+      SignedQueueFull: AugmentedError<ApiType>;
+      /**
+       * The signed submission consumes too much weight
+       **/
+      SignedTooMuchWeight: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     genericAsset: {
+      /**
+       * There is no such account id in the storage.
+       **/
+      AccountIdNotExist: AugmentedError<ApiType>;
       /**
        * No new assets id available.
        **/
@@ -77,6 +156,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       AssetIdNotExist: AugmentedError<ApiType>;
       /**
+       * The integer for decimal places is too large for conversion into u128.
+       **/
+      DecimalTooLarge: AugmentedError<ApiType>;
+      /**
        * Free balance got underflowed after burning.
        **/
       FreeBurningUnderflow: AugmentedError<ApiType>;
@@ -84,6 +167,10 @@ declare module '@polkadot/api/types/errors' {
        * Free balance got overflowed after minting.
        **/
       FreeMintingOverflow: AugmentedError<ApiType>;
+      /**
+       * The integer for initial issuance is too large for conversion into u128.
+       **/
+      InitialIssuanceTooLarge: AugmentedError<ApiType>;
       /**
        * The balance is too low to send amount.
        **/
@@ -120,6 +207,10 @@ declare module '@polkadot/api/types/errors' {
        * Cannot transfer zero amount.
        **/
       ZeroAmount: AugmentedError<ApiType>;
+      /**
+       * Existential deposit for assets should always be greater than zero.
+       **/
+      ZeroExistentialDeposit: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -255,6 +346,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       AlreadyStored: AugmentedError<ApiType>;
       /**
+       * The maximum weight information provided was too low.
+       **/
+      MaxWeightTooLow: AugmentedError<ApiType>;
+      /**
        * Threshold must be 2 or greater.
        **/
       MinimumThreshold: AugmentedError<ApiType>;
@@ -294,10 +389,6 @@ declare module '@polkadot/api/types/errors' {
        * A timepoint was given, yet no multisig operation is underway.
        **/
       UnexpectedTimepoint: AugmentedError<ApiType>;
-      /**
-       * The maximum weight information provided was too low.
-       **/
-      WeightTooLow: AugmentedError<ApiType>;
       /**
        * A different timepoint was given to the multisig operation that is underway.
        **/
@@ -413,6 +504,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       InvalidProof: AugmentedError<ApiType>;
       /**
+       * Key setting account is not live, so it's impossible to associate keys.
+       **/
+      NoAccount: AugmentedError<ApiType>;
+      /**
        * No associated validator ID for account.
        **/
       NoAssociatedValidatorId: AugmentedError<ApiType>;
@@ -434,6 +529,10 @@ declare module '@polkadot/api/types/errors' {
        * Controller is already paired.
        **/
       AlreadyPaired: AugmentedError<ApiType>;
+      /**
+       * A nomination target was supplied that was blocked or otherwise not a validator.
+       **/
+      BadTarget: AugmentedError<ApiType>;
       /**
        * The call is not allowed at the given time due to restrictions of election period.
        **/
@@ -542,6 +641,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       SnapshotUnavailable: AugmentedError<ApiType>;
       /**
+       * Too many nomination targets supplied.
+       **/
+      TooManyTargets: AugmentedError<ApiType>;
+      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
@@ -588,58 +691,17 @@ declare module '@polkadot/api/types/errors' {
     };
     treasury: {
       /**
-       * The tip was already found/started.
-       **/
-      AlreadyKnown: AugmentedError<ApiType>;
-      /**
        * Proposer's balance is too low.
        **/
       InsufficientProposersBalance: AugmentedError<ApiType>;
-      /**
-       * Invalid bounty fee.
-       **/
-      InvalidFee: AugmentedError<ApiType>;
       /**
        * No proposal or bounty at that index.
        **/
       InvalidIndex: AugmentedError<ApiType>;
       /**
-       * Invalid bounty value.
+       * Too many approvals in the queue.
        **/
-      InvalidValue: AugmentedError<ApiType>;
-      /**
-       * The account attempting to retract the tip is not the finder of the tip.
-       **/
-      NotFinder: AugmentedError<ApiType>;
-      /**
-       * A bounty payout is pending.
-       * To cancel the bounty, you must unassign and slash the curator.
-       **/
-      PendingPayout: AugmentedError<ApiType>;
-      /**
-       * The tip cannot be claimed/closed because it's still in the countdown period.
-       **/
-      Premature: AugmentedError<ApiType>;
-      /**
-       * The reason given is just too big.
-       **/
-      ReasonTooBig: AugmentedError<ApiType>;
-      /**
-       * Require bounty curator.
-       **/
-      RequireCurator: AugmentedError<ApiType>;
-      /**
-       * The tip cannot be claimed/closed because there are not enough tippers yet.
-       **/
-      StillOpen: AugmentedError<ApiType>;
-      /**
-       * The bounty status is unexpected.
-       **/
-      UnexpectedStatus: AugmentedError<ApiType>;
-      /**
-       * The tip hash is unknown.
-       **/
-      UnknownTip: AugmentedError<ApiType>;
+      TooManyApprovals: AugmentedError<ApiType>;
       /**
        * Generic error
        **/

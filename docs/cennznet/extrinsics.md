@@ -14,6 +14,10 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[cennzx](#cennzx)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
 
 - **[grandpa](#grandpa)**
@@ -72,6 +76,10 @@ ___
 
 ## babe
  
+### planConfigChange(config: `NextConfigDescriptor`)
+- **interface**: `api.tx.babe.planConfigChange`
+- **summary**:   Plan an epoch config change. The epoch config change is recorded and will be enacted on the next call to `enact_epoch_change`. The config will be activated one epoch after. Multiple calls to this method will replace any existing planned config change that had not been enacted yet. 
+ 
 ### reportEquivocation(equivocation_proof: `BabeEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
 - **interface**: `api.tx.babe.reportEquivocation`
 - **summary**:   Report authority equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. 
@@ -85,25 +93,25 @@ ___
 
 ## cennzx
  
-### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<BalanceOf>`, max_asset_amount: `Compact<BalanceOf>`, core_amount: `Compact<BalanceOf>`)
+### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<Balance>`, max_asset_amount: `Compact<Balance>`, core_amount: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.addLiquidity`
 - **summary**:   Deposit core asset and trade asset at current ratio to mint liquidity Returns amount of liquidity minted. 
 
   `origin` `asset_id` - The trade asset ID `min_liquidity` - The minimum liquidity to add `asset_amount` - Amount of trade asset to add `core_amount` - Amount of core asset to add 
  
-### buyAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, buy_amount: `Compact<BalanceOf>`, maximum_sell: `Compact<BalanceOf>`)
+### buyAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, buy_amount: `Compact<Balance>`, maximum_sell: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.buyAsset`
 - **summary**:   Buy `asset_to_buy` with `asset_to_sell`. Caller specifies an exact `buy_amount` and a `maximum_sell` amount to pay. 
 
   `recipient` - Account to receive assets, defaults to `origin` if None `asset_to_sell` - asset ID to sell `asset_to_buy` - asset ID to buy `buy_amount` - The amount of `asset_to_buy` to receive `maximum_sell` - Maximum `asset_to_sell` caller should pay 
  
-### removeLiquidity(asset_id: `Compact<AssetId>`, liquidity_to_withdraw: `Compact<BalanceOf>`, min_asset_withdraw: `Compact<BalanceOf>`, min_core_withdraw: `Compact<BalanceOf>`)
+### removeLiquidity(asset_id: `Compact<AssetId>`, liquidity_to_withdraw: `Compact<Balance>`, min_asset_withdraw: `Compact<Balance>`, min_core_withdraw: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.removeLiquidity`
 - **summary**:   Burn exchange assets to withdraw core asset and trade asset at current ratio 
 
   `asset_id` - The trade asset ID `liquidity_to_withdraw` - Amount of user's liquidity to withdraw `min_asset_withdraw` - The minimum trade asset withdrawn `min_core_withdraw` -  The minimum core asset withdrawn 
  
-### sellAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, sell_amount: `Compact<BalanceOf>`, minimum_buy: `Compact<BalanceOf>`)
+### sellAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, sell_amount: `Compact<Balance>`, minimum_buy: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.sellAsset`
 - **summary**:   Sell `asset_to_sell` for `asset_to_buy`. Caller specifies an exact `sell_amount` and a `minimum_buy` amount to receive. 
 
@@ -112,6 +120,62 @@ ___
 ### setFeeRate(new_fee_rate: `FeeRate`)
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### setEmergencyElectionResult(supports: `Supports`)
+- **interface**: `api.tx.electionProviderMultiPhase.setEmergencyElectionResult`
+- **summary**:   Set a solution in the queue, to be handed out to the client of this pallet in the next call to `ElectionProvider::elect`. 
+
+  This can only be set by `T::ForceOrigin`, and only when the phase is `Emergency`. 
+
+  The solution is not checked for any feasibility and is assumed to be trustworthy, as any feasibility check itself can in principle cause the election process to fail (due to memory/weight constrains). 
+ 
+### setMinimumUntrustedScore(maybe_next_score: `Option<ElectionScore>`)
+- **interface**: `api.tx.electionProviderMultiPhase.setMinimumUntrustedScore`
+- **summary**:   Set a new value for `MinimumUntrustedScore`. 
+
+  Dispatch origin must be aligned with `T::ForceOrigin`. 
+
+  This check can be turned off by setting the value to `None`. 
+ 
+### submit(solution: `RawSolution`, num_signed_submissions: `u32`)
+- **interface**: `api.tx.electionProviderMultiPhase.submit`
+- **summary**:   Submit a solution for the signed phase. 
+
+  The dispatch origin fo this call must be __signed__. 
+
+  The solution is potentially queued, based on the claimed score and processed at the end of the signed phase. 
+
+  A deposit is reserved and recorded for the solution. Based on the outcome, the solution might be rewarded, slashed, or get all or a part of the deposit back. 
+
+   
+ 
+### submitUnsigned(solution: `RawSolution`, witness: `SolutionOrSnapshotSize`)
+- **interface**: `api.tx.electionProviderMultiPhase.submitUnsigned`
+- **summary**:   Submit a solution for the unsigned phase. 
+
+  The dispatch origin fo this call must be __none__. 
+
+  This submission is checked on the fly. Moreover, this unsigned solution is only validated when submitted to the pool from the **local** node. Effectively, this means that only active validators can submit this transaction when authoring a block (similar to an inherent). 
+
+  To prevent any incorrect solution (and thus wasted time/weight), this transaction will panic if the solution submitted by the validator is invalid in any way, effectively putting their authoring reward at risk. 
+
+  No deposit or reward is associated with this submission. 
+
+___
+
+
+## ethBridge
+ 
+### depositClaim(tx_hash: `H256`)
+- **interface**: `api.tx.ethBridge.depositClaim`
+ 
+### submitNotarization(payload: `NotarizationPayload`, _signature: `Signature`)
+- **interface**: `api.tx.ethBridge.submitNotarization`
 
 ___
 
@@ -151,6 +215,10 @@ ___
   The dispatch origin for this call must be `Signed` by the transactor. 
 
    
+ 
+### transferAll(asset_id: `Compact<AssetId>`, to: `AccountId`)
+- **interface**: `api.tx.genericAsset.transferAll`
+- **summary**:   Transfer all of the free balance of `asset_id` to another account. 
  
 ### updateAssetInfo(asset_id: `Compact<AssetId>`, info: `AssetInfo`)
 - **interface**: `api.tx.genericAsset.updateAssetInfo`
@@ -815,44 +883,6 @@ ___
 
    
  
-### submitElectionSolution(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
-- **interface**: `api.tx.staking.submitElectionSolution`
-- **summary**:   Submit an election result to the chain. If the solution: 
-
-  1. is valid. 2. has a better score than a potentially existing solution on chain. 
-
-  then, it will be _put_ on chain. 
-
-  A solution consists of two pieces of data: 
-
-  1. `winners`: a flat vector of all the winners of the round. 2. `assignments`: the compact version of an assignment vector that encodes the edge    weights. 
-
-  Both of which may be computed using _phragmen_, or any other algorithm. 
-
-  Additionally, the submitter must provide: 
-
-  - The `score` that they claim their solution has. 
-
-  Both validators and nominators will be represented by indices in the solution. The indices should respect the corresponding types ([`ValidatorIndex`] and [`NominatorIndex`]). Moreover, they should be valid when used to index into [`SnapshotValidators`] and [`SnapshotNominators`]. Any invalid index will cause the solution to be rejected. These two storage items are set during the election window and may be used to determine the indices. 
-
-  A solution is valid if: 
-
-  0. It is submitted when [`EraElectionStatus`] is `Open`. 1. Its claimed score is equal to the score computed on-chain. 2. Presents the correct number of winners. 3. All indexes must be value according to the snapshot vectors. All edge values must    also be correct and should not overflow the granularity of the ratio type (i.e. 256    or billion). 4. For each edge, all targets are actually nominated by the voter. 5. Has correct self-votes. 
-
-  A solutions score is consisted of 3 parameters: 
-
-  1. `min { support.total }` for each support of a winner. This value should be maximized. 2. `sum { support.total }` for each support of a winner. This value should be minimized. 3. `sum { support.total^2 }` for each support of a winner. This value should be    minimized (to ensure less variance) 
-
-   
- 
-### submitElectionSolutionUnsigned(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
-- **interface**: `api.tx.staking.submitElectionSolutionUnsigned`
-- **summary**:   Unsigned version of `submit_election_solution`. 
-
-  Note that this must pass the [`ValidateUnsigned`] check which only allows transactions from the local node to be included. In other words, only the block author can include a transaction in the block. 
-
-   
- 
 ### unbond(value: `Compact<BalanceOf>`)
 - **interface**: `api.tx.staking.unbond`
 - **summary**:   Schedule a portion of the stash to be unlocked ready for transfer out after the bond period ends. If this leaves an amount actively bonded less than T::Currency::minimum_balance(), then it is increased to the full amount. 
@@ -959,6 +989,12 @@ ___
 
    
  
+### remarkWithEvent(remark: `Bytes`)
+- **interface**: `api.tx.system.remarkWithEvent`
+- **summary**:   Make some on-chain remark and emit event. 
+
+   
+ 
 ### setChangesTrieConfig(changes_trie_config: `Option<ChangesTrieConfiguration>`)
 - **interface**: `api.tx.system.setChangesTrieConfig`
 - **summary**:   Set the new changes trie configuration. 
@@ -988,12 +1024,6 @@ ___
 - **summary**:   Set some items of storage. 
 
    
- 
-### suicide()
-- **interface**: `api.tx.system.suicide`
-- **summary**:   Kill the sending account, assuming there are no references outstanding and the composite data is equal to its default value. 
-
-   
 
 ___
 
@@ -1017,97 +1047,9 @@ ___
 
 ## treasury
  
-### acceptCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.acceptCurator`
-- **summary**:   Accept the curator role for a bounty. A deposit will be reserved from curator and refund upon successful payout. 
-
-  May only be called from the curator. 
-
-   
- 
-### approveBounty(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.approveBounty`
-- **summary**:   Approve a bounty proposal. At a later time, the bounty will be funded and become active and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
 ### approveProposal(proposal_id: `Compact<ProposalIndex>`)
 - **interface**: `api.tx.treasury.approveProposal`
 - **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
-### awardBounty(bounty_id: `Compact<ProposalIndex>`, beneficiary: `LookupSource`)
-- **interface**: `api.tx.treasury.awardBounty`
-- **summary**:   Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to award. 
-
-  - `beneficiary`: The beneficiary account whom will receive the payout.
- 
-### claimBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.claimBounty`
-- **summary**:   Claim the payout from an awarded bounty after payout delay. 
-
-  The dispatch origin for this call must be the beneficiary of this bounty. 
-
-  - `bounty_id`: Bounty ID to claim. 
- 
-### closeBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.closeBounty`
-- **summary**:   Cancel a proposed or active bounty. All the funds will be sent to treasury and the curator deposit will be unreserved if possible. 
-
-  Only `T::RejectOrigin` is able to cancel a bounty. 
-
-  - `bounty_id`: Bounty ID to cancel. 
- 
-### closeTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.closeTip`
-- **summary**:   Close and payout a tip. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  The tip identified by `hash` must have finished its countdown period. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-   
- 
-### extendBountyExpiry(bounty_id: `Compact<BountyIndex>`, _remark: `Bytes`)
-- **interface**: `api.tx.treasury.extendBountyExpiry`
-- **summary**:   Extend the expiry time of an active bounty. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to extend. 
-
-  - `remark`: additional information.
- 
-### proposeBounty(value: `Compact<BalanceOf>`, description: `Bytes`)
-- **interface**: `api.tx.treasury.proposeBounty`
-- **summary**:   Propose a new bounty. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval, or slashed when rejected. 
-
-  - `curator`: The curator account whom will manage this bounty. 
-
-  - `fee`: The curator fee.
-
-  - `value`: The total payment amount of this bounty, curator fee included.
-
-  - `description`: The description of this bounty.
- 
-### proposeCurator(bounty_id: `Compact<ProposalIndex>`, curator: `LookupSource`, fee: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.proposeCurator`
-- **summary**:   Assign a curator to a funded bounty. 
 
   May only be called from `T::ApproveOrigin`. 
 
@@ -1124,80 +1066,6 @@ ___
 - **summary**:   Reject a proposed spend. The original deposit will be slashed. 
 
   May only be called from `T::RejectOrigin`. 
-
-   
- 
-### reportAwesome(reason: `Bytes`, who: `AccountId`)
-- **interface**: `api.tx.treasury.reportAwesome`
-- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### retractTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.retractTip`
-- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
-
-  If successful, the original deposit will be unreserved. 
-
-  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-  Emits `TipRetracted` if successful. 
-
-   
- 
-### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tip`
-- **summary**:   Declare a tip value for an already-open tip. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
-
-   
- 
-### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tipNew`
-- **summary**:   Give a tip for something new; no finder's fee will be taken. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### unassignCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.unassignCurator`
-- **summary**:   Unassign curator from a bounty. 
-
-  This function can only be called by the `RejectOrigin` a signed origin. 
-
-  If this function is called by the `RejectOrigin`, we assume that the curator is malicious or inactive. As a result, we will slash the curator when possible. 
-
-  If the origin is the curator, we take this as a sign they are unable to do their job and they willingly give up. We could slash them, but for now we allow them to recover their deposit and exit without issue. (We may want to change this if it is abused.) 
-
-  Finally, the origin can be anyone if and only if the curator is "inactive". This allows anyone in the community to call out that a curator is not doing their due diligence, and we should pick a new curator. In this case the curator should also be slashed. 
 
    
 
@@ -1226,8 +1094,20 @@ ___
 
   - `calls`: The calls to be dispatched from the same origin. 
 
-  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Trait::BaseCallFilter`). 
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
 
    
 
   This will return `Ok` in all circumstances. To determine the success of the batch, an event is deposited. If a call failed and the batch was interrupted, then the `BatchInterrupted` event is deposited, along with the number of successful calls made and the error of the failed call. If all were successful, then the `BatchCompleted` event is deposited. 
+ 
+### batchAll(calls: `Vec<Call>`)
+- **interface**: `api.tx.utility.batchAll`
+- **summary**:   Send a batch of dispatch calls and atomically execute them. The whole transaction will rollback and fail if any of the calls failed. 
+
+  May be called from any origin. 
+
+  - `calls`: The calls to be dispatched from the same origin. 
+
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
+
+   

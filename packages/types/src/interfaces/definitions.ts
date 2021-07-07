@@ -1,5 +1,6 @@
 export { default as attestation } from './attestation/definitions';
 export { default as cennzx } from './cennzx/definitions';
+export { default as ethBridge } from './ethBridge/definitions';
 export { default as genericAsset } from './genericAsset/definitions';
 export { default as grandpa } from './grandpa/definitions';
 export { default as nft } from './nft/definitions';

@@ -6,7 +6,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [Unreleased]
 ## [2.0.0-alpha.2](https://github.com/cennznet/api.js/compare/release/1.4.0-alpha.0...prerelease/2.0.0-alpha.2) (11/05/2021)
 ### Changed:
-   - Use polkadots latest beta version (4.9.3-11) for api and (6.3.2-9) for util
+   - Use polkadots latest beta version (4.17.1) for api and (6.3.2-9) for util
    - Changes StakingLedger type to a compatible polkadot's definition - StakingLedgerTo223 
 ## [1.4.0-alpha.0](https://github.com/cennznet/api.js/compare/release/1.3.4...prerelease/1.4.0-alpha.0) (10/05/2021)
 - Add NFT module support

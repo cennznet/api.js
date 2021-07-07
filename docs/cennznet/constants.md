@@ -8,6 +8,8 @@ The following sections contain the module constants, also known as parameter typ
 
 - **[babe](#babe)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
 - **[identity](#identity)**
 
 - **[multisig](#multisig)**
@@ -30,7 +32,7 @@ ___
  
 ### epochDuration: `u64`
 - **interface**: `api.consts.babe.epochDuration`
-- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. 
+- **summary**:   The amount of time, in slots, that each epoch should last. NOTE: Currently it is not possible to change the epoch duration after the chain has started. Attempting to do so will brick block production. 
  
 ### expectedBlockTime: `Moment`
 - **interface**: `api.consts.babe.expectedBlockTime`
@@ -39,11 +41,62 @@ ___
 ___
 
 
+## electionProviderMultiPhase
+ 
+### offchainRepeat: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.offchainRepeat`
+- **summary**:   The repeat threshold of the offchain worker. 
+
+  For example, if it is 5, that means that at least 5 blocks will elapse between attempts to submit the worker's solution. 
+ 
+### signedDepositBase: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositBase`
+- **summary**:   Base deposit for a signed solution. 
+ 
+### signedDepositByte: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositByte`
+- **summary**:   Per-byte deposit for a signed solution. 
+ 
+### signedDepositWeight: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedDepositWeight`
+- **summary**:   Per-weight deposit for a signed solution. 
+ 
+### signedMaxSubmissions: `u32`
+- **interface**: `api.consts.electionProviderMultiPhase.signedMaxSubmissions`
+- **summary**:   Maximum number of signed submissions that can be queued. 
+
+  It is best to avoid adjusting this during an election, as it impacts downstream data structures. In particular, `SignedSubmissionIndices<T>` is bounded on this value. If you update this value during an election, you _must_ ensure that `SignedSubmissionIndices.len()` is less than or equal to the new value. Otherwise, attempts to submit new solutions may cause a runtime panic. 
+ 
+### signedMaxWeight: `Weight`
+- **interface**: `api.consts.electionProviderMultiPhase.signedMaxWeight`
+- **summary**:   Maximum weight of a signed solution. 
+
+  This should probably be similar to [`Config::MinerMaxWeight`]. 
+ 
+### signedPhase: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.signedPhase`
+- **summary**:   Duration of the signed phase. 
+ 
+### signedRewardBase: `BalanceOf`
+- **interface**: `api.consts.electionProviderMultiPhase.signedRewardBase`
+- **summary**:   Base reward for a signed solution 
+ 
+### solutionImprovementThreshold: `Perbill`
+- **interface**: `api.consts.electionProviderMultiPhase.solutionImprovementThreshold`
+- **summary**:   The minimum amount of improvement to the solution score that defines a solution as "better" (in any phase). 
+ 
+### unsignedPhase: `BlockNumber`
+- **interface**: `api.consts.electionProviderMultiPhase.unsignedPhase`
+- **summary**:   Duration of the unsigned phase. 
+
+___
+
+
 ## identity
  
 ### basicDeposit: `BalanceOf`
 - **interface**: `api.consts.identity.basicDeposit`
-- **summary**:   The amount held on deposit for a registered identity. 
+- **summary**:   The amount held on deposit for a registered identity 
  
 ### fieldDeposit: `BalanceOf`
 - **interface**: `api.consts.identity.fieldDeposit`
@@ -73,14 +126,18 @@ ___
 ### depositBase: `BalanceOf`
 - **interface**: `api.consts.multisig.depositBase`
 - **summary**:   The base amount of currency needed to reserve for creating a multisig execution or to store a dispatch call for later. 
+
+  This is held for an additional storage item whose value size is `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is `32 + sizeof(AccountId)` bytes. 
  
 ### depositFactor: `BalanceOf`
 - **interface**: `api.consts.multisig.depositFactor`
 - **summary**:   The amount of currency needed per unit threshold when creating a multisig execution. 
+
+  This is held for adding 32 bytes more into a pre-existing storage value. 
  
 ### maxSignatories: `u16`
 - **interface**: `api.consts.multisig.maxSignatories`
-- **summary**:   The maximum amount of signatories allowed for a given multisig. 
+- **summary**:   The maximum amount of signatories allowed in the multisig. 
 
 ___
 
@@ -91,29 +148,11 @@ ___
 - **interface**: `api.consts.staking.bondingDuration`
 - **summary**:   Number of eras that staked funds must remain bonded for. 
  
-### electionLookahead: `BlockNumber`
-- **interface**: `api.consts.staking.electionLookahead`
-- **summary**:   The number of blocks before the end of the era from which election submissions are allowed. 
-
-  Setting this to zero will disable the offchain compute and only on-chain seq-phragmen will be used. 
-
-  This is bounded by being within the last session. Hence, setting it to a value more than the length of a session will be pointless. 
- 
-### maxIterations: `u32`
-- **interface**: `api.consts.staking.maxIterations`
-- **summary**:   Maximum number of balancing iterations to run in the offchain submission. 
-
-  If set to 0, balance_solution will not be executed at all. 
- 
 ### maxNominatorRewardedPerValidator: `u32`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
 - **summary**:   The maximum number of nominators rewarded for each validator. 
 
   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim their reward. This used to limit the i/o cost for the nominator payout. 
- 
-### minSolutionScoreBump: `Perbill`
-- **interface**: `api.consts.staking.minSolutionScoreBump`
-- **summary**:   The threshold of improvement that should be provided for a new solution to be accepted. 
  
 ### sessionsPerEra: `SessionIndex`
 - **interface**: `api.consts.staking.sessionsPerEra`
@@ -130,29 +169,31 @@ ___
 
 ## system
  
-### blockExecutionWeight: `Weight`
-- **interface**: `api.consts.system.blockExecutionWeight`
-- **summary**:   The base weight of executing a block, independent of the transactions in the block. 
- 
 ### blockHashCount: `BlockNumber`
 - **interface**: `api.consts.system.blockHashCount`
-- **summary**:   The maximum number of blocks to allow in mortal eras. 
+- **summary**:   Maximum number of block number to block hash mappings to keep (oldest pruned first). 
+ 
+### blockLength: `BlockLength`
+- **interface**: `api.consts.system.blockLength`
+- **summary**:   The maximum length of a block (in bytes). 
+ 
+### blockWeights: `BlockWeights`
+- **interface**: `api.consts.system.blockWeights`
+- **summary**:   Block & extrinsics weights: base values and limits. 
  
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:   The weight of runtime database operations the runtime can invoke. 
  
-### extrinsicBaseWeight: `Weight`
-- **interface**: `api.consts.system.extrinsicBaseWeight`
-- **summary**:   The base weight of an Extrinsic in the block, independent of the of extrinsic being executed. 
+### ss58Prefix: `u16`
+- **interface**: `api.consts.system.ss58Prefix`
+- **summary**:   The designated SS85 prefix of this chain. 
+
+  This replaces the "ss58Format" property declared in the chain spec. Reason is that the runtime should know about the prefix in order to make use of it as an identifier of the chain. 
  
-### maximumBlockLength: `u32`
-- **interface**: `api.consts.system.maximumBlockLength`
-- **summary**:   The maximum length of a block (in bytes). 
- 
-### maximumBlockWeight: `Weight`
-- **interface**: `api.consts.system.maximumBlockWeight`
-- **summary**:   The maximum weight of a block. 
+### version: `RuntimeVersion`
+- **interface**: `api.consts.system.version`
+- **summary**:   Get the chain's current version. 
 
 ___
 
@@ -181,35 +222,12 @@ ___
 
 ## treasury
  
-### bountyCuratorDeposit: `Permill`
-- **interface**: `api.consts.treasury.bountyCuratorDeposit`
-- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
- 
-### bountyDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyDepositBase`
-- **summary**:   The amount held on deposit for placing a bounty proposal. 
- 
-### bountyDepositPayoutDelay: `BlockNumber`
-- **interface**: `api.consts.treasury.bountyDepositPayoutDelay`
-- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
- 
-### bountyValueMinimum: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyValueMinimum`
- 
 ### burn: `Permill`
 - **interface**: `api.consts.treasury.burn`
 - **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
  
-### dataDepositPerByte: `BalanceOf`
-- **interface**: `api.consts.treasury.dataDepositPerByte`
-- **summary**:   The amount held on deposit per byte within the tip report reason or bounty description. 
- 
-### maximumReasonLength: `u32`
-- **interface**: `api.consts.treasury.maximumReasonLength`
-- **summary**:   Maximum acceptable reason length. 
- 
-### moduleId: `ModuleId`
-- **interface**: `api.consts.treasury.moduleId`
+### palletId: `PalletId`
+- **interface**: `api.consts.treasury.palletId`
 - **summary**:   The treasury's module id, used for deriving its sovereign account ID. 
  
 ### proposalBond: `Permill`
@@ -223,15 +241,3 @@ ___
 ### spendPeriod: `BlockNumber`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:   Period between successive spends. 
- 
-### tipCountdown: `BlockNumber`
-- **interface**: `api.consts.treasury.tipCountdown`
-- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
- 
-### tipFindersFee: `Percent`
-- **interface**: `api.consts.treasury.tipFindersFee`
-- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
- 
-### tipReportDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.tipReportDepositBase`
-- **summary**:   The amount held on deposit for placing a tip report. 

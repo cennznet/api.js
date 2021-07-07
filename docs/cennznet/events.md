@@ -10,6 +10,10 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[cennzx](#cennzx)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
 
 - **[grandpa](#grandpa)**
@@ -72,6 +76,41 @@ ___
 ___
 
 
+## electionProviderMultiPhase
+ 
+### ElectionFinalized(`Option<ElectionCompute>`)
+- **summary**:   The election has been finalized, with `Some` of the given computation, or else if the election failed, `None`. 
+ 
+### Rewarded(`AccountId`, `Balance`)
+- **summary**:   An account has been rewarded for their signed submission being finalized. 
+ 
+### SignedPhaseStarted(`u32`)
+- **summary**:   The signed phase of the given round has started. 
+ 
+### Slashed(`AccountId`, `Balance`)
+- **summary**:   An account has been slashed for submitting an invalid signed submission. 
+ 
+### SolutionStored(`ElectionCompute`, `bool`)
+- **summary**:   A solution was stored with the given compute. 
+
+  If the solution is signed, this means that it hasn't yet been processed. If the solution is unsigned, this means that it has also been processed. 
+
+  The `bool` is `true` when a previous solution was ejected to make room for this one. 
+ 
+### UnsignedPhaseStarted(`u32`)
+- **summary**:   The unsigned phase of the given round has started. 
+
+___
+
+
+## ethBridge
+ 
+### TokenClaim(`AccountId`, `u64`)
+- **summary**:   A bridge token claim succeeded (address, claim id) 
+
+___
+
+
 ## genericAsset
  
 ### AssetInfoUpdated(`AssetId`, `AssetInfo`)
@@ -82,6 +121,9 @@ ___
  
 ### Created(`AssetId`, `AccountId`, `AssetOptions`)
 - **summary**:   Asset created (asset_id, creator, asset_options). 
+ 
+### DustReclaimed(`AssetId`, `AccountId`, `Balance`)
+- **summary**:   Asset balance storage has been reclaimed due to falling below the existential deposit 
  
 ### Minted(`AssetId`, `AccountId`, `Balance`)
 - **summary**:   New asset minted (asset_id, account, amount). 
@@ -221,8 +263,8 @@ ___
 
 ## offences
  
-### Offence(`Kind`, `OpaqueTimeSlot`, `bool`)
-- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. last element indicates of the offence was applied (true) or queued (false) \[kind, timeslot, applied\]. 
+### Offence(`Kind`, `OpaqueTimeSlot`)
+- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. \[kind, timeslot\]. 
 
 ___
 
@@ -288,11 +330,8 @@ ___
 ### Slash(`AccountId`, `Balance`)
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. 
  
-### SolutionStored(`ElectionCompute`)
-- **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
- 
-### StakingElection(`ElectionCompute`)
-- **summary**:   A new set of stakers was elected with the given \[compute\]. 
+### StakingElection()
+- **summary**:   A new set of stakers was elected. 
  
 ### Unbonded(`AccountId`, `Balance`)
 - **summary**:   An account has unbonded this amount. \[stash, amount\] 
@@ -311,7 +350,7 @@ ___
 ### Sudid(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
  
-### SudoAsDone(`bool`)
+### SudoAsDone(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
 
 ___
@@ -333,6 +372,9 @@ ___
  
 ### NewAccount(`AccountId`)
 - **summary**:   A new \[account\] was created. 
+ 
+### Remarked(`AccountId`, `Hash`)
+- **summary**:   On on-chain remark happened. \[origin, remark_hash\] 
 
 ___
 
@@ -342,35 +384,11 @@ ___
 ### Awarded(`ProposalIndex`, `Balance`, `AccountId`)
 - **summary**:   Some funds have been allocated. \[proposal_index, award, beneficiary\] 
  
-### BountyAwarded(`BountyIndex`, `AccountId`)
-- **summary**:   A bounty is awarded to a beneficiary. [index, beneficiary] 
- 
-### BountyBecameActive(`BountyIndex`)
-- **summary**:   A bounty proposal is funded and became active. [index] 
- 
-### BountyCanceled(`BountyIndex`)
-- **summary**:   A bounty is cancelled. [index] 
- 
-### BountyClaimed(`BountyIndex`, `Balance`, `AccountId`)
-- **summary**:   A bounty is claimed by beneficiary. [index, payout, beneficiary] 
- 
-### BountyExtended(`BountyIndex`)
-- **summary**:   A bounty expiry is extended. [index] 
- 
-### BountyProposed(`BountyIndex`)
-- **summary**:   New bounty proposal. [index] 
- 
-### BountyRejected(`BountyIndex`, `Balance`)
-- **summary**:   A bounty proposal was rejected; funds were slashed. [index, bond] 
- 
 ### Burnt(`Balance`)
 - **summary**:   Some of our funds have been burnt. \[burn\] 
  
 ### Deposit(`Balance`)
 - **summary**:   Some funds have been deposited. \[deposit\] 
- 
-### NewTip(`Hash`)
-- **summary**:   A new tip suggestion has been opened. \[tip_hash\] 
  
 ### Proposed(`ProposalIndex`)
 - **summary**:   New proposal. \[proposal_index\] 
@@ -383,15 +401,6 @@ ___
  
 ### Spending(`Balance`)
 - **summary**:   We have ended a spend period and will now allocate funds. \[budget_remaining\] 
- 
-### TipClosed(`Hash`, `AccountId`, `Balance`)
-- **summary**:   A tip suggestion has been closed. \[tip_hash, who, payout\] 
- 
-### TipClosing(`Hash`)
-- **summary**:   A tip suggestion has reached threshold and is closing. \[tip_hash\] 
- 
-### TipRetracted(`Hash`)
-- **summary**:   A tip suggestion has been retracted. \[tip_hash\] 
 
 ___
 

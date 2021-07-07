@@ -6,9 +6,15 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[attestation](#attestation)**
+
 - **[authorship](#authorship)**
 
+- **[babe](#babe)**
+
 - **[cennzx](#cennzx)**
+
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
 
 - **[genericAsset](#genericasset)**
 
@@ -38,6 +44,13 @@ This page lists the errors that can be encountered in the different modules.
 ___
 
 
+## attestation
+ 
+### TopicNotRegistered
+
+___
+
+
 ## authorship
  
 ### GenesisUncle
@@ -60,6 +73,20 @@ ___
  
 ### UnclesAlreadySet
 - **summary**:   Uncles already set in the block. 
+
+___
+
+
+## babe
+ 
+### DuplicateOffenceReport
+- **summary**:   A given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **summary**:   An equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **summary**:   A key ownership proof provided as part of an equivocation report is invalid. 
 
 ___
 
@@ -105,7 +132,48 @@ ___
 ___
 
 
+## electionProviderMultiPhase
+ 
+### CallNotAllowed
+- **summary**:   The call is not allowed at this point. 
+ 
+### InvalidSubmissionIndex
+- **summary**:   `Self::insert_submission` returned an invalid index. 
+ 
+### MissingSnapshotMetadata
+- **summary**:   Snapshot metadata should exist but didn't. 
+ 
+### OcwCallWrongEra
+- **summary**:   OCW submitted solution for wrong round 
+ 
+### PreDispatchEarlySubmission
+- **summary**:   Submission was too early. 
+ 
+### PreDispatchWeakSubmission
+- **summary**:   Submission was too weak, score-wise. 
+ 
+### PreDispatchWrongWinnerCount
+- **summary**:   Wrong number of winners presented. 
+ 
+### SignedCannotPayDeposit
+- **summary**:   The origin failed to pay the deposit. 
+ 
+### SignedInvalidWitness
+- **summary**:   Witness data to dispatchable is invalid. 
+ 
+### SignedQueueFull
+- **summary**:   The queue was full, and the solution was not better than any of the existing ones. 
+ 
+### SignedTooMuchWeight
+- **summary**:   The signed submission consumes too much weight 
+
+___
+
+
 ## genericAsset
+ 
+### AccountIdNotExist
+- **summary**:   There is no such account id in the storage. 
  
 ### AssetIdExhausted
 - **summary**:   No new assets id available. 
@@ -116,11 +184,17 @@ ___
 ### AssetIdNotExist
 - **summary**:   Failure due to asset id not existing on chain 
  
+### DecimalTooLarge
+- **summary**:   The integer for decimal places is too large for conversion into u128. 
+ 
 ### FreeBurningUnderflow
 - **summary**:   Free balance got underflowed after burning. 
  
 ### FreeMintingOverflow
 - **summary**:   Free balance got overflowed after minting. 
+ 
+### InitialIssuanceTooLarge
+- **summary**:   The integer for initial issuance is too large for conversion into u128. 
  
 ### InsufficientBalance
 - **summary**:   The balance is too low to send amount. 
@@ -148,6 +222,9 @@ ___
  
 ### ZeroAmount
 - **summary**:   Cannot transfer zero amount. 
+ 
+### ZeroExistentialDeposit
+- **summary**:   Existential deposit for assets should always be greater than zero. 
 
 ___
 
@@ -250,6 +327,9 @@ ___
 ### AlreadyStored
 - **summary**:   The data to be stored is already stored. 
  
+### MaxWeightTooLow
+- **summary**:   The maximum weight information provided was too low. 
+ 
 ### MinimumThreshold
 - **summary**:   Threshold must be 2 or greater. 
  
@@ -279,9 +359,6 @@ ___
  
 ### UnexpectedTimepoint
 - **summary**:   A timepoint was given, yet no multisig operation is underway. 
- 
-### WeightTooLow
-- **summary**:   The maximum weight information provided was too low. 
  
 ### WrongTimepoint
 - **summary**:   A different timepoint was given to the multisig operation that is underway. 
@@ -370,6 +447,9 @@ ___
 ### InvalidProof
 - **summary**:   Invalid ownership proof. 
  
+### NoAccount
+- **summary**:   Key setting account is not live, so it's impossible to associate keys. 
+ 
 ### NoAssociatedValidatorId
 - **summary**:   No associated validator ID for account. 
  
@@ -386,6 +466,9 @@ ___
  
 ### AlreadyPaired
 - **summary**:   Controller is already paired. 
+ 
+### BadTarget
+- **summary**:   A nomination target was supplied that was blocked or otherwise not a validator. 
  
 ### CallNotAllowed
 - **summary**:   The call is not allowed at the given time due to restrictions of election period. 
@@ -464,6 +547,9 @@ ___
  
 ### SnapshotUnavailable
 - **summary**:   The snapshot data of the current window is missing. 
+ 
+### TooManyTargets
+- **summary**:   Too many nomination targets supplied. 
 
 ___
 
@@ -500,41 +586,11 @@ ___
 
 ## treasury
  
-### AlreadyKnown
-- **summary**:   The tip was already found/started. 
- 
 ### InsufficientProposersBalance
 - **summary**:   Proposer's balance is too low. 
- 
-### InvalidFee
-- **summary**:   Invalid bounty fee. 
  
 ### InvalidIndex
 - **summary**:   No proposal or bounty at that index. 
  
-### InvalidValue
-- **summary**:   Invalid bounty value. 
- 
-### NotFinder
-- **summary**:   The account attempting to retract the tip is not the finder of the tip. 
- 
-### PendingPayout
-- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
- 
-### Premature
-- **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **summary**:   The reason given is just too big. 
- 
-### RequireCurator
-- **summary**:   Require bounty curator. 
- 
-### StillOpen
-- **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnexpectedStatus
-- **summary**:   The bounty status is unexpected. 
- 
-### UnknownTip
-- **summary**:   The tip hash is unknown. 
+### TooManyApprovals
+- **summary**:   Too many approvals in the queue. 

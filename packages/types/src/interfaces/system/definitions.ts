@@ -13,6 +13,7 @@ export default {
     DispatchClassTo36: {
       _enum: ['Normal', 'Operational'],
     },
+    Supports: {},
     WeightTo36: 'u32',
     DispatchInfoTo36: {
       weight: 'WeightTo36',

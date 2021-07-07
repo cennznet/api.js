@@ -14,6 +14,10 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[cennzx](#cennzx)**
 
+- **[electionProviderMultiPhase](#electionprovidermultiphase)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
 
 - **[grandpa](#grandpa)**
@@ -108,15 +112,23 @@ ___
 - **interface**: `api.query.babe.authorVrfRandomness`
 - **summary**:   Temporary value (cleared at block finalization) that includes the VRF output generated at this block. This field should always be populated during block processing unless secondary plain slots are enabled (which don't contain a VRF output). 
  
-### currentSlot(): `u64`
+### currentSlot(): `Slot`
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:   Current slot number. 
+ 
+### epochConfig(): `Option<BabeEpochConfiguration>`
+- **interface**: `api.query.babe.epochConfig`
+- **summary**:   The configuration for the current epoch. Should never be `None` as it is initialized in genesis. 
  
 ### epochIndex(): `u64`
 - **interface**: `api.query.babe.epochIndex`
 - **summary**:   Current epoch index. 
  
-### genesisSlot(): `u64`
+### epochStart(): `(BlockNumber,BlockNumber)`
+- **interface**: `api.query.babe.epochStart`
+- **summary**:   The block numbers when the last and current epoch have started, respectively `N-1` and `N`. NOTE: We track this is in order to annotate the block number when a given pool of entropy was fixed (i.e. it was known to chain observers). Since epochs are defined in slots, which may be skipped, the block numbers may not line up with the slot numbers. 
+ 
+### genesisSlot(): `Slot`
 - **interface**: `api.query.babe.genesisSlot`
 - **summary**:   The slot at which the first epoch actually started. This is 0 until the first block of the chain. 
  
@@ -130,13 +142,21 @@ ___
 
   This entry is populated as part of block execution and is cleaned up on block finalization. Querying this storage entry outside of block execution context should always yield zero. 
  
-### nextEpochConfig(): `Option<NextConfigDescriptor>`
+### nextAuthorities(): `Vec<(AuthorityId,BabeAuthorityWeight)>`
+- **interface**: `api.query.babe.nextAuthorities`
+- **summary**:   Next epoch authorities. 
+ 
+### nextEpochConfig(): `Option<BabeEpochConfiguration>`
 - **interface**: `api.query.babe.nextEpochConfig`
-- **summary**:   Next epoch configuration, if changed. 
+- **summary**:   The configuration for the next epoch, `None` if the config will not change (you can fallback to `EpochConfig` instead in that case). 
  
 ### nextRandomness(): `Randomness`
 - **interface**: `api.query.babe.nextRandomness`
 - **summary**:   Next epoch randomness. 
+ 
+### pendingEpochConfigChange(): `Option<NextConfigDescriptor>`
+- **interface**: `api.query.babe.pendingEpochConfigChange`
+- **summary**:   Pending epoch configuration change that will be applied when the next epoch is enacted. 
  
 ### randomness(): `Randomness`
 - **interface**: `api.query.babe.randomness`
@@ -171,13 +191,101 @@ ___
 - **interface**: `api.query.cennzx.defaultFeeRate`
 - **summary**:   Default trading fee rate 
  
-### liquidityBalance(`ExchangeKey, AccountId`): `BalanceOf`
+### liquidityBalance(`ExchangeKey, AccountId`): `Balance`
 - **interface**: `api.query.cennzx.liquidityBalance`
 - **summary**:   Liquidity holdings of a user in an exchange pool. Key: `(core_asset_id, trade_asset_id), account_id` 
  
-### totalLiquidity(`ExchangeKey`): `BalanceOf`
+### totalLiquidity(`ExchangeKey`): `Balance`
 - **interface**: `api.query.cennzx.totalLiquidity`
 - **summary**:   Total liquidity holdings of all investors in an exchange. ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
+
+___
+
+
+## electionProviderMultiPhase
+ 
+### currentPhase(): `ElectionPhase`
+- **interface**: `api.query.electionProviderMultiPhase.currentPhase`
+- **summary**:   Current phase. 
+ 
+### desiredTargets(): `Option<u32>`
+- **interface**: `api.query.electionProviderMultiPhase.desiredTargets`
+- **summary**:   Desired number of targets to elect for this round. 
+
+  Only exists when [`Snapshot`] is present. 
+ 
+### minimumUntrustedScore(): `Option<ElectionScore>`
+- **interface**: `api.query.electionProviderMultiPhase.minimumUntrustedScore`
+- **summary**:   The minimum score that each 'untrusted' solution must attain in order to be considered feasible. 
+
+  Can be set via `set_minimum_untrusted_score`. 
+ 
+### queuedSolution(): `Option<ReadySolution>`
+- **interface**: `api.query.electionProviderMultiPhase.queuedSolution`
+- **summary**:   Current best solution, signed or unsigned, queued to be returned upon `elect`. 
+ 
+### round(): `u32`
+- **interface**: `api.query.electionProviderMultiPhase.round`
+- **summary**:   Internal counter for the number of rounds. 
+
+  This is useful for de-duplication of transactions submitted to the pool, and general diagnostics of the pallet. 
+
+  This is merely incremented once per every time that an upstream `elect` is called. 
+ 
+### signedSubmissionIndices(): `SubmissionIndicesOf`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionIndices`
+- **summary**:   A sorted, bounded set of `(score, index)`, where each `index` points to a value in `SignedSubmissions`. 
+
+  We never need to process more than a single signed submission at a time. Signed submissions can be quite large, so we're willing to pay the cost of multiple database accesses to access them one at a time instead of reading and decoding all of them at once. 
+ 
+### signedSubmissionNextIndex(): `u32`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionNextIndex`
+- **summary**:   The next index to be assigned to an incoming signed submission. 
+
+  Every accepted submission is assigned a unique index; that index is bound to that particular submission for the duration of the election. On election finalization, the next index is reset to 0. 
+
+  We can't just use `SignedSubmissionIndices.len()`, because that's a bounded set; past its capacity, it will simply saturate. We can't just iterate over `SignedSubmissionsMap`, because iteration is slow. Instead, we store the value here. 
+ 
+### signedSubmissionsMap(`u32`): `SignedSubmissionOf`
+- **interface**: `api.query.electionProviderMultiPhase.signedSubmissionsMap`
+- **summary**:   Unchecked, signed solutions. 
+
+  Together with `SubmissionIndices`, this stores a bounded set of `SignedSubmissions` while allowing us to keep only a single one in memory at a time. 
+
+  Twox note: the key of the map is an auto-incrementing index which users cannot inspect or affect; we shouldn't need a cryptographically secure hasher. 
+ 
+### snapshot(): `Option<RoundSnapshot>`
+- **interface**: `api.query.electionProviderMultiPhase.snapshot`
+- **summary**:   Snapshot data of the round. 
+
+  This is created at the beginning of the signed phase and cleared upon calling `elect`. 
+ 
+### snapshotMetadata(): `Option<SolutionOrSnapshotSize>`
+- **interface**: `api.query.electionProviderMultiPhase.snapshotMetadata`
+- **summary**:   The metadata of the [`RoundSnapshot`] 
+
+  Only exists when [`Snapshot`] is present. 
+
+___
+
+
+## ethBridge
+ 
+### claimNotarizations(`u64, AuthorityId`): `Option<bool>`
+- **interface**: `api.query.ethBridge.claimNotarizations`
+- **summary**:   Notarizations for pending claims None, no notarization or Some(yay/nay) 
+ 
+### nextClaimId(): `u64`
+- **interface**: `api.query.ethBridge.nextClaimId`
+- **summary**:   Id of a token claim 
+ 
+### notaryKeys(): `Vec<AuthorityId>`
+- **interface**: `api.query.ethBridge.notaryKeys`
+- **summary**:   Active notary (Validator) public keys 
+ 
+### pendingClaims(`u64`): `H256`
+- **interface**: `api.query.ethBridge.pendingClaims`
+- **summary**:   Pending claims 
 
 ___
 
@@ -194,7 +302,7 @@ ___
 
   TWOX-NOTE: `AssetId` is trusted. 
  
-### locks(`AccountId`): `Vec<BalanceLock>`
+### locks(`AssetId, AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.genericAsset.locks`
 - **summary**:   Any liquidity locks on some account balances. 
  
@@ -221,6 +329,12 @@ ___
 ### stakingAssetId(): `AssetId`
 - **interface**: `api.query.genericAsset.stakingAssetId`
 - **summary**:   The identity of the asset which is the one that is designated for the chain's staking system. 
+ 
+### storageVersion(): `u32`
+- **interface**: `api.query.genericAsset.storageVersion`
+- **summary**:   Storage version of the pallet. 
+
+  This is set to v1 for new networks. 
  
 ### totalIssuance(`AssetId`): `Balance`
 - **interface**: `api.query.genericAsset.totalIssuance`
@@ -295,13 +409,15 @@ ___
  
 ### authoredBlocks(`SessionIndex, ValidatorId`): `u32`
 - **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:   For each session index, we keep a mapping of `T::ValidatorId` to the number of blocks authored by the given authority. 
+- **summary**:   For each session index, we keep a mapping of `ValidatorId<T>` to the number of blocks authored by the given authority. 
  
 ### heartbeatAfter(): `BlockNumber`
 - **interface**: `api.query.imOnline.heartbeatAfter`
-- **summary**:   The block number after which it's ok to send heartbeats in current session. 
+- **summary**:   The block number after which it's ok to send heartbeats in the current session. 
 
   At the beginning of each session we set this to a value that should fall roughly in the middle of the session duration. The idea is to first wait for the validators to produce a block in the current session, so that the heartbeat later on will not be necessary. 
+
+  This value will only be used as a fallback if we fail to get a proper session progress estimate from `NextSessionRotation`, as those estimates should be more accurate then the value we calculate for `HeartbeatAfter`. 
  
 ### keys(): `Vec<AuthorityId>`
 - **interface**: `api.query.imOnline.keys`
@@ -412,10 +528,6 @@ ___
 ### concurrentReportsIndex(`Kind, OpaqueTimeSlot`): `Vec<ReportIdOf>`
 - **interface**: `api.query.offences.concurrentReportsIndex`
 - **summary**:   A vector of reports of the same kind that happened at the same time slot. 
- 
-### deferredOffences(): `Vec<DeferredOffenceOf>`
-- **interface**: `api.query.offences.deferredOffences`
-- **summary**:   Deferred reports that have been rejected by the offence handler and need to be submitted at a later time. 
  
 ### reports(`ReportIdOf`): `Option<OffenceDetails>`
 - **interface**: `api.query.offences.reports`
@@ -566,13 +678,15 @@ ___
 - **interface**: `api.query.staking.currentEra`
 - **summary**:   The current era index. 
  
+### currentPlannedSession(): `SessionIndex`
+- **interface**: `api.query.staking.currentPlannedSession`
+- **summary**:   The last planned session scheduled by the session pallet. 
+
+  This is basically in sync with the call to [`SessionManager::new_session`]. 
+ 
 ### earliestUnappliedSlash(): `Option<EraIndex>`
 - **interface**: `api.query.staking.earliestUnappliedSlash`
 - **summary**:   The earliest era for which we have a pending, unapplied slash. 
- 
-### eraElectionStatus(): `ElectionStatus`
-- **interface**: `api.query.staking.eraElectionStatus`
-- **summary**:   Flag to control the execution of the offchain election. When `Open(_)`, we accept solutions to be submitted. 
  
 ### erasStakers(`EraIndex, AccountId`): `Exposure`
 - **interface**: `api.query.staking.erasStakers`
@@ -648,14 +762,6 @@ ___
 - **interface**: `api.query.staking.nominatorSlashInEra`
 - **summary**:   All slashing events on nominators, mapped by era to the highest slash value of the era. 
  
-### queuedElected(): `Option<ElectionResult>`
-- **interface**: `api.query.staking.queuedElected`
-- **summary**:   The next validator set. At the end of an era, if this is available (potentially from the result of an offchain worker), it is immediately used. Otherwise, the on-chain election is executed. 
- 
-### queuedScore(): `Option<ElectionScore>`
-- **interface**: `api.query.staking.queuedScore`
-- **summary**:   The score of the current [`QueuedElected`]. 
- 
 ### slashingSpans(`AccountId`): `Option<SlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
 - **summary**:   Slashing spans for stash accounts. 
@@ -665,14 +771,6 @@ ___
 - **summary**:   The percentage of the slash that is distributed to reporters. 
 
   The rest of the slashed value is handled by the `Slash`. 
- 
-### snapshotNominators(): `Option<Vec<AccountId>>`
-- **interface**: `api.query.staking.snapshotNominators`
-- **summary**:   Snapshot of nominators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
- 
-### snapshotValidators(): `Option<Vec<AccountId>>`
-- **interface**: `api.query.staking.snapshotValidators`
-- **summary**:   Snapshot of validators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
  
 ### spanSlash(`(AccountId,SpanIndex)`): `SpanRecord`
 - **interface**: `api.query.staking.spanSlash`
@@ -789,7 +887,7 @@ ___
 - **interface**: `api.query.system.blockHash`
 - **summary**:   Map of block numbers to block hashes. 
  
-### blockWeight(): `ExtrinsicsWeight`
+### blockWeight(): `ConsumedWeight`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:   The current weight for the block. 
  
@@ -825,10 +923,6 @@ ___
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:   Extrinsics data for the current block (maps an extrinsic's index to its data). 
  
-### extrinsicsRoot(): `Hash`
-- **interface**: `api.query.system.extrinsicsRoot`
-- **summary**:   Extrinsics root of the current block, also part of the block header. 
- 
 ### lastRuntimeUpgrade(): `Option<LastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
 - **summary**:   Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened. 
@@ -840,6 +934,10 @@ ___
 ### parentHash(): `Hash`
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
+ 
+### upgradedToTripleRefCount(): `bool`
+- **interface**: `api.query.system.upgradedToTripleRefCount`
+- **summary**:   True if we have upgraded so that AccountInfo contains three types of `RefCount`. False (default) if not. 
  
 ### upgradedToU32RefCount(): `bool`
 - **interface**: `api.query.system.upgradedToU32RefCount`
@@ -878,22 +976,6 @@ ___
 - **interface**: `api.query.treasury.approvals`
 - **summary**:   Proposal indices that have been approved but not yet awarded. 
  
-### bounties(`BountyIndex`): `Option<Bounty>`
-- **interface**: `api.query.treasury.bounties`
-- **summary**:   Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<BountyIndex>`
-- **interface**: `api.query.treasury.bountyApprovals`
-- **summary**:   Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `BountyIndex`
-- **interface**: `api.query.treasury.bountyCount`
-- **summary**:   Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
-- **interface**: `api.query.treasury.bountyDescriptions`
-- **summary**:   The description of each bounty. 
- 
 ### proposalCount(): `ProposalIndex`
 - **interface**: `api.query.treasury.proposalCount`
 - **summary**:   Number of proposals that have been made. 
@@ -901,14 +983,6 @@ ___
 ### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:   Proposals that have been made. 
- 
-### reasons(`Hash`): `Option<Bytes>`
-- **interface**: `api.query.treasury.reasons`
-- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`Hash`): `Option<OpenTip>`
-- **interface**: `api.query.treasury.tips`
-- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
 
 ___
 

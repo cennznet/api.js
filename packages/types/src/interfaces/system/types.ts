@@ -33,6 +33,9 @@ export interface PhaseTo36 extends Enum {
   readonly isFinalization: boolean;
 }
 
+/** @name Supports */
+export interface Supports extends Struct {}
+
 /** @name WeightTo36 */
 export interface WeightTo36 extends u32 {}
 
