@@ -1,5 +1,4 @@
 import { Api } from '../packages/api/src/Api';
-import Types, { typesBundle } from '../packages/types/src/interfaces/injects';
 import { allExtensions as userExtensions } from '../packages/types/src/interfaces/extrinsic/signedExtensions';
 import { Metadata } from '@polkadot/metadata';
 import { getSpecTypes } from '@polkadot/types-known';
@@ -80,16 +79,15 @@ docker run --network=host -d cennznet/cennznet:latest --dev --ws-external --ws-p
 async function generateMetaCallsForExtensionReleases() {
   const providerAzalea = 'wss://cennznet.unfrastructure.io/public/ws';
   // const providerAzalea = 'ws://localhost:9942';
-  const apiAzalea = await Api.create({provider: providerAzalea, types: Types});
+  const apiAzalea = await Api.create({ provider: providerAzalea });
   const providerNikau = 'wss://nikau.centrality.me/public/ws';
   // const providerNikau = 'ws://localhost:9941';
-  const apiNikau = await Api.create({provider: providerNikau, types: Types});
+  const apiNikau = await Api.create({ provider: providerNikau });
   const providerRata = 'wss://kong2.centrality.me/public/rata/ws';
   // const providerRata = 'ws://localhost:9943';
-  const apiRata = await Api.create({provider: providerRata, types: Types});
+  const apiRata = await Api.create({ provider: providerRata });
   const providerLocal = 'ws://localhost:9944';
-  const apiLocal = await Api.create({provider: providerLocal, types: Types});
-  // await getMetaCalls([apiLocal, apiAzalea, apiNikau, apiRata]);
+  const apiLocal = await Api.create({ provider: providerLocal });
   await getMetaCalls({ [GENESIS_LOCAL]: apiLocal, [GENESIS_AZALEA]: apiAzalea, [GENESIS_NIKAU]: apiNikau, [GENESIS_RATA]: apiRata });
   await getTypeDefinition({ [CHAIN_LOCAL]: apiLocal, [CHAIN_AZALEA]: apiAzalea, [CHAIN_NIKAU]: apiNikau, [CHAIN_RATA]: apiRata });
   process.exit();
