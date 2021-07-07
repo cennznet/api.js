@@ -1,7 +1,7 @@
-import { ExtDef } from './extrinsic';
+import { ExtDef } from './types';
 
 const CheckMortality = {
-  extra: {
+  payload: {
     blockHash: 'Hash',
   },
   extrinsic: {
