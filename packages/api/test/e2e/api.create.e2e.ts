@@ -19,7 +19,7 @@ import { Metadata } from '@polkadot/metadata';
 import {SubmittableResult} from "@polkadot/api";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-import { waitReady } from '@polkadot/wasm-crypto';
+//import { waitReady } from '@polkadot/wasm-crypto';
 import {WsProvider} from "@polkadot/rpc-provider";
 
 describe('e2e api create', () => {
@@ -28,7 +28,7 @@ describe('e2e api create', () => {
 
   beforeAll(async () => {
     await cryptoWaitReady();
-    await waitReady();
+   // await waitReady();
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
