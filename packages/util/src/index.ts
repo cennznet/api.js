@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// export * from '@polkadot/util';
-// export * from '@polkadot/util-crypto';
+export * from '@polkadot/util';
+export * from '@polkadot/util-crypto';
 
 export { default as stripEndZero } from './format/stripEndZero';
 export { default as isSafeInteger } from './is/integer';
