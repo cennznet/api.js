@@ -19,7 +19,6 @@ import { Metadata } from '@polkadot/metadata';
 import {SubmittableResult} from "@polkadot/api";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-//import { waitReady } from '@polkadot/wasm-crypto';
 import { WsProvider } from "@polkadot/rpc-provider";
 
 const keyring = new Keyring({ type: 'sr25519' });

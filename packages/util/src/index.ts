@@ -13,7 +13,28 @@
 // limitations under the License.
 
 export * from '@polkadot/util';
-// export * from '@polkadot/util-crypto';
+// export individual modules from @polkadot/util-crypto
+export * from '@polkadot/util-crypto/address';
+export * from '@polkadot/util-crypto/base32';
+export * from '@polkadot/util-crypto/base58';
+export * from '@polkadot/util-crypto/base64';
+export * from '@polkadot/util-crypto/blake2';
+export * from '@polkadot/util-crypto/crypto';
+export * from '@polkadot/util-crypto/ethereum';
+export * from '@polkadot/util-crypto/hd';
+export * from '@polkadot/util-crypto/hmac';
+export * from '@polkadot/util-crypto/keccak';
+export * from '@polkadot/util-crypto/key';
+export * from '@polkadot/util-crypto/mnemonic';
+export * from '@polkadot/util-crypto/nacl';
+export * from '@polkadot/util-crypto/pbkdf2';
+export * from '@polkadot/util-crypto/random';
+export * from '@polkadot/util-crypto/schnorrkel';
+export * from '@polkadot/util-crypto/scrypt';
+export * from '@polkadot/util-crypto/secp256k1';
+export * from '@polkadot/util-crypto/sha512';
+export * from '@polkadot/util-crypto/signature';
+export * from '@polkadot/util-crypto/xxhash';
 
 export { default as stripEndZero } from './format/stripEndZero';
 export { default as isSafeInteger } from './is/integer';
