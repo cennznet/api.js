@@ -11,10 +11,6 @@ jobs:
     # release to github only when its a prerelease branch and auto merge label is triggered
     runs-on: ubuntu-latest
     steps:
-    # checkout merged branch
-    - uses: actions/checkout@v2
-      with:
-        ref: master
     - uses: actions/setup-node@v1
       with:
         node-version: '15.3'
