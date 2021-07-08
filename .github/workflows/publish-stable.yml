@@ -1,19 +1,14 @@
 name: Release Pipeline (master/1.0)
 
 on:
-  pull_request:
+  push:
     branches:
       # stable/1.0
-      - master
-      - release/*
       - prerelease/*
-    types:
-      - labeled
 
 jobs:
   release-to-github:
     # release to github only when its a prerelease branch and auto merge label is triggered
-    if: ${{ github.event.label.name == 'automerge' }}
     runs-on: ubuntu-latest
     steps:
     # checkout merged branch
