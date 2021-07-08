@@ -5,6 +5,7 @@ on:
     branches:
       # stable/1.0
       - master
+      - release/*
     types:
       - labeled
     check_suite:
