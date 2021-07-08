@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "additional types for CENNZnet api",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@polkadot/api": "2.7.1",
-        "@polkadot/typegen": "2.7.1",
-        "@polkadot/rpc-provider": "2.7.1"
+        "@polkadot/rpc-provider": "2.7.1",
+        "@polkadot/typegen": "2.7.1"
     }
 }
