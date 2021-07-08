@@ -13,7 +13,7 @@ on:
 jobs:
   release-to-github:
     # release to github only when its a prerelease branch and auto merge label is triggered
-    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    if: ${{ github.event.label.name == 'automerge' }}
     runs-on: ubuntu-latest
     steps:
     # checkout merged branch
