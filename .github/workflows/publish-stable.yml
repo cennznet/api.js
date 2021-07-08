@@ -6,6 +6,7 @@ on:
       # stable/1.0
       - master
       - release/*
+      - prerelease/*
     types:
       - labeled
 
