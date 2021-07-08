@@ -85,6 +85,17 @@ describe('e2e transactions', () => {
         });
     });
 
+    it('decodes sudo as', async done => {
+      await api.tx.sudo.sudoAs(bob.address, api.tx.system.remark("hello world"))
+        .signAndSend(alice, async ({ events, status }: SubmittableResult) => {
+          if (status.isInBlock) {
+            expect(events[0].event.method).toEqual('SudoAs');
+            expect(events[0].event.section).toEqual('sudo');
+            done();
+          }
+        });
+    });
+
   });
 
   describe('Extrinsic payment options', () => {

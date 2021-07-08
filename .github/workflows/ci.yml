@@ -9,6 +9,8 @@ on:
     - master
   push:
     branches:
+    - prerelease/*
+    - release/*
     - develop
     - master
 
