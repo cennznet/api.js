@@ -14,6 +14,7 @@
     "docs:meta": "yarn run docs:derive && cp -rf deriveDocs/interfaces docs && node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --plugin typedoc-plugin-markdown --options typedoc.config.js .",
     "docs:derive": "npx typedoc packages/api/src/derives/ --out deriveDocs  --exclude  '**/*+(index|.e2e|balances).ts'",
+    "meta:extension": "node ./scripts/generateMetaCallsForExtension",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
     "meta:update": "node ./scripts/updateStaticMetadata packages/api/src packages/types && pushd packages/types && yarn build && popd && yarn docs:meta",
     "lint": "eslint . --ext .ts",

@@ -64,6 +64,51 @@ export const typesBundle: OverrideBundleType = {
       ],
     },
   },
+  // chain: {
+  //   "CENNZnet Azalea": {
+  //     types: [
+  //       {
+  //         minmax: [37, undefined],
+  //         types: {
+  //           "Food": {
+  //             "x": "i8",
+  //             "y": "i8"
+  //           }
+  //         }
+  //       }
+  //     ],
+  //   },
+  //   "CENNZnet Nikau": {
+  //     types: [
+  //       {
+  //         minmax: [37, undefined],
+  //         types: {
+  //           "Direction": {
+  //             "_enum": [
+  //               "Up",
+  //               "Left",
+  //               "Down",
+  //               "Right"
+  //             ]
+  //           },
+  //         }
+  //       }
+  //     ],
+  //   },
+  //   "CENNZnet Rata": {
+  //     types: [
+  //       {
+  //         minmax: [37, undefined],
+  //         types: {
+  //           "WindowSize": {
+  //             "window_width": "i8",
+  //             "window_height": "i8"
+  //           }
+  //         }
+  //       }
+  //     ],
+  //   },
+  // }
 };
 // Unwind the nested type definitions into a flat map
 export default Object.values(_types).reduce((res, { types }): object => ({ ...res, ...types }), {});

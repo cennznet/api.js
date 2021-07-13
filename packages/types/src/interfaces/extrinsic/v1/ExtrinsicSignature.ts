@@ -50,7 +50,7 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
       {
         signer: 'Address',
         signature: 'MultiSignature',
-        ...expandExtensionTypes(defaultExtensions as string[], 'types'),
+        ...expandExtensionTypes(defaultExtensions as string[], 'extrinsic'),
       },
       CENNZnetExtrinsicSignatureV1.decodeExtrinsicSignature(value, isSigned)
     );
