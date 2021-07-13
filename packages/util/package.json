@@ -18,11 +18,11 @@
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "dependencies": {
-        "@polkadot/util": "^3.5.1",
-        "@polkadot/util-crypto": "^3.5.1"
+        "@polkadot/util": "5.9.2",
+        "@polkadot/util-crypto": "5.9.2"
     },
     "devDependencies": {
         "@polkadot/keyring": "^3.5.1",
-        "@polkadot/types": "^2.3.1"
+        "@polkadot/types": "3.7.1"
     }
 }
