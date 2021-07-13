@@ -8,6 +8,12 @@ import { WsProvider } from '@polkadot/rpc-provider';
 
 // All the CENNZnet specific runtime modules supported in version 1.4.1 + essential module from substrate (system, timestamp)
 export const essential = ['system', 'timestamp', 'transactionpayment', 'genericasset', 'cennzx', 'nft'];
+
+// Check if provider is WsProvider
+function isWsProvider(providerInterface: ProviderInterface): providerInterface is WsProvider {
+  return (providerInterface as WsProvider).isReady !== undefined;
+}
+
 // This function is used to create a slim version of the metadata based on the modules passed and the essential modules required
 export async function getMetadata(
   provider: string | ProviderInterface,
@@ -20,6 +26,9 @@ export async function getMetadata(
     providerInterface = getProvider(provider);
   } else {
     providerInterface = provider || new WsProvider();
+  }
+  if (isWsProvider(providerInterface)) {
+    await providerInterface.isReady;
   }
   const registry = new TypeRegistry();
   // '1' is the instance id here

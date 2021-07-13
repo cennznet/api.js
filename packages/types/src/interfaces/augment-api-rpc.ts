@@ -4,6 +4,7 @@
 import type { Metadata } from '@polkadot/metadata';
 import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
+import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
 import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
@@ -78,19 +79,19 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Retrieves the spot exchange buy price
        **/
-      buyPrice: AugmentedRpc<(AssetToBuy: AssetId | AnyNumber | Uint8Array, Amount: Balance | AnyNumber | Uint8Array, AssetToPay: AssetId | AnyNumber | Uint8Array) => Observable<u64>>;
+      buyPrice: AugmentedRpc<(AssetToBuy: AssetId | AnyNumber | Uint8Array, Amount: Balance | AnyNumber | Uint8Array, AssetToPay: AssetId | AnyNumber | Uint8Array) => Observable<PriceResponse>>;
       /**
        * Get the price of liquidity for the given asset ID
        **/
-      liquidityPrice: AugmentedRpc<(AssetId: AssetId | AnyNumber | Uint8Array, liquidityToBuy: Balance | AnyNumber | Uint8Array) => Observable<ITuple<[u64, u64]>>>;
+      liquidityPrice: AugmentedRpc<(AssetId: AssetId | AnyNumber | Uint8Array, liquidityToBuy: Balance | AnyNumber | Uint8Array) => Observable<LiquidityPriceResponse>>;
       /**
        * Get the value of an account's liquidity for the given asset
        **/
-      liquidityValue: AugmentedRpc<(AccountId: Address | string | Uint8Array, AssetId: AssetId | AnyNumber | Uint8Array) => Observable<ITuple<[u64, u64, u64]>>>;
+      liquidityValue: AugmentedRpc<(AccountId: Address | string | Uint8Array, AssetId: AssetId | AnyNumber | Uint8Array) => Observable<LiquidityValueResponse>>;
       /**
        * Retrieves the spot exchange sell price
        **/
-      sellPrice: AugmentedRpc<(AssetToSell: AssetId | AnyNumber | Uint8Array, Amount: Balance | AnyNumber | Uint8Array, AssetToPayout: AssetId | AnyNumber | Uint8Array) => Observable<u64>>;
+      sellPrice: AugmentedRpc<(AssetToSell: AssetId | AnyNumber | Uint8Array, Amount: Balance | AnyNumber | Uint8Array, AssetToPayout: AssetId | AnyNumber | Uint8Array) => Observable<PriceResponse>>;
     };
     chain: {
       /**
