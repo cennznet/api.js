@@ -106,7 +106,7 @@ describe('e2e transactions', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
       const option = {initialIssuance , permissions};
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'TEST', decimalPlaces: 4});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'TEST', decimalPlaces: 4, existentialDeposit: 5});
       let createAssetTx = api.tx.genericAsset.create(assetOwner.address, assetOption, assetInfo);
 
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
@@ -178,7 +178,7 @@ describe('e2e transactions', () => {
 
     it('Update asset info', async done => {
       const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'NEW_ASSET_ID', decimalPlaces: 5});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'NEW_ASSET_ID', decimalPlaces: 5, existentialDeposit: 5});
       await api.tx.genericAsset.updateAssetInfo( feeAssetId, assetInfo).signAndSend(assetOwner, { nonce }, async ({ events, status }) => {
         if (status.isInBlock) {
           for (const { event: { method, section, data } } of events) {

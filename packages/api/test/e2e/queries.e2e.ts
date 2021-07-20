@@ -90,7 +90,7 @@ describe('e2e queries', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
       const option = {initialIssuance : 0, permissions};
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3, existentialDeposit: 5});
       await api.tx.sudo
         .sudo(api.tx.genericAsset
           .create(alice.address,

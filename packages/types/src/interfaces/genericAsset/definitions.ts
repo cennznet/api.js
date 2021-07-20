@@ -14,6 +14,7 @@ export default {
     AssetInfo: {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
+      existentialDeposit: 'u64'
     },
     Owner: {
       _enum: {
