@@ -11,6 +11,12 @@ export interface AssetInfo extends Struct {
   readonly existentialDeposit: u64;
 }
 
+/** @name AssetInfoV40 */
+export interface AssetInfoV40 extends Struct {
+  readonly symbol: Bytes;
+  readonly decimalPlaces: u8;
+}
+
 /** @name AssetOptions */
 export interface AssetOptions extends Struct {
   readonly initialIssuance: Compact<Balance>;
