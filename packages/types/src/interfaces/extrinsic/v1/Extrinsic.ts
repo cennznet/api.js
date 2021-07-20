@@ -4,7 +4,7 @@ import { AnyU8a, ExtrinsicPayloadValue, IKeyringPair, Registry } from '@polkadot
 import { Address, Call } from '@polkadot/types/interfaces/runtime';
 import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
-import { PaymentOptions } from '@cennznet/api/derives/types';
+import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
 import { Constructor } from '@polkadot/util/types';
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
@@ -59,7 +59,7 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     const _maxPaymentConstructor: Constructor<UInt> = UInt.with(128)
     const _maxPayment: string = new _maxPaymentConstructor(this.registry).toString()
     const getEstimatedFee = async () => {
-      const estimatedFee = await api.derive.fees.estimateFee({ extrinsic : this , userFeeAssetId: feeAssetId, maxPayment: _maxPayment })
+      const estimatedFee = await api.derive.fees.estimateFee({ extrinsic : this , userFeeAssetId: feeAssetId, maxPayment: _maxPayment } as unknown as EstimateFeeParams)
       return estimatedFee;
     }
     getEstimatedFee()

@@ -422,7 +422,6 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       accruedPayout: AugmentedRpc<(undefined: AccountId | string | Uint8Array) => Observable<u64>>;
     };
-    // @ts-ignore
     state: {
       /**
        * Perform a call to a builtin on the chain

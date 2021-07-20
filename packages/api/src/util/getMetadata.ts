@@ -1,6 +1,7 @@
 import { getProvider } from '@cennznet/api/util/getProvider';
 import { TypeRegistry } from '@polkadot/types/create';
 import { RpcCore } from '@polkadot/rpc-core';
+import type { RpcInterface } from '@polkadot/rpc-core/types.jsonrpc';
 import { MetadataVersioned } from '@polkadot/metadata/MetadataVersioned';
 import { Metadata } from '@polkadot/metadata';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
@@ -32,7 +33,7 @@ export async function getMetadata(
   }
   const registry = new TypeRegistry();
   // '1' is the instance id here
-  const rpcCore = new RpcCore('1', registry, providerInterface);
+  const rpcCore: RpcCore & RpcInterface = new RpcCore('1', registry, providerInterface) as RpcCore & RpcInterface;
   const meta: Metadata = await rpcCore.state.getMetadata().toPromise();
   const magicNumber = meta.magicNumber;
   const modules = meta.asLatest.modules.toArray();
