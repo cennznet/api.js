@@ -59,7 +59,11 @@ describe('Cennzx Operations', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'A', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'A',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAssetTx1 = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
       nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
@@ -105,7 +109,11 @@ describe('Cennzx Operations', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'B', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'B',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAssetTx2 = api.tx.genericAsset.create(bob.address, assetOption, assetInfo);
       // when the new asset is created it will have this ID.
       assetB = await api.query.genericAsset.nextAssetId();
@@ -504,7 +512,11 @@ describe('Cennzx Operations', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'cUSD', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'cUSD',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAsset = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
       nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
