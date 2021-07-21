@@ -42,7 +42,8 @@ describe('e2e api create', () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     let targetVersion = api.runtimeVersion.specVersion;
-    const metaKey = `${api.genesisHash.toHex()}-${targetVersion}`
+    const metaKey = `${api.genesisHash.toHex()}-${targetVersion}`;
+    console.log('metaKey::', metaKey);
     let matchingVersions = Object.keys(staticMetadata).filter(v => v.includes(metaKey));
     // only one metadata per protocol version
     expect(matchingVersions.length).toEqual(1);
