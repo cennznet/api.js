@@ -78,7 +78,7 @@ describe('Cennzx Operations', () => {
       // AddLiquidity for the 'A' asset
       assetCreated.then(async () => {
         const assetBalance = await api.query.genericAsset.freeBalance(assetA, alice.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(2);
+        const investmentAmount = new BN(assetBalance.toString()).divn(10_000);
         const coreAmount = investmentAmount; // Initial investment - core amount same as invested amount
         const minLiquidity = 1;
         await api.tx.cennzx
@@ -126,7 +126,7 @@ describe('Cennzx Operations', () => {
       // AddLiquidity for the 'B' asset
       assetCreated.then(async () => {
         const assetBalance = await api.query.genericAsset.freeBalance(assetB, bob.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(2);
+        const investmentAmount = new BN(assetBalance.toString()).divn(10_000);
         const coreAmount = investmentAmount;
         const minLiquidity = 1;
         await api.tx.cennzx
