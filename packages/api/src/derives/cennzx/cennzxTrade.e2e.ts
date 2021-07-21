@@ -26,7 +26,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../../jest/initApiPromise';
 
 const keyring = new Keyring({ type: 'sr25519' });
-describe.skip('Cennzx Operations', () => {
+describe('Cennzx Operations', () => {
   let api;
   let alice, bob, charlie, sudoKeypair, nonce;
   let coreAssetId, assetA, assetB, cUSDAsset;
@@ -62,7 +62,7 @@ describe.skip('Cennzx Operations', () => {
       const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
         symbol: 'A',
         decimalPlaces: 18,
-        existentialDeposit: 5,
+        // existentialDeposit: 5,
       });
       const createAssetTx1 = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
@@ -111,7 +111,7 @@ describe.skip('Cennzx Operations', () => {
       const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
         symbol: 'B',
         decimalPlaces: 18,
-        existentialDeposit: 5,
+        // existentialDeposit: 5,
       });
       const createAssetTx2 = api.tx.genericAsset.create(bob.address, assetOption, assetInfo);
       // when the new asset is created it will have this ID.
@@ -513,7 +513,7 @@ describe.skip('Cennzx Operations', () => {
       const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
         symbol: 'cUSD',
         decimalPlaces: 18,
-        existentialDeposit: 5,
+        // existentialDeposit: 5,
       });
       const createAsset = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
