@@ -49,7 +49,8 @@ export const typesBundle: OverrideBundleType = {
             // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
-            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0
+            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
+            AssetInfo: 'AssetInfoV40'
           },
         },
         {
