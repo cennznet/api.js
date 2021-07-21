@@ -50,7 +50,6 @@ export const typesBundle: OverrideBundleType = {
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
-            AssetInfo: 'AssetInfoV40'
           },
         },
         {
