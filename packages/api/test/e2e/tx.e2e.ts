@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions } from "@cennznet/types";
+import { AssetInfo, AssetOptions, LiquidityPriceResponse } from "@cennznet/types";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -128,12 +128,11 @@ describe('e2e transactions', () => {
 
       // 3) Mint liquidity for fee asset <> CPAY.
       assetCreated.then(async () => {
-        const desiredLiquidity = 30_000_000_000_000;
+        const desiredLiquidity = 30_000_000;
         const minimumLiquidity = 1;
-        const [coreInvestment, feeInvestment] = await (api.rpc.cennzx.liquidityPrice(feeAssetId, desiredLiquidity));
-
+        const liquidityPrice: LiquidityPriceResponse = await (api.rpc.cennzx.liquidityPrice(feeAssetId, desiredLiquidity));
         await api.tx.cennzx
-          .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
+          .addLiquidity(feeAssetId, minimumLiquidity, liquidityPrice.asset, liquidityPrice.core)
           .signAndSend(assetOwner, ({ events, status }) => status.isInBlock ? done() :null );
 
       });
