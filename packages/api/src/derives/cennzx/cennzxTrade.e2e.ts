@@ -26,7 +26,7 @@ import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../../jest/initApiPromise';
 
 const keyring = new Keyring({ type: 'sr25519' });
-describe('Cennzx Operations', () => {
+describe.skip('Cennzx Operations', () => {
   let api;
   let alice, bob, charlie, sudoKeypair, nonce;
   let coreAssetId, assetA, assetB, cUSDAsset;
