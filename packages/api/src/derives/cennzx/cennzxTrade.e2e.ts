@@ -77,8 +77,7 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'A' asset
       assetCreated.then(async () => {
-        const assetBalance = await api.query.genericAsset.freeBalance(assetA, alice.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(10_000);
+        const investmentAmount = 100_000;
         const coreAmount = investmentAmount; // Initial investment - core amount same as invested amount
         const minLiquidity = 1;
         await api.tx.cennzx
@@ -125,8 +124,7 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'B' asset
       assetCreated.then(async () => {
-        const assetBalance = await api.query.genericAsset.freeBalance(assetB, bob.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(10_000);
+        const investmentAmount = 100_000;
         const coreAmount = investmentAmount;
         const minLiquidity = 1;
         await api.tx.cennzx
@@ -507,7 +505,7 @@ describe('Cennzx Operations', () => {
     it("Add liquidity for 'cUSD' to the pool", async (done) => {
       // Create a new Asset 'cUSD' and add liquidity to it
       // Amount of test asset - 'cUSD' to create
-      const initialIssuance = new BN('9000000000000000000000');
+      const initialIssuance = new BN('17446744073709551615');
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
@@ -530,7 +528,9 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'cUSD' asset
       assetCreated.then(async () => {
+        const assetBalance = await api.query.genericAsset.freeBalance(cUSDAsset, alice.address);
         const investmentAmount = new BN('9000000000000000000');
+        expect(assetBalance.toBn().gt(investmentAmount)).toBeTruthy();
         const coreAmount = new BN('90000'); // Initial core investment for this pool
         const minLiquidity = 1;
         await api.tx.cennzx
