@@ -12,6 +12,31 @@ on:
       - completed
 
 jobs:
+  generate-metadata-for-extension:
+    # Generate metadata for extension before automerging the current branch to master
+    # only run if prechecks pass and the source branch is named 'prerelease/*'
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: generate meta for extension
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: install dependencies
+      run: yarn
+    - name: start latest test node
+      run: |
+        docker run --pull=always --network=host -d cennznet/cennznet:1.5.1-nikau --dev --tmp --ws-external --rpc-external --no-mdns
+    - name: yarn meta:extension
+      run: yarn meta:extension
+    - name: commit changes
+      run: |
+        git config --global user.name ${{ secrets.GIT_AUTHOR_NAME }}
+        git add .
+        git commit -m "Add extension data"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   merge-release-branch:
     # only run if prechecks pass and the source branch is named 'prerelease/*'
     if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
