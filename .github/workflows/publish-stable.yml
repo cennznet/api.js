@@ -1,0 +1,90 @@
+name: Release Pipeline (master/1.0)
+
+on:
+  pull_request:
+    branches:
+      # stable/1.0
+      - master
+    types:
+      - labeled
+    check_suite:
+      types:
+      - completed
+
+jobs:
+  generate-metadata-for-extension:
+    # Generate metadata for extension before automerging the current branch to master
+    # only run if prechecks pass and the source branch is named 'prerelease/*'
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: generate meta for extension
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: install dependencies
+      run: yarn
+    - name: start latest test node
+      run: |
+        docker run --pull=always --network=host -d cennznet/cennznet:1.5.1-nikau --dev --tmp --ws-external --rpc-external --no-mdns
+    - name: yarn meta:extension
+      run: yarn meta:extension
+    - name: commit changes
+      run: |
+        git config --global user.name ${{ secrets.GIT_AUTHOR_NAME }}
+        git add .
+        git commit -m "Add extension data"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  merge-release-branch:
+    # only run if prechecks pass and the source branch is named 'prerelease/*'
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Automerge
+      uses: "pascalgn/automerge-action@v0.12.0"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MERGE_LABELS: automerge
+        MERGE_METHOD: squash
+  release-to-github:
+    needs:
+    - merge-release-branch
+    # release to github only when its a prerelease branch and auto merge label is triggered
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    runs-on: ubuntu-latest
+    steps:
+    # checkout merged branch
+    - uses: actions/checkout@v2
+      with:
+        ref: master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '15.3'
+    - name: find release version
+      id: find_version
+      run: |
+        echo ::set-output name=tag_name::$(cat packages/api/package.json \
+        | grep version \
+        | head -1 \
+        | grep -E -o '[0-9|.]+\-*[a-z]*\.[0-9]+|]+')
+    - name: make release branch
+      uses: peterjgrainger/action-create-branch@v2.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        branch: "release/${{steps.find_version.outputs.tag_name}}"
+    - name: package
+      run: |
+        yarn && yarn build
+        npx lerna exec -- 'cp package.json build/'
+        npx lerna exec -- 'cp README.md build/'
+        npx lerna exec -- 'cp ../../LICENSE build/'
+    - name: publish to npm
+      env:
+        NPM_KEY: ${{ secrets.NPM_KEY }}
+      run: |
+        echo "//registry.npmjs.org/:_authToken=${NPM_KEY}" > ~/.npmrc
+        echo 'Publishing to npmjs.org.'
+        npx lerna exec -- 'cd build && npm publish --access public'
