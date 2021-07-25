@@ -9,7 +9,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
     - Script for module specific markdown
     - Api creation with option to connection via network name
     - Doc generation for derive functions
-    - usCennznet hook to connect to chain and extension and return all accounts
+    - useCennznet hook to connect to chain and extension and return all accounts
     - Generated extension release data
 ### Changed    
     - Update polkadot dependencies to 3.7.1.
