@@ -50,6 +50,7 @@ jobs:
           - staking
           - rpc.decodeResponse
           - send
+          - getMetadata
     steps:
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
@@ -73,7 +74,7 @@ jobs:
         docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
     - name: start latest test node
       run: |
-        docker run --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:1.5.1-nikau --dev --tmp --ws-external --rpc-external --no-mdns
     - name: test
       env:
         TEST_TYPE: integration
@@ -91,7 +92,7 @@ jobs:
         node-version: '15.3'
     - name: start latest test node
       run: |
-        docker run --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns
     - name: run subscriber script at polkadot/rpc-provider version (2.7.1)
       working-directory: ./test
       run: |

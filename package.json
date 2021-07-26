@@ -13,12 +13,15 @@
     "build": "tsc --outDir build",
     "build:release": "node ./scripts/polkadot-dev-build-ts.cjs",
     "clean": "rm -rf build && npx lerna exec -- rm -rf build",
-    "docs:meta": "node ./scripts/metadataMdWrapper.js",
+    "docs:meta": "yarn run docs:derive && cp -rf deriveDocs/interfaces docs && node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --out api_docs --exclude '**/*+(index|.spec|.e2e).ts' packages/api/src",
+    "docs:derive": "npx typedoc packages/api/src/derives/ --out deriveDocs  --exclude  '**/*+(index|.e2e|balances).ts'",
+    "meta:extension": "node ./scripts/generateMetaCallsForExtension",
     "meta:slim": "node ./scripts/generateSlimMetadataWrapper",
     "meta:update": "node ./scripts/updateStaticMetadata packages/api/src packages/types && pushd packages/types && yarn build && popd && yarn docs:meta",
     "lint": "eslint . --ext .ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
+    "test:hooks": "jest -c ./jest/hook.config.js --bail --detectOpenHandles --forceExit --runInBand",
     "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
   },
   "devDependencies": {
@@ -38,7 +41,7 @@
     "ts-jest": "^26.4.1",
     "ts-node": "^8.0.3",
     "tsconfig-paths": "^3.8.0",
-    "typedoc": "^0.20.0",
+    "typedoc": "0.21.0",
     "typescript": "^4.0.3"
   },
   "resolutions": {
@@ -53,5 +56,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged --pattern 'packages/api/src/**/*' && npx eslint . --ext .ts"
     }
+  },
+  "dependencies": {
+    "typedoc-plugin-markdown": "^3.10.0"
   }
 }

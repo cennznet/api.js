@@ -27,11 +27,35 @@ export interface ApiOptions extends Pick<ApiOptionsBase, Exclude<keyof ApiOption
    */
   provider?: ProviderInterface | string;
   /**
+   * network is all network names available on cennznet
+   * and should be used if provider not provided
+   */
+  network?: CENNZNetNetwork;
+  /**
    * timeout for Api.create
    * default 10000 ms, 0 indicates no limit
    */
   timeout?: number;
+  /**
+   * fullMeta
+   * default true, when set to false,
+   * it will use slim metadata (smaller size)
+   * to connect to node
+   */
+  fullMeta?: boolean;
+  /**
+   * modules is an
+   * array of runtime modules
+   * used by an application
+   * to connect to node
+   * by default
+   * ['system', 'timestamp', 'transactionpayment', 'genericasset', 'cennzx', 'nft']
+   * will always be available
+   */
+  modules?: string[];
 }
 
 export type Derives<ApiType extends ApiTypes> = ReturnType<Decorate<ApiType>['_decorateDerive']> &
   DecoratedCennznetDerive<ApiType>;
+
+export type CENNZNetNetwork = 'azalea' | 'nikau' | 'rata' | 'local';

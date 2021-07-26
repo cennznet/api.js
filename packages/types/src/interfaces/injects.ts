@@ -20,7 +20,8 @@ import {
   CENNZnetExtrinsicSignatureV0,
   SignerPayload,
   CENNZnetExtrinsicPayloadV1,
-  CENNZnetExtrinsicPayloadV0
+  CENNZnetExtrinsicPayloadV0,
+  CENNZnetExtrinsic
 } from './extrinsic';
 import * as definitions from './definitions';
 import { EnhancedTokenId } from './nft/enhanced-token-id';
@@ -48,18 +49,21 @@ export const typesBundle: OverrideBundleType = {
             // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
-            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0
+            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
           },
         },
         {
           minmax: [37, undefined],
           types: {
+            GenericExtrinsic: CENNZnetExtrinsic,
             // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
             MessageId: 'SyloMessageId',
-            EnhancedTokenId: EnhancedTokenId
+            EnhancedTokenId,
+            // CENNZnet lookup source is 1:1 with address
+            LookupSource: 'Address',
           },
         },
       ],

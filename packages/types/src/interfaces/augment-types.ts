@@ -3,8 +3,8 @@
 
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
-import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfo, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
+import type { AssetInfo, AssetInfoV40, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
@@ -191,6 +191,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<AssetDetails>': Option<AssetDetails>;
     'Option<AssetId>': Option<AssetId>;
     'Option<AssetInfo>': Option<AssetInfo>;
+    'Option<AssetInfoV40>': Option<AssetInfoV40>;
     'Option<AssetInstance>': Option<AssetInstance>;
     'Option<AssetMetadata>': Option<AssetMetadata>;
     'Option<AssetOptions>': Option<AssetOptions>;
@@ -529,6 +530,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<LeasePeriodOf>': Option<LeasePeriodOf>;
     'Option<Limits>': Option<Limits>;
     'Option<LimitsTo264>': Option<LimitsTo264>;
+    'Option<LiquidityPriceResponse>': Option<LiquidityPriceResponse>;
+    'Option<LiquidityValueResponse>': Option<LiquidityValueResponse>;
     'Option<Listing>': Option<Listing>;
     'Option<ListingId>': Option<ListingId>;
     'Option<LocalValidationData>': Option<LocalValidationData>;
@@ -661,6 +664,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<PreKeyBundle>': Option<PreKeyBundle>;
     'Option<PreKeyBundlesResponse>': Option<PreKeyBundlesResponse>;
     'Option<PreRuntime>': Option<PreRuntime>;
+    'Option<PriceResponse>': Option<PriceResponse>;
     'Option<Priority>': Option<Priority>;
     'Option<PriorLock>': Option<PriorLock>;
     'Option<PropIndex>': Option<PropIndex>;
@@ -958,6 +962,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<AssetDetails>': Vec<AssetDetails>;
     'Vec<AssetId>': Vec<AssetId>;
     'Vec<AssetInfo>': Vec<AssetInfo>;
+    'Vec<AssetInfoV40>': Vec<AssetInfoV40>;
     'Vec<AssetInstance>': Vec<AssetInstance>;
     'Vec<AssetMetadata>': Vec<AssetMetadata>;
     'Vec<AssetOptions>': Vec<AssetOptions>;
@@ -1296,6 +1301,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<LeasePeriodOf>': Vec<LeasePeriodOf>;
     'Vec<Limits>': Vec<Limits>;
     'Vec<LimitsTo264>': Vec<LimitsTo264>;
+    'Vec<LiquidityPriceResponse>': Vec<LiquidityPriceResponse>;
+    'Vec<LiquidityValueResponse>': Vec<LiquidityValueResponse>;
     'Vec<Listing>': Vec<Listing>;
     'Vec<ListingId>': Vec<ListingId>;
     'Vec<LocalValidationData>': Vec<LocalValidationData>;
@@ -1428,6 +1435,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<PreKeyBundle>': Vec<PreKeyBundle>;
     'Vec<PreKeyBundlesResponse>': Vec<PreKeyBundlesResponse>;
     'Vec<PreRuntime>': Vec<PreRuntime>;
+    'Vec<PriceResponse>': Vec<PriceResponse>;
     'Vec<Priority>': Vec<Priority>;
     'Vec<PriorLock>': Vec<PriorLock>;
     'Vec<PropIndex>': Vec<PropIndex>;
@@ -1725,6 +1733,7 @@ declare module '@polkadot/types/types/registry' {
     AssetDetails: AssetDetails;
     AssetId: AssetId;
     AssetInfo: AssetInfo;
+    AssetInfoV40: AssetInfoV40;
     AssetInstance: AssetInstance;
     AssetMetadata: AssetMetadata;
     AssetOptions: AssetOptions;
@@ -2063,6 +2072,8 @@ declare module '@polkadot/types/types/registry' {
     LeasePeriodOf: LeasePeriodOf;
     Limits: Limits;
     LimitsTo264: LimitsTo264;
+    LiquidityPriceResponse: LiquidityPriceResponse;
+    LiquidityValueResponse: LiquidityValueResponse;
     Listing: Listing;
     ListingId: ListingId;
     LocalValidationData: LocalValidationData;
@@ -2195,6 +2206,7 @@ declare module '@polkadot/types/types/registry' {
     PreKeyBundle: PreKeyBundle;
     PreKeyBundlesResponse: PreKeyBundlesResponse;
     PreRuntime: PreRuntime;
+    PriceResponse: PriceResponse;
     Priority: Priority;
     PriorLock: PriorLock;
     PropIndex: PropIndex;

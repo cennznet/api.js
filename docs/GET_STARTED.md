@@ -25,7 +25,7 @@ So what you need to have for this call is the websocket address of your node.
 The cennznet's main network is residing at `wss://cennznet.unfrastructure.io/public/ws`. 
 If you use this address to connect to our main network which is called Azalea, you automatically get connected to one of the cennznet's validator/full nodes. 
 However you may want to run your own local node and connect to that for testing. To do so you can checkout the docker-compose script that we have provided in this project and also mentioned it later in this document. 
-Alternatively you can have a look at [Running a full cennznet node](https://github.com/cennznet/cennznet/wiki/Running-a-Full-Node). 
+Alternatively you can have a look at [Running a full cennznet node](https://wiki.cennz.net/#/Network-participating/Node-operating/Running-a-Full-Node).  
 In the case that you are connecting to Azalea, your connect snippet would look like:
 ```js
 const provider = 'wss://cennznet.unfrastructure.io/public/ws';

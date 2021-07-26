@@ -15,7 +15,7 @@
 import { EstimateFeeParams } from '@cennznet/api/derives/types';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { drr } from '@polkadot/rpc-core/util';
-import { RuntimeDispatchInfo, SignatureOptions, AssetId, Balance } from '@cennznet/types';
+import { RuntimeDispatchInfo, SignatureOptions, AssetId, Balance, PriceResponse } from '@cennznet/types';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';
@@ -36,7 +36,10 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 //    const maxPayment = 'xxx' // Max amount user is ok to pay in 'fee asset'
 //    const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId, maxPayment}) // this will only be successful if their is enough liquidity of users asset in exchange pool
 
-export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
+export function estimateFee(
+  instanceId: string,
+  api: ApiInterfaceRx
+): ({ extrinsic, userFeeAssetId, maxPayment }: EstimateFeeParams) => Observable<Balance | Error> {
   // We generate fake signature data here to ensure the estimated fee will correctly match the fee paid when the extrinsic is signed by a user.
   // This is because fees are currently based on the byte length of the extrinsic
   return ({ extrinsic, userFeeAssetId, maxPayment }: EstimateFeeParams): Observable<Balance | Error> => {
@@ -65,14 +68,18 @@ export function estimateFee(instanceId: string, api: ApiInterfaceRx) {
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }
       ),
-      switchMap(([paymentInfo, networkFeeAssetId]) => {
-        const feeInBaseCurrency = paymentInfo.partialFee;
-        if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
-          return of(feeInBaseCurrency);
-        } else {
-          return api.rpc.cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId);
+      switchMap(
+        ([paymentInfo, networkFeeAssetId]): Observable<BN> => {
+          const feeInBaseCurrency = paymentInfo.partialFee;
+          if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
+            return of(feeInBaseCurrency);
+          } else {
+            return (api.rpc as any).cennzx
+              .buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId)
+              .pipe(switchMap((priceRes: PriceResponse): Observable<Balance> => of(priceRes.price)));
+          }
         }
-      }),
+      ),
       map((price: BN) => price),
       catchError((err: Error) => of(err)),
       map((err: Error) => err),

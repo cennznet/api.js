@@ -19,12 +19,13 @@ import { timeout } from 'rxjs/operators';
 
 import * as definitions from '@cennznet/types/interfaces/definitions';
 import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
+import { getMetadata } from '@cennznet/api/util/getMetadata';
 
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
 import { mergeDeriveOptions } from './util/derives';
-import { getProvider } from './util/getProvider';
+import { getCENNZNetProvider, getProvider } from './util/getProvider';
 import { getTimeout } from './util/getTimeout';
 
 export class ApiRx extends ApiRxBase {
@@ -62,8 +63,17 @@ export class ApiRx extends ApiRxBase {
 
   constructor(_options: ApiOptions = {}) {
     const options = { ..._options };
-    if (typeof options.provider === 'string') {
+    if (options.network) {
+      options.provider = getCENNZNetProvider(options.network);
+    } else if (typeof options.provider === 'string') {
       options.provider = getProvider(options.provider);
+    }
+    if (options.fullMeta === false) {
+      // Don't use fullMetadata
+      getMetadata(options.provider).then((metadata) => (options.metadata = metadata));
+    } else if (options.modules !== undefined) {
+      // Use custom metadata for modules
+      getMetadata(options.provider, options.modules).then((metadata) => (options.metadata = metadata));
     }
     const rpc = {};
     const sectionsList = Object.keys(definitions);

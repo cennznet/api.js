@@ -11,9 +11,16 @@ export default {
       initialIssuance: 'Compact<Balance>',
       permissions: 'PermissionLatest',
     },
+    // Asset info used till runtime version 40
+    AssetInfoV40: {
+      symbol: 'Vec<u8>',
+      decimalPlaces: 'u8',
+    },
     AssetInfo: {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
+      // Uncomment once new docker image is ready
+      // existentialDeposit: 'u64'
     },
     Owner: {
       _enum: {

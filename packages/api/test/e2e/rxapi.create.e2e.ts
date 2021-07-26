@@ -14,6 +14,8 @@
 
 import {ApiRx} from '../../src/ApiRx';
 import initApiRx from '../../../../jest/initApiRx';
+import {Api} from "@cennznet/api";
+import config from '../../../../config';
 
 describe('e2e rx api create', () => {
   const incorrectEndPoint = 'wss://rimu.centrality.cloud/';
@@ -26,6 +28,49 @@ describe('e2e rx api create', () => {
     const apiRx = await initApiRx();
     const api = await apiRx.toPromise();
 
+    api.rpc.chain.getBlockHash().subscribe(hash => {
+      expect(hash).toBeDefined();
+      done();
+    });
+  });
+
+  it ('Should create rx api instance with slim metadata', async done => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    const api = await Api.create({provider, fullMeta: false});
+    const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+    expect(stakingAssetId.toNumber()).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+  it ('Should create rx api instance with custom metadata', async done => {
+    const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    const api = await Api.create({provider, modules:['TransactionPayment', 'GenericAsset']});
+    const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+    expect(stakingAssetId.toNumber()).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+  it('Should connect to all available networks on cennznet via network name', async done => {
+    let apiRx;
+    let api;
+    const networkNames = ['azalea', 'nikau', 'rata', 'local'] as const;
+    const connectionPromises = networkNames.map(async networkName => {
+      apiRx = await ApiRx.create({network: networkName, timeout: 10000});
+      api = await apiRx.toPromise()
+      return api.rpc.chain.getBlockHash();
+    });
+    const networkHashes = await Promise.all(connectionPromises);
+    networkHashes.forEach(hash => {
+      expect(hash).toBeDefined();
+    })
+    done();
+  });
+
+  it('Should connect to use network name and not provider', async done => {
+    const apiRx = await ApiRx.create({ network: 'local', provider: 'wss://should/not/use/this/provider.io', timeout: 10000});
+    const api = await apiRx.toPromise()
     api.rpc.chain.getBlockHash().subscribe(hash => {
       expect(hash).toBeDefined();
       done();

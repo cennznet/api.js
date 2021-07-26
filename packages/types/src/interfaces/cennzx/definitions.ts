@@ -16,7 +16,7 @@ export default {
           type: 'AssetId',
         },
       ],
-      type: 'u64',
+      type: 'PriceResponse',
     },
     sellPrice: {
       description: 'Retrieves the spot exchange sell price',
@@ -34,7 +34,7 @@ export default {
           type: 'AssetId',
         },
       ],
-      type: 'u64',
+      type: 'PriceResponse',
     },
     liquidityPrice: {
       description: 'Get the price of liquidity for the given asset ID',
@@ -48,7 +48,7 @@ export default {
           type: 'Balance',
         },
       ],
-      type: '(u64, u64)',
+      type: 'LiquidityPriceResponse',
     },
     liquidityValue: {
       description: "Get the value of an account's liquidity for the given asset",
@@ -62,11 +62,23 @@ export default {
           type: 'AssetId',
         },
       ],
-      type: '(u64, u64, u64)',
+      type: 'LiquidityValueResponse',
     },
   },
   types: {
     ExchangeKey: '(AssetId, AssetId)',
     FeeRate: 'u128',
+    LiquidityValueResponse: {
+      liquidity: 'Balance',
+      core: 'Balance',
+      asset: 'Balance'
+    },
+    PriceResponse: {
+      price: 'Balance'
+    },
+    LiquidityPriceResponse: {
+      core: 'Balance',
+      asset: 'Balance'
+    }
   },
 };
