@@ -3,9 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0-alpha.0](https://github.com/cennznet/api.js/compare/prerelease/1.4.1...prerelease/1.5.0-alpha.0) (26/07/2021)
+### Added:
+    - Improved extrinsic payment option
+    - Script for module specific markdown
+    - Api creation with option to connection via network name
+    - Doc generation for derive functions
+    - useCennznet hook to connect to chain and extension and return all accounts
+    - Generated extension release data
+### Changed    
+    - Update polkadot dependencies to 3.7.1.
+
 ## [1.4.0](https://github.com/cennznet/api.js/compare/release/1.3.4...prerelease/1.4.0) (25/05/2021)
 ### Added:
-- NFT module derived queries
+    - NFT module derived queries
 
 ## [1.3.4](https://github.com/cennznet/api.js/compare/release/1.3.3...prerelease/1.3.4) (15/03/2021)
 ### Changed:
