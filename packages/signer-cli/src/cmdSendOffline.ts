@@ -24,7 +24,6 @@ export default async function cmdSendOffline (account: string, blocks: number | 
   }
 
   if (!nonce && nonce !== 0) {
-    // options.nonce = (await api.derive.balances.account(account)).accountNonce;
     options.nonce = await api.rpc.system.accountNextIndex(account) as AnyNumber;
   } else {
     options.nonce = nonce;
