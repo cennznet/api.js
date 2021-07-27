@@ -7,7 +7,7 @@
   "bin": {
     "cennznet-js-signer": "./index.cjs"
   },
-  "author": "Jaco Greeff <jacogr@gmail.com>",
+  "author": "Jaco Greeff <jacogr@gmail.com> & CENNZnet developers <support@centrality.ai>",
   "maintainers": [],
   "contributors": [],
   "license": "Apache-2.0",
@@ -15,7 +15,6 @@
     "type": "git",
     "url": "git+ssh://git@github.com/cennznet/signer-cli.git"
   },
-  "bugs": "https://github.com/polkadot-js/tools/issues",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/signer-cli#readme",
   "dependencies": {
     "@babel/core": "^7.14.8",
