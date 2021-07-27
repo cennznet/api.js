@@ -5,7 +5,7 @@
   "main": "index.cjs",
   "sideEffects": false,
   "bin": {
-    "cennznet-js-signer": "./index.cjs"
+    "cennznet-signer-cli": "./index.cjs"
   },
   "author": "Jaco Greeff <jacogr@gmail.com> & CENNZnet developers <support@centrality.ai>",
   "maintainers": [],

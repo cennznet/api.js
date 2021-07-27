@@ -9,7 +9,7 @@ import cmdSendOffline from './cmdSendOffline';
 import cmdSign from './cmdSign';
 import cmdSubmit from './cmdSubmit';
 
-const BLOCKTIME = 6;
+const BLOCKTIME = 5;
 const ONE_MINUTE = 60 / BLOCKTIME;
 
 type ArgV = { _: string[]; account?: string; blocks?: number; minutes?: number; nonce?: number; params?: string; seed?: string; type?: string; ws?: string; tx?: string; };

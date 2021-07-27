@@ -2,15 +2,19 @@
 
 A simple CLI interface for offline signing. 
 
+Please install the package globally from npm registry as
+
+`npm i --global @cennznet/signer-cli`
+
 ## Create a transaction
 
 To create a transaction, you need to use the API to connect to a chain, enabling the creation of a transaction using the chain's metadata. In a terminal, run the `submit` command with the following form:
 
-`yarn run:signer submit --account <ss58> --ws <endpoint> <module.method> [param1] [...] [paramX]`
+`npx cennznet-signer-cli submit --account <ss58> --ws <endpoint> <module.method> [param1] [...] [paramX]`
 
 For instance, to make a transfer, we run the following command:
 
-`yarn run:signer submit --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
+`npx cennznet-signer-cli submit --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
 
 On execution, it will prompt us with:
 
@@ -25,17 +29,17 @@ You can also use this command to submit pre-signed transactions, e.g. generated 
 
 The syntax is as follows:
 
-`yarn run:signer submit --tx <signedTransaction> --ws <endpoint>`
+`npx cennznet-signer-cli submit --tx <signedTransaction> --ws <endpoint>`
 
 ## Sign a transaction
 
 To sign, you do not need a network connection at all and this command does not use the API to make connections to a chain. In a terminal, run the `sign` command with the following form:
 
-`yarn run:signer sign --account <ss58> --seed <suri> --type <ed25519|sr25519> <hex payload>`
+`npx cennznet-signer-cli sign --account <ss58> --seed <suri> --type <ed25519|sr25519> <hex payload>`
 
 For instance, to sign the transfer made above, we run:
 
-`yarn run:signer sign --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --seed "leaf ... rude" --type sr25519 0x040300ff4a83f1...a8239139ff3ff7c3f6`
+`npx cennznet-signer-cli sign --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --seed "leaf ... rude" --type sr25519 0x040300ff4a83f1...a8239139ff3ff7c3f6`
 
 On execution, it will respond with:
 
@@ -53,10 +57,10 @@ This functionality lets you generate signed transactions for execution at a late
 
 The flow is similar to the `submit` command. First, run the `sendOffline` command on a computer with a network connection:
 
-`yarn run:signer sendOffline --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
+`npx cennznet-signer-cli sendOffline --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
 
 This will give you a payload to sign. Use the `sign` command as per instructions above.
 
 Once you've pasted the signature into the `sendOffline` terminal (and hit `Enter`), it will print the signed transaction that can be stored and submitted later (e.g. using the `submit` command).
 
-Run `yarn run:signer --help` to learn about optional parameters.
+Run `npx cennznet-signer-cli --help` to learn about optional parameters.
