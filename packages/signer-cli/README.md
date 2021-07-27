@@ -14,7 +14,7 @@ To create a transaction, you need to use the API to connect to a chain, enabling
 
 For instance, to make a transfer, we run the following command:
 
-`npx cennznet-signer-cli submit --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
+`npx cennznet-signer-cli submit --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws ws://127.0.0.1:9944/ genericAsset.transfer 16000 5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy 9631`
 
 On execution, it will prompt us with:
 
@@ -57,7 +57,7 @@ This functionality lets you generate signed transactions for execution at a late
 
 The flow is similar to the `submit` command. First, run the `sendOffline` command on a computer with a network connection:
 
-`npx cennznet-signer-cli sendOffline --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN --ws wss://poc3-rpc.polkadot.io/ balances.transfer 5DkQbYAExs3M2sZgT1Ec3mKfZnAQCL4Dt9beTCknkCUn5jzo 123`
+`npx cennznet-signer-cli sendOffline --account 5HNHXTw65dTNVGRdYkxFUpKcvmUYQMZHcDHmSKpuC8pvVEaN  --ws ws://127.0.0.1:9944/ genericAsset.transfer 16000 5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy 9631`
 
 This will give you a payload to sign. Use the `sign` command as per instructions above.
 
