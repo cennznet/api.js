@@ -22,7 +22,8 @@
     "lint": "eslint . --ext .ts",
     "test": "jest -c ./jest/unit.config.js --coverage",
     "test:hooks": "jest -c ./jest/hook.config.js --bail --detectOpenHandles --forceExit --runInBand",
-    "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles"
+    "test:e2e": "TEST_TYPE=integration jest -c ./jest/integration.config.js --bail  --forceExit --detectOpenHandles",
+    "run:signer": "node ./packages/signer-cli/src/index.cjs"
   },
   "devDependencies": {
     "@polkadot/dev": "0.62.12",
