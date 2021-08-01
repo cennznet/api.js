@@ -10,3 +10,4 @@ export * from './staking/types';
 export * from './sylo/types';
 export * from './system/types';
 export * from './transactionPayment/types';
+export * from './governance/types';

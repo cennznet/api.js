@@ -4,6 +4,7 @@
 import type { Bytes, Option, Vec, bool, u32 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { ProposalId } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
@@ -16,7 +17,6 @@ import type { TaskAddress } from '@polkadot/types/interfaces/scheduler';
 import type { IdentificationTuple, SessionIndex } from '@polkadot/types/interfaces/session';
 import type { ElectionCompute } from '@polkadot/types/interfaces/staking';
 import type { DispatchError, DispatchInfo, DispatchResult } from '@polkadot/types/interfaces/system';
-import type { BountyIndex } from '@polkadot/types/interfaces/treasury';
 import type { Timepoint } from '@polkadot/types/interfaces/utility';
 import type { ApiTypes } from '@polkadot/api/types';
 
@@ -53,6 +53,40 @@ declare module '@polkadot/api/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    electionProviderMultiPhase: {
+      /**
+       * The election has been finalized, with `Some` of the given computation, or else if the
+       * election failed, `None`.
+       **/
+      ElectionFinalized: AugmentedEvent<ApiType, [Option<ElectionCompute>]>;
+      /**
+       * An account has been rewarded for their signed submission being finalized.
+       **/
+      Rewarded: AugmentedEvent<ApiType, [AccountId]>;
+      /**
+       * The signed phase of the given round has started.
+       **/
+      SignedPhaseStarted: AugmentedEvent<ApiType, [u32]>;
+      /**
+       * An account has been slashed for submitting an invalid signed submission.
+       **/
+      Slashed: AugmentedEvent<ApiType, [AccountId]>;
+      /**
+       * A solution was stored with the given compute.
+       * 
+       * If the solution is signed, this means that it hasn't yet been processed. If the
+       * solution is unsigned, this means that it has also been processed.
+       **/
+      SolutionStored: AugmentedEvent<ApiType, [ElectionCompute]>;
+      /**
+       * The unsigned phase of the given round has started.
+       **/
+      UnsignedPhaseStarted: AugmentedEvent<ApiType, [u32]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     genericAsset: {
       /**
        * Asset info updated (asset_id, asset_info).
@@ -67,6 +101,10 @@ declare module '@polkadot/api/types/events' {
        **/
       Created: AugmentedEvent<ApiType, [AssetId, AccountId, AssetOptions]>;
       /**
+       * Asset balance storage has been reclaimed due to falling below the existential deposit
+       **/
+      DustReclaimed: AugmentedEvent<ApiType, [AssetId, AccountId, Balance]>;
+      /**
        * New asset minted (asset_id, account, amount).
        **/
       Minted: AugmentedEvent<ApiType, [AssetId, AccountId, Balance]>;
@@ -78,6 +116,20 @@ declare module '@polkadot/api/types/events' {
        * Asset transfer succeeded (asset_id, from, to, amount).
        **/
       Transferred: AugmentedEvent<ApiType, [AssetId, AccountId, AccountId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    governance: {
+      /**
+       * A proposal was enacted, success
+       **/
+      EnactProposal: AugmentedEvent<ApiType, [ProposalId, bool]>;
+      /**
+       * A proposal was submitted
+       **/
+      SubmitProposal: AugmentedEvent<ApiType, [ProposalId]>;
       /**
        * Generic event
        **/
@@ -251,11 +303,10 @@ declare module '@polkadot/api/types/events' {
     offences: {
       /**
        * There is an offence reported of the given `kind` happened at the `session_index` and
-       * (kind-specific) time slot. This event is not deposited for duplicate slashes. last
-       * element indicates of the offence was applied (true) or queued (false)
-       * \[kind, timeslot, applied\].
+       * (kind-specific) time slot. This event is not deposited for duplicate slashes.
+       * \[kind, timeslot\].
        **/
-      Offence: AugmentedEvent<ApiType, [Kind, OpaqueTimeSlot, bool]>;
+      Offence: AugmentedEvent<ApiType, [Kind, OpaqueTimeSlot]>;
       /**
        * Generic event
        **/
@@ -342,13 +393,9 @@ declare module '@polkadot/api/types/events' {
        **/
       Slash: AugmentedEvent<ApiType, [AccountId, Balance]>;
       /**
-       * A new solution for the upcoming election has been stored. \[compute\]
+       * A new set of stakers was elected.
        **/
-      SolutionStored: AugmentedEvent<ApiType, [ElectionCompute]>;
-      /**
-       * A new set of stakers was elected with the given \[compute\].
-       **/
-      StakingElection: AugmentedEvent<ApiType, [ElectionCompute]>;
+      StakingElection: AugmentedEvent<ApiType, []>;
       /**
        * An account has unbonded this amount. \[stash, amount\]
        **/
@@ -375,7 +422,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * A sudo just took place. \[result\]
        **/
-      SudoAsDone: AugmentedEvent<ApiType, [bool]>;
+      SudoAsDone: AugmentedEvent<ApiType, [DispatchResult]>;
       /**
        * Generic event
        **/
@@ -403,6 +450,10 @@ declare module '@polkadot/api/types/events' {
        **/
       NewAccount: AugmentedEvent<ApiType, [AccountId]>;
       /**
+       * On on-chain remark happened. \[origin, remark_hash\]
+       **/
+      Remarked: AugmentedEvent<ApiType, [AccountId, Hash]>;
+      /**
        * Generic event
        **/
       [key: string]: AugmentedEvent<ApiType>;
@@ -413,34 +464,6 @@ declare module '@polkadot/api/types/events' {
        **/
       Awarded: AugmentedEvent<ApiType, [ProposalIndex, Balance, AccountId]>;
       /**
-       * A bounty is awarded to a beneficiary. [index, beneficiary]
-       **/
-      BountyAwarded: AugmentedEvent<ApiType, [BountyIndex, AccountId]>;
-      /**
-       * A bounty proposal is funded and became active. [index]
-       **/
-      BountyBecameActive: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty is cancelled. [index]
-       **/
-      BountyCanceled: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty is claimed by beneficiary. [index, payout, beneficiary]
-       **/
-      BountyClaimed: AugmentedEvent<ApiType, [BountyIndex, Balance, AccountId]>;
-      /**
-       * A bounty expiry is extended. [index]
-       **/
-      BountyExtended: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * New bounty proposal. [index]
-       **/
-      BountyProposed: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty proposal was rejected; funds were slashed. [index, bond]
-       **/
-      BountyRejected: AugmentedEvent<ApiType, [BountyIndex, Balance]>;
-      /**
        * Some of our funds have been burnt. \[burn\]
        **/
       Burnt: AugmentedEvent<ApiType, [Balance]>;
@@ -448,10 +471,6 @@ declare module '@polkadot/api/types/events' {
        * Some funds have been deposited. \[deposit\]
        **/
       Deposit: AugmentedEvent<ApiType, [Balance]>;
-      /**
-       * A new tip suggestion has been opened. \[tip_hash\]
-       **/
-      NewTip: AugmentedEvent<ApiType, [Hash]>;
       /**
        * New proposal. \[proposal_index\]
        **/
@@ -469,18 +488,6 @@ declare module '@polkadot/api/types/events' {
        * We have ended a spend period and will now allocate funds. \[budget_remaining\]
        **/
       Spending: AugmentedEvent<ApiType, [Balance]>;
-      /**
-       * A tip suggestion has been closed. \[tip_hash, who, payout\]
-       **/
-      TipClosed: AugmentedEvent<ApiType, [Hash, AccountId, Balance]>;
-      /**
-       * A tip suggestion has reached threshold and is closing. \[tip_hash\]
-       **/
-      TipClosing: AugmentedEvent<ApiType, [Hash]>;
-      /**
-       * A tip suggestion has been retracted. \[tip_hash\]
-       **/
-      TipRetracted: AugmentedEvent<ApiType, [Hash]>;
       /**
        * Generic event
        **/

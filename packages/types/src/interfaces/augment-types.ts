@@ -5,6 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetInfoV40, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { ProposalId, ProposalStatusInfo, ProposalVoteInfo } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
@@ -114,6 +115,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<PerU16>': Compact<PerU16>;
     'Compact<Priority>': Compact<Priority>;
     'Compact<PropIndex>': Compact<PropIndex>;
+    'Compact<ProposalId>': Compact<ProposalId>;
     'Compact<ProposalIndex>': Compact<ProposalIndex>;
     'Compact<ReferendumIndex>': Compact<ReferendumIndex>;
     'Compact<RegistrarIndex>': Compact<RegistrarIndex>;
@@ -669,7 +671,10 @@ declare module '@polkadot/types/types/registry' {
     'Option<PriorLock>': Option<PriorLock>;
     'Option<PropIndex>': Option<PropIndex>;
     'Option<Proposal>': Option<Proposal>;
+    'Option<ProposalId>': Option<ProposalId>;
     'Option<ProposalIndex>': Option<ProposalIndex>;
+    'Option<ProposalStatusInfo>': Option<ProposalStatusInfo>;
+    'Option<ProposalVoteInfo>': Option<ProposalVoteInfo>;
     'Option<ProxyAnnouncement>': Option<ProxyAnnouncement>;
     'Option<ProxyDefinition>': Option<ProxyDefinition>;
     'Option<ProxyState>': Option<ProxyState>;
@@ -1440,7 +1445,10 @@ declare module '@polkadot/types/types/registry' {
     'Vec<PriorLock>': Vec<PriorLock>;
     'Vec<PropIndex>': Vec<PropIndex>;
     'Vec<Proposal>': Vec<Proposal>;
+    'Vec<ProposalId>': Vec<ProposalId>;
     'Vec<ProposalIndex>': Vec<ProposalIndex>;
+    'Vec<ProposalStatusInfo>': Vec<ProposalStatusInfo>;
+    'Vec<ProposalVoteInfo>': Vec<ProposalVoteInfo>;
     'Vec<ProxyAnnouncement>': Vec<ProxyAnnouncement>;
     'Vec<ProxyDefinition>': Vec<ProxyDefinition>;
     'Vec<ProxyState>': Vec<ProxyState>;
@@ -2211,7 +2219,10 @@ declare module '@polkadot/types/types/registry' {
     PriorLock: PriorLock;
     PropIndex: PropIndex;
     Proposal: Proposal;
+    ProposalId: ProposalId;
     ProposalIndex: ProposalIndex;
+    ProposalStatusInfo: ProposalStatusInfo;
+    ProposalVoteInfo: ProposalVoteInfo;
     ProxyAnnouncement: ProxyAnnouncement;
     ProxyDefinition: ProxyDefinition;
     ProxyState: ProxyState;
