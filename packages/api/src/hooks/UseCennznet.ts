@@ -13,10 +13,7 @@
 // limitations under the License.
 
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
-import { InjectedAccountWithMeta, MetadataDef } from '@polkadot/extension-inject/types';
-import { getSpecTypes } from '@polkadot/types-known';
-import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defaults';
-import { default as cennznetExtensions } from '@cennznet/types/interfaces/extrinsic/signedExtensions/cennznet';
+import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { ApiRx } from '@cennznet/api';
 
 import { ApiOptions } from '../types';
