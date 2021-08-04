@@ -185,6 +185,7 @@ describe('e2e transactions', () => {
               const [assetId, assetMeta] = data;
               expect(assetId as number).toEqual(feeAssetId);
               expect(assetMeta.toJSON()).toEqual({
+                existentialDeposit: 5,
                 decimalPlaces: 5,
                 symbol: stringToHex('NEW_ASSET_ID')
               });
