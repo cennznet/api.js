@@ -19,8 +19,7 @@ export default {
     AssetInfo: {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
-      // Uncomment once new docker image is ready
-      // existentialDeposit: 'u64'
+      existentialDeposit: 'u64'
     },
     Owner: {
       _enum: {

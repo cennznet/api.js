@@ -185,7 +185,7 @@ declare module '@polkadot/api/types/submittable' {
        * O(1) Limited number of read and writes.
        * Should not be called often.
        **/
-      create: AugmentedSubmittable<(owner: AccountId | string | Uint8Array, options: AssetOptions | { initialIssuance?: any; permissions?: any } | string | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId, AssetOptions, AssetInfo]>;
+      create: AugmentedSubmittable<(owner: AccountId | string | Uint8Array, options: AssetOptions | { initialIssuance?: any; permissions?: any } | string | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any; existentialDeposit?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId, AssetOptions, AssetInfo]>;
       /**
        * Create a new asset with reserved asset_id.
        * Internally calls create_asset with an asset_id
@@ -194,7 +194,7 @@ declare module '@polkadot/api/types/submittable' {
        * Weights:
        * O(1) Limited read/writes
        **/
-      createReserved: AugmentedSubmittable<(assetId: AssetId | AnyNumber | Uint8Array, options: AssetOptions | { initialIssuance?: any; permissions?: any } | string | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AssetId, AssetOptions, AssetInfo]>;
+      createReserved: AugmentedSubmittable<(assetId: AssetId | AnyNumber | Uint8Array, options: AssetOptions | { initialIssuance?: any; permissions?: any } | string | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any; existentialDeposit?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AssetId, AssetOptions, AssetInfo]>;
       /**
        * Mints an asset, increases its total issuance. Deposits the newly minted currency into target account
        * The origin must have `mint` permissions.
@@ -234,7 +234,7 @@ declare module '@polkadot/api/types/submittable' {
        * O(1) limited number of read and writes
        * Expected to not be called frequently
        **/
-      updateAssetInfo: AugmentedSubmittable<(assetId: Compact<AssetId> | AnyNumber | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Compact<AssetId>, AssetInfo]>;
+      updateAssetInfo: AugmentedSubmittable<(assetId: Compact<AssetId> | AnyNumber | Uint8Array, info: AssetInfo | { symbol?: any; decimalPlaces?: any; existentialDeposit?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Compact<AssetId>, AssetInfo]>;
       /**
        * Updates permissions(mint/burn/change permission) for a given `asset_id` and an account.
        * 
