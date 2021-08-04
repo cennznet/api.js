@@ -26,6 +26,8 @@ jobs:
       run: yarn
     - name: start latest test node
       run: |
+        echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        echo "label:: ${{ github.event.label.name }}!"
         docker run --pull=always --network=host -d cennznet/cennznet:1.5.1-nikau --dev --tmp --ws-external --rpc-external --no-mdns
     - name: yarn meta:extension
       run: yarn meta:extension
