@@ -47,7 +47,7 @@ describe('UseCennznet()', () => {
 
   it('Should return API, Dummy account, and extension installed when metadata already set', async () => {
     const fakeInjectedExtension = {
-      name: 'polkadot-js',
+      name: 'cennznet-extension',
     };
     const fakeAccount = {
       address: 'random_account_hash',
@@ -73,7 +73,7 @@ describe('UseCennznet()', () => {
 
   it('Should extract and set metadata from chain', async () => {
     const fakeInjectedExtension = {
-      name: 'polkadot-js',
+      name: 'cennznet-extension',
       metadata: {
         data: {} as MetadataDef,
         provide: (metadata: MetadataDef) => {
@@ -103,7 +103,7 @@ describe('UseCennznet()', () => {
 
   it('Should be able to connect to multiple chains and update metadata', async () => {
     const fakeInjectedExtension = {
-      name: 'polkadot-js',
+      name: 'cennznet-extension',
       metadata: {
         provide: (metadata: MetadataDef) => {
           return (fakeInjectedExtension.metadata[metadata.genesisHash] = metadata);
@@ -141,7 +141,7 @@ describe('UseCennznet()', () => {
 
   it('Should return API RX instance', async (done) => {
     const fakeInjectedExtension = {
-      name: 'polkadot-js',
+      name: 'cennznet-extension',
       metadata: {
         provide: (metadata: MetadataDef) => {
           return (fakeInjectedExtension.metadata[metadata.genesisHash] = metadata);
