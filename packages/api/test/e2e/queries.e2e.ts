@@ -137,7 +137,8 @@ describe('e2e queries', () => {
   describe('Generic Asset Storage', () => {
     it('Gets balance locks ok', async done => {
       const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
-      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
+      const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stakingAssetId, stashId);
       expect(balanceLocks.isEmpty).toBeFalsy();
       let reasons: WithdrawReasons = balanceLocks[0].reasons;
       expect(reasons.isTransactionPayment).toBeTruthy();
