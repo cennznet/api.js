@@ -74,7 +74,7 @@ jobs:
         docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
     - name: start latest test node
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:f6f42e --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:f6f42ec --dev --tmp --ws-external --rpc-external --no-mdns
     - name: test
       env:
         TEST_TYPE: integration
