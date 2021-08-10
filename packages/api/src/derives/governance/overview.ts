@@ -47,7 +47,7 @@ export function proposals(instanceId: string, api: ApiInterfaceRx) {
                       votes:
                         votes.length > 0
                           ? ((votes.toJSON() as unknown) as ProposalVotes[]).find(
-                              (vote: ProposalVotes) => vote.proposalId.toNumber() === idx
+                              (vote: ProposalVotes) => ((vote.proposalId as unknown) as number) === idx
                             )?.votes
                           : [],
                     };
