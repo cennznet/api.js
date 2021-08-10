@@ -3,13 +3,13 @@
 
 import type { Bytes, Enum, Option, Struct, Vec, bool, u128, u64 } from '@polkadot/types';
 import type { ITuple } from '@polkadot/types/types';
-import type { AccountId } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, BlockNumber } from '@polkadot/types/interfaces/runtime';
 
-/** @name Proposal */
-export interface Proposal extends Struct {
+/** @name GovernanceProposal */
+export interface GovernanceProposal extends Struct {
   readonly sponsor: AccountId;
   readonly justificationUri: Bytes;
-  readonly enactmentDelay: u64;
+  readonly enactmentDelay: BlockNumber;
 }
 
 /** @name ProposalId */

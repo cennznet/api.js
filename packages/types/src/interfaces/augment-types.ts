@@ -5,7 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { AssetInfo, AssetInfoV40, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
-import type { ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
+import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
@@ -456,6 +456,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<GiltBid>': Option<GiltBid>;
     'Option<GlobalValidationData>': Option<GlobalValidationData>;
     'Option<GlobalValidationSchedule>': Option<GlobalValidationSchedule>;
+    'Option<GovernanceProposal>': Option<GovernanceProposal>;
     'Option<Group>': Option<Group>;
     'Option<GroupIndex>': Option<GroupIndex>;
     'Option<H1024>': Option<H1024>;
@@ -1231,6 +1232,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<GiltBid>': Vec<GiltBid>;
     'Vec<GlobalValidationData>': Vec<GlobalValidationData>;
     'Vec<GlobalValidationSchedule>': Vec<GlobalValidationSchedule>;
+    'Vec<GovernanceProposal>': Vec<GovernanceProposal>;
     'Vec<Group>': Vec<Group>;
     'Vec<GroupIndex>': Vec<GroupIndex>;
     'Vec<H1024>': Vec<H1024>;
@@ -2006,6 +2008,7 @@ declare module '@polkadot/types/types/registry' {
     GiltBid: GiltBid;
     GlobalValidationData: GlobalValidationData;
     GlobalValidationSchedule: GlobalValidationSchedule;
+    GovernanceProposal: GovernanceProposal;
     Group: Group;
     GroupIndex: GroupIndex;
     H1024: H1024;

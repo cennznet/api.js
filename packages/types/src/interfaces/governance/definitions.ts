@@ -23,14 +23,14 @@ export default {
       voteBits: '(u128, u128)',
       activeBits: '(u128, u128)'
     },
-    "ProposalVotes": {
-      "proposalId": "ProposalId",
-      "votes": "Vec<(AccountId, Option<bool>)>"
+    ProposalVotes: {
+      proposalId: "ProposalId",
+      votes: "Vec<(AccountId, Option<bool>)>"
     },
-    "Proposal": {
+    GovernanceProposal: {
       "sponsor": "AccountId",
       "justificationUri": "Vec<u8>",
-      "enactmentDelay": "u64"
+      "enactmentDelay": 'BlockNumber'
     }
   },
 };

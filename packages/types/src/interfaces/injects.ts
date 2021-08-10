@@ -69,14 +69,17 @@ export const typesBundle: OverrideBundleType = {
           minmax: [37, 40],
           types: {
             ...shareType37Onwards,
-            AssetInfo: 'AssetInfoV40'
+            AssetInfo: 'AssetInfoV40',
+            Proposal: 'GovernanceProposal'
           },
         },
         {
           minmax: [41, undefined],
           types: {
             ...shareType37Onwards,
-            AssetInfo: 'AssetInfo'
+            AssetInfo: 'AssetInfo',
+            // Proposal also exist in polkadots democracy module
+            Proposal: 'GovernanceProposal'
           },
         },
       ],
