@@ -18,7 +18,7 @@ import type { Heartbeat } from '@polkadot/types/interfaces/imOnline';
 import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, Call, ChangesTrieConfiguration, Header, KeyValue, LookupSource, Moment, OpaqueCall, Perbill, Weight } from '@polkadot/types/interfaces/runtime';
 import type { Period, Priority } from '@polkadot/types/interfaces/scheduler';
 import type { Keys } from '@polkadot/types/interfaces/session';
-import type { ElectionScore, EraIndex, RawSolution, RewardDestination, SolutionOrSnapshotSize, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
+import type { CompactAssignments, ElectionScore, ElectionSize, EraIndex, RewardDestination, ValidatorIndex, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
 import type { Key } from '@polkadot/types/interfaces/system';
 import type { Timepoint } from '@polkadot/types/interfaces/utility';
 import type { ApiTypes, SubmittableExtrinsic } from '@polkadot/api/types';
@@ -135,37 +135,6 @@ declare module '@polkadot/api/types/submittable' {
        **/
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    electionProviderMultiPhase: {
-      /**
-       * Set a new value for `MinimumUntrustedScore`.
-       * 
-       * Dispatch origin must be aligned with `T::ForceOrigin`.
-       * 
-       * This check can be turned off by setting the value to `None`.
-       **/
-      setMinimumUntrustedScore: AugmentedSubmittable<(maybeNextScore: Option<ElectionScore> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Option<ElectionScore>]>;
-      /**
-       * Submit a solution for the unsigned phase.
-       * 
-       * The dispatch origin fo this call must be __none__.
-       * 
-       * This submission is checked on the fly. Moreover, this unsigned solution is only
-       * validated when submitted to the pool from the **local** node. Effectively, this means
-       * that only active validators can submit this transaction when authoring a block (similar
-       * to an inherent).
-       * 
-       * To prevent any incorrect solution (and thus wasted time/weight), this transaction will
-       * panic if the solution submitted by the validator is invalid in any way, effectively
-       * putting their authoring reward at risk.
-       * 
-       * No deposit or reward is associated with this submission.
-       **/
-      submitUnsigned: AugmentedSubmittable<(solution: RawSolution | { compact?: any; score?: any; round?: any } | string | Uint8Array, witness: SolutionOrSnapshotSize | { voters?: any; targets?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [RawSolution, SolutionOrSnapshotSize]>;
-      /**
-       * Generic tx
-       **/
-      [key: string]: SubmittableExtrinsicFunction<ApiType>;
-    };
     genericAsset: {
       /**
        * Burns an asset, decreases its total issuance. Deduct the money from target account
@@ -269,7 +238,12 @@ declare module '@polkadot/api/types/submittable' {
        * This must be submitted like any other proposal
        **/
       removeCouncilMember: AugmentedSubmittable<(removeMember: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId]>;
-      submitProposal: AugmentedSubmittable<(call: Bytes | string | Uint8Array, justificationCid: Bytes | string | Uint8Array, enactmentDelay: BlockNumber | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, Bytes, BlockNumber]>;
+      /**
+       * Adjust the proposal bond
+       * This must be submitted like any other proposal
+       **/
+      setProposalBond: AugmentedSubmittable<(newProposalBond: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Balance]>;
+      submitProposal: AugmentedSubmittable<(call: Bytes | string | Uint8Array, justificationUri: Bytes | string | Uint8Array, enactmentDelay: BlockNumber | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, Bytes, BlockNumber]>;
       voteOnProposal: AugmentedSubmittable<(proposalId: ProposalId | AnyNumber | Uint8Array, vote: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [ProposalId, bool]>;
       /**
        * Generic tx
@@ -1273,6 +1247,70 @@ declare module '@polkadot/api/types/submittable' {
        * # </weight>
        **/
       setValidatorCount: AugmentedSubmittable<(updated: Compact<u32> | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Compact<u32>]>;
+      /**
+       * Submit an election result to the chain. If the solution:
+       * 
+       * 1. is valid.
+       * 2. has a better score than a potentially existing solution on chain.
+       * 
+       * then, it will be _put_ on chain.
+       * 
+       * A solution consists of two pieces of data:
+       * 
+       * 1. `winners`: a flat vector of all the winners of the round.
+       * 2. `assignments`: the compact version of an assignment vector that encodes the edge
+       * weights.
+       * 
+       * Both of which may be computed using _phragmen_, or any other algorithm.
+       * 
+       * Additionally, the submitter must provide:
+       * 
+       * - The `score` that they claim their solution has.
+       * 
+       * Both validators and nominators will be represented by indices in the solution. The
+       * indices should respect the corresponding types ([`ValidatorIndex`] and
+       * [`NominatorIndex`]). Moreover, they should be valid when used to index into
+       * [`SnapshotValidators`] and [`SnapshotNominators`]. Any invalid index will cause the
+       * solution to be rejected. These two storage items are set during the election window and
+       * may be used to determine the indices.
+       * 
+       * A solution is valid if:
+       * 
+       * 0. It is submitted when [`EraElectionStatus`] is `Open`.
+       * 1. Its claimed score is equal to the score computed on-chain.
+       * 2. Presents the correct number of winners.
+       * 3. All indexes must be value according to the snapshot vectors. All edge values must
+       * also be correct and should not overflow the granularity of the ratio type (i.e. 256
+       * or billion).
+       * 4. For each edge, all targets are actually nominated by the voter.
+       * 5. Has correct self-votes.
+       * 
+       * A solutions score is consisted of 3 parameters:
+       * 
+       * 1. `min { support.total }` for each support of a winner. This value should be maximized.
+       * 2. `sum { support.total }` for each support of a winner. This value should be minimized.
+       * 3. `sum { support.total^2 }` for each support of a winner. This value should be
+       * minimized (to ensure less variance)
+       * 
+       * # <weight>
+       * The transaction is assumed to be the longest path, a better solution.
+       * - Initial solution is almost the same.
+       * - Worse solution is retraced in pre-dispatch-checks which sets its own weight.
+       * # </weight>
+       **/
+      submitElectionSolution: AugmentedSubmittable<(winners: Vec<ValidatorIndex> | (ValidatorIndex | AnyNumber | Uint8Array)[], compact: CompactAssignments | { votes1?: any; votes2?: any; votes3?: any; votes4?: any; votes5?: any; votes6?: any; votes7?: any; votes8?: any; votes9?: any; votes10?: any; votes11?: any; votes12?: any; votes13?: any; votes14?: any; votes15?: any; votes16?: any; votes17?: any; votes18?: any; votes19?: any; votes20?: any; votes21?: any; votes22?: any; votes23?: any; votes24?: any } | string | Uint8Array, score: ElectionScore, era: EraIndex | AnyNumber | Uint8Array, size: ElectionSize | { validators?: any; nominators?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<ValidatorIndex>, CompactAssignments, ElectionScore, EraIndex, ElectionSize]>;
+      /**
+       * Unsigned version of `submit_election_solution`.
+       * 
+       * Note that this must pass the [`ValidateUnsigned`] check which only allows transactions
+       * from the local node to be included. In other words, only the block author can include a
+       * transaction in the block.
+       * 
+       * # <weight>
+       * See `crate::weight` module.
+       * # </weight>
+       **/
+      submitElectionSolutionUnsigned: AugmentedSubmittable<(winners: Vec<ValidatorIndex> | (ValidatorIndex | AnyNumber | Uint8Array)[], compact: CompactAssignments | { votes1?: any; votes2?: any; votes3?: any; votes4?: any; votes5?: any; votes6?: any; votes7?: any; votes8?: any; votes9?: any; votes10?: any; votes11?: any; votes12?: any; votes13?: any; votes14?: any; votes15?: any; votes16?: any; votes17?: any; votes18?: any; votes19?: any; votes20?: any; votes21?: any; votes22?: any; votes23?: any; votes24?: any } | string | Uint8Array, score: ElectionScore, era: EraIndex | AnyNumber | Uint8Array, size: ElectionSize | { validators?: any; nominators?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<ValidatorIndex>, CompactAssignments, ElectionScore, EraIndex, ElectionSize]>;
       /**
        * Schedule a portion of the stash to be unlocked ready for transfer out after the bond
        * period ends. If this leaves an amount actively bonded less than

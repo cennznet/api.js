@@ -53,40 +53,6 @@ declare module '@polkadot/api/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
-    electionProviderMultiPhase: {
-      /**
-       * The election has been finalized, with `Some` of the given computation, or else if the
-       * election failed, `None`.
-       **/
-      ElectionFinalized: AugmentedEvent<ApiType, [Option<ElectionCompute>]>;
-      /**
-       * An account has been rewarded for their signed submission being finalized.
-       **/
-      Rewarded: AugmentedEvent<ApiType, [AccountId]>;
-      /**
-       * The signed phase of the given round has started.
-       **/
-      SignedPhaseStarted: AugmentedEvent<ApiType, [u32]>;
-      /**
-       * An account has been slashed for submitting an invalid signed submission.
-       **/
-      Slashed: AugmentedEvent<ApiType, [AccountId]>;
-      /**
-       * A solution was stored with the given compute.
-       * 
-       * If the solution is signed, this means that it hasn't yet been processed. If the
-       * solution is unsigned, this means that it has also been processed.
-       **/
-      SolutionStored: AugmentedEvent<ApiType, [ElectionCompute]>;
-      /**
-       * The unsigned phase of the given round has started.
-       **/
-      UnsignedPhaseStarted: AugmentedEvent<ApiType, [u32]>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
     genericAsset: {
       /**
        * Asset info updated (asset_id, asset_info).
@@ -303,10 +269,11 @@ declare module '@polkadot/api/types/events' {
     offences: {
       /**
        * There is an offence reported of the given `kind` happened at the `session_index` and
-       * (kind-specific) time slot. This event is not deposited for duplicate slashes.
-       * \[kind, timeslot\].
+       * (kind-specific) time slot. This event is not deposited for duplicate slashes. last
+       * element indicates of the offence was applied (true) or queued (false)
+       * \[kind, timeslot, applied\].
        **/
-      Offence: AugmentedEvent<ApiType, [Kind, OpaqueTimeSlot]>;
+      Offence: AugmentedEvent<ApiType, [Kind, OpaqueTimeSlot, bool]>;
       /**
        * Generic event
        **/
@@ -393,9 +360,13 @@ declare module '@polkadot/api/types/events' {
        **/
       Slash: AugmentedEvent<ApiType, [AccountId, Balance]>;
       /**
-       * A new set of stakers was elected.
+       * A new solution for the upcoming election has been stored. \[compute\]
        **/
-      StakingElection: AugmentedEvent<ApiType, []>;
+      SolutionStored: AugmentedEvent<ApiType, [ElectionCompute]>;
+      /**
+       * A new set of stakers was elected with the given \[compute\].
+       **/
+      StakingElection: AugmentedEvent<ApiType, [ElectionCompute]>;
       /**
        * An account has unbonded this amount. \[stash, amount\]
        **/

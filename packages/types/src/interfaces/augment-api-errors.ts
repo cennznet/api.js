@@ -46,24 +46,6 @@ declare module '@polkadot/api/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    babe: {
-      /**
-       * A given equivocation report is valid but already previously reported.
-       **/
-      DuplicateOffenceReport: AugmentedError<ApiType>;
-      /**
-       * An equivocation proof provided as part of an equivocation report is invalid.
-       **/
-      InvalidEquivocationProof: AugmentedError<ApiType>;
-      /**
-       * A key ownership proof provided as part of an equivocation report is invalid.
-       **/
-      InvalidKeyOwnershipProof: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     cennzx: {
       AssetCannotSwapForItself: AugmentedError<ApiType>;
       CannotAddLiquidityWithZero: AugmentedError<ApiType>;
@@ -83,28 +65,6 @@ declare module '@polkadot/api/types/errors' {
       MinimumLiquidityRequirementNotMet: AugmentedError<ApiType>;
       MinimumTradeAssetRequirementNotMet: AugmentedError<ApiType>;
       Overflow: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
-    electionProviderMultiPhase: {
-      /**
-       * OCW submitted solution for wrong round
-       **/
-      OcwCallWrongEra: AugmentedError<ApiType>;
-      /**
-       * Submission was too early.
-       **/
-      PreDispatchEarlySubmission: AugmentedError<ApiType>;
-      /**
-       * Submission was too weak, score-wise.
-       **/
-      PreDispatchWeakSubmission: AugmentedError<ApiType>;
-      /**
-       * Wrong number of winners presented.
-       **/
-      PreDispatchWrongWinnerCount: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -424,9 +384,9 @@ declare module '@polkadot/api/types/errors' {
        **/
       NoToken: AugmentedError<ApiType>;
       /**
-       * Total royalties would exceed 100% of sale
+       * Total royalties would exceed 100% of sale or an empty vec is supplied
        **/
-      RoyaltiesOvercommitment: AugmentedError<ApiType>;
+      RoyaltiesInvalid: AugmentedError<ApiType>;
       /**
        * Tokens with different individual royalties cannot be sold together
        **/
@@ -501,10 +461,6 @@ declare module '@polkadot/api/types/errors' {
        * Controller is already paired.
        **/
       AlreadyPaired: AugmentedError<ApiType>;
-      /**
-       * A nomination target was supplied that was blocked or otherwise not a validator.
-       **/
-      BadTarget: AugmentedError<ApiType>;
       /**
        * The call is not allowed at the given time due to restrictions of election period.
        **/
@@ -613,10 +569,6 @@ declare module '@polkadot/api/types/errors' {
        **/
       SnapshotUnavailable: AugmentedError<ApiType>;
       /**
-       * Too many nomination targets supplied.
-       **/
-      TooManyTargets: AugmentedError<ApiType>;
-      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
@@ -670,10 +622,6 @@ declare module '@polkadot/api/types/errors' {
        * No proposal or bounty at that index.
        **/
       InvalidIndex: AugmentedError<ApiType>;
-      /**
-       * Too many approvals in the queue.
-       **/
-      TooManyApprovals: AugmentedError<ApiType>;
       /**
        * Generic error
        **/

@@ -1,8 +1,16 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Enum, Struct, u128, u64 } from '@polkadot/types';
+import type { Bytes, Enum, Option, Struct, Vec, bool, u128, u64 } from '@polkadot/types';
 import type { ITuple } from '@polkadot/types/types';
+import type { AccountId } from '@polkadot/types/interfaces/runtime';
+
+/** @name Proposal */
+export interface Proposal extends Struct {
+  readonly sponsor: AccountId;
+  readonly justificationUri: Bytes;
+  readonly enactmentDelay: u64;
+}
 
 /** @name ProposalId */
 export interface ProposalId extends u64 {}
@@ -19,6 +27,12 @@ export interface ProposalStatusInfo extends Enum {
 export interface ProposalVoteInfo extends Struct {
   readonly voteBits: ITuple<[u128, u128]>;
   readonly activeBits: ITuple<[u128, u128]>;
+}
+
+/** @name ProposalVotes */
+export interface ProposalVotes extends Struct {
+  readonly proposalId: ProposalId;
+  readonly votes: Vec<ITuple<[AccountId, Option<bool>]>>;
 }
 
 export type PHANTOM_GOVERNANCE = 'governance';
