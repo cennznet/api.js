@@ -16,6 +16,8 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[genericAsset](#genericasset)**
 
+- **[governance](#governance)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -108,7 +110,7 @@ ___
 - **interface**: `api.query.babe.authorVrfRandomness`
 - **summary**:   Temporary value (cleared at block finalization) that includes the VRF output generated at this block. This field should always be populated during block processing unless secondary plain slots are enabled (which don't contain a VRF output). 
  
-### currentSlot(): `u64`
+### currentSlot(): `Slot`
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:   Current slot number. 
  
@@ -116,7 +118,7 @@ ___
 - **interface**: `api.query.babe.epochIndex`
 - **summary**:   Current epoch index. 
  
-### genesisSlot(): `u64`
+### genesisSlot(): `Slot`
 - **interface**: `api.query.babe.genesisSlot`
 - **summary**:   The slot at which the first epoch actually started. This is 0 until the first block of the chain. 
  
@@ -129,6 +131,10 @@ ___
 - **summary**:   How late the current block is compared to its parent. 
 
   This entry is populated as part of block execution and is cleaned up on block finalization. Querying this storage entry outside of block execution context should always yield zero. 
+ 
+### nextAuthorities(): `Vec<(AuthorityId,BabeAuthorityWeight)>`
+- **interface**: `api.query.babe.nextAuthorities`
+- **summary**:   Next epoch authorities. 
  
 ### nextEpochConfig(): `Option<NextConfigDescriptor>`
 - **interface**: `api.query.babe.nextEpochConfig`
@@ -171,11 +177,11 @@ ___
 - **interface**: `api.query.cennzx.defaultFeeRate`
 - **summary**:   Default trading fee rate 
  
-### liquidityBalance(`ExchangeKey, AccountId`): `BalanceOf`
+### liquidityBalance(`ExchangeKey, AccountId`): `Balance`
 - **interface**: `api.query.cennzx.liquidityBalance`
 - **summary**:   Liquidity holdings of a user in an exchange pool. Key: `(core_asset_id, trade_asset_id), account_id` 
  
-### totalLiquidity(`ExchangeKey`): `BalanceOf`
+### totalLiquidity(`ExchangeKey`): `Balance`
 - **interface**: `api.query.cennzx.totalLiquidity`
 - **summary**:   Total liquidity holdings of all investors in an exchange. ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
 
@@ -194,7 +200,7 @@ ___
 
   TWOX-NOTE: `AssetId` is trusted. 
  
-### locks(`AccountId`): `Vec<BalanceLock>`
+### locks(`AssetId, AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.genericAsset.locks`
 - **summary**:   Any liquidity locks on some account balances. 
  
@@ -222,11 +228,50 @@ ___
 - **interface**: `api.query.genericAsset.stakingAssetId`
 - **summary**:   The identity of the asset which is the one that is designated for the chain's staking system. 
  
+### storageVersion(): `u32`
+- **interface**: `api.query.genericAsset.storageVersion`
+- **summary**:   Storage version of the pallet. 
+
+  This is set to v1 for new networks. 
+ 
 ### totalIssuance(`AssetId`): `Balance`
 - **interface**: `api.query.genericAsset.totalIssuance`
 - **summary**:   Total issuance of a given asset. 
 
   TWOX-NOTE: `AssetId` is trusted. 
+
+___
+
+
+## governance
+ 
+### council(): `Vec<AccountId>`
+- **interface**: `api.query.governance.council`
+- **summary**:   Ordered set of active council members 
+ 
+### nextProposalId(): `ProposalId`
+- **interface**: `api.query.governance.nextProposalId`
+- **summary**:   Next available ID for proposal 
+ 
+### proposalBond(): `Balance`
+- **interface**: `api.query.governance.proposalBond`
+- **summary**:   Proposal bond amount in 'wei' 
+ 
+### proposalCalls(`ProposalId`): `Option<Bytes>`
+- **interface**: `api.query.governance.proposalCalls`
+- **summary**:   Map from proposal Id to call if any 
+ 
+### proposals(`ProposalId`): `Option<Proposal>`
+- **interface**: `api.query.governance.proposals`
+- **summary**:   Map from proposal Id to proposal info 
+ 
+### proposalStatus(`ProposalId`): `Option<ProposalStatusInfo>`
+- **interface**: `api.query.governance.proposalStatus`
+- **summary**:   Map from proposal Id to status 
+ 
+### proposalVotes(`ProposalId`): `ProposalVoteInfo`
+- **interface**: `api.query.governance.proposalVotes`
+- **summary**:   Map from proposal Id to votes 
 
 ___
 
@@ -295,7 +340,7 @@ ___
  
 ### authoredBlocks(`SessionIndex, ValidatorId`): `u32`
 - **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:   For each session index, we keep a mapping of `T::ValidatorId` to the number of blocks authored by the given authority. 
+- **summary**:   For each session index, we keep a mapping of `ValidatorId<T>` to the number of blocks authored by the given authority. 
  
 ### heartbeatAfter(): `BlockNumber`
 - **interface**: `api.query.imOnline.heartbeatAfter`
@@ -789,7 +834,7 @@ ___
 - **interface**: `api.query.system.blockHash`
 - **summary**:   Map of block numbers to block hashes. 
  
-### blockWeight(): `ExtrinsicsWeight`
+### blockWeight(): `ConsumedWeight`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:   The current weight for the block. 
  
@@ -825,10 +870,6 @@ ___
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:   Extrinsics data for the current block (maps an extrinsic's index to its data). 
  
-### extrinsicsRoot(): `Hash`
-- **interface**: `api.query.system.extrinsicsRoot`
-- **summary**:   Extrinsics root of the current block, also part of the block header. 
- 
 ### lastRuntimeUpgrade(): `Option<LastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
 - **summary**:   Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened. 
@@ -840,6 +881,10 @@ ___
 ### parentHash(): `Hash`
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
+ 
+### upgradedToDualRefCount(): `bool`
+- **interface**: `api.query.system.upgradedToDualRefCount`
+- **summary**:   True if we have upgraded so that AccountInfo contains two types of `RefCount`. False (default) if not. 
  
 ### upgradedToU32RefCount(): `bool`
 - **interface**: `api.query.system.upgradedToU32RefCount`
@@ -878,22 +923,6 @@ ___
 - **interface**: `api.query.treasury.approvals`
 - **summary**:   Proposal indices that have been approved but not yet awarded. 
  
-### bounties(`BountyIndex`): `Option<Bounty>`
-- **interface**: `api.query.treasury.bounties`
-- **summary**:   Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<BountyIndex>`
-- **interface**: `api.query.treasury.bountyApprovals`
-- **summary**:   Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `BountyIndex`
-- **interface**: `api.query.treasury.bountyCount`
-- **summary**:   Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
-- **interface**: `api.query.treasury.bountyDescriptions`
-- **summary**:   The description of each bounty. 
- 
 ### proposalCount(): `ProposalIndex`
 - **interface**: `api.query.treasury.proposalCount`
 - **summary**:   Number of proposals that have been made. 
@@ -901,14 +930,6 @@ ___
 ### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:   Proposals that have been made. 
- 
-### reasons(`Hash`): `Option<Bytes>`
-- **interface**: `api.query.treasury.reasons`
-- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`Hash`): `Option<OpenTip>`
-- **interface**: `api.query.treasury.tips`
-- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
 
 ___
 

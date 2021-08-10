@@ -30,7 +30,7 @@ ___
  
 ### epochDuration: `u64`
 - **interface**: `api.consts.babe.epochDuration`
-- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. 
+- **summary**:   The number of **slots** that an epoch takes. We couple sessions to epochs, i.e. we start a new session once the new epoch begins. NOTE: Currently it is not possible to change the epoch duration after the chain has started. Attempting to do so will brick block production. 
  
 ### expectedBlockTime: `Moment`
 - **interface**: `api.consts.babe.expectedBlockTime`
@@ -130,29 +130,31 @@ ___
 
 ## system
  
-### blockExecutionWeight: `Weight`
-- **interface**: `api.consts.system.blockExecutionWeight`
-- **summary**:   The base weight of executing a block, independent of the transactions in the block. 
- 
 ### blockHashCount: `BlockNumber`
 - **interface**: `api.consts.system.blockHashCount`
-- **summary**:   The maximum number of blocks to allow in mortal eras. 
+- **summary**:   Maximum number of block number to block hash mappings to keep (oldest pruned first). 
+ 
+### blockLength: `BlockLength`
+- **interface**: `api.consts.system.blockLength`
+- **summary**:   The maximum length of a block (in bytes). 
+ 
+### blockWeights: `BlockWeights`
+- **interface**: `api.consts.system.blockWeights`
+- **summary**:   Block & extrinsics weights: base values and limits. 
  
 ### dbWeight: `RuntimeDbWeight`
 - **interface**: `api.consts.system.dbWeight`
 - **summary**:   The weight of runtime database operations the runtime can invoke. 
  
-### extrinsicBaseWeight: `Weight`
-- **interface**: `api.consts.system.extrinsicBaseWeight`
-- **summary**:   The base weight of an Extrinsic in the block, independent of the of extrinsic being executed. 
+### ss58Prefix: `u8`
+- **interface**: `api.consts.system.ss58Prefix`
+- **summary**:   The designated SS85 prefix of this chain. 
+
+  This replaces the "ss58Format" property declared in the chain spec. Reason is that the runtime should know about the prefix in order to make use of it as an identifier of the chain. 
  
-### maximumBlockLength: `u32`
-- **interface**: `api.consts.system.maximumBlockLength`
-- **summary**:   The maximum length of a block (in bytes). 
- 
-### maximumBlockWeight: `Weight`
-- **interface**: `api.consts.system.maximumBlockWeight`
-- **summary**:   The maximum weight of a block. 
+### version: `RuntimeVersion`
+- **interface**: `api.consts.system.version`
+- **summary**:   Get the chain's current version. 
 
 ___
 
@@ -181,32 +183,9 @@ ___
 
 ## treasury
  
-### bountyCuratorDeposit: `Permill`
-- **interface**: `api.consts.treasury.bountyCuratorDeposit`
-- **summary**:   Percentage of the curator fee that will be reserved upfront as deposit for bounty curator. 
- 
-### bountyDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyDepositBase`
-- **summary**:   The amount held on deposit for placing a bounty proposal. 
- 
-### bountyDepositPayoutDelay: `BlockNumber`
-- **interface**: `api.consts.treasury.bountyDepositPayoutDelay`
-- **summary**:   The delay period for which a bounty beneficiary need to wait before claim the payout. 
- 
-### bountyValueMinimum: `BalanceOf`
-- **interface**: `api.consts.treasury.bountyValueMinimum`
- 
 ### burn: `Permill`
 - **interface**: `api.consts.treasury.burn`
 - **summary**:   Percentage of spare funds (if any) that are burnt per spend period. 
- 
-### dataDepositPerByte: `BalanceOf`
-- **interface**: `api.consts.treasury.dataDepositPerByte`
-- **summary**:   The amount held on deposit per byte within the tip report reason or bounty description. 
- 
-### maximumReasonLength: `u32`
-- **interface**: `api.consts.treasury.maximumReasonLength`
-- **summary**:   Maximum acceptable reason length. 
  
 ### moduleId: `ModuleId`
 - **interface**: `api.consts.treasury.moduleId`
@@ -223,15 +202,3 @@ ___
 ### spendPeriod: `BlockNumber`
 - **interface**: `api.consts.treasury.spendPeriod`
 - **summary**:   Period between successive spends. 
- 
-### tipCountdown: `BlockNumber`
-- **interface**: `api.consts.treasury.tipCountdown`
-- **summary**:   The period for which a tip remains open after is has achieved threshold tippers. 
- 
-### tipFindersFee: `Percent`
-- **interface**: `api.consts.treasury.tipFindersFee`
-- **summary**:   The amount of the final tip which goes to the original reporter of the tip. 
- 
-### tipReportDepositBase: `BalanceOf`
-- **interface**: `api.consts.treasury.tipReportDepositBase`
-- **summary**:   The amount held on deposit for placing a tip report. 

@@ -24,6 +24,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[genericAsset](#genericasset)**
 
+- **[governance](#governance)**
+
 - **[grandpa](#grandpa)**
 
 - **[mmr](#mmr)**
@@ -482,6 +484,16 @@ ___
 - **interface**: `api.rpc.genericAsset.registeredAssets`
 - **jsonrpc**: `genericAsset_registeredAssets`
 - **summary**: Get all registered generic assets (symbol, decimal places)
+
+___
+
+
+## governance
+ 
+### getProposalVotes(): `Vec<ProposalVotes<AccountId>>`
+- **interface**: `api.rpc.governance.getProposalVotes`
+- **jsonrpc**: `governance_getProposalVotes`
+- **summary**: Get all proposals and the vote information
 
 ___
 

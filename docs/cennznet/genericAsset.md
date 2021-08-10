@@ -27,7 +27,7 @@ The following sections contain the module details.
 
   TWOX-NOTE: `AssetId` is trusted. 
  
-### locks(`AccountId`): `Vec<BalanceLock>`
+### locks(`AssetId, AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.genericAsset.locks`
 - **summary**:   Any liquidity locks on some account balances. 
  
@@ -54,6 +54,12 @@ The following sections contain the module details.
 ### stakingAssetId(): `AssetId`
 - **interface**: `api.query.genericAsset.stakingAssetId`
 - **summary**:   The identity of the asset which is the one that is designated for the chain's staking system. 
+ 
+### storageVersion(): `u32`
+- **interface**: `api.query.genericAsset.storageVersion`
+- **summary**:   Storage version of the pallet. 
+
+  This is set to v1 for new networks. 
  
 ### totalIssuance(`AssetId`): `Balance`
 - **interface**: `api.query.genericAsset.totalIssuance`
@@ -97,6 +103,10 @@ The following sections contain the module details.
 
    
  
+### transferAll(asset_id: `Compact<AssetId>`, to: `AccountId`)
+- **interface**: `api.tx.genericAsset.transferAll`
+- **summary**:   Transfer all of the free balance of `asset_id` to another account. 
+ 
 ### updateAssetInfo(asset_id: `Compact<AssetId>`, info: `AssetInfo`)
 - **interface**: `api.tx.genericAsset.updateAssetInfo`
 - **summary**:   Updates asset info for a given `asset_id`. 
@@ -115,6 +125,9 @@ The following sections contain the module details.
  
 # Error
  
+### AccountIdNotExist
+- **summary**:   There is no such account id in the storage. 
+ 
 ### AssetIdExhausted
 - **summary**:   No new assets id available. 
  
@@ -124,11 +137,17 @@ The following sections contain the module details.
 ### AssetIdNotExist
 - **summary**:   Failure due to asset id not existing on chain 
  
+### DecimalTooLarge
+- **summary**:   The integer for decimal places is too large for conversion into u128. 
+ 
 ### FreeBurningUnderflow
 - **summary**:   Free balance got underflowed after burning. 
  
 ### FreeMintingOverflow
 - **summary**:   Free balance got overflowed after minting. 
+ 
+### InitialIssuanceTooLarge
+- **summary**:   The integer for initial issuance is too large for conversion into u128. 
  
 ### InsufficientBalance
 - **summary**:   The balance is too low to send amount. 
@@ -157,6 +176,9 @@ The following sections contain the module details.
 ### ZeroAmount
 - **summary**:   Cannot transfer zero amount. 
  
+### ZeroExistentialDeposit
+- **summary**:   Existential deposit for assets should always be greater than zero. 
+ 
 # Events
  
 ### AssetInfoUpdated(`AssetId`, `AssetInfo`)
@@ -167,6 +189,9 @@ The following sections contain the module details.
  
 ### Created(`AssetId`, `AccountId`, `AssetOptions`)
 - **summary**:   Asset created (asset_id, creator, asset_options). 
+ 
+### DustReclaimed(`AssetId`, `AccountId`, `Balance`)
+- **summary**:   Asset balance storage has been reclaimed due to falling below the existential deposit 
  
 ### Minted(`AssetId`, `AccountId`, `Balance`)
 - **summary**:   New asset minted (asset_id, account, amount). 

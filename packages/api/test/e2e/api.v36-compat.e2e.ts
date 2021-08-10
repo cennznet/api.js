@@ -114,7 +114,7 @@ describe('runtime v36 compatibility', () => {
             done();
         });
 
-        it.skip('Emits events when storage changes', async done => {
+        it('Emits events when storage changes', async done => {
             let unsubscribeFn;
             let count = 0;
             const reservedIdStart: number = 17000;
@@ -137,8 +137,8 @@ describe('runtime v36 compatibility', () => {
             const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
             const option = {initialIssuance : 0, permissions};
             const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-            const assetInfo: AssetInfoV40 = api.registry.createType('AssetInfoV40', {symbol: 'SYLO', decimalPlaces: 3});
-            console.log('assetInfo::',assetInfo.toHuman());
+
+            const assetInfo: AssetInfoV40 = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
             await api.tx.sudo
             .sudo(api.tx.genericAsset
                 .create(alice.address,

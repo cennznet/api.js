@@ -12,6 +12,8 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[genericAsset](#genericasset)**
 
+- **[governance](#governance)**
+
 - **[grandpa](#grandpa)**
 
 - **[identity](#identity)**
@@ -83,6 +85,9 @@ ___
 ### Created(`AssetId`, `AccountId`, `AssetOptions`)
 - **summary**:   Asset created (asset_id, creator, asset_options). 
  
+### DustReclaimed(`AssetId`, `AccountId`, `Balance`)
+- **summary**:   Asset balance storage has been reclaimed due to falling below the existential deposit 
+ 
 ### Minted(`AssetId`, `AccountId`, `Balance`)
 - **summary**:   New asset minted (asset_id, account, amount). 
  
@@ -91,6 +96,17 @@ ___
  
 ### Transferred(`AssetId`, `AccountId`, `AccountId`, `Balance`)
 - **summary**:   Asset transfer succeeded (asset_id, from, to, amount). 
+
+___
+
+
+## governance
+ 
+### EnactProposal(`ProposalId`, `bool`)
+- **summary**:   A proposal was enacted, success 
+ 
+### SubmitProposal(`ProposalId`)
+- **summary**:   A proposal was submitted 
 
 ___
 
@@ -311,7 +327,7 @@ ___
 ### Sudid(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
  
-### SudoAsDone(`bool`)
+### SudoAsDone(`DispatchResult`)
 - **summary**:   A sudo just took place. \[result\] 
 
 ___
@@ -333,6 +349,9 @@ ___
  
 ### NewAccount(`AccountId`)
 - **summary**:   A new \[account\] was created. 
+ 
+### Remarked(`AccountId`, `Hash`)
+- **summary**:   On on-chain remark happened. \[origin, remark_hash\] 
 
 ___
 
@@ -342,35 +361,11 @@ ___
 ### Awarded(`ProposalIndex`, `Balance`, `AccountId`)
 - **summary**:   Some funds have been allocated. \[proposal_index, award, beneficiary\] 
  
-### BountyAwarded(`BountyIndex`, `AccountId`)
-- **summary**:   A bounty is awarded to a beneficiary. [index, beneficiary] 
- 
-### BountyBecameActive(`BountyIndex`)
-- **summary**:   A bounty proposal is funded and became active. [index] 
- 
-### BountyCanceled(`BountyIndex`)
-- **summary**:   A bounty is cancelled. [index] 
- 
-### BountyClaimed(`BountyIndex`, `Balance`, `AccountId`)
-- **summary**:   A bounty is claimed by beneficiary. [index, payout, beneficiary] 
- 
-### BountyExtended(`BountyIndex`)
-- **summary**:   A bounty expiry is extended. [index] 
- 
-### BountyProposed(`BountyIndex`)
-- **summary**:   New bounty proposal. [index] 
- 
-### BountyRejected(`BountyIndex`, `Balance`)
-- **summary**:   A bounty proposal was rejected; funds were slashed. [index, bond] 
- 
 ### Burnt(`Balance`)
 - **summary**:   Some of our funds have been burnt. \[burn\] 
  
 ### Deposit(`Balance`)
 - **summary**:   Some funds have been deposited. \[deposit\] 
- 
-### NewTip(`Hash`)
-- **summary**:   A new tip suggestion has been opened. \[tip_hash\] 
  
 ### Proposed(`ProposalIndex`)
 - **summary**:   New proposal. \[proposal_index\] 
@@ -383,15 +378,6 @@ ___
  
 ### Spending(`Balance`)
 - **summary**:   We have ended a spend period and will now allocate funds. \[budget_remaining\] 
- 
-### TipClosed(`Hash`, `AccountId`, `Balance`)
-- **summary**:   A tip suggestion has been closed. \[tip_hash, who, payout\] 
- 
-### TipClosing(`Hash`)
-- **summary**:   A tip suggestion has reached threshold and is closing. \[tip_hash\] 
- 
-### TipRetracted(`Hash`)
-- **summary**:   A tip suggestion has been retracted. \[tip_hash\] 
 
 ___
 

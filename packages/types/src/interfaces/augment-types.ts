@@ -4,7 +4,7 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfo, AssetInfoV40, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
@@ -192,8 +192,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<AssetDestroyWitness>': Option<AssetDestroyWitness>;
     'Option<AssetDetails>': Option<AssetDetails>;
     'Option<AssetId>': Option<AssetId>;
-    'Option<AssetInfo>': Option<AssetInfo>;
     'Option<AssetInfoV40>': Option<AssetInfoV40>;
+    'Option<AssetInfoV41>': Option<AssetInfoV41>;
     'Option<AssetInstance>': Option<AssetInstance>;
     'Option<AssetMetadata>': Option<AssetMetadata>;
     'Option<AssetOptions>': Option<AssetOptions>;
@@ -968,8 +968,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<AssetDestroyWitness>': Vec<AssetDestroyWitness>;
     'Vec<AssetDetails>': Vec<AssetDetails>;
     'Vec<AssetId>': Vec<AssetId>;
-    'Vec<AssetInfo>': Vec<AssetInfo>;
     'Vec<AssetInfoV40>': Vec<AssetInfoV40>;
+    'Vec<AssetInfoV41>': Vec<AssetInfoV41>;
     'Vec<AssetInstance>': Vec<AssetInstance>;
     'Vec<AssetMetadata>': Vec<AssetMetadata>;
     'Vec<AssetOptions>': Vec<AssetOptions>;
@@ -1744,8 +1744,8 @@ declare module '@polkadot/types/types/registry' {
     AssetDestroyWitness: AssetDestroyWitness;
     AssetDetails: AssetDetails;
     AssetId: AssetId;
-    AssetInfo: AssetInfo;
     AssetInfoV40: AssetInfoV40;
+    AssetInfoV41: AssetInfoV41;
     AssetInstance: AssetInstance;
     AssetMetadata: AssetMetadata;
     AssetOptions: AssetOptions;

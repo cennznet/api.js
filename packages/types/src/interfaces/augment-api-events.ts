@@ -3,7 +3,7 @@
 
 import type { Bytes, Option, Vec, bool, u32 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
-import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
@@ -333,7 +333,7 @@ declare module '@polkadot/api/types/events' {
     staking: {
       /**
        * An account has bonded this amount. \[stash, amount\]
-       * 
+       *
        * NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
        * it will not be emitted for staking rewards when they are added to stake.
        **/

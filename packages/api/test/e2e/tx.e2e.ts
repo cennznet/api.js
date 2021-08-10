@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, LiquidityPriceResponse } from "@cennznet/types";
+import { AssetInfoV40 as AssetInfo, AssetOptions, LiquidityPriceResponse } from "@cennznet/types";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';

@@ -14,7 +14,7 @@
 
 import BN from 'bn.js';
 import {
-  AssetInfo,
+  AssetInfoV41 as AssetInfo,
   AssetOptions,
   LiquidityPriceResponse,
   LiquidityValueResponse,

@@ -16,7 +16,7 @@ export default {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
     },
-    AssetInfo: {
+    AssetInfoV41: {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
       existentialDeposit: 'u64'

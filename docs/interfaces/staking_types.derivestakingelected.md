@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:22](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/types.ts#L22)
+[packages/api/src/derives/staking/types.ts:23](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/types.ts#L23)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:23](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/types.ts#L23)
+[packages/api/src/derives/staking/types.ts:24](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/types.ts#L24)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:24](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/types.ts#L24)
+[packages/api/src/derives/staking/types.ts:25](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/types.ts#L25)
