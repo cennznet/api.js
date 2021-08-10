@@ -51,6 +51,7 @@ jobs:
           - rpc.decodeResponse
           - send
           - getMetadata
+          - governance
     steps:
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
