@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [2.0.0-alpha.3](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.0.0-alpha.3) (11/08/2021)
+### Added:
+    - LookupSource type definition
+    - Types for governance module
+### Changed:
+    - RPC types for CENNZX
+    - AssetInfo - additional field (existential deposit)
 ## [2.0.0-alpha.2](https://github.com/cennznet/api.js/compare/release/1.4.0-alpha.0...prerelease/2.0.0-alpha.2) (11/05/2021)
 ### Changed:
    - Use polkadots latest beta version (4.9.3-11) for api and (6.3.2-9) for util
