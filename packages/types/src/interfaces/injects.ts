@@ -37,6 +37,18 @@ const _types = {
   },
 };
 
+const shareType37Onwards = {
+  GenericExtrinsic: CENNZnetExtrinsic,
+  // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
+  StakingLedger: 'StakingLedgerTo223',
+  ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
+  ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
+  MessageId: 'SyloMessageId',
+  EnhancedTokenId,
+  // CENNZnet lookup source is 1:1 with address
+  LookupSource: 'Address',
+};
+
 export const typesBundle: OverrideBundleType = {
   spec: {
     cennznet: {
@@ -50,20 +62,24 @@ export const typesBundle: OverrideBundleType = {
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
+            AssetInfo: 'AssetInfoV40'
           },
         },
         {
-          minmax: [37, undefined],
+          minmax: [37, 40],
           types: {
-            GenericExtrinsic: CENNZnetExtrinsic,
-            // In our staking runtime module, we use StakingLedgerTo223 definition of polkadot's staking ledger
-            StakingLedger: 'StakingLedgerTo223',
-            ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV1,
-            ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV1,
-            MessageId: 'SyloMessageId',
-            EnhancedTokenId,
-            // CENNZnet lookup source is 1:1 with address
-            LookupSource: 'Address',
+            ...shareType37Onwards,
+            AssetInfo: 'AssetInfoV40',
+            Proposal: 'GovernanceProposal'
+          },
+        },
+        {
+          minmax: [41, undefined],
+          types: {
+            ...shareType37Onwards,
+            AssetInfo: 'AssetInfoV41',
+            // Proposal also exist in polkadots democracy module
+            Proposal: 'GovernanceProposal'
           },
         },
       ],

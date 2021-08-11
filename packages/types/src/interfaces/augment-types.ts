@@ -4,7 +4,8 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfo, AssetInfoV40, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
@@ -114,6 +115,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<PerU16>': Compact<PerU16>;
     'Compact<Priority>': Compact<Priority>;
     'Compact<PropIndex>': Compact<PropIndex>;
+    'Compact<ProposalId>': Compact<ProposalId>;
     'Compact<ProposalIndex>': Compact<ProposalIndex>;
     'Compact<ReferendumIndex>': Compact<ReferendumIndex>;
     'Compact<RegistrarIndex>': Compact<RegistrarIndex>;
@@ -190,8 +192,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<AssetDestroyWitness>': Option<AssetDestroyWitness>;
     'Option<AssetDetails>': Option<AssetDetails>;
     'Option<AssetId>': Option<AssetId>;
-    'Option<AssetInfo>': Option<AssetInfo>;
     'Option<AssetInfoV40>': Option<AssetInfoV40>;
+    'Option<AssetInfoV41>': Option<AssetInfoV41>;
     'Option<AssetInstance>': Option<AssetInstance>;
     'Option<AssetMetadata>': Option<AssetMetadata>;
     'Option<AssetOptions>': Option<AssetOptions>;
@@ -454,6 +456,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<GiltBid>': Option<GiltBid>;
     'Option<GlobalValidationData>': Option<GlobalValidationData>;
     'Option<GlobalValidationSchedule>': Option<GlobalValidationSchedule>;
+    'Option<GovernanceProposal>': Option<GovernanceProposal>;
     'Option<Group>': Option<Group>;
     'Option<GroupIndex>': Option<GroupIndex>;
     'Option<H1024>': Option<H1024>;
@@ -669,7 +672,11 @@ declare module '@polkadot/types/types/registry' {
     'Option<PriorLock>': Option<PriorLock>;
     'Option<PropIndex>': Option<PropIndex>;
     'Option<Proposal>': Option<Proposal>;
+    'Option<ProposalId>': Option<ProposalId>;
     'Option<ProposalIndex>': Option<ProposalIndex>;
+    'Option<ProposalStatusInfo>': Option<ProposalStatusInfo>;
+    'Option<ProposalVoteInfo>': Option<ProposalVoteInfo>;
+    'Option<ProposalVotes>': Option<ProposalVotes>;
     'Option<ProxyAnnouncement>': Option<ProxyAnnouncement>;
     'Option<ProxyDefinition>': Option<ProxyDefinition>;
     'Option<ProxyState>': Option<ProxyState>;
@@ -961,8 +968,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<AssetDestroyWitness>': Vec<AssetDestroyWitness>;
     'Vec<AssetDetails>': Vec<AssetDetails>;
     'Vec<AssetId>': Vec<AssetId>;
-    'Vec<AssetInfo>': Vec<AssetInfo>;
     'Vec<AssetInfoV40>': Vec<AssetInfoV40>;
+    'Vec<AssetInfoV41>': Vec<AssetInfoV41>;
     'Vec<AssetInstance>': Vec<AssetInstance>;
     'Vec<AssetMetadata>': Vec<AssetMetadata>;
     'Vec<AssetOptions>': Vec<AssetOptions>;
@@ -1225,6 +1232,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<GiltBid>': Vec<GiltBid>;
     'Vec<GlobalValidationData>': Vec<GlobalValidationData>;
     'Vec<GlobalValidationSchedule>': Vec<GlobalValidationSchedule>;
+    'Vec<GovernanceProposal>': Vec<GovernanceProposal>;
     'Vec<Group>': Vec<Group>;
     'Vec<GroupIndex>': Vec<GroupIndex>;
     'Vec<H1024>': Vec<H1024>;
@@ -1440,7 +1448,11 @@ declare module '@polkadot/types/types/registry' {
     'Vec<PriorLock>': Vec<PriorLock>;
     'Vec<PropIndex>': Vec<PropIndex>;
     'Vec<Proposal>': Vec<Proposal>;
+    'Vec<ProposalId>': Vec<ProposalId>;
     'Vec<ProposalIndex>': Vec<ProposalIndex>;
+    'Vec<ProposalStatusInfo>': Vec<ProposalStatusInfo>;
+    'Vec<ProposalVoteInfo>': Vec<ProposalVoteInfo>;
+    'Vec<ProposalVotes>': Vec<ProposalVotes>;
     'Vec<ProxyAnnouncement>': Vec<ProxyAnnouncement>;
     'Vec<ProxyDefinition>': Vec<ProxyDefinition>;
     'Vec<ProxyState>': Vec<ProxyState>;
@@ -1732,8 +1744,8 @@ declare module '@polkadot/types/types/registry' {
     AssetDestroyWitness: AssetDestroyWitness;
     AssetDetails: AssetDetails;
     AssetId: AssetId;
-    AssetInfo: AssetInfo;
     AssetInfoV40: AssetInfoV40;
+    AssetInfoV41: AssetInfoV41;
     AssetInstance: AssetInstance;
     AssetMetadata: AssetMetadata;
     AssetOptions: AssetOptions;
@@ -1996,6 +2008,7 @@ declare module '@polkadot/types/types/registry' {
     GiltBid: GiltBid;
     GlobalValidationData: GlobalValidationData;
     GlobalValidationSchedule: GlobalValidationSchedule;
+    GovernanceProposal: GovernanceProposal;
     Group: Group;
     GroupIndex: GroupIndex;
     H1024: H1024;
@@ -2211,7 +2224,11 @@ declare module '@polkadot/types/types/registry' {
     PriorLock: PriorLock;
     PropIndex: PropIndex;
     Proposal: Proposal;
+    ProposalId: ProposalId;
     ProposalIndex: ProposalIndex;
+    ProposalStatusInfo: ProposalStatusInfo;
+    ProposalVoteInfo: ProposalVoteInfo;
+    ProposalVotes: ProposalVotes;
     ProxyAnnouncement: ProxyAnnouncement;
     ProxyDefinition: ProxyDefinition;
     ProxyState: ProxyState;

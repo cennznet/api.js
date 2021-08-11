@@ -248,8 +248,8 @@ The following sections contain the module details.
 ### NoToken
 - **summary**:   The token does not exist 
  
-### RoyaltiesOvercommitment
-- **summary**:   Total royalties would exceed 100% of sale 
+### RoyaltiesInvalid
+- **summary**:   Total royalties would exceed 100% of sale or an empty vec is supplied 
  
 ### RoyaltiesProtection
 - **summary**:   Tokens with different individual royalties cannot be sold together 
@@ -329,7 +329,7 @@ Get map of collection id to collection name
 
 #### Defined in
 
-[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/collectionInfo.ts#L13)
+[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/collectionInfo.ts#L13)
 
 # Module: nft/openCollectionListings
 
@@ -355,7 +355,7 @@ Gets all tokens in a collection that have an open listing
 
 #### Defined in
 
-[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/openCollectionListings.ts#L30)
+[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/openCollectionListings.ts#L30)
 
 # Module: nft/tokenInfo
 
@@ -381,7 +381,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:31](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfo.ts#L31)
+[packages/api/src/derives/nft/tokenInfo.ts:31](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/tokenInfo.ts#L31)
 
 ___
 
@@ -405,7 +405,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:64](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfo.ts#L64)
+[packages/api/src/derives/nft/tokenInfo.ts:64](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/tokenInfo.ts#L64)
 
 # Module: nft/tokenInfoForCollection
 
@@ -423,7 +423,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfoForCollection.ts:28](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfoForCollection.ts#L28)
+[packages/api/src/derives/nft/tokenInfoForCollection.ts:28](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/tokenInfoForCollection.ts#L28)
 
 # Module: nft/types
 

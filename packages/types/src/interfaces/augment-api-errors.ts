@@ -5,6 +5,13 @@ import type { ApiTypes } from '@polkadot/api/types';
 
 declare module '@polkadot/api/types/errors' {
   export interface AugmentedErrors<ApiType> {
+    attestation: {
+      TopicNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     authorship: {
       /**
        * The uncle is genesis.
@@ -65,6 +72,10 @@ declare module '@polkadot/api/types/errors' {
     };
     genericAsset: {
       /**
+       * There is no such account id in the storage.
+       **/
+      AccountIdNotExist: AugmentedError<ApiType>;
+      /**
        * No new assets id available.
        **/
       AssetIdExhausted: AugmentedError<ApiType>;
@@ -77,6 +88,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       AssetIdNotExist: AugmentedError<ApiType>;
       /**
+       * The integer for decimal places is too large for conversion into u128.
+       **/
+      DecimalTooLarge: AugmentedError<ApiType>;
+      /**
        * Free balance got underflowed after burning.
        **/
       FreeBurningUnderflow: AugmentedError<ApiType>;
@@ -84,6 +99,10 @@ declare module '@polkadot/api/types/errors' {
        * Free balance got overflowed after minting.
        **/
       FreeMintingOverflow: AugmentedError<ApiType>;
+      /**
+       * The integer for initial issuance is too large for conversion into u128.
+       **/
+      InitialIssuanceTooLarge: AugmentedError<ApiType>;
       /**
        * The balance is too low to send amount.
        **/
@@ -120,6 +139,10 @@ declare module '@polkadot/api/types/errors' {
        * Cannot transfer zero amount.
        **/
       ZeroAmount: AugmentedError<ApiType>;
+      /**
+       * Existential deposit for assets should always be greater than zero.
+       **/
+      ZeroExistentialDeposit: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -255,6 +278,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       AlreadyStored: AugmentedError<ApiType>;
       /**
+       * The maximum weight information provided was too low.
+       **/
+      MaxWeightTooLow: AugmentedError<ApiType>;
+      /**
        * Threshold must be 2 or greater.
        **/
       MinimumThreshold: AugmentedError<ApiType>;
@@ -294,10 +321,6 @@ declare module '@polkadot/api/types/errors' {
        * A timepoint was given, yet no multisig operation is underway.
        **/
       UnexpectedTimepoint: AugmentedError<ApiType>;
-      /**
-       * The maximum weight information provided was too low.
-       **/
-      WeightTooLow: AugmentedError<ApiType>;
       /**
        * A different timepoint was given to the multisig operation that is underway.
        **/
@@ -361,9 +384,9 @@ declare module '@polkadot/api/types/errors' {
        **/
       NoToken: AugmentedError<ApiType>;
       /**
-       * Total royalties would exceed 100% of sale
+       * Total royalties would exceed 100% of sale or an empty vec is supplied
        **/
-      RoyaltiesOvercommitment: AugmentedError<ApiType>;
+      RoyaltiesInvalid: AugmentedError<ApiType>;
       /**
        * Tokens with different individual royalties cannot be sold together
        **/
@@ -412,6 +435,10 @@ declare module '@polkadot/api/types/errors' {
        * Invalid ownership proof.
        **/
       InvalidProof: AugmentedError<ApiType>;
+      /**
+       * Key setting account is not live, so it's impossible to associate keys.
+       **/
+      NoAccount: AugmentedError<ApiType>;
       /**
        * No associated validator ID for account.
        **/
@@ -588,58 +615,13 @@ declare module '@polkadot/api/types/errors' {
     };
     treasury: {
       /**
-       * The tip was already found/started.
-       **/
-      AlreadyKnown: AugmentedError<ApiType>;
-      /**
        * Proposer's balance is too low.
        **/
       InsufficientProposersBalance: AugmentedError<ApiType>;
       /**
-       * Invalid bounty fee.
-       **/
-      InvalidFee: AugmentedError<ApiType>;
-      /**
        * No proposal or bounty at that index.
        **/
       InvalidIndex: AugmentedError<ApiType>;
-      /**
-       * Invalid bounty value.
-       **/
-      InvalidValue: AugmentedError<ApiType>;
-      /**
-       * The account attempting to retract the tip is not the finder of the tip.
-       **/
-      NotFinder: AugmentedError<ApiType>;
-      /**
-       * A bounty payout is pending.
-       * To cancel the bounty, you must unassign and slash the curator.
-       **/
-      PendingPayout: AugmentedError<ApiType>;
-      /**
-       * The tip cannot be claimed/closed because it's still in the countdown period.
-       **/
-      Premature: AugmentedError<ApiType>;
-      /**
-       * The reason given is just too big.
-       **/
-      ReasonTooBig: AugmentedError<ApiType>;
-      /**
-       * Require bounty curator.
-       **/
-      RequireCurator: AugmentedError<ApiType>;
-      /**
-       * The tip cannot be claimed/closed because there are not enough tippers yet.
-       **/
-      StillOpen: AugmentedError<ApiType>;
-      /**
-       * The bounty status is unexpected.
-       **/
-      UnexpectedStatus: AugmentedError<ApiType>;
-      /**
-       * The tip hash is unknown.
-       **/
-      UnknownTip: AugmentedError<ApiType>;
       /**
        * Generic error
        **/

@@ -5,7 +5,8 @@ import type { Metadata } from '@polkadot/metadata';
 import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
 import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
 import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
@@ -340,6 +341,12 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        * Get all registered generic assets (symbol, decimal places)
        **/
       registeredAssets: AugmentedRpc<() => Observable<Vec<ITuple<[AssetId, AssetInfo]>>>>;
+    };
+    governance: {
+      /**
+       * Get all proposals and the vote information
+       **/
+      getProposalVotes: AugmentedRpc<() => Observable<Vec<ProposalVotes>>>;
     };
     // NOTE: need some way to merge during generation, ignore for now
     // @ts-ignore

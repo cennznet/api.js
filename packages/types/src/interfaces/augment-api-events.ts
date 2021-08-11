@@ -3,7 +3,8 @@
 
 import type { Bytes, Option, Vec, bool, u32 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
-import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { ProposalId } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
@@ -16,7 +17,6 @@ import type { TaskAddress } from '@polkadot/types/interfaces/scheduler';
 import type { IdentificationTuple, SessionIndex } from '@polkadot/types/interfaces/session';
 import type { ElectionCompute } from '@polkadot/types/interfaces/staking';
 import type { DispatchError, DispatchInfo, DispatchResult } from '@polkadot/types/interfaces/system';
-import type { BountyIndex } from '@polkadot/types/interfaces/treasury';
 import type { Timepoint } from '@polkadot/types/interfaces/utility';
 import type { ApiTypes } from '@polkadot/api/types';
 
@@ -67,6 +67,10 @@ declare module '@polkadot/api/types/events' {
        **/
       Created: AugmentedEvent<ApiType, [AssetId, AccountId, AssetOptions]>;
       /**
+       * Asset balance storage has been reclaimed due to falling below the existential deposit
+       **/
+      DustReclaimed: AugmentedEvent<ApiType, [AssetId, AccountId, Balance]>;
+      /**
        * New asset minted (asset_id, account, amount).
        **/
       Minted: AugmentedEvent<ApiType, [AssetId, AccountId, Balance]>;
@@ -78,6 +82,20 @@ declare module '@polkadot/api/types/events' {
        * Asset transfer succeeded (asset_id, from, to, amount).
        **/
       Transferred: AugmentedEvent<ApiType, [AssetId, AccountId, AccountId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    governance: {
+      /**
+       * A proposal was enacted, success
+       **/
+      EnactProposal: AugmentedEvent<ApiType, [ProposalId, bool]>;
+      /**
+       * A proposal was submitted
+       **/
+      SubmitProposal: AugmentedEvent<ApiType, [ProposalId]>;
       /**
        * Generic event
        **/
@@ -315,7 +333,7 @@ declare module '@polkadot/api/types/events' {
     staking: {
       /**
        * An account has bonded this amount. \[stash, amount\]
-       * 
+       *
        * NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
        * it will not be emitted for staking rewards when they are added to stake.
        **/
@@ -375,7 +393,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * A sudo just took place. \[result\]
        **/
-      SudoAsDone: AugmentedEvent<ApiType, [bool]>;
+      SudoAsDone: AugmentedEvent<ApiType, [DispatchResult]>;
       /**
        * Generic event
        **/
@@ -403,6 +421,10 @@ declare module '@polkadot/api/types/events' {
        **/
       NewAccount: AugmentedEvent<ApiType, [AccountId]>;
       /**
+       * On on-chain remark happened. \[origin, remark_hash\]
+       **/
+      Remarked: AugmentedEvent<ApiType, [AccountId, Hash]>;
+      /**
        * Generic event
        **/
       [key: string]: AugmentedEvent<ApiType>;
@@ -413,34 +435,6 @@ declare module '@polkadot/api/types/events' {
        **/
       Awarded: AugmentedEvent<ApiType, [ProposalIndex, Balance, AccountId]>;
       /**
-       * A bounty is awarded to a beneficiary. [index, beneficiary]
-       **/
-      BountyAwarded: AugmentedEvent<ApiType, [BountyIndex, AccountId]>;
-      /**
-       * A bounty proposal is funded and became active. [index]
-       **/
-      BountyBecameActive: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty is cancelled. [index]
-       **/
-      BountyCanceled: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty is claimed by beneficiary. [index, payout, beneficiary]
-       **/
-      BountyClaimed: AugmentedEvent<ApiType, [BountyIndex, Balance, AccountId]>;
-      /**
-       * A bounty expiry is extended. [index]
-       **/
-      BountyExtended: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * New bounty proposal. [index]
-       **/
-      BountyProposed: AugmentedEvent<ApiType, [BountyIndex]>;
-      /**
-       * A bounty proposal was rejected; funds were slashed. [index, bond]
-       **/
-      BountyRejected: AugmentedEvent<ApiType, [BountyIndex, Balance]>;
-      /**
        * Some of our funds have been burnt. \[burn\]
        **/
       Burnt: AugmentedEvent<ApiType, [Balance]>;
@@ -448,10 +442,6 @@ declare module '@polkadot/api/types/events' {
        * Some funds have been deposited. \[deposit\]
        **/
       Deposit: AugmentedEvent<ApiType, [Balance]>;
-      /**
-       * A new tip suggestion has been opened. \[tip_hash\]
-       **/
-      NewTip: AugmentedEvent<ApiType, [Hash]>;
       /**
        * New proposal. \[proposal_index\]
        **/
@@ -469,18 +459,6 @@ declare module '@polkadot/api/types/events' {
        * We have ended a spend period and will now allocate funds. \[budget_remaining\]
        **/
       Spending: AugmentedEvent<ApiType, [Balance]>;
-      /**
-       * A tip suggestion has been closed. \[tip_hash, who, payout\]
-       **/
-      TipClosed: AugmentedEvent<ApiType, [Hash, AccountId, Balance]>;
-      /**
-       * A tip suggestion has reached threshold and is closing. \[tip_hash\]
-       **/
-      TipClosing: AugmentedEvent<ApiType, [Hash]>;
-      /**
-       * A tip suggestion has been retracted. \[tip_hash\]
-       **/
-      TipRetracted: AugmentedEvent<ApiType, [Hash]>;
       /**
        * Generic event
        **/

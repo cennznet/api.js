@@ -1,12 +1,14 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Vec, u16, u32, u64 } from '@polkadot/types';
+import type { Vec, u16, u32, u64, u8 } from '@polkadot/types';
 import type { Codec } from '@polkadot/types/types';
-import type { BalanceOf, BlockNumber, ModuleId, Moment, Perbill, Percent, Permill, RuntimeDbWeight, Weight } from '@polkadot/types/interfaces/runtime';
+import type { BalanceOf, BlockNumber, ModuleId, Moment, Perbill, Permill, RuntimeDbWeight } from '@polkadot/types/interfaces/runtime';
 import type { SessionIndex } from '@polkadot/types/interfaces/session';
 import type { EraIndex } from '@polkadot/types/interfaces/staking';
+import type { RuntimeVersion } from '@polkadot/types/interfaces/state';
 import type { WeightToFeeCoefficient } from '@polkadot/types/interfaces/support';
+import type { BlockLength, BlockWeights } from '@polkadot/types/interfaces/system';
 import type { ApiTypes } from '@polkadot/api/types';
 
 declare module '@polkadot/api/types/consts' {
@@ -15,6 +17,9 @@ declare module '@polkadot/api/types/consts' {
       /**
        * The number of **slots** that an epoch takes. We couple sessions to
        * epochs, i.e. we start a new session once the new epoch begins.
+       * NOTE: Currently it is not possible to change the epoch duration
+       * after the chain has started. Attempting to do so will brick block
+       * production.
        **/
       epochDuration: u64 & AugmentedConst<ApiType>;
       /**
@@ -134,29 +139,33 @@ declare module '@polkadot/api/types/consts' {
     };
     system: {
       /**
-       * The base weight of executing a block, independent of the transactions in the block.
-       **/
-      blockExecutionWeight: Weight & AugmentedConst<ApiType>;
-      /**
-       * The maximum number of blocks to allow in mortal eras.
+       * Maximum number of block number to block hash mappings to keep (oldest pruned first).
        **/
       blockHashCount: BlockNumber & AugmentedConst<ApiType>;
+      /**
+       * The maximum length of a block (in bytes).
+       **/
+      blockLength: BlockLength & AugmentedConst<ApiType>;
+      /**
+       * Block & extrinsics weights: base values and limits.
+       **/
+      blockWeights: BlockWeights & AugmentedConst<ApiType>;
       /**
        * The weight of runtime database operations the runtime can invoke.
        **/
       dbWeight: RuntimeDbWeight & AugmentedConst<ApiType>;
       /**
-       * The base weight of an Extrinsic in the block, independent of the of extrinsic being executed.
+       * The designated SS85 prefix of this chain.
+       * 
+       * This replaces the "ss58Format" property declared in the chain spec. Reason is
+       * that the runtime should know about the prefix in order to make use of it as
+       * an identifier of the chain.
        **/
-      extrinsicBaseWeight: Weight & AugmentedConst<ApiType>;
+      ss58Prefix: u8 & AugmentedConst<ApiType>;
       /**
-       * The maximum length of a block (in bytes).
+       * Get the chain's current version.
        **/
-      maximumBlockLength: u32 & AugmentedConst<ApiType>;
-      /**
-       * The maximum weight of a block.
-       **/
-      maximumBlockWeight: Weight & AugmentedConst<ApiType>;
+      version: RuntimeVersion & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/
@@ -191,30 +200,9 @@ declare module '@polkadot/api/types/consts' {
     };
     treasury: {
       /**
-       * Percentage of the curator fee that will be reserved upfront as deposit for bounty curator.
-       **/
-      bountyCuratorDeposit: Permill & AugmentedConst<ApiType>;
-      /**
-       * The amount held on deposit for placing a bounty proposal.
-       **/
-      bountyDepositBase: BalanceOf & AugmentedConst<ApiType>;
-      /**
-       * The delay period for which a bounty beneficiary need to wait before claim the payout.
-       **/
-      bountyDepositPayoutDelay: BlockNumber & AugmentedConst<ApiType>;
-      bountyValueMinimum: BalanceOf & AugmentedConst<ApiType>;
-      /**
        * Percentage of spare funds (if any) that are burnt per spend period.
        **/
       burn: Permill & AugmentedConst<ApiType>;
-      /**
-       * The amount held on deposit per byte within the tip report reason or bounty description.
-       **/
-      dataDepositPerByte: BalanceOf & AugmentedConst<ApiType>;
-      /**
-       * Maximum acceptable reason length.
-       **/
-      maximumReasonLength: u32 & AugmentedConst<ApiType>;
       /**
        * The treasury's module id, used for deriving its sovereign account ID.
        **/
@@ -232,18 +220,6 @@ declare module '@polkadot/api/types/consts' {
        * Period between successive spends.
        **/
       spendPeriod: BlockNumber & AugmentedConst<ApiType>;
-      /**
-       * The period for which a tip remains open after is has achieved threshold tippers.
-       **/
-      tipCountdown: BlockNumber & AugmentedConst<ApiType>;
-      /**
-       * The amount of the final tip which goes to the original reporter of the tip.
-       **/
-      tipFindersFee: Percent & AugmentedConst<ApiType>;
-      /**
-       * The amount held on deposit for placing a tip report.
-       **/
-      tipReportDepositBase: BalanceOf & AugmentedConst<ApiType>;
       /**
        * Generic const
        **/

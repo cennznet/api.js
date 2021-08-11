@@ -7,3 +7,4 @@ export { default as staking } from './staking/definitions';
 export { default as sylo } from './sylo/definitions';
 export { default as system } from './system/definitions';
 export { default as transactionPayment } from './transactionPayment/definitions';
+export { default as governance } from './governance/definitions';

@@ -574,6 +574,7 @@ function main (): void {
     writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
     writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
     writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));
+    writeFile('docs/cennznet/governance.md', addModule(latest, 'Governance', 'Governance'));
     writeFile('docs/cennznet/nft.md', addModule(latest, 'Nft', 'Nft'));
     writeFile('docs/cennznet/rpc.md', addRpc());
     writeFile('docs/cennznet/constants.md', addConstants(latest));

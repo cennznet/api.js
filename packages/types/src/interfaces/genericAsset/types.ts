@@ -1,19 +1,20 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Set, Struct, u8 } from '@polkadot/types';
+import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types';
 import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
-
-/** @name AssetInfo */
-export interface AssetInfo extends Struct {
-  readonly symbol: Bytes;
-  readonly decimalPlaces: u8;
-}
 
 /** @name AssetInfoV40 */
 export interface AssetInfoV40 extends Struct {
   readonly symbol: Bytes;
   readonly decimalPlaces: u8;
+}
+
+/** @name AssetInfoV41 */
+export interface AssetInfoV41 extends Struct {
+  readonly symbol: Bytes;
+  readonly decimalPlaces: u8;
+  readonly existentialDeposit: u64;
 }
 
 /** @name AssetOptions */
