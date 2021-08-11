@@ -77,15 +77,14 @@ docker run --network=host -d cennznet/cennznet:rata-latest --dev --ws-external -
 docker run --network=host -d cennznet/cennznet:latest --dev --ws-external --ws-port=9944 --no-mdns
  */
 async function generateMetaCallsForExtensionReleases() {
-  // const providerAzalea = 'wss://cennznet.unfrastructure.io/public/ws';
-  // using the chain running via docker image for azalea, nikau, rata, local
-  const providerAzalea = 'ws://localhost:9944';
+  const providerAzalea = 'wss://cennznet.unfrastructure.io/public/ws';
+  // const providerAzalea = 'ws://localhost:9942';
   const apiAzalea = await Api.create({ provider: providerAzalea });
-  // const providerNikau = 'wss://nikau.centrality.me/public/ws';
-  const providerNikau = 'ws://localhost:9944';
+  const providerNikau = 'wss://nikau.centrality.me/public/ws';
+  // const providerNikau = 'ws://localhost:9941';
   const apiNikau = await Api.create({ provider: providerNikau });
-  // const providerRata = 'wss://kong2.centrality.me/public/rata/ws';
-  const providerRata = 'ws://localhost:9944';
+  const providerRata = 'wss://kong2.centrality.me/public/rata/ws';
+  // const providerRata = 'ws://localhost:9943';
   const apiRata = await Api.create({ provider: providerRata });
   const providerLocal = 'ws://localhost:9944';
   const apiLocal = await Api.create({ provider: providerLocal });
