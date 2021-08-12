@@ -43,8 +43,9 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
   constructor(
     registry: Registry,
     value: CENNZnetExtrinsicSignatureV1 | Uint8Array | undefined,
-    { isSigned }: ExtrinsicSignatureOptions = {}
+    extSigOpt: ExtrinsicSignatureOptions = {}
   ) {
+    const isSigned = extSigOpt.isSigned;
     super(
       registry,
       {
