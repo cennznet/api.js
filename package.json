@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc --outDir build",
-    "build:release": "yarn clean && node ./scripts/polkadot-dev-build-ts.cjs",
+    "build:release": "node ./scripts/polkadot-dev-build-ts.cjs",
     "clean": "rm -rf build && npx lerna exec -- rm -rf build",
     "docs:meta": "yarn run docs:derive && cp -rf deriveDocs/interfaces docs && node ./scripts/metadataMdWrapper.js",
     "docs:src": "rm -rf api_docs && typedoc --out api_docs --exclude '**/*+(index|.spec|.e2e).ts' packages/api/src",
