@@ -42,8 +42,9 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   constructor(
     registry: Registry,
     value: ExtrinsicSignatureV0 | Uint8Array | undefined,
-    { isSigned }: ExtrinsicSignatureOptions = {}
+    extSigOpt: ExtrinsicSignatureOptions = {}
   ) {
+    const isSigned = extSigOpt.isSigned;
     super(
       registry,
       {
