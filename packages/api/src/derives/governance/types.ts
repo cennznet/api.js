@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Bytes, u32 } from '@cennznet/types';
+import { Address, Bytes, u32 } from '@cennznet/types';
 
 export interface DeriveProposalInfo {
   id: number;
@@ -22,7 +22,7 @@ export interface DeriveProposalInfo {
 
 export interface Proposal {
   call: Bytes;
-  sponsor: Account;
+  sponsor: Address;
   justificationCid: string;
   enactmentDelay: u32;
 }
