@@ -32,6 +32,8 @@ jobs:
       run: yarn lint
     - name: build
       run: yarn build
+    - name: build release
+      run: yarn build:release
     - name: unit tests
       run: yarn test --coverage
   e2e:
