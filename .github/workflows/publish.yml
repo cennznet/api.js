@@ -72,10 +72,19 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         branch: "release/${{steps.find_version.outputs.tag_name}}"
+    - name: yarn
+      run: yarn
+    - name: tsc --emitDeclarationOnly
+      run: tsc --emitDeclarationOnly
+    - name: build clean
+      run: yarn clean
     - name: package 📦
       shell: bash
       run: |
-        yarn && yarn build:release
+        yarn build:release
+    - name: list
+      run: |
+        cd packages/api/build && ls
     - name: publish to npm ✨
       env:
         NPM_KEY: ${{ secrets.NPM_KEY }}
