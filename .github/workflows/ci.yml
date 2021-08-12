@@ -36,8 +36,12 @@ jobs:
       run: yarn clean
     - name: build release
       run: yarn build:release
+    - name: build release
+      run: yarn build:release
     - name: list
-      run: ls
+      run: |
+        cd packages/api
+        | ls
     - name: unit tests
       run: yarn test --coverage
   e2e:
