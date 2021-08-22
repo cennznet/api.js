@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:34](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/types.ts#L34)
+[packages/api/src/derives/types.ts:34](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/types.ts#L34)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:36](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/types.ts#L36)
+[packages/api/src/derives/types.ts:36](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/types.ts#L36)
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:35](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/types.ts#L35)
+[packages/api/src/derives/types.ts:35](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/types.ts#L35)
 
 ## Methods
 

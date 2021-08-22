@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:27](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/types.ts#L27)
+[packages/api/src/derives/nft/types.ts:27](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/nft/types.ts#L27)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:28](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/nft/types.ts#L28)
+[packages/api/src/derives/nft/types.ts:28](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/nft/types.ts#L28)

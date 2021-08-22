@@ -10,6 +10,10 @@ Events are emitted for certain operations on the runtime. The following sections
 
 - **[cennzx](#cennzx)**
 
+- **[erc20Peg](#erc20peg)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
 
 - **[governance](#governance)**
@@ -70,6 +74,31 @@ ___
  
 ### RemoveLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
+
+___
+
+
+## erc20Peg
+ 
+### Erc20Claim(`u64`, `AccountId`)
+- **summary**:   An erc20 deposit claim has started. (deposit Id, sender) 
+ 
+### Erc20Deposit(`u64`, `AssetId`, `Balance`, `AccountId`)
+- **summary**:   A bridged erc20 deposit succeeded.(deposit Id, asset, amount, beneficiary) 
+ 
+### Erc20DepositFail(`u64`)
+- **summary**:   A bridged erc20 deposit failed.(deposit Id) 
+
+___
+
+
+## ethBridge
+ 
+### Invalid(`EventClaimId`)
+- **summary**:   Verifying an event failed 
+ 
+### Verified(`EventClaimId`)
+- **summary**:   Verifying an event succeeded 
 
 ___
 

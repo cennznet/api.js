@@ -1,16 +1,7 @@
-import {
-  AccountId,
-  EraIndex,
-  Exposure,
-  Keys,
-  StakingLedger,
-  ValidatorPrefs,
-  RewardDestination,
-  Index,
-  Codec,
-} from '@cennznet/types';
+import { AccountId, EraIndex, Exposure, Keys, ValidatorPrefs, RewardDestination, Index, Codec } from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 import CENNZnetExtrinsic from '@cennznet/types/interfaces/extrinsic/v1/Extrinsic';
+import type { StakingLedgerTo223 as StakingLedger } from '@polkadot/types/interfaces';
 
 export interface DerivedStakingInfo {
   accountId: AccountId;

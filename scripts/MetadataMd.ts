@@ -570,6 +570,8 @@ function main (): void {
     registry.setMetadata(metadata);
 
     const latest = metadata.asLatest;
+    //EthBridge
+    writeFile('docs/cennznet/ethBridge.md', addModule(latest, 'EthBridge', 'Eth_Bridge'));
     writeFile('docs/cennznet/attestation.md', addModule(latest, 'Attestation', 'Attestation'));
     writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
     writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));

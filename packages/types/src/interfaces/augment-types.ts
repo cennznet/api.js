@@ -4,6 +4,7 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
+import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -90,6 +91,8 @@ declare module '@polkadot/types/types/registry' {
     'Compact<DepositBalanceOf>': Compact<DepositBalanceOf>;
     'Compact<DeviceId>': Compact<DeviceId>;
     'Compact<DeviceIdResponse>': Compact<DeviceIdResponse>;
+    'Compact<EventClaimId>': Compact<EventClaimId>;
+    'Compact<EventTypeId>': Compact<EventTypeId>;
     'Compact<FeeRate>': Compact<FeeRate>;
     'Compact<FixedU128>': Compact<FixedU128>;
     'Compact<FixedU64>': Compact<FixedU64>;
@@ -355,6 +358,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<Ed25519Signature>': Option<Ed25519Signature>;
     'Option<EncodedJustification>': Option<EncodedJustification>;
     'Option<EpochAuthorship>': Option<EpochAuthorship>;
+    'Option<Erc20DepositEvent>': Option<Erc20DepositEvent>;
     'Option<ErrorMetadataLatest>': Option<ErrorMetadataLatest>;
     'Option<ErrorMetadataV10>': Option<ErrorMetadataV10>;
     'Option<ErrorMetadataV11>': Option<ErrorMetadataV11>;
@@ -362,6 +366,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<ErrorMetadataV13>': Option<ErrorMetadataV13>;
     'Option<ErrorMetadataV9>': Option<ErrorMetadataV9>;
     'Option<EthAccount>': Option<EthAccount>;
+    'Option<EthAddress>': Option<EthAddress>;
     'Option<EthBlock>': Option<EthBlock>;
     'Option<EthBloom>': Option<EthBloom>;
     'Option<EthCallRequest>': Option<EthCallRequest>;
@@ -375,6 +380,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<EthFilterTopic>': Option<EthFilterTopic>;
     'Option<EthFilterTopicEntry>': Option<EthFilterTopicEntry>;
     'Option<EthFilterTopicInner>': Option<EthFilterTopicInner>;
+    'Option<EthHash>': Option<EthHash>;
     'Option<EthHeader>': Option<EthHeader>;
     'Option<EthLog>': Option<EthLog>;
     'Option<EthReceipt>': Option<EthReceipt>;
@@ -393,12 +399,15 @@ declare module '@polkadot/types/types/registry' {
     'Option<EthTransactionSignature>': Option<EthTransactionSignature>;
     'Option<EthTransactionStatus>': Option<EthTransactionStatus>;
     'Option<EthWork>': Option<EthWork>;
+    'Option<EventClaimId>': Option<EventClaimId>;
+    'Option<EventClaimResult>': Option<EventClaimResult>;
     'Option<EventMetadataLatest>': Option<EventMetadataLatest>;
     'Option<EventMetadataV10>': Option<EventMetadataV10>;
     'Option<EventMetadataV11>': Option<EventMetadataV11>;
     'Option<EventMetadataV12>': Option<EventMetadataV12>;
     'Option<EventMetadataV13>': Option<EventMetadataV13>;
     'Option<EventMetadataV9>': Option<EventMetadataV9>;
+    'Option<EventTypeId>': Option<EventTypeId>;
     'Option<EvmAccount>': Option<EvmAccount>;
     'Option<EvmLog>': Option<EvmLog>;
     'Option<EvmVicinity>': Option<EvmVicinity>;
@@ -606,6 +615,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<NFTAttributeValue>': Option<NFTAttributeValue>;
     'Option<NMapTypeLatest>': Option<NMapTypeLatest>;
     'Option<NMapTypeV13>': Option<NMapTypeV13>;
+    'Option<NotarizationPayload>': Option<NotarizationPayload>;
     'Option<Null>': Option<Null>;
     'Option<OffenceDetails>': Option<OffenceDetails>;
     'Option<Offender>': Option<Offender>;
@@ -1131,6 +1141,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<Ed25519Signature>': Vec<Ed25519Signature>;
     'Vec<EncodedJustification>': Vec<EncodedJustification>;
     'Vec<EpochAuthorship>': Vec<EpochAuthorship>;
+    'Vec<Erc20DepositEvent>': Vec<Erc20DepositEvent>;
     'Vec<ErrorMetadataLatest>': Vec<ErrorMetadataLatest>;
     'Vec<ErrorMetadataV10>': Vec<ErrorMetadataV10>;
     'Vec<ErrorMetadataV11>': Vec<ErrorMetadataV11>;
@@ -1138,6 +1149,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<ErrorMetadataV13>': Vec<ErrorMetadataV13>;
     'Vec<ErrorMetadataV9>': Vec<ErrorMetadataV9>;
     'Vec<EthAccount>': Vec<EthAccount>;
+    'Vec<EthAddress>': Vec<EthAddress>;
     'Vec<EthBlock>': Vec<EthBlock>;
     'Vec<EthBloom>': Vec<EthBloom>;
     'Vec<EthCallRequest>': Vec<EthCallRequest>;
@@ -1151,6 +1163,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<EthFilterTopic>': Vec<EthFilterTopic>;
     'Vec<EthFilterTopicEntry>': Vec<EthFilterTopicEntry>;
     'Vec<EthFilterTopicInner>': Vec<EthFilterTopicInner>;
+    'Vec<EthHash>': Vec<EthHash>;
     'Vec<EthHeader>': Vec<EthHeader>;
     'Vec<EthLog>': Vec<EthLog>;
     'Vec<EthReceipt>': Vec<EthReceipt>;
@@ -1169,12 +1182,15 @@ declare module '@polkadot/types/types/registry' {
     'Vec<EthTransactionSignature>': Vec<EthTransactionSignature>;
     'Vec<EthTransactionStatus>': Vec<EthTransactionStatus>;
     'Vec<EthWork>': Vec<EthWork>;
+    'Vec<EventClaimId>': Vec<EventClaimId>;
+    'Vec<EventClaimResult>': Vec<EventClaimResult>;
     'Vec<EventMetadataLatest>': Vec<EventMetadataLatest>;
     'Vec<EventMetadataV10>': Vec<EventMetadataV10>;
     'Vec<EventMetadataV11>': Vec<EventMetadataV11>;
     'Vec<EventMetadataV12>': Vec<EventMetadataV12>;
     'Vec<EventMetadataV13>': Vec<EventMetadataV13>;
     'Vec<EventMetadataV9>': Vec<EventMetadataV9>;
+    'Vec<EventTypeId>': Vec<EventTypeId>;
     'Vec<EvmAccount>': Vec<EvmAccount>;
     'Vec<EvmLog>': Vec<EvmLog>;
     'Vec<EvmVicinity>': Vec<EvmVicinity>;
@@ -1382,6 +1398,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<NFTAttributeValue>': Vec<NFTAttributeValue>;
     'Vec<NMapTypeLatest>': Vec<NMapTypeLatest>;
     'Vec<NMapTypeV13>': Vec<NMapTypeV13>;
+    'Vec<NotarizationPayload>': Vec<NotarizationPayload>;
     'Vec<Null>': Vec<Null>;
     'Vec<OffenceDetails>': Vec<OffenceDetails>;
     'Vec<Offender>': Vec<Offender>;
@@ -1907,6 +1924,7 @@ declare module '@polkadot/types/types/registry' {
     Ed25519Signature: Ed25519Signature;
     EncodedJustification: EncodedJustification;
     EpochAuthorship: EpochAuthorship;
+    Erc20DepositEvent: Erc20DepositEvent;
     ErrorMetadataLatest: ErrorMetadataLatest;
     ErrorMetadataV10: ErrorMetadataV10;
     ErrorMetadataV11: ErrorMetadataV11;
@@ -1914,6 +1932,7 @@ declare module '@polkadot/types/types/registry' {
     ErrorMetadataV13: ErrorMetadataV13;
     ErrorMetadataV9: ErrorMetadataV9;
     EthAccount: EthAccount;
+    EthAddress: EthAddress;
     EthBlock: EthBlock;
     EthBloom: EthBloom;
     EthCallRequest: EthCallRequest;
@@ -1927,6 +1946,7 @@ declare module '@polkadot/types/types/registry' {
     EthFilterTopic: EthFilterTopic;
     EthFilterTopicEntry: EthFilterTopicEntry;
     EthFilterTopicInner: EthFilterTopicInner;
+    EthHash: EthHash;
     EthHeader: EthHeader;
     EthLog: EthLog;
     EthReceipt: EthReceipt;
@@ -1945,12 +1965,15 @@ declare module '@polkadot/types/types/registry' {
     EthTransactionSignature: EthTransactionSignature;
     EthTransactionStatus: EthTransactionStatus;
     EthWork: EthWork;
+    EventClaimId: EventClaimId;
+    EventClaimResult: EventClaimResult;
     EventMetadataLatest: EventMetadataLatest;
     EventMetadataV10: EventMetadataV10;
     EventMetadataV11: EventMetadataV11;
     EventMetadataV12: EventMetadataV12;
     EventMetadataV13: EventMetadataV13;
     EventMetadataV9: EventMetadataV9;
+    EventTypeId: EventTypeId;
     EvmAccount: EvmAccount;
     EvmLog: EvmLog;
     EvmVicinity: EvmVicinity;
@@ -2158,6 +2181,7 @@ declare module '@polkadot/types/types/registry' {
     NFTAttributeValue: NFTAttributeValue;
     NMapTypeLatest: NMapTypeLatest;
     NMapTypeV13: NMapTypeV13;
+    NotarizationPayload: NotarizationPayload;
     Null: Null;
     OffenceDetails: OffenceDetails;
     Offender: Offender;

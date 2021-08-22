@@ -52,7 +52,23 @@ jobs:
           - send
           - getMetadata
           - governance
+          - ethBridge
     steps:
+    - name: start local Eth node setup
+      uses: actions/checkout@v2
+      with:
+        repository: cennznet/bridge-contracts
+        ref: setup
+    - name: install
+      run: yarn
+    - name: build
+      run: yarn build
+    - name: start local Eth node
+      run: |
+        docker run --dns=127.0.0.1 -dit --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
+        docker container ls -a
+    - name: Deploy contract and deposit
+      run: yarn deploy
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
         access_token: ${{ github.token }}
@@ -73,9 +89,12 @@ jobs:
       if: contains(${{ matrix['test-suite'] }}, 'v36')
       run: |
         docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
-    - name: start latest test node
+    - name: start latest test node and list all docker container
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:f16e01b --dev --tmp --ws-external --rpc-external --no-mdns
+        docker network create my-bridge-net
+        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:d18bb4e --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
+        docker network connect my-bridge-net ethNode
+        docker exec testnet_node_alice curl ethNode:8545
     - name: test
       env:
         TEST_TYPE: integration

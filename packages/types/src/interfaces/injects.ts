@@ -79,7 +79,10 @@ export const typesBundle: OverrideBundleType = {
             ...shareType37Onwards,
             AssetInfo: 'AssetInfoV41',
             // Proposal also exist in polkadots democracy module
-            Proposal: 'GovernanceProposal'
+            Proposal: 'GovernanceProposal',
+            // works with this definition
+            SessionKeys5B: '(AccountId, AccountId, AccountId, AccountId, BeefyKey)',
+            Keys: 'SessionKeys5B'
           },
         },
       ],

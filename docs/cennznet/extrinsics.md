@@ -14,6 +14,10 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[cennzx](#cennzx)**
 
+- **[erc20Peg](#erc20peg)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
 
 - **[governance](#governance)**
@@ -118,6 +122,26 @@ ___
 ### setFeeRate(new_fee_rate: `FeeRate`)
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
+
+___
+
+
+## erc20Peg
+ 
+### activateDeposits(activate: `bool`)
+- **interface**: `api.tx.erc20Peg.activateDeposits`
+- **summary**:   Activate/deactivate deposits (root only) 
+ 
+### depositClaim(tx_hash: `H256`, claim: `Erc20DepositEvent`)
+- **interface**: `api.tx.erc20Peg.depositClaim`
+
+___
+
+
+## ethBridge
+ 
+### submitNotarization(payload: `NotarizationPayload`, _signature: `Signature`)
+- **interface**: `api.tx.ethBridge.submitNotarization`
 
 ___
 

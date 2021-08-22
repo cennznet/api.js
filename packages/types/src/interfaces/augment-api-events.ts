@@ -1,8 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Option, Vec, bool, u32 } from '@polkadot/types';
+import type { Bytes, Option, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
+import type { EventClaimId } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -48,6 +49,38 @@ declare module '@polkadot/api/types/events' {
        * Provider, core asset amount, trade asset id, trade asset amount
        **/
       RemoveLiquidity: AugmentedEvent<ApiType, [AccountId, Balance, AssetId, Balance]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    erc20Peg: {
+      /**
+       * An erc20 deposit claim has started. (deposit Id, sender)
+       **/
+      Erc20Claim: AugmentedEvent<ApiType, [u64, AccountId]>;
+      /**
+       * A bridged erc20 deposit succeeded.(deposit Id, asset, amount, beneficiary)
+       **/
+      Erc20Deposit: AugmentedEvent<ApiType, [u64, AssetId, Balance, AccountId]>;
+      /**
+       * A bridged erc20 deposit failed.(deposit Id)
+       **/
+      Erc20DepositFail: AugmentedEvent<ApiType, [u64]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    ethBridge: {
+      /**
+       * Verifying an event failed
+       **/
+      Invalid: AugmentedEvent<ApiType, [EventClaimId]>;
+      /**
+       * Verifying an event succeeded
+       **/
+      Verified: AugmentedEvent<ApiType, [EventClaimId]>;
       /**
        * Generic event
        **/

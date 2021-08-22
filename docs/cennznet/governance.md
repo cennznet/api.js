@@ -111,7 +111,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/overview.ts#L16)
+[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/governance/overview.ts#L16)
 
 # Module: governance/types
 

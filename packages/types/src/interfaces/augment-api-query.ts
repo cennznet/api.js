@@ -1,10 +1,11 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Data, Option, U8aFixed, Vec, bool, u32, u64 } from '@polkadot/types';
+import type { Bytes, Data, Option, U8aFixed, Vec, bool, u32, u64, u8 } from '@polkadot/types';
 import type { AnyNumber, ITuple, Observable } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate } from '@cennznet/types/interfaces/cennzx';
+import type { EthAddress, EthHash, EventClaimId, EventClaimResult, EventTypeId } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId, ProposalStatusInfo, ProposalVoteInfo } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -21,7 +22,7 @@ import type { SetId, StoredPendingChange, StoredState } from '@polkadot/types/in
 import type { RegistrarInfo, Registration } from '@polkadot/types/interfaces/identity';
 import type { AuthIndex } from '@polkadot/types/interfaces/imOnline';
 import type { DeferredOffenceOf, Kind, OffenceDetails, OpaqueTimeSlot, ReportIdOf } from '@polkadot/types/interfaces/offences';
-import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, FixedU128, Hash, KeyTypeId, Moment, OpaqueCall, Perbill, Releases, Slot, ValidatorId } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, FixedU128, Hash, KeyTypeId, Moment, OpaqueCall, Perbill, Percent, Releases, Slot, ValidatorId } from '@polkadot/types/interfaces/runtime';
 import type { Scheduled, TaskAddress } from '@polkadot/types/interfaces/scheduler';
 import type { Keys, SessionIndex } from '@polkadot/types/interfaces/session';
 import type { ActiveEraInfo, ElectionResult, ElectionScore, ElectionStatus, EraIndex, EraRewardPoints, Exposure, Forcing, Nominations, SlashingSpans, SpanIndex, SpanRecord, StakingLedger, UnappliedSlash, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
@@ -171,6 +172,80 @@ declare module '@polkadot/api/types/storage' {
        * ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times
        **/
       totalLiquidity: AugmentedQuery<ApiType, (arg: ExchangeKey) => Observable<Balance>, [ExchangeKey]> & QueryableStorageEntry<ApiType, [ExchangeKey]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    erc20Peg: {
+      /**
+       * Map GA asset Id to ERC20 address
+       **/
+      assetIdToErc20: AugmentedQuery<ApiType, (arg: AssetId | AnyNumber | Uint8Array) => Observable<Option<EthAddress>>, [AssetId]> & QueryableStorageEntry<ApiType, [AssetId]>;
+      /**
+       * Wether deposit are active
+       **/
+      depositsActive: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Metadata for well-known erc20 tokens
+       **/
+      erc20Meta: AugmentedQuery<ApiType, (arg: EthAddress | string | Uint8Array) => Observable<Option<ITuple<[Bytes, u8]>>>, [EthAddress]> & QueryableStorageEntry<ApiType, [EthAddress]>;
+      /**
+       * Map ERC20 address to GA asset Id
+       **/
+      erc20ToAssetId: AugmentedQuery<ApiType, (arg: EthAddress | string | Uint8Array) => Observable<Option<AssetId>>, [EthAddress]> & QueryableStorageEntry<ApiType, [EthAddress]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    ethBridge: {
+      /**
+       * Required % of validator support to signal readiness (default: 66%)
+       **/
+      activationThreshold: AugmentedQuery<ApiType, () => Observable<Percent>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Queued event claims, awaiting notarization
+       **/
+      eventClaims: AugmentedQuery<ApiType, (arg: EventClaimId | AnyNumber | Uint8Array) => Observable<ITuple<[EthHash, EventTypeId]>>, [EventClaimId]> & QueryableStorageEntry<ApiType, [EventClaimId]>;
+      /**
+       * Event data for a given claim
+       **/
+      eventData: AugmentedQuery<ApiType, (arg: EventClaimId | AnyNumber | Uint8Array) => Observable<Option<Bytes>>, [EventClaimId]> & QueryableStorageEntry<ApiType, [EventClaimId]>;
+      /**
+       * Notarizations for queued messages
+       * Either: None = no notarization exists OR Some(yay/nay)
+       **/
+      eventNotarizations: AugmentedQuery<ApiType, (arg1: EventClaimId | AnyNumber | Uint8Array, arg2: AuthorityId | string | Uint8Array) => Observable<Option<EventClaimResult>>, [EventClaimId, AuthorityId]> & QueryableStorageEntry<ApiType, [EventClaimId, AuthorityId]>;
+      /**
+       * Maps event types seen by the bridge ((contract address, event signature)) to unique type Ids
+       **/
+      eventTypeToTypeId: AugmentedQuery<ApiType, (arg: ITuple<[EthAddress, EthHash]> | [EthAddress | string | Uint8Array, EthHash | string | Uint8Array]) => Observable<EventTypeId>, [ITuple<[EthAddress, EthHash]>]> & QueryableStorageEntry<ApiType, [ITuple<[EthAddress, EthHash]>]>;
+      /**
+       * Id of the next Eth bridge event claim
+       **/
+      nextEventClaimId: AugmentedQuery<ApiType, () => Observable<EventClaimId>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Id of the next event type (internal)
+       **/
+      nextEventTypeId: AugmentedQuery<ApiType, () => Observable<EventTypeId>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Active notary (validator) public keys
+       **/
+      notaryKeys: AugmentedQuery<ApiType, () => Observable<Vec<AuthorityId>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Processed tx hashes bucketed by unix timestamp (`BUCKET_FACTOR_S`)
+       **/
+      processedTxBuckets: AugmentedQuery<ApiType, (arg1: u64 | AnyNumber | Uint8Array, arg2: EthHash | string | Uint8Array) => Observable<ITuple<[]>>, [u64, EthHash]> & QueryableStorageEntry<ApiType, [u64, EthHash]>;
+      /**
+       * Map from processed tx hash to status
+       * Periodically cleared after `EventDeadline` expires
+       **/
+      processedTxHashes: AugmentedQuery<ApiType, (arg: EthHash | string | Uint8Array) => Observable<ITuple<[]>>, [EthHash]> & QueryableStorageEntry<ApiType, [EthHash]>;
+      /**
+       * Maps event type ids to ((contract address, event signature))
+       **/
+      typeIdToEventType: AugmentedQuery<ApiType, (arg: EventTypeId | AnyNumber | Uint8Array) => Observable<ITuple<[EthAddress, EthHash]>>, [EventTypeId]> & QueryableStorageEntry<ApiType, [EventTypeId]>;
       /**
        * Generic query
        **/

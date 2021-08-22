@@ -5,6 +5,7 @@ import type { Bytes, Compact, Data, Option, U8aFixed, Vec, bool, u16, u32, u64 }
 import type { AnyNumber, ITuple } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
+import type { Erc20DepositEvent, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
 import type { CollectionId, CollectionNameType, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -15,7 +16,7 @@ import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/
 import type { GrandpaEquivocationProof, KeyOwnerProof } from '@polkadot/types/interfaces/grandpa';
 import type { IdentityFields, IdentityInfo, IdentityJudgement, RegistrarIndex } from '@polkadot/types/interfaces/identity';
 import type { Heartbeat } from '@polkadot/types/interfaces/imOnline';
-import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, Call, ChangesTrieConfiguration, Header, KeyValue, LookupSource, Moment, OpaqueCall, Perbill, Weight } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, Call, ChangesTrieConfiguration, H256, Header, KeyValue, LookupSource, Moment, OpaqueCall, Perbill, Weight } from '@polkadot/types/interfaces/runtime';
 import type { Period, Priority } from '@polkadot/types/interfaces/scheduler';
 import type { Keys } from '@polkadot/types/interfaces/session';
 import type { CompactAssignments, ElectionScore, ElectionSize, EraIndex, RewardDestination, ValidatorIndex, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
@@ -130,6 +131,24 @@ declare module '@polkadot/api/types/submittable' {
        * Set the spot exchange wide fee rate (root only)
        **/
       setFeeRate: AugmentedSubmittable<(newFeeRate: FeeRate | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [FeeRate]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
+    erc20Peg: {
+      /**
+       * Activate/deactivate deposits (root only)
+       **/
+      activateDeposits: AugmentedSubmittable<(activate: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [bool]>;
+      depositClaim: AugmentedSubmittable<(txHash: H256 | string | Uint8Array, claim: Erc20DepositEvent | { tokenAddress?: any; amount?: any; beneficiary?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H256, Erc20DepositEvent]>;
+      /**
+       * Generic tx
+       **/
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+    };
+    ethBridge: {
+      submitNotarization: AugmentedSubmittable<(payload: NotarizationPayload | { eventClaimId?: any; authorityIndex?: any; result?: any } | string | Uint8Array, signature: Signature | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [NotarizationPayload, Signature]>;
       /**
        * Generic tx
        **/
