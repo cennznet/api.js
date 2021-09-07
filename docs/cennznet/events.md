@@ -80,6 +80,9 @@ ___
 
 ## erc20Peg
  
+### CENNZDepositsActive()
+- **summary**:   ERC20 CENNZ deposits activated 
+ 
 ### Erc20Claim(`u64`, `AccountId`)
 - **summary**:   An erc20 deposit claim has started. (deposit Id, sender) 
  
@@ -88,11 +91,23 @@ ___
  
 ### Erc20DepositFail(`u64`)
 - **summary**:   A bridged erc20 deposit failed.(deposit Id) 
+ 
+### Erc20MockWithdraw(`u64`)
+- **summary**:   Mock withdraw 
+ 
+### Erc20Withdraw(`u64`, `AssetId`, `Balance`, `EthAddress`)
+- **summary**:   Tokens were burnt for withdrawal on Ethereum as ERC20s (withdrawal Id, asset, amount, beneficiary) 
+ 
+### SetContractAddress(`EthAddress`)
+- **summary**:   The peg contract address has been set 
 
 ___
 
 
 ## ethBridge
+ 
+### AuthoritySetChange(`EventProofId`)
+- **summary**:   A notary (validator) set change is in motion A proof for the change will be generated with the given `event_id` 
  
 ### Invalid(`EventClaimId`)
 - **summary**:   Verifying an event failed 
@@ -133,6 +148,9 @@ ___
  
 ### EnactProposal(`ProposalId`, `bool`)
 - **summary**:   A proposal was enacted, success 
+ 
+### ProposalVeto(`ProposalId`)
+- **summary**:   A proposal was vetoed by the council 
  
 ### SubmitProposal(`ProposalId`)
 - **summary**:   A proposal was submitted 

@@ -32,6 +32,9 @@ export interface EventClaimResult extends Enum {
   readonly isExpired: boolean;
 }
 
+/** @name EventProofId */
+export interface EventProofId extends u64 {}
+
 /** @name EventTypeId */
 export interface EventTypeId extends u32 {}
 

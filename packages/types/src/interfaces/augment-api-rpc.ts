@@ -5,6 +5,7 @@ import type { Metadata } from '@polkadot/metadata';
 import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
+import type { EventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
@@ -335,6 +336,12 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        * Uninstalls filter.
        **/
       uninstallFilter: AugmentedRpc<(index: U256 | AnyNumber | Uint8Array) => Observable<bool>>;
+    };
+    ethy: {
+      /**
+       * Subscribe event proof
+       **/
+      subscribeEventProofs: AugmentedRpc<() => Observable<EventProof>>;
     };
     genericAsset: {
       /**

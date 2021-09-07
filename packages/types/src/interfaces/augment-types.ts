@@ -4,7 +4,8 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
+import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
+import type { EthyId, EventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -92,6 +93,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<DeviceId>': Compact<DeviceId>;
     'Compact<DeviceIdResponse>': Compact<DeviceIdResponse>;
     'Compact<EventClaimId>': Compact<EventClaimId>;
+    'Compact<EventProofId>': Compact<EventProofId>;
     'Compact<EventTypeId>': Compact<EventTypeId>;
     'Compact<FeeRate>': Compact<FeeRate>;
     'Compact<FixedU128>': Compact<FixedU128>;
@@ -399,6 +401,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<EthTransactionSignature>': Option<EthTransactionSignature>;
     'Option<EthTransactionStatus>': Option<EthTransactionStatus>;
     'Option<EthWork>': Option<EthWork>;
+    'Option<EthyId>': Option<EthyId>;
     'Option<EventClaimId>': Option<EventClaimId>;
     'Option<EventClaimResult>': Option<EventClaimResult>;
     'Option<EventMetadataLatest>': Option<EventMetadataLatest>;
@@ -407,6 +410,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<EventMetadataV12>': Option<EventMetadataV12>;
     'Option<EventMetadataV13>': Option<EventMetadataV13>;
     'Option<EventMetadataV9>': Option<EventMetadataV9>;
+    'Option<EventProof>': Option<EventProof>;
+    'Option<EventProofId>': Option<EventProofId>;
     'Option<EventTypeId>': Option<EventTypeId>;
     'Option<EvmAccount>': Option<EvmAccount>;
     'Option<EvmLog>': Option<EvmLog>;
@@ -1182,6 +1187,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<EthTransactionSignature>': Vec<EthTransactionSignature>;
     'Vec<EthTransactionStatus>': Vec<EthTransactionStatus>;
     'Vec<EthWork>': Vec<EthWork>;
+    'Vec<EthyId>': Vec<EthyId>;
     'Vec<EventClaimId>': Vec<EventClaimId>;
     'Vec<EventClaimResult>': Vec<EventClaimResult>;
     'Vec<EventMetadataLatest>': Vec<EventMetadataLatest>;
@@ -1190,6 +1196,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<EventMetadataV12>': Vec<EventMetadataV12>;
     'Vec<EventMetadataV13>': Vec<EventMetadataV13>;
     'Vec<EventMetadataV9>': Vec<EventMetadataV9>;
+    'Vec<EventProof>': Vec<EventProof>;
+    'Vec<EventProofId>': Vec<EventProofId>;
     'Vec<EventTypeId>': Vec<EventTypeId>;
     'Vec<EvmAccount>': Vec<EvmAccount>;
     'Vec<EvmLog>': Vec<EvmLog>;
@@ -1965,6 +1973,7 @@ declare module '@polkadot/types/types/registry' {
     EthTransactionSignature: EthTransactionSignature;
     EthTransactionStatus: EthTransactionStatus;
     EthWork: EthWork;
+    EthyId: EthyId;
     EventClaimId: EventClaimId;
     EventClaimResult: EventClaimResult;
     EventMetadataLatest: EventMetadataLatest;
@@ -1973,6 +1982,8 @@ declare module '@polkadot/types/types/registry' {
     EventMetadataV12: EventMetadataV12;
     EventMetadataV13: EventMetadataV13;
     EventMetadataV9: EventMetadataV9;
+    EventProof: EventProof;
+    EventProofId: EventProofId;
     EventTypeId: EventTypeId;
     EvmAccount: EvmAccount;
     EvmLog: EvmLog;

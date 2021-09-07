@@ -198,9 +198,17 @@ ___
 - **interface**: `api.query.erc20Peg.assetIdToErc20`
 - **summary**:   Map GA asset Id to ERC20 address 
  
+### cENNZDepositsActive(): `bool`
+- **interface**: `api.query.erc20Peg.cENNZDepositsActive`
+- **summary**:   Whether CENNZ deposits are active 
+ 
+### contractAddress(): `EthAddress`
+- **interface**: `api.query.erc20Peg.contractAddress`
+- **summary**:   The peg contract address on Ethereum 
+ 
 ### depositsActive(): `bool`
 - **interface**: `api.query.erc20Peg.depositsActive`
-- **summary**:   Wether deposit are active 
+- **summary**:   Whether deposit are active 
  
 ### erc20Meta(`EthAddress`): `Option<(Bytes,u8)>`
 - **interface**: `api.query.erc20Peg.erc20Meta`
@@ -209,6 +217,10 @@ ___
 ### erc20ToAssetId(`EthAddress`): `Option<AssetId>`
 - **interface**: `api.query.erc20Peg.erc20ToAssetId`
 - **summary**:   Map ERC20 address to GA asset Id 
+ 
+### withdrawalsActive(): `bool`
+- **interface**: `api.query.erc20Peg.withdrawalsActive`
+- **summary**:   Whether withdrawals are active 
 
 ___
 
@@ -219,6 +231,10 @@ ___
 - **interface**: `api.query.ethBridge.activationThreshold`
 - **summary**:   Required % of validator support to signal readiness (default: 66%) 
  
+### bridgePaused(): `bool`
+- **interface**: `api.query.ethBridge.bridgePaused`
+- **summary**:   Whether the bridge is paused 
+ 
 ### eventClaims(`EventClaimId`): `(EthHash,EventTypeId)`
 - **interface**: `api.query.ethBridge.eventClaims`
 - **summary**:   Queued event claims, awaiting notarization 
@@ -227,7 +243,7 @@ ___
 - **interface**: `api.query.ethBridge.eventData`
 - **summary**:   Event data for a given claim 
  
-### eventNotarizations(`EventClaimId, AuthorityId`): `Option<EventClaimResult>`
+### eventNotarizations(`EventClaimId, EthyId`): `Option<EventClaimResult>`
 - **interface**: `api.query.ethBridge.eventNotarizations`
 - **summary**:   Notarizations for queued messages Either: None = no notarization exists OR Some(yay/nay) 
  
@@ -243,9 +259,21 @@ ___
 - **interface**: `api.query.ethBridge.nextEventTypeId`
 - **summary**:   Id of the next event type (internal) 
  
-### notaryKeys(): `Vec<AuthorityId>`
+### nextNotaryKeys(): `Vec<EthyId>`
+- **interface**: `api.query.ethBridge.nextNotaryKeys`
+- **summary**:   Scheduled notary (validator) public keys for the next session 
+ 
+### nextProofId(): `EventProofId`
+- **interface**: `api.query.ethBridge.nextProofId`
+- **summary**:   Id of the next event proof 
+ 
+### notaryKeys(): `Vec<EthyId>`
 - **interface**: `api.query.ethBridge.notaryKeys`
 - **summary**:   Active notary (validator) public keys 
+ 
+### notarySetId(): `u64`
+- **interface**: `api.query.ethBridge.notarySetId`
+- **summary**:   The current validator set id 
  
 ### processedTxBuckets(`u64, EthHash`): `()`
 - **interface**: `api.query.ethBridge.processedTxBuckets`
@@ -469,7 +497,7 @@ ___
  
 ### listingEndSchedule(`BlockNumber, ListingId`): `bool`
 - **interface**: `api.query.nft.listingEndSchedule`
-- **summary**:   Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close. 
+- **summary**:   Block numbers where listings will close. Value is `true` if at block number `listing_id` is scheduled to close. 
  
 ### listings(`ListingId`): `Option<Listing>`
 - **interface**: `api.query.nft.listings`
@@ -745,7 +773,11 @@ ___
  
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+- **summary**:   True if the active session is final (last in the era). Note that this does not take era forcing into account 
+ 
+### isPlannedSessionFinal(): `bool`
+- **interface**: `api.query.staking.isPlannedSessionFinal`
+- **summary**:   True if the next **planned** session is final (last in the era). Note that this does not take era forcing into account. 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`

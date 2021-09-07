@@ -22,6 +22,8 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[eth](#eth)**
 
+- **[ethy](#ethy)**
+
 - **[genericAsset](#genericasset)**
 
 - **[governance](#governance)**
@@ -474,6 +476,16 @@ ___
 - **interface**: `api.rpc.eth.version`
 - **jsonrpc**: `eth_version`
 - **summary**: Returns protocol version.
+
+___
+
+
+## ethy
+ 
+### subscribeEventProofs(): `EventProof`
+- **interface**: `api.rpc.ethy.subscribeEventProofs`
+- **jsonrpc**: `ethy_subscribeEventProofs`
+- **summary**: Subscribe event proof
 
 ___
 

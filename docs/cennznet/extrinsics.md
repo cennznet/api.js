@@ -128,12 +128,25 @@ ___
 
 ## erc20Peg
  
+### activateCennzDeposits()
+- **interface**: `api.tx.erc20Peg.activateCennzDeposits`
+ 
 ### activateDeposits(activate: `bool`)
 - **interface**: `api.tx.erc20Peg.activateDeposits`
 - **summary**:   Activate/deactivate deposits (root only) 
  
+### activateWithdrawals(activate: `bool`)
+- **interface**: `api.tx.erc20Peg.activateWithdrawals`
+- **summary**:   Activate/deactivate withdrawals (root only) 
+ 
 ### depositClaim(tx_hash: `H256`, claim: `Erc20DepositEvent`)
 - **interface**: `api.tx.erc20Peg.depositClaim`
+ 
+### setContractAddress(eth_address: `EthAddress`)
+- **interface**: `api.tx.erc20Peg.setContractAddress`
+ 
+### withdraw(asset_id: `AssetId`, amount: `Balance`, beneficiary: `EthAddress`)
+- **interface**: `api.tx.erc20Peg.withdraw`
 
 ___
 
@@ -602,7 +615,7 @@ ___
 - **interface**: `api.tx.nft.mintSeries`
 - **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) Series can be issued additional tokens with `mint_additional` 
 
-  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `is_limited_edition` - signal whether the series is a limited edition or not `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
+  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
 
   -----------Performs O(N) writes where N is `quantity` 
  

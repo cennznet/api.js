@@ -141,7 +141,11 @@ The following sections contain the module details.
  
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+- **summary**:   True if the active session is final (last in the era). Note that this does not take era forcing into account 
+ 
+### isPlannedSessionFinal(): `bool`
+- **interface**: `api.query.staking.isPlannedSessionFinal`
+- **summary**:   True if the next **planned** session is final (last in the era). Note that this does not take era forcing into account. 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
@@ -599,7 +603,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/electedInfo.ts#L17)
+[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/electedInfo.ts#L17)
 
 # Module: staking/overview
 
@@ -617,7 +621,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/overview.ts#L16)
+[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/overview.ts#L16)
 
 # Module: staking/query
 
@@ -642,7 +646,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:127](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/query.ts#L127)
+[packages/api/src/derives/staking/query.ts:127](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/query.ts#L127)
 
 ___
 
@@ -662,7 +666,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:138](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/query.ts#L138)
+[packages/api/src/derives/staking/query.ts:138](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/query.ts#L138)
 
 # Module: staking/stakingAccount
 
@@ -687,7 +691,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/stakingAccount.ts#L47)
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/stakingAccount.ts#L47)
 
 # Module: staking/stashes
 
@@ -705,7 +709,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/stashes.ts#L15)
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/stashes.ts#L15)
 
 # Module: staking/types
 
@@ -732,7 +736,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/validators.ts#L14)
+[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/validators.ts#L14)
 
 ___
 
@@ -747,7 +751,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/validators.ts#L32)
+[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/validators.ts#L32)
 
 # Module: staking/waitingInfo
 
@@ -763,4 +767,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/waitingInfo.ts:13](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/staking/waitingInfo.ts#L13)
+[packages/api/src/derives/staking/waitingInfo.ts:13](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/waitingInfo.ts#L13)

@@ -1,5 +1,6 @@
 export default {
   types: {
+    "EventProofId": "u64",
     "EventClaimId": "u64",
     "EthAddress": "H160",
     "EthHash": "H256",

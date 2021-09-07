@@ -12,3 +12,4 @@ export * from './system/types';
 export * from './transactionPayment/types';
 export * from './governance/types';
 export * from './ethBridge/types';
+export * from './ethy/types';

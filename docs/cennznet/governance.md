@@ -82,6 +82,9 @@ The following sections contain the module details.
 ### EnactProposal(`ProposalId`, `bool`)
 - **summary**:   A proposal was enacted, success 
  
+### ProposalVeto(`ProposalId`)
+- **summary**:   A proposal was vetoed by the council 
+ 
 ### SubmitProposal(`ProposalId`)
 - **summary**:   A proposal was submitted 
  
@@ -111,7 +114,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/8cc696b/packages/api/src/derives/governance/overview.ts#L16)
+[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/governance/overview.ts#L16)
 
 # Module: governance/types
 

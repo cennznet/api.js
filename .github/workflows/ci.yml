@@ -58,7 +58,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: cennznet/bridge-contracts
-        ref: setup
+        ref: main
     - name: install
       run: yarn
     - name: build
