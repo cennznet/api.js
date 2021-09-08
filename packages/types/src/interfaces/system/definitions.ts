@@ -2,6 +2,7 @@
 export default {
   types: {
     Address: 'AccountId',
+    BeefyKey: '[u8; 33]',
     Index: 'u64',
     doughnut: 'Raw',
     PhaseTo36: {
