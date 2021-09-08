@@ -13,7 +13,13 @@
 // limitations under the License.
 
 import BN from 'bn.js';
-import {AssetInfo, AssetOptions, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse} from '@cennznet/types';
+import {
+  AssetInfoV41 as AssetInfo,
+  AssetOptions,
+  LiquidityPriceResponse,
+  LiquidityValueResponse,
+  PriceResponse,
+} from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -53,7 +59,11 @@ describe('Cennzx Operations', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'A', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'A',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAssetTx1 = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
       nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
@@ -67,8 +77,7 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'A' asset
       assetCreated.then(async () => {
-        const assetBalance = await api.query.genericAsset.freeBalance(assetA, alice.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(2);
+        const investmentAmount = 100_000;
         const coreAmount = investmentAmount; // Initial investment - core amount same as invested amount
         const minLiquidity = 1;
         await api.tx.cennzx
@@ -99,7 +108,11 @@ describe('Cennzx Operations', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'B', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'B',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAssetTx2 = api.tx.genericAsset.create(bob.address, assetOption, assetInfo);
       // when the new asset is created it will have this ID.
       assetB = await api.query.genericAsset.nextAssetId();
@@ -111,8 +124,7 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'B' asset
       assetCreated.then(async () => {
-        const assetBalance = await api.query.genericAsset.freeBalance(assetB, bob.address);
-        const investmentAmount = new BN(assetBalance.toString()).divn(2);
+        const investmentAmount = 100_000;
         const coreAmount = investmentAmount;
         const minLiquidity = 1;
         await api.tx.cennzx
@@ -535,7 +547,7 @@ describe('Cennzx Operations', () => {
           });
       });
     });
-    it("Test all rpc calls", async (done) => {
+    it('Test all rpc calls', async (done) => {
       let amount = 2_000;
       const liquidityPrice: LiquidityPriceResponse = await api.rpc.cennzx.liquidityPrice(cUSDAsset, amount);
       expect(liquidityPrice.asset.gtn(0)).toBe(true);
@@ -547,8 +559,7 @@ describe('Cennzx Operations', () => {
       const buyPrice = await api.rpc.cennzx.buyPrice(coreAssetId, amount, cUSDAsset);
       console.log('Buy price:', buyPrice.price.toBn().toString());
       expect(buyPrice.price.toBn().gtn(0)).toBeTruthy();
-      const sellPrice = await api.rpc.cennzx
-        .sellPrice(coreAssetId, amount, cUSDAsset);
+      const sellPrice = await api.rpc.cennzx.sellPrice(coreAssetId, amount, cUSDAsset);
       console.log('Sell price:', sellPrice.price.toBn().toString());
       expect(buyPrice.price.toBn().gtn(0)).toBeTruthy();
       done();

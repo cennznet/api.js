@@ -23,10 +23,11 @@ import * as nft from './nft';
 import * as session from './session';
 import * as staking from './staking';
 import * as balances from './balances';
+import * as governance from './governance';
 
 export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = { attestation, balances, cennzx, fees, nft, staking, session };
+export const derive = { attestation, balances, cennzx, fees, governance, nft, staking, session };
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,

@@ -20,6 +20,7 @@ import {SubmittableResult} from "@polkadot/api";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { WsProvider } from "@polkadot/rpc-provider";
+import ExtrinsicPayload from "@cennznet/types/interfaces/extrinsic/v1/ExtrinsicPayload";
 
 const keyring = new Keyring({ type: 'sr25519' });
 
@@ -41,7 +42,8 @@ describe('e2e api create', () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
     let targetVersion = api.runtimeVersion.specVersion;
-    const metaKey = `${api.genesisHash.toHex()}-${targetVersion}`
+    const metaKey = `${api.genesisHash.toHex()}-${targetVersion}`;
+    console.log('metaKey::', metaKey);
     let matchingVersions = Object.keys(staticMetadata).filter(v => v.includes(metaKey));
     // only one metadata per protocol version
     expect(matchingVersions.length).toEqual(1);
@@ -86,7 +88,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '0', feeExchange: null});
+    expect((extPayload.toHuman() as unknown as ExtrinsicPayload).transactionPayment).toEqual({tip: '0', feeExchange: null});
   });
 
   it('Creating extrinsic payload via registry with transaction payment option', async () => {
@@ -111,7 +113,7 @@ describe('e2e api create', () => {
       version: 4
     };
     const extPayload = api.registry.createType('ExtrinsicPayload', payload, { version: 4 });
-    expect(extPayload.toHuman().transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
+    expect((extPayload.toHuman() as unknown as ExtrinsicPayload).transactionPayment).toEqual({tip: '2.0000 pUnit', feeExchange:{ FeeExchangeV1: { assetId: '16,000', maxPayment: '50.0000 mUnit' }}});
   });
 
   it('Should connect to all available networks on cennznet via network name', async done => {

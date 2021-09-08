@@ -123,7 +123,11 @@ describe('CENNZX RPC calls testing', () => {
           const assetId = api.registry.createType('AssetId', CENNZ);
           const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
           const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
-          const extrinsic = api.tx.treasury.reportAwesome('Fantastic Work', alice.address);
+          const extrinsic = api.tx.nft.createCollection(
+            'collectionName',
+            {"Https": "example.com/nft/metadata" },
+            null
+          );
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
           await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {

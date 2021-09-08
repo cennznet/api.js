@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Api as ApiPromise } from "@cennznet/api";
-import { AssetInfo, AssetOptions, Hash, Vec } from "@cennznet/types";
+import { AssetInfoV40, AssetOptions, Hash, Vec } from "@cennznet/types";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { Extrinsic, SignedBlock } from "@polkadot/types/interfaces";
@@ -137,15 +137,24 @@ describe('runtime v36 compatibility', () => {
             const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
             const option = {initialIssuance : 0, permissions};
             const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-            const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
+
+            const assetInfo: AssetInfoV40 = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
             await api.tx.sudo
             .sudo(api.tx.genericAsset
                 .create(alice.address,
                 assetOption,
                 assetInfo
                 ))
-            .signAndSend(sudoPair);
-        }, 12000);
+            .signAndSend(sudoPair, async ({ events, status }) => {
+              if (status.isInBlock) {
+                for (const {event: {method, section, data}} of events) {
+                  console.log('Method:', method.toString());
+                  console.log('section:', section.toString());
+                }
+                console.log(`Transaction included at blockHash ${status.asInBlock}`);
+              }
+            });
+        },  12000);
     });
 
     it('Decodes historical block', async () => {
@@ -167,7 +176,7 @@ describe('runtime v36 compatibility', () => {
       expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
       expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
     });
-  
+
     it('Queries historical block events', async done => {
       // This will make a tx to generate some events, then request the block events after the fact.
 
