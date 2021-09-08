@@ -112,7 +112,7 @@ jobs:
         node-version: '15.3'
     - name: start latest test node
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:688aa03 --dev --tmp --ws-external --rpc-external --no-mdns
     - name: run subscriber script at polkadot/rpc-provider version (2.7.1)
       working-directory: ./test
       run: |
