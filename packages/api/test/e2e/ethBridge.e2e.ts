@@ -13,13 +13,16 @@ describe('Eth bridge test', () => {
     aliceStash = keyring.addFromUri('//Alice//stash')
     bob = keyring.addFromUri('//Bob');
     api = await initApiPromise();
+    // console.log('api.tx.ethBridge:',api.tx.ethBridge);
     const transaction1 = api.tx.erc20Peg.activateDeposits(true);
     const transaction2 = api.tx.erc20Peg.activateWithdrawals(true);
     const transaction3 = api.tx.erc20Peg.setContractAddress('0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512');
+    const transaction4 = api.tx.ethBridge.setEventConfirmations(0); // Hardhat only makes blocks when txs are sent
     const batchBridgeActivationEx = api.tx.utility.batch([
       transaction1,
       transaction2,
-      transaction3
+      transaction3,
+      transaction4
     ]);
 
     await api.tx.sudo.sudo(batchBridgeActivationEx).signAndSend(alice, async ({status, events}) => {
