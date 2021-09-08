@@ -40,7 +40,6 @@ describe('Eth bridge test', () => {
 
   describe('Eth bridge claims', () => {
   it('Submit claim for test token 1 from BridgeTest account', async done => {
-    // const depositTxHash = "0x3669266003c569752d4efcd4d63b9f9fac7d35a48e79490e74afe4f2b34b9231";
     const depositTxHash = "0x40964ab316ac8fb083c1c6d171627478b9d6946bdde686e8ec3837e20c535cdb";
     testTokenId1 = await api.query.genericAsset.nextAssetId();
     const claim = {
@@ -68,7 +67,6 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Alice', async done => {
-    // const depositTxHash = "0xe1ddb6a283f0204c12c8a88941fa2a97d379af91d983366df9aa69e106b265ad";
     const depositTxHash = "0x53433bae44e94ff6e36dbaea06de296fe544619273095b6b8709862f0a551c38";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
@@ -195,9 +193,9 @@ describe('Eth bridge test', () => {
 
   describe('Test RPC subscribe to new clain', () => {
     it.skip('Subscribe event proof after mock withdraw', async done => {
-      // let nonce = await api.rpc.system.accountNextIndex(alice.address);
-      // await api.tx.erc20Peg.mockWithdraw().signAndSend(alice, {nonce});
-      // await api.tx.erc20Peg.mockWithdraw().signAndSend(aliceStash);
+      let nonce = await api.rpc.system.accountNextIndex(alice.address);
+      await api.tx.erc20Peg.mockWithdraw().signAndSend(alice, {nonce});
+      await api.tx.erc20Peg.mockWithdraw().signAndSend(aliceStash);
       let count = 0;
       const unsubHeads = await api.rpc.ethy.subscribeEventProofs((result: any) => {
         console.log('data::', result.toHuman());
@@ -212,7 +210,6 @@ describe('Eth bridge test', () => {
     it('Withdraw claim for test token 2 from Alice', async done => {
       // const depositTxHash = "0xe1ddb6a283f0204c12c8a88941fa2a97d379af91d983366df9aa69e106b265ad";
       let nonce = await api.rpc.system.accountNextIndex(alice.address);
-      // testTokenId2 = 17001;
       let amount = 5644;
       const ethBeneficiary = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8';
       await api.tx.erc20Peg.withdraw(testTokenId2, amount, ethBeneficiary,).signAndSend(alice, {nonce}, async ({status, events}) => {
@@ -234,7 +231,6 @@ describe('Eth bridge test', () => {
 
     it('Withdraw claim for test token 2 from Bob', async done => {
       let nonce = await api.rpc.system.accountNextIndex(bob.address);
-      // testTokenId2 = 17001;
       let amount = 11644;
       const ethBeneficiary = '0x3c44cdddb6a900fa2b585dd299e03d12fa4293bc';
       await api.tx.erc20Peg.withdraw(testTokenId2, amount, ethBeneficiary,).signAndSend(bob, {nonce}, async ({status, events}) => {

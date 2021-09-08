@@ -331,7 +331,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                 ...(func.documentation.length && { summary: func.documentation })
               };
             }),
-            rpc: section.rpc ? Object.keys(section.rpc)
+            rpc: section?.rpc ? Object.keys(section.rpc)
               .sort()
               .map((methodName) => {
                 const method = section.rpc[methodName];
@@ -571,7 +571,8 @@ function main (): void {
 
     const latest = metadata.asLatest;
     //EthBridge
-    writeFile('docs/cennznet/ethBridge.md', addModule(latest, 'EthBridge', 'Eth_Bridge'));
+    writeFile('docs/cennznet/ethBridge.md', addModule(latest, 'EthBridge', 'Eth Bridge'));
+    writeFile('docs/cennznet/erc20peg.md', addModule(latest, 'Erc20Peg', 'ERC20 Peg'));
     writeFile('docs/cennznet/attestation.md', addModule(latest, 'Attestation', 'Attestation'));
     writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
     writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));

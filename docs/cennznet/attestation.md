@@ -82,7 +82,7 @@ Retrieve a single claim made about a holder by the given issuer on a given topic
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/attestation/getClaim.ts#L33)
+[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/476c3e9/packages/api/src/derives/attestation/getClaim.ts#L33)
 
 # Module: attestation/getClaims
 
@@ -108,7 +108,7 @@ Get all claims made about a holder by the given issuers on the given topics.
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/attestation/getClaims.ts#L29)
+[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/476c3e9/packages/api/src/derives/attestation/getClaims.ts#L29)
 
 # Module: attestation/types
 
@@ -138,4 +138,4 @@ An alias for `AttestationValue`
 
 #### Defined in
 
-[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/attestation/types.ts#L22)
+[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/476c3e9/packages/api/src/derives/attestation/types.ts#L22)

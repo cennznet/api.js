@@ -65,7 +65,7 @@ jobs:
       run: yarn build
     - name: start local Eth node
       run: |
-        docker run --dns=127.0.0.1 -dit --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
+        docker run --dns=127.0.0.1 -d --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
         docker container ls -a
     - name: Deploy contract and deposit
       run: yarn deploy

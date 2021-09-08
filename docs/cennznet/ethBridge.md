@@ -1,5 +1,5 @@
 ---
- Eth_Bridge
+ Eth Bridge
 ---
 
 The following sections contain the module details. 
