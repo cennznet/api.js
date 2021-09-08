@@ -153,6 +153,12 @@ ___
 
 ## ethBridge
  
+### setEventConfirmations(confirmations: `u64`)
+- **interface**: `api.tx.ethBridge.setEventConfirmations`
+ 
+### setEventDeadline(seconds: `u64`)
+- **interface**: `api.tx.ethBridge.setEventDeadline`
+ 
 ### submitNotarization(payload: `NotarizationPayload`, _signature: `Signature`)
 - **interface**: `api.tx.ethBridge.submitNotarization`
 

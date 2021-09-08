@@ -27,9 +27,17 @@ The following sections contain the module details.
 - **interface**: `api.query.ethBridge.eventClaims`
 - **summary**:   Queued event claims, awaiting notarization 
  
+### eventConfirmations(): `u64`
+- **interface**: `api.query.ethBridge.eventConfirmations`
+- **summary**:   The minimum number of block confirmations needed to notarize an Ethereum event 
+ 
 ### eventData(`EventClaimId`): `Option<Bytes>`
 - **interface**: `api.query.ethBridge.eventData`
 - **summary**:   Event data for a given claim 
+ 
+### eventDeadlineSeconds(): `u64`
+- **interface**: `api.query.ethBridge.eventDeadlineSeconds`
+- **summary**:   Events cannot be claimed after this time (seconds) 
  
 ### eventNotarizations(`EventClaimId, EthyId`): `Option<EventClaimResult>`
 - **interface**: `api.query.ethBridge.eventNotarizations`
@@ -69,13 +77,19 @@ The following sections contain the module details.
  
 ### processedTxHashes(`EthHash`): `()`
 - **interface**: `api.query.ethBridge.processedTxHashes`
-- **summary**:   Map from processed tx hash to status Periodically cleared after `EventDeadline` expires 
+- **summary**:   Map from processed tx hash to status Periodically cleared after `EventDeadlineSeconds` expires 
  
 ### typeIdToEventType(`EventTypeId`): `(EthAddress,EthHash)`
 - **interface**: `api.query.ethBridge.typeIdToEventType`
 - **summary**:   Maps event type ids to ((contract address, event signature)) 
  
 # Extrinsic
+ 
+### setEventConfirmations(confirmations: `u64`)
+- **interface**: `api.tx.ethBridge.setEventConfirmations`
+ 
+### setEventDeadline(seconds: `u64`)
+- **interface**: `api.tx.ethBridge.setEventDeadline`
  
 ### submitNotarization(payload: `NotarizationPayload`, _signature: `Signature`)
 - **interface**: `api.tx.ethBridge.submitNotarization`

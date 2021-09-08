@@ -27,7 +27,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:7](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L7)
+[packages/api/src/derives/types.ts:7](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L7)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:8](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L8)
+[packages/api/src/derives/types.ts:8](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L8)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:12](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L12)
+[packages/api/src/derives/types.ts:12](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L12)
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:10](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L10)
+[packages/api/src/derives/types.ts:10](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L10)
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:9](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L9)
+[packages/api/src/derives/types.ts:9](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L9)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:11](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L11)
+[packages/api/src/derives/types.ts:11](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L11)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:13](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L13)
+[packages/api/src/derives/types.ts:13](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L13)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:16](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L16)
+[packages/api/src/derives/types.ts:16](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L16)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:14](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L14)
+[packages/api/src/derives/types.ts:14](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L14)
 
 ___
 
@@ -117,4 +117,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:15](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L15)
+[packages/api/src/derives/types.ts:15](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L15)

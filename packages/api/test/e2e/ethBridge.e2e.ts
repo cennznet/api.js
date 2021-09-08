@@ -13,7 +13,6 @@ describe('Eth bridge test', () => {
     aliceStash = keyring.addFromUri('//Alice//stash')
     bob = keyring.addFromUri('//Bob');
     api = await initApiPromise();
-    // console.log('api.tx.ethBridge:',api.tx.ethBridge);
     const transaction1 = api.tx.erc20Peg.activateDeposits(true);
     const transaction2 = api.tx.erc20Peg.activateWithdrawals(true);
     const transaction3 = api.tx.erc20Peg.setContractAddress('0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512');

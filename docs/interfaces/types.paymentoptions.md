@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:36](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L36)
+[packages/api/src/derives/types.ts:36](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L36)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:37](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L37)
+[packages/api/src/derives/types.ts:37](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L37)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/types.ts:38](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/types.ts#L38)
+[packages/api/src/derives/types.ts:38](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/types.ts#L38)

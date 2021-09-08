@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:34](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/types.ts#L34)
+[packages/api/src/derives/staking/types.ts:34](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/staking/types.ts#L34)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:35](https://github.com/cennznet/api.js/blob/9d130bf/packages/api/src/derives/staking/types.ts#L35)
+[packages/api/src/derives/staking/types.ts:35](https://github.com/cennznet/api.js/blob/30c06f4/packages/api/src/derives/staking/types.ts#L35)

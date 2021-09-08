@@ -239,9 +239,17 @@ ___
 - **interface**: `api.query.ethBridge.eventClaims`
 - **summary**:   Queued event claims, awaiting notarization 
  
+### eventConfirmations(): `u64`
+- **interface**: `api.query.ethBridge.eventConfirmations`
+- **summary**:   The minimum number of block confirmations needed to notarize an Ethereum event 
+ 
 ### eventData(`EventClaimId`): `Option<Bytes>`
 - **interface**: `api.query.ethBridge.eventData`
 - **summary**:   Event data for a given claim 
+ 
+### eventDeadlineSeconds(): `u64`
+- **interface**: `api.query.ethBridge.eventDeadlineSeconds`
+- **summary**:   Events cannot be claimed after this time (seconds) 
  
 ### eventNotarizations(`EventClaimId, EthyId`): `Option<EventClaimResult>`
 - **interface**: `api.query.ethBridge.eventNotarizations`
@@ -281,7 +289,7 @@ ___
  
 ### processedTxHashes(`EthHash`): `()`
 - **interface**: `api.query.ethBridge.processedTxHashes`
-- **summary**:   Map from processed tx hash to status Periodically cleared after `EventDeadline` expires 
+- **summary**:   Map from processed tx hash to status Periodically cleared after `EventDeadlineSeconds` expires 
  
 ### typeIdToEventType(`EventTypeId`): `(EthAddress,EthHash)`
 - **interface**: `api.query.ethBridge.typeIdToEventType`
@@ -771,13 +779,13 @@ ___
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:   Any validators that may never be slashed or forcibly kicked. It's a Vec since they're easy to initialize and the performance hit is minimal (we expect no more than four invulnerables) and restricted to testnets. 
  
+### isActiveSessionFinal(): `bool`
+- **interface**: `api.query.staking.isActiveSessionFinal`
+- **summary**:   NOTE:!! this is poorly named. True if the _active_ session (session_index) is final (last in the era). Note that this does not take era forcing into accoun 
+ 
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the active session is final (last in the era). Note that this does not take era forcing into account 
- 
-### isPlannedSessionFinal(): `bool`
-- **interface**: `api.query.staking.isPlannedSessionFinal`
-- **summary**:   True if the next **planned** session is final (last in the era). Note that this does not take era forcing into account. 
+- **summary**:   NOTE:!! this is poorly named. True if the **planned** session (session_index + 1) is final (last in the era). Note that this does not take era forcing into account 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
