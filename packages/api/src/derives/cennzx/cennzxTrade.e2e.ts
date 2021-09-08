@@ -505,12 +505,16 @@ describe('Cennzx Operations', () => {
     it("Add liquidity for 'cUSD' to the pool", async (done) => {
       // Create a new Asset 'cUSD' and add liquidity to it
       // Amount of test asset - 'cUSD' to create
-      const initialIssuance = new BN('9000000000000000000000');
+      const initialIssuance = new BN('17446744073709551615');
       const owner = api.registry.createType('Owner', 0); // Owner type is enum with 0 as none/null
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner });
       const option = { initialIssuance, permissions };
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', { symbol: 'cUSD', decimalPlaces: 18 });
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {
+        symbol: 'cUSD',
+        decimalPlaces: 18,
+        existentialDeposit: 5,
+      });
       const createAsset = api.tx.genericAsset.create(alice.address, assetOption, assetInfo);
 
       nonce = await api.rpc.system.accountNextIndex(sudoKeypair.address);
@@ -524,7 +528,9 @@ describe('Cennzx Operations', () => {
       });
       // AddLiquidity for the 'cUSD' asset
       assetCreated.then(async () => {
+        const assetBalance = await api.query.genericAsset.freeBalance(cUSDAsset, alice.address);
         const investmentAmount = new BN('9000000000000000000');
+        expect(assetBalance.toBn().gt(investmentAmount)).toBeTruthy();
         const coreAmount = new BN('90000'); // Initial core investment for this pool
         const minLiquidity = 1;
         await api.tx.cennzx
