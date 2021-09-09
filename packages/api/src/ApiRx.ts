@@ -72,12 +72,12 @@ export class ApiRx extends ApiRxBase {
       // Don't use fullMetadata
       getMetadata(options.provider)
         .then((metadata) => (options.metadata = metadata))
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     } else if (options.modules !== undefined) {
       // Use custom metadata for modules
-      getMetadata(options.provider, options.modules).then((metadata) => (options.metadata = metadata));
+      getMetadata(options.provider, options.modules)
+        .then((metadata) => (options.metadata = metadata))
+        .catch((err) => console.log(err));
     }
     const rpc = {};
     const sectionsList = Object.keys(definitions);

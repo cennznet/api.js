@@ -65,7 +65,7 @@ export class EnhancedTokenId extends Struct implements Codec {
     /**
     * @description Returns the base runtime type name for this instance
     */
-    toRawType() {
+    toRawType(): string {
         return 'EnhancedTokenId';
     }
 }
