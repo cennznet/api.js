@@ -17,7 +17,7 @@ export default {
       digest: '[u8; 32]',
       eventId: 'u64',
       validatorSetId: 'u64',
-      signatures: 'Vec<Option<EthereumSignature>>'
+      signatures: 'Vec<EthereumSignature>'
     },
   }
 };

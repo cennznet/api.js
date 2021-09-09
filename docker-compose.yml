@@ -4,15 +4,23 @@
 version: '3'
 services:
   # dev node with runtime v40 and client 1.4.0
+  testnet_eth:
+    container_name: ethNode
+    image: ethereumoptimism/hardhat
+    ports:
+      - '8545:8545'
+      - '30303:30303'
+  # dev node with runtime v40 and client 1.4.0
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:688aa03
+    image: cennznet/cennznet:dad2b20
     command:
       - --dev
       - --tmp
       - --no-mdns
       - --unsafe-ws-external
       - --unsafe-rpc-external
+      - --eth-http=http://ethNode:8545
     ports:
       - '9933:9933'
       - '9944:9944'
