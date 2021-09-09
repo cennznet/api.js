@@ -15,7 +15,7 @@
 import { EstimateFeeParams } from '@cennznet/api/derives/types';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { drr } from '@polkadot/rpc-core/util';
-import {RuntimeDispatchInfo, SignatureOptions, AssetId, Balance, PriceResponse} from '@cennznet/types';
+import { RuntimeDispatchInfo, SignatureOptions, AssetId, Balance, PriceResponse } from '@cennznet/types';
 import BN from 'bn.js';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, first, map, switchMap } from 'rxjs/operators';
@@ -68,15 +68,18 @@ export function estimateFee(
           return combineLatest([api.rpc.payment.queryInfo(extrinsic.toHex()), of(networkFeeAssetId)]);
         }
       ),
-      switchMap(([paymentInfo, networkFeeAssetId]): Observable<BN> => {
-        const feeInBaseCurrency = paymentInfo.partialFee;
-        if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
-          return of(feeInBaseCurrency);
-        } else {
-          return (api.rpc as any).cennzx.buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId).pipe(
-            switchMap((priceRes: PriceResponse): Observable<Balance> => of(priceRes.price)))
+      switchMap(
+        ([paymentInfo, networkFeeAssetId]): Observable<BN> => {
+          const feeInBaseCurrency = paymentInfo.partialFee;
+          if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
+            return of(feeInBaseCurrency);
+          } else {
+            return (api.rpc as any).cennzx
+              .buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId)
+              .pipe(switchMap((priceRes: PriceResponse): Observable<Balance> => of(priceRes.price)));
+          }
         }
-      }),
+      ),
       map((price: BN) => price),
       catchError((err: Error) => of(err)),
       map((err: Error) => err),

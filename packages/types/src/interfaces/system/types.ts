@@ -1,11 +1,14 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Enum, Raw, Struct, bool, u32, u64 } from '@polkadot/types';
+import type { Enum, Raw, Struct, U8aFixed, bool, u32, u64 } from '@polkadot/types';
 import type { AccountId } from '@polkadot/types/interfaces/runtime';
 
 /** @name Address */
 export interface Address extends AccountId {}
+
+/** @name BeefyKey */
+export interface BeefyKey extends U8aFixed {}
 
 /** @name DispatchClassTo36 */
 export interface DispatchClassTo36 extends Enum {

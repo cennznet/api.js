@@ -36,7 +36,7 @@ describe('e2e queries', () => {
       const nextAssetId$ = api.rpc.chain
         .getBlockHash()
         .pipe(switchMap(blockHash => api.query.genericAsset.nextAssetId.at(blockHash as Hash)));
-      combineLatest([api.query.genericAsset.nextAssetId(), nextAssetId$]).subscribe(([nextAssetId, nextAssetIdAt]) => {
+      combineLatest(api.query.genericAsset.nextAssetId(), nextAssetId$).subscribe(([nextAssetId, nextAssetIdAt]) => {
         expect(nextAssetId.toString()).toEqual(nextAssetIdAt.toString());
         done();
       });

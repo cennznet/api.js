@@ -11,9 +11,15 @@ export default {
       initialIssuance: 'Compact<Balance>',
       permissions: 'PermissionLatest',
     },
-    AssetInfo: {
+    // Asset info used till runtime version 40
+    AssetInfoV40: {
       symbol: 'Vec<u8>',
       decimalPlaces: 'u8',
+    },
+    AssetInfoV41: {
+      symbol: 'Vec<u8>',
+      decimalPlaces: 'u8',
+      existentialDeposit: 'u64'
     },
     Owner: {
       _enum: {

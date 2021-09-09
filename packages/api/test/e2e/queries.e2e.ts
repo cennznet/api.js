@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
+import { AssetInfoV41 as AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
 import { Keyring } from '@polkadot/keyring';
 import { u8aToString } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -90,7 +90,7 @@ describe('e2e queries', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
       const option = {initialIssuance : 0, permissions};
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'SYLO', decimalPlaces: 3, existentialDeposit: 5});
       await api.tx.sudo
         .sudo(api.tx.genericAsset
           .create(alice.address,
@@ -104,6 +104,7 @@ describe('e2e queries', () => {
   describe('GA rpc calls', () => {
     it('Gets generic asset registeredAssets through RPC call', async done => {
       const registeredAsset = await api.rpc.genericAsset.registeredAssets();
+      console.log(registeredAsset.toJSON());
       expect(registeredAsset.length).toBeGreaterThan(0);
       const hasCpayAsset = ([assetId, meta]) => assetId.toString() === '16001' && u8aToString(meta.symbol) === 'CPAY' && meta.decimalPlaces.toString() === '4';
       const hasCennzAsset = ([assetId, meta]) => assetId.toString() === '16000' && u8aToString(meta.symbol) === 'CENNZ' && meta.decimalPlaces.toString() === '4';
@@ -137,7 +138,8 @@ describe('e2e queries', () => {
   describe('Generic Asset Storage', () => {
     it('Gets balance locks ok', async done => {
       const stashId = '5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY'; // alice_stash
-      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stashId);
+      const stakingAssetId = await api.query.genericAsset.stakingAssetId();
+      const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stakingAssetId, stashId);
       expect(balanceLocks.isEmpty).toBeFalsy();
       let reasons: WithdrawReasons = balanceLocks[0].reasons;
       expect(reasons.isTransactionPayment).toBeTruthy();

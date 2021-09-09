@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfo, AssetOptions } from "@cennznet/types";
+import { AssetInfoV40 as AssetInfo, AssetOptions, LiquidityPriceResponse } from "@cennznet/types";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -106,7 +106,7 @@ describe('e2e transactions', () => {
       const permissions = api.registry.createType('PermissionsV1', { update: owner, mint: owner, burn: owner});
       const option = {initialIssuance , permissions};
       const assetOption: AssetOptions = api.registry.createType('AssetOptions', option);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'TEST', decimalPlaces: 4});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'TEST', decimalPlaces: 4, existentialDeposit: 5});
       let createAssetTx = api.tx.genericAsset.create(assetOwner.address, assetOption, assetInfo);
 
       // Lookup from keyring (assuming we have added all, on --dev this would be `//Alice`)
@@ -128,12 +128,11 @@ describe('e2e transactions', () => {
 
       // 3) Mint liquidity for fee asset <> CPAY.
       assetCreated.then(async () => {
-        const desiredLiquidity = 30_000_000_000_000;
+        const desiredLiquidity = 30_000_000;
         const minimumLiquidity = 1;
-        const [coreInvestment, feeInvestment] = await (api.rpc as any).cennzx.liquidityPrice(feeAssetId, desiredLiquidity);
-
+        const liquidityPrice: LiquidityPriceResponse = await (api.rpc.cennzx.liquidityPrice(feeAssetId, desiredLiquidity));
         await api.tx.cennzx
-          .addLiquidity(feeAssetId, minimumLiquidity, feeInvestment, coreInvestment)
+          .addLiquidity(feeAssetId, minimumLiquidity, liquidityPrice.asset, liquidityPrice.core)
           .signAndSend(assetOwner, ({ events, status }) => status.isInBlock ? done() :null );
 
       });
@@ -178,7 +177,7 @@ describe('e2e transactions', () => {
 
     it('Update asset info', async done => {
       const nonce = await api.rpc.system.accountNextIndex(assetOwner.address);
-      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'NEW_ASSET_ID', decimalPlaces: 5});
+      const assetInfo: AssetInfo = api.registry.createType('AssetInfo', {symbol: 'NEW_ASSET_ID', decimalPlaces: 5, existentialDeposit: 5});
       await api.tx.genericAsset.updateAssetInfo( feeAssetId, assetInfo).signAndSend(assetOwner, { nonce }, async ({ events, status }) => {
         if (status.isInBlock) {
           for (const { event: { method, section, data } } of events) {
@@ -186,6 +185,7 @@ describe('e2e transactions', () => {
               const [assetId, assetMeta] = data;
               expect(assetId as number).toEqual(feeAssetId);
               expect(assetMeta.toJSON()).toEqual({
+                existentialDeposit: 5,
                 decimalPlaces: 5,
                 symbol: stringToHex('NEW_ASSET_ID')
               });

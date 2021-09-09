@@ -5,8 +5,11 @@ import type { Metadata } from '@polkadot/metadata';
 import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { EventProof } from '@cennznet/types/interfaces/ethy';
+import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
+import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
 import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
 import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
 import type { BlockHash } from '@polkadot/types/interfaces/chain';
@@ -23,11 +26,8 @@ import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
 import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
 import type { ReadProof, RuntimeVersion } from '@polkadot/types/interfaces/state';
 import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
-import {EnhancedTokenId} from "@cennznet/types/interfaces/nft/enhanced-token-id";
 
 declare module '@polkadot/rpc-core/types.jsonrpc' {
-
-
   export interface RpcInterface {
     author: {
       /**
@@ -301,12 +301,25 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       syncing: AugmentedRpc<() => Observable<EthSyncStatus>>;
     };
+    ethy: {
+      /**
+       * Subscribe event proof
+       **/
+      subscribeEventProofs: AugmentedRpc<() => Observable<EventProof>>;
+    };
     genericAsset: {
       /**
        * Get all registered generic assets (symbol, decimal places)
        **/
       registeredAssets: AugmentedRpc<() => Observable<Vec<ITuple<[AssetId, AssetInfo]>>>>;
     };
+    governance: {
+      /**
+       * Get all proposals and the vote information
+       **/
+      getProposalVotes: AugmentedRpc<() => Observable<Vec<ProposalVotes>>>;
+    };
+    // NOTE: need some way to merge during generation, ignore for now
     // @ts-ignore
     grandpa: {
       /**
