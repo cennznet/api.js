@@ -5,7 +5,7 @@ import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I25
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
-import type { EthyId, EventProof } from '@cennznet/types/interfaces/ethy';
+import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
@@ -81,6 +81,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<CoreIndex>': Compact<CoreIndex>;
     'Compact<DeviceId>': Compact<DeviceId>;
     'Compact<DeviceIdResponse>': Compact<DeviceIdResponse>;
+    'Compact<EthyEventId>': Compact<EthyEventId>;
     'Compact<EventClaimId>': Compact<EventClaimId>;
     'Compact<EventProofId>': Compact<EventProofId>;
     'Compact<EventTypeId>': Compact<EventTypeId>;
@@ -351,6 +352,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<EthTransactionRequest>': Option<EthTransactionRequest>;
     'Option<EthTransactionStatus>': Option<EthTransactionStatus>;
     'Option<EthWork>': Option<EthWork>;
+    'Option<EthyEventId>': Option<EthyEventId>;
     'Option<EthyId>': Option<EthyId>;
     'Option<EventClaimId>': Option<EventClaimId>;
     'Option<EventClaimResult>': Option<EventClaimResult>;
@@ -786,6 +788,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<VaultValue>': Option<VaultValue>;
     'Option<VecDeque>': Option<VecDeque>;
     'Option<VecInboundHrmpMessage>': Option<VecInboundHrmpMessage>;
+    'Option<VersionedEventProof>': Option<VersionedEventProof>;
     'Option<VersionedMultiAsset>': Option<VersionedMultiAsset>;
     'Option<VersionedMultiLocation>': Option<VersionedMultiLocation>;
     'Option<VersionedXcm>': Option<VersionedXcm>;
@@ -1023,6 +1026,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<EthTransactionRequest>': Vec<EthTransactionRequest>;
     'Vec<EthTransactionStatus>': Vec<EthTransactionStatus>;
     'Vec<EthWork>': Vec<EthWork>;
+    'Vec<EthyEventId>': Vec<EthyEventId>;
     'Vec<EthyId>': Vec<EthyId>;
     'Vec<EventClaimId>': Vec<EventClaimId>;
     'Vec<EventClaimResult>': Vec<EventClaimResult>;
@@ -1458,6 +1462,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<VaultValue>': Vec<VaultValue>;
     'Vec<VecDeque>': Vec<VecDeque>;
     'Vec<VecInboundHrmpMessage>': Vec<VecInboundHrmpMessage>;
+    'Vec<VersionedEventProof>': Vec<VersionedEventProof>;
     'Vec<VersionedMultiAsset>': Vec<VersionedMultiAsset>;
     'Vec<VersionedMultiLocation>': Vec<VersionedMultiLocation>;
     'Vec<VersionedXcm>': Vec<VersionedXcm>;
@@ -1695,6 +1700,7 @@ declare module '@polkadot/types/types/registry' {
     EthTransactionRequest: EthTransactionRequest;
     EthTransactionStatus: EthTransactionStatus;
     EthWork: EthWork;
+    EthyEventId: EthyEventId;
     EthyId: EthyId;
     EventClaimId: EventClaimId;
     EventClaimResult: EventClaimResult;
@@ -2130,6 +2136,7 @@ declare module '@polkadot/types/types/registry' {
     VaultValue: VaultValue;
     VecDeque: VecDeque;
     VecInboundHrmpMessage: VecInboundHrmpMessage;
+    VersionedEventProof: VersionedEventProof;
     VersionedMultiAsset: VersionedMultiAsset;
     VersionedMultiLocation: VersionedMultiLocation;
     VersionedXcm: VersionedXcm;
