@@ -8,7 +8,7 @@ export default {
         'subscribeEventProofs',
         'unsubscribeEventProofs',
       ],
-      type: 'EventProof',
+      type: 'Option<VersionedEventProof>',
     },
     getEventProof: {
       description: 'Get event proof for event Id',
