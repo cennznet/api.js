@@ -31,7 +31,7 @@ export function eventProof(instanceId: string, api: ApiInterfaceRx): () => Obser
         api.derive.chain.bestNumberFinalized(), // use this so that the call keeps happening until eventProof value exist.
       ]).pipe(
         filter(([eventProof, header]) => {
-          console.log(
+          console.debug(
             `event proof recieved is ${eventProof.toHuman() === null ? null : eventProof} at block ${header.toString()}`
           );
           return eventProof.toHuman() !== null;
