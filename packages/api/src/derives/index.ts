@@ -18,7 +18,7 @@ import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import * as attestation from './attestation';
 import * as cennzx from './cennzx';
-import * as erc20Peg from './erc20Peg';
+import * as ethBridge from './ethBridge';
 import * as fees from './fees';
 import * as nft from './nft';
 import * as session from './session';
@@ -28,7 +28,7 @@ import * as governance from './governance';
 
 export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
 
-export const derive = { attestation, balances, cennzx, erc20Peg, fees, governance, nft, staking, session };
+export const derive = { attestation, balances, cennzx, ethBridge, fees, governance, nft, staking, session };
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,

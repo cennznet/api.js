@@ -12,29 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable , combineLatest } from '@polkadot/x-rxjs';
+import { Observable, combineLatest } from '@polkadot/x-rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 
 import { memo } from '@polkadot/api-derive/util';
 import { map, filter } from '@polkadot/x-rxjs/operators';
-import { EthyEventId, EventProof} from '@cennznet/types';
+import { EthyEventId, EventProof } from '@cennznet/types';
 
 /**
  * @description Retrieve event proof
  */
 export function eventProof(instanceId: string, api: ApiInterfaceRx): () => Observable<EventProof> {
-    return memo(instanceId, (eventId: EthyEventId): Observable<EventProof> =>
+  return memo(
+    instanceId,
+    (eventId: EthyEventId): Observable<EventProof> =>
       combineLatest([
         api.rpc.ethy.getEventProof(eventId),
-        api.derive.chain.subscribeNewHeads() // use this so that the call keeps happening until eventProof value exist.
+        api.derive.chain.bestNumberFinalized(), // use this so that the call keeps happening until eventProof value exist.
       ]).pipe(
-        filter(([eventProof, header]) =>{
-          console.log(`event proof recieved is ${eventProof.toHuman() === null ? null: eventProof} at block ${header.number.toString()}`);
-          return eventProof.toHuman() !== null
+        filter(([eventProof, header]) => {
+          console.log(
+            `event proof recieved is ${eventProof.toHuman() === null ? null : eventProof} at block ${header.toString()}`
+          );
+          return eventProof.toHuman() !== null;
         }),
-        map(([eventProof]): EventProof => {
-          return eventProof.unwrap().asEventProof;
-        })
+        map(
+          ([eventProof]): EventProof => {
+            return eventProof.unwrap().asEventProof;
+          }
+        )
       )
-    );
+  );
 }

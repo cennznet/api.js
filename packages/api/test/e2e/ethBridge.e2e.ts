@@ -262,7 +262,7 @@ describe('Eth bridge test', () => {
       const versionedEventProof = (await api.rpc.ethy.getEventProof('0')).toJSON();
       expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
 
-      const eventProof = await api.derive.erc20Peg.eventProof('1');
+      const eventProof = await api.derive.ethBridge.eventProof('1');
       console.log('Proof::',eventProof.toHuman());
       expect(eventProof.eventId.toString()).toEqual('1');
       done();
