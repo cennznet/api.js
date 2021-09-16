@@ -42,7 +42,7 @@ describe('Eth bridge test', () => {
 
   describe('Eth bridge claims', () => {
   it('Submit claim for test token 1 from BridgeTest account', async done => {
-    const depositTxHash = "0x40964ab316ac8fb083c1c6d171627478b9d6946bdde686e8ec3837e20c535cdb";
+    const depositTxHash = "0xe689e5c7d33a58f28018a62c2c5e9b9d9a6fc954609739f2cac634962389c617";
     testTokenId1 = await api.query.genericAsset.nextAssetId();
     const claim = {
       tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
@@ -69,7 +69,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Alice', async done => {
-    const depositTxHash = "0x53433bae44e94ff6e36dbaea06de296fe544619273095b6b8709862f0a551c38";
+    const depositTxHash = "0xcdb32cc1892d23068e24233f41d08b5cdf5d317c622c920aa70c1390a6cf3478";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "5644",
@@ -92,7 +92,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Bob', async done => {
-    const depositTxHash = "0xbd1e5655b06edf00cc86e913a8f87ec0fcccff77ae2c91f3e8a13a7c1826e56a";
+    const depositTxHash = "0xf08c10c795bb995aed6414531bc7f221ac67b522d4d639a770b1083ad5549f82";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "11644",
