@@ -2,6 +2,7 @@ import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
+import { Api } from "@cennznet/api";
 
 describe('Eth bridge test', () => {
   let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
@@ -257,10 +258,13 @@ describe('Eth bridge test', () => {
     });
 
     it( 'Get event id from rpc call', async done => {
+      api = await Api.create({network: 'rata'});
       const versionedEventProof = (await api.rpc.ethy.getEventProof('0')).toJSON();
       expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
-      const versionedEventProof1 = (await api.rpc.ethy.getEventProof('1')).toJSON();
-      expect(versionedEventProof1.EventProof.eventId.toString()).toEqual('1');
+
+      const eventProof = await api.derive.erc20Peg.eventProof('1');
+      console.log('Proof::',eventProof.toHuman());
+      expect(eventProof.eventId.toString()).toEqual('1');
       done();
     })
   })

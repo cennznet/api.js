@@ -14,10 +14,6 @@
 import { Hash, Block, AccountId, EventRecord, AssetId } from '@cennznet/types'
 import { HeaderExtended } from '@polkadot/api-derive';
 import initApiPromise from '../../../../jest/initApiPromise';
-import {Api} from "@cennznet/api";
-import {SignedBlock} from "@polkadot/types/interfaces/runtime";
-import {Extrinsic} from "@polkadot/types/interfaces";
-import {Vec} from "@polkadot/types";
 
 describe('e2e api calls', () => {
   let api;
