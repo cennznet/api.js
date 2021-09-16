@@ -1,7 +1,9 @@
+import { extractEthereumSignature } from "@cennznet/api/util/helper";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
+import { Api } from "@cennznet/api";
 
 describe('Eth bridge test', () => {
   let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
@@ -40,7 +42,7 @@ describe('Eth bridge test', () => {
 
   describe('Eth bridge claims', () => {
   it('Submit claim for test token 1 from BridgeTest account', async done => {
-    const depositTxHash = "0x40964ab316ac8fb083c1c6d171627478b9d6946bdde686e8ec3837e20c535cdb";
+    const depositTxHash = "0xe689e5c7d33a58f28018a62c2c5e9b9d9a6fc954609739f2cac634962389c617";
     testTokenId1 = await api.query.genericAsset.nextAssetId();
     const claim = {
       tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
@@ -67,7 +69,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Alice', async done => {
-    const depositTxHash = "0x53433bae44e94ff6e36dbaea06de296fe544619273095b6b8709862f0a551c38";
+    const depositTxHash = "0xcdb32cc1892d23068e24233f41d08b5cdf5d317c622c920aa70c1390a6cf3478";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "5644",
@@ -90,7 +92,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Bob', async done => {
-    const depositTxHash = "0xbd1e5655b06edf00cc86e913a8f87ec0fcccff77ae2c91f3e8a13a7c1826e56a";
+    const depositTxHash = "0xf08c10c795bb995aed6414531bc7f221ac67b522d4d639a770b1083ad5549f82";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "11644",
@@ -257,10 +259,25 @@ describe('Eth bridge test', () => {
     });
 
     it( 'Get event id from rpc call', async done => {
+      api = await Api.create({network: 'rata'});
       const versionedEventProof = (await api.rpc.ethy.getEventProof('0')).toJSON();
       expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
-      const versionedEventProof1 = (await api.rpc.ethy.getEventProof('1')).toJSON();
-      expect(versionedEventProof1.EventProof.eventId.toString()).toEqual('1');
+
+      const eventProof = await api.derive.ethBridge.eventProof('1');
+      console.log('Proof::',eventProof);
+      expect(eventProof.eventId).toEqual('1');
+      done();
+    })
+
+    it( 'Get r,s,v from signature', async done => {
+      const sign = api.registry.createType('EthereumSignature', '0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb946bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b01');
+      const signatures = [sign];
+      const { r, s, v } = extractEthereumSignature(signatures);
+
+      expect(r[0]).toEqual('0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb94');
+      expect(s[0]).toEqual('0x6bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b');
+      expect(v[0]).toEqual(28);
+
       done();
     })
   })
