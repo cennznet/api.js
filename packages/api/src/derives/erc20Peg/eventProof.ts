@@ -22,8 +22,7 @@ import { EthyEventId, EventProof} from '@cennznet/types';
 /**
  * @description Retrieve event proof
  */
-export function eventProof(instanceId: string, api: ApiInterfaceRx) {
-
+export function eventProof(instanceId: string, api: ApiInterfaceRx): () => Observable<EventProof> {
     return memo(instanceId, (eventId: EthyEventId): Observable<EventProof> =>
       combineLatest([
         api.rpc.ethy.getEventProof(eventId),
