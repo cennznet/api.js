@@ -1,3 +1,4 @@
+import { extractEthereumSignature } from "@cennznet/api/util/helper";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
@@ -265,6 +266,18 @@ describe('Eth bridge test', () => {
       const eventProof = await api.derive.ethBridge.eventProof('1');
       console.log('Proof::',eventProof);
       expect(eventProof.eventId).toEqual('1');
+      done();
+    })
+
+    it( 'Get r,s,v from signature', async done => {
+      const sign = api.registry.createType('EthereumSignature', '0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb946bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b01');
+      const signatures = [sign];
+      const { r, s, v } = extractEthereumSignature(signatures);
+
+      expect(r[0]).toEqual('0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb94');
+      expect(s[0]).toEqual('0x6bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b');
+      expect(v[0]).toEqual(28);
+
       done();
     })
   })
