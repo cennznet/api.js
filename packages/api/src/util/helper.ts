@@ -1,6 +1,7 @@
 import { u8aToHex } from '@cennznet/util';
 import { EthereumSignature } from '@polkadot/types/interfaces';
 
+// Splits the given Ethereum signatures into r,s,v format
 export function extractEthereumSignature(signatures: EthereumSignature[]): { r: string[]; s: string[]; v: number[] } {
   const rPart = [],
     sPart = [],
