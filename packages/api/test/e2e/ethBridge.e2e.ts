@@ -263,8 +263,8 @@ describe('Eth bridge test', () => {
       expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
 
       const eventProof = await api.derive.ethBridge.eventProof('1');
-      console.log('Proof::',eventProof.toHuman());
-      expect(eventProof.eventId.toString()).toEqual('1');
+      console.log('Proof::',eventProof);
+      expect(eventProof.eventId).toEqual('1');
       done();
     })
   })
