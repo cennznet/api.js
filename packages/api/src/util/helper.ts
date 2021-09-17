@@ -1,4 +1,4 @@
-import { Erc20DepositEvent, u64 } from '@cennznet/types';
+import { u64 } from '@cennznet/types';
 import { u8aToHex } from '@cennznet/util';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { EthereumSignature } from '@polkadot/types/interfaces';
@@ -36,7 +36,7 @@ export function extractEthereumSignature(signatures: EthereumSignature[]): { r: 
 export async function awaitDepositClaim(
   api: Api,
   depositTxHash: H256 | string | Uint8Array,
-  claim: Erc20DepositEvent,
+  claim: { tokenAddress: string; amount: string; beneficiary: string },
   signer: KeyringPair
 ): Promise<ClaimDeposited> {
   const nonce = await api.rpc.system.accountNextIndex(signer.address);
