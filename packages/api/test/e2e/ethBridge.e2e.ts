@@ -63,6 +63,8 @@ describe('Eth bridge test', () => {
       expect(assetId).toEqual(testTokenId1.toString());
       expect(amount).toEqual(depositAmount);
       expect(beneficiary).toEqual(beneficiaryAddress);
+      const assetBalance = await api.query.genericAsset.freeBalance(testTokenId1.toNumber(), beneficiaryAddress);
+      expect(assetBalance.toString()).toBe(depositAmount);
       done();
   });
 
@@ -190,13 +192,6 @@ describe('Eth bridge test', () => {
       const hasTestToken2Asset = ([assetId, meta]) => assetId.toString() === testTokenId2.toString() && meta.decimalPlaces.toString() === '18';
       expect(registeredAsset.some(hasTestToken1Asset)).toBe(true);
       expect(registeredAsset.some(hasTestToken2Asset)).toBe(true);
-      done();
-    });
-
-    it('Queries generic asset balance for test token 1 for BridgeTests account', async done => {
-      const bridgeTestAccount = '5FyKggXKhqAwJ2o9oBu8j3WHbCfPCz3uCuhTc4fTDgVniWNU';
-      const assetBalance = await api.query.genericAsset.freeBalance(testTokenId1.toNumber(), bridgeTestAccount);
-      expect(assetBalance.toString()).toBe("1423");
       done();
     });
 
