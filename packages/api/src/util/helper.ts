@@ -39,17 +39,17 @@ export async function awaitDepositClaim(
   claim: { tokenAddress: string; amount: string; beneficiary: string },
   signer: KeyringPair
 ): Promise<ClaimDeposited> {
-  const nonce = await api.rpc.system.accountNextIndex(signer.address);
   return new Promise((resolve, reject) => {
     api.tx.erc20Peg
       .depositClaim(depositTxHash, claim)
-      .signAndSend(signer, { nonce }, ({ status, events }) => {
+      .signAndSend(signer, ({ status, events }) => {
         let eventClaimId;
         if (status.isInBlock) {
           for (const {
             event: { method, section, data },
           } of events) {
-            if (section === 'erc20Peg' && method === 'Erc20Claim') {
+            const [, claimer] = data;
+            if (section === 'erc20Peg' && method === 'Erc20Claim' && claimer && claimer.toString() === signer.address) {
               eventClaimId = data[0];
               break;
             } else if (section === 'system' && method === 'ExtrinsicFailed') {
