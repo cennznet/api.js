@@ -281,8 +281,8 @@ describe('Eth bridge test', () => {
       done();
     })
 
-    it( 'Get r,s,v from invalid signatuew', async done => {
-      const sign = api.registry.createType('EthereumSignature', '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000');
+    it( 'Get r,s,v from invalid signature', async done => {
+      const sign = api.registry.createType('EthereumSignature', '');
       const signatures = [sign];
       const { r, s, v } = extractEthereumSignature(signatures);
       expect(r).toEqual([]);
