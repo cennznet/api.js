@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Data, Option, U8aFixed, Vec, bool, u16, u32, u64 } from '@polkadot/types';
+import type { Bytes, Compact, Data, Option, U8aFixed, Vec, bool, u16, u32, u64, u8 } from '@polkadot/types';
 import type { AnyNumber, ITuple } from '@polkadot/types/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
@@ -137,6 +137,7 @@ declare module '@polkadot/api/types/submittable' {
       activateWithdrawals: AugmentedSubmittable<(activate: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [bool]>;
       depositClaim: AugmentedSubmittable<(txHash: H256 | string | Uint8Array, claim: Erc20DepositEvent | { tokenAddress?: any; amount?: any; beneficiary?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [H256, Erc20DepositEvent]>;
       setContractAddress: AugmentedSubmittable<(ethAddress: EthAddress | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [EthAddress]>;
+      setErc20Meta: AugmentedSubmittable<(details: Vec<ITuple<[EthAddress, Bytes, u8]>> | ([EthAddress | string | Uint8Array, Bytes | string | Uint8Array, u8 | AnyNumber | Uint8Array])[]) => SubmittableExtrinsic<ApiType>, [Vec<ITuple<[EthAddress, Bytes, u8]>>]>;
       withdraw: AugmentedSubmittable<(assetId: AssetId | AnyNumber | Uint8Array, amount: Balance | AnyNumber | Uint8Array, beneficiary: EthAddress | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AssetId, Balance, EthAddress]>;
     };
     ethBridge: {

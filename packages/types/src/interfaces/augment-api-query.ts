@@ -9,8 +9,9 @@ import type { EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId,
 import type { EthyId } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId, ProposalStatusInfo, ProposalVoteInfo } from '@cennznet/types/interfaces/governance';
-import type { CollectionId, CollectionNameType, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { DeviceId, Group, Message, MessageId, PreKeyBundle, Response, VaultKey, VaultValue } from '@cennznet/types/interfaces/sylo';
+import type { BabeEpochConfiguration } from '@cennznet/types/interfaces/system';
 import type { UncleEntryItem } from '@polkadot/types/interfaces/authorship';
 import type { BabeAuthorityWeight, MaybeRandomness, NextConfigDescriptor, Randomness } from '@polkadot/types/interfaces/babe';
 import type { BalanceLock } from '@polkadot/types/interfaces/balances';
@@ -81,6 +82,10 @@ declare module '@polkadot/api/types/storage' {
        **/
       currentSlot: AugmentedQuery<ApiType, () => Observable<Slot>, []> & QueryableStorageEntry<ApiType, []>;
       /**
+       * The configuration for the current epoch. Should never be `None` as it is initialized in genesis.
+       **/
+      epochConfig: AugmentedQuery<ApiType, () => Observable<Option<BabeEpochConfiguration>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
        * Current epoch index.
        **/
       epochIndex: AugmentedQuery<ApiType, () => Observable<u64>, []> & QueryableStorageEntry<ApiType, []>;
@@ -107,13 +112,18 @@ declare module '@polkadot/api/types/storage' {
        **/
       nextAuthorities: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[AuthorityId, BabeAuthorityWeight]>>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
-       * Next epoch configuration, if changed.
+       * The configuration for the next epoch, `None` if the config will not change
+       * (you can fallback to `EpochConfig` instead in that case).
        **/
-      nextEpochConfig: AugmentedQuery<ApiType, () => Observable<Option<NextConfigDescriptor>>, []> & QueryableStorageEntry<ApiType, []>;
+      nextEpochConfig: AugmentedQuery<ApiType, () => Observable<Option<BabeEpochConfiguration>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Next epoch randomness.
        **/
       nextRandomness: AugmentedQuery<ApiType, () => Observable<Randomness>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Pending epoch configuration change that will be applied when the next epoch is enacted.
+       **/
+      pendingEpochConfigChange: AugmentedQuery<ApiType, () => Observable<Option<NextConfigDescriptor>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * The epoch randomness for the *current* epoch.
        *
@@ -184,7 +194,7 @@ declare module '@polkadot/api/types/storage' {
        **/
       depositsActive: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
       /**
-       * Metadata for well-known erc20 tokens
+       * Metadata for well-known erc20 tokens (symbol, decimals)
        **/
       erc20Meta: AugmentedQuery<ApiType, (arg: EthAddress | string | Uint8Array) => Observable<Option<ITuple<[Bytes, u8]>>>, [EthAddress]> & QueryableStorageEntry<ApiType, [EthAddress]>;
       /**
@@ -203,7 +213,7 @@ declare module '@polkadot/api/types/storage' {
        **/
       activationThreshold: AugmentedQuery<ApiType, () => Observable<Percent>, []> & QueryableStorageEntry<ApiType, []>;
       /**
-       * Whether the bridge is paused
+       * Whether the bridge is paused (for validator transitions)
        **/
       bridgePaused: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
       /**
@@ -519,9 +529,13 @@ declare module '@polkadot/api/types/storage' {
        **/
       seriesRoyalties: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<Option<RoyaltiesSchedule>>, [CollectionId, SeriesId]> & QueryableStorageEntry<ApiType, [CollectionId, SeriesId]>;
       /**
-       * Map from token to its locked status
+       * Version of this module's storage schema
        **/
-      tokenLocks: AugmentedQuery<ApiType, (arg: TokenId) => Observable<bool>, [TokenId]> & QueryableStorageEntry<ApiType, [TokenId]>;
+      storageVersion: AugmentedQuery<ApiType, () => Observable<u32>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Map from a token to lock status if any
+       **/
+      tokenLocks: AugmentedQuery<ApiType, (arg: TokenId) => Observable<Option<TokenLockReason>>, [TokenId]> & QueryableStorageEntry<ApiType, [TokenId]>;
       /**
        * Map from a token to its owner
        * The token Id is split in this map to allow better indexing (collection, series) + (serial number)

@@ -3,7 +3,8 @@
 
 import type { Vec, u16, u32, u64, u8 } from '@polkadot/types';
 import type { Codec } from '@polkadot/types/types';
-import type { BalanceOf, BlockNumber, ModuleId, Moment, Perbill, Permill, RuntimeDbWeight } from '@polkadot/types/interfaces/runtime';
+import type { PalletId } from '@cennznet/types/interfaces/system';
+import type { BalanceOf, BlockNumber, Moment, Perbill, Permill, RuntimeDbWeight } from '@polkadot/types/interfaces/runtime';
 import type { SessionIndex } from '@polkadot/types/interfaces/session';
 import type { EraIndex } from '@polkadot/types/interfaces/staking';
 import type { RuntimeVersion } from '@polkadot/types/interfaces/state';
@@ -186,7 +187,7 @@ declare module '@polkadot/api/types/consts' {
       /**
        * The treasury's module id, used for deriving its sovereign account ID.
        **/
-      moduleId: ModuleId & AugmentedConst<ApiType>;
+      palletId: PalletId & AugmentedConst<ApiType>;
       /**
        * Fraction of a proposal's value that should be bonded in order to place the proposal.
        * An accepted proposal gets these back. A rejected proposal does not.

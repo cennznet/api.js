@@ -20,5 +20,10 @@ export default {
       class: 'DispatchClassTo36',
       paysFee: 'bool',
     },
+    PalletId: 'LockIdentifier',
+    BabeEpochConfiguration: {
+      c: '(u64, u64)',
+      allowedSlots: 'AllowedSlots'
+    },
   },
 };

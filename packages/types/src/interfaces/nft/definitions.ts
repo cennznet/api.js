@@ -79,5 +79,10 @@ export default {
         'SeriesId': 'u32',
         'SerialNumber': 'u32',
         'TokenCount': 'u32',
+        'TokenLockReason': {
+          '_enum': {
+            'ListingId': 'u128'
+          }
+        }
     }
 }
