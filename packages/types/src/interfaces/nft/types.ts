@@ -108,7 +108,7 @@ export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> 
 /** @name TokenLockReason */
 export interface TokenLockReason extends Enum {
   readonly isListingId: boolean;
-  readonly asListingId: u128;
+  readonly asListingId: ListingId;
 }
 
 export type PHANTOM_NFT = 'nft';

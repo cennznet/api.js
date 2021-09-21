@@ -4,7 +4,7 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload, details } from '@cennznet/types/interfaces/ethBridge';
+import type { Details, Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
@@ -297,7 +297,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<DeployData>': Option<DeployData>;
     'Option<DepositAsset>': Option<DepositAsset>;
     'Option<DepositReserveAsset>': Option<DepositReserveAsset>;
-    'Option<details>': Option<details>;
+    'Option<Details>': Option<Details>;
     'Option<DeviceId>': Option<DeviceId>;
     'Option<DeviceIdResponse>': Option<DeviceIdResponse>;
     'Option<Digest>': Option<Digest>;
@@ -975,7 +975,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<DeployData>': Vec<DeployData>;
     'Vec<DepositAsset>': Vec<DepositAsset>;
     'Vec<DepositReserveAsset>': Vec<DepositReserveAsset>;
-    'Vec<details>': Vec<details>;
+    'Vec<Details>': Vec<Details>;
     'Vec<DeviceId>': Vec<DeviceId>;
     'Vec<DeviceIdResponse>': Vec<DeviceIdResponse>;
     'Vec<Digest>': Vec<Digest>;
@@ -1653,7 +1653,7 @@ declare module '@polkadot/types/types/registry' {
     DeployData: DeployData;
     DepositAsset: DepositAsset;
     DepositReserveAsset: DepositReserveAsset;
-    details: details;
+    Details: Details;
     DeviceId: DeviceId;
     DeviceIdResponse: DeviceIdResponse;
     Digest: Digest;

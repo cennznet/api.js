@@ -81,7 +81,7 @@ export default {
         'TokenCount': 'u32',
         'TokenLockReason': {
           '_enum': {
-            'ListingId': 'u128'
+            'ListingId': 'ListingId'
           }
         }
     }

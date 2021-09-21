@@ -27,6 +27,6 @@ export default {
       "authorityIndex": "u16",
       "result": "EventClaimResult"
     },
-    details: 'Vec<(EthAddress, Vec<u8>, u8 )>',
+    Details: 'Vec<(EthAddress, Vec<u8>, u8 )>',
   },
 };
