@@ -105,4 +105,10 @@ export interface TokenCount extends u32 {}
 /** @name TokenId */
 export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
 
+/** @name TokenLockReason */
+export interface TokenLockReason extends Enum {
+  readonly isListingId: boolean;
+  readonly asListingId: ListingId;
+}
+
 export type PHANTOM_NFT = 'nft';

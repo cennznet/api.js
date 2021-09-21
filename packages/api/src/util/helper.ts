@@ -5,12 +5,16 @@ import { EthereumSignature } from '@polkadot/types/interfaces';
 import { H256 } from '@polkadot/types/interfaces/runtime';
 import { Api } from '@cennznet/api';
 
+// Ignore if signature is 0x000
+const IGNORE_SIGNATURE =
+  '0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
 // Splits the given Ethereum signatures into r,s,v format
 export function extractEthereumSignature(signatures: EthereumSignature[]): { r: string[]; s: string[]; v: number[] } {
   const rPart = [],
     sPart = [],
     vPart = [];
-  signatures.forEach((signature) => {
+  const filteredSignature = signatures.filter((sig) => sig.toString() !== IGNORE_SIGNATURE);
+  filteredSignature.forEach((signature) => {
     const sigU8a = signature.toU8a();
     const rSlice = sigU8a.slice(0, 32);
     const r = u8aToHex(rSlice);

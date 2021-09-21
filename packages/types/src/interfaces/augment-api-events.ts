@@ -67,10 +67,6 @@ declare module '@polkadot/api/types/events' {
        **/
       Erc20DepositFail: AugmentedEvent<ApiType, [u64]>;
       /**
-       * Mock withdraw
-       **/
-      Erc20MockWithdraw: AugmentedEvent<ApiType, [u64]>;
-      /**
        * Tokens were burnt for withdrawal on Ethereum as ERC20s (withdrawal Id, asset, amount, beneficiary)
        **/
       Erc20Withdraw: AugmentedEvent<ApiType, [u64, AssetId, Balance, EthAddress]>;

@@ -94,7 +94,7 @@ jobs:
     - name: start latest test node and list all docker container
       run: |
         docker network create my-bridge-net
-        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:84cc9ba --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
+        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:2.0.0-rc3 --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
         docker network connect my-bridge-net ethNode
         docker exec testnet_node_alice curl ethNode:8545
     - name: test
@@ -114,7 +114,7 @@ jobs:
         node-version: '15.3'
     - name: start latest test node
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:84cc9ba --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:2.0.0-rc3 --dev --tmp --ws-external --rpc-external --no-mdns
     - name: run subscriber script at polkadot/rpc-provider version (2.7.1)
       working-directory: ./test
       run: |

@@ -4,14 +4,14 @@
 import type { BitVec, Bool, Bytes, Compact, Data, DoNotConstruct, I128, I16, I256, I32, I64, I8, Json, Null, Option, Raw, StorageKey, Text, Type, U128, U16, U256, U32, U64, U8, USize, Vec, bool, i128, i16, i256, i32, i64, i8, u128, u16, u256, u32, u64, u8, usize } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
+import type { Details, Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
-import type { BeefyKey, DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
+import type { BabeEpochConfiguration, BeefyKey, DispatchClassTo36, DispatchInfoTo36, PalletId, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
 import type { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from '@cennznet/types/interfaces/transactionPayment';
 import type { AssetBalance, AssetDetails, AssetMetadata, TAssetBalance, TAssetDepositBalance } from '@polkadot/types/interfaces/assets';
 import type { BlockAttestations, IncludedBlocks, MoreAttestations } from '@polkadot/types/interfaces/attestations';
@@ -198,6 +198,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<AvailabilityBitfieldRecord>': Option<AvailabilityBitfieldRecord>;
     'Option<BabeAuthorityWeight>': Option<BabeAuthorityWeight>;
     'Option<BabeBlockWeight>': Option<BabeBlockWeight>;
+    'Option<BabeEpochConfiguration>': Option<BabeEpochConfiguration>;
     'Option<BabeEquivocationProof>': Option<BabeEquivocationProof>;
     'Option<BabeWeight>': Option<BabeWeight>;
     'Option<BackedCandidate>': Option<BackedCandidate>;
@@ -296,6 +297,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<DeployData>': Option<DeployData>;
     'Option<DepositAsset>': Option<DepositAsset>;
     'Option<DepositReserveAsset>': Option<DepositReserveAsset>;
+    'Option<Details>': Option<Details>;
     'Option<DeviceId>': Option<DeviceId>;
     'Option<DeviceIdResponse>': Option<DeviceIdResponse>;
     'Option<Digest>': Option<Digest>;
@@ -559,6 +561,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<OriginKind>': Option<OriginKind>;
     'Option<OutboundHrmpMessage>': Option<OutboundHrmpMessage>;
     'Option<Owner>': Option<Owner>;
+    'Option<PalletId>': Option<PalletId>;
     'Option<PalletsOrigin>': Option<PalletsOrigin>;
     'Option<PalletVersion>': Option<PalletVersion>;
     'Option<ParachainDispatchOrigin>': Option<ParachainDispatchOrigin>;
@@ -751,6 +754,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<Timepoint>': Option<Timepoint>;
     'Option<TokenCount>': Option<TokenCount>;
     'Option<TokenId>': Option<TokenId>;
+    'Option<TokenLockReason>': Option<TokenLockReason>;
     'Option<TombstoneContractInfo>': Option<TombstoneContractInfo>;
     'Option<Transact>': Option<Transact>;
     'Option<TransactionPriority>': Option<TransactionPriority>;
@@ -872,6 +876,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<AvailabilityBitfieldRecord>': Vec<AvailabilityBitfieldRecord>;
     'Vec<BabeAuthorityWeight>': Vec<BabeAuthorityWeight>;
     'Vec<BabeBlockWeight>': Vec<BabeBlockWeight>;
+    'Vec<BabeEpochConfiguration>': Vec<BabeEpochConfiguration>;
     'Vec<BabeEquivocationProof>': Vec<BabeEquivocationProof>;
     'Vec<BabeWeight>': Vec<BabeWeight>;
     'Vec<BackedCandidate>': Vec<BackedCandidate>;
@@ -970,6 +975,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<DeployData>': Vec<DeployData>;
     'Vec<DepositAsset>': Vec<DepositAsset>;
     'Vec<DepositReserveAsset>': Vec<DepositReserveAsset>;
+    'Vec<Details>': Vec<Details>;
     'Vec<DeviceId>': Vec<DeviceId>;
     'Vec<DeviceIdResponse>': Vec<DeviceIdResponse>;
     'Vec<Digest>': Vec<Digest>;
@@ -1233,6 +1239,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<OriginKind>': Vec<OriginKind>;
     'Vec<OutboundHrmpMessage>': Vec<OutboundHrmpMessage>;
     'Vec<Owner>': Vec<Owner>;
+    'Vec<PalletId>': Vec<PalletId>;
     'Vec<PalletsOrigin>': Vec<PalletsOrigin>;
     'Vec<PalletVersion>': Vec<PalletVersion>;
     'Vec<ParachainDispatchOrigin>': Vec<ParachainDispatchOrigin>;
@@ -1425,6 +1432,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<Timepoint>': Vec<Timepoint>;
     'Vec<TokenCount>': Vec<TokenCount>;
     'Vec<TokenId>': Vec<TokenId>;
+    'Vec<TokenLockReason>': Vec<TokenLockReason>;
     'Vec<TombstoneContractInfo>': Vec<TombstoneContractInfo>;
     'Vec<Transact>': Vec<Transact>;
     'Vec<TransactionPriority>': Vec<TransactionPriority>;
@@ -1546,6 +1554,7 @@ declare module '@polkadot/types/types/registry' {
     AvailabilityBitfieldRecord: AvailabilityBitfieldRecord;
     BabeAuthorityWeight: BabeAuthorityWeight;
     BabeBlockWeight: BabeBlockWeight;
+    BabeEpochConfiguration: BabeEpochConfiguration;
     BabeEquivocationProof: BabeEquivocationProof;
     BabeWeight: BabeWeight;
     BackedCandidate: BackedCandidate;
@@ -1644,6 +1653,7 @@ declare module '@polkadot/types/types/registry' {
     DeployData: DeployData;
     DepositAsset: DepositAsset;
     DepositReserveAsset: DepositReserveAsset;
+    Details: Details;
     DeviceId: DeviceId;
     DeviceIdResponse: DeviceIdResponse;
     Digest: Digest;
@@ -1907,6 +1917,7 @@ declare module '@polkadot/types/types/registry' {
     OriginKind: OriginKind;
     OutboundHrmpMessage: OutboundHrmpMessage;
     Owner: Owner;
+    PalletId: PalletId;
     PalletsOrigin: PalletsOrigin;
     PalletVersion: PalletVersion;
     ParachainDispatchOrigin: ParachainDispatchOrigin;
@@ -2099,6 +2110,7 @@ declare module '@polkadot/types/types/registry' {
     Timepoint: Timepoint;
     TokenCount: TokenCount;
     TokenId: TokenId;
+    TokenLockReason: TokenLockReason;
     TombstoneContractInfo: TombstoneContractInfo;
     Transact: Transact;
     TransactionPriority: TransactionPriority;

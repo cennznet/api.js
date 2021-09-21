@@ -26,6 +26,7 @@ export default {
       "eventClaimId": "EventClaimId",
       "authorityIndex": "u16",
       "result": "EventClaimResult"
-    }
+    },
+    Details: 'Vec<(EthAddress, Vec<u8>, u8 )>',
   },
 };
