@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Hash } from '@cennznet/types';
 import { ApiPromise } from '@polkadot/api';
 import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
 
@@ -92,7 +93,7 @@ export class Api extends ApiPromise {
   }
 
   // Get extrinsic call at index and blockhash
-  async findCallAt(callIndex: Uint8Array | string, blockHash): Promise<CallFunction> {
+  async findCallAt(callIndex: Uint8Array | string, blockHash: Hash | Uint8Array | string): Promise<CallFunction> {
     const metaAtBlockHash = await this.rpc.state.getMetadata(blockHash);
     // use registry metadatacalls registry
     const metadataCalls: Record<string, CallFunction> = {};
