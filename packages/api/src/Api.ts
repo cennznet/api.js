@@ -93,9 +93,10 @@ export class Api extends ApiPromise {
   }
 
   // Get extrinsic call at index and blockhash
+  // Prefer api.findCall(callIndex) when at the latest block
   async findCallAt(callIndex: Uint8Array | string, blockHash: Hash | Uint8Array | string): Promise<CallFunction> {
     const metaAtBlockHash = await this.rpc.state.getMetadata(blockHash);
-    // use registry metadatacalls registry
+    // create local metadatacalls registry
     const metadataCalls: Record<string, CallFunction> = {};
     const extrinsics = decorateExtrinsics(this.registry, metaAtBlockHash.asLatest, metaAtBlockHash.version);
 
@@ -110,7 +111,7 @@ export class Api extends ApiPromise {
 
     return assertReturn(
       metadataCalls[hexIndex],
-      `findMetaCall: Unable to find Call with index ${hexIndex}/[${callIndex.toString()}]`
+      `findCallAt: Unable to find Call with index ${hexIndex}/[${callIndex.toString()}]`
     );
   }
 }
