@@ -38,6 +38,30 @@ describe('e2e api create', () => {
         'Timed out in 1 ms.');
   });
 
+  it('use findCallAt block hash to get extrinsic data', async () => {
+    const key = process.env.API_KEY_1;
+    api = await Api.create({provider: `wss://cennznet.unfrastructure.io/public/uncover?apikey=${key}`});
+    const blockId = 4605302;
+    const blockHash = await api.rpc.chain.getBlockHash(blockId);
+    const blockInfo = await api.rpc.chain.getBlock(blockHash);
+    const extrinsics = blockInfo.block.extrinsics;
+    await Promise.all(
+      extrinsics.map(async (value, extrinsicIndex) => {
+        const {method, section} = await api.findCallAt(value.callIndex, blockHash);
+        if (extrinsicIndex === 0) {
+          expect(method).toEqual('set');
+          expect(section).toEqual('timestamp');
+        } else if (extrinsicIndex === 1) {
+          expect(method).toEqual('finalHint');
+          expect(section).toEqual('finalityTracker');
+        } else if (extrinsicIndex === 2) {
+          expect(method).toEqual('transfer');
+          expect(section).toEqual('genericAsset');
+        }
+      })
+    );
+  });
+
   it('For local chain - checking if static metadata is same as latest', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider});
