@@ -102,6 +102,7 @@ jobs:
         TEST_TYPE: integration
         # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
+        API_KEY_1: ${{ secrets.API_KEY_1 }}
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand
   subscribe:

@@ -18,6 +18,9 @@ import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/a
 import * as definitions from '@cennznet/types/interfaces/definitions';
 import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 import { getMetadata } from '@cennznet/api/util/getMetadata';
+import { decorateExtrinsics } from '@polkadot/metadata';
+import { CallFunction } from '@polkadot/types/types';
+import { assertReturn, u8aToHex, u8aToU8a } from '@cennznet/util';
 import derives from './derives';
 import staticMetadata from './staticMetadata';
 import { ApiOptions, Derives } from './types';
@@ -86,6 +89,28 @@ export class Api extends ApiPromise {
     options.rpc = { ...rpc, ...options.rpc };
     options.typesBundle = typesBundle;
     super(options as ApiOptionsBase);
+  }
+
+  // Get extrinsic call at index and blockhash
+  async findCallAt(callIndex: Uint8Array | string, blockHash): Promise<CallFunction> {
+    const metaAtBlockHash = await this.rpc.state.getMetadata(blockHash);
+    // use registry metadatacalls registry
+    const metadataCalls: Record<string, CallFunction> = {};
+    const extrinsics = decorateExtrinsics(this.registry, metaAtBlockHash.asLatest, metaAtBlockHash.version);
+
+    // decorate the extrinsics
+    Object.values(extrinsics).forEach((methods): void =>
+      Object.values(methods).forEach((method): void => {
+        metadataCalls[u8aToHex(method.callIndex)] = method;
+      })
+    );
+
+    const hexIndex = u8aToHex(u8aToU8a(callIndex));
+
+    return assertReturn(
+      metadataCalls[hexIndex],
+      `findMetaCall: Unable to find Call with index ${hexIndex}/[${callIndex.toString()}]`
+    );
   }
 }
 
