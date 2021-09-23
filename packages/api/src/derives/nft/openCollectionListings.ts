@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, reduce, mergeAll, first } from 'rxjs/operators';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
@@ -32,6 +32,9 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
     return api.query.nft.openCollectionListings.keys(collectionId).pipe(
       switchMap(
         (storageKeys): Observable<DeriveTokenInfo[]> => {
+          if (storageKeys.length === 0) {
+            return of([]);
+          }
           const listingIDs = storageKeys.map((storageKey) => {
             return storageKey.args.map((k) => k.toHuman())[1];
           });

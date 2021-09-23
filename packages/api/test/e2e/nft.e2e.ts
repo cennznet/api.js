@@ -510,4 +510,9 @@ describe('NFTs', () => {
       })
   });
 
+  it( 'Return empty listing when it is not available ', async done => {
+      const listing = await api.derive.nft.openCollectionListings(1442);
+      expect(listing).toEqual([]);
+      done();
+  })
 });
