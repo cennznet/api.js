@@ -304,13 +304,13 @@ describe('Eth bridge test', () => {
       done();
     })
 
-    it( 'Get r,s,v from invalid signature', async done => {
+    it(   'Get r,s,v from invalid signature', async done => {
       const sign = api.registry.createType('EthereumSignature', '');
       const signatures = [sign];
       const { r, s, v } = extractEthereumSignature(signatures);
-      expect(r).toEqual([]);
-      expect(s).toEqual([]);
-      expect(v).toEqual([]);
+      expect(r).toEqual(['0x0000000000000000000000000000000000000000000000000000000000000000']);
+      expect(s).toEqual(['0x0000000000000000000000000000000000000000000000000000000000000000']);
+      expect(v[0]).toEqual(27);
 
       done();
     })
