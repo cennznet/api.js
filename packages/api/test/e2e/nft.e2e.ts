@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Api } from "@cennznet/api";
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
 import { stringToHex, stringToU8a } from '@polkadot/util'
@@ -514,5 +515,18 @@ describe('NFTs', () => {
       const listing = await api.derive.nft.openCollectionListings(1442);
       expect(listing).toEqual([]);
       done();
-  })
+  });
+
+  it('Find all tokens with owner on Nikau', async done => {
+    jest.setTimeout(40000); // sometimes takes more time
+    const address = '5FWEHQqYMN8YCg8yJxKHnon7Dtx4Psp2xnjvKfQqGC6kUwgv';
+    const api = await Api.create({network: 'nikau', timeout: 10000});
+    const tokens = await api.derive.nft.tokensOf(address);
+    console.log('Tokens::',tokens.toString());
+    expect((tokens as EnhancedTokenId[]).length).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+
+  });
+
 });
