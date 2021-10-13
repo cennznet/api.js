@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Vec } from '@polkadot/types';
-import { Observable, from, of } from 'rxjs';
+import { combineLatest, Observable, from, of } from 'rxjs';
 import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
@@ -56,14 +56,17 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
 
 function collectionTokens(collectionIdsFetched, api: ApiInterfaceRx, owner: AccountId | string) {
   return from(collectionIdsFetched).pipe(
-    mergeMap((collectionId) =>
-      // If we can have rpc call which accepts multiple collectionIds, this can improve significantly, we would need to make only one call
-      (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
-        filter((ownedTokens: Vec<EnhancedTokenId>) => ownedTokens.toArray().length !== 0),
-        map((ownedTokens) => ownedTokens),
+    mergeMap((collectionId) => {
+      return (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
+        filter((ownedTokens: Vec<EnhancedTokenId>) => {
+          return ownedTokens.toArray().length !== 0;
+        }),
+        map((ownedTokens) => {
+          return ownedTokens;
+        }),
         catchError((err: Error) => of(err))
-      )
-    ),
+      );
+    }),
     reduce((a, i) => [...a, i], [])
   );
 }
@@ -84,7 +87,6 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
             const collectionIdsFetched = entries
               .filter((detail) => detail[1].toString() === owner)
               .flatMap((detail) => detail[0].toHuman());
-            console.log('collectionIdsFetched:', collectionIdsFetched);
             return collectionTokens(collectionIdsFetched, api, owner);
           })
         )
