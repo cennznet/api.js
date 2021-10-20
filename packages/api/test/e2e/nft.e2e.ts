@@ -84,7 +84,7 @@ describe('NFTs', () => {
           }
         });
 
-        await api.tx.nft.mintSeries(globalCollectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+        await api.tx.nft.mintSeries(globalCollectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null, null)
           .signAndSend(collectionOwner, async ({ status, events }) => {
             if (status.isInBlock) {
               events.forEach(({ event: { data, method }}) => {
@@ -192,7 +192,7 @@ describe('NFTs', () => {
     let metadataPath = "series/metadata";
 
     await api.tx.nft
-    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null, null)
     .signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
@@ -225,7 +225,7 @@ describe('NFTs', () => {
     let metadataPath = "series/metadata";
 
     await api.tx.nft
-      .mintSeries(collectionId2, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+      .mintSeries(collectionId2, quantity, tokenOwner.address, series1Attributes, metadataPath, null, null)
       .signAndSend(collectionOwner, async ({ status, events }) => {
         if (status.isInBlock) {
           events.forEach(({ event: {data, method }}) => {
@@ -514,5 +514,62 @@ describe('NFTs', () => {
       const listing = await api.derive.nft.openCollectionListings(1442);
       expect(listing).toEqual([]);
       done();
-  })
+  });
+
+  it('creates and enters a mass drop', async done => {
+    let quantity = 0;
+    let metadataPath = "series/metadata";
+    const signedBlock = await api.rpc.chain.getBlock();
+    const currentHeight = signedBlock.block.header.number;
+    let massDrop = {
+      'price': 10,
+      'asset_id': 16000,
+      'max_supply': 10,
+      'transaction_limit': null,
+      'activation_time': parseInt(currentHeight) + 2,
+      'presale': null
+    }
+    let massDropStarted = false;
+
+    const enterMassDrop = async (newCollectionId, newSeriesId) => {
+      let purchaseQuantity = 1;
+        api.tx.nft.enterMassDrop(newCollectionId, newSeriesId, purchaseQuantity)
+        .signAndSend(alice, async ({status, events}) => {
+          if (status.isInBlock) {
+            events.forEach(({ event: { data, method } }) => {
+              if (method == 'EnterMassDrop') {
+                let tokenCount = data[2];
+                console.log(`purchased ${tokenCount} tokens`)
+                done();
+              }
+            });
+          }
+        });
+    }
+
+    const waitForMassDropStart = async (newCollectionId, newSeriesId) => {
+      api.rpc.chain
+        .subscribeNewHeads(async (head) => {
+          const blockNumber = head.number.toNumber();
+          if (blockNumber > currentHeight && !massDropStarted) {
+            massDropStarted = true
+            await enterMassDrop(newCollectionId, newSeriesId);
+          }
+        });
+    }
+
+    await api.tx.nft
+      .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null, massDrop)
+      .signAndSend(collectionOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({ event: {data, method }}) => {
+            if (method == 'CreateMassDrop') {
+              let newCollectionId = data[0];
+              let newSeriesId = data[1];
+              waitForMassDropStart(newCollectionId, newSeriesId);
+            }
+          });
+        }
+      });
+  });
 });

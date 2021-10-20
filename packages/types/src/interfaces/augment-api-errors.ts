@@ -309,6 +309,10 @@ declare module '@polkadot/api/types/errors' {
     nft: {
       [key: string]: AugmentedError<ApiType>;
       /**
+       * The activation time has passed or is invalid
+       **/
+      ActivationTimeInvalid: AugmentedError<ApiType>;
+      /**
        * Cannot mint additional tokens in a unique issue series
        **/
       AddToUniqueIssue: AugmentedError<ApiType>;
@@ -325,13 +329,37 @@ declare module '@polkadot/api/types/errors' {
        **/
       CollectionNameInvalid: AugmentedError<ApiType>;
       /**
+       * The number of Metadata URIs supplied doesn't match the Mass Drop max supply
+       **/
+      IncorrectAmountOfUris: AugmentedError<ApiType>;
+      /**
        * Internal error during payment
        **/
       InternalPayment: AugmentedError<ApiType>;
       /**
-       * Given attirbute value is larger than the configured max.
+       * The account_id hasn't been registered as a marketplace
+       **/
+      MarketplaceNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Can't mint additional when a mass drop is active
+       **/
+      MassDropConfigured: AugmentedError<ApiType>;
+      /**
+       * The mass_drop activation_time or limit is invalid
+       **/
+      MassDropInvalid: AugmentedError<ApiType>;
+      /**
+       * The mass_drop hasn't started yet
+       **/
+      MassDropNotStarted: AugmentedError<ApiType>;
+      /**
+       * Given attribute value is larger than the configured max.
        **/
       MaxAttributeLength: AugmentedError<ApiType>;
+      /**
+       * Metadata URIs already changed and Mass Drop has started
+       **/
+      MetadataAlreadySet: AugmentedError<ApiType>;
       /**
        * Selling tokens from different collections is not allowed
        **/
@@ -345,9 +373,25 @@ declare module '@polkadot/api/types/errors' {
        **/
       NoCollection: AugmentedError<ApiType>;
       /**
+       * No owner exists for this collection id
+       **/
+      NoCollectionOwner: AugmentedError<ApiType>;
+      /**
+       * There is no mass_drop associated with the series
+       **/
+      NoMassDropExists: AugmentedError<ApiType>;
+      /**
        * origin does not have permission for the operation (the token may not exist)
        **/
       NoPermission: AugmentedError<ApiType>;
+      /**
+       * There is no presale associated with the mass_drop
+       **/
+      NoPresaleExists: AugmentedError<ApiType>;
+      /**
+       * There are not enough tokens left to purchase this amount
+       **/
+      NotEnoughTokens: AugmentedError<ApiType>;
       /**
        * The token is not listed for auction sale
        **/
@@ -360,6 +404,14 @@ declare module '@polkadot/api/types/errors' {
        * The token does not exist
        **/
       NoToken: AugmentedError<ApiType>;
+      /**
+       * The presale is invalid
+       **/
+      PresaleInvalid: AugmentedError<ApiType>;
+      /**
+       * The quantity specified is higher than the mass_drop purchase limit
+       **/
+      PurchaseQuantityTooHigh: AugmentedError<ApiType>;
       /**
        * Total royalties would exceed 100% of sale or an empty vec is supplied
        **/

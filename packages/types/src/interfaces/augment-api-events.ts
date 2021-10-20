@@ -4,16 +4,15 @@
 import type { Bytes, Option, Vec, bool, u32, u64 } from '@polkadot/types';
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { EthAddress, EventClaimId, EventProofId } from '@cennznet/types/interfaces/ethBridge';
-import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
-import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, ListingId, MarketplaceId, Presale, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/genericAsset';
 import type { AuthorityList } from '@polkadot/types/interfaces/grandpa';
 import type { RegistrarIndex } from '@polkadot/types/interfaces/identity';
 import type { Kind, OpaqueTimeSlot } from '@polkadot/types/interfaces/offences';
-import type { AccountId, AssetId, Balance, BlockNumber, CallHash, Hash, Perbill } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BlockNumber, CallHash, Hash, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
 import type { TaskAddress } from '@polkadot/types/interfaces/scheduler';
 import type { IdentificationTuple, SessionIndex } from '@polkadot/types/interfaces/session';
 import type { ElectionCompute } from '@polkadot/types/interfaces/staking';
@@ -78,10 +77,10 @@ declare module '@polkadot/api/types/events' {
     ethBridge: {
       [key: string]: AugmentedEvent<ApiType>;
       /**
-       * A notary (validator) set change is in motion
+       * A notary (validator) set change is in motion (event_id, new_validator_set_id)
        * A proof for the change will be generated with the given `event_id`
        **/
-      AuthoritySetChange: AugmentedEvent<ApiType, [EventProofId]>;
+      AuthoritySetChange: AugmentedEvent<ApiType, [EventProofId, u64]>;
       /**
        * Verifying an event failed
        **/
@@ -239,9 +238,9 @@ declare module '@polkadot/api/types/events' {
        **/
       AuctionClosed: AugmentedEvent<ApiType, [CollectionId, ListingId, Reason]>;
       /**
-       * An auction has opened (collection, listing)
+       * An auction has opened (collection, listing, marketplace_id)
        **/
-      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
+      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, ListingId, Option<MarketplaceId>]>;
       /**
        * An auction has sold (collection, listing, payment asset, bid, new owner)
        **/
@@ -271,6 +270,10 @@ declare module '@polkadot/api/types/events' {
        **/
       CreateToken: AugmentedEvent<ApiType, [CollectionId, TokenId, AccountId]>;
       /**
+       * Token(s) were purchased (collection, series, quantity, first serial number, new owner)
+       **/
+      EnterMassDrop: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, SerialNumber, AccountId]>;
+      /**
        * A fixed price sale has closed without selling (collection, listing)
        **/
       FixedPriceSaleClosed: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
@@ -279,13 +282,49 @@ declare module '@polkadot/api/types/events' {
        **/
       FixedPriceSaleComplete: AugmentedEvent<ApiType, [CollectionId, ListingId, AccountId]>;
       /**
-       * A fixed price sale has been listed (collection, listing)
+       * A fixed price sale has been listed (collection, listing, marketplace_id)
        **/
-      FixedPriceSaleListed: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
+      FixedPriceSaleListed: AugmentedEvent<ApiType, [CollectionId, ListingId, Option<MarketplaceId>]>;
+      /**
+       * All tokens in the mass drop have been minted
+       **/
+      MassDropEnded: AugmentedEvent<ApiType, [CollectionId, SeriesId]>;
+      /**
+       * metadata has been updated (collection, series, last_serial_number)
+       **/
+      MetadataUpdated: AugmentedEvent<ApiType, [CollectionId, SeriesId, SerialNumber]>;
+      /**
+       * All tokens in the presale have been minted
+       **/
+      PresaleEnded: AugmentedEvent<ApiType, [CollectionId, SeriesId]>;
+      /**
+       * An account has been registered as a marketplace (account, entitlement, marketplace_id)
+       **/
+      RegisteredMarketplace: AugmentedEvent<ApiType, [AccountId, Permill, MarketplaceId]>;
       /**
        * Token(s) were transferred (previous owner, token Ids, new owner)
        **/
       Transfer: AugmentedEvent<ApiType, [AccountId, Vec<TokenId>, AccountId]>;
+      /**
+       * Activation time was changed (collection, series, activation time)
+       **/
+      UpdateMassDropActivationTime: AugmentedEvent<ApiType, [CollectionId, SeriesId, BlockNumber]>;
+      /**
+       * Mass drop whitelist was updated (collection, series, account ids)
+       **/
+      UpdateMassDropWhitelist: AugmentedEvent<ApiType, [CollectionId, SeriesId, Vec<AccountId>]>;
+      /**
+       * Presale was updated (collection, series, presale)
+       **/
+      UpdatePresale: AugmentedEvent<ApiType, [CollectionId, SeriesId, Presale]>;
+      /**
+       * Activation time was changed (collection, series, activation time)
+       **/
+      UpdatePresaleActivationTime: AugmentedEvent<ApiType, [CollectionId, SeriesId, BlockNumber]>;
+      /**
+       * Presale whitelist was updated (collection, series, account ids)
+       **/
+      UpdatePresaleWhitelist: AugmentedEvent<ApiType, [CollectionId, SeriesId, Vec<AccountId>]>;
     };
     offences: {
       [key: string]: AugmentedEvent<ApiType>;
@@ -343,7 +382,7 @@ declare module '@polkadot/api/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
       /**
        * An account has bonded this amount. \[stash, amount\]
-       *
+       * 
        * NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
        * it will not be emitted for staking rewards when they are added to stake.
        **/

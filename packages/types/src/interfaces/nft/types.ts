@@ -50,6 +50,25 @@ export interface Listing extends Enum {
 /** @name ListingId */
 export interface ListingId extends u128 {}
 
+/** @name Marketplace */
+export interface Marketplace extends Struct {
+  readonly account: AccountId;
+  readonly entitlement: Permill;
+}
+
+/** @name MarketplaceId */
+export interface MarketplaceId extends u32 {}
+
+/** @name MassDrop */
+export interface MassDrop extends Struct {
+  readonly price: Balance;
+  readonly assetId: AssetId;
+  readonly maxSupply: TokenCount;
+  readonly transactionLimit: Option<TokenCount>;
+  readonly activationTime: BlockNumber;
+  readonly preSale: Option<Presale>;
+}
+
 /** @name MetadataBaseURI */
 export interface MetadataBaseURI extends Enum {
   readonly isIpfs: boolean;
@@ -83,6 +102,14 @@ export interface NFTAttributeValue extends Enum {
   readonly asTimestamp: u64;
   readonly isUrl: boolean;
   readonly asUrl: Text;
+}
+
+/** @name Presale */
+export interface Presale extends Struct {
+  readonly price: Balance;
+  readonly transactionLimit: Option<TokenCount>;
+  readonly activationTime: BlockNumber;
+  readonly maxSupply: TokenCount;
 }
 
 /** @name Reason */

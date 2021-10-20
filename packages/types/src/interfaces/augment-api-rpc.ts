@@ -6,10 +6,8 @@ import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, V
 import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
 import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
-import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
 import type { CollectionId } from '@cennznet/types/interfaces/nft';
-import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
 import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
 import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
 import type { BlockHash } from '@polkadot/types/interfaces/chain';
@@ -323,15 +321,12 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       getProposalVotes: AugmentedRpc<() => Observable<Vec<ProposalVotes>>>;
     };
-    // NOTE: need some way to merge during generation, ignore for now
-    // @ts-ignore
     grandpa: {
       /**
        * Restarts the grandpa voter future
        **/
       restartVoter: AugmentedRpc<() => Observable<any>>;
     };
-    // @ts-ignore
     grandpa: {
       /**
        * Prove finality for the range (begin; end] hash.

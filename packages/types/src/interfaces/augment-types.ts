@@ -8,7 +8,7 @@ import type { Details, Erc20DepositEvent, EthAddress, EthHash, EventClaimId, Eve
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, Marketplace, MarketplaceId, MassDrop, MetadataBaseURI, NFTAttributeValue, Presale, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { BabeEpochConfiguration, BeefyKey, DispatchClassTo36, DispatchInfoTo36, PalletId, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -96,6 +96,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<LeasePeriod>': Compact<LeasePeriod>;
     'Compact<LeasePeriodOf>': Compact<LeasePeriodOf>;
     'Compact<ListingId>': Compact<ListingId>;
+    'Compact<MarketplaceId>': Compact<MarketplaceId>;
     'Compact<MemberCount>': Compact<MemberCount>;
     'Compact<MessageId>': Compact<MessageId>;
     'Compact<Moment>': Compact<Moment>;
@@ -497,6 +498,9 @@ declare module '@polkadot/types/types/registry' {
     'Option<MapTypeV11>': Option<MapTypeV11>;
     'Option<MapTypeV12>': Option<MapTypeV12>;
     'Option<MapTypeV9>': Option<MapTypeV9>;
+    'Option<Marketplace>': Option<Marketplace>;
+    'Option<MarketplaceId>': Option<MarketplaceId>;
+    'Option<MassDrop>': Option<MassDrop>;
     'Option<MaybeRandomness>': Option<MaybeRandomness>;
     'Option<MaybeVrf>': Option<MaybeVrf>;
     'Option<Member>': Option<Member>;
@@ -598,6 +602,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<PreKeyBundle>': Option<PreKeyBundle>;
     'Option<PreKeyBundlesResponse>': Option<PreKeyBundlesResponse>;
     'Option<PreRuntime>': Option<PreRuntime>;
+    'Option<Presale>': Option<Presale>;
     'Option<PriceResponse>': Option<PriceResponse>;
     'Option<Priority>': Option<Priority>;
     'Option<PriorLock>': Option<PriorLock>;
@@ -1175,6 +1180,9 @@ declare module '@polkadot/types/types/registry' {
     'Vec<MapTypeV11>': Vec<MapTypeV11>;
     'Vec<MapTypeV12>': Vec<MapTypeV12>;
     'Vec<MapTypeV9>': Vec<MapTypeV9>;
+    'Vec<Marketplace>': Vec<Marketplace>;
+    'Vec<MarketplaceId>': Vec<MarketplaceId>;
+    'Vec<MassDrop>': Vec<MassDrop>;
     'Vec<MaybeRandomness>': Vec<MaybeRandomness>;
     'Vec<MaybeVrf>': Vec<MaybeVrf>;
     'Vec<Member>': Vec<Member>;
@@ -1276,6 +1284,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<PreKeyBundle>': Vec<PreKeyBundle>;
     'Vec<PreKeyBundlesResponse>': Vec<PreKeyBundlesResponse>;
     'Vec<PreRuntime>': Vec<PreRuntime>;
+    'Vec<Presale>': Vec<Presale>;
     'Vec<PriceResponse>': Vec<PriceResponse>;
     'Vec<Priority>': Vec<Priority>;
     'Vec<PriorLock>': Vec<PriorLock>;
@@ -1853,6 +1862,9 @@ declare module '@polkadot/types/types/registry' {
     MapTypeV11: MapTypeV11;
     MapTypeV12: MapTypeV12;
     MapTypeV9: MapTypeV9;
+    Marketplace: Marketplace;
+    MarketplaceId: MarketplaceId;
+    MassDrop: MassDrop;
     MaybeRandomness: MaybeRandomness;
     MaybeVrf: MaybeVrf;
     Member: Member;
@@ -1954,6 +1966,7 @@ declare module '@polkadot/types/types/registry' {
     PreKeyBundle: PreKeyBundle;
     PreKeyBundlesResponse: PreKeyBundlesResponse;
     PreRuntime: PreRuntime;
+    Presale: Presale;
     PriceResponse: PriceResponse;
     Priority: Priority;
     PriorLock: PriorLock;

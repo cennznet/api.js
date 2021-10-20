@@ -83,6 +83,25 @@ export default {
           '_enum': {
             'ListingId': 'ListingId'
           }
+        },
+        'MarketplaceId': 'u32',
+        'Marketplace': {
+          'account': 'AccountId',
+          'entitlement': 'Permill'
+        },
+        'MassDrop': {
+          'price': 'Balance',
+          'assetId': 'AssetId',
+          'maxSupply': 'TokenCount',
+          'transactionLimit': 'Option<TokenCount>',
+          'activationTime': 'BlockNumber',
+          'preSale': 'Option<Presale>'
+        },
+        'Presale': {
+          'price': 'Balance',
+          'transactionLimit': 'Option<TokenCount>',
+          'activationTime': 'BlockNumber',
+          'maxSupply': 'TokenCount'
         }
     }
 }
