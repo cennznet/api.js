@@ -84,7 +84,7 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
           switchMap((entries) => {
             const collectionIdsFetched = entries
               .filter((detail) => detail[1].toString() === owner)
-              .flatMap((detail) => detail[0].toHuman());
+              .map((detail) => detail[0].toHuman());
             return collectionTokens(collectionIdsFetched, api, owner);
           })
         )
