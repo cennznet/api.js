@@ -537,7 +537,7 @@ describe('NFTs', () => {
     expect(tokenInfo.owner).toEqual("5Gri29iHxAPMtZU8Km92P3g42ENGhXoME7Prya6yeC8goteV");
 
     const tokenInfo1 = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 441]));
-    expect(tokenInfo.owner).toEqual("5CoQbre9E6oaSq9RzcqQJCd6qcNEy5d1YyBnpLC2mqoubWQV");
+    expect(tokenInfo1.owner).toEqual("5CoQbre9E6oaSq9RzcqQJCd6qcNEy5d1YyBnpLC2mqoubWQV");
 
     await api.disconnect();
     done();
