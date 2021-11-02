@@ -517,7 +517,7 @@ describe('NFTs', () => {
       done();
   });
 
-  it('Find all tokens with owner on Nikau', async done => {
+  it('Find all tokens with owner on Azalea', async done => {
     jest.setTimeout(40000); // sometimes takes more time
     const address = '5EYxYJVZFwa4T1nVGFadeMNWRhHPYboMdToEbiER2AzWVsLK';
     const api = await Api.create({network: 'azalea'});
