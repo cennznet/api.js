@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, from, of, EMPTY } from 'rxjs';
-import { switchMap, map, mergeMap, catchError, reduce } from 'rxjs/operators';
+import { Vec } from '@polkadot/types';
+import { combineLatest, Observable, from, of } from 'rxjs';
+import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { CollectionId, TokenId } from '@cennznet/types';
@@ -32,25 +33,40 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
   return (tokenId: TokenId | EnhancedTokenId): Observable<DeriveTokenInfo> => {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
 
-    return api
-      .queryMulti([
-        [api.query.nft.tokenOwner, [tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber],
-        [api.query.nft.seriesAttributes, [tokenId.collectionId, tokenId.seriesId]],
-      ])
-      .pipe(
-        switchMap(
-          ([owner, attributes]): Observable<DeriveTokenInfo> => {
-            return of(
-              new Object({
-                owner: owner.toString(),
-                attributes: attributes.toJSON(),
-                tokenId: tokenId as EnhancedTokenId,
-              }) as DeriveTokenInfo
-            );
-          }
-        )
-      );
+    return combineLatest([
+      api.query.nft.tokenOwner([tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber),
+      api.query.nft.seriesAttributes(tokenId.collectionId, tokenId.seriesId),
+    ]).pipe(
+      switchMap(
+        ([owner, attributes]): Observable<DeriveTokenInfo> => {
+          return of(
+            new Object({
+              owner: owner.toString(),
+              attributes: attributes,
+              tokenId: tokenId as EnhancedTokenId,
+            }) as DeriveTokenInfo
+          );
+        }
+      )
+    );
   };
+}
+
+function collectionTokens(collectionIdsFetched, api: ApiInterfaceRx, owner: AccountId | string) {
+  return from(collectionIdsFetched).pipe(
+    mergeMap((collectionId) => {
+      return (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
+        filter((ownedTokens: Vec<EnhancedTokenId>) => {
+          return ownedTokens.toArray().length !== 0;
+        }),
+        map((ownedTokens) => {
+          return ownedTokens;
+        }),
+        catchError((err: Error) => of(err))
+      );
+    }),
+    reduce((a, i) => [...a, i], [])
+  );
 }
 
 /**
@@ -62,31 +78,21 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
  * @returns [[EnchanceTokenId]]
  */
 export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
-  return (owner: AccountId | string, collectionIds?: CollectionId[]): Observable<EnhancedTokenId[]> => {
-    return api.query.nft.nextCollectionId().pipe(
-      switchMap(
-        (nextCollectionId): Observable<EnhancedTokenId[]> => {
-          let args = [];
-          if (collectionIds && collectionIds.length > 0) {
-            args = collectionIds;
-          } else {
-            for (let i = 0; i < nextCollectionId.toNumber(); i++) {
-              const collectionId = i.toString();
-              args.push(collectionId);
-            }
-          }
-          if (args.length === 0) return EMPTY;
-          return from(args).pipe(
-            mergeMap((collectionId) =>
-              (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
-                map((ownedTokens) => ownedTokens),
-                catchError((err: Error) => of(err))
-              )
-            ),
-            reduce((a, i) => [...a, i], [])
-          );
-        }
-      )
-    );
+  return (owner: AccountId | string, collectionIds?: CollectionId[]): Observable<EnhancedTokenId[] | Error> => {
+    return collectionIds === undefined
+      ? api.query.nft.tokenOwner.entries().pipe(
+          switchMap((entries) => {
+            const tokenIdsFetched = entries
+              .filter((detail) => detail[1].toString() === owner)
+              .map((detail) => detail[0].toHuman());
+            return of(
+              tokenIdsFetched.map((token) => {
+                // here token is of the format [ [ 'collectionId', 'seriesId' ], 'serialNumber' ] - api.query.nft.tokenOwner
+                return new EnhancedTokenId(api.registry, [token[0][0], token[0][1], token[1][0]]);
+              })
+            );
+          })
+        )
+      : collectionTokens(collectionIds, api, owner);
   };
 }

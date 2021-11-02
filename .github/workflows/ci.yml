@@ -64,12 +64,18 @@ jobs:
     - name: install
       run: yarn
     - name: build
+      env:
+        ACCOUNT_KEY: ${{ secrets.ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
       run: yarn build
     - name: start local Eth node
       run: |
         docker run --dns=127.0.0.1 -d --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
         docker container ls -a
     - name: Deploy contract and deposit
+      env:
+        ACCOUNT_KEY: ${{ secrets.ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
       run: yarn deploy
     - uses: styfle/cancel-workflow-action@0.6.0
       with:

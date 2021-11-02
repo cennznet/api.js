@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Api } from "@cennznet/api";
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import { stringToHex, stringToU8a } from '@polkadot/util'
+import {hexToU8a, stringToHex, stringToU8a} from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing, TokenId } from '@cennznet/types';
@@ -275,42 +276,11 @@ describe('NFTs', () => {
 
   it('Find tokens with owner ', async done => {
     const tokens = await api.derive.nft.tokensOf(tokenOwner.address);
-    const tokensInFirstCollection = tokens[0];
-    const tokensInSecondCollection = tokens[1];
-    expect(tokensInFirstCollection.toJSON()).toEqual([
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 0,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 1,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 2,
-      },
-    ]);
-    expect(tokensInSecondCollection.toJSON()).toEqual([
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 0
-      },
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 1
-      },
-      {
-        collectionId: 1,
-        serialNumber: 2,
-        seriesId: 1
-      }
-    ]);
+    console.log('tokens:::',tokens);
+    const hasToken0 = (token) => token.collectionId.toNumber() === 0 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    const hasToken1 = (token) => token.collectionId.toNumber() === 1 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    expect(tokens.some(hasToken0)).toBe(true);
+    expect(tokens.some(hasToken1)).toBe(true);
     done();
   });
 
@@ -514,5 +484,32 @@ describe('NFTs', () => {
       const listing = await api.derive.nft.openCollectionListings(1442);
       expect(listing).toEqual([]);
       done();
-  })
+  });
+
+  it('Find all tokens with owner on Azalea', async done => {
+    jest.setTimeout(40000); // sometimes takes more time
+    const address = '5EYxYJVZFwa4T1nVGFadeMNWRhHPYboMdToEbiER2AzWVsLK';
+    const api = await Api.create({network: 'azalea'});
+    const tokens = await api.derive.nft.tokensOf(address);
+    expect((tokens as EnhancedTokenId[]).length).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+
+  it('Find tokens info with owner on Azalea', async done => {
+    const api = await Api.create({network: 'azalea'});
+
+    const tokenInfo = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 214]));
+
+    expect(tokenInfo.owner).toEqual("5Gri29iHxAPMtZU8Km92P3g42ENGhXoME7Prya6yeC8goteV");
+
+    const tokenInfo1 = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 441]));
+    expect(tokenInfo1.owner).toEqual("5CoQbre9E6oaSq9RzcqQJCd6qcNEy5d1YyBnpLC2mqoubWQV");
+
+    await api.disconnect();
+    done();
+
+  });
+
 });
