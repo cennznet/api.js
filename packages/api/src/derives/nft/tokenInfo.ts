@@ -33,24 +33,22 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
   return (tokenId: TokenId | EnhancedTokenId): Observable<DeriveTokenInfo> => {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
 
-    return api
-      .queryMulti([
-        [api.query.nft.tokenOwner, [tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber],
-        [api.query.nft.seriesAttributes, [tokenId.collectionId, tokenId.seriesId]],
-      ])
-      .pipe(
-        switchMap(
-          ([owner, attributes]): Observable<DeriveTokenInfo> => {
-            return of(
-              new Object({
-                owner: owner.toString(),
-                attributes: attributes.toJSON(),
-                tokenId: tokenId as EnhancedTokenId,
-              }) as DeriveTokenInfo
-            );
-          }
-        )
-      );
+    return combineLatest([
+      api.query.nft.tokenOwner([tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber),
+      api.query.nft.seriesAttributes(tokenId.collectionId, tokenId.seriesId),
+    ]).pipe(
+      switchMap(
+        ([owner, attributes]): Observable<DeriveTokenInfo> => {
+          return of(
+            new Object({
+              owner: owner.toString(),
+              attributes: attributes,
+              tokenId: tokenId as EnhancedTokenId,
+            }) as DeriveTokenInfo
+          );
+        }
+      )
+    );
   };
 }
 

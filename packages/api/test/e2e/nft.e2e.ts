@@ -15,7 +15,7 @@
 import { Api } from "@cennznet/api";
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import { stringToHex, stringToU8a } from '@polkadot/util'
+import {hexToU8a, stringToHex, stringToU8a} from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing, TokenId } from '@cennznet/types';
@@ -519,11 +519,26 @@ describe('NFTs', () => {
 
   it('Find all tokens with owner on Nikau', async done => {
     jest.setTimeout(40000); // sometimes takes more time
-    const address = '5FWEHQqYMN8YCg8yJxKHnon7Dtx4Psp2xnjvKfQqGC6kUwgv';
-    const api = await Api.create({network: 'nikau', timeout: 10000});
+    const address = '5EYxYJVZFwa4T1nVGFadeMNWRhHPYboMdToEbiER2AzWVsLK';
+    const api = await Api.create({network: 'azalea'});
     const tokens = await api.derive.nft.tokensOf(address);
     console.log('Tokens::',tokens.toString());
     expect((tokens as EnhancedTokenId[]).length).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+
+  it('Find tokens info with owner on Azalea', async done => {
+    const api = await Api.create({network: 'azalea'});
+
+    const tokenInfo = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 214]));
+
+    expect(tokenInfo.owner).toEqual("5Gri29iHxAPMtZU8Km92P3g42ENGhXoME7Prya6yeC8goteV");
+
+    const tokenInfo1 = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 441]));
+    expect(tokenInfo.owner).toEqual("5CoQbre9E6oaSq9RzcqQJCd6qcNEy5d1YyBnpLC2mqoubWQV");
+
     await api.disconnect();
     done();
 
