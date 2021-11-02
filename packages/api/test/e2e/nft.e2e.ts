@@ -276,42 +276,11 @@ describe('NFTs', () => {
 
   it('Find tokens with owner ', async done => {
     const tokens = await api.derive.nft.tokensOf(tokenOwner.address);
-    const tokensInFirstCollection = tokens[0];
-    const tokensInSecondCollection = tokens[1];
-    expect(tokensInFirstCollection.toJSON()).toEqual([
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 0,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 1,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 2,
-      },
-    ]);
-    expect(tokensInSecondCollection.toJSON()).toEqual([
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 0
-      },
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 1
-      },
-      {
-        collectionId: 1,
-        serialNumber: 2,
-        seriesId: 1
-      }
-    ]);
+    console.log('tokens:::',tokens);
+    const hasToken0 = (token) => token.collectionId.toNumber() === 0 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    const hasToken1 = (token) => token.collectionId.toNumber() === 1 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    expect(tokens.some(hasToken0)).toBe(true);
+    expect(tokens.some(hasToken1)).toBe(true);
     done();
   });
 
@@ -522,7 +491,6 @@ describe('NFTs', () => {
     const address = '5EYxYJVZFwa4T1nVGFadeMNWRhHPYboMdToEbiER2AzWVsLK';
     const api = await Api.create({network: 'azalea'});
     const tokens = await api.derive.nft.tokensOf(address);
-    console.log('Tokens::',tokens.toString());
     expect((tokens as EnhancedTokenId[]).length).toBeGreaterThan(0);
     await api.disconnect();
     done();

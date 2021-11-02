@@ -80,12 +80,17 @@ function collectionTokens(collectionIdsFetched, api: ApiInterfaceRx, owner: Acco
 export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
   return (owner: AccountId | string, collectionIds?: CollectionId[]): Observable<EnhancedTokenId[] | Error> => {
     return collectionIds === undefined
-      ? api.query.nft.collectionOwner.entries().pipe(
+      ? api.query.nft.tokenOwner.entries().pipe(
           switchMap((entries) => {
-            const collectionIdsFetched = entries
+            const tokenIdsFetched = entries
               .filter((detail) => detail[1].toString() === owner)
               .map((detail) => detail[0].toHuman());
-            return collectionTokens(collectionIdsFetched, api, owner);
+            return of(
+              tokenIdsFetched.map((token) => {
+                // here token is of the format [ [ 'collectionId', 'seriesId' ], 'serialNumber' ] - api.query.nft.tokenOwner
+                return new EnhancedTokenId(api.registry, [token[0][0], token[0][1], token[1][0]]);
+              })
+            );
           })
         )
       : collectionTokens(collectionIds, api, owner);
