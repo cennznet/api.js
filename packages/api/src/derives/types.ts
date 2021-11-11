@@ -7,7 +7,6 @@ import {
   ValidatorPrefs,
   RewardDestination,
   Index,
-  Codec,
 } from '@cennznet/types';
 import { ApiTypes, SubmittableExtrinsic } from '@cennznet/api/types';
 import CENNZnetExtrinsic from '@cennznet/types/interfaces/extrinsic/v1/Extrinsic';
