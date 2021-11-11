@@ -30,7 +30,7 @@ export interface DerivedSessionKeyInfo {
   sessionKeys: AccountId[];
 }
 
-export interface EstimateFeeParams extends Codec {
+export interface EstimateFeeParams {
   extrinsic: SubmittableExtrinsic<ApiTypes> | CENNZnetExtrinsic;
   userFeeAssetId: string | number;
   maxPayment?: string;

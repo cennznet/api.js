@@ -11,7 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import { Api } from '@cennznet/api';
+import {SignerOptions} from "@polkadot/api/types";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
@@ -21,7 +22,7 @@ const CENTRAPAY = '16001';
 const PLUG = '16003';
 
 describe('CENNZX RPC calls testing', () => {
-  let api;
+  let api: Api;
   let alice, bob;
   beforeAll(async () => {
     await cryptoWaitReady();
@@ -130,7 +131,7 @@ describe('CENNZX RPC calls testing', () => {
           );
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
-          await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
+          await extrinsic.signAndSend(alice,  {transactionPayment} as Partial<SignerOptions>, async ({events, status}) => {
             if (status.isFinalized) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 if (method === 'AssetBought') {

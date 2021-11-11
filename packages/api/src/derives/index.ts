@@ -35,9 +35,10 @@ export type DecoratedCennznetDerive<
   AllSections extends { [section: string]: { [method: string]: DeriveFunc } } = typeof derive
 > = {
   [SectionName in keyof AllSections]: {
-    [MethodName in keyof AllSections[SectionName]]: ReturnType<AllSections[SectionName][MethodName]> extends AnyFunction
-      ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
-      : never;
+    [MethodName in keyof AllSections[SectionName]]: MethodResult<
+      ApiType,
+      ReturnType<AllSections[SectionName][MethodName]>
+    >;
   };
 };
 
