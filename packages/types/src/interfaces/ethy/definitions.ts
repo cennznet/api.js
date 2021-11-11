@@ -34,7 +34,9 @@ export default {
       digest: '[u8; 32]',
       eventId: 'EthyEventId',
       validatorSetId: 'u64',
-      signatures: 'Vec<EthereumSignature>'
+      signatures: 'Vec<EthereumSignature>',
+      blockHash: '[u8; 32]',
+      tag: 'Option<Vec<u8>>',
     },
   }
 };

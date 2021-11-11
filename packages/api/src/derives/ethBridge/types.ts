@@ -15,6 +15,8 @@
 export interface EthEventProof {
   eventId: string;
   validatorSetId: string;
+  blockHash: string;
+  tag: string;
   r: string[];
   s: string[];
   v: number[];

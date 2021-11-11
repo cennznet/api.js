@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { ApiTypes } from '@cennznet/api/types';
-import { AnyFunction } from '@cennznet/types';
 import { ApiInterfaceRx, MethodResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 import * as attestation from './attestation';
@@ -35,9 +34,10 @@ export type DecoratedCennznetDerive<
   AllSections extends { [section: string]: { [method: string]: DeriveFunc } } = typeof derive
 > = {
   [SectionName in keyof AllSections]: {
-    [MethodName in keyof AllSections[SectionName]]: ReturnType<AllSections[SectionName][MethodName]> extends AnyFunction
-      ? MethodResult<ApiType, ReturnType<AllSections[SectionName][MethodName]>>
-      : never;
+    [MethodName in keyof AllSections[SectionName]]: MethodResult<
+      ApiType,
+      ReturnType<AllSections[SectionName][MethodName]>
+    >;
   };
 };
 

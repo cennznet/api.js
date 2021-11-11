@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { extractEthereumSignature } from '@cennznet/api/util/helper';
+import { hexToString } from '@polkadot/util';
 import { Observable, combineLatest } from '@polkadot/x-rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 
@@ -45,6 +46,8 @@ export function eventProof(instanceId: string, api: ApiInterfaceRx): () => Obser
             return {
               eventId: eventProof.eventId.toString(),
               validatorSetId: eventProof.validatorSetId.toString(),
+              blockHash: eventProof.blockHash.toString(),
+              tag: hexToString(eventProof.tag.toString()),
               r,
               s,
               v,

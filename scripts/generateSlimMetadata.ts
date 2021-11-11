@@ -21,6 +21,9 @@ async function generateSlimMeta() {
     'TransactionPayment',
     'GenericAsset',
     'Cennzx',
+    'Nft',
+    'Erc20Peg',
+    'EthBridge'
   ];
   let magicNumber = metadata.magicNumber;
   let modules = metadata.asLatest.modules;
