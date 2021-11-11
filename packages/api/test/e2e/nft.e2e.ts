@@ -384,7 +384,7 @@ describe('NFTs', () => {
                 paymentAsset: spendingAssetId,
                 fixedPrice: price,
                 buyer: buyer.address,
-                close: blockNumber + duration,
+                close: blockNumber + parseInt(duration),
                 seller: tokenOwner.address,
                 tokens,
                 royaltiesSchedule: { entitlements: [] },
@@ -410,9 +410,9 @@ describe('NFTs', () => {
           expect(listing.asAuction.toJSON()).toEqual({
               paymentAsset: spendingAssetId,
               reservePrice,
-              close: blockNumber + duration,
+              close: blockNumber + parseInt(duration),
               seller: tokenOwner.address,
-              tokens: [token],
+              tokens: [token.toJSON()],
               royaltiesSchedule: { entitlements: [] }
             });
 
