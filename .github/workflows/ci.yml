@@ -76,8 +76,10 @@ jobs:
         docker container ls -a
     - name: Deploy contract and deposit
       env:
-        ACCOUNT_KEY: ${{ secrets.ACCOUNT_KEY }}
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
         ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
       run: yarn deploy
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
