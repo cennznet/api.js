@@ -65,8 +65,10 @@ jobs:
       run: yarn
     - name: build
       env:
-        ACCOUNT_KEY: ${{ secrets.ACCOUNT_KEY }}
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
         ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
       run: yarn build
     - name: start local Eth node
       run: |
