@@ -310,14 +310,13 @@ describe('NFTs', () => {
   });
 
   it('finds collected tokens, their attributes and owners with derived query', async () => {
-    // @ts-ignore
-    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId) as DeriveTokenInfo[];
+    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId.toString());
     const uniqueToken = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === collectionId
       && token.tokenId.seriesId.toNumber() ===  0
       && token.tokenId.serialNumber.toNumber() === 0
     );
-    expect((uniqueToken.attributes as any).toJSON()).toEqual(attributes);
+    expect(uniqueToken.attributes.toJSON()).toEqual(attributes);
     expect(uniqueToken.owner).toEqual(tokenOwner.address);
 
     const token1InSeries = tokenInfos.find((token) =>
@@ -325,7 +324,7 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() === 1
       && token.tokenId.serialNumber.toNumber() === 0
     );
-    expect((token1InSeries.attributes as any).toJSON()).toEqual(series1Attributes);
+    expect(token1InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token1InSeries.owner).toEqual(tokenOwner.address);
 
     const token2InSeries = tokenInfos.find((token) =>
@@ -333,7 +332,7 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 1
     );
-    expect((token2InSeries.attributes as any).toJSON()).toEqual(series1Attributes);
+    expect(token2InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token2InSeries.owner).toEqual(null);
 
     const token3InSeries = tokenInfos.find((token) =>
@@ -341,7 +340,7 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 2
     );
-    expect((token3InSeries.attributes as any).toJSON()).toEqual(series1Attributes);
+    expect(token3InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token3InSeries.owner).toEqual(tokenOwner.address);
 
   });
