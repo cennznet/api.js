@@ -15,7 +15,7 @@ jobs:
   generate-metadata-for-extension:
     # Generate metadata for extension before automerging the current branch to master
     # only run if prechecks pass and the source branch is named 'prerelease/*'
-    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge!' }} && ${{ github.event.label.name != 'dependencies!' }}
     runs-on: ubuntu-latest
     steps:
     - name: generate meta for extension
@@ -41,7 +41,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   merge-release-branch:
     # only run if prechecks pass and the source branch is named 'prerelease/*'
-    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge!' }} && ${{ github.event.label.name != 'dependencies!' }}
     runs-on: ubuntu-latest
     steps:
     - name: Automerge
@@ -54,7 +54,7 @@ jobs:
     needs:
     - merge-release-branch
     # release to github only when its a prerelease branch and auto merge label is triggered
-    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge' }}
+    if: ${{ startsWith(github.head_ref, 'prerelease/1') }} && ${{ github.event.label.name == 'automerge!' }} && ${{ github.event.label.name != 'dependencies!' }}
     runs-on: ubuntu-latest
     steps:
     # checkout merged branch
