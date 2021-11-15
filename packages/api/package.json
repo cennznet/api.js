@@ -8,7 +8,7 @@
   "author": "Centrality Developers <support@centrality.ai>",
   "homepage": "https://github.com/cennznet/api.js/tree/master/packages/api",
   "license": "Apache-2.0",
-  "main": "src/index.ts",
+  "main": "index.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
