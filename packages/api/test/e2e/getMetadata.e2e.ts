@@ -21,7 +21,7 @@ describe('getMetadata()',  () => {
     const slimMetadata = await getMetadata('ws://localhost:9944');
     const metadataKey = Object.entries(slimMetadata)[0][0].split('-');
     const metadataValue = Object.entries(slimMetadata)[0][1];
-    expect(metadataKey[1]).toEqual("42");
+    expect(metadataKey[1]).toEqual("45");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
     const modules = mVersionedSlim.asLatest.modules.toArray();
@@ -36,7 +36,7 @@ describe('getMetadata()',  () => {
     const slimMetadata = await getMetadata('ws://localhost:9944', keepMetaFor);
     const metadataKey = Object.entries(slimMetadata)[0][0].split('-');
     const metadataValue = Object.entries(slimMetadata)[0][1];
-    expect(metadataKey[1]).toEqual("42");
+    expect(metadataKey[1]).toEqual("45");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
     const modules = mVersionedSlim.asLatest.modules.toArray();
