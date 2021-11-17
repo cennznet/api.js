@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0](https://github.com/cennznet/api.js/compare/prerelease/1.5.0-alpha.0...prerelease/1.5.0) (18/11/2021)
+### Added:
+    - Eth Bridge module derived queries support
+    - Governance module support
+### Changed
+    - Bump version tmpl from 1.0.4 to 1.0.5
+    - Bump version ws from 5.2.2 to 5.2.3
+    - Bump version url-parse from 1.4.7 to 1.5.3
+    - Bump version color-string from 1.5.4 to 1.6.0
+    - Bump version postcss from 7.0.35 to 7.0.39
+    - Bump version prismjs from 1.23.0 to 1.25.0
+    - Bump version tar from 4.4.15 to 4.4.19
+    - Bump version browserlist from 4.8.7 to 4.17.6
+    - Bump version hosted-git-info from 2.8.8 to 2.8.9
+    - Bump version dns-packet from 1.3.1 to 1.3.4
+    - Bump version handlebars from 4.7.3 to 4.7.7
+    - Bump version underscore from 1.11.0 to 1.13.1
+    - Bump version lodash from 4.17.20 to 4.17.21
 ## [1.5.0-alpha.0](https://github.com/cennznet/api.js/compare/prerelease/1.4.1...prerelease/1.5.0-alpha.0) (26/07/2021)
 ### Added:
     - Improved extrinsic payment option

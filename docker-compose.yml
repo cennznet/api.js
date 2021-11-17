@@ -13,7 +13,7 @@ services:
   # dev node with runtime v40 and client 1.4.0
   testnet_node_alice:
     container_name: testnet_node_alice
-    image: cennznet/cennznet:2.0.0-rc4
+    image: cennznet/cennznet:2.0.0
     command:
       - --dev
       - --tmp
