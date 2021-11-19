@@ -139,9 +139,13 @@ The following sections contain the module details.
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:   Any validators that may never be slashed or forcibly kicked. It's a Vec since they're easy to initialize and the performance hit is minimal (we expect no more than four invulnerables) and restricted to testnets. 
  
+### isActiveSessionFinal(): `bool`
+- **interface**: `api.query.staking.isActiveSessionFinal`
+- **summary**:   NOTE:!! this is poorly named. True if the _active_ session (session_index) is final (last in the era). Note that this does not take era forcing into accoun 
+ 
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+- **summary**:   NOTE:!! this is poorly named. True if the **planned** session (session_index + 1) is final (last in the era). Note that this does not take era forcing into account 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
@@ -599,7 +603,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/electedInfo.ts#L17)
+[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/electedInfo.ts#L17)
 
 # Module: staking/overview
 
@@ -617,7 +621,52 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/overview.ts#L16)
+[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/overview.ts#L16)
+
+# Module: staking/query
+
+
+## Functions
+
+### query
+
+▸ **query**(`accountId`: `Uint8Array` \| `string`, `flags`: `QueryFlags`) => `Observable`<[`DeriveStakingQuery`](../interfaces/staking_types.derivestakingquery.md)\>
+
+**`description`** From a stash, retrieve the controllerId and all relevant details
+
+
+| Name | Type |
+| :------ | :------ |
+| `accountId` | `Uint8Array` \| `string` |
+| `flags` | `QueryFlags` |
+
+##### Returns
+
+`Observable`<[`DeriveStakingQuery`](../interfaces/staking_types.derivestakingquery.md)\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/query.ts:127](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/query.ts#L127)
+
+___
+
+### queryMulti
+
+▸ **queryMulti**(`accountIds`: (`Uint8Array` \| `string`)[], `flags`: `QueryFlags`) => `Observable`<[`DeriveStakingQuery`](../interfaces/staking_types.derivestakingquery.md)[]\>
+
+
+| Name | Type |
+| :------ | :------ |
+| `accountIds` | (`Uint8Array` \| `string`)[] |
+| `flags` | `QueryFlags` |
+
+##### Returns
+
+`Observable`<[`DeriveStakingQuery`](../interfaces/staking_types.derivestakingquery.md)[]\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/query.ts:138](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/query.ts#L138)
 
 # Module: staking/stakingAccount
 
@@ -642,7 +691,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/stakingAccount.ts#L47)
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/stakingAccount.ts#L47)
 
 # Module: staking/stashes
 
@@ -660,7 +709,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/stashes.ts#L15)
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/stashes.ts#L15)
 
 # Module: staking/types
 
@@ -671,6 +720,7 @@ The following sections contain the module details.
 - [DeriveStakingOverview](../interfaces/staking_types.derivestakingoverview.md)
 - [DeriveStakingQuery](../interfaces/staking_types.derivestakingquery.md)
 - [DeriveStakingStash](../interfaces/staking_types.derivestakingstash.md)
+- [DeriveStakingWaiting](../interfaces/staking_types.derivestakingwaiting.md)
 
 # Module: staking/validators
 
@@ -686,7 +736,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/validators.ts#L14)
+[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/validators.ts#L14)
 
 ___
 
@@ -701,7 +751,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/validators.ts#L32)
+[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/validators.ts#L32)
 
 # Module: staking/waitingInfo
 
@@ -710,11 +760,11 @@ ___
 
 ### waitingInfo
 
-▸ **waitingInfo**() => `Observable`<`DeriveStakingWaiting`\>
+▸ **waitingInfo**() => `Observable`<[`DeriveStakingWaiting`](../interfaces/staking_types.derivestakingwaiting.md)\>
 
 
-`Observable`<`DeriveStakingWaiting`\>
+`Observable`<[`DeriveStakingWaiting`](../interfaces/staking_types.derivestakingwaiting.md)\>
 
 #### Defined in
 
-[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/staking/waitingInfo.ts#L14)
+[packages/api/src/derives/staking/waitingInfo.ts:13](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/staking/waitingInfo.ts#L13)
