@@ -55,8 +55,7 @@ describe('e2e rx api create', () => {
   it('Should connect to all available networks on cennznet via network name', async done => {
     let apiRx;
     let api;
-    // const networkNames = ['azalea', 'nikau', 'rata', 'local'] as const;
-    const networkNames = ['azalea', 'local'] as const;
+    const networkNames = ['azalea', 'nikau', 'rata', 'local'] as const;
     const connectionPromises = networkNames.map(async networkName => {
       apiRx = await ApiRx.create({network: networkName, timeout: 10000});
       api = await apiRx.toPromise()
