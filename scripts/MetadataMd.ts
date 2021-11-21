@@ -14,6 +14,7 @@ import * as substrateDefinitions from '@polkadot/types/interfaces/definitions';
 import * as cennznetDefinitions from '@cennznet/types/interfaces/definitions';
 import { Text } from '@polkadot/types/primitive';
 import { stringCamelCase, stringLowerFirst } from '@polkadot/util';
+import Types from '@cennznet/types/interfaces/injects';
 
 interface Page {
     title: string;
@@ -560,13 +561,15 @@ function writeFile (name: string, ...chunks: any[]): void {
 function main (): void {
     const registry = new TypeRegistry();
     // use the latest runtime metadata we know about
-    const [key, meta] = Object.entries(staticMetadata).pop();
-
-    console.log();
-    console.log(`Generating docs for: ${key}`);
+    // console.log('Object.entries(staticMetadata)::',Object.entries(staticMetadata))
+    // const [key, meta] = Object.entries(staticMetadata).pop(); --> this will pop the last entry
+    const meta = staticMetadata[Object.keys(staticMetadata)[0]];
+    // console.log(`Generating docs for: ${key}`);
     console.log();
 
     const metadata = new Metadata(registry, meta);
+
+    registry.register(Types);
     registry.setMetadata(metadata);
 
     const latest = metadata.asLatest;
@@ -574,6 +577,8 @@ function main (): void {
     writeFile('docs/cennznet/genericAsset.md', addModule(latest, 'GenericAsset', 'Generic Asset'));
     writeFile('docs/cennznet/cennzx.md', addModule(latest, 'Cennzx', 'CENNZX'));
     writeFile('docs/cennznet/staking.md', addModule(latest, 'Staking', 'Staking'));
+    writeFile('docs/cennznet/ethBridge.md', addModule(latest, 'EthBridge', 'EthBridge'));
+    writeFile('docs/cennznet/erc20Peg.md', addModule(latest, 'Erc20Peg', 'erc20Peg'));
     writeFile('docs/cennznet/nft.md', addModule(latest, 'Nft', 'Nft'));
     writeFile('docs/cennznet/rpc.md', addRpc());
     writeFile('docs/cennznet/constants.md', addConstants(latest));

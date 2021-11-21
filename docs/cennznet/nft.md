@@ -333,7 +333,7 @@ Get map of collection id to collection name
 
 #### Defined in
 
-[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/nft/collectionInfo.ts#L13)
+[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/collectionInfo.ts#L13)
 
 # Module: nft/openCollectionListings
 
@@ -359,7 +359,7 @@ Gets all tokens in a collection that have an open listing
 
 #### Defined in
 
-[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/nft/openCollectionListings.ts#L30)
+[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/openCollectionListings.ts#L30)
 
 # Module: nft/tokenInfo
 
@@ -385,7 +385,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:32](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/nft/tokenInfo.ts#L32)
+[packages/api/src/derives/nft/tokenInfo.ts:32](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfo.ts#L32)
 
 ___
 
@@ -409,7 +409,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:80](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/nft/tokenInfo.ts#L80)
+[packages/api/src/derives/nft/tokenInfo.ts:80](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfo.ts#L80)
 
 # Module: nft/tokenInfoForCollection
 
@@ -433,7 +433,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfoForCollection.ts:27](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/nft/tokenInfoForCollection.ts#L27)
+[packages/api/src/derives/nft/tokenInfoForCollection.ts:27](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfoForCollection.ts#L27)
 
 # Module: nft/types
 

@@ -134,7 +134,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/eventProof.ts:28](https://github.com/cennznet/api.js/blob/cd8c2b0/packages/api/src/derives/ethBridge/eventProof.ts#L28)
+[packages/api/src/derives/ethBridge/eventProof.ts:28](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/ethBridge/eventProof.ts#L28)
 
 # Module: ethBridge/types
 

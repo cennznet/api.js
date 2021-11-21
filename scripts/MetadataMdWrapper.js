@@ -17,7 +17,8 @@ try {
       ['module-resolver', {
         alias: {
           '^@cennznet/api(.*)': './packages/api/src\\1',
-          '^@cennznet/types(.*)': './packages/types/src\\1'
+          '^@cennznet/types(.*)': './packages/types/src\\1',
+          '^@cennznet/util(.*)': './packages/util/src\\1'
         }
       }]
     ]
