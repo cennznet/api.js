@@ -6,6 +6,8 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
+- **[attestation](#attestation)**
+
 - **[authorship](#authorship)**
 
 - **[cennzx](#cennzx)**
@@ -34,6 +36,13 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[treasury](#treasury)**
 
+
+___
+
+
+## attestation
+ 
+### TopicNotRegistered
 
 ___
 
@@ -107,6 +116,9 @@ ___
 
 ## genericAsset
  
+### AccountIdNotExist
+- **summary**:   There is no such account id in the storage. 
+ 
 ### AssetIdExhausted
 - **summary**:   No new assets id available. 
  
@@ -116,11 +128,17 @@ ___
 ### AssetIdNotExist
 - **summary**:   Failure due to asset id not existing on chain 
  
+### DecimalTooLarge
+- **summary**:   The integer for decimal places is too large for conversion into u128. 
+ 
 ### FreeBurningUnderflow
 - **summary**:   Free balance got underflowed after burning. 
  
 ### FreeMintingOverflow
 - **summary**:   Free balance got overflowed after minting. 
+ 
+### InitialIssuanceTooLarge
+- **summary**:   The integer for initial issuance is too large for conversion into u128. 
  
 ### InsufficientBalance
 - **summary**:   The balance is too low to send amount. 
@@ -148,6 +166,9 @@ ___
  
 ### ZeroAmount
 - **summary**:   Cannot transfer zero amount. 
+ 
+### ZeroExistentialDeposit
+- **summary**:   Existential deposit for assets should always be greater than zero. 
 
 ___
 
@@ -250,6 +271,9 @@ ___
 ### AlreadyStored
 - **summary**:   The data to be stored is already stored. 
  
+### MaxWeightTooLow
+- **summary**:   The maximum weight information provided was too low. 
+ 
 ### MinimumThreshold
 - **summary**:   Threshold must be 2 or greater. 
  
@@ -279,9 +303,6 @@ ___
  
 ### UnexpectedTimepoint
 - **summary**:   A timepoint was given, yet no multisig operation is underway. 
- 
-### WeightTooLow
-- **summary**:   The maximum weight information provided was too low. 
  
 ### WrongTimepoint
 - **summary**:   A different timepoint was given to the multisig operation that is underway. 
@@ -330,8 +351,8 @@ ___
 ### NoToken
 - **summary**:   The token does not exist 
  
-### RoyaltiesOvercommitment
-- **summary**:   Total royalties would exceed 100% of sale 
+### RoyaltiesInvalid
+- **summary**:   Total royalties would exceed 100% of sale or an empty vec is supplied 
  
 ### RoyaltiesProtection
 - **summary**:   Tokens with different individual royalties cannot be sold together 
@@ -369,6 +390,9 @@ ___
  
 ### InvalidProof
 - **summary**:   Invalid ownership proof. 
+ 
+### NoAccount
+- **summary**:   Key setting account is not live, so it's impossible to associate keys. 
  
 ### NoAssociatedValidatorId
 - **summary**:   No associated validator ID for account. 
@@ -500,41 +524,8 @@ ___
 
 ## treasury
  
-### AlreadyKnown
-- **summary**:   The tip was already found/started. 
- 
 ### InsufficientProposersBalance
 - **summary**:   Proposer's balance is too low. 
  
-### InvalidFee
-- **summary**:   Invalid bounty fee. 
- 
 ### InvalidIndex
 - **summary**:   No proposal or bounty at that index. 
- 
-### InvalidValue
-- **summary**:   Invalid bounty value. 
- 
-### NotFinder
-- **summary**:   The account attempting to retract the tip is not the finder of the tip. 
- 
-### PendingPayout
-- **summary**:   A bounty payout is pending. To cancel the bounty, you must unassign and slash the curator. 
- 
-### Premature
-- **summary**:   The tip cannot be claimed/closed because it's still in the countdown period. 
- 
-### ReasonTooBig
-- **summary**:   The reason given is just too big. 
- 
-### RequireCurator
-- **summary**:   Require bounty curator. 
- 
-### StillOpen
-- **summary**:   The tip cannot be claimed/closed because there are not enough tippers yet. 
- 
-### UnexpectedStatus
-- **summary**:   The bounty status is unexpected. 
- 
-### UnknownTip
-- **summary**:   The tip hash is unknown. 

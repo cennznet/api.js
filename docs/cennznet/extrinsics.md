@@ -14,7 +14,13 @@ The following sections contain Extrinsics methods are part of the default Substr
 
 - **[cennzx](#cennzx)**
 
+- **[erc20Peg](#erc20peg)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
+
+- **[governance](#governance)**
 
 - **[grandpa](#grandpa)**
 
@@ -72,6 +78,10 @@ ___
 
 ## babe
  
+### planConfigChange(config: `NextConfigDescriptor`)
+- **interface**: `api.tx.babe.planConfigChange`
+- **summary**:   Plan an epoch config change. The epoch config change is recorded and will be enacted on the next call to `enact_epoch_change`. The config will be activated one epoch after. Multiple calls to this method will replace any existing planned config change that had not been enacted yet. 
+ 
 ### reportEquivocation(equivocation_proof: `BabeEquivocationProof`, key_owner_proof: `KeyOwnerProof`)
 - **interface**: `api.tx.babe.reportEquivocation`
 - **summary**:   Report authority equivocation/misbehavior. This method will verify the equivocation proof and validate the given key ownership proof against the extracted offender. If both are valid, the offence will be reported. 
@@ -85,25 +95,25 @@ ___
 
 ## cennzx
  
-### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<BalanceOf>`, max_asset_amount: `Compact<BalanceOf>`, core_amount: `Compact<BalanceOf>`)
+### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<Balance>`, max_asset_amount: `Compact<Balance>`, core_amount: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.addLiquidity`
 - **summary**:   Deposit core asset and trade asset at current ratio to mint liquidity Returns amount of liquidity minted. 
 
   `origin` `asset_id` - The trade asset ID `min_liquidity` - The minimum liquidity to add `asset_amount` - Amount of trade asset to add `core_amount` - Amount of core asset to add 
  
-### buyAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, buy_amount: `Compact<BalanceOf>`, maximum_sell: `Compact<BalanceOf>`)
+### buyAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, buy_amount: `Compact<Balance>`, maximum_sell: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.buyAsset`
 - **summary**:   Buy `asset_to_buy` with `asset_to_sell`. Caller specifies an exact `buy_amount` and a `maximum_sell` amount to pay. 
 
   `recipient` - Account to receive assets, defaults to `origin` if None `asset_to_sell` - asset ID to sell `asset_to_buy` - asset ID to buy `buy_amount` - The amount of `asset_to_buy` to receive `maximum_sell` - Maximum `asset_to_sell` caller should pay 
  
-### removeLiquidity(asset_id: `Compact<AssetId>`, liquidity_to_withdraw: `Compact<BalanceOf>`, min_asset_withdraw: `Compact<BalanceOf>`, min_core_withdraw: `Compact<BalanceOf>`)
+### removeLiquidity(asset_id: `Compact<AssetId>`, liquidity_to_withdraw: `Compact<Balance>`, min_asset_withdraw: `Compact<Balance>`, min_core_withdraw: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.removeLiquidity`
 - **summary**:   Burn exchange assets to withdraw core asset and trade asset at current ratio 
 
   `asset_id` - The trade asset ID `liquidity_to_withdraw` - Amount of user's liquidity to withdraw `min_asset_withdraw` - The minimum trade asset withdrawn `min_core_withdraw` -  The minimum core asset withdrawn 
  
-### sellAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, sell_amount: `Compact<BalanceOf>`, minimum_buy: `Compact<BalanceOf>`)
+### sellAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, sell_amount: `Compact<Balance>`, minimum_buy: `Compact<Balance>`)
 - **interface**: `api.tx.cennzx.sellAsset`
 - **summary**:   Sell `asset_to_sell` for `asset_to_buy`. Caller specifies an exact `sell_amount` and a `minimum_buy` amount to receive. 
 
@@ -112,6 +122,48 @@ ___
 ### setFeeRate(new_fee_rate: `FeeRate`)
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
+
+___
+
+
+## erc20Peg
+ 
+### activateCennzDeposits()
+- **interface**: `api.tx.erc20Peg.activateCennzDeposits`
+ 
+### activateDeposits(activate: `bool`)
+- **interface**: `api.tx.erc20Peg.activateDeposits`
+- **summary**:   Activate/deactivate deposits (root only) 
+ 
+### activateWithdrawals(activate: `bool`)
+- **interface**: `api.tx.erc20Peg.activateWithdrawals`
+- **summary**:   Activate/deactivate withdrawals (root only) 
+ 
+### depositClaim(tx_hash: `H256`, claim: `Erc20DepositEvent`)
+- **interface**: `api.tx.erc20Peg.depositClaim`
+ 
+### setContractAddress(eth_address: `EthAddress`)
+- **interface**: `api.tx.erc20Peg.setContractAddress`
+ 
+### setErc20Meta(details: `Vec<(EthAddress,Bytes,u8)>`)
+- **interface**: `api.tx.erc20Peg.setErc20Meta`
+ 
+### withdraw(asset_id: `AssetId`, amount: `Balance`, beneficiary: `EthAddress`)
+- **interface**: `api.tx.erc20Peg.withdraw`
+
+___
+
+
+## ethBridge
+ 
+### setEventConfirmations(confirmations: `u64`)
+- **interface**: `api.tx.ethBridge.setEventConfirmations`
+ 
+### setEventDeadline(seconds: `u64`)
+- **interface**: `api.tx.ethBridge.setEventDeadline`
+ 
+### submitNotarization(payload: `NotarizationPayload`, _signature: `Signature`)
+- **interface**: `api.tx.ethBridge.submitNotarization`
 
 ___
 
@@ -152,6 +204,10 @@ ___
 
    
  
+### transferAll(asset_id: `Compact<AssetId>`, to: `AccountId`)
+- **interface**: `api.tx.genericAsset.transferAll`
+- **summary**:   Transfer all of the free balance of `asset_id` to another account. 
+ 
 ### updateAssetInfo(asset_id: `Compact<AssetId>`, info: `AssetInfo`)
 - **interface**: `api.tx.genericAsset.updateAssetInfo`
 - **summary**:   Updates asset info for a given `asset_id`. 
@@ -167,6 +223,37 @@ ___
   The `origin` must have `update` permission. 
 
   weights: O(1) limited number of read and writes Expected to not be called frequently 
+
+___
+
+
+## governance
+ 
+### addCouncilMember(new_member: `AccountId`)
+- **interface**: `api.tx.governance.addCouncilMember`
+- **summary**:   Add a member to the council This must be submitted like any other proposal 
+ 
+### cancelEnactment(proposal_id: `ProposalId`)
+- **interface**: `api.tx.governance.cancelEnactment`
+- **summary**:   Cancel a proposal queued for enactment. 
+ 
+### enactProposal(proposal_id: `ProposalId`)
+- **interface**: `api.tx.governance.enactProposal`
+- **summary**:   Execute a proposal transaction 
+ 
+### removeCouncilMember(remove_member: `AccountId`)
+- **interface**: `api.tx.governance.removeCouncilMember`
+- **summary**:   Remove a member from the council This must be submitted like any other proposal 
+ 
+### setProposalBond(new_proposal_bond: `Balance`)
+- **interface**: `api.tx.governance.setProposalBond`
+- **summary**:   Adjust the proposal bond This must be submitted like any other proposal 
+ 
+### submitProposal(call: `Bytes`, justification_uri: `Bytes`, enactment_delay: `BlockNumber`)
+- **interface**: `api.tx.governance.submitProposal`
+ 
+### voteOnProposal(proposal_id: `ProposalId`, vote: `bool`)
+- **interface**: `api.tx.governance.voteOnProposal`
 
 ___
 
@@ -537,7 +624,7 @@ ___
 - **interface**: `api.tx.nft.mintSeries`
 - **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) Series can be issued additional tokens with `mint_additional` 
 
-  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `is_limited_edition` - signal whether the series is a limited edition or not `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
+  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
 
   -----------Performs O(N) writes where N is `quantity` 
  
@@ -959,6 +1046,12 @@ ___
 
    
  
+### remarkWithEvent(remark: `Bytes`)
+- **interface**: `api.tx.system.remarkWithEvent`
+- **summary**:   Make some on-chain remark and emit event. 
+
+   
+ 
 ### setChangesTrieConfig(changes_trie_config: `Option<ChangesTrieConfiguration>`)
 - **interface**: `api.tx.system.setChangesTrieConfig`
 - **summary**:   Set the new changes trie configuration. 
@@ -988,12 +1081,6 @@ ___
 - **summary**:   Set some items of storage. 
 
    
- 
-### suicide()
-- **interface**: `api.tx.system.suicide`
-- **summary**:   Kill the sending account, assuming there are no references outstanding and the composite data is equal to its default value. 
-
-   
 
 ___
 
@@ -1017,97 +1104,9 @@ ___
 
 ## treasury
  
-### acceptCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.acceptCurator`
-- **summary**:   Accept the curator role for a bounty. A deposit will be reserved from curator and refund upon successful payout. 
-
-  May only be called from the curator. 
-
-   
- 
-### approveBounty(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.approveBounty`
-- **summary**:   Approve a bounty proposal. At a later time, the bounty will be funded and become active and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
 ### approveProposal(proposal_id: `Compact<ProposalIndex>`)
 - **interface**: `api.tx.treasury.approveProposal`
 - **summary**:   Approve a proposal. At a later time, the proposal will be allocated to the beneficiary and the original deposit will be returned. 
-
-  May only be called from `T::ApproveOrigin`. 
-
-   
- 
-### awardBounty(bounty_id: `Compact<ProposalIndex>`, beneficiary: `LookupSource`)
-- **interface**: `api.tx.treasury.awardBounty`
-- **summary**:   Award bounty to a beneficiary account. The beneficiary will be able to claim the funds after a delay. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to award. 
-
-  - `beneficiary`: The beneficiary account whom will receive the payout.
- 
-### claimBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.claimBounty`
-- **summary**:   Claim the payout from an awarded bounty after payout delay. 
-
-  The dispatch origin for this call must be the beneficiary of this bounty. 
-
-  - `bounty_id`: Bounty ID to claim. 
- 
-### closeBounty(bounty_id: `Compact<BountyIndex>`)
-- **interface**: `api.tx.treasury.closeBounty`
-- **summary**:   Cancel a proposed or active bounty. All the funds will be sent to treasury and the curator deposit will be unreserved if possible. 
-
-  Only `T::RejectOrigin` is able to cancel a bounty. 
-
-  - `bounty_id`: Bounty ID to cancel. 
- 
-### closeTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.closeTip`
-- **summary**:   Close and payout a tip. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  The tip identified by `hash` must have finished its countdown period. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-   
- 
-### extendBountyExpiry(bounty_id: `Compact<BountyIndex>`, _remark: `Bytes`)
-- **interface**: `api.tx.treasury.extendBountyExpiry`
-- **summary**:   Extend the expiry time of an active bounty. 
-
-  The dispatch origin for this call must be the curator of this bounty. 
-
-  - `bounty_id`: Bounty ID to extend. 
-
-  - `remark`: additional information.
- 
-### proposeBounty(value: `Compact<BalanceOf>`, description: `Bytes`)
-- **interface**: `api.tx.treasury.proposeBounty`
-- **summary**:   Propose a new bounty. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. It will be unreserved upon approval, or slashed when rejected. 
-
-  - `curator`: The curator account whom will manage this bounty. 
-
-  - `fee`: The curator fee.
-
-  - `value`: The total payment amount of this bounty, curator fee included.
-
-  - `description`: The description of this bounty.
- 
-### proposeCurator(bounty_id: `Compact<ProposalIndex>`, curator: `LookupSource`, fee: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.proposeCurator`
-- **summary**:   Assign a curator to a funded bounty. 
 
   May only be called from `T::ApproveOrigin`. 
 
@@ -1124,80 +1123,6 @@ ___
 - **summary**:   Reject a proposed spend. The original deposit will be slashed. 
 
   May only be called from `T::RejectOrigin`. 
-
-   
- 
-### reportAwesome(reason: `Bytes`, who: `AccountId`)
-- **interface**: `api.tx.treasury.reportAwesome`
-- **summary**:   Report something `reason` that deserves a tip and claim any eventual the finder's fee. 
-
-  The dispatch origin for this call must be _Signed_. 
-
-  Payment: `TipReportDepositBase` will be reserved from the origin account, as well as `DataDepositPerByte` for each byte in `reason`. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### retractTip(hash: `Hash`)
-- **interface**: `api.tx.treasury.retractTip`
-- **summary**:   Retract a prior tip-report from `report_awesome`, and cancel the process of tipping. 
-
-  If successful, the original deposit will be unreserved. 
-
-  The dispatch origin for this call must be _Signed_ and the tip identified by `hash` must have been reported by the signing account through `report_awesome` (and not through `tip_new`). 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the original tip `reason` and the beneficiary account ID. 
-
-  Emits `TipRetracted` if successful. 
-
-   
- 
-### tip(hash: `Hash`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tip`
-- **summary**:   Declare a tip value for an already-open tip. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `hash`: The identity of the open tip for which a tip value is declared. This is formed   as the hash of the tuple of the hash of the original tip `reason` and the beneficiary   account ID. 
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `TipClosing` if the threshold of tippers has been reached and the countdown period has started. 
-
-   
- 
-### tipNew(reason: `Bytes`, who: `AccountId`, tip_value: `Compact<BalanceOf>`)
-- **interface**: `api.tx.treasury.tipNew`
-- **summary**:   Give a tip for something new; no finder's fee will be taken. 
-
-  The dispatch origin for this call must be _Signed_ and the signing account must be a member of the `Tippers` set. 
-
-  - `reason`: The reason for, or the thing that deserves, the tip; generally this will be   a UTF-8-encoded URL. 
-
-  - `who`: The account which should be credited for the tip.
-
-  - `tip_value`: The amount of tip that the sender would like to give. The median tip  value of active tippers will be given to the `who`. 
-
-  Emits `NewTip` if successful. 
-
-   
- 
-### unassignCurator(bounty_id: `Compact<ProposalIndex>`)
-- **interface**: `api.tx.treasury.unassignCurator`
-- **summary**:   Unassign curator from a bounty. 
-
-  This function can only be called by the `RejectOrigin` a signed origin. 
-
-  If this function is called by the `RejectOrigin`, we assume that the curator is malicious or inactive. As a result, we will slash the curator when possible. 
-
-  If the origin is the curator, we take this as a sign they are unable to do their job and they willingly give up. We could slash them, but for now we allow them to recover their deposit and exit without issue. (We may want to change this if it is abused.) 
-
-  Finally, the origin can be anyone if and only if the curator is "inactive". This allows anyone in the community to call out that a curator is not doing their due diligence, and we should pick a new curator. In this case the curator should also be slashed. 
 
    
 
@@ -1226,8 +1151,20 @@ ___
 
   - `calls`: The calls to be dispatched from the same origin. 
 
-  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Trait::BaseCallFilter`). 
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
 
    
 
   This will return `Ok` in all circumstances. To determine the success of the batch, an event is deposited. If a call failed and the batch was interrupted, then the `BatchInterrupted` event is deposited, along with the number of successful calls made and the error of the failed call. If all were successful, then the `BatchCompleted` event is deposited. 
+ 
+### batchAll(calls: `Vec<Call>`)
+- **interface**: `api.tx.utility.batchAll`
+- **summary**:   Send a batch of dispatch calls and atomically execute them. The whole transaction will rollback and fail if any of the calls failed. 
+
+  May be called from any origin. 
+
+  - `calls`: The calls to be dispatched from the same origin. 
+
+  If origin is root then call are dispatch without checking origin filter. (This includes bypassing `frame_system::Config::BaseCallFilter`). 
+
+   

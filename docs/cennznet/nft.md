@@ -41,7 +41,7 @@ The following sections contain the module details.
  
 ### listingEndSchedule(`BlockNumber, ListingId`): `bool`
 - **interface**: `api.query.nft.listingEndSchedule`
-- **summary**:   Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close. 
+- **summary**:   Block numbers where listings will close. Value is `true` if at block number `listing_id` is scheduled to close. 
  
 ### listings(`ListingId`): `Option<Listing>`
 - **interface**: `api.query.nft.listings`
@@ -87,9 +87,13 @@ The following sections contain the module details.
 - **interface**: `api.query.nft.seriesRoyalties`
 - **summary**:   Map from (collection, series) to configured royalties schedule 
  
-### tokenLocks(`TokenId`): `bool`
+### storageVersion(): `u32`
+- **interface**: `api.query.nft.storageVersion`
+- **summary**:   Version of this module's storage schema 
+ 
+### tokenLocks(`TokenId`): `Option<TokenLockReason>`
 - **interface**: `api.query.nft.tokenLocks`
-- **summary**:   Map from token to its locked status 
+- **summary**:   Map from a token to lock status if any 
  
 ### tokenOwner(`(CollectionId,SeriesId), SerialNumber`): `AccountId`
 - **interface**: `api.query.nft.tokenOwner`
@@ -169,7 +173,7 @@ The following sections contain the module details.
 - **interface**: `api.tx.nft.mintSeries`
 - **summary**:   Mint a series of tokens distinguishable only by a serial number (SFT) Series can be issued additional tokens with `mint_additional` 
 
-  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `is_limited_edition` - signal whether the series is a limited edition or not `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
+  `quantity` - how many tokens to mint `owner` - the token owner, defaults to the caller `attributes` - all tokens in series will have these values `metadata_path` - URI path to token offchain metadata relative to the collection base URI Caller must be the collection owner 
 
   -----------Performs O(N) writes where N is `quantity` 
  
@@ -248,8 +252,8 @@ The following sections contain the module details.
 ### NoToken
 - **summary**:   The token does not exist 
  
-### RoyaltiesOvercommitment
-- **summary**:   Total royalties would exceed 100% of sale 
+### RoyaltiesInvalid
+- **summary**:   Total royalties would exceed 100% of sale or an empty vec is supplied 
  
 ### RoyaltiesProtection
 - **summary**:   Tokens with different individual royalties cannot be sold together 
@@ -329,7 +333,7 @@ Get map of collection id to collection name
 
 #### Defined in
 
-[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/collectionInfo.ts#L13)
+[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/collectionInfo.ts#L13)
 
 # Module: nft/openCollectionListings
 
@@ -355,7 +359,7 @@ Gets all tokens in a collection that have an open listing
 
 #### Defined in
 
-[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/openCollectionListings.ts#L30)
+[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/openCollectionListings.ts#L30)
 
 # Module: nft/tokenInfo
 
@@ -381,13 +385,13 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:31](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfo.ts#L31)
+[packages/api/src/derives/nft/tokenInfo.ts:32](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfo.ts#L32)
 
 ___
 
 ### tokensOf
 
-▸ **tokensOf**(`owner`: `string` \| `AccountId`, `collectionIds?`: `CollectionId`[]) => `Observable`<`EnhancedTokenId`[]\>
+▸ **tokensOf**(`owner`: `string` \| `AccountId`, `collectionIds?`: `CollectionId`[]) => `Observable`<`Error` \| `EnhancedTokenId`[]\>
 
 Get info on the current token
 
@@ -401,11 +405,11 @@ Get info on the current token
 
 ##### Returns
 
-`Observable`<`EnhancedTokenId`[]\>
+`Observable`<`Error` \| `EnhancedTokenId`[]\>
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:64](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfo.ts#L64)
+[packages/api/src/derives/nft/tokenInfo.ts:80](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfo.ts#L80)
 
 # Module: nft/tokenInfoForCollection
 
@@ -414,16 +418,22 @@ Get info on the current token
 
 ### tokenInfoForCollection
 
-▸ **tokenInfoForCollection**() => `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
+▸ **tokenInfoForCollection**(`collectionId`: `string`) => `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
 
 **`description`** Retrieve the list of all tokens in a collection
 
+
+| Name | Type |
+| :------ | :------ |
+| `collectionId` | `string` |
+
+##### Returns
 
 `Observable`<[`DeriveTokenInfo`](../interfaces/nft_types.derivetokeninfo.md)[]\>
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfoForCollection.ts:28](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/tokenInfoForCollection.ts#L28)
+[packages/api/src/derives/nft/tokenInfoForCollection.ts:27](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/tokenInfoForCollection.ts#L27)
 
 # Module: nft/types
 

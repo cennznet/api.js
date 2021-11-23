@@ -17,11 +17,11 @@
 
 ### attributes
 
-• **attributes**: `NFTAttributeValue`[]
+• **attributes**: `Vec`<`NFTAttributeValue`\>
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:20](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/types.ts#L20)
+[packages/api/src/derives/nft/types.ts:20](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/types.ts#L20)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:23](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/types.ts#L23)
+[packages/api/src/derives/nft/types.ts:23](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/types.ts#L23)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:22](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/types.ts#L22)
+[packages/api/src/derives/nft/types.ts:22](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/types.ts#L22)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/nft/types.ts:19](https://github.com/cennznet/api.js/blob/ed0f396/packages/api/src/derives/nft/types.ts#L19)
+[packages/api/src/derives/nft/types.ts:19](https://github.com/cennznet/api.js/blob/f6dfb70/packages/api/src/derives/nft/types.ts#L19)

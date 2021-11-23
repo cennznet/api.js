@@ -14,7 +14,13 @@ The following sections contain Storage methods are part of the default Substrate
 
 - **[cennzx](#cennzx)**
 
+- **[erc20Peg](#erc20peg)**
+
+- **[ethBridge](#ethbridge)**
+
 - **[genericAsset](#genericasset)**
+
+- **[governance](#governance)**
 
 - **[grandpa](#grandpa)**
 
@@ -108,15 +114,19 @@ ___
 - **interface**: `api.query.babe.authorVrfRandomness`
 - **summary**:   Temporary value (cleared at block finalization) that includes the VRF output generated at this block. This field should always be populated during block processing unless secondary plain slots are enabled (which don't contain a VRF output). 
  
-### currentSlot(): `u64`
+### currentSlot(): `Slot`
 - **interface**: `api.query.babe.currentSlot`
 - **summary**:   Current slot number. 
+ 
+### epochConfig(): `Option<BabeEpochConfiguration>`
+- **interface**: `api.query.babe.epochConfig`
+- **summary**:   The configuration for the current epoch. Should never be `None` as it is initialized in genesis. 
  
 ### epochIndex(): `u64`
 - **interface**: `api.query.babe.epochIndex`
 - **summary**:   Current epoch index. 
  
-### genesisSlot(): `u64`
+### genesisSlot(): `Slot`
 - **interface**: `api.query.babe.genesisSlot`
 - **summary**:   The slot at which the first epoch actually started. This is 0 until the first block of the chain. 
  
@@ -130,13 +140,21 @@ ___
 
   This entry is populated as part of block execution and is cleaned up on block finalization. Querying this storage entry outside of block execution context should always yield zero. 
  
-### nextEpochConfig(): `Option<NextConfigDescriptor>`
+### nextAuthorities(): `Vec<(AuthorityId,BabeAuthorityWeight)>`
+- **interface**: `api.query.babe.nextAuthorities`
+- **summary**:   Next epoch authorities. 
+ 
+### nextEpochConfig(): `Option<BabeEpochConfiguration>`
 - **interface**: `api.query.babe.nextEpochConfig`
-- **summary**:   Next epoch configuration, if changed. 
+- **summary**:   The configuration for the next epoch, `None` if the config will not change (you can fallback to `EpochConfig` instead in that case). 
  
 ### nextRandomness(): `Randomness`
 - **interface**: `api.query.babe.nextRandomness`
 - **summary**:   Next epoch randomness. 
+ 
+### pendingEpochConfigChange(): `Option<NextConfigDescriptor>`
+- **interface**: `api.query.babe.pendingEpochConfigChange`
+- **summary**:   Pending epoch configuration change that will be applied when the next epoch is enacted. 
  
 ### randomness(): `Randomness`
 - **interface**: `api.query.babe.randomness`
@@ -171,13 +189,123 @@ ___
 - **interface**: `api.query.cennzx.defaultFeeRate`
 - **summary**:   Default trading fee rate 
  
-### liquidityBalance(`ExchangeKey, AccountId`): `BalanceOf`
+### liquidityBalance(`ExchangeKey, AccountId`): `Balance`
 - **interface**: `api.query.cennzx.liquidityBalance`
 - **summary**:   Liquidity holdings of a user in an exchange pool. Key: `(core_asset_id, trade_asset_id), account_id` 
  
-### totalLiquidity(`ExchangeKey`): `BalanceOf`
+### totalLiquidity(`ExchangeKey`): `Balance`
 - **interface**: `api.query.cennzx.totalLiquidity`
 - **summary**:   Total liquidity holdings of all investors in an exchange. ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
+
+___
+
+
+## erc20Peg
+ 
+### assetIdToErc20(`AssetId`): `Option<EthAddress>`
+- **interface**: `api.query.erc20Peg.assetIdToErc20`
+- **summary**:   Map GA asset Id to ERC20 address 
+ 
+### cENNZDepositsActive(): `bool`
+- **interface**: `api.query.erc20Peg.cENNZDepositsActive`
+- **summary**:   Whether CENNZ deposits are active 
+ 
+### contractAddress(): `EthAddress`
+- **interface**: `api.query.erc20Peg.contractAddress`
+- **summary**:   The peg contract address on Ethereum 
+ 
+### depositsActive(): `bool`
+- **interface**: `api.query.erc20Peg.depositsActive`
+- **summary**:   Whether deposit are active 
+ 
+### erc20Meta(`EthAddress`): `Option<(Bytes,u8)>`
+- **interface**: `api.query.erc20Peg.erc20Meta`
+- **summary**:   Metadata for well-known erc20 tokens (symbol, decimals) 
+ 
+### erc20ToAssetId(`EthAddress`): `Option<AssetId>`
+- **interface**: `api.query.erc20Peg.erc20ToAssetId`
+- **summary**:   Map ERC20 address to GA asset Id 
+ 
+### withdrawalsActive(): `bool`
+- **interface**: `api.query.erc20Peg.withdrawalsActive`
+- **summary**:   Whether withdrawals are active 
+
+___
+
+
+## ethBridge
+ 
+### activationThreshold(): `Percent`
+- **interface**: `api.query.ethBridge.activationThreshold`
+- **summary**:   Required % of validator support to signal readiness (default: 66%) 
+ 
+### bridgePaused(): `bool`
+- **interface**: `api.query.ethBridge.bridgePaused`
+- **summary**:   Whether the bridge is paused (for validator transitions) 
+ 
+### eventClaims(`EventClaimId`): `(EthHash,EventTypeId)`
+- **interface**: `api.query.ethBridge.eventClaims`
+- **summary**:   Queued event claims, awaiting notarization 
+ 
+### eventConfirmations(): `u64`
+- **interface**: `api.query.ethBridge.eventConfirmations`
+- **summary**:   The minimum number of block confirmations needed to notarize an Ethereum event 
+ 
+### eventData(`EventClaimId`): `Option<Bytes>`
+- **interface**: `api.query.ethBridge.eventData`
+- **summary**:   Event data for a given claim 
+ 
+### eventDeadlineSeconds(): `u64`
+- **interface**: `api.query.ethBridge.eventDeadlineSeconds`
+- **summary**:   Events cannot be claimed after this time (seconds) 
+ 
+### eventNotarizations(`EventClaimId, EthyId`): `Option<EventClaimResult>`
+- **interface**: `api.query.ethBridge.eventNotarizations`
+- **summary**:   Notarizations for queued messages Either: None = no notarization exists OR Some(yay/nay) 
+ 
+### eventTypeToTypeId(`(EthAddress,EthHash)`): `EventTypeId`
+- **interface**: `api.query.ethBridge.eventTypeToTypeId`
+- **summary**:   Maps event types seen by the bridge ((contract address, event signature)) to unique type Ids 
+ 
+### nextEventClaimId(): `EventClaimId`
+- **interface**: `api.query.ethBridge.nextEventClaimId`
+- **summary**:   Id of the next Eth bridge event claim 
+ 
+### nextEventTypeId(): `EventTypeId`
+- **interface**: `api.query.ethBridge.nextEventTypeId`
+- **summary**:   Id of the next event type (internal) 
+ 
+### nextNotaryKeys(): `Vec<EthyId>`
+- **interface**: `api.query.ethBridge.nextNotaryKeys`
+- **summary**:   Scheduled notary (validator) public keys for the next session 
+ 
+### nextProofId(): `EventProofId`
+- **interface**: `api.query.ethBridge.nextProofId`
+- **summary**:   Id of the next event proof 
+ 
+### notaryKeys(): `Vec<EthyId>`
+- **interface**: `api.query.ethBridge.notaryKeys`
+- **summary**:   Active notary (validator) public keys 
+ 
+### notarySetId(): `u64`
+- **interface**: `api.query.ethBridge.notarySetId`
+- **summary**:   The current validator set id 
+ 
+### notarySetProofId(): `EventProofId`
+- **interface**: `api.query.ethBridge.notarySetProofId`
+- **summary**:   The event proof Id generated by the previous validator set to notarize the current set. Useful for syncing the latest proof to Ethereum 
+ 
+### processedTxBuckets(`u64, EthHash`): `()`
+- **interface**: `api.query.ethBridge.processedTxBuckets`
+- **summary**:   Processed tx hashes bucketed by unix timestamp (`BUCKET_FACTOR_S`) 
+ 
+### processedTxHashes(`EthHash`): `()`
+- **interface**: `api.query.ethBridge.processedTxHashes`
+- **summary**:   Map from processed tx hash to status Periodically cleared after `EventDeadlineSeconds` expires 
+ 
+### typeIdToEventType(`EventTypeId`): `(EthAddress,EthHash)`
+- **interface**: `api.query.ethBridge.typeIdToEventType`
+- **summary**:   Maps event type ids to ((contract address, event signature)) 
 
 ___
 
@@ -194,7 +322,7 @@ ___
 
   TWOX-NOTE: `AssetId` is trusted. 
  
-### locks(`AccountId`): `Vec<BalanceLock>`
+### locks(`AssetId, AccountId`): `Vec<BalanceLock>`
 - **interface**: `api.query.genericAsset.locks`
 - **summary**:   Any liquidity locks on some account balances. 
  
@@ -222,11 +350,50 @@ ___
 - **interface**: `api.query.genericAsset.stakingAssetId`
 - **summary**:   The identity of the asset which is the one that is designated for the chain's staking system. 
  
+### storageVersion(): `u32`
+- **interface**: `api.query.genericAsset.storageVersion`
+- **summary**:   Storage version of the pallet. 
+
+  This is set to v1 for new networks. 
+ 
 ### totalIssuance(`AssetId`): `Balance`
 - **interface**: `api.query.genericAsset.totalIssuance`
 - **summary**:   Total issuance of a given asset. 
 
   TWOX-NOTE: `AssetId` is trusted. 
+
+___
+
+
+## governance
+ 
+### council(): `Vec<AccountId>`
+- **interface**: `api.query.governance.council`
+- **summary**:   Ordered set of active council members 
+ 
+### nextProposalId(): `ProposalId`
+- **interface**: `api.query.governance.nextProposalId`
+- **summary**:   Next available ID for proposal 
+ 
+### proposalBond(): `Balance`
+- **interface**: `api.query.governance.proposalBond`
+- **summary**:   Proposal bond amount in 'wei' 
+ 
+### proposalCalls(`ProposalId`): `Option<Bytes>`
+- **interface**: `api.query.governance.proposalCalls`
+- **summary**:   Map from proposal Id to call if any 
+ 
+### proposals(`ProposalId`): `Option<Proposal>`
+- **interface**: `api.query.governance.proposals`
+- **summary**:   Map from proposal Id to proposal info 
+ 
+### proposalStatus(`ProposalId`): `Option<ProposalStatusInfo>`
+- **interface**: `api.query.governance.proposalStatus`
+- **summary**:   Map from proposal Id to status 
+ 
+### proposalVotes(`ProposalId`): `ProposalVoteInfo`
+- **interface**: `api.query.governance.proposalVotes`
+- **summary**:   Map from proposal Id to votes 
 
 ___
 
@@ -295,7 +462,7 @@ ___
  
 ### authoredBlocks(`SessionIndex, ValidatorId`): `u32`
 - **interface**: `api.query.imOnline.authoredBlocks`
-- **summary**:   For each session index, we keep a mapping of `T::ValidatorId` to the number of blocks authored by the given authority. 
+- **summary**:   For each session index, we keep a mapping of `ValidatorId<T>` to the number of blocks authored by the given authority. 
  
 ### heartbeatAfter(): `BlockNumber`
 - **interface**: `api.query.imOnline.heartbeatAfter`
@@ -350,7 +517,7 @@ ___
  
 ### listingEndSchedule(`BlockNumber, ListingId`): `bool`
 - **interface**: `api.query.nft.listingEndSchedule`
-- **summary**:   Block numbers where listings will close. It is `Some` if at block number, (collection id, token id) is listed and scheduled to close. 
+- **summary**:   Block numbers where listings will close. Value is `true` if at block number `listing_id` is scheduled to close. 
  
 ### listings(`ListingId`): `Option<Listing>`
 - **interface**: `api.query.nft.listings`
@@ -396,9 +563,13 @@ ___
 - **interface**: `api.query.nft.seriesRoyalties`
 - **summary**:   Map from (collection, series) to configured royalties schedule 
  
-### tokenLocks(`TokenId`): `bool`
+### storageVersion(): `u32`
+- **interface**: `api.query.nft.storageVersion`
+- **summary**:   Version of this module's storage schema 
+ 
+### tokenLocks(`TokenId`): `Option<TokenLockReason>`
 - **interface**: `api.query.nft.tokenLocks`
-- **summary**:   Map from token to its locked status 
+- **summary**:   Map from a token to lock status if any 
  
 ### tokenOwner(`(CollectionId,SeriesId), SerialNumber`): `AccountId`
 - **interface**: `api.query.nft.tokenOwner`
@@ -483,7 +654,7 @@ ___
 - **interface**: `api.query.rewards.transactionFeePot`
 - **summary**:   Accumulated transaction fees for reward payout 
  
-### transactionFeePotHistory(): `VecDeque`
+### transactionFeePotHistory(): `Vec<BalanceOf>`
 - **interface**: `api.query.rewards.transactionFeePotHistory`
 - **summary**:   Historic accumulated transaction fees on reward payout 
 
@@ -624,9 +795,13 @@ ___
 - **interface**: `api.query.staking.invulnerables`
 - **summary**:   Any validators that may never be slashed or forcibly kicked. It's a Vec since they're easy to initialize and the performance hit is minimal (we expect no more than four invulnerables) and restricted to testnets. 
  
+### isActiveSessionFinal(): `bool`
+- **interface**: `api.query.staking.isActiveSessionFinal`
+- **summary**:   NOTE:!! this is poorly named. True if the _active_ session (session_index) is final (last in the era). Note that this does not take era forcing into accoun 
+ 
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+- **summary**:   NOTE:!! this is poorly named. True if the **planned** session (session_index + 1) is final (last in the era). Note that this does not take era forcing into account 
  
 ### ledger(`AccountId`): `Option<StakingLedger>`
 - **interface**: `api.query.staking.ledger`
@@ -789,7 +964,7 @@ ___
 - **interface**: `api.query.system.blockHash`
 - **summary**:   Map of block numbers to block hashes. 
  
-### blockWeight(): `ExtrinsicsWeight`
+### blockWeight(): `ConsumedWeight`
 - **interface**: `api.query.system.blockWeight`
 - **summary**:   The current weight for the block. 
  
@@ -825,10 +1000,6 @@ ___
 - **interface**: `api.query.system.extrinsicData`
 - **summary**:   Extrinsics data for the current block (maps an extrinsic's index to its data). 
  
-### extrinsicsRoot(): `Hash`
-- **interface**: `api.query.system.extrinsicsRoot`
-- **summary**:   Extrinsics root of the current block, also part of the block header. 
- 
 ### lastRuntimeUpgrade(): `Option<LastRuntimeUpgradeInfo>`
 - **interface**: `api.query.system.lastRuntimeUpgrade`
 - **summary**:   Stores the `spec_version` and `spec_name` of when the last runtime upgrade happened. 
@@ -840,6 +1011,10 @@ ___
 ### parentHash(): `Hash`
 - **interface**: `api.query.system.parentHash`
 - **summary**:   Hash of the previous block. 
+ 
+### upgradedToDualRefCount(): `bool`
+- **interface**: `api.query.system.upgradedToDualRefCount`
+- **summary**:   True if we have upgraded so that AccountInfo contains two types of `RefCount`. False (default) if not. 
  
 ### upgradedToU32RefCount(): `bool`
 - **interface**: `api.query.system.upgradedToU32RefCount`
@@ -878,22 +1053,6 @@ ___
 - **interface**: `api.query.treasury.approvals`
 - **summary**:   Proposal indices that have been approved but not yet awarded. 
  
-### bounties(`BountyIndex`): `Option<Bounty>`
-- **interface**: `api.query.treasury.bounties`
-- **summary**:   Bounties that have been made. 
- 
-### bountyApprovals(): `Vec<BountyIndex>`
-- **interface**: `api.query.treasury.bountyApprovals`
-- **summary**:   Bounty indices that have been approved but not yet funded. 
- 
-### bountyCount(): `BountyIndex`
-- **interface**: `api.query.treasury.bountyCount`
-- **summary**:   Number of bounty proposals that have been made. 
- 
-### bountyDescriptions(`BountyIndex`): `Option<Bytes>`
-- **interface**: `api.query.treasury.bountyDescriptions`
-- **summary**:   The description of each bounty. 
- 
 ### proposalCount(): `ProposalIndex`
 - **interface**: `api.query.treasury.proposalCount`
 - **summary**:   Number of proposals that have been made. 
@@ -901,14 +1060,6 @@ ___
 ### proposals(`ProposalIndex`): `Option<TreasuryProposal>`
 - **interface**: `api.query.treasury.proposals`
 - **summary**:   Proposals that have been made. 
- 
-### reasons(`Hash`): `Option<Bytes>`
-- **interface**: `api.query.treasury.reasons`
-- **summary**:   Simple preimage lookup from the reason's hash to the original data. Again, has an insecure enumerable hash since the key is guaranteed to be the result of a secure hash. 
- 
-### tips(`Hash`): `Option<OpenTip>`
-- **interface**: `api.query.treasury.tips`
-- **summary**:   Tips that are not yet completed. Keyed by the hash of `(reason, who)` from the value. This has the insecure enumerable hash function since the key itself is already guaranteed to be a secure hash. 
 
 ___
 
