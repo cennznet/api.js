@@ -22,7 +22,8 @@ import type { Keys } from '@polkadot/types/interfaces/session';
 import type { CompactAssignments, ElectionScore, ElectionSize, EraIndex, RewardDestination, ValidatorIndex, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
 import type { Key } from '@polkadot/types/interfaces/system';
 import type { Timepoint } from '@polkadot/types/interfaces/utility';
-import type { ApiTypes, SubmittableExtrinsic } from '@polkadot/api/types';
+import type { ApiTypes } from '@polkadot/api/types';
+import type { SubmittableExtrinsic } from './types';
 
 declare module '@polkadot/api/types/submittable' {
   export interface AugmentedSubmittables<ApiType> {
