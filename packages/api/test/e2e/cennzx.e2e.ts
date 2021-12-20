@@ -126,7 +126,6 @@ describe('CENNZX RPC calls testing', () => {
           const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
           const extrinsic = api.tx.nft.createCollection(
             'collectionName',
-            {"Https": "example.com/nft/metadata" },
             null
           );
 

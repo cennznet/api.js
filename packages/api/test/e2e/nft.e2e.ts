@@ -26,7 +26,7 @@ let api: Api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
-let spendingAssetId, attributes, series1Attributes;
+let spendingAssetId, attributes;
 let globalCollectionId;
 let globalTokenIds;
 
@@ -53,12 +53,6 @@ beforeAll(async done => {
   attributes = [
     {'Text': '💎🙌'},
   ];
-
-  series1Attributes = [
-    {'Text': 'hello world'},
-    {'Hash': blake2AsHex(stringToU8a('hello world'))},
-    {'Timestamp': 12345}
-  ];
 });
 
 afterAll(async () => {
@@ -73,11 +67,10 @@ describe('NFTs', () => {
     let collectionName = 'global-example-collection';
     let quantity = 3;
     globalTokenIds = [...Array(quantity)]
-    let metadataPath = "series/metadata";
+    const metadataPath = {"Https": "example.com/nft/metadata" }
     await api.tx.nft.createCollection(
       collectionName,
       {"Https": "example.com/nft/metadata" },
-      null,
     ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method}}) => {
@@ -86,7 +79,7 @@ describe('NFTs', () => {
           }
         });
 
-        await api.tx.nft.mintSeries(globalCollectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+        await api.tx.nft.mintSeries(globalCollectionId, quantity, tokenOwner.address, metadataPath, null)
           .signAndSend(collectionOwner, async ({ status, events }) => {
             if (status.isInBlock) {
               events.forEach(({ event: { data, method }}) => {
@@ -105,10 +98,10 @@ describe('NFTs', () => {
 
   it('creates a collection', async done => {
     let collectionName = 'example-collection';
+    const royaltiesSchedule = null;
     await api.tx.nft.createCollection(
       collectionName,
-      {"Https": "example.com/nft/metadata" },
-      null,
+      royaltiesSchedule,
     ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
@@ -127,10 +120,10 @@ describe('NFTs', () => {
 
   it('creates another collection', async done => {
     let collectionName = 'Digital Art';
+    const royaltiesSchedule = null;
     await api.tx.nft.createCollection(
       collectionName,
-      {"Https": "new.com/nft/metadata" },
-      null,
+      royaltiesSchedule,
     ).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({phase, event: {data, method, section}}) => {
@@ -191,10 +184,10 @@ describe('NFTs', () => {
   it('creates a series in first collection', async done => {
     let seriesId;
     let quantity = 3;
-    let metadataPath = "series/metadata";
+    const metadataPath = {"Https": "example.com/nft/metadata" }
 
     await api.tx.nft
-    .mintSeries(collectionId, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+    .mintSeries(collectionId, quantity, tokenOwner.address, metadataPath, null)
     .signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
@@ -224,10 +217,10 @@ describe('NFTs', () => {
   it('creates a series of 5 in second collection', async done => {
     let seriesId;
     let quantity = 5;
-    let metadataPath = "series/metadata";
-
+    // let metadataPath = api.registry.createType("MetadataScheme","series/metadata");
+    const metadataPath = {"Https": "example.com/nft/metadata" };
     await api.tx.nft
-      .mintSeries(collectionId2, quantity, tokenOwner.address, series1Attributes, metadataPath, null)
+      .mintSeries(collectionId2, quantity, tokenOwner.address, metadataPath, null)
       .signAndSend(collectionOwner, async ({ status, events }) => {
         if (status.isInBlock) {
           events.forEach(({ event: {data, method }}) => {
@@ -324,7 +317,6 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() === 1
       && token.tokenId.serialNumber.toNumber() === 0
     );
-    expect(token1InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token1InSeries.owner).toEqual(tokenOwner.address);
 
     const token2InSeries = tokenInfos.find((token) =>
@@ -332,7 +324,6 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 1
     );
-    expect(token2InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token2InSeries.owner).toEqual(null);
 
     const token3InSeries = tokenInfos.find((token) =>
@@ -340,7 +331,6 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() ===  1
       && token.tokenId.serialNumber.toNumber() === 2
     );
-    expect(token3InSeries.attributes.toJSON()).toEqual(series1Attributes);
     expect(token3InSeries.owner).toEqual(tokenOwner.address);
 
   });
@@ -375,7 +365,7 @@ describe('NFTs', () => {
     let listingId = await api.query.nft.nextListingId();
 
     await api.tx.nft
-      .sellBundle(tokenIds, buyer.address, spendingAssetId, price, duration)
+      .sellBundle(tokenIds, buyer.address, spendingAssetId, price, duration, null)
       .signAndSend(tokenOwner, async ({ status }) => {
           if (status.isInBlock) {
             let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
@@ -402,7 +392,7 @@ describe('NFTs', () => {
     let listingId = await api.query.nft.nextListingId();
 
     await api.tx.nft
-      .auction(token, spendingAssetId, reservePrice, duration)
+      .auction(token, spendingAssetId, reservePrice, duration, null)
       .signAndSend(tokenOwner, async ({ status }) => {
         if (status.isInBlock) {
           let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
@@ -429,10 +419,10 @@ describe('NFTs', () => {
     let token = globalTokenIds[0]
     let token2 = globalTokenIds[1]
     // list two out of the three tokens, one auction & one fixed in collection
-    await api.tx.nft.auction(token, spendingAssetId, reservePrice, duration)
+    await api.tx.nft.auction(token, spendingAssetId, reservePrice, duration, null)
       .signAndSend(tokenOwner, async ({ status }) => {
         if (status.isInBlock) {
-          await api.tx.nft.sell(token2, null, spendingAssetId, reservePrice, duration)
+          await api.tx.nft.sell(token2, null, spendingAssetId, reservePrice, duration, null)
             .signAndSend(tokenOwner, async ({ status }) => {
               if (status.isInBlock) {
                 const allTokens = await api.derive.nft.openCollectionListings(globalCollectionId);

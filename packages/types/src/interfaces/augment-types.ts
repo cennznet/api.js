@@ -7,8 +7,8 @@ import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueRespon
 import type { Details, Erc20DepositEvent, EthAddress, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
-import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataBaseURI, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
+import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, Marketplace, MarketplaceId, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { BabeEpochConfiguration, BeefyKey, DispatchClassTo36, DispatchInfoTo36, PalletId, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -96,6 +96,7 @@ declare module '@polkadot/types/types/registry' {
     'Compact<LeasePeriod>': Compact<LeasePeriod>;
     'Compact<LeasePeriodOf>': Compact<LeasePeriodOf>;
     'Compact<ListingId>': Compact<ListingId>;
+    'Compact<MarketplaceId>': Compact<MarketplaceId>;
     'Compact<MemberCount>': Compact<MemberCount>;
     'Compact<MessageId>': Compact<MessageId>;
     'Compact<Moment>': Compact<Moment>;
@@ -497,6 +498,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<MapTypeV11>': Option<MapTypeV11>;
     'Option<MapTypeV12>': Option<MapTypeV12>;
     'Option<MapTypeV9>': Option<MapTypeV9>;
+    'Option<Marketplace>': Option<Marketplace>;
+    'Option<MarketplaceId>': Option<MarketplaceId>;
     'Option<MaybeRandomness>': Option<MaybeRandomness>;
     'Option<MaybeVrf>': Option<MaybeVrf>;
     'Option<Member>': Option<Member>;
@@ -510,8 +513,8 @@ declare module '@polkadot/types/types/registry' {
     'Option<MessagingStateSnapshotEgressEntry>': Option<MessagingStateSnapshotEgressEntry>;
     'Option<Meta>': Option<Meta>;
     'Option<MetadataAll>': Option<MetadataAll>;
-    'Option<MetadataBaseURI>': Option<MetadataBaseURI>;
     'Option<MetadataLatest>': Option<MetadataLatest>;
+    'Option<MetadataScheme>': Option<MetadataScheme>;
     'Option<MetadataV10>': Option<MetadataV10>;
     'Option<MetadataV11>': Option<MetadataV11>;
     'Option<MetadataV12>': Option<MetadataV12>;
@@ -635,6 +638,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<ReferendumInfoFinished>': Option<ReferendumInfoFinished>;
     'Option<ReferendumInfoTo239>': Option<ReferendumInfoTo239>;
     'Option<ReferendumStatus>': Option<ReferendumStatus>;
+    'Option<ReferendumVoteCount>': Option<ReferendumVoteCount>;
     'Option<RegisteredParachainInfo>': Option<RegisteredParachainInfo>;
     'Option<RegistrarIndex>': Option<RegistrarIndex>;
     'Option<RegistrarInfo>': Option<RegistrarInfo>;
@@ -1175,6 +1179,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<MapTypeV11>': Vec<MapTypeV11>;
     'Vec<MapTypeV12>': Vec<MapTypeV12>;
     'Vec<MapTypeV9>': Vec<MapTypeV9>;
+    'Vec<Marketplace>': Vec<Marketplace>;
+    'Vec<MarketplaceId>': Vec<MarketplaceId>;
     'Vec<MaybeRandomness>': Vec<MaybeRandomness>;
     'Vec<MaybeVrf>': Vec<MaybeVrf>;
     'Vec<Member>': Vec<Member>;
@@ -1188,8 +1194,8 @@ declare module '@polkadot/types/types/registry' {
     'Vec<MessagingStateSnapshotEgressEntry>': Vec<MessagingStateSnapshotEgressEntry>;
     'Vec<Meta>': Vec<Meta>;
     'Vec<MetadataAll>': Vec<MetadataAll>;
-    'Vec<MetadataBaseURI>': Vec<MetadataBaseURI>;
     'Vec<MetadataLatest>': Vec<MetadataLatest>;
+    'Vec<MetadataScheme>': Vec<MetadataScheme>;
     'Vec<MetadataV10>': Vec<MetadataV10>;
     'Vec<MetadataV11>': Vec<MetadataV11>;
     'Vec<MetadataV12>': Vec<MetadataV12>;
@@ -1313,6 +1319,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<ReferendumInfoFinished>': Vec<ReferendumInfoFinished>;
     'Vec<ReferendumInfoTo239>': Vec<ReferendumInfoTo239>;
     'Vec<ReferendumStatus>': Vec<ReferendumStatus>;
+    'Vec<ReferendumVoteCount>': Vec<ReferendumVoteCount>;
     'Vec<RegisteredParachainInfo>': Vec<RegisteredParachainInfo>;
     'Vec<RegistrarIndex>': Vec<RegistrarIndex>;
     'Vec<RegistrarInfo>': Vec<RegistrarInfo>;
@@ -1853,6 +1860,8 @@ declare module '@polkadot/types/types/registry' {
     MapTypeV11: MapTypeV11;
     MapTypeV12: MapTypeV12;
     MapTypeV9: MapTypeV9;
+    Marketplace: Marketplace;
+    MarketplaceId: MarketplaceId;
     MaybeRandomness: MaybeRandomness;
     MaybeVrf: MaybeVrf;
     Member: Member;
@@ -1866,8 +1875,8 @@ declare module '@polkadot/types/types/registry' {
     MessagingStateSnapshotEgressEntry: MessagingStateSnapshotEgressEntry;
     Meta: Meta;
     MetadataAll: MetadataAll;
-    MetadataBaseURI: MetadataBaseURI;
     MetadataLatest: MetadataLatest;
+    MetadataScheme: MetadataScheme;
     MetadataV10: MetadataV10;
     MetadataV11: MetadataV11;
     MetadataV12: MetadataV12;
@@ -1991,6 +2000,7 @@ declare module '@polkadot/types/types/registry' {
     ReferendumInfoFinished: ReferendumInfoFinished;
     ReferendumInfoTo239: ReferendumInfoTo239;
     ReferendumStatus: ReferendumStatus;
+    ReferendumVoteCount: ReferendumVoteCount;
     RegisteredParachainInfo: RegisteredParachainInfo;
     RegistrarIndex: RegistrarIndex;
     RegistrarInfo: RegistrarInfo;

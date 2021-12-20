@@ -8,15 +8,16 @@ import type { FeeRate } from '@cennznet/types/interfaces/cennzx';
 import type { Erc20DepositEvent, EthAddress, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
-import type { CollectionId, CollectionNameType, ListingId, MetadataBaseURI, NFTAttributeValue, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, ListingId, MarketplaceId, MetadataScheme, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { BabeEquivocationProof, NextConfigDescriptor } from '@polkadot/types/interfaces/babe';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
+import type { EthereumSignature } from '@polkadot/types/interfaces/eth';
 import type { Extrinsic, Signature } from '@polkadot/types/interfaces/extrinsics';
 import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/genericAsset';
 import type { GrandpaEquivocationProof, KeyOwnerProof } from '@polkadot/types/interfaces/grandpa';
 import type { IdentityFields, IdentityInfo, IdentityJudgement, RegistrarIndex } from '@polkadot/types/interfaces/identity';
 import type { Heartbeat } from '@polkadot/types/interfaces/imOnline';
-import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, Call, ChangesTrieConfiguration, H256, Header, KeyValue, LookupSource, Moment, OpaqueCall, Perbill, Weight } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BalanceOf, BlockNumber, Call, ChangesTrieConfiguration, H256, Header, KeyValue, LookupSource, Moment, OpaqueCall, Perbill, Permill, Weight } from '@polkadot/types/interfaces/runtime';
 import type { Period, Priority } from '@polkadot/types/interfaces/scheduler';
 import type { Keys } from '@polkadot/types/interfaces/session';
 import type { CompactAssignments, ElectionScore, ElectionSize, EraIndex, RewardDestination, ValidatorIndex, ValidatorPrefs } from '@polkadot/types/interfaces/staking';
@@ -147,6 +148,10 @@ declare module '@polkadot/api/types/submittable' {
       setEventDeadline: AugmentedSubmittable<(seconds: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u64]>;
       submitNotarization: AugmentedSubmittable<(payload: NotarizationPayload | { eventClaimId?: any; authorityIndex?: any; result?: any } | string | Uint8Array, signature: Signature | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [NotarizationPayload, Signature]>;
     };
+    ethWallet: {
+      [key: string]: SubmittableExtrinsicFunction<ApiType>;
+      call: AugmentedSubmittable<(call: Call | { callIndex?: any; args?: any } | string | Uint8Array, ethAddress: EthAddress | string | Uint8Array, signature: EthereumSignature | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Call, EthAddress, EthereumSignature]>;
+    };
     genericAsset: {
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
       /**
@@ -242,18 +247,36 @@ declare module '@polkadot/api/types/submittable' {
       /**
        * Execute a proposal transaction
        **/
-      enactProposal: AugmentedSubmittable<(proposalId: ProposalId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [ProposalId]>;
+      enactReferendum: AugmentedSubmittable<(proposalId: ProposalId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [ProposalId]>;
       /**
        * Remove a member from the council
        * This must be submitted like any other proposal
        **/
       removeCouncilMember: AugmentedSubmittable<(removeMember: AccountId | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [AccountId]>;
       /**
+       * Adjust the minimum stake required for new council members
+       **/
+      setMinimumCouncilStake: AugmentedSubmittable<(newMinimumCouncilStake: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Balance]>;
+      /**
+       * Adjust the minimum staked amount
+       * This must be submitted like any other proposal
+       **/
+      setMinimumVoterStakedAmount: AugmentedSubmittable<(newMinimumStakedAmount: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Balance]>;
+      /**
        * Adjust the proposal bond
        * This must be submitted like any other proposal
        **/
       setProposalBond: AugmentedSubmittable<(newProposalBond: Balance | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Balance]>;
+      /**
+       * Adjust the referendum veto threshold
+       * This must be submitted like any other proposal
+       **/
+      setReferendumThreshold: AugmentedSubmittable<(newReferendumThreshold: Permill | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Permill]>;
       submitProposal: AugmentedSubmittable<(call: Bytes | string | Uint8Array, justificationUri: Bytes | string | Uint8Array, enactmentDelay: BlockNumber | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, Bytes, BlockNumber]>;
+      /**
+       * Submit a veto for a referendum
+       **/
+      voteAgainstReferendum: AugmentedSubmittable<(proposalId: ProposalId | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [ProposalId]>;
       voteOnProposal: AugmentedSubmittable<(proposalId: ProposalId | AnyNumber | Uint8Array, vote: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>, [ProposalId, bool]>;
     };
     grandpa: {
@@ -716,7 +739,7 @@ declare module '@polkadot/api/types/submittable' {
        * - `reserve_price` winning bid must be over this threshold
        * - `duration` length of the auction (in blocks), uses default duration if unspecified
        **/
-      auction: AugmentedSubmittable<(tokenId: TokenId, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [TokenId, AssetId, Balance, Option<BlockNumber>]>;
+      auction: AugmentedSubmittable<(tokenId: TokenId, paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array, marketplaceId: Option<MarketplaceId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [TokenId, AssetId, Balance, Option<BlockNumber>, Option<MarketplaceId>]>;
       /**
        * Auction a bundle of tokens on the open market to the highest bidder
        * - Tokens must be from the same collection
@@ -727,7 +750,7 @@ declare module '@polkadot/api/types/submittable' {
        * - `reserve_price` winning bid must be over this threshold
        * - `duration` length of the auction (in blocks), uses default duration if unspecified
        **/
-      auctionBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<TokenId>, AssetId, Balance, Option<BlockNumber>]>;
+      auctionBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], paymentAsset: AssetId | AnyNumber | Uint8Array, reservePrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array, marketplaceId: Option<MarketplaceId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<TokenId>, AssetId, Balance, Option<BlockNumber>, Option<MarketplaceId>]>;
       /**
        * Place a bid on an open auction
        * - `amount` to bid (in the seller's requested payment asset)
@@ -765,40 +788,35 @@ declare module '@polkadot/api/types/submittable' {
        * `metadata_base_uri` - Base URI for off-chain metadata for tokens in this collection
        * `royalties_schedule` - defacto royalties plan for secondary sales, this will apply to all tokens in the collection by default.
        **/
-      createCollection: AugmentedSubmittable<(name: CollectionNameType | string | Uint8Array, metadataBaseUri: Option<MetadataBaseURI> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionNameType, Option<MetadataBaseURI>, Option<RoyaltiesSchedule>]>;
+      createCollection: AugmentedSubmittable<(name: CollectionNameType | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionNameType, Option<RoyaltiesSchedule>]>;
       /**
-       * Mint additional tokens to an existing series
-       * It will fail if the series is not semi-fungible
+       * Mint tokens for an existing series
        *
        * `quantity` - how many tokens to mint
-       * `owner` - the token owner, defaults to the caller
+       * `owner` - the token owner, defaults to the caller if unspecified
        * Caller must be the collection owner
        * -----------
        * Weight is O(N) where N is `quantity`
        **/
       mintAdditional: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, seriesId: SeriesId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionId, SeriesId, TokenCount, Option<AccountId>]>;
       /**
-       * Mint a series of tokens distinguishable only by a serial number (SFT)
-       * Series can be issued additional tokens with `mint_additional`
+       * Create a new series
+       * Additional tokens can be minted via `mint_additional`
        *
-       * `quantity` - how many tokens to mint
+       * `quantity` - number of tokens to mint now
        * `owner` - the token owner, defaults to the caller
-       * `attributes` - all tokens in series will have these values
-       * `metadata_path` - URI path to token offchain metadata relative to the collection base URI
+       * `metadata_scheme` - The offchain metadata referencing scheme for tokens in this series
        * Caller must be the collection owner
-       * -----------
-       * Performs O(N) writes where N is `quantity`
        **/
-      mintSeries: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionId, TokenCount, Option<AccountId>, Vec<NFTAttributeValue>, Option<Bytes>, Option<RoyaltiesSchedule>]>;
+      mintSeries: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, quantity: TokenCount | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, metadataScheme: MetadataScheme | { Https: any } | { IpfsDir: any } | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionId, TokenCount, Option<AccountId>, MetadataScheme, Option<RoyaltiesSchedule>]>;
       /**
-       * Mint a single token (NFT)
+       * Flag an account as a marketplace
        *
-       * `owner` - the token owner, defaults to the caller
-       * `attributes` - initial values according to the NFT collection/schema
-       * `metadata_path` - URI path to the offchain metadata relative to the collection base URI
-       * Caller must be the collection owner
+       * `marketplace_account` - if specified, this account will be registered
+       * `entitlement` - Permill, percentage of sales to go to the marketplace
+       * If no marketplace is specified the caller will be registered
        **/
-      mintUnique: AugmentedSubmittable<(collectionId: CollectionId | AnyNumber | Uint8Array, owner: Option<AccountId> | null | object | string | Uint8Array, attributes: Vec<NFTAttributeValue> | (NFTAttributeValue | { i32: any } | { u8: any } | { u16: any } | { u32: any } | { u64: any } | { u128: any } | { Bytes32: any } | { Bytes: any } | { Text: any } | { Hash: any } | { Timestamp: any } | { Url: any } | string | Uint8Array)[], metadataPath: Option<Bytes> | null | object | string | Uint8Array, royaltiesSchedule: Option<RoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [CollectionId, Option<AccountId>, Vec<NFTAttributeValue>, Option<Bytes>, Option<RoyaltiesSchedule>]>;
+      registerMarketplace: AugmentedSubmittable<(marketplaceAccount: Option<AccountId> | null | object | string | Uint8Array, entitlement: Permill | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [Option<AccountId>, Permill]>;
       /**
        * Sell a single token at a fixed price
        *
@@ -806,9 +824,10 @@ declare module '@polkadot/api/types/submittable' {
        * `asset_id` fungible asset Id to receive as payment for the NFT
        * `fixed_price` ask price
        * `duration` listing duration time in blocks from now
+       * `marketplace` optionally, the marketplace that the NFT is being sold on
        * Caller must be the token owner
        **/
-      sell: AugmentedSubmittable<(tokenId: TokenId, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [TokenId, Option<AccountId>, AssetId, Balance, Option<BlockNumber>]>;
+      sell: AugmentedSubmittable<(tokenId: TokenId, buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array, marketplaceId: Option<MarketplaceId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [TokenId, Option<AccountId>, AssetId, Balance, Option<BlockNumber>, Option<MarketplaceId>]>;
       /**
        * Sell a bundle of tokens at a fixed price
        * - Tokens must be from the same collection
@@ -820,7 +839,7 @@ declare module '@polkadot/api/types/submittable' {
        * `duration` listing duration time in blocks from now
        * Caller must be the token owner
        **/
-      sellBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<TokenId>, Option<AccountId>, AssetId, Balance, Option<BlockNumber>]>;
+      sellBundle: AugmentedSubmittable<(tokens: Vec<TokenId> | (TokenId)[], buyer: Option<AccountId> | null | object | string | Uint8Array, paymentAsset: AssetId | AnyNumber | Uint8Array, fixedPrice: Balance | AnyNumber | Uint8Array, duration: Option<BlockNumber> | null | object | string | Uint8Array, marketplaceId: Option<MarketplaceId> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Vec<TokenId>, Option<AccountId>, AssetId, Balance, Option<BlockNumber>, Option<MarketplaceId>]>;
       /**
        * Set the owner of a collection
        * Caller must be the current collection owner

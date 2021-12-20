@@ -61,6 +61,25 @@ declare module '@polkadot/api/types/errors' {
       MinimumTradeAssetRequirementNotMet: AugmentedError<ApiType>;
       Overflow: AugmentedError<ApiType>;
     };
+    ethWallet: {
+      [key: string]: AugmentedError<ApiType>;
+      /**
+       * Can't pay fees
+       **/
+      CantPay: AugmentedError<ApiType>;
+      /**
+       * Signature decode fails.
+       **/
+      DecodeFailure: AugmentedError<ApiType>;
+      /**
+       * Nonce invalid
+       **/
+      InvalidNonce: AugmentedError<ApiType>;
+      /**
+       * Signature & account mismatched.
+       **/
+      InvalidSignature: AugmentedError<ApiType>;
+    };
     genericAsset: {
       [key: string]: AugmentedError<ApiType>;
       /**
@@ -224,6 +243,10 @@ declare module '@polkadot/api/types/errors' {
        **/
       StickyJudgement: AugmentedError<ApiType>;
       /**
+       * Sub-accounts not enabled
+       **/
+      SubNotEnabled: AugmentedError<ApiType>;
+      /**
        * Too many additional fields.
        **/
       TooManyFields: AugmentedError<ApiType>;
@@ -309,10 +332,6 @@ declare module '@polkadot/api/types/errors' {
     nft: {
       [key: string]: AugmentedError<ApiType>;
       /**
-       * Cannot mint additional tokens in a unique issue series
-       **/
-      AddToUniqueIssue: AugmentedError<ApiType>;
-      /**
        * Auction bid was lower than reserve or current highest bid
        **/
       BidTooLow: AugmentedError<ApiType>;
@@ -329,7 +348,11 @@ declare module '@polkadot/api/types/errors' {
        **/
       InternalPayment: AugmentedError<ApiType>;
       /**
-       * Given attirbute value is larger than the configured max.
+       * The account_id hasn't been registered as a marketplace
+       **/
+      MarketplaceNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Given attribute value is larger than the configured max.
        **/
       MaxAttributeLength: AugmentedError<ApiType>;
       /**

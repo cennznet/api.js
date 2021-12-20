@@ -50,10 +50,10 @@ export default {
             }
         },
         'ListingId': 'u128',
-        'MetadataBaseURI': {
+        'MetadataScheme': {
             "_enum": {
-                "Ipfs": null,
                 "Https": "Vec<u8>",
+                "IpfsDir": "Vec<u8>",
             }
         },
         'NFTAttributeValue': {
@@ -79,10 +79,15 @@ export default {
         'SeriesId': 'u32',
         'SerialNumber': 'u32',
         'TokenCount': 'u32',
+        'MarketplaceId': 'u32',
         'TokenLockReason': {
           '_enum': {
             'ListingId': 'ListingId'
           }
-        }
+        },
+      'Marketplace': {
+          'account': 'AccountId',
+          'entitlement': 'Permill'
+      }
     }
 }

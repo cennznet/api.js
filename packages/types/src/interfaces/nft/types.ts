@@ -50,11 +50,21 @@ export interface Listing extends Enum {
 /** @name ListingId */
 export interface ListingId extends u128 {}
 
-/** @name MetadataBaseURI */
-export interface MetadataBaseURI extends Enum {
-  readonly isIpfs: boolean;
+/** @name Marketplace */
+export interface Marketplace extends Struct {
+  readonly account: AccountId;
+  readonly entitlement: Permill;
+}
+
+/** @name MarketplaceId */
+export interface MarketplaceId extends u32 {}
+
+/** @name MetadataScheme */
+export interface MetadataScheme extends Enum {
   readonly isHttps: boolean;
   readonly asHttps: Bytes;
+  readonly isIpfsDir: boolean;
+  readonly asIpfsDir: Bytes;
 }
 
 /** @name NFTAttributeValue */

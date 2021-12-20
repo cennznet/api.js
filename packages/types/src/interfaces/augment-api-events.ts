@@ -6,14 +6,14 @@ import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfa
 import type { EthAddress, EventClaimId, EventProofId } from '@cennznet/types/interfaces/ethBridge';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalId } from '@cennznet/types/interfaces/governance';
-import type { CollectionId, CollectionNameType, ListingId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionNameType, ListingId, MarketplaceId, Reason, SerialNumber, SeriesId, TokenCount, TokenId } from '@cennznet/types/interfaces/nft';
 import type { ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/genericAsset';
 import type { AuthorityList } from '@polkadot/types/interfaces/grandpa';
 import type { RegistrarIndex } from '@polkadot/types/interfaces/identity';
 import type { Kind, OpaqueTimeSlot } from '@polkadot/types/interfaces/offences';
-import type { AccountId, AssetId, Balance, BlockNumber, CallHash, Hash, Perbill } from '@polkadot/types/interfaces/runtime';
+import type { AccountId, AssetId, Balance, BlockNumber, CallHash, Hash, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
 import type { TaskAddress } from '@polkadot/types/interfaces/scheduler';
 import type { IdentificationTuple, SessionIndex } from '@polkadot/types/interfaces/session';
 import type { ElectionCompute } from '@polkadot/types/interfaces/staking';
@@ -78,10 +78,10 @@ declare module '@polkadot/api/types/events' {
     ethBridge: {
       [key: string]: AugmentedEvent<ApiType>;
       /**
-       * A notary (validator) set change is in motion
+       * A notary (validator) set change is in motion (event_id, new_validator_set_id)
        * A proof for the change will be generated with the given `event_id`
        **/
-      AuthoritySetChange: AugmentedEvent<ApiType, [EventProofId]>;
+      AuthoritySetChange: AugmentedEvent<ApiType, [EventProofId, u64]>;
       /**
        * Verifying an event failed
        **/
@@ -90,6 +90,13 @@ declare module '@polkadot/api/types/events' {
        * Verifying an event succeeded
        **/
       Verified: AugmentedEvent<ApiType, [EventClaimId]>;
+    };
+    ethWallet: {
+      [key: string]: AugmentedEvent<ApiType>;
+      /**
+       * A call just executed. (Ethereum Address, CENNZnet Address, Result)
+       **/
+      Execute: AugmentedEvent<ApiType, [EthAddress, AccountId, DispatchResult]>;
     };
     genericAsset: {
       [key: string]: AugmentedEvent<ApiType>;
@@ -127,11 +134,23 @@ declare module '@polkadot/api/types/events' {
       /**
        * A proposal was enacted, success
        **/
-      EnactProposal: AugmentedEvent<ApiType, [ProposalId, bool]>;
+      EnactReferendum: AugmentedEvent<ApiType, [ProposalId, bool]>;
       /**
        * A proposal was vetoed by the council
        **/
       ProposalVeto: AugmentedEvent<ApiType, [ProposalId]>;
+      /**
+       * A referendum has been approved and is awaiting enactment
+       **/
+      ReferendumApproved: AugmentedEvent<ApiType, [ProposalId]>;
+      /**
+       * A proposal was approved by council and a referendum has been created
+       **/
+      ReferendumCreated: AugmentedEvent<ApiType, [ProposalId]>;
+      /**
+       * A referendum was vetoed by vote
+       **/
+      ReferendumVeto: AugmentedEvent<ApiType, [ProposalId]>;
       /**
        * A proposal was submitted
        **/
@@ -239,9 +258,9 @@ declare module '@polkadot/api/types/events' {
        **/
       AuctionClosed: AugmentedEvent<ApiType, [CollectionId, ListingId, Reason]>;
       /**
-       * An auction has opened (collection, listing)
+       * An auction has opened (collection, listing, marketplace_id)
        **/
-      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
+      AuctionOpen: AugmentedEvent<ApiType, [CollectionId, ListingId, Option<MarketplaceId>]>;
       /**
        * An auction has sold (collection, listing, payment asset, bid, new owner)
        **/
@@ -255,10 +274,6 @@ declare module '@polkadot/api/types/events' {
        **/
       Burn: AugmentedEvent<ApiType, [CollectionId, SeriesId, Vec<SerialNumber>]>;
       /**
-       * Additional tokens were added to a series (collection, series id, quantity, owner)
-       **/
-      CreateAdditional: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, AccountId]>;
-      /**
        * A new token collection was created (collection, name, owner)
        **/
       CreateCollection: AugmentedEvent<ApiType, [CollectionId, CollectionNameType, AccountId]>;
@@ -267,9 +282,9 @@ declare module '@polkadot/api/types/events' {
        **/
       CreateSeries: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, AccountId]>;
       /**
-       * A unique token was created (collection, series id, serial number, owner)
+       * Token(s) were created (collection, series id, quantity, owner)
        **/
-      CreateToken: AugmentedEvent<ApiType, [CollectionId, TokenId, AccountId]>;
+      CreateTokens: AugmentedEvent<ApiType, [CollectionId, SeriesId, TokenCount, AccountId]>;
       /**
        * A fixed price sale has closed without selling (collection, listing)
        **/
@@ -279,9 +294,13 @@ declare module '@polkadot/api/types/events' {
        **/
       FixedPriceSaleComplete: AugmentedEvent<ApiType, [CollectionId, ListingId, AccountId]>;
       /**
-       * A fixed price sale has been listed (collection, listing)
+       * A fixed price sale has been listed (collection, listing, marketplace_id)
        **/
-      FixedPriceSaleListed: AugmentedEvent<ApiType, [CollectionId, ListingId]>;
+      FixedPriceSaleListed: AugmentedEvent<ApiType, [CollectionId, ListingId, Option<MarketplaceId>]>;
+      /**
+       * An account has been registered as a marketplace (account, entitlement, marketplace_id)
+       **/
+      RegisteredMarketplace: AugmentedEvent<ApiType, [AccountId, Permill, MarketplaceId]>;
       /**
        * Token(s) were transferred (previous owner, token Ids, new owner)
        **/

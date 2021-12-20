@@ -13,10 +13,12 @@ export default {
     ProposalStatusInfo: {
       _enum: {
         'Deliberation': null,
+        'ReferendumDeliberation': null,
         'ApprovedWaitingEnactment': null,
         'ApprovedEnacted': bool,
         'ApprovedEnactmentCancelled': null,
-        'Disapproved': null
+        'Disapproved': null,
+        'ReferendumVetoed': null
       }
     },
     ProposalVoteInfo:{
@@ -31,6 +33,9 @@ export default {
       "sponsor": "AccountId",
       "justificationUri": "Vec<u8>",
       "enactmentDelay": 'BlockNumber'
+    },
+    ReferendumVoteCount: {
+      "vote": "u8"
     }
   },
 };
