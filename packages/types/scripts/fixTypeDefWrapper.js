@@ -2,31 +2,7 @@
 // Copyright 2017-2021 @polkadot/typegen authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable sort-keys */
-
-// let main;
-//
-// try {
-//   main = require('../fixTypeDef.cjs').main;
-// } catch (error) {
-//   process.env.JEST_WORKER_ID = '123';
-//
-//   require('@babel/register')({
-//     extensions: ['.js', '.ts'],
-//     plugins: [
-//       ['module-resolver', {
-//         alias: {
-//           '^@cennznet/api(.*)': './packages/api/src\\1',
-//           '^@cennznet/types(.*)': './packages/types/src\\1',
-//           '^@cennznet/util(.*)': './packages/util/src\\1'
-//         }
-//       }]
-//     ]
-//   });
-//
-//   main = require('./fixTypeDef.ts').main;
-// }
-
+/// TODO - once https://github.com/cennznet/cennznet/issues/542 is fixed, we can delete this file
 const fs = require('fs')
 
 function main () {

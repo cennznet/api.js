@@ -318,5 +318,20 @@ describe('Eth bridge test', () => {
       done();
     })
 
+
+    it(   'For rata chain get series metadata URI at collection id 29', async done => {
+      const provider = 'wss://kong2.centrality.me/public/rata/ws';
+
+      const apiRata: Api = await Api.create({provider});
+
+      const metadataPath = (await api.query.nft.seriesMetadataURI(
+        29,
+        0
+      )).toHuman();
+      expect(metadataPath).toEqual("ipfs://QmWGYnnapNUT9voEx8gyZBXKsSgmWWQXdkCqRrucQ8qdmx");
+      await apiRata.disconnect();
+      done();
+    })
+
   })
 });
