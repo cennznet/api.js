@@ -1,4 +1,6 @@
+import {EthEventProof} from "@cennznet/api/derives/ethBridge/types";
 import { awaitDepositClaim, ClaimDeposited, extractEthereumSignature } from "@cennznet/api/util/helper";
+import {AssetId, Balance, EventClaimId} from "@cennznet/types";
 import { encodeAddress } from "@polkadot/util-crypto";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -7,7 +9,7 @@ import initApiPromise from '../../../../jest/initApiPromise';
 import { Api } from "@cennznet/api";
 
 describe('Eth bridge test', () => {
-  let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
+  let api: Api, alice, aliceStash, bob, testTokenId1, testTokenId2;
 
   beforeAll(async done => {
     await cryptoWaitReady();
@@ -112,7 +114,7 @@ describe('Eth bridge test', () => {
           console.log('\t', `: ${section}.${method}`, data.toString());
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
-            expect(claimId.toNumber() as number).toBeGreaterThanOrEqual(0);
+            expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
             expect(claimer.toString()).toEqual(alice.address);
             done();
           }
@@ -137,7 +139,7 @@ describe('Eth bridge test', () => {
           console.log('\t', `: ${section}.${method}`, data.toString());
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
-            expect(claimId.toNumber() as number).toBeGreaterThanOrEqual(0);
+            expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
             expect(claimer.toString()).toEqual(alice.address);
             done();
           }
@@ -242,9 +244,9 @@ describe('Eth bridge test', () => {
             console.log('\t', `: ${section}.${method}`, data.toString());
             if (section === 'erc20Peg' && method == 'Erc20Withdraw') {
               const [withdrawalId, assetId, amountt, beneficiary] = data;
-              expect(withdrawalId.toNumber() as number).toBeGreaterThanOrEqual(0);
+              expect((withdrawalId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
               // expect(assetId.toNumber()).toEqual(testTokenId2.toNumber());
-              expect(amountt.toNumber()).toEqual(amount);
+              expect((amountt as Balance).toNumber()).toEqual(amount);
               expect(beneficiary.toString()).toEqual(ethBeneficiary);
               done();
             }
@@ -271,9 +273,9 @@ describe('Eth bridge test', () => {
                 }
               });
               const [withdrawalId, assetId, amountt, beneficiary] = data;
-              expect(withdrawalId.toNumber() as number).toBeGreaterThanOrEqual(0);
-              expect(assetId.toNumber()).toEqual(testTokenId2.toNumber());
-              expect(amountt.toNumber()).toEqual(amount);
+              expect((withdrawalId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
+              expect((assetId as AssetId).toNumber()).toEqual(testTokenId2.toNumber());
+              expect((amountt as Balance).toNumber()).toEqual(amount);
               expect(beneficiary.toString()).toEqual(ethBeneficiary);
             }
           }
@@ -286,10 +288,10 @@ describe('Eth bridge test', () => {
       // api = await Api.create({network: 'rata'});
       // const versionedEventProof = (await api.rpc.ethy.getEventProof('0')).toJSON();
       // expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
-
-      const eventProof = await api.derive.ethBridge.eventProof('1');
+      const eventId = api.registry.createType('EthyEventId',1);
+      const eventProof = await api.derive.ethBridge.eventProof(eventId);
       console.log('Proof::',eventProof);
-      expect(eventProof.eventId).toEqual('1');
+      expect((eventProof as unknown as EthEventProof).eventId).toEqual('1');
       done();
     })
 
