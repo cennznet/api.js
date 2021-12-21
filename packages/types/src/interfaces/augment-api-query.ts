@@ -184,7 +184,7 @@ declare module '@polkadot/api/types/storage' {
       /**
        * Whether CENNZ deposits are active
        **/
-      cennzDepositsActive: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
+      cENNZDepositsActive: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * The peg contract address on Ethereum
        **/
@@ -462,7 +462,7 @@ declare module '@polkadot/api/types/storage' {
       /**
        * Map from collection to a base metadata URI for its token's offchain attributes
        **/
-      collectionMetadataUri: AugmentedQuery<ApiType, (arg: CollectionId | AnyNumber | Uint8Array) => Observable<Option<MetadataBaseURI>>, [CollectionId]> & QueryableStorageEntry<ApiType, [CollectionId]>;
+      collectionMetadataURI: AugmentedQuery<ApiType, (arg: CollectionId | AnyNumber | Uint8Array) => Observable<Option<MetadataBaseURI>>, [CollectionId]> & QueryableStorageEntry<ApiType, [CollectionId]>;
       /**
        * Map from collection to its human friendly name
        **/
@@ -523,7 +523,7 @@ declare module '@polkadot/api/types/storage' {
       /**
        * Map from a token series to its metadata URI path. This should be joined wih the collection base path
        **/
-      seriesMetadataUri: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<Option<Bytes>>, [CollectionId, SeriesId]> & QueryableStorageEntry<ApiType, [CollectionId, SeriesId]>;
+      seriesMetadataURI: AugmentedQueryDoubleMap<ApiType, (key1: CollectionId | AnyNumber | Uint8Array, key2: SeriesId | AnyNumber | Uint8Array) => Observable<Option<Bytes>>, [CollectionId, SeriesId]> & QueryableStorageEntry<ApiType, [CollectionId, SeriesId]>;
       /**
        * Map from (collection, series) to configured royalties schedule
        **/

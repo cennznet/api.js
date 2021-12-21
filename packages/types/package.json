@@ -16,9 +16,10 @@
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1",
-        "build": "yarn generate:defs && yarn generate:meta",
+        "build": "yarn generate:defs && yarn generate:meta && yarn fix:metaTypes",
         "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @cennznet/types/interfaces --input ./src/interfaces",
-        "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @cennznet/types/interfaces --endpoint ./cennznet.json --output ./src/interfaces"
+        "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @cennznet/types/interfaces --endpoint ./cennznet.json --output ./src/interfaces",
+        "fix:metaTypes": "./scripts/fixTypeDefWrapper.js"
     },
     "dependencies": {
         "@polkadot/keyring": "5.9.2",
