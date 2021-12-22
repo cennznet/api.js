@@ -8,6 +8,7 @@ import type { Details, Erc20DepositEvent, EthAddress, EthHash, EventClaimId, Eve
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
+import type { IdentityInfo } from '@cennznet/types/interfaces/identity';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, Marketplace, MarketplaceId, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, MessageId, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, Response, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
@@ -34,7 +35,6 @@ import type { CreatedBlock, ImportedAux } from '@polkadot/types/interfaces/engin
 import type { EthAccount, EthBlock, EthBloom, EthCallRequest, EthFilter, EthFilterAddress, EthFilterTopic, EthFilterTopicEntry, EthFilterTopicInner, EthHeader, EthLog, EthReceipt, EthRichBlock, EthRichHeader, EthStorageProof, EthSubKind, EthSubParams, EthSubResult, EthSyncInfo, EthSyncStatus, EthTransaction, EthTransactionAction, EthTransactionCondition, EthTransactionRequest, EthTransactionStatus, EthWork, EthereumAccountId, EthereumLookupSource, EthereumSignature } from '@polkadot/types/interfaces/eth';
 import type { EvmAccount, EvmLog, EvmVicinity, ExitError, ExitFatal, ExitReason, ExitRevert, ExitSucceed } from '@polkadot/types/interfaces/evm';
 import type { AnySignature, EcdsaSignature, Ed25519Signature, Extrinsic, ExtrinsicEra, ExtrinsicPayload, ExtrinsicPayloadUnknown, ExtrinsicPayloadV4, ExtrinsicSignature, ExtrinsicSignatureV4, ExtrinsicUnknown, ExtrinsicV4, ImmortalEra, MortalEra, MultiSignature, Signature, SignerPayload, Sr25519Signature } from '@polkadot/types/interfaces/extrinsics';
-import type { IdentityFields, IdentityInfo, IdentityInfoAdditional, IdentityJudgement, RegistrarIndex, RegistrarInfo, Registration, RegistrationJudgement } from '@polkadot/types/interfaces/identity';
 import type { AuthIndex, AuthoritySignature, Heartbeat, HeartbeatTo244, OpaqueMultiaddr, OpaqueNetworkState, OpaquePeerId } from '@polkadot/types/interfaces/imOnline';
 import type { CallIndex, LotteryConfig } from '@polkadot/types/interfaces/lottery';
 import type { DoubleMapTypeLatest, DoubleMapTypeV10, DoubleMapTypeV11, DoubleMapTypeV12, DoubleMapTypeV9, ErrorMetadataLatest, ErrorMetadataV10, ErrorMetadataV11, ErrorMetadataV12, ErrorMetadataV9, EventMetadataLatest, EventMetadataV10, EventMetadataV11, EventMetadataV12, EventMetadataV9, ExtrinsicMetadataLatest, ExtrinsicMetadataV11, ExtrinsicMetadataV12, FunctionArgumentMetadataLatest, FunctionArgumentMetadataV10, FunctionArgumentMetadataV11, FunctionArgumentMetadataV12, FunctionArgumentMetadataV9, FunctionMetadataLatest, FunctionMetadataV10, FunctionMetadataV11, FunctionMetadataV12, FunctionMetadataV9, MapTypeLatest, MapTypeV10, MapTypeV11, MapTypeV12, MapTypeV9, MetadataAll, MetadataLatest, MetadataV10, MetadataV11, MetadataV12, MetadataV9, ModuleConstantMetadataLatest, ModuleConstantMetadataV10, ModuleConstantMetadataV11, ModuleConstantMetadataV12, ModuleConstantMetadataV9, ModuleMetadataLatest, ModuleMetadataV10, ModuleMetadataV11, ModuleMetadataV12, ModuleMetadataV9, StorageEntryMetadataLatest, StorageEntryMetadataV10, StorageEntryMetadataV11, StorageEntryMetadataV12, StorageEntryMetadataV9, StorageEntryModifierLatest, StorageEntryModifierV10, StorageEntryModifierV11, StorageEntryModifierV12, StorageEntryModifierV9, StorageEntryTypeLatest, StorageEntryTypeV10, StorageEntryTypeV11, StorageEntryTypeV12, StorageEntryTypeV9, StorageHasher, StorageHasherV10, StorageHasherV11, StorageHasherV12, StorageHasherV9, StorageMetadataLatest, StorageMetadataV10, StorageMetadataV11, StorageMetadataV12, StorageMetadataV9 } from '@polkadot/types/interfaces/metadata';
@@ -112,7 +112,6 @@ declare module '@polkadot/types/types/registry' {
     'Compact<ProposalId>': Compact<ProposalId>;
     'Compact<ProposalIndex>': Compact<ProposalIndex>;
     'Compact<ReferendumIndex>': Compact<ReferendumIndex>;
-    'Compact<RegistrarIndex>': Compact<RegistrarIndex>;
     'Compact<RelayChainBlockNumber>': Compact<RelayChainBlockNumber>;
     'Compact<RewardBalance>': Compact<RewardBalance>;
     'Compact<RewardBalanceOf>': Compact<RewardBalanceOf>;
@@ -452,10 +451,7 @@ declare module '@polkadot/types/types/registry' {
     'Option<i8>': Option<i8>;
     'Option<I8>': Option<I8>;
     'Option<IdentificationTuple>': Option<IdentificationTuple>;
-    'Option<IdentityFields>': Option<IdentityFields>;
     'Option<IdentityInfo>': Option<IdentityInfo>;
-    'Option<IdentityInfoAdditional>': Option<IdentityInfoAdditional>;
-    'Option<IdentityJudgement>': Option<IdentityJudgement>;
     'Option<ImmortalEra>': Option<ImmortalEra>;
     'Option<ImportedAux>': Option<ImportedAux>;
     'Option<InboundDownwardMessage>': Option<InboundDownwardMessage>;
@@ -640,10 +636,6 @@ declare module '@polkadot/types/types/registry' {
     'Option<ReferendumStatus>': Option<ReferendumStatus>;
     'Option<ReferendumVoteCount>': Option<ReferendumVoteCount>;
     'Option<RegisteredParachainInfo>': Option<RegisteredParachainInfo>;
-    'Option<RegistrarIndex>': Option<RegistrarIndex>;
-    'Option<RegistrarInfo>': Option<RegistrarInfo>;
-    'Option<Registration>': Option<Registration>;
-    'Option<RegistrationJudgement>': Option<RegistrationJudgement>;
     'Option<RelayChainBlockNumber>': Option<RelayChainBlockNumber>;
     'Option<RelayedFrom>': Option<RelayedFrom>;
     'Option<RelayTo>': Option<RelayTo>;
@@ -1133,10 +1125,7 @@ declare module '@polkadot/types/types/registry' {
     'Vec<i8>': Vec<i8>;
     'Vec<I8>': Vec<I8>;
     'Vec<IdentificationTuple>': Vec<IdentificationTuple>;
-    'Vec<IdentityFields>': Vec<IdentityFields>;
     'Vec<IdentityInfo>': Vec<IdentityInfo>;
-    'Vec<IdentityInfoAdditional>': Vec<IdentityInfoAdditional>;
-    'Vec<IdentityJudgement>': Vec<IdentityJudgement>;
     'Vec<ImmortalEra>': Vec<ImmortalEra>;
     'Vec<ImportedAux>': Vec<ImportedAux>;
     'Vec<InboundDownwardMessage>': Vec<InboundDownwardMessage>;
@@ -1321,10 +1310,6 @@ declare module '@polkadot/types/types/registry' {
     'Vec<ReferendumStatus>': Vec<ReferendumStatus>;
     'Vec<ReferendumVoteCount>': Vec<ReferendumVoteCount>;
     'Vec<RegisteredParachainInfo>': Vec<RegisteredParachainInfo>;
-    'Vec<RegistrarIndex>': Vec<RegistrarIndex>;
-    'Vec<RegistrarInfo>': Vec<RegistrarInfo>;
-    'Vec<Registration>': Vec<Registration>;
-    'Vec<RegistrationJudgement>': Vec<RegistrationJudgement>;
     'Vec<RelayChainBlockNumber>': Vec<RelayChainBlockNumber>;
     'Vec<RelayedFrom>': Vec<RelayedFrom>;
     'Vec<RelayTo>': Vec<RelayTo>;
@@ -1814,10 +1799,7 @@ declare module '@polkadot/types/types/registry' {
     i8: i8;
     I8: I8;
     IdentificationTuple: IdentificationTuple;
-    IdentityFields: IdentityFields;
     IdentityInfo: IdentityInfo;
-    IdentityInfoAdditional: IdentityInfoAdditional;
-    IdentityJudgement: IdentityJudgement;
     ImmortalEra: ImmortalEra;
     ImportedAux: ImportedAux;
     InboundDownwardMessage: InboundDownwardMessage;
@@ -2002,10 +1984,6 @@ declare module '@polkadot/types/types/registry' {
     ReferendumStatus: ReferendumStatus;
     ReferendumVoteCount: ReferendumVoteCount;
     RegisteredParachainInfo: RegisteredParachainInfo;
-    RegistrarIndex: RegistrarIndex;
-    RegistrarInfo: RegistrarInfo;
-    Registration: Registration;
-    RegistrationJudgement: RegistrationJudgement;
     RelayChainBlockNumber: RelayChainBlockNumber;
     RelayedFrom: RelayedFrom;
     RelayTo: RelayTo;
