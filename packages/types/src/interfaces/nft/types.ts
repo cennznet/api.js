@@ -2,14 +2,15 @@
 /* eslint-disable */
 
 import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
 import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
+import type { ITuple } from '@polkadot/types/types';
 
 /** @name AuctionClosureReason */
 export interface AuctionClosureReason extends Enum {
   readonly isExpiredNoBids: boolean;
   readonly isSettlementFailed: boolean;
   readonly isVendorCancelled: boolean;
+  readonly type: 'ExpiredNoBids' | 'SettlementFailed' | 'VendorCancelled';
 }
 
 /** @name AuctionListing */
@@ -45,16 +46,18 @@ export interface Listing extends Enum {
   readonly asFixedPrice: FixedPriceListing;
   readonly isAuction: boolean;
   readonly asAuction: AuctionListing;
+  readonly type: 'FixedPrice' | 'Auction';
 }
 
 /** @name ListingId */
 export interface ListingId extends u128 {}
 
 /** @name MetadataBaseURI */
-export interface MetadataBaseURI extends Enum {
+export interface MetadataScheme extends Enum {
   readonly isIpfs: boolean;
   readonly isHttps: boolean;
   readonly asHttps: Bytes;
+  readonly type: 'Ipfs' | 'Https';
 }
 
 /** @name NFTAttributeValue */
@@ -83,6 +86,7 @@ export interface NFTAttributeValue extends Enum {
   readonly asTimestamp: u64;
   readonly isUrl: boolean;
   readonly asUrl: Text;
+  readonly type: 'I32' | 'U8' | 'U16' | 'U32' | 'U64' | 'U128' | 'Bytes32' | 'Bytes' | 'Text' | 'Hash' | 'Timestamp' | 'Url';
 }
 
 /** @name Reason */
@@ -104,5 +108,11 @@ export interface TokenCount extends u32 {}
 
 /** @name TokenId */
 export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
+
+/** @name TokenLockReason */
+export interface TokenLockReason extends Enum {
+  readonly isListingId: boolean;
+  readonly asListingId: ListingId;
+}
 
 export type PHANTOM_NFT = 'nft';

@@ -26,8 +26,9 @@
     "run:signer": "node ./packages/signer-cli/src/index.cjs"
   },
   "devDependencies": {
-    "@polkadot/dev": "0.62.12",
+    "@polkadot/dev": "0.64.18",
     "@polkadot/ts": "0.3.64",
+    "@babel/helper-regex": "^7.10.5",
     "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",

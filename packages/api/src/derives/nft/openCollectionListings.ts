@@ -66,7 +66,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                           ].toString()
                         );
                       })[0];
-                      const listingId = new UInt(api.registry, parseInt(listingIdStr as string));
+                      const listingId = api.registry.createType('ListingId', listingIdStr);
                       tokenInfo.listingId = listingId;
                       return tokenInfo;
                     });

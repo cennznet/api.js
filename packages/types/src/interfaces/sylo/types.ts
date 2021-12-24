@@ -2,8 +2,8 @@
 /* eslint-disable */
 
 import type { Bytes, Enum, Struct, Text, Vec, u32 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
 import type { AccountId, H256 } from '@polkadot/types/interfaces/runtime';
+import type { ITuple } from '@polkadot/types/types';
 
 /** @name AcceptPayload */
 export interface AcceptPayload extends Struct {
@@ -44,6 +44,7 @@ export interface Member extends Struct {
 export interface MemberRoles extends Enum {
   readonly isAdminRole: boolean;
   readonly isMemberRole: boolean;
+  readonly type: 'AdminRole' | 'MemberRole';
 }
 
 /** @name Message */
@@ -71,6 +72,7 @@ export interface Response extends Enum {
   readonly asDeviceIdResponse: DeviceIdResponse;
   readonly isPreKeyBundlesResponse: boolean;
   readonly asPreKeyBundlesResponse: PreKeyBundlesResponse;
+  readonly type: 'DeviceIdResponse' | 'PreKeyBundlesResponse';
 }
 
 /** @name SyloMessageId */

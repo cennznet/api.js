@@ -17,6 +17,7 @@ import { Bytes, Compact, Option, Raw, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
 import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, InterfaceTypes, Registry } from '@polkadot/types/types';
+import {HexString} from "@polkadot/util/types";
 import { ChargeTransactionPayment, doughnut, Index } from '../../types';
 
 export interface ExtrinsicPayloadValueV0 {
@@ -68,7 +69,7 @@ export const FullPayloadV0: Record<string, keyof InterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV0 extends Struct {
-  constructor(registry: Registry, value?: ExtrinsicPayloadValueV0 | Uint8Array | string) {
+  constructor(registry: Registry, value?: ExtrinsicPayloadValueV0 | Uint8Array | HexString) {
     super(registry, FullPayloadV0, value);
   }
 

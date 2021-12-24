@@ -52,7 +52,7 @@ export function account(
                     ? (queryCurrentNonce(api, accountId) as Observable<Index>)
                     : (queryOldNonce(api, accountId) as Observable<Index>),
                 ])
-              : of([api.registry.createType('AccountId'), api.registry.createType('Index')])
+              : of([api.registry.createType('AccountId'), api.registry.createType('u64')])
         ),
         map((result): DeriveBalancesAccount => calcBalances(api, result))
       )

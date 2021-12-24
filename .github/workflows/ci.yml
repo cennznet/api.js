@@ -18,7 +18,7 @@ jobs:
         access_token: ${{ github.token }}
     - uses: actions/setup-node@v1
       with:
-        node-version: '15.3'
+        node-version: '16'
     - name: cache node modules
       id: cache
       uses: actions/cache@v2
@@ -59,7 +59,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.19'
+        node-version: '16'
     - name: cache node modules
       id: cache
       uses: actions/cache@v2
@@ -90,7 +90,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '15.3'
+        node-version: '16'
     - name: start latest test node
       run: |
         docker run --pull=always --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns

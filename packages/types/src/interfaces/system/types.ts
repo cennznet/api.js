@@ -11,6 +11,7 @@ export interface Address extends AccountId {}
 export interface DispatchClassTo36 extends Enum {
   readonly isNormal: boolean;
   readonly isOperational: boolean;
+  readonly type: 'Normal' | 'Operational';
 }
 
 /** @name DispatchInfoTo36 */
@@ -31,6 +32,7 @@ export interface PhaseTo36 extends Enum {
   readonly isApplyExtrinsic: boolean;
   readonly asApplyExtrinsic: u32;
   readonly isFinalization: boolean;
+  readonly type: 'ApplyExtrinsic' | 'Finalization';
 }
 
 /** @name WeightTo36 */

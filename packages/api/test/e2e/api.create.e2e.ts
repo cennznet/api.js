@@ -15,7 +15,7 @@
 import { Api } from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';
-import { Metadata } from '@polkadot/metadata';
+import { Metadata } from '@polkadot/types/metadata';
 import {SubmittableResult} from "@polkadot/api";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -109,7 +109,7 @@ describe('e2e api create', () => {
   });
 
   it('Should connect to all available networks on cennznet via network name', async done => {
-    const networkNames = ['azalea', 'nikau', 'rata', 'local'] as const;
+    const networkNames = ['local'] as const;
     const connectionPromises = networkNames.map(async networkName => {
       api = await Api.create({network: networkName, timeout: 10000});
       return api.rpc.chain.getBlockHash();

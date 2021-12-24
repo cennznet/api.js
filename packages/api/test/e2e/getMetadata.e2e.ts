@@ -14,7 +14,7 @@
 
 import {getMetadata, essential} from "../../src/util/getMetadata";
 import {TypeRegistry} from "@polkadot/types/create";
-import {MetadataVersioned} from "@polkadot/metadata/MetadataVersioned";
+import {MetadataVersioned} from "@polkadot/types/metadata/MetadataVersioned";
 
 describe('getMetadata()',  () => {
   it('get slim metadata for endpoint', async (done)=> {
@@ -24,7 +24,7 @@ describe('getMetadata()',  () => {
     expect(metadataKey[1]).toEqual("41");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
-    const modules = mVersionedSlim.asLatest.modules.toArray();
+    const modules = mVersionedSlim.asLatest.pallets.toArray();
     expect(modules.length).toEqual(essential.length);
     const modulesName = modules.map(value => value.name.toString().toLowerCase());
     expect(modulesName.sort()).toEqual(essential.sort());
@@ -39,7 +39,7 @@ describe('getMetadata()',  () => {
     expect(metadataKey[1]).toEqual("41");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
-    const modules = mVersionedSlim.asLatest.modules.toArray();
+    const modules = mVersionedSlim.asLatest.pallets.toArray();
     expect(modules.length).toEqual(keepMetaFor.length + essential.length);
     const modulesNameRecieved = modules.map(value => value.name.toString().toLowerCase());
     const modulesNameExpected = keepMetaFor.concat(essential).map(value => value.toLowerCase());

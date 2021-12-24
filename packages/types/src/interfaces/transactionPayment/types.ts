@@ -14,6 +14,7 @@ export interface ChargeTransactionPayment extends Struct {
 export interface FeeExchange extends Enum {
   readonly isFeeExchangeV1: boolean;
   readonly asFeeExchangeV1: FeeExchangeV1;
+  readonly type: 'FeeExchangeV1';
 }
 
 /** @name FeeExchangeV1 */

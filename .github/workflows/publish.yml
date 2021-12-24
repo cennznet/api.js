@@ -58,7 +58,7 @@ jobs:
         ref: develop
     - uses: actions/setup-node@v1
       with:
-        node-version: '15.3'
+        node-version: '16'
     - name: find release version
       id: find_version
       run: |

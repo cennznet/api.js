@@ -29,6 +29,7 @@ import { EMPTY_U8A, IMMORTAL_ERA } from '@polkadot/types/extrinsic/constants';
 import { IExtrinsicSignature, IKeyringPair, Registry } from '@polkadot/types/types';
 import { u8aConcat } from '@polkadot/util';
 import { ExtrinsicSignatureOptions } from '@polkadot/types/extrinsic/types';
+import {HexString} from "@polkadot/util/types";
 import { ExtrinsicV0SignatureOptions } from '../types';
 import { ChargeTransactionPayment } from '../../types';
 import ExtrinsicPayloadV0, { ExtrinsicPayloadValueV0 } from './ExtrinsicPayloadV0';
@@ -162,7 +163,7 @@ export default class ExtrinsicSignatureV0 extends Struct implements IExtrinsicSi
   addSignature(
     signer: Address | Uint8Array | string,
     signature: Uint8Array | string,
-    payload: ExtrinsicPayloadValueV0 | Uint8Array | string
+    payload: ExtrinsicPayloadValueV0 | Uint8Array | HexString
   ): IExtrinsicSignature {
     return this.injectSignature(
       createType(this.registry, 'Address', signer),

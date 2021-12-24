@@ -14,7 +14,8 @@
 
 // CENNZnet types for injection into a polkadot API session
 
-import { OverrideBundleType } from '@polkadot/types/types/registry';
+import {OverrideBundleType} from "@polkadot/types/types";
+// import { OverrideBundleType } from '@polkadot/types/types/registry';
 import {
   CENNZnetExtrinsicSignatureV1,
   CENNZnetExtrinsicSignatureV0,

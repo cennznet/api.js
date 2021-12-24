@@ -2,8 +2,8 @@
 /* eslint-disable */
 
 import type { Bytes, Enum, Option, Struct, Vec, bool, u128, u64 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
 import type { AccountId, BlockNumber } from '@polkadot/types/interfaces/runtime';
+import type { ITuple } from '@polkadot/types/types';
 
 /** @name GovernanceProposal */
 export interface GovernanceProposal extends Struct {
@@ -21,6 +21,7 @@ export interface ProposalStatusInfo extends Enum {
   readonly isApprovedWaitingEnactment: boolean;
   readonly isApprovedEnactmentCancelled: boolean;
   readonly isDisapproved: boolean;
+  readonly type: 'Deliberation' | 'ApprovedWaitingEnactment' | 'ApprovedEnactmentCancelled' | 'Disapproved';
 }
 
 /** @name ProposalVoteInfo */

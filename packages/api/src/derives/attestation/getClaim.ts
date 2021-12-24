@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { exchangeAddress } from '@cennznet/api/derives/cennzx';
+import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { AnyAssetId, Balance, TokenId } from '@cennznet/types';
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -31,16 +35,18 @@ import { Claim } from './types';
  *  @returns the claim
  */
 export function getClaim(instanceId: string, api: ApiInterfaceRx) {
-  return (holder: string, issuer: string, topic: string): Observable<Claim> =>
-    api.query.attestation
+  return (holder: string, issuer: string, topic: string): Observable<Claim> => {
+    // @ts-ignore
+    return api.query.attestation
       .values<AttestationValue>([holder, issuer, topic])
       .pipe(drr())
       .pipe(
-        map(value => ({
+        map((value) => ({
           holder,
           issuer,
           topic,
           value,
         }))
       );
+  };
 }

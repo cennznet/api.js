@@ -1,34 +1,35 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { Metadata } from '@polkadot/metadata';
-import type { Bytes, HashMap, Json, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
-import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
-import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { CollectionId } from '@cennznet/types/interfaces/nft';
-import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
-import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
-import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
-import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
-import type { BlockHash } from '@polkadot/types/interfaces/chain';
-import type { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
-import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
-import type { ContractCallRequest, ContractExecResult, ContractInstantiateResult, InstantiateRequest } from '@polkadot/types/interfaces/contracts';
-import type { CreatedBlock } from '@polkadot/types/interfaces/engine';
-import type { EthAccount, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
-import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
-import type { EncodedFinalityProofs, JustificationNotification, ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
-import type { MmrLeafProof } from '@polkadot/types/interfaces/mmr';
-import type { StorageKind } from '@polkadot/types/interfaces/offchain';
-import type { FeeDetails, RuntimeDispatchInfo } from '@polkadot/types/interfaces/payment';
-import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
-import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
-import type { ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
-import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
-
 declare module '@polkadot/rpc-core/types.jsonrpc' {
+  import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
+  import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
+  import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
+  import type { CollectionId } from '@cennznet/types/interfaces/nft';
+  import type { AugmentedRpc } from '@polkadot/api/types';
+  import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+  import type { Bytes, HashMap, Json, Metadata, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
+  import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
+  import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
+  import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
+  import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
+  import type { BlockHash } from '@polkadot/types/interfaces/chain';
+  import type { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
+  import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
+  import type { ContractCallRequest, ContractExecResult, ContractInstantiateResult, InstantiateRequest } from '@polkadot/types/interfaces/contracts';
+  import type { CreatedBlock } from '@polkadot/types/interfaces/engine';
+  import type { EthAccount, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
+  import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
+  import type { EncodedFinalityProofs, JustificationNotification, ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
+  import type { MmrLeafProof } from '@polkadot/types/interfaces/mmr';
+  import type { StorageKind } from '@polkadot/types/interfaces/offchain';
+  import type { FeeDetails, RuntimeDispatchInfo } from '@polkadot/types/interfaces/payment';
+  import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
+  import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
+  import type { ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
+  import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
+  import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
+
   export interface RpcInterface {
     author: {
       /**
@@ -88,7 +89,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Get the value of an account's liquidity for the given asset
        **/
-      liquidityValue: AugmentedRpc<(AccountId: Address | string | Uint8Array, AssetId: AssetId | AnyNumber | Uint8Array) => Observable<LiquidityValueResponse>>;
+      liquidityValue: AugmentedRpc<(AccountId: Address | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array, AssetId: AssetId | AnyNumber | Uint8Array) => Observable<LiquidityValueResponse>>;
       /**
        * Retrieves the spot exchange sell price
        **/
@@ -130,9 +131,17 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       getKeys: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, prefix: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Vec<StorageKey>>>;
       /**
+       * Returns the keys with prefix from a child storage with pagination support
+       **/
+      getKeysPaged: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, prefix: StorageKey | string | Uint8Array | any, count: u32 | AnyNumber | Uint8Array, startKey?: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Vec<StorageKey>>>;
+      /**
        * Returns a child storage entry at a specific block state
        **/
       getStorage: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, key: StorageKey | string | Uint8Array | any, at?: Hash | string | Uint8Array) => Observable<Option<StorageData>>>;
+      /**
+       * Returns child storage entries for multiple keys at a specific block state
+       **/
+      getStorageEntries: AugmentedRpc<(childKey: PrefixedStorageKey | string | Uint8Array, keys: Vec<StorageKey> | (StorageKey | string | Uint8Array | any)[], at?: Hash | string | Uint8Array) => Observable<Vec<Option<StorageData>>>>;
       /**
        * Returns the hash of a child storage entry at a block state
        **/
@@ -176,7 +185,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       accounts: AugmentedRpc<() => Observable<Vec<H160>>>;
       /**
-       * Returns balance of the given account.
+       * Returns the blockNumber
        **/
       blockNumber: AugmentedRpc<() => Observable<U256>>;
       /**
@@ -336,6 +345,16 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       uninstallFilter: AugmentedRpc<(index: U256 | AnyNumber | Uint8Array) => Observable<bool>>;
     };
+    ethy: {
+      /**
+       * Get event proof for event Id
+       **/
+      getEventProof: AugmentedRpc<(EventId: EthyEventId | AnyNumber | Uint8Array) => Observable<Option<VersionedEventProof>>>;
+      /**
+       * Subscribe event proof
+       **/
+      subscribeEventProofs: AugmentedRpc<() => Observable<Option<VersionedEventProof>>>;
+    };
     genericAsset: {
       /**
        * Get all registered generic assets (symbol, decimal places)
@@ -395,7 +414,8 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Get the tokens owned by an address in a certain collection
        **/
-      collectedTokens: AugmentedRpc<(collection: CollectionId | AnyNumber | Uint8Array, address: Address | string | Uint8Array) => Observable<Vec<EnhancedTokenId>>>;
+      // @ts-ignore
+      collectedTokens: AugmentedRpc<(collection: CollectionId | AnyNumber | Uint8Array, address: Address | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => Observable<Vec<EnhancedTokenId>>>;
     };
     offchain: {
       /**
@@ -509,7 +529,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Provides a way to trace the re-execution of a single block
        **/
-      traceBlock: AugmentedRpc<(block: Hash | string | Uint8Array, targets: Option<Text> | null | object | string | Uint8Array, storageKeys: Option<Text> | null | object | string | Uint8Array) => Observable<TraceBlockResponse>>;
+      traceBlock: AugmentedRpc<(block: Hash | string | Uint8Array, targets: Option<Text> | null | object | string | Uint8Array, storageKeys: Option<Text> | null | object | string | Uint8Array, methods: Option<Text> | null | object | string | Uint8Array) => Observable<TraceBlockResponse>>;
     };
     syncstate: {
       /**
@@ -605,5 +625,6 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
        **/
       sha3: AugmentedRpc<(data: Bytes | string | Uint8Array) => Observable<H256>>;
     };
-  }
-}
+  } // RpcInterface
+
+} // declare module
