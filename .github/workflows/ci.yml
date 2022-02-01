@@ -2,7 +2,7 @@ name: PR builder
 
 on:
   label:
-    types: [created, edited]
+    types: [created, edited, closed]
   pull_request:
     branches:
     - develop
