@@ -33,7 +33,7 @@ export interface ExtrinsicPayloadValueV0 {
 }
 
 // The base of an extrinsic payload
-export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
+export const BasePayloadV0: Record<string, string> = {
   method: 'Bytes',
   doughnut: 'Option<doughnut>',
   era: 'ExtrinsicEra',
@@ -45,7 +45,7 @@ export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
 // the final extrinsic payload itself.
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
-export const PayloadImplicitAddonsV0: Record<string, keyof InterfaceTypes> = {
+export const PayloadImplicitAddonsV0: Record<string, string> = {
   specVersion: 'u32',
   genesisHash: 'Hash',
   blockHash: 'Hash',
@@ -53,7 +53,7 @@ export const PayloadImplicitAddonsV0: Record<string, keyof InterfaceTypes> = {
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
-export const FullPayloadV0: Record<string, keyof InterfaceTypes> = {
+export const FullPayloadV0: Record<string, string> = {
   ...BasePayloadV0,
   ...PayloadImplicitAddonsV0,
 };
