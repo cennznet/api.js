@@ -44,7 +44,7 @@ jobs:
           - "v36-compat"
           - "create|call|queries"
           - tx
-          #- attestation.*
+          - attestation.*
           - cennzx.*
           - nft.*
           - staking
@@ -75,7 +75,7 @@ jobs:
         docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
     - name: start latest test node
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:06dfaf5 --dev --tmp --ws-external --rpc-external --no-mdns
+        docker run --pull=always --network=host -d cennznet/cennznet:2.1.0-rc1 --dev --tmp --ws-external --rpc-external --no-mdns
     - name: test
       env:
         TEST_TYPE: integration
