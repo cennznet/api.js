@@ -86,6 +86,6 @@ describe('decodeResponse', (): void => {
     });
     it('encodes a valid JsonRPC JSON string', () => {
       const p: unknown[] = ['params'];
-        expect(coder.encodeJson('method', p)).toEqual('{"id":1,"jsonrpc":"2.0","method":"method","params":"params"}');
+        expect(coder.encodeJson('method', p)).toEqual('{"id":1,"jsonrpc":"2.0","method":"method","params":["params"]}');
     });
 });
