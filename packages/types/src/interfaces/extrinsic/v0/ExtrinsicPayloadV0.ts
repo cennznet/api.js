@@ -16,7 +16,7 @@
 import { Bytes, Compact, Option, Raw, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
-import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, InterfaceTypes, Registry } from '@polkadot/types/types';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
 import {HexString} from "@polkadot/util/types";
 import { ChargeTransactionPayment, doughnut, Index } from '../../types';
 
