@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types';
+import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types-codec';
 import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
 
 /** @name AssetInfoV40 */

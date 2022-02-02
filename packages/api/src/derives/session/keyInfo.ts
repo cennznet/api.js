@@ -27,10 +27,10 @@ function retrieveSessionDetails(
   api: ApiInterfaceRx,
   stashId: AccountId
 ): Observable<[Vec<ITuple<[AccountId, Keys]>>, Option<Keys>]> {
-  return combineLatest([
+  return (combineLatest([
     api.query.session.queuedKeys<Vec<ITuple<[AccountId, Keys]>>>(),
     api.query.session.nextKeys(stashId),
-  ]) as Observable<[Vec<ITuple<[AccountId, Keys]>>, Option<Keys>]>;
+  ]) as unknown) as Observable<[Vec<ITuple<[AccountId, Keys]>>, Option<Keys>]>;
 }
 
 /**

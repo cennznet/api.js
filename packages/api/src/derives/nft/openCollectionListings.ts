@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Option } from '@polkadot/types';
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap, reduce, mergeAll, first } from 'rxjs/operators';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { Listing, TokenId } from '@cennznet/types';
-import { Option } from '@polkadot/types/codec/Option';
-import { UInt } from '@polkadot/types';
 
 /**
  * Gets all tokens in a collection that have an open listing

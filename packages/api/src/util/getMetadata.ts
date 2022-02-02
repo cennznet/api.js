@@ -1,7 +1,7 @@
 import { getProvider } from '@cennznet/api/util/getProvider';
+import { RpcInterface } from '@polkadot/rpc-core/types';
 import { TypeRegistry } from '@polkadot/types/create';
 import { RpcCore } from '@polkadot/rpc-core';
-import type { RpcInterface } from '@polkadot/rpc-core/types.jsonrpc';
 import { MetadataVersioned } from '@polkadot/types/metadata/MetadataVersioned';
 import { Metadata } from '@polkadot/types/metadata';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';

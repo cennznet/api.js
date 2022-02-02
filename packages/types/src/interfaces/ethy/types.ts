@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Option, Struct, U8aFixed, Vec, u64 } from '@polkadot/types';
+import type { Bytes, Enum, Option, Struct, U8aFixed, Vec, u64 } from '@polkadot/types-codec';
 import type { EthereumSignature } from '@polkadot/types/interfaces/eth';
 
 /** @name EthyEventId */

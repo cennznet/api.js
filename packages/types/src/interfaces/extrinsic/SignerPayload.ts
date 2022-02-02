@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Compact, Struct, u8, Vec } from '@polkadot/types';
-import { Text } from '@polkadot/types/primitive/Text';
+import { Compact, Struct, Text, u8, Vec } from '@polkadot/types';
 import { Balance, BlockNumber, Call, ExtrinsicEra, Hash, RuntimeVersion } from '@polkadot/types/interfaces';
 import {
   AnyJson,

@@ -1,9 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-declare module '@polkadot/api/types/errors' {
-  import type { ApiTypes, AugmentedError, ModuleErrors } from '@polkadot/api/types';
+import type { ApiTypes } from '@polkadot/api-base/types';
 
+declare module '@polkadot/api-base/types/errors' {
   export interface AugmentedErrors<ApiType extends ApiTypes> {
     authorship: {
       /**
@@ -679,9 +679,4 @@ declare module '@polkadot/api/types/errors' {
       [key: string]: AugmentedError<ApiType>;
     };
   } // AugmentedErrors
-
-  export interface DecoratedErrors<ApiType extends ApiTypes> extends AugmentedErrors<ApiType> {
-    [key: string]: ModuleErrors<ApiType>;
-  } // DecoratedErrors
-
 } // declare module

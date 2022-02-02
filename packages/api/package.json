@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "@cennznet/types": "^2.0.0-alpha.4",
-    "@polkadot/api": "^6.12.1",
-    "@polkadot/rpc-core": "^6.12.1",
-    "@polkadot/rpc-provider": "^6.12.1",
-    "@polkadot/types": "^6.12.1",
+    "@polkadot/api": "^7.6.1",
+    "@polkadot/rpc-core": "^7.6.1",
+    "@polkadot/rpc-provider": "^7.6.1",
+    "@polkadot/types": "^7.6.1",
     "@polkadot/extension-dapp": "^0.36.1",
-    "@polkadot/x-rxjs": "^6.11.1",
+    "@polkadot/x-rxjs": "^6.11.2-6",
     "eventemitter3": "^4.0.0"
   },
   "resolutions": {
-    "rxjs": "7.0.0"
+    "rxjs": "7.2.0"
   }
 }

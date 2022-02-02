@@ -1,9 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
+import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
-import type { ITuple } from '@polkadot/types/types';
 
 /** @name AuctionClosureReason */
 export interface AuctionClosureReason extends Enum {
@@ -52,7 +52,7 @@ export interface Listing extends Enum {
 /** @name ListingId */
 export interface ListingId extends u128 {}
 
-/** @name MetadataBaseURI */
+/** @name MetadataScheme */
 export interface MetadataScheme extends Enum {
   readonly isIpfs: boolean;
   readonly isHttps: boolean;
@@ -113,6 +113,7 @@ export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> 
 export interface TokenLockReason extends Enum {
   readonly isListingId: boolean;
   readonly asListingId: ListingId;
+  readonly type: 'ListingId';
 }
 
 export type PHANTOM_NFT = 'nft';

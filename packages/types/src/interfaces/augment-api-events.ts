@@ -1,20 +1,13 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-declare module '@polkadot/api/types/events' {
-  import type { ApiTypes, AugmentedEvent, ModuleEvents } from '@polkadot/api/types';
-  import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types';
-  import type { AccountId32, H160, H256, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-  import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-  import type { AssetOptions, PermissionLatest } from '@polkadot/types/interfaces/genericAsset';
-  import type { Reason } from '@cennznet/types/interfaces/nft';
-  import type { IdentificationTuple, SessionIndex } from '@polkadot/types/interfaces/session';
-  import type { ElectionCompute } from '@polkadot/types/interfaces/staking';
+import type { ApiTypes } from '@polkadot/api-base/types';
+import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
+import type { AccountId32, H160, H256, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
+import type { CrmlGenericAssetAssetInfo, CrmlGenericAssetAssetOptions, CrmlGenericAssetPermissionsV1, CrmlNftAuctionClosureReason, CrmlStakingElectionCompute, CrmlStakingExposure, FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, PalletMultisigTimepoint, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
-  // @ts-ignore
-  import type { FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, PalletMultisigTimepoint, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
-  import type { ITuple } from '@polkadot/types/types';
-
+declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
     cennzx: {
       /**
@@ -101,7 +94,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * Asset info updated (asset_id, asset_info).
        **/
-      AssetInfoUpdated: AugmentedEvent<ApiType, [u32, AssetInfo]>;
+      AssetInfoUpdated: AugmentedEvent<ApiType, [u32, CrmlGenericAssetAssetInfo]>;
       /**
        * Asset burned (asset_id, account, amount).
        **/
@@ -109,7 +102,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * Asset created (asset_id, creator, asset_options).
        **/
-      Created: AugmentedEvent<ApiType, [u32, AccountId32, AssetOptions]>;
+      Created: AugmentedEvent<ApiType, [u32, AccountId32, CrmlGenericAssetAssetOptions]>;
       /**
        * Asset balance storage has been reclaimed due to falling below the existential deposit
        **/
@@ -121,7 +114,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * Asset permission updated (asset_id, new_permissions).
        **/
-      PermissionUpdated: AugmentedEvent<ApiType, [u32, PermissionLatest]>;
+      PermissionUpdated: AugmentedEvent<ApiType, [u32, CrmlGenericAssetPermissionsV1]>;
       /**
        * Asset transfer succeeded (asset_id, from, to, amount).
        **/
@@ -238,7 +231,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * At the end of the session, at least one validator was found to be offline.
        **/
-      SomeOffline: AugmentedEvent<ApiType, [Vec<IdentificationTuple>]>;
+      SomeOffline: AugmentedEvent<ApiType, [Vec<ITuple<[AccountId32, CrmlStakingExposure]>>]>;
       /**
        * Generic event
        **/
@@ -270,7 +263,7 @@ declare module '@polkadot/api/types/events' {
       /**
        * An auction has closed without selling (collection, listing, reason)
        **/
-      AuctionClosed: AugmentedEvent<ApiType, [u32, u128, Reason]>;
+      AuctionClosed: AugmentedEvent<ApiType, [u32, u128, CrmlNftAuctionClosureReason]>;
       /**
        * An auction has opened (collection, listing, marketplace_id)
        **/
@@ -390,7 +383,7 @@ declare module '@polkadot/api/types/events' {
     staking: {
       /**
        * An account has bonded this amount. \[stash, amount\]
-       *
+       * 
        * NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably,
        * it will not be emitted for staking rewards when they are added to stake.
        **/
@@ -419,11 +412,11 @@ declare module '@polkadot/api/types/events' {
       /**
        * A new solution for the upcoming election has been stored. \[compute\]
        **/
-      SolutionStored: AugmentedEvent<ApiType, [ElectionCompute]>;
+      SolutionStored: AugmentedEvent<ApiType, [CrmlStakingElectionCompute]>;
       /**
        * A new set of stakers was elected with the given \[compute\].
        **/
-      StakingElection: AugmentedEvent<ApiType, [ElectionCompute]>;
+      StakingElection: AugmentedEvent<ApiType, [CrmlStakingElectionCompute]>;
       /**
        * An account has unbonded this amount. \[stash, amount\]
        **/
@@ -544,9 +537,4 @@ declare module '@polkadot/api/types/events' {
       [key: string]: AugmentedEvent<ApiType>;
     };
   } // AugmentedEvents
-
-  export interface DecoratedEvents<ApiType extends ApiTypes> extends AugmentedEvents<ApiType> {
-    [key: string]: ModuleEvents<ApiType>;
-  } // DecoratedEvents
-
 } // declare module

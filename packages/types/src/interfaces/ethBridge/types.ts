@@ -1,9 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Struct, U256, Vec, u16, u32, u64, u8 } from '@polkadot/types';
+import type { Bytes, Enum, Struct, U256, Vec, u16, u32, u64, u8 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
 import type { Address, H160, H256 } from '@polkadot/types/interfaces/runtime';
-import type { ITuple } from '@polkadot/types/types';
 
 /** @name Details */
 export interface Details extends Vec<ITuple<[EthAddress, Bytes, u8]>> {}

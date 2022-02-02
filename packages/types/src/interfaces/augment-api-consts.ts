@@ -1,15 +1,14 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-declare module '@polkadot/api/types/consts' {
-  import type { ApiTypes, AugmentedConst, QueryableModuleConsts } from '@polkadot/api/types';
-  import type { Vec, u128, u16, u32, u64 } from '@polkadot/types';
-  import type { Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-  // @ts-ignore
-  import type { FrameSupportPalletId, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
-  import type { Codec } from '@polkadot/types/types';
+import type { ApiTypes } from '@polkadot/api-base/types';
+import type { Vec, u128, u16, u32, u64 } from '@polkadot/types-codec';
+import type { Codec } from '@polkadot/types-codec/types';
+import type { Perbill, Permill } from '@polkadot/types/interfaces/runtime';
+import type { FrameSupportPalletId, FrameSupportWeightsRuntimeDbWeight, FrameSupportWeightsWeightToFeeCoefficient, FrameSystemLimitsBlockLength, FrameSystemLimitsBlockWeights, SpVersionRuntimeVersion } from '@polkadot/types/lookup';
 
-  export interface AugmentedConsts<ApiType  extends ApiTypes> {
+declare module '@polkadot/api-base/types/consts' {
+  export interface AugmentedConsts<ApiType extends ApiTypes> {
     authorship: {
       /**
        * The number of blocks back we should accept uncles.
@@ -93,7 +92,7 @@ declare module '@polkadot/api/types/consts' {
     imOnline: {
       /**
        * A configuration for base priority of unsigned transactions.
-       *
+       * 
        * This is exposed so that it can be tuned for particular runtime, when
        * multiple pallets send unsigned transactions.
        **/
@@ -107,7 +106,7 @@ declare module '@polkadot/api/types/consts' {
       /**
        * The base amount of currency needed to reserve for creating a multisig execution or to
        * store a dispatch call for later.
-       *
+       * 
        * This is held for an additional storage item whose value size is
        * `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is
        * `32 + sizeof(AccountId)` bytes.
@@ -115,7 +114,7 @@ declare module '@polkadot/api/types/consts' {
       depositBase: u128 & AugmentedConst<ApiType>;
       /**
        * The amount of currency needed per unit threshold when creating a multisig execution.
-       *
+       * 
        * This is held for adding 32 bytes more into a pre-existing storage value.
        **/
       depositFactor: u128 & AugmentedConst<ApiType>;
@@ -151,23 +150,23 @@ declare module '@polkadot/api/types/consts' {
       bondingDuration: u32 & AugmentedConst<ApiType>;
       /**
        * The number of blocks before the end of the era from which election submissions are allowed.
-       *
+       * 
        * Setting this to zero will disable the offchain compute and only on-chain seq-phragmen will
        * be used.
-       *
+       * 
        * This is bounded by being within the last session. Hence, setting it to a value more than the
        * length of a session will be pointless.
        **/
       electionLookahead: u32 & AugmentedConst<ApiType>;
       /**
        * Maximum number of balancing iterations to run in the offchain submission.
-       *
+       * 
        * If set to 0, balance_solution will not be executed at all.
        **/
       maxIterations: u32 & AugmentedConst<ApiType>;
       /**
        * The maximum number of nominators rewarded for each validator.
-       *
+       * 
        * For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim
        * their reward. This used to limit the i/o cost for the nominator payout.
        **/
@@ -182,7 +181,7 @@ declare module '@polkadot/api/types/consts' {
       sessionsPerEra: u32 & AugmentedConst<ApiType>;
       /**
        * Number of eras that slashes are deferred by, after computation.
-       *
+       * 
        * This should be less than the bonding duration.
        * Set to 0 if slashes should be applied immediately, without opportunity for
        * intervention.
@@ -212,7 +211,7 @@ declare module '@polkadot/api/types/consts' {
       dbWeight: FrameSupportWeightsRuntimeDbWeight & AugmentedConst<ApiType>;
       /**
        * The designated SS85 prefix of this chain.
-       *
+       * 
        * This replaces the "ss58Format" property declared in the chain spec. Reason is
        * that the runtime should know about the prefix in order to make use of it as
        * an identifier of the chain.
@@ -296,9 +295,4 @@ declare module '@polkadot/api/types/consts' {
       [key: string]: Codec;
     };
   } // AugmentedConsts
-
-  export interface QueryableConsts<ApiType extends ApiTypes> extends AugmentedConsts<ApiType> {
-    [key: string]: QueryableModuleConsts;
-  } // QueryableConsts
-
 } // declare module

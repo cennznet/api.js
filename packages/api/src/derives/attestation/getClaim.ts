@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { exchangeAddress } from '@cennznet/api/derives/cennzx';
-import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
-import { AnyAssetId, Balance, TokenId } from '@cennznet/types';
-import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

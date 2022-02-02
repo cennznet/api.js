@@ -1,35 +1,37 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-declare module '@polkadot/rpc-core/types.jsonrpc' {
-  import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
-  import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
-  import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
-  import type { CollectionId } from '@cennznet/types/interfaces/nft';
-  import type { AugmentedRpc } from '@polkadot/api/types';
-  import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
-  import type { Bytes, HashMap, Json, Metadata, Null, Option, StorageKey, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types';
-  import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
-  import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
-  import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
-  import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
-  import type { BlockHash } from '@polkadot/types/interfaces/chain';
-  import type { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
-  import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
-  import type { ContractCallRequest, ContractExecResult, ContractInstantiateResult, InstantiateRequest } from '@polkadot/types/interfaces/contracts';
-  import type { CreatedBlock } from '@polkadot/types/interfaces/engine';
-  import type { EthAccount, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
-  import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
-  import type { EncodedFinalityProofs, JustificationNotification, ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
-  import type { MmrLeafProof } from '@polkadot/types/interfaces/mmr';
-  import type { StorageKind } from '@polkadot/types/interfaces/offchain';
-  import type { FeeDetails, RuntimeDispatchInfo } from '@polkadot/types/interfaces/payment';
-  import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
-  import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
-  import type { ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
-  import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
-  import type { AnyNumber, Codec, IExtrinsic, ITuple, Observable } from '@polkadot/types/types';
+import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
+import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
+import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
+import type { CollectionId } from '@cennznet/types/interfaces/nft';
+import type { AugmentedRpc } from '@polkadot/rpc-core/types';
+import type { Metadata, StorageKey } from '@polkadot/types';
+import type { Bytes, HashMap, Json, Null, Option, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types-codec';
+import type { AnyNumber, Codec, ITuple } from '@polkadot/types-codec/types';
+import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
+import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
+import type { ExtrinsicOrHash, ExtrinsicStatus } from '@polkadot/types/interfaces/author';
+import type { EpochAuthorship } from '@polkadot/types/interfaces/babe';
+import type { BeefySignedCommitment } from '@polkadot/types/interfaces/beefy';
+import type { BlockHash } from '@polkadot/types/interfaces/chain';
+import type { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
+import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
+import type { CodeUploadRequest, CodeUploadResult, ContractCallRequest, ContractExecResult, ContractInstantiateResult, InstantiateRequest } from '@polkadot/types/interfaces/contracts';
+import type { CreatedBlock } from '@polkadot/types/interfaces/engine';
+import type { EthAccount, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
+import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
+import type { EncodedFinalityProofs, JustificationNotification, ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
+import type { MmrLeafProof } from '@polkadot/types/interfaces/mmr';
+import type { StorageKind } from '@polkadot/types/interfaces/offchain';
+import type { FeeDetails, RuntimeDispatchInfo } from '@polkadot/types/interfaces/payment';
+import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
+import type { AccountId, Address, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@polkadot/types/interfaces/runtime';
+import type { ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
+import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
+import type { IExtrinsic, Observable } from '@polkadot/types/types';
 
+declare module '@polkadot/rpc-core/types/jsonrpc' {
   export interface RpcInterface {
     author: {
       /**
@@ -155,7 +157,7 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Executes a call to a contract
        **/
-      call: AugmentedRpc<(callRequest: ContractCallRequest | { origin?: any; dest?: any; value?: any; gasLimit?: any; inputData?: any } | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<ContractExecResult>>;
+      call: AugmentedRpc<(callRequest: ContractCallRequest | { origin?: any; dest?: any; value?: any; gasLimit?: any; storageDepositLimit?: any; inputData?: any } | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<ContractExecResult>>;
       /**
        * Returns the value under a specified storage key in a contract
        **/
@@ -163,11 +165,15 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Instantiate a new contract
        **/
-      instantiate: AugmentedRpc<(request: InstantiateRequest | { origin?: any; endowment?: any; gasLimit?: any; code?: any; data?: any; salt?: any } | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<ContractInstantiateResult>>;
+      instantiate: AugmentedRpc<(request: InstantiateRequest | { origin?: any; value?: any; gasLimit?: any; storageDepositLimit?: any; code?: any; data?: any; salt?: any } | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<ContractInstantiateResult>>;
       /**
        * Returns the projected time a given contract will be able to sustain paying its rent
        **/
       rentProjection: AugmentedRpc<(address: AccountId | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<Option<BlockNumber>>>;
+      /**
+       * Upload new code without instantiating a contract from it
+       **/
+      uploadCode: AugmentedRpc<(uploadRequest: CodeUploadRequest | { origin?: any; code?: any; storageDepositLimit?: any } | string | Uint8Array, at?: BlockHash | string | Uint8Array) => Observable<CodeUploadResult>>;
     };
     engine: {
       /**
@@ -414,7 +420,6 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       /**
        * Get the tokens owned by an address in a certain collection
        **/
-      // @ts-ignore
       collectedTokens: AugmentedRpc<(collection: CollectionId | AnyNumber | Uint8Array, address: Address | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => Observable<Vec<EnhancedTokenId>>>;
     };
     offchain: {
@@ -626,5 +631,4 @@ declare module '@polkadot/rpc-core/types.jsonrpc' {
       sha3: AugmentedRpc<(data: Bytes | string | Uint8Array) => Observable<H256>>;
     };
   } // RpcInterface
-
 } // declare module
