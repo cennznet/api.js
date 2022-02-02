@@ -35,17 +35,15 @@ export async function getMetadata(
   const registry = new TypeRegistry();
   // '1' is the instance id here
   const rpcCore: RpcCore & RpcInterface = new RpcCore('1', registry, providerInterface) as RpcCore & RpcInterface;
-  // @ts-ignore
   const meta: Metadata = await rpcCore.state.getMetadata().toPromise();
   const magicNumber = meta.magicNumber;
   const modules = meta.asLatest.pallets.toArray(); // changed from modules to pallets
-
   const extrinsic = meta.asLatest.extrinsic;
   const filteredModule = modules.filter((mod) => mergedModules.find((a) => a === mod.name.toString().toLowerCase()));
-  const filteredModuleMetadataLatest = registry.createType('Vec<ModuleMetadataLatest>', filteredModule);
+  const filteredModuleMetadataLatest = registry.createType('Vec<PalletMetadataLatest>', filteredModule);
   const metadataSlim = registry.createType('MetadataLatest', {
     extrinsic,
-    modules: filteredModuleMetadataLatest,
+    pallets: filteredModuleMetadataLatest,
   });
   const mVersionedSlim = new MetadataVersioned(registry, {
     magicNumber: magicNumber,

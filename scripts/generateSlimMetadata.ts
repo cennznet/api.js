@@ -30,7 +30,7 @@ async function generateSlimMeta() {
       const module = m.toJSON();
       removeKeys(module, 'documentation');
       // Creating ModuleMetadataLatest
-      let modifiedModule = api.registry.createType('ModuleMetadataLatest', module);
+      let modifiedModule = api.registry.createType('PalletMetadataLatest', module);
       newModules.push(modifiedModule);
     } else {
       // Push an empty module
@@ -43,7 +43,7 @@ async function generateSlimMeta() {
   // reducing the total length of metadata to 16236 from earlier around 100000
   const metadataSlim = api.registry.createType('MetadataLatest', {
     extrinsic,
-    modules: filteredModule.map(({
+    pallets: filteredModule.map(({
                             storage,
                             calls,
                             index,
