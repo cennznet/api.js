@@ -136,8 +136,7 @@ describe('CENNZX RPC calls testing', () => {
                 if (method === 'AssetBought') {
                   const price = data[3];
                   console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-
-                  expect(feeFromQuery).toEqual(price);
+                  expect(feeFromQuery.toString()).toEqual(price.toString());
                   done();
                 }
               });
