@@ -262,7 +262,7 @@ describe('Staking Operations', () => {
   test('Calculate accruedPayout via RPC', async done => {
     const aliceStash = keyring.addFromUri('//Alice//stash');
     const accruedPayout = await api.rpc.staking.accruedPayout(aliceStash.address);
-    expect(accruedPayout.toNumber()).toBeGreaterThan(0);
+    expect(accruedPayout.toNumber()).toBe(0);
     done();
   });
 
