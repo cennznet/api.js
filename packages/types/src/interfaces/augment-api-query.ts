@@ -3,10 +3,10 @@
 
 import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Data } from '@polkadot/types';
-import type { Bytes, Null, Option, U8aFixed, Vec, WrapperKeepOpaque, WrapperOpaque, bool, u128, u32, u64, u8 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, U256, U8aFixed, Vec, WrapperKeepOpaque, WrapperOpaque, bool, u128, u32, u64, u8 } from '@polkadot/types-codec';
 import type { AnyNumber, ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, Call, H160, H256, Perbill, Percent, Permill } from '@polkadot/types/interfaces/runtime';
-import type { CennznetPrimitivesEthCryptoAppCryptoPublic, CennznetRuntimeSessionKeys, CrmlEthBridgeEventClaimResult, CrmlGenericAssetAssetInfo, CrmlGenericAssetBalanceLock, CrmlGenericAssetPermissionVersions, CrmlGovernanceProposal, CrmlGovernanceProposalStatusInfo, CrmlGovernanceProposalVoteInfo, CrmlGovernanceReferendumVoteCount, CrmlNftListing, CrmlNftMarketplace, CrmlNftMetadataScheme, CrmlNftNftAttributeValue, CrmlNftRoyaltiesSchedule, CrmlNftTokenLockReason, CrmlStakingActiveEraInfo, CrmlStakingElectionResult, CrmlStakingElectionStatus, CrmlStakingExposure, CrmlStakingForcing, CrmlStakingNominations, CrmlStakingRewardsTypesEraRewardPoints, CrmlStakingSlashingSlashingSpans, CrmlStakingSlashingSpanRecord, CrmlStakingStakingLedger, CrmlStakingUnappliedSlash, CrmlStakingValidatorPrefs, CrmlTransactionPaymentReleases, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, PalletAuthorshipUncleEntryItem, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletImOnlineBoundedOpaqueNetworkState, PalletImOnlineSr25519AppSr25519Public, PalletMultisigMultisig, PalletSchedulerReleases, PalletSchedulerScheduledV2, PalletTreasuryProposal, SpConsensusBabeAppPublic, SpConsensusBabeBabeEpochConfiguration, SpConsensusBabeDigestsNextConfigDescriptor, SpCoreCryptoKeyTypeId, SpRuntimeDigest, SpStakingOffenceOffenceDetails } from '@polkadot/types/lookup';
+import type { CennznetPrimitivesEthCryptoAppCryptoPublic, CennznetRuntimeSessionKeys, CrmlEthBridgeEventClaimResult, CrmlGenericAssetAssetInfo, CrmlGenericAssetBalanceLock, CrmlGenericAssetPermissionVersions, CrmlGovernanceProposal, CrmlGovernanceProposalStatusInfo, CrmlGovernanceProposalVoteInfo, CrmlGovernanceReferendumVoteCount, CrmlNftListing, CrmlNftMarketplace, CrmlNftMetadataScheme, CrmlNftNftAttributeValue, CrmlNftRoyaltiesSchedule, CrmlNftTokenLockReason, CrmlStakingActiveEraInfo, CrmlStakingElectionResult, CrmlStakingElectionStatus, CrmlStakingExposure, CrmlStakingForcing, CrmlStakingNominations, CrmlStakingRewardsTypesEraRewardPoints, CrmlStakingSlashingSlashingSpans, CrmlStakingSlashingSpanRecord, CrmlStakingStakingLedger, CrmlStakingUnappliedSlash, CrmlStakingValidatorPrefs, CrmlTransactionPaymentReleases, EthereumBlock, EthereumReceiptReceiptV3, EthereumTransactionTransactionV2, FpRpcTransactionStatus, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, PalletAuthorshipUncleEntryItem, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletImOnlineBoundedOpaqueNetworkState, PalletImOnlineSr25519AppSr25519Public, PalletMultisigMultisig, PalletSchedulerReleases, PalletSchedulerScheduledV2, PalletTreasuryProposal, SpConsensusBabeAppPublic, SpConsensusBabeBabeEpochConfiguration, SpConsensusBabeDigestsNextConfigDescriptor, SpCoreCryptoKeyTypeId, SpRuntimeDigest, SpStakingOffenceOffenceDetails } from '@polkadot/types/lookup';
 import type { Observable } from '@polkadot/types/types';
 
 declare module '@polkadot/api-base/types/storage' {
@@ -126,6 +126,15 @@ declare module '@polkadot/api-base/types/storage' {
        * TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay.
        **/
       underConstruction: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<Vec<U8aFixed>>, [u32]> & QueryableStorageEntry<ApiType, [u32]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    baseFee: {
+      baseFeePerGas: AugmentedQuery<ApiType, () => Observable<U256>, []> & QueryableStorageEntry<ApiType, []>;
+      elasticity: AugmentedQuery<ApiType, () => Observable<Permill>, []> & QueryableStorageEntry<ApiType, []>;
+      isActive: AugmentedQuery<ApiType, () => Observable<bool>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Generic query
        **/
@@ -265,6 +274,37 @@ declare module '@polkadot/api-base/types/storage' {
        * Maps event type ids to ((contract address, event signature))
        **/
       typeIdToEventType: AugmentedQuery<ApiType, (arg: u32 | AnyNumber | Uint8Array) => Observable<ITuple<[H160, H256]>>, [u32]> & QueryableStorageEntry<ApiType, [u32]>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    ethereum: {
+      blockHash: AugmentedQuery<ApiType, (arg: U256 | AnyNumber | Uint8Array) => Observable<H256>, [U256]> & QueryableStorageEntry<ApiType, [U256]>;
+      /**
+       * The current Ethereum block.
+       **/
+      currentBlock: AugmentedQuery<ApiType, () => Observable<Option<EthereumBlock>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * The current Ethereum receipts.
+       **/
+      currentReceipts: AugmentedQuery<ApiType, () => Observable<Option<Vec<EthereumReceiptReceiptV3>>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * The current transaction statuses.
+       **/
+      currentTransactionStatuses: AugmentedQuery<ApiType, () => Observable<Option<Vec<FpRpcTransactionStatus>>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Current building block's transactions and receipts.
+       **/
+      pending: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[EthereumTransactionTransactionV2, FpRpcTransactionStatus, EthereumReceiptReceiptV3]>>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    evm: {
+      accountCodes: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Bytes>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
+      accountStorages: AugmentedQuery<ApiType, (arg1: H160 | string | Uint8Array, arg2: H256 | string | Uint8Array) => Observable<H256>, [H160, H256]> & QueryableStorageEntry<ApiType, [H160, H256]>;
       /**
        * Generic query
        **/

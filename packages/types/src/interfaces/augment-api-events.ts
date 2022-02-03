@@ -2,13 +2,23 @@
 /* eslint-disable */
 
 import type { ApiTypes } from '@polkadot/api-base/types';
-import type { Bytes, Null, Option, Result, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H160, H256, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-import type { CrmlGenericAssetAssetInfo, CrmlGenericAssetAssetOptions, CrmlGenericAssetPermissionsV1, CrmlNftAuctionClosureReason, CrmlStakingElectionCompute, CrmlStakingExposure, FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, PalletMultisigTimepoint, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
+import type { CrmlGenericAssetAssetInfo, CrmlGenericAssetAssetOptions, CrmlGenericAssetPermissionsV1, CrmlNftAuctionClosureReason, CrmlStakingElectionCompute, CrmlStakingExposure, EthereumLog, EvmCoreErrorExitReason, FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, PalletMultisigTimepoint, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
+    baseFee: {
+      BaseFeeOverflow: AugmentedEvent<ApiType, []>;
+      IsActive: AugmentedEvent<ApiType, [bool]>;
+      NewBaseFeePerGas: AugmentedEvent<ApiType, [U256]>;
+      NewElasticity: AugmentedEvent<ApiType, [Permill]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     cennzx: {
       /**
        * Provider, core asset amount, trade asset id, trade asset amount
@@ -80,11 +90,55 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
+    ethereum: {
+      /**
+       * An ethereum transaction was successfully executed. [from, to/contract_address, transaction_hash, exit_reason]
+       **/
+      Executed: AugmentedEvent<ApiType, [H160, H160, H256, EvmCoreErrorExitReason]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
     ethWallet: {
       /**
        * A call just executed. (Ethereum Address, CENNZnet Address, Result)
        **/
       Execute: AugmentedEvent<ApiType, [H160, AccountId32, Result<Null, SpRuntimeDispatchError>]>;
+      /**
+       * Generic event
+       **/
+      [key: string]: AugmentedEvent<ApiType>;
+    };
+    evm: {
+      /**
+       * A deposit has been made at a given address. \[sender, address, value\]
+       **/
+      BalanceDeposit: AugmentedEvent<ApiType, [AccountId32, H160, U256]>;
+      /**
+       * A withdrawal has been made from a given address. \[sender, address, value\]
+       **/
+      BalanceWithdraw: AugmentedEvent<ApiType, [AccountId32, H160, U256]>;
+      /**
+       * A contract has been created at given \[address\].
+       **/
+      Created: AugmentedEvent<ApiType, [H160]>;
+      /**
+       * A \[contract\] was attempted to be created, but the execution failed.
+       **/
+      CreatedFailed: AugmentedEvent<ApiType, [H160]>;
+      /**
+       * A \[contract\] has been executed successfully with states applied.
+       **/
+      Executed: AugmentedEvent<ApiType, [H160]>;
+      /**
+       * A \[contract\] has been executed with errors. States are reverted with only gas fees applied.
+       **/
+      ExecutedFailed: AugmentedEvent<ApiType, [H160]>;
+      /**
+       * Ethereum events from contracts.
+       **/
+      Log: AugmentedEvent<ApiType, [EthereumLog]>;
       /**
        * Generic event
        **/

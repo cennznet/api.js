@@ -81,6 +81,20 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    ethereum: {
+      /**
+       * Signature is invalid.
+       **/
+      InvalidSignature: AugmentedError<ApiType>;
+      /**
+       * Pre-log is present, therefore transact is not allowed.
+       **/
+      PreLogExists: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     ethWallet: {
       /**
        * Can't pay fees
@@ -98,6 +112,36 @@ declare module '@polkadot/api-base/types/errors' {
        * Signature & account mismatched.
        **/
       InvalidSignature: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    evm: {
+      /**
+       * Not enough balance to perform action
+       **/
+      BalanceLow: AugmentedError<ApiType>;
+      /**
+       * Calculating total fee overflowed
+       **/
+      FeeOverflow: AugmentedError<ApiType>;
+      /**
+       * Gas price is too low.
+       **/
+      GasPriceTooLow: AugmentedError<ApiType>;
+      /**
+       * Nonce is invalid
+       **/
+      InvalidNonce: AugmentedError<ApiType>;
+      /**
+       * Calculating total payment overflowed
+       **/
+      PaymentOverflow: AugmentedError<ApiType>;
+      /**
+       * Withdraw fee failed
+       **/
+      WithdrawFailed: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
