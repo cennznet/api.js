@@ -157,7 +157,9 @@ describe('NFTs', () => {
 
   it('creates a token', async done => {
     let tokenId;
-    await api.tx.nft.mintUnique(collectionId, tokenOwner.address, attributes, null, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    const quantity = 1;
+    const metadataPath = {"Https": "example.com/nft/metadata" }
+    await api.tx.nft.mintSeries(collectionId, quantity, tokenOwner.address, metadataPath, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
           if (method == 'CreateToken') {
@@ -339,7 +341,6 @@ describe('NFTs', () => {
       && token.tokenId.seriesId.toNumber() ===  0
       && token.tokenId.serialNumber.toNumber() === 0
     );
-    expect(uniqueToken.attributes.toJSON()).toEqual(attributes);
     expect(uniqueToken.owner).toEqual(tokenOwner.address);
 
     const token1InSeries = tokenInfos.find((token) =>
