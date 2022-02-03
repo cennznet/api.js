@@ -127,12 +127,12 @@ function retrieveControllers(
  */
 export function query(
   instanceId: string,
-  api: ApiRx
+  api: ApiInterfaceRx
 ): (accountId: Uint8Array | string, flags: QueryFlags) => Observable<DeriveStakingQuery> {
   return memo(
     instanceId,
     (accountId: Uint8Array | string, flags: QueryFlags): Observable<DeriveStakingQuery> =>
-      api.derive.stakingCennznet.queryMulti([accountId], flags).pipe(map(([first]) => first))
+      ((api as unknown) as ApiRx).derive.stakingCennznet.queryMulti([accountId], flags).pipe(map(([first]) => first))
   );
 }
 

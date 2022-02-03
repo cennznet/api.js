@@ -30,7 +30,7 @@ export function nextElected(instanceId: string, api: ApiInterfaceRx): () => Obse
 /**
  * @description Retrieve latest list of validators
  */
-export function validators(instanceId: string, api: ApiRx): () => Observable<DeriveStakingValidators> {
+export function validators(instanceId: string, api: ApiInterfaceRx): () => Observable<DeriveStakingValidators> {
   return memo(
     instanceId,
     (): Observable<DeriveStakingValidators> =>
@@ -38,7 +38,7 @@ export function validators(instanceId: string, api: ApiRx): () => Observable<Der
       // in all actual real-world deployed chains, it does create some confusion for limited template chains
       combineLatest([
         api.query.session ? api.query.session.validators() : of([]),
-        api.query.staking ? api.derive.stakingCennznet.nextElected() : of([]),
+        api.query.staking ? ((api as unknown) as ApiRx).derive.stakingCennznet.nextElected() : of([]),
       ]).pipe(
         map(
           ([validators, nextElected]): DeriveStakingValidators => ({

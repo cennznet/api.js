@@ -3,6 +3,7 @@
 
 import { ApiRx } from '@cennznet/api';
 import type { Observable } from 'rxjs';
+import type { ApiInterfaceRx } from '@polkadot/api/types';
 import type { DeriveStakingOverview } from '@polkadot/api-derive/types';
 
 import { combineLatest } from 'rxjs';
@@ -13,11 +14,14 @@ import { memo } from '@polkadot/api-derive/util';
 /**
  * @description Retrieve the staking overview, including elected and points earned
  */
-export function overview(instanceId: string, api: ApiRx): () => Observable<DeriveStakingOverview> {
+export function overview(instanceId: string, api: ApiInterfaceRx): () => Observable<DeriveStakingOverview> {
   return memo(
     instanceId,
     (): Observable<DeriveStakingOverview> =>
-      combineLatest([api.derive.session.indexes(), api.derive.stakingCennznet.validators()]).pipe(
+      combineLatest([
+        api.derive.session.indexes(),
+        ((api as unknown) as ApiRx).derive.stakingCennznet.validators(),
+      ]).pipe(
         map(
           ([indexes, { nextElected, validators }]): DeriveStakingOverview => ({
             ...indexes,
