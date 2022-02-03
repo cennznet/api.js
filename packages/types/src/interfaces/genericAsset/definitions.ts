@@ -38,19 +38,10 @@ export default {
       },
     },
     PermissionLatest: 'PermissionsV1',
-    WithdrawReasons: {
-      _set: {
-        TransactionPayment: 0b00000001,
-        Transfer: 0b00000010,
-        Reserve: 0b00000100,
-        Fee: 0b00001000,
-        Tip: 0b00010000,
-      },
-    },
     BalanceLock: {
       id: 'LockIdentifier',
       amount: 'Balance',
-      reasons: 'WithdrawReasons',
+      reasons: 'Reasons',
     },
   },
 };

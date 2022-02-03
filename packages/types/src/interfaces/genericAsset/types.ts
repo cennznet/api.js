@@ -1,7 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types-codec';
+import type { Bytes, Compact, Enum, Struct, u64, u8 } from '@polkadot/types-codec';
+import type { Reasons } from '@polkadot/types/interfaces/balances';
 import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
 
 /** @name AssetInfoV40 */
@@ -27,7 +28,7 @@ export interface AssetOptions extends Struct {
 export interface BalanceLock extends Struct {
   readonly id: LockIdentifier;
   readonly amount: Balance;
-  readonly reasons: WithdrawReasons;
+  readonly reasons: Reasons;
 }
 
 /** @name Owner */
@@ -53,15 +54,6 @@ export interface PermissionVersions extends Enum {
   readonly isV1: boolean;
   readonly asV1: PermissionsV1;
   readonly type: 'V1';
-}
-
-/** @name WithdrawReasons */
-export interface WithdrawReasons extends Set {
-  readonly isTransactionPayment: boolean;
-  readonly isTransfer: boolean;
-  readonly isReserve: boolean;
-  readonly isFee: boolean;
-  readonly isTip: boolean;
 }
 
 export type PHANTOM_GENERICASSET = 'genericAsset';

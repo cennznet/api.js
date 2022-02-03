@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfoV41 as AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
+import { AssetInfoV41 as AssetInfo, AssetOptions, Hash, Vec, BalanceLock } from "@cennznet/types";
 import { Keyring } from '@polkadot/keyring';
-import { u8aToString } from '@polkadot/util';
+import {Reasons} from "@polkadot/types/interfaces";
+import {stringToHex, u8aToString} from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
@@ -148,12 +149,14 @@ describe('e2e queries', () => {
       const stakingAssetId = await api.query.genericAsset.stakingAssetId();
       const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stakingAssetId, stashId);
       expect(balanceLocks.isEmpty).toBeFalsy();
-      let reasons: WithdrawReasons = balanceLocks[0].reasons;
-      expect(reasons.isTransactionPayment).toBeTruthy();
-      expect(reasons.isTransfer).toBeTruthy();
-      expect(reasons.isTip).toBeTruthy();
-      expect(reasons.isReserve).toBeTruthy();
-      expect(reasons.isFee).toBeTruthy();
+      const lockDetails = {
+        "id": stringToHex("staking "),
+        "amount": 1000000,
+        "reasons": "All"
+      };
+      expect(balanceLocks[0].toJSON()).toStrictEqual(lockDetails);
+      let reasons: Reasons = balanceLocks[0].reasons;
+      expect(reasons.isAll).toBeTruthy();
       done();
     });
   });
