@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { ApiRx } from '@cennznet/api';
 import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 import type { Option } from '@polkadot/types';
@@ -126,12 +127,12 @@ function retrieveControllers(
  */
 export function query(
   instanceId: string,
-  api: ApiInterfaceRx
+  api: ApiRx
 ): (accountId: Uint8Array | string, flags: QueryFlags) => Observable<DeriveStakingQuery> {
   return memo(
     instanceId,
     (accountId: Uint8Array | string, flags: QueryFlags): Observable<DeriveStakingQuery> =>
-      api.derive.staking.queryMulti([accountId], flags).pipe(map(([first]) => first))
+      api.derive.stakingCennznet.queryMulti([accountId], flags).pipe(map(([first]) => first))
   );
 }
 
