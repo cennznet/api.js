@@ -55,7 +55,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                   first(),
                   map((tokenInfos: DeriveTokenInfo[]): DeriveTokenInfo[] => {
                     const tokenInfoWithListingId = tokenInfos.map((tokenInfo) => {
-                      const listingIdStr = listingTokenIds.find(([_listing, tokenId]) => {
+                      const listingIdStr = listingTokenIds.find(([, tokenId]) => {
                         return (
                           tokenId.toString() ===
                           [

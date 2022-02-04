@@ -74,7 +74,7 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
           if (args.length === 0) return EMPTY;
           return from(args).pipe(
             mergeMap((collectionId) =>
-              (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
+              api.rpc.nft.collectedTokens(collectionId, owner).pipe(
                 map((ownedTokens) => ownedTokens),
                 catchError((err: Error) => of(err))
               )

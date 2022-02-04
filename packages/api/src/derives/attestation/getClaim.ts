@@ -32,7 +32,6 @@ import { Claim } from './types';
  */
 export function getClaim(instanceId: string, api: ApiInterfaceRx) {
   return (holder: string, issuer: string, topic: string): Observable<Claim> => {
-    // @ts-ignore
     return api.query.attestation
       .values<AttestationValue>([holder, issuer, topic])
       .pipe(drr())
