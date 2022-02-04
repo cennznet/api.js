@@ -44,7 +44,6 @@ jobs:
           - "v36-compat"
           - "create|call|queries"
           - tx
-          #- attestation.*
           - cennzx.*
           - nft.*
           - staking
