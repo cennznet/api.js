@@ -403,6 +403,7 @@ describe('NFTs', () => {
               expect(listing.asFixedPrice.toJSON()).toEqual({
                 paymentAsset: spendingAssetId,
                 fixedPrice: price,
+                marketplaceId: null,
                 buyer: buyer.address,
                 close: blockNumber + duration,
                 seller: tokenOwner.address,
@@ -432,6 +433,7 @@ describe('NFTs', () => {
               paymentAsset: spendingAssetId,
               reservePrice,
               close: blockNumber + duration,
+              marketplaceId: null,
               seller: tokenOwner.address,
               tokens: [token],
               royaltiesSchedule: { entitlements: [] }

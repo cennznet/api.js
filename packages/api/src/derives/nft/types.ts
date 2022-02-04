@@ -17,7 +17,6 @@ import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-i
 
 export interface DeriveTokenInfo {
   tokenId: EnhancedTokenId;
-  attributes: NFTAttributeValue[];
   /* Token owner address. It is undefined if the token is burnt */
   owner: string | undefined;
   listingId?: ListingId;

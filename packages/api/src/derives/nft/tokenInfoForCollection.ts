@@ -29,23 +29,16 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
   return memo(
     instanceId,
     (collectionId: string): Observable<DeriveTokenInfo[]> =>
-      combineLatest([
-        api.query.nft.seriesAttributes.entries(collectionId),
-        api.query.nft.seriesAttributes.keys(collectionId),
-      ]).pipe(
-        switchMap(([entries, seriesIds]) => {
-          const seriesAttributeMap = entries.reduce((acc, detail, idx) => {
-            const index = seriesIds[idx].args[1].toString();
-            acc[index] = detail;
-            return acc;
-          }, {});
-          return api.query.nft.nextSerialNumber.multi(seriesIds.map((token) => [collectionId, token.args[1]])).pipe(
+      combineLatest([api.query.nft.nextSeriesId(collectionId)]).pipe(
+        switchMap(([seriesIds]) => {
+          const querySeriesList = [...Array(seriesIds.toNumber()).keys()];
+          return api.query.nft.nextSerialNumber.multi(querySeriesList.map((token) => [collectionId, token])).pipe(
             switchMap((nextSerialNumber: SerialNumber[]) => {
-              const queryArgs = seriesIds.map((token, idx) => {
+              const queryArgs = querySeriesList.map((token, idx) => {
                 const nextSerial = nextSerialNumber[idx];
                 const queryArgsList = [];
                 for (let i = 0; i < nextSerial.toNumber(); i++) {
-                  queryArgsList.push([{ seriesId: token.args[1], serialNumber: i }]);
+                  queryArgsList.push([{ seriesId: token, serialNumber: i }]);
                 }
                 return queryArgsList.reduce((acc, curr) => acc.concat(curr), []);
               });
@@ -54,15 +47,13 @@ export function tokenInfoForCollection(instanceId: string, api: ApiInterfaceRx):
                 []
               );
               return api.query.nft.tokenOwner
-                .multi(args.map((arg) => [[collectionId, arg.seriesId.toNumber()], arg.serialNumber]))
+                .multi(args.map((arg) => [[collectionId, arg.seriesId], arg.serialNumber]))
                 .pipe(
                   map((allOwners) => {
                     const emptyAddress = api.registry.createType('AccountId', null);
                     return args.map(({ seriesId, serialNumber }, idx) => {
-                      const attribute = seriesAttributeMap[seriesId.toString()];
                       return {
                         tokenId: new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]),
-                        attributes: attribute[1],
                         owner: allOwners[idx].toString() === emptyAddress.toString() ? null : allOwners[idx].toString(),
                       } as DeriveTokenInfo;
                     });
