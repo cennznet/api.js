@@ -1,7 +1,10 @@
+import { awaitDepositClaim, ClaimDeposited, extractEthereumSignature } from "@cennznet/api/util/helper";
+import { encodeAddress } from "@polkadot/util-crypto";
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
-
+import {AssetId, Balance, EventClaimId} from "@cennznet/types";
 import initApiPromise from '../../../../jest/initApiPromise';
+import {Api} from "@cennznet/api";
 
 describe('Eth bridge test', () => {
   let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
@@ -39,35 +42,64 @@ describe('Eth bridge test', () => {
   });
 
   describe('Eth bridge claims', () => {
-  it('Submit claim for test token 1 from BridgeTest account', async done => {
-    const depositTxHash = "0x40964ab316ac8fb083c1c6d171627478b9d6946bdde686e8ec3837e20c535cdb";
-    testTokenId1 = await api.query.genericAsset.nextAssetId();
-    const claim = {
-      tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-      amount: "1423",
-      beneficiary: "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10"
-    };
-    console.log('Claim::',claim.toString());
 
-    console.log('testTokenId1::',testTokenId1.toString());
-    let nonce = await api.rpc.system.accountNextIndex(alice.address);
-    await api.tx.erc20Peg.depositClaim(depositTxHash, claim).signAndSend(alice, {nonce}, async ({status, events}) => {
-      if (status.isInBlock) {
-        for (const {event: {method, section, data}} of events) {
-          console.log('\t', `: ${section}.${method}`, data.toString());
-          if (section === 'erc20Peg' && method == 'Erc20Claim') {
-            const [claimId, claimer] = data;
-            expect(claimId.toNumber() as number).toBeGreaterThanOrEqual(0);
-            expect(claimer.toString()).toEqual(alice.address);
-            done();
-          }
-        }
-      }
-    });
+    it('Submit claim for test token 1 from BridgeTest account', async done => {
+      const depositTxHash = "0x8de45761831d90b179fbf97ef47ac80d540ce619d7c9bb2b54a0fed13b6f714c";
+      testTokenId1 = await api.query.genericAsset.nextAssetId();
+      const depositAmount = "1423";
+      const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
+      const claim = {
+        tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        amount: depositAmount,
+        beneficiary: beneficiaryAcc
+      };
+      console.log('New token generated will be::',testTokenId1.toString());
+      const depositClaimEvent: ClaimDeposited = await awaitDepositClaim(api, depositTxHash, claim, alice) as ClaimDeposited;
+
+      const beneficiaryAddress = encodeAddress(beneficiaryAcc, 42); // convert public key to address
+
+      const {claimId, assetId, amount, beneficiary} = depositClaimEvent;
+      expect(claimId).toBeGreaterThanOrEqual(0);
+      expect(assetId).toEqual(testTokenId1.toString());
+      expect(amount).toEqual(depositAmount);
+      expect(beneficiary).toEqual(beneficiaryAddress);
+      const assetBalance = await api.query.genericAsset.freeBalance(testTokenId1.toNumber(), beneficiaryAddress);
+      expect(assetBalance.toString()).toBe(depositAmount);
+      done();
   });
 
+  it('Submit a wrong claim ', async done => {
+      const depositTxHash = "0x028a721fcfd6ffa48e1095294bc26570f61a1866a57b7e6162ddaebe22871608";
+      testTokenId1 = await api.query.genericAsset.nextAssetId();
+      const depositAmount = "1423";
+      const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
+      const claim = {
+        tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        amount: depositAmount,
+        beneficiary: beneficiaryAcc
+      };
+      await expect(awaitDepositClaim(api, depositTxHash, claim, alice)).rejects.toEqual(
+        'Claim deposition failed');
+      done();
+    });
+
+    it('Submitting same claim again show fail', async done => {
+      const depositTxHash = "0x8de45761831d90b179fbf97ef47ac80d540ce619d7c9bb2b54a0fed13b6f714c";
+      testTokenId1 = await api.query.genericAsset.nextAssetId();
+      const depositAmount = "1423";
+      const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
+      const claim = {
+        tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        amount: depositAmount,
+        beneficiary: beneficiaryAcc
+      };
+      await expect(awaitDepositClaim(api, depositTxHash, claim, alice)).rejects.toEqual(
+        'Claim already notarized');
+      done();
+    });
+
   it('Submit claim for test token 2 from Alice', async done => {
-    const depositTxHash = "0x53433bae44e94ff6e36dbaea06de296fe544619273095b6b8709862f0a551c38";
+    const depositTxHash = "0x736f081653a370dd76a8320a83d80a2939dd7d49e0ecdc99b99850d5b4256553";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "5644",
@@ -80,7 +112,7 @@ describe('Eth bridge test', () => {
           console.log('\t', `: ${section}.${method}`, data.toString());
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
-            expect(claimId.toNumber() as number).toBeGreaterThanOrEqual(0);
+            expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
             expect(claimer.toString()).toEqual(alice.address);
             done();
           }
@@ -90,7 +122,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Bob', async done => {
-    const depositTxHash = "0xbd1e5655b06edf00cc86e913a8f87ec0fcccff77ae2c91f3e8a13a7c1826e56a";
+    const depositTxHash = "0xd054dc0a46e07b8688aa9e1eee76ec7d88a129ba777845e3d8d55b4cd9beed3b";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "11644",
@@ -105,7 +137,7 @@ describe('Eth bridge test', () => {
           console.log('\t', `: ${section}.${method}`, data.toString());
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
-            expect(claimId.toNumber() as number).toBeGreaterThanOrEqual(0);
+            expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
             expect(claimer.toString()).toEqual(alice.address);
             done();
           }
@@ -163,13 +195,6 @@ describe('Eth bridge test', () => {
       done();
     });
 
-    it('Queries generic asset balance for test token 1 for BridgeTests account', async done => {
-      const bridgeTestAccount = '5FyKggXKhqAwJ2o9oBu8j3WHbCfPCz3uCuhTc4fTDgVniWNU';
-      const assetBalance = await api.query.genericAsset.freeBalance(testTokenId1.toNumber(), bridgeTestAccount);
-      expect(assetBalance.toString()).toBe("1423");
-      done();
-    });
-
     it('Queries generic asset balance for test token 2 for Alices account', async done => {
       const assetBalance = await api.query.genericAsset.freeBalance(testTokenId2.toNumber(), alice.address);
       expect(assetBalance.toString()).toBe("5644");
@@ -208,7 +233,6 @@ describe('Eth bridge test', () => {
     });
 
     it('Withdraw claim for test token 2 from Alice', async done => {
-      // const depositTxHash = "0xe1ddb6a283f0204c12c8a88941fa2a97d379af91d983366df9aa69e106b265ad";
       let nonce = await api.rpc.system.accountNextIndex(alice.address);
       let amount = 5644;
       const ethBeneficiary = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8';
@@ -218,9 +242,9 @@ describe('Eth bridge test', () => {
             console.log('\t', `: ${section}.${method}`, data.toString());
             if (section === 'erc20Peg' && method == 'Erc20Withdraw') {
               const [withdrawalId, assetId, amountt, beneficiary] = data;
-              expect(withdrawalId.toNumber() as number).toBeGreaterThanOrEqual(0);
+              expect((withdrawalId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
               // expect(assetId.toNumber()).toEqual(testTokenId2.toNumber());
-              expect(amountt.toNumber()).toEqual(amount);
+              expect((amountt as Balance).toNumber()).toEqual(amount);
               expect(beneficiary.toString()).toEqual(ethBeneficiary);
               done();
             }
@@ -247,14 +271,65 @@ describe('Eth bridge test', () => {
                 }
               });
               const [withdrawalId, assetId, amountt, beneficiary] = data;
-              expect(withdrawalId.toNumber() as number).toBeGreaterThanOrEqual(0);
-              expect(assetId.toNumber()).toEqual(testTokenId2.toNumber());
-              expect(amountt.toNumber()).toEqual(amount);
+              expect((withdrawalId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
+              expect((assetId as AssetId).toNumber()).toEqual(testTokenId2.toNumber());
+              expect((amountt as Balance).toNumber()).toEqual(amount);
               expect(beneficiary.toString()).toEqual(ethBeneficiary);
             }
           }
         }
       });
     });
+
+    it( 'Get event id from rpc call', async done => {
+      // TODO - uncomment the following when rata is healthy again..
+      // api = await Api.create({network: 'rata'});
+      // const versionedEventProof = (await api.rpc.ethy.getEventProof('0')).toJSON();
+      // expect(versionedEventProof.EventProof.eventId.toString()).toEqual('0');
+      const eventId = api.registry.createType('EthyEventId',1);
+      const eventProof = await api.derive.ethBridge.eventProof(eventId);
+      console.log('Proof::',eventProof);
+      expect(eventProof.eventId).toEqual('1');
+      done();
+    })
+
+    it( 'Get r,s,v from signature', async done => {
+      const sign = api.registry.createType('EthereumSignature', '0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb946bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b01');
+      const signatures = [sign];
+      const { r, s, v } = extractEthereumSignature(signatures);
+
+      expect(r[0]).toEqual('0x5e0a108f836af7c7aeb832382f0a237709da037abdac72cc16a8a54b77d2bb94');
+      expect(s[0]).toEqual('0x6bb8e78fd63af7594650b8d1a033046e3d08ad15a0b648a0473263e51fe70e1b');
+      expect(v[0]).toEqual(28);
+
+      done();
+    })
+
+    it(   'Get r,s,v from invalid signature', async done => {
+      const sign = api.registry.createType('EthereumSignature', '');
+      const signatures = [sign];
+      const { r, s, v } = extractEthereumSignature(signatures);
+      expect(r).toEqual(['0x0000000000000000000000000000000000000000000000000000000000000000']);
+      expect(s).toEqual(['0x0000000000000000000000000000000000000000000000000000000000000000']);
+      expect(v[0]).toEqual(27);
+
+      done();
+    })
+
+    it(   'For rata chain get series metadata URI at collection id 29', async done => {
+      const provider = 'wss://kong2.centrality.me/public/rata/ws';
+
+      const apiRata = await Api.create({provider});
+
+      const metadataPath = (await apiRata.query.nft.seriesMetadataURI(
+        29,
+        0
+      )).toHuman();
+      console.log('metadataPath::',metadataPath);
+      expect(metadataPath).toEqual("ipfs://QmWGYnnapNUT9voEx8gyZBXKsSgmWWQXdkCqRrucQ8qdmx");
+      await apiRata.disconnect();
+      done();
+    })
+
   })
 });
