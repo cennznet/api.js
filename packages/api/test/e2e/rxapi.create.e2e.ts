@@ -34,7 +34,7 @@ describe('e2e rx api create', () => {
     });
   });
 
-  it.skip ('Should create rx api instance with slim metadata', async done => {
+  it ('Should create rx api instance with slim metadata', async done => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     const api = await Api.create({provider, fullMeta: false});
     const stakingAssetId = await api.query.genericAsset.stakingAssetId();
@@ -43,7 +43,7 @@ describe('e2e rx api create', () => {
     done();
   });
 
-  it.skip ('Should create rx api instance with custom metadata', async done => {
+  it ('Should create rx api instance with custom metadata', async done => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     const api = await Api.create({provider, modules:['TransactionPayment', 'GenericAsset']});
     const stakingAssetId = await api.query.genericAsset.stakingAssetId();

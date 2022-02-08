@@ -44,6 +44,7 @@ export async function getMetadata(
   const metadataSlim = registry.createType('MetadataLatest', {
     extrinsic,
     pallets: filteredModuleMetadataLatest,
+    lookup: meta.asLatest.lookup,
   });
   const mVersionedSlim = new MetadataVersioned(registry, {
     magicNumber: magicNumber,
