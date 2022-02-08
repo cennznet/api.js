@@ -62,12 +62,22 @@ jobs:
     - name: install
       run: yarn
     - name: build
+      env:
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
       run: yarn build
     - name: start local Eth node
       run: |
         docker run --dns=127.0.0.1 -d --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
         docker container ls -a
     - name: Deploy contract and deposit
+      env:
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
       run: yarn deploy
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
@@ -100,6 +110,7 @@ jobs:
         TEST_TYPE: integration
         # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
+        API_KEY_1: ${{ secrets.API_KEY_1 }}
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand
   subscribe:
