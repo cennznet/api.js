@@ -1,5 +1,5 @@
 import { u64 } from '@cennznet/types';
-import { u8aToHex } from '@cennznet/util';
+import { u8aToHex } from '@polkadot/util';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { EthereumSignature } from '@polkadot/types/interfaces';
 import { H256 } from '@polkadot/types/interfaces/runtime';
