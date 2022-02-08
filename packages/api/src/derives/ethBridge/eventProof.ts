@@ -14,10 +14,10 @@
 
 import { extractEthereumSignature } from '@cennznet/api/util/helper';
 import { hexToString } from '@polkadot/util';
-import { Observable, combineLatest } from '@polkadot/x-rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 
-import { map, filter } from '@polkadot/x-rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 import { EthyEventId } from '@cennznet/types';
 import { EthEventProof } from './types';
 
