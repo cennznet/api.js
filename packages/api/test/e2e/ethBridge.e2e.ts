@@ -169,7 +169,8 @@ describe('Eth bridge test', () => {
 
             // show what we are busy with
             console.log(`\t${event.section}:${event.method}:: (phase=${phase.toString()})`);
-            console.log(`\t\t${event.meta.documentation.toString()}`);
+            console.log('event.meta::', event.meta);
+            // console.log(`\t\t${event.meta.documentation.toString()}`);
 
             // loop through each of the parameters, displaying the type and data
             event.data.forEach((data, index) => {
