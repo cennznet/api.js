@@ -25,8 +25,9 @@ describe('getMetadata()',  () => {
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
     const modules = mVersionedSlim.asLatest.pallets.toArray();
-    expect(modules.length).toEqual(essential.length);
-    const modulesName = modules.map(value => value.name.toString().toLowerCase());
+    const storageData = modules.filter(m => m.storage.isSome);
+    expect(storageData.length).toEqual(essential.length);
+    const modulesName = storageData.map(value => value.name.toString().toLowerCase());
     expect(modulesName.sort()).toEqual(essential.sort());
     done();
   });
@@ -40,8 +41,9 @@ describe('getMetadata()',  () => {
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
     const modules = mVersionedSlim.asLatest.pallets.toArray();
-    expect(modules.length).toEqual(keepMetaFor.length + essential.length);
-    const modulesNameRecieved = modules.map(value => value.name.toString().toLowerCase());
+    const storageData = modules.filter(m => m.storage.isSome);
+    expect(storageData.length).toEqual(keepMetaFor.length + essential.length);
+    const modulesNameRecieved = storageData.map(value => value.name.toString().toLowerCase());
     const modulesNameExpected = keepMetaFor.concat(essential).map(value => value.toLowerCase());
     expect(modulesNameRecieved.sort()).toEqual(modulesNameExpected.sort());
     done();
