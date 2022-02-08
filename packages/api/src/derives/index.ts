@@ -23,6 +23,7 @@ import * as nft from './nft';
 import * as session from './session';
 import * as stakingCennznet from './staking';
 import * as balances from './balances';
+import * as ethBridge from './ethBridge';
 // import * as governance from './governance';
 
 export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: any[]) => Observable<any>;
@@ -30,7 +31,7 @@ export type DeriveFunc = (instanceId: string, api: ApiInterfaceRx) => (...args: 
 // export const derive = { attestation, balances, cennzx, fees, governance, nft, staking, session };
 // As per https://github.com/polkadot-js/api/blob/master/packages/api-derive/src/bundle.ts#L67 -
 // staking derive is enabled only if it has storage for erasRewardPoints so we updated staking to stakingCennznet
-export const derive = { stakingCennznet, attestation, balances, cennzx, fees, nft, session };
+export const derive = { stakingCennznet, attestation, balances, cennzx, ethBridge, fees, nft, session };
 
 export type DecoratedCennznetDerive<
   ApiType extends ApiTypes,
