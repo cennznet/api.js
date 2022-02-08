@@ -9,7 +9,7 @@ import { WsProvider } from '@polkadot/rpc-provider';
 import type { HexString } from '@polkadot/util/types';
 
 // All the CENNZnet specific runtime modules supported in version 1.4.1 + essential module from substrate (system, timestamp)
-export const essential = ['system', 'timestamp', 'transactionpayment', 'genericasset', 'cennzx', 'nft'];
+export const essential = ['system', 'timestamp', 'transactionpayment', 'genericasset', 'cennzx', 'nft', 'basefee'];
 
 // Check if provider is WsProvider
 function isWsProvider(providerInterface: ProviderInterface): providerInterface is WsProvider {
@@ -39,7 +39,19 @@ export async function getMetadata(
   const magicNumber = meta.magicNumber;
   const modules = meta.asLatest.pallets.toArray(); // changed from modules to pallets
   const extrinsic = meta.asLatest.extrinsic;
-  const filteredModule = modules.filter((mod) => mergedModules.find((a) => a === mod.name.toString().toLowerCase()));
+  const filteredModule = modules.map((mod) => {
+    if (mergedModules.find((a) => a === mod.name.toString().toLowerCase())) {
+      // add storage, call, constants, events for essential modules
+      return mod;
+    } else {
+      // add only events info for other runtime module
+      return {
+        events: mod.events,
+        index: mod.index,
+        name: mod.name,
+      };
+    }
+  });
   const filteredModuleMetadataLatest = registry.createType('Vec<PalletMetadataLatest>', filteredModule);
   const metadataSlim = registry.createType('MetadataLatest', {
     extrinsic,

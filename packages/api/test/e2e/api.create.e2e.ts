@@ -150,15 +150,17 @@ describe('e2e api create', () => {
     await tx.send(async ({ events, status }: SubmittableResult) => {
       console.log('status:::', status.toHuman());
       if (status.isInBlock) {
-      const aliceAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, alice.address);
-      const alicesBalanceAfter = aliceAssetBalance.toNumber();
-      console.log('Alices Balance after ', aliceAssetBalance.toString());
-      const bobAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, bob.address);
-      const bobsBalanceAfter = bobAssetBalance.toNumber();
-      console.log('Bobs Balance after ', bobAssetBalance.toString());
-      expect(alicesBalanceBefore+amount).toEqual(alicesBalanceAfter);
-      expect(bobsBalanceBefore-amount).toEqual(bobsBalanceAfter);
-      done();
+        expect(events[0].event.method).toEqual('Transferred');
+        expect(events[0].event.section).toEqual('genericAsset');
+        const aliceAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, alice.address);
+        const alicesBalanceAfter = aliceAssetBalance.toNumber();
+        console.log('Alices Balance after ', aliceAssetBalance.toString());
+        const bobAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, bob.address);
+        const bobsBalanceAfter = bobAssetBalance.toNumber();
+        console.log('Bobs Balance after ', bobAssetBalance.toString());
+        expect(alicesBalanceBefore+amount).toEqual(alicesBalanceAfter);
+        expect(bobsBalanceBefore-amount).toEqual(bobsBalanceAfter);
+        done();
       }
     });
   });
@@ -167,27 +169,14 @@ describe('e2e api create', () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     api = await Api.create({provider, fullMeta: false});
     const stakingAssetId = await api.query.genericAsset.stakingAssetId();
-    const assetBalanceAlice = await api.query.genericAsset.freeBalance(stakingAssetId, alice.address);
-    const alicesBalanceBefore = assetBalanceAlice.toNumber();
-    console.log('Alices Balance before ', alicesBalanceBefore.toString());
-    const assetBalanceBob = await api.query.genericAsset.freeBalance(stakingAssetId, bob.address);
-    const bobsBalanceBefore = assetBalanceBob.toNumber();
-    console.log('Bobs Balance before ', bobsBalanceBefore.toString());
-    const amount = 1121;
     const nonce = await api.rpc.system.accountNextIndex(alice.address);
     const tx = api.tx.genericAsset
-      .transfer(stakingAssetId, bob.address, amount)
+      .transfer(stakingAssetId, bob.address, 1121)
       .sign(alice, { nonce });
     await tx.send(async ({ events, status }: SubmittableResult) => {
       if (status.isInBlock) {
-        const aliceAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, alice.address);
-        const alicesBalanceAfter = aliceAssetBalance.toNumber();
-        console.log('Alices Balance after ', aliceAssetBalance.toString());
-        const bobAssetBalance = await api.query.genericAsset.freeBalance(stakingAssetId, bob.address);
-        const bobsBalanceAfter = bobAssetBalance.toNumber();
-        console.log('Bobs Balance after ', bobAssetBalance.toString());
-        expect(alicesBalanceBefore-amount).toEqual(alicesBalanceAfter);
-        expect(bobsBalanceBefore+amount).toEqual(bobsBalanceAfter);
+        expect(events[0].event.method).toEqual('Transferred');
+        expect(events[0].event.section).toEqual('genericAsset');
         done();
       }
     });
