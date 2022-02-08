@@ -10,3 +10,4 @@ export { default as transactionPayment } from './transactionPayment/definitions'
 export { default as governance } from './governance/definitions';
 export { default as ethy } from './ethy/definitions';
 export { default as ethBridge } from './ethBridge/definitions';
+export { default as ethWallet } from './ethWallet/definitions';

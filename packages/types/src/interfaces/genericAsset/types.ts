@@ -24,6 +24,13 @@ export interface AssetOptions extends Struct {
   readonly permissions: PermissionLatest;
 }
 
+/** @name BalanceInformation */
+export interface BalanceInformation extends Struct {
+  readonly reserved: Balance;
+  readonly staked: Balance;
+  readonly available: Balance;
+}
+
 /** @name BalanceLock */
 export interface BalanceLock extends Struct {
   readonly id: LockIdentifier;

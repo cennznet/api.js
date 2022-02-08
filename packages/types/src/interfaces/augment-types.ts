@@ -5,9 +5,9 @@ import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfa
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { Details, Erc20DepositEvent, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
-import type { AssetInfoV40, AssetInfoV41, AssetOptions, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV40, AssetInfoV41, AssetOptions, BalanceInformation, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionNameType, FixedPriceListing, Listing, ListingId, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenLockReason } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionInfo, CollectionNameType, FixedPriceListing, Listing, ListingId, ListingResponse, ListingResponseWrapper, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenInfo, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -130,6 +130,7 @@ declare module '@polkadot/types/types/registry' {
     BabeWeight: BabeWeight;
     BackedCandidate: BackedCandidate;
     Balance: Balance;
+    BalanceInformation: BalanceInformation;
     BalanceLock: BalanceLock;
     BalanceLockTo212: BalanceLockTo212;
     BalanceOf: BalanceOf;
@@ -199,6 +200,7 @@ declare module '@polkadot/types/types/registry' {
     CollatorId: CollatorId;
     CollatorSignature: CollatorSignature;
     CollectionId: CollectionId;
+    CollectionInfo: CollectionInfo;
     CollectionNameType: CollectionNameType;
     CollectiveOrigin: CollectiveOrigin;
     CommittedCandidateReceipt: CommittedCandidateReceipt;
@@ -526,6 +528,8 @@ declare module '@polkadot/types/types/registry' {
     LiquidityValueResponse: LiquidityValueResponse;
     Listing: Listing;
     ListingId: ListingId;
+    ListingResponse: ListingResponse;
+    ListingResponseWrapper: ListingResponseWrapper;
     LocalValidationData: LocalValidationData;
     LockIdentifier: LockIdentifier;
     LookupSource: LookupSource;
@@ -912,6 +916,7 @@ declare module '@polkadot/types/types/registry' {
     Timepoint: Timepoint;
     TokenCount: TokenCount;
     TokenId: TokenId;
+    TokenInfo: TokenInfo;
     TokenLockReason: TokenLockReason;
     TombstoneContractInfo: TombstoneContractInfo;
     TraceBlockResponse: TraceBlockResponse;

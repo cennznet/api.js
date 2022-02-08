@@ -3,11 +3,12 @@
 
 import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
+import type { BalanceInformation } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { CollectionId } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionInfo, ListingResponseWrapper, SerialNumber, SeriesId, TokenInfo } from '@cennznet/types/interfaces/nft';
 import type { AugmentedRpc } from '@polkadot/rpc-core/types';
 import type { Metadata, StorageKey } from '@polkadot/types';
-import type { Bytes, HashMap, Json, Null, Option, Text, U256, U64, Vec, bool, u32, u64 } from '@polkadot/types-codec';
+import type { Bytes, HashMap, Json, Null, Option, Text, U256, U64, Vec, bool, u128, u16, u32, u64 } from '@polkadot/types-codec';
 import type { AnyNumber, Codec, ITuple } from '@polkadot/types-codec/types';
 import type { AssetInfoV41 as AssetInfo } from '@cennznet/types/interfaces/genericAsset';
 import { EnhancedTokenId } from "@cennznet/types/interfaces/nft/enhanced-token-id";
@@ -363,6 +364,10 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
     };
     genericAsset: {
       /**
+       * Get balance for users generic assets
+       **/
+      getBalance: AugmentedRpc<(AccountId: AccountId | string | Uint8Array, AssetId: AssetId | AnyNumber | Uint8Array) => Observable<BalanceInformation>>;
+      /**
        * Get all registered generic assets (symbol, decimal places)
        **/
       registeredAssets: AugmentedRpc<() => Observable<Vec<ITuple<[AssetId, AssetInfo]>>>>;
@@ -421,6 +426,18 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
        * Get the tokens owned by an address in a certain collection
        **/
       collectedTokens: AugmentedRpc<(collection: CollectionId | AnyNumber | Uint8Array, address: Address | { Id: any } | { Index: any } | { Raw: any } | { Address32: any } | { Address20: any } | string | Uint8Array) => Observable<Vec<EnhancedTokenId>>>;
+      /**
+       * Get collection info from a given collection
+       **/
+      getCollectionInfo: AugmentedRpc<(CollectionId: CollectionId | AnyNumber | Uint8Array) => Observable<Option<CollectionInfo>>>;
+      /**
+       * Get collection listing from a given collection
+       **/
+      getCollectionListings: AugmentedRpc<(CollectionId: CollectionId | AnyNumber | Uint8Array, cursor: u128 | AnyNumber | Uint8Array, limit: u16 | AnyNumber | Uint8Array) => Observable<Option<ListingResponseWrapper>>>;
+      /**
+       * Get token info
+       **/
+      getTokenInfo: AugmentedRpc<(CollectionId: CollectionId | AnyNumber | Uint8Array, SeriesId: SeriesId | AnyNumber | Uint8Array, SerialNumber: SerialNumber | AnyNumber | Uint8Array) => Observable<TokenInfo>>;
     };
     offchain: {
       /**

@@ -14,6 +14,52 @@ export default {
             ],
             type: 'Vec<EnhancedTokenId>',
           },
+        getCollectionInfo: {
+          description: 'Get collection info from a given collection',
+          params: [
+            {
+              name: 'CollectionId',
+              type: 'CollectionId'
+            }
+          ],
+          type: 'Option<CollectionInfo>',
+        },
+        getCollectionListings: {
+          description: 'Get collection listing from a given collection',
+          params: [
+            {
+              name: 'CollectionId',
+              type: 'CollectionId'
+            },
+            {
+              name: 'cursor',
+              type: 'u128'
+            },
+            {
+              name: 'limit',
+              type: 'u16'
+            }
+          ],
+          type: 'Option<ListingResponseWrapper<AccountId>>',
+        },
+      getTokenInfo: {
+        description: 'Get token info',
+        params: [
+          {
+            name: 'CollectionId',
+            type: 'CollectionId'
+          },
+          {
+            name: 'SeriesId',
+            type: 'SeriesId'
+          },
+          {
+            name: 'SerialNumber',
+            type: 'SerialNumber'
+          }
+        ],
+        type: 'TokenInfo<AccountId>',
+      },
     },
     types: {
         'TokenId': '(CollectionId, SeriesId, SerialNumber)',
@@ -83,6 +129,31 @@ export default {
           '_enum': {
             'ListingId': 'ListingId'
           }
-        }
+        },
+        'CollectionInfo': {
+          'name': 'Vec<u8>',
+          'owner': 'AccountId',
+          'royalties': 'Vec<(AccountId, Permill)>'
+        },
+        'ListingResponse': {
+          'id': 'ListingId',
+          'listingType': 'Vec<u8>',
+          'paymentAsset': 'AssetId',
+          'price': 'Balance',
+          'endBlock': 'BlockNumber',
+          'buyer': 'Option<AccountId>',
+          'seller': 'AccountId',
+          'tokenIds': 'Vec<TokenId>',
+          'royalties': 'Vec<(AccountId, Permill)>'
+        },
+        'ListingResponseWrapper': {
+          'listings': 'Vec<ListingResponse<AccountId>>',
+          'newCursor': 'Option<u128>'
+        },
+      'TokenInfo':{
+        'attributes': 'Vec<NFTAttributeValue>',
+        'owner': 'AccountId',
+        'royalties': 'Vec<(AccountId, Permill)>'
+      }
     }
 }

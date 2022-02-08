@@ -26,6 +26,13 @@ export interface AuctionListing extends Struct {
 /** @name CollectionId */
 export interface CollectionId extends u32 {}
 
+/** @name CollectionInfo */
+export interface CollectionInfo extends Struct {
+  readonly name: Bytes;
+  readonly owner: AccountId;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
+
 /** @name CollectionNameType */
 export interface CollectionNameType extends Bytes {}
 
@@ -51,6 +58,25 @@ export interface Listing extends Enum {
 
 /** @name ListingId */
 export interface ListingId extends u128 {}
+
+/** @name ListingResponse */
+export interface ListingResponse extends Struct {
+  readonly id: ListingId;
+  readonly listingType: Bytes;
+  readonly paymentAsset: AssetId;
+  readonly price: Balance;
+  readonly endBlock: BlockNumber;
+  readonly buyer: Option<AccountId>;
+  readonly seller: AccountId;
+  readonly tokenIds: Vec<TokenId>;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
+
+/** @name ListingResponseWrapper */
+export interface ListingResponseWrapper extends Struct {
+  readonly listings: Vec<ListingResponse>;
+  readonly newCursor: Option<u128>;
+}
 
 /** @name MetadataScheme */
 export interface MetadataScheme extends Enum {
@@ -108,6 +134,13 @@ export interface TokenCount extends u32 {}
 
 /** @name TokenId */
 export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
+
+/** @name TokenInfo */
+export interface TokenInfo extends Struct {
+  readonly attributes: Vec<NFTAttributeValue>;
+  readonly owner: AccountId;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
 
 /** @name TokenLockReason */
 export interface TokenLockReason extends Enum {
