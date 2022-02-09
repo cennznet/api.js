@@ -1,8 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Struct, Text, Vec, u32 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
+import type { Bytes, Enum, Struct, Text, Vec, u32 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId, H256 } from '@polkadot/types/interfaces/runtime';
 
 /** @name AcceptPayload */
@@ -44,6 +44,7 @@ export interface Member extends Struct {
 export interface MemberRoles extends Enum {
   readonly isAdminRole: boolean;
   readonly isMemberRole: boolean;
+  readonly type: 'AdminRole' | 'MemberRole';
 }
 
 /** @name Message */
@@ -71,6 +72,7 @@ export interface Response extends Enum {
   readonly asDeviceIdResponse: DeviceIdResponse;
   readonly isPreKeyBundlesResponse: boolean;
   readonly asPreKeyBundlesResponse: PreKeyBundlesResponse;
+  readonly type: 'DeviceIdResponse' | 'PreKeyBundlesResponse';
 }
 
 /** @name SyloMessageId */

@@ -18,7 +18,7 @@ jobs:
         access_token: ${{ github.token }}
     - uses: actions/setup-node@v1
       with:
-        node-version: '15.3'
+        node-version: '16'
     - name: cache node modules
       id: cache
       uses: actions/cache@v2
@@ -52,14 +52,40 @@ jobs:
           - send
           - getMetadata
           - governance
+          - ethBridge
     steps:
+    - name: start local Eth node setup
+      uses: actions/checkout@v2
+      with:
+        repository: cennznet/bridge-contracts
+        ref: main
+    - name: install
+      run: yarn
+    - name: build
+      env:
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
+      run: yarn build
+    - name: start local Eth node
+      run: |
+        docker run --dns=127.0.0.1 -dit --name ethNode -p 8545:8545 -p 30303:30303  ethereumoptimism/hardhat
+        docker container ls -a
+    - name: Deploy contract and deposit
+      env:
+        ETH_ACCOUNT_KEY: ${{ secrets.ETH_ACCOUNT_KEY }}
+        ROPSTEN_INFURA_API_KEY: ${{ secrets.ROPSTEN_INFURA_API_KEY }}
+        RINKEBY_INFURA_API_KEY: ${{ secrets.RINKEBY_INFURA_API_KEY }}
+        MAINNET_INFURA_API_KEY: ${{ secrets.MAINNET_INFURA_API_KEY }}
+      run: yarn deploy
     - uses: styfle/cancel-workflow-action@0.6.0
       with:
         access_token: ${{ github.token }}
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.19'
+        node-version: '16'
     - name: cache node modules
       id: cache
       uses: actions/cache@v2
@@ -73,14 +99,18 @@ jobs:
       if: contains(${{ matrix['test-suite'] }}, 'v36')
       run: |
         docker run --network=host -d cennznet/cennznet:1.1.1 --dev --ws-external --ws-port=9945 --no-mdns
-    - name: start latest test node
+    - name: start latest test node and list all docker container
       run: |
-        docker run --pull=always --network=host -d cennznet/cennznet:f16e01b --dev --tmp --ws-external --rpc-external --no-mdns
+        docker network create my-bridge-net
+        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:2.1.0-rc1 --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
+        docker network connect my-bridge-net ethNode
+        docker exec testnet_node_alice curl ethNode:8545
     - name: test
       env:
         TEST_TYPE: integration
         # arbitrary value to disable internal API logging in test output
         NODE_ENV: disable-logging
+        API_KEY_1: ${{ secrets.API_KEY_1 }}
       run: |
         npx jest -c jest/integration.config.js "${{ matrix['test-suite'] }}" --bail  --forceExit --detectOpenHandles --runInBand
   subscribe:
@@ -90,7 +120,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '15.3'
+        node-version: '16'
     - name: start latest test node
       run: |
         docker run --pull=always --network=host -d cennznet/cennznet:latest --dev --tmp --ws-external --rpc-external --no-mdns

@@ -1,17 +1,10 @@
 // Auto-generated via `yarn polkadot-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from '@polkadot/api/types';
+import type { ApiTypes } from '@polkadot/api-base/types';
 
-declare module '@polkadot/api/types/errors' {
-  export interface AugmentedErrors<ApiType> {
-    attestation: {
-      TopicNotRegistered: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
+declare module '@polkadot/api-base/types/errors' {
+  export interface AugmentedErrors<ApiType extends ApiTypes> {
     authorship: {
       /**
        * The uncle is genesis.
@@ -46,6 +39,24 @@ declare module '@polkadot/api/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
+    babe: {
+      /**
+       * A given equivocation report is valid but already previously reported.
+       **/
+      DuplicateOffenceReport: AugmentedError<ApiType>;
+      /**
+       * An equivocation proof provided as part of an equivocation report is invalid.
+       **/
+      InvalidEquivocationProof: AugmentedError<ApiType>;
+      /**
+       * A key ownership proof provided as part of an equivocation report is invalid.
+       **/
+      InvalidKeyOwnershipProof: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
     cennzx: {
       AssetCannotSwapForItself: AugmentedError<ApiType>;
       CannotAddLiquidityWithZero: AugmentedError<ApiType>;
@@ -65,6 +76,72 @@ declare module '@polkadot/api/types/errors' {
       MinimumLiquidityRequirementNotMet: AugmentedError<ApiType>;
       MinimumTradeAssetRequirementNotMet: AugmentedError<ApiType>;
       Overflow: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    ethereum: {
+      /**
+       * Signature is invalid.
+       **/
+      InvalidSignature: AugmentedError<ApiType>;
+      /**
+       * Pre-log is present, therefore transact is not allowed.
+       **/
+      PreLogExists: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    ethWallet: {
+      /**
+       * Can't pay fees
+       **/
+      CantPay: AugmentedError<ApiType>;
+      /**
+       * Signature decode fails.
+       **/
+      DecodeFailure: AugmentedError<ApiType>;
+      /**
+       * Nonce invalid
+       **/
+      InvalidNonce: AugmentedError<ApiType>;
+      /**
+       * Signature & account mismatched.
+       **/
+      InvalidSignature: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+    evm: {
+      /**
+       * Not enough balance to perform action
+       **/
+      BalanceLow: AugmentedError<ApiType>;
+      /**
+       * Calculating total fee overflowed
+       **/
+      FeeOverflow: AugmentedError<ApiType>;
+      /**
+       * Gas price is too low.
+       **/
+      GasPriceTooLow: AugmentedError<ApiType>;
+      /**
+       * Nonce is invalid
+       **/
+      InvalidNonce: AugmentedError<ApiType>;
+      /**
+       * Calculating total payment overflowed
+       **/
+      PaymentOverflow: AugmentedError<ApiType>;
+      /**
+       * Withdraw fee failed
+       **/
+      WithdrawFailed: AugmentedError<ApiType>;
       /**
        * Generic error
        **/
@@ -332,10 +409,6 @@ declare module '@polkadot/api/types/errors' {
     };
     nft: {
       /**
-       * Cannot mint additional tokens in a unique issue series
-       **/
-      AddToUniqueIssue: AugmentedError<ApiType>;
-      /**
        * Auction bid was lower than reserve or current highest bid
        **/
       BidTooLow: AugmentedError<ApiType>;
@@ -352,7 +425,11 @@ declare module '@polkadot/api/types/errors' {
        **/
       InternalPayment: AugmentedError<ApiType>;
       /**
-       * Given attirbute value is larger than the configured max.
+       * The account_id hasn't been registered as a marketplace
+       **/
+      MarketplaceNotRegistered: AugmentedError<ApiType>;
+      /**
+       * Given attribute value is larger than the configured max.
        **/
       MaxAttributeLength: AugmentedError<ApiType>;
       /**
@@ -585,6 +662,10 @@ declare module '@polkadot/api/types/errors' {
     };
     system: {
       /**
+       * The origin filter prevent the call to be dispatched.
+       **/
+      CallFiltered: AugmentedError<ApiType>;
+      /**
        * Failed to extract the runtime version from the new runtime.
        * 
        * Either calling `Core_version` or decoding `RuntimeVersion` failed.
@@ -623,13 +704,23 @@ declare module '@polkadot/api/types/errors' {
        **/
       InvalidIndex: AugmentedError<ApiType>;
       /**
+       * Too many approvals in the queue.
+       **/
+      TooManyApprovals: AugmentedError<ApiType>;
+      /**
        * Generic error
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-  }
-
-  export interface DecoratedErrors<ApiType extends ApiTypes> extends AugmentedErrors<ApiType> {
-    [key: string]: ModuleErrors<ApiType>;
-  }
-}
+    utility: {
+      /**
+       * Too many calls batched.
+       **/
+      TooManyCalls: AugmentedError<ApiType>;
+      /**
+       * Generic error
+       **/
+      [key: string]: AugmentedError<ApiType>;
+    };
+  } // AugmentedErrors
+} // declare module

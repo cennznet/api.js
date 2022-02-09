@@ -171,9 +171,9 @@ describe('runtime v36 compatibility', () => {
       expect(extrinsicList[0].method.method).toEqual('set');
       expect(extrinsicList[1].method.section).toEqual('finalityTracker');
       expect(extrinsicList[1].method.method).toEqual('finalHint');
-      expect(extrinsicList[2].method.section).toEqual('syloE2Ee');
+      expect(extrinsicList[2].method.section).toEqual('syloE2EE');
       expect(extrinsicList[2].method.method).toEqual('replenishPkbs');
-      expect(extrinsicList[3].method.section).toEqual('syloE2Ee');
+      expect(extrinsicList[3].method.section).toEqual('syloE2EE');
       expect(extrinsicList[3].method.method).toEqual('withdrawPkbs');
     });
 

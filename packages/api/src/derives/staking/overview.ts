@@ -1,6 +1,7 @@
 // Copyright 2017-2020 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { ApiRx } from '@cennznet/api';
 import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 import type { DeriveStakingOverview } from '@polkadot/api-derive/types';
@@ -17,7 +18,10 @@ export function overview(instanceId: string, api: ApiInterfaceRx): () => Observa
   return memo(
     instanceId,
     (): Observable<DeriveStakingOverview> =>
-      combineLatest([api.derive.session.indexes(), api.derive.staking.validators()]).pipe(
+      combineLatest([
+        api.derive.session.indexes(),
+        ((api as unknown) as ApiRx).derive.stakingCennznet.validators(),
+      ]).pipe(
         map(
           ([indexes, { nextElected, validators }]): DeriveStakingOverview => ({
             ...indexes,

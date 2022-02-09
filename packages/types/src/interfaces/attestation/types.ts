@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { u256 } from '@polkadot/types';
+import type { u256 } from '@polkadot/types-codec';
 
 /** @name AttestationTopic */
 export interface AttestationTopic extends u256 {}

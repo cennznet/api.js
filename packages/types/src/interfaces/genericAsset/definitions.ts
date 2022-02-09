@@ -5,6 +5,20 @@ export default {
       params: [],
       type: 'Vec<(AssetId, AssetInfo)>',
     },
+    getBalance: {
+      description: 'Get balance for users generic assets',
+      params: [
+        {
+          name: 'AccountId',
+          type: 'AccountId',
+        },
+        {
+          name: 'AssetId',
+          type: 'AssetId',
+        },
+      ],
+      type: 'BalanceInformation',
+    }
   },
   types: {
     AssetOptions: {
@@ -38,19 +52,15 @@ export default {
       },
     },
     PermissionLatest: 'PermissionsV1',
-    WithdrawReasons: {
-      _set: {
-        TransactionPayment: 0b00000001,
-        Transfer: 0b00000010,
-        Reserve: 0b00000100,
-        Fee: 0b00001000,
-        Tip: 0b00010000,
-      },
-    },
     BalanceLock: {
       id: 'LockIdentifier',
       amount: 'Balance',
-      reasons: 'WithdrawReasons',
+      reasons: 'Reasons',
     },
+    BalanceInformation: {
+      reserved: 'Balance',
+      staked: 'Balance',
+      available: 'Balance'
+    }
   },
 };

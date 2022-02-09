@@ -67,7 +67,7 @@ afterAll(async () => {
   await api.disconnect();
 });
 
-describe('Governance', () => {
+describe.skip('Governance', () => {
 
   it('List all council members', async done => {
     const councilMembers: Vec<AccountId> = await api.query.governance.council();

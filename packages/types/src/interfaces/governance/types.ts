@@ -1,8 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Option, Struct, Vec, bool, u128, u64 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
+import type { Bytes, Enum, Option, Struct, Vec, bool, u128, u64, u8 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId, BlockNumber } from '@polkadot/types/interfaces/runtime';
 
 /** @name GovernanceProposal */
@@ -21,6 +21,7 @@ export interface ProposalStatusInfo extends Enum {
   readonly isApprovedWaitingEnactment: boolean;
   readonly isApprovedEnactmentCancelled: boolean;
   readonly isDisapproved: boolean;
+  readonly type: 'Deliberation' | 'ApprovedWaitingEnactment' | 'ApprovedEnactmentCancelled' | 'Disapproved';
 }
 
 /** @name ProposalVoteInfo */
@@ -33,6 +34,11 @@ export interface ProposalVoteInfo extends Struct {
 export interface ProposalVotes extends Struct {
   readonly proposalId: ProposalId;
   readonly votes: Vec<ITuple<[AccountId, Option<bool>]>>;
+}
+
+/** @name ReferendumVoteCount */
+export interface ReferendumVoteCount extends Struct {
+  readonly vote: u8;
 }
 
 export type PHANTOM_GOVERNANCE = 'governance';

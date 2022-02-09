@@ -17,6 +17,7 @@ import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
 import { IKeyringPair, Registry } from '@polkadot/types/types';
 
+import { HexString } from '@polkadot/util/types';
 import { ChargeTransactionPayment, Index } from '../../types';
 import { defaultExtensions, expandExtensionTypes } from '../signedExtensions';
 import { ExtrinsicPayloadValue } from '../types';
@@ -28,7 +29,7 @@ import { ExtrinsicPayloadValue } from '../types';
  * on the contents included
  */
 export default class CENNZnetExtrinsicPayloadV1 extends Struct {
-  constructor(registry: Registry, value?: ExtrinsicPayloadValue | Uint8Array | string) {
+  constructor(registry: Registry, value?: ExtrinsicPayloadValue | Uint8Array | HexString) {
     super(
       registry,
       {

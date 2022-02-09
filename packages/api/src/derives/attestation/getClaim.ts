@@ -31,16 +31,17 @@ import { Claim } from './types';
  *  @returns the claim
  */
 export function getClaim(instanceId: string, api: ApiInterfaceRx) {
-  return (holder: string, issuer: string, topic: string): Observable<Claim> =>
-    api.query.attestation
+  return (holder: string, issuer: string, topic: string): Observable<Claim> => {
+    return api.query.attestation
       .values<AttestationValue>([holder, issuer, topic])
       .pipe(drr())
       .pipe(
-        map(value => ({
+        map((value) => ({
           holder,
           issuer,
           topic,
           value,
         }))
       );
+  };
 }

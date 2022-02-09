@@ -36,7 +36,7 @@ afterAll(async () => {
 describe('Staking derived queries', () => {
 
   test('test elected validators info for local chain', async done =>{
-    const electedValidatorInfo = await api.derive.staking.electedInfo();
+    const electedValidatorInfo = await api.derive.stakingCennznet.electedInfo();
     const {info, nextElected, validators} = electedValidatorInfo;
     expect(info).toBeDefined();
     expect(info[0].accountId.toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
@@ -53,7 +53,7 @@ describe('Staking derived queries', () => {
   })
 
   test('test waiting validators info query', async done =>{
-    const waitingValidatorsToBeElected = await api.derive.staking.waitingInfo();
+    const waitingValidatorsToBeElected = await api.derive.stakingCennznet.waitingInfo();
     const {info, waiting} = waitingValidatorsToBeElected;
     expect(info.length).toEqual(0);
     expect(waiting.length).toEqual(0);
@@ -61,20 +61,20 @@ describe('Staking derived queries', () => {
   })
 
   test('validators info', async done => {
-    const validatorDetails = await api.derive.staking.validators();
+    const validatorDetails = await api.derive.stakingCennznet.validators();
     expect(validatorDetails.nextElected[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     expect(validatorDetails.validators[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
   test('get all validators', async done => {
-    const validatorList = await api.derive.staking.stashes();
+    const validatorList = await api.derive.stakingCennznet.stashes();
     expect(validatorList[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
   test('test staking overview query', async done => {
-    const validatorOverview = await api.derive.staking.overview();
+    const validatorOverview = await api.derive.stakingCennznet.overview();
     expect(validatorOverview.activeEra.toString()).toEqual('0');
     expect(validatorOverview.activeEraStart.unwrap().toNumber()).toBeGreaterThanOrEqual(0);
     expect(validatorOverview.currentEra.toString()).toEqual('0');
@@ -262,7 +262,7 @@ describe('Staking Operations', () => {
   test('Calculate accruedPayout via RPC', async done => {
     const aliceStash = keyring.addFromUri('//Alice//stash');
     const accruedPayout = await api.rpc.staking.accruedPayout(aliceStash.address);
-    expect(accruedPayout.toNumber()).toBeGreaterThan(0);
+    expect(accruedPayout.toNumber()).toBe(0);
     done();
   });
 

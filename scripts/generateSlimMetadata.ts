@@ -23,14 +23,14 @@ async function generateSlimMeta() {
     'Cennzx',
   ];
   let magicNumber = metadata.magicNumber;
-  let modules = metadata.asLatest.modules;
+  let modules = metadata.asLatest.pallets;
   let newModules = [];
   for (const m of modules) {
     if (KEEP.indexOf(m.name.toJSON()) >= 0) {
       const module = m.toJSON();
       removeKeys(module, 'documentation');
       // Creating ModuleMetadataLatest
-      let modifiedModule = api.registry.createType('ModuleMetadataLatest', module);
+      let modifiedModule = api.registry.createType('PalletMetadataLatest', module);
       newModules.push(modifiedModule);
     } else {
       // Push an empty module
@@ -38,22 +38,13 @@ async function generateSlimMeta() {
     }
   }
   let extrinsic = metadata.asLatest.extrinsic;
-  let filteredModule = api.registry.createType('Vec<ModuleMetadataLatest>', newModules);
+  let filteredModule = api.registry.createType('Vec<PalletMetadataLatest>', newModules);
   // metadataSlim is created using the same mechanism as asCallsOnly from MetadataVersioned.js (with additional storage)
   // reducing the total length of metadata to 16236 from earlier around 100000
   const metadataSlim = api.registry.createType('MetadataLatest', {
     extrinsic,
-    modules: filteredModule.map(({
-                            storage,
-                            calls,
-                            index,
-                            name
-                          }) => ({
-      storage,
-      calls: mapCalls(api.registry, calls),
-      index,
-      name
-    }))
+    pallets: filteredModule,
+    lookup: metadata.asLatest.lookup,
   }).toJSON();
   const mVersionedSlim = new MetadataVersioned(api.registry, {
     magicNumber: magicNumber,

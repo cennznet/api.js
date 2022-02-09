@@ -33,17 +33,13 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
 
     return api
-      .queryMulti([
-        [api.query.nft.tokenOwner, [tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber],
-        [api.query.nft.seriesAttributes, [tokenId.collectionId, tokenId.seriesId]],
-      ])
+      .queryMulti([[api.query.nft.tokenOwner, [tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber]])
       .pipe(
         switchMap(
-          ([owner, attributes]): Observable<DeriveTokenInfo> => {
+          ([owner]): Observable<DeriveTokenInfo> => {
             return of(
               new Object({
                 owner: owner.toString(),
-                attributes: attributes.toJSON(),
                 tokenId: tokenId as EnhancedTokenId,
               }) as DeriveTokenInfo
             );
@@ -78,7 +74,7 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
           if (args.length === 0) return EMPTY;
           return from(args).pipe(
             mergeMap((collectionId) =>
-              (api.rpc as any).nft.collectedTokens(collectionId, owner).pipe(
+              api.rpc.nft.collectedTokens(collectionId, owner).pipe(
                 map((ownedTokens) => ownedTokens),
                 catchError((err: Error) => of(err))
               )

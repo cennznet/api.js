@@ -123,10 +123,10 @@ describe('CENNZX RPC calls testing', () => {
           const assetId = api.registry.createType('AssetId', CENNZ);
           const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
           const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
+          const royaltiesSchedule = null;
           const extrinsic = api.tx.nft.createCollection(
             'collectionName',
-            {"Https": "example.com/nft/metadata" },
-            null
+            royaltiesSchedule
           );
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
@@ -136,8 +136,7 @@ describe('CENNZX RPC calls testing', () => {
                 if (method === 'AssetBought') {
                   const price = data[3];
                   console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-
-                  expect(feeFromQuery).toEqual(price);
+                  expect(feeFromQuery.toString()).toEqual(price.toString());
                   done();
                 }
               });

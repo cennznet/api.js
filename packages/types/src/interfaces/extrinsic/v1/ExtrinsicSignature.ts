@@ -29,6 +29,7 @@ import { EMPTY_U8A, IMMORTAL_ERA } from '@polkadot/types/extrinsic/constants';
 import { u8aConcat } from '@polkadot/util';
 
 import { ExtrinsicSignatureOptions } from '@polkadot/types/extrinsic/types';
+import {HexString} from "@polkadot/util/types";
 import { expandExtensionTypes, defaultExtensions } from '../signedExtensions';
 import { ChargeTransactionPayment } from '../../transactionPayment';
 import { SignatureOptions } from '../types';
@@ -154,7 +155,7 @@ export default class CENNZnetExtrinsicSignatureV1 extends Struct implements IExt
   addSignature(
     signer: Address | Uint8Array | string,
     signature: Uint8Array | string,
-    payload: ExtrinsicPayloadValue | Uint8Array | string
+    payload: ExtrinsicPayloadValue | Uint8Array | HexString
   ): IExtrinsicSignature {
     return this.injectSignature(
       this.registry.createType('Address', signer),

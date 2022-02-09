@@ -16,7 +16,8 @@
 import { Bytes, Compact, Option, Raw, Struct, u32 } from '@polkadot/types';
 import { Balance, ExtrinsicEra, Hash } from '@polkadot/types/interfaces';
 import { sign } from '@polkadot/types/extrinsic/util';
-import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, InterfaceTypes, Registry } from '@polkadot/types/types';
+import { AnyNumber, AnyU8a, IExtrinsicEra, IKeyringPair, IMethod, Registry } from '@polkadot/types/types';
+import {HexString} from "@polkadot/util/types";
 import { ChargeTransactionPayment, doughnut, Index } from '../../types';
 
 export interface ExtrinsicPayloadValueV0 {
@@ -32,7 +33,7 @@ export interface ExtrinsicPayloadValueV0 {
 }
 
 // The base of an extrinsic payload
-export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
+export const BasePayloadV0: Record<string, string> = {
   method: 'Bytes',
   doughnut: 'Option<doughnut>',
   era: 'ExtrinsicEra',
@@ -44,7 +45,7 @@ export const BasePayloadV0: Record<string, keyof InterfaceTypes> = {
 // the final extrinsic payload itself.
 // The CENNZnet node will populate these fields from on-chain data and check the signature compares
 // hence 'implicit'
-export const PayloadImplicitAddonsV0: Record<string, keyof InterfaceTypes> = {
+export const PayloadImplicitAddonsV0: Record<string, string> = {
   specVersion: 'u32',
   genesisHash: 'Hash',
   blockHash: 'Hash',
@@ -52,7 +53,7 @@ export const PayloadImplicitAddonsV0: Record<string, keyof InterfaceTypes> = {
 
 // The full definition for the extrinsic payload.
 // It will be encoded (+ hashed if len > 256) and then signed to make the extrinsic signature
-export const FullPayloadV0: Record<string, keyof InterfaceTypes> = {
+export const FullPayloadV0: Record<string, string> = {
   ...BasePayloadV0,
   ...PayloadImplicitAddonsV0,
 };
@@ -68,7 +69,7 @@ export const FullPayloadV0: Record<string, keyof InterfaceTypes> = {
  *   32 bytes: The hash of the authoring block implied by the Transaction Era and the current block.
  */
 export default class ExtrinsicPayloadV0 extends Struct {
-  constructor(registry: Registry, value?: ExtrinsicPayloadValueV0 | Uint8Array | string) {
+  constructor(registry: Registry, value?: ExtrinsicPayloadValueV0 | Uint8Array | HexString) {
     super(registry, FullPayloadV0, value);
   }
 

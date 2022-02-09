@@ -1,7 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types';
+import type { Bytes, Compact, Enum, Struct, u64, u8 } from '@polkadot/types-codec';
+import type { Reasons } from '@polkadot/types/interfaces/balances';
 import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
 
 /** @name AssetInfoV40 */
@@ -23,11 +24,18 @@ export interface AssetOptions extends Struct {
   readonly permissions: PermissionLatest;
 }
 
+/** @name BalanceInformation */
+export interface BalanceInformation extends Struct {
+  readonly reserved: Balance;
+  readonly staked: Balance;
+  readonly available: Balance;
+}
+
 /** @name BalanceLock */
 export interface BalanceLock extends Struct {
   readonly id: LockIdentifier;
   readonly amount: Balance;
-  readonly reasons: WithdrawReasons;
+  readonly reasons: Reasons;
 }
 
 /** @name Owner */
@@ -35,6 +43,7 @@ export interface Owner extends Enum {
   readonly isNone: boolean;
   readonly isAddress: boolean;
   readonly asAddress: AccountId;
+  readonly type: 'None' | 'Address';
 }
 
 /** @name PermissionLatest */
@@ -51,15 +60,7 @@ export interface PermissionsV1 extends Struct {
 export interface PermissionVersions extends Enum {
   readonly isV1: boolean;
   readonly asV1: PermissionsV1;
-}
-
-/** @name WithdrawReasons */
-export interface WithdrawReasons extends Set {
-  readonly isTransactionPayment: boolean;
-  readonly isTransfer: boolean;
-  readonly isReserve: boolean;
-  readonly isFee: boolean;
-  readonly isTip: boolean;
+  readonly type: 'V1';
 }
 
 export type PHANTOM_GENERICASSET = 'genericAsset';

@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Option } from '@polkadot/types';
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap, reduce, mergeAll, first } from 'rxjs/operators';
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { Listing, TokenId } from '@cennznet/types';
-import { Option } from '@polkadot/types/codec/Option';
-import { UInt } from '@polkadot/types';
 
 /**
  * Gets all tokens in a collection that have an open listing
@@ -56,7 +55,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                   first(),
                   map((tokenInfos: DeriveTokenInfo[]): DeriveTokenInfo[] => {
                     const tokenInfoWithListingId = tokenInfos.map((tokenInfo) => {
-                      const listingIdStr = listingTokenIds.find(([_listing, tokenId]) => {
+                      const listingIdStr = listingTokenIds.find(([, tokenId]) => {
                         return (
                           tokenId.toString() ===
                           [
@@ -66,7 +65,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                           ].toString()
                         );
                       })[0];
-                      const listingId = new UInt(api.registry, parseInt(listingIdStr as string));
+                      const listingId = api.registry.createType('ListingId', listingIdStr);
                       tokenInfo.listingId = listingId;
                       return tokenInfo;
                     });
