@@ -113,7 +113,7 @@ describe('e2e api create', () => {
   });
 
   it('Should connect to all available networks on cennznet via network name', async done => {
-    const networkNames = ['local'] as const;
+    const networkNames = ['azalea', 'nikau', 'rata','local'] as const;
     const connectionPromises = networkNames.map(async networkName => {
       api = await Api.create({network: networkName, timeout: 10000});
       return api.rpc.chain.getBlockHash();

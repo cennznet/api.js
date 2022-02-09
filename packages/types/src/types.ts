@@ -35,4 +35,3 @@ export type {
 export * from '@polkadot/types/types';
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
 export type AnyAssetId = AnyNumber;
-// export declare type AnyFunction = (...args: CodecArg[]) => any;
