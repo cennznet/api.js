@@ -17,7 +17,6 @@ import type { ApiInterfaceRx } from '@polkadot/api/types';
 
 import { map, switchMap } from 'rxjs/operators';
 
-import { memo } from '@polkadot/api-derive/util';
 import { combineLatest } from 'rxjs';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { SerialNumber, SeriesId } from '@cennznet/types';
