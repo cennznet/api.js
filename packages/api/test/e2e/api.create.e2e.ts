@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {hexToU8a, stringToU8a, u8aConcat} from "@polkadot/util";
 import { Api } from '../../src/Api';
 import staticMetadata from '../../src/staticMetadata';
 import config from '../../../../config';
 import { Metadata } from '@polkadot/types/metadata';
 import {SubmittableResult} from "@polkadot/api";
-import { Keyring } from '@polkadot/keyring';
+import {encodeAddress, Keyring} from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {WsProvider} from "@polkadot/rpc-provider";
 import ExtrinsicPayload from "@cennznet/types/interfaces/extrinsic/v1/ExtrinsicPayload";
@@ -38,6 +39,30 @@ describe('e2e api create', () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
         'Timed out in 1 ms.');
+  });
+
+  it('use findCallAt block hash to get extrinsic data', async () => {
+    const key = process.env.API_KEY_1;
+    api = await Api.create({provider: `wss://cennznet.unfrastructure.io/public/uncover?apikey=${key}`});
+    const blockId = 4605302;
+    const blockHash = await api.rpc.chain.getBlockHash(blockId);
+    const blockInfo = await api.rpc.chain.getBlock(blockHash);
+    const extrinsics = blockInfo.block.extrinsics;
+    await Promise.all(
+      extrinsics.map(async (value, extrinsicIndex) => {
+        const {method, section} = await api.findCallAt(value.callIndex, blockHash);
+        if (extrinsicIndex === 0) {
+          expect(method).toEqual('set');
+          expect(section).toEqual('timestamp');
+        } else if (extrinsicIndex === 1) {
+          expect(method).toEqual('finalHint');
+          expect(section).toEqual('finalityTracker');
+        } else if (extrinsicIndex === 2) {
+          expect(method).toEqual('transfer');
+          expect(section).toEqual('genericAsset');
+        }
+      })
+    );
   });
 
   it('For local chain - checking if static metadata is same as latest', async () => {
@@ -113,11 +138,18 @@ describe('e2e api create', () => {
   });
 
   it('Should connect to all available networks on cennznet via network name', async done => {
-    const networkNames = ['azalea', 'nikau', 'rata','local'] as const;
+    const networkNames = ['nikau' ] as const;
     const connectionPromises = networkNames.map(async networkName => {
       api = await Api.create({network: networkName, timeout: 10000});
       return api.rpc.chain.getBlockHash();
     });
+    const evmAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
+    var message = stringToU8a('cvm:');
+    message = u8aConcat(message, new Array(7).fill(0), hexToU8a(evmAddress));
+    let checkSum = message.reduce((a, b) => a ^ b, 0);
+    message = u8aConcat(message, new Array(1).fill(checkSum));
+
+    console.log("Address::",encodeAddress(message, 42));
     const networkHashes = await Promise.all(connectionPromises);
     networkHashes.forEach(hash => {
       expect(hash).toBeDefined();

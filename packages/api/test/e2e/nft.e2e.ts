@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { Api } from "@cennznet/api";
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
 import { stringToHex, stringToU8a } from '@polkadot/util'
@@ -20,11 +21,11 @@ import initApiPromise from '../../../../jest/initApiPromise';
 import { Listing, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
-let api;
+let api: Api;
 const keyring = new Keyring({ type: 'sr25519' });
 let alice;
 let collectionOwner, tokenOwner;
-let spendingAssetId, attributes;
+let spendingAssetId;
 let globalCollectionId;
 let globalTokenIds;
 
@@ -46,11 +47,6 @@ beforeAll(async done => {
       api.tx.genericAsset
     .mint(spendingAssetId, tokenOwner.address, initialEndowment),
   ]).signAndSend(alice, ({ status }) => status.isInBlock ? done() : null);
-
-
-  attributes = [
-    {'text': '💎🙌'},
-  ];
 
 });
 
@@ -172,7 +168,6 @@ describe('NFTs', () => {
         expect(tokenInfo ==
           {
             owner: tokenOwner.address,
-            attributes,
             tokenId,
           }
         );
@@ -205,7 +200,6 @@ describe('NFTs', () => {
         expect(tokenInfo ==
           {
             owner: tokenOwner.address,
-            attributes,
             tokenId,
           }
         );
@@ -238,7 +232,6 @@ describe('NFTs', () => {
           expect(tokenInfo ==
             {
               owner: tokenOwner.address,
-              attributes,
               tokenId,
             }
           );
@@ -253,7 +246,7 @@ describe('NFTs', () => {
     const serialNumber = 1;
     const tokenId = [collectionId, seriesId, serialNumber];
 
-    await api.tx.nft.burn(tokenId)
+    await api.tx.nft.burn(api.registry.createType('TokenId', tokenId))
       .signAndSend(tokenOwner, async ({ status, events }) => {
         if (status.isInBlock) {
           events.forEach(({event: {data, method}}) => {
@@ -270,48 +263,17 @@ describe('NFTs', () => {
   });
 
   it('Find tokens with owner ', async done => {
-    const tokens = await api.derive.nft.tokensOf(tokenOwner.address);
-    const tokensInFirstCollection = tokens[0];
-    const tokensInSecondCollection = tokens[1];
-    expect(tokensInFirstCollection.toJSON()).toEqual([
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 0,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 1,
-      },
-      {
-        collectionId: 0,
-        seriesId: 0,
-        serialNumber: 2,
-      },
-    ]);
-    expect(tokensInSecondCollection.toJSON()).toEqual([
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 0
-      },
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 1
-      },
-      {
-        collectionId: 1,
-        serialNumber: 2,
-        seriesId: 1
-      }
-    ]);
+    const tokens: EnhancedTokenId[] = await api.derive.nft.tokensOf(tokenOwner.address) as EnhancedTokenId[];
+    console.log('tokens:::',tokens);
+    const hasToken0 = (token) => token.collectionId.toNumber() === 0 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    const hasToken1 = (token) => token.collectionId.toNumber() === 1 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
+    expect(tokens.some(hasToken0)).toBe(true);
+    expect(tokens.some(hasToken1)).toBe(true);
     done();
   });
 
   it('Find tokens in second collection for owner ', async done => {
-    const collectionIds = [1];
+    const collectionIds = api.registry.createType('Vec<CollectionId>',[1]);
     const tokens = await api.derive.nft.tokensOf(tokenOwner.address, collectionIds);
     const tokensInCollection = tokens[0];
     expect(tokensInCollection.toJSON()).toEqual([
@@ -335,7 +297,7 @@ describe('NFTs', () => {
   });
 
   it('finds collected tokens, their attributes and owners with derived query', async () => {
-    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId);
+    const tokenInfos = await api.derive.nft.tokenInfoForCollection(collectionId.toString());
     const uniqueToken = tokenInfos.find((token) =>
       token.tokenId.collectionId.toNumber() === collectionId
       && token.tokenId.seriesId.toNumber() ===  0
@@ -390,12 +352,13 @@ describe('NFTs', () => {
   it('can list a bundle for fixed price sale', async done => {
     let buyer = keyring.addFromUri('//Test//TokenBuyer');
     let price = 200 * 10_000; // 200 CPAY
-    let duration = 1000;
+    let duration = '1000';
     let tokens = [[collectionId,0,0], [collectionId,1,0]];
+    let tokenIds = api.registry.createType('Vec<TokenId>',tokens);
     let listingId = await api.query.nft.nextListingId();
     const marketplaceId = null;
     await api.tx.nft
-      .sellBundle(tokens, buyer.address, spendingAssetId, price, duration, marketplaceId)
+      .sellBundle(tokenIds, buyer.address, spendingAssetId, price, duration, marketplaceId)
       .signAndSend(tokenOwner, async ({ status }) => {
           if (status.isInBlock) {
             let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
@@ -418,8 +381,8 @@ describe('NFTs', () => {
 
   it('can list a token for auction', async done => {
     let reservePrice = 200 * 10_000; // 200 CPAY
-    let duration = 1000;
-    let token = [collectionId,1,2];
+    let duration = '1000';
+    let token = api.registry.createType('TokenId',[collectionId,1,2]);
     let listingId = await api.query.nft.nextListingId();
     const marketplaceId = null;
 
@@ -448,7 +411,7 @@ describe('NFTs', () => {
 
   it('Get Open listings for Collection', async done => {
     let reservePrice = 200 * 10_000;
-    let duration = 1000;
+    let duration = '1000';
     let token = globalTokenIds[0]
     let token2 = globalTokenIds[1]
     const marketplaceId = null;
@@ -504,6 +467,39 @@ describe('NFTs', () => {
             })
         }
       })
+  });
+
+  it( 'Return empty listing when it is not available ', async done => {
+      const listing = await api.derive.nft.openCollectionListings('1442');
+      expect(listing).toEqual([]);
+      done();
+  });
+
+  it('Find all tokens with owner on Azalea', async done => {
+    jest.setTimeout(40000); // sometimes takes more time
+    const address = '5EYxYJVZFwa4T1nVGFadeMNWRhHPYboMdToEbiER2AzWVsLK';
+    const api = await Api.create({network: 'azalea'});
+    const tokens = await api.derive.nft.tokensOf(address);
+    expect((tokens as EnhancedTokenId[]).length).toBeGreaterThan(0);
+    await api.disconnect();
+    done();
+  });
+
+
+  // Might need to change this test as owner can change while trading nfts
+  it('Find tokens info with owner on Azalea', async done => {
+    const api = await Api.create({network: 'azalea'});
+
+    const tokenInfo = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 214]));
+
+    expect(tokenInfo.owner).toEqual("5G1oXM53W1zMB6YZQvgZ6BUvAk1iXQcZdpNAZAJjyLyJX8NL");
+
+    const tokenInfo1 = await api.derive.nft.tokenInfo(api.createType('TokenId',[46, 24, 441]));
+    expect(tokenInfo1.owner).toEqual("5CoQbre9E6oaSq9RzcqQJCd6qcNEy5d1YyBnpLC2mqoubWQV");
+
+    await api.disconnect();
+    done();
+
   });
 
 });
