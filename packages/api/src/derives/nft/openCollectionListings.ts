@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ApiRx } from '@cennznet/api';
 import { Option } from '@polkadot/types';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, reduce, mergeAll, first } from 'rxjs/operators';
