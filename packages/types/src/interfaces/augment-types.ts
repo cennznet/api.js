@@ -748,6 +748,7 @@ declare module '@polkadot/types/types/registry' {
     ReportIdOf: ReportIdOf;
     ReserveData: ReserveData;
     ReserveIdentifier: ReserveIdentifier;
+    // @ts-ignore
     Response: Response;
     ResponseV0: ResponseV0;
     ResponseV1: ResponseV1;
