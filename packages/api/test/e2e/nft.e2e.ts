@@ -357,7 +357,7 @@ describe('NFTs', () => {
     let listingId = await api.query.nft.nextListingId();
     const marketplaceId = null;
     await api.tx.nft
-      .sellBundle(tokenIds, buyer.address, spendingAssetId, price, duration, marketplaceId)
+      .sellBundle(tokenIds, buyer.address, spendingAssetId, price, duration.toString(), marketplaceId)
       .signAndSend(tokenOwner, async ({ status }) => {
           if (status.isInBlock) {
             let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
@@ -387,7 +387,7 @@ describe('NFTs', () => {
     const marketplaceId = null;
 
     await api.tx.nft
-      .auction(token, spendingAssetId, reservePrice, duration, marketplaceId)
+      .auction(token, spendingAssetId, reservePrice, duration.toString(), marketplaceId)
       .signAndSend(tokenOwner, async ({ status }) => {
         if (status.isInBlock) {
           let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
