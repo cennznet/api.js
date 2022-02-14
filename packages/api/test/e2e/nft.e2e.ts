@@ -264,7 +264,6 @@ describe('NFTs', () => {
 
   it('Find tokens with owner ', async done => {
     const tokens: EnhancedTokenId[] = await api.derive.nft.tokensOf(tokenOwner.address) as EnhancedTokenId[];
-    console.log('tokens:::',tokens);
     const hasToken0 = (token) => token.collectionId.toNumber() === 0 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
     const hasToken1 = (token) => token.collectionId.toNumber() === 1 && token.seriesId.toNumber() === 0 && token.serialNumber.toNumber() === 0;
     expect(tokens.some(hasToken0)).toBe(true);
@@ -352,7 +351,7 @@ describe('NFTs', () => {
   it('can list a bundle for fixed price sale', async done => {
     let buyer = keyring.addFromUri('//Test//TokenBuyer');
     let price = 200 * 10_000; // 200 CPAY
-    let duration = '1000';
+    let duration = 1000;
     let tokens = [[collectionId,0,0], [collectionId,1,0]];
     let tokenIds = api.registry.createType('Vec<TokenId>',tokens);
     let listingId = await api.query.nft.nextListingId();
@@ -363,6 +362,7 @@ describe('NFTs', () => {
           if (status.isInBlock) {
             let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
             let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
+
               expect(listing.asFixedPrice.toJSON()).toEqual({
                 paymentAsset: spendingAssetId,
                 fixedPrice: price,
@@ -381,7 +381,7 @@ describe('NFTs', () => {
 
   it('can list a token for auction', async done => {
     let reservePrice = 200 * 10_000; // 200 CPAY
-    let duration = '1000';
+    let duration = 1000;
     let token = api.registry.createType('TokenId',[collectionId,1,2]);
     let listingId = await api.query.nft.nextListingId();
     const marketplaceId = null;
@@ -392,15 +392,12 @@ describe('NFTs', () => {
         if (status.isInBlock) {
           let blockNumber = (await api.rpc.chain.getBlock()).block.header.number.toNumber();
           let listing: Listing = (await api.query.nft.listings(listingId)).unwrapOrDefault();
-          expect(listing.asAuction.toJSON()).toEqual({
-              paymentAsset: spendingAssetId,
-              reservePrice,
-              close: blockNumber + duration,
-              marketplaceId: null,
-              seller: tokenOwner.address,
-              tokens: [token],
-              royaltiesSchedule: { entitlements: [] }
-            });
+          expect(listing.asAuction.close.toNumber()).toEqual(blockNumber + duration);
+          expect(listing.asAuction.paymentAsset.toNumber()).toEqual(spendingAssetId);
+          expect(listing.asAuction.reservePrice.toNumber()).toEqual(reservePrice);
+          expect(listing.asAuction.seller).toEqual(tokenOwner.address);
+          expect(listing.asAuction.tokens).toEqual([token]);
+          expect(listing.asAuction.royaltiesSchedule).toEqual({ entitlements: [] });
 
           done();
         }

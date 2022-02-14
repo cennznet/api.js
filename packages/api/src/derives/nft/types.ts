@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ListingId } from '@cennznet/types';
+import { AccountId, ListingId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 export interface DeriveTokenInfo {
@@ -26,3 +26,4 @@ export interface CollectionInfo {
   id: number;
   name: string;
 }
+export type DeriveCollectionInfo = [AccountId, CollectionInfo][];

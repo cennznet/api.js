@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Vec } from '@polkadot/types';
 import { Observable, from, of } from 'rxjs';
 import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { CollectionId, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { DeriveCollectionInfo, DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { AccountId } from '@polkadot/types/interfaces';
 
 /**
@@ -32,12 +31,12 @@ import { AccountId } from '@polkadot/types/interfaces';
 export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
   return (tokenId: TokenId | EnhancedTokenId): Observable<DeriveTokenInfo> => {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
-
-    return api
-      .queryMulti([[api.query.nft.tokenOwner, [tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber]])
+    return api.query.nft
+      .tokenOwner([tokenId.collectionId.toNumber(), tokenId.seriesId.toNumber()], tokenId.serialNumber.toNumber())
       .pipe(
         switchMap(
-          ([owner]): Observable<DeriveTokenInfo> => {
+          (owner): Observable<DeriveTokenInfo> => {
+            console.log('Token info::', owner);
             return of(
               new Object({
                 owner: owner.toString(),
@@ -54,8 +53,8 @@ function collectionTokens(collectionIdsFetched, api: ApiInterfaceRx, owner: Acco
   return from(collectionIdsFetched).pipe(
     mergeMap((collectionId) => {
       return api.rpc.nft.collectedTokens(collectionId as CollectionId, owner).pipe(
-        filter((ownedTokens: Vec<EnhancedTokenId>) => {
-          return ownedTokens.toArray().length !== 0;
+        filter((ownedTokens: EnhancedTokenId[]) => {
+          return ownedTokens.length !== 0;
         }),
         map((ownedTokens) => {
           return ownedTokens;
@@ -80,7 +79,7 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
     return collectionIds === undefined
       ? api.query.nft.tokenOwner.entries().pipe(
           switchMap((entries) => {
-            const tokenIdsFetched = entries
+            const tokenIdsFetched = (entries as DeriveCollectionInfo)
               .filter((detail) => detail[1].toString() === owner)
               .map((detail) => detail[0].toHuman());
             return of(
