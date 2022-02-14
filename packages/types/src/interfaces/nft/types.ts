@@ -78,6 +78,14 @@ export interface ListingResponseWrapper extends Struct {
   readonly newCursor: Option<u128>;
 }
 
+/** @name MetadataBaseURI */
+export interface MetadataBaseURI extends Enum {
+  readonly isIpfs: boolean;
+  readonly isHttps: boolean;
+  readonly asHttps: Bytes;
+  readonly type: 'Ipfs' | 'Https';
+}
+
 /** @name MetadataScheme */
 export interface MetadataScheme extends Enum {
   readonly isIpfs: boolean;
