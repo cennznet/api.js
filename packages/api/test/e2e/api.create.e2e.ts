@@ -77,8 +77,8 @@ describe('e2e api create', () => {
     let meta = staticMetadata[matchingVersions[0]];
     expect(meta).toBeDefined();
     const a = new Metadata(api.registry, meta);
-    expect(a.asLatest.pallets).toEqual(api.runtimeMetadata.asLatest.pallets);
-    expect(a.asLatest.extrinsic).toEqual(api.runtimeMetadata.asLatest.extrinsic);
+    expect(a.asLatest.pallets.toJSON()).toEqual(api.runtimeMetadata.asLatest.pallets.toJSON());
+    expect(a.asLatest.extrinsic.toJSON()).toEqual(api.runtimeMetadata.asLatest.extrinsic.toJSON());
   });
 
   it('Should create an Api instance with the timeout option', async () => {
