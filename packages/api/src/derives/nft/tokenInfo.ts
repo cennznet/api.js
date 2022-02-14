@@ -36,7 +36,6 @@ export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
       .pipe(
         switchMap(
           (owner): Observable<DeriveTokenInfo> => {
-            console.log('Token info::', owner);
             return of(
               new Object({
                 owner: owner.toString(),

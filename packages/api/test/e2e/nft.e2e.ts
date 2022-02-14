@@ -395,9 +395,9 @@ describe('NFTs', () => {
           expect(listing.asAuction.close.toNumber()).toEqual(blockNumber + duration);
           expect(listing.asAuction.paymentAsset.toNumber()).toEqual(spendingAssetId);
           expect(listing.asAuction.reservePrice.toNumber()).toEqual(reservePrice);
-          expect(listing.asAuction.seller).toEqual(tokenOwner.address);
-          expect(listing.asAuction.tokens).toEqual([token]);
-          expect(listing.asAuction.royaltiesSchedule).toEqual({ entitlements: [] });
+          expect(listing.asAuction.seller.toString()).toEqual(tokenOwner.address);
+          expect(listing.asAuction.tokens.toJSON()).toEqual([token.toJSON()]);
+          expect(listing.asAuction.royaltiesSchedule.toJSON()).toEqual({ entitlements: [] });
 
           done();
         }
