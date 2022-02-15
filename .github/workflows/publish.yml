@@ -46,8 +46,8 @@ jobs:
         MERGE_LABELS: automerge
         MERGE_METHOD: squash
   release-to-github:
-#    needs:
-#    - merge-release-branch
+    needs:
+    - merge-release-branch
     # release to github only when its a prerelease branch and auto merge label is triggered
     if: ${{ startsWith(github.head_ref, 'prerelease/') }} && ${{ github.event.label.name == 'automerge' }}
     runs-on: ubuntu-latest
@@ -55,7 +55,7 @@ jobs:
     # checkout merged branch
     - uses: actions/checkout@v2
       with:
-        ref: prerelease/2.1.0-alpha.1
+        ref: develop
     - uses: actions/setup-node@v1
       with:
         node-version: '16'
