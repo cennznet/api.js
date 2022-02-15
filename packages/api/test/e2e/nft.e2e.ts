@@ -169,6 +169,7 @@ describe('NFTs', () => {
           {
             owner: tokenOwner.address,
             tokenId,
+            attributes: api.registry.createType('Vec<NFTAttributeValue>',[])
           }
         );
 
@@ -201,6 +202,7 @@ describe('NFTs', () => {
           {
             owner: tokenOwner.address,
             tokenId,
+            attributes: api.registry.createType('Vec<NFTAttributeValue>',[])
           }
         );
 
@@ -233,9 +235,43 @@ describe('NFTs', () => {
             {
               owner: tokenOwner.address,
               tokenId,
+              attributes: api.registry.createType('Vec<NFTAttributeValue>',[])
             }
           );
 
+          done();
+        }
+      });
+  });
+
+  it('mint additional in second collection', async done => {
+    let seriesId = 1;
+    let quantity = 3;
+    // const metadataPath = {"Https": "example.com/nft/metadata" };
+
+    await api.tx.nft
+      .mintAdditional(collectionId2, seriesId, quantity, collectionOwner.address)
+      .signAndSend(collectionOwner, async ({ status, events }) => {
+        if (status.isInBlock) {
+          events.forEach(({ event: {data, method }}) => {
+            if (method == 'CreateSeries') {
+              seriesId = data[1];
+              console.log(`got series: ${seriesId}`);
+            }
+          });
+
+          // this is a new series, the first token will have serial number 0
+          let serialNumber = 0;
+          let tokenId = new EnhancedTokenId(api.registry, [collectionId2, seriesId, serialNumber]);
+          let tokenInfo = (await api.derive.nft.tokenInfo(tokenId));
+          expect(tokenInfo ==
+            {
+              owner: tokenOwner.address,
+              tokenId,
+              attributes: api.registry.createType('Vec<NFTAttributeValue>',[])
+            }
+          );
+          //console.log('tokenInfo:',tokenInfo);
           done();
         }
       });

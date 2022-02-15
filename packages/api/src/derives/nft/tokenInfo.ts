@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, from, of } from 'rxjs';
+import { combineLatest, Observable, from, of } from 'rxjs';
 import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
@@ -31,20 +31,23 @@ import { AccountId } from '@polkadot/types/interfaces';
 export function tokenInfo(instanceId: string, api: ApiInterfaceRx) {
   return (tokenId: TokenId | EnhancedTokenId): Observable<DeriveTokenInfo> => {
     tokenId = new EnhancedTokenId(api.registry, tokenId);
-    return api.query.nft
-      .tokenOwner([tokenId.collectionId.toNumber(), tokenId.seriesId.toNumber()], tokenId.serialNumber.toNumber())
-      .pipe(
-        switchMap(
-          (owner): Observable<DeriveTokenInfo> => {
-            return of(
-              new Object({
-                owner: owner.toString(),
-                tokenId: tokenId as EnhancedTokenId,
-              }) as DeriveTokenInfo
-            );
-          }
-        )
-      );
+
+    return combineLatest([
+      api.query.nft.tokenOwner([tokenId.collectionId, tokenId.seriesId], tokenId.serialNumber),
+      api.query.nft.seriesAttributes(tokenId.collectionId, tokenId.seriesId),
+    ]).pipe(
+      switchMap(
+        ([owner, attributes]): Observable<DeriveTokenInfo> => {
+          return of(
+            new Object({
+              owner: owner.toString(),
+              attributes: attributes,
+              tokenId: tokenId as EnhancedTokenId,
+            }) as DeriveTokenInfo
+          );
+        }
+      )
+    );
   };
 }
 
