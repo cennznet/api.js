@@ -1,6 +1,6 @@
 import { Api } from '../packages/api/src/Api';
 import { allExtensions as userExtensions } from '../packages/types/src/interfaces/extrinsic/signedExtensions';
-import { Metadata } from '@polkadot/metadata';
+import { Metadata } from '@polkadot/types/metadata';
 import { getSpecTypes } from '@polkadot/types-known';
 import * as fs from 'fs';
 import process from "process";
