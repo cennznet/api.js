@@ -102,6 +102,12 @@ export default {
                 "Https": "Vec<u8>",
             }
         },
+        'MetadataBaseURI': {
+          "_enum": {
+            "Ipfs": null,
+            "Https": "Vec<u8>",
+          }
+        },
         'NFTAttributeValue': {
             '_enum': {
                 'i32': 'i32',

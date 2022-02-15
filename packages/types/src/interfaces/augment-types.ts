@@ -5,9 +5,9 @@ import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfa
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { Details, Erc20DepositEvent, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
-import type { AssetInfoV40, AssetInfoV41, AssetOptions, BalanceInformation, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
+import type { AssetInfoV40, AssetInfoV41, AssetOptions, BalanceInformation, BalanceLock45, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
-import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionInfo, CollectionNameType, FixedPriceListing, Listing, ListingId, ListingResponse, ListingResponseWrapper, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenInfo, TokenLockReason } from '@cennznet/types/interfaces/nft';
+import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionInfo, CollectionNameType, FixedPriceListing, Listing, ListingId, ListingResponse, ListingResponseWrapper, MetadataBaseURI, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenInfo, TokenLockReason } from '@cennznet/types/interfaces/nft';
 import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
@@ -132,6 +132,7 @@ declare module '@polkadot/types/types/registry' {
     Balance: Balance;
     BalanceInformation: BalanceInformation;
     BalanceLock: BalanceLock;
+    BalanceLock45: BalanceLock45;
     BalanceLockTo212: BalanceLockTo212;
     BalanceOf: BalanceOf;
     BalanceStatus: BalanceStatus;
@@ -554,6 +555,7 @@ declare module '@polkadot/types/types/registry' {
     MessagingStateSnapshotEgressEntry: MessagingStateSnapshotEgressEntry;
     Meta: Meta;
     MetadataAll: MetadataAll;
+    MetadataBaseURI: MetadataBaseURI;
     MetadataLatest: MetadataLatest;
     MetadataScheme: MetadataScheme;
     MetadataV10: MetadataV10;
@@ -746,7 +748,6 @@ declare module '@polkadot/types/types/registry' {
     ReportIdOf: ReportIdOf;
     ReserveData: ReserveData;
     ReserveIdentifier: ReserveIdentifier;
-    // error TS1208: 'index.ts' cannot be compiled under '--isolatedModules' because it is considered a global script file. Add an import, export, or an empty 'export {}' statement to make it a module
     // @ts-ignore
     Response: Response;
     ResponseV0: ResponseV0;

@@ -74,7 +74,7 @@ export function estimateFee(
           if (userFeeAssetId.toString() === networkFeeAssetId.toString()) {
             return of(feeInBaseCurrency);
           } else {
-            return (api.rpc as any).cennzx
+            return api.rpc.cennzx
               .buyPrice(networkFeeAssetId, feeInBaseCurrency, userFeeAssetId)
               .pipe(switchMap((priceRes: PriceResponse): Observable<Balance> => of(priceRes.price)));
           }

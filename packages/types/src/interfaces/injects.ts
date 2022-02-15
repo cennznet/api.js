@@ -49,6 +49,13 @@ const shareType37Onwards = {
   LookupSource: 'Address',
 };
 
+const sharedTypes41Onwards = {
+  ...shareType37Onwards,
+  AssetInfo: 'AssetInfoV41',
+  // Proposal also exist in polkadots democracy module
+  Proposal: 'GovernanceProposal'
+};
+
 export const typesBundle: OverrideBundleType = {
   spec: {
     cennznet: {
@@ -62,7 +69,8 @@ export const typesBundle: OverrideBundleType = {
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
-            AssetInfo: 'AssetInfoV40'
+            AssetInfo: 'AssetInfoV40',
+            BalanceLock: 'BalanceLock45'
           },
         },
         {
@@ -70,16 +78,21 @@ export const typesBundle: OverrideBundleType = {
           types: {
             ...shareType37Onwards,
             AssetInfo: 'AssetInfoV40',
-            Proposal: 'GovernanceProposal'
+            Proposal: 'GovernanceProposal',
+            BalanceLock: 'BalanceLock45'
           },
         },
         {
-          minmax: [41, undefined],
+          minmax: [41, 45],
           types: {
-            ...shareType37Onwards,
-            AssetInfo: 'AssetInfoV41',
-            // Proposal also exist in polkadots democracy module
-            Proposal: 'GovernanceProposal'
+            ...sharedTypes41Onwards,
+            BalanceLock: 'BalanceLock45'
+          },
+        },
+        {
+          minmax: [46, undefined],
+          types: {
+            ...sharedTypes41Onwards
           },
         },
       ],

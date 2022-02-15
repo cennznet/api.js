@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "main": "src/index.ts",
+  "main": "index.js",
   "types": "index.d.ts",
   "type": "module",
   "repository": {
@@ -24,10 +24,10 @@
   },
   "dependencies": {
     "@cennznet/types": "^2.1.0-alpha.0",
-    "@polkadot/api": "^7.6.1",
-    "@polkadot/rpc-core": "^7.6.1",
-    "@polkadot/rpc-provider": "^7.6.1",
-    "@polkadot/types": "^7.6.1",
+    "@polkadot/api": "^7.7.1",
+    "@polkadot/rpc-core": "^7.7.1",
+    "@polkadot/rpc-provider": "^7.7.1",
+    "@polkadot/types": "^7.7.1",
     "@polkadot/extension-dapp": "^0.36.1",
     "@polkadot/x-rxjs": "^6.11.2-6",
     "eventemitter3": "^4.0.0"

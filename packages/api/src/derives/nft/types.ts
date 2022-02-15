@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ListingId } from '@cennznet/types';
+import { ListingId, StorageKey, u32, NFTAttributeValue, Vec } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
+import { Codec, ITuple } from '@polkadot/types/types';
 
 export interface DeriveTokenInfo {
   tokenId: EnhancedTokenId;
+  attributes: Vec<NFTAttributeValue>;
   /* Token owner address. It is undefined if the token is burnt */
   owner: string | undefined;
   listingId?: ListingId;
@@ -26,3 +28,4 @@ export interface CollectionInfo {
   id: number;
   name: string;
 }
+export type DeriveCollectionInfo = [StorageKey<[ITuple<[u32, u32]>, u32]>, Codec][];
