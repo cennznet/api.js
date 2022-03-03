@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       # bleeding-edge (2.0)
-      - develop 
+      - develop
     types:
       - labeled
     check_suite:
@@ -33,7 +33,7 @@ jobs:
     # checkout merged branch
     - uses: actions/checkout@v2
       with:
-        ref: develop
+        ref: prerelease/1.5.1
     - uses: actions/setup-node@v1
       with:
         node-version: '15.3'
