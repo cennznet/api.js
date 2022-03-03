@@ -87,8 +87,13 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
               .map((detail) => detail[0].toHuman());
             return of(
               tokenIdsFetched.map((token) => {
+                // toString or toJSON will return hex format and can't figure out the collection, series and serial number
                 // here token is of the format [ [ 'collectionId', 'seriesId' ], 'serialNumber' ] - api.query.nft.tokenOwner
-                return new EnhancedTokenId(api.registry, [token[0][0], token[0][1], token[1][0]]);
+                // possibility of it returning value - [ [ '6,110', '0' ], '1,321' ]
+                const collectionId = token[0][0].replaceAll(',', '');
+                const seriesId = token[0][1].replaceAll(',', '');
+                const serialNumber = token[1][0].replaceAll(',', '');
+                return new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
               })
             );
           })

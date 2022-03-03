@@ -24,7 +24,7 @@ export function collectionInfo(instanceId: string, api: ApiInterfaceRx) {
               return collectionNames.map((name, idx) => {
                 return {
                   id: idx,
-                  name: name.toHuman(),
+                  name: name.toHuman(), // toHuman() is fine here and returns "example-col", toString() will return hex value "0x6578616d706c652d636"
                 };
               }) as CollectionInfo[];
             })
