@@ -38,7 +38,14 @@ describe('e2e api create', () => {
         'Timed out in 1 ms.');
   });
 
-  it('use findCallAt block hash to get extrinsic data', async () => {
+  it('Find tokens listing on Azalea', async done => {
+    const api = await Api.create({network: 'azalea'});
+    const tokenInfo = await api.derive.nft.openCollectionListings('55');
+    console.log('allTokens::',tokenInfo);
+    done();
+  });
+
+    it('use findCallAt block hash to get extrinsic data', async () => {
     const key = process.env.API_KEY_1;
     api = await Api.create({provider: `wss://cennznet.unfrastructure.io/public/uncover?apikey=${key}`});
     const blockId = 4605302;
