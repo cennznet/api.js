@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: prerelease/1.5.1
+        ref: prerelease/1.5.3
     - name: package
       run: |
         yarn && yarn build
