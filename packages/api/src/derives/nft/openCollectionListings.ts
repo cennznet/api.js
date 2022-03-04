@@ -39,7 +39,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
           const listingIDs = storageKeys.map((storageKey) => {
             return storageKey.args.map((k) => k.toString())[1];
           });
-          return api.query.nft.listings.multi(listingIDs.map((listingID) => listingID)).pipe(
+          return api.query.nft.listings.multi(listingIDs).pipe(
             switchMap(
               (listingsCodec: Option<Listing>[]): Observable<DeriveTokenInfo[]> => {
                 const tokenIds = listingsCodec.map((listingCodec) => {
