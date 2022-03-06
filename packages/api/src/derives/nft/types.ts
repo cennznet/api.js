@@ -25,7 +25,6 @@ export interface DeriveTokenInfo {
 
 export interface tokens {
   tokenId: EnhancedTokenId;
-  attributes: Vec<NFTAttributeValue>;
   owner: string | undefined;
 }
 

@@ -133,13 +133,11 @@ export function openCollectionListingsV2(instanceId: string, api: ApiInterfaceRx
                   api.query.nft.tokenOwner.multi(
                     queryArgs.map(({ tokenId }) => [[tokenId[0], tokenId[1]], tokenId[2]])
                   ),
-                  api.query.nft.seriesAttributes.multi(queryArgs.map(({ tokenId }) => [tokenId[0], tokenId[1]])),
                 ]).pipe(
-                  map(([allOwners, allAttributes]): DeriveListingInfo[] => {
+                  map(([allOwners]): DeriveListingInfo[] => {
                     queryArgs.map(({ listingId, tokenId }, idx) => {
                       const token = {
                         owner: allOwners[idx].toString(),
-                        attributes: allAttributes[idx],
                         tokenId: new EnhancedTokenId(api.registry, tokenId),
                       };
                       const index = listingDetails.findIndex((l) => l.listingId === listingId);
