@@ -124,9 +124,9 @@ export function openCollectionListingsV2(instanceId: string, api: ApiInterfaceRx
                       .map((tokenId) => {
                         return { listingId: listingId.toString(), tokenId };
                       })
-                      .flat();
+                      .reduce((acc, curr) => acc.concat(curr), []);
                   })
-                  .flat();
+                  .reduce((acc, curr) => acc.concat(curr), []);
                 const listingDetails = [];
                 // multi will make the query faster
                 return combineLatest([
