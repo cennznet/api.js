@@ -319,7 +319,7 @@ describe('Eth bridge test', () => {
     })
 
     it(   'For rata chain get series metadata URI at collection id 29', async done => {
-      const provider = 'wss://kong2.centrality.me/public/rata/ws';
+      const provider = 'https://rata.centrality.me/public/ws';
 
       const apiRata: Api = await Api.create({provider});
 
