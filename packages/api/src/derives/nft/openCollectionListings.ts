@@ -109,7 +109,7 @@ export function openCollectionListingsV2(instanceId: string, api: ApiInterfaceRx
           const listingIDs = storageKeys.map((storageKey) => storageKey.args[1]);
           return api.query.nft.listings.multi(listingIDs.map((listingID) => listingID)).pipe(
             switchMap(
-              (listingsCodec: Option<Listing>[]): Observable<any> => {
+              (listingsCodec: Option<Listing>[]): Observable<DeriveListingInfo[]> => {
                 const tokenIds = listingsCodec.map((listingCodec) => {
                   const listing: Listing = listingCodec.unwrapOrDefault();
                   const tokenID: Vec<TokenId> = listing.isAuction
