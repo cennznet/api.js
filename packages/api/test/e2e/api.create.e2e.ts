@@ -259,4 +259,18 @@ describe('e2e api create', () => {
     console.log('API query::', api.query.genericAsset);
     console.log('API tx::', api.tx.genericAsset);
   });
+
+
+  it('subscription test', async () => {
+    let count = 0;
+   // const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
+    api = await Api.create({timeout: 100000});
+    const unsubscribe = await api.rpc.chain.subscribeNewHeads((header) => {
+      console.log(`Chain is at block: #${header.number}`);
+      expect(header.number).toBeDefined();
+      if (++count === 4) {
+        unsubscribe();
+      }
+    });
+  });
 });
