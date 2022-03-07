@@ -51,7 +51,7 @@ describe('Eth bridge test', () => {
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
       const claim = {
-        tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
         amount: depositAmount,
         beneficiary: beneficiaryAcc
       };
@@ -91,7 +91,7 @@ describe('Eth bridge test', () => {
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
       const claim = {
-        tokenAddress: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+        tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
         amount: depositAmount,
         beneficiary: beneficiaryAcc
       };
@@ -103,7 +103,7 @@ describe('Eth bridge test', () => {
   it('Submit claim for test token 2 from Alice', async done => {
     const depositTxHash = "0xe2758b79065d02fbeaed51f115d850259ebdfef343c01c74825a44ee0e5f8a8b";
     const claim = {
-      tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      tokenAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       amount: "5644",
         beneficiary: "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d"
     };
@@ -126,7 +126,7 @@ describe('Eth bridge test', () => {
   it('Submit claim for test token 2 from Bob', async done => {
     const depositTxHash = "0xe8a0b627b0795b61faed125d18e84198a2c258c3be65b2437903208698be1257";
     const claim = {
-      tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      tokenAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       amount: "11644",
       beneficiary: "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
     };
