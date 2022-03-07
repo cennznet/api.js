@@ -46,7 +46,7 @@ describe('Eth bridge test', () => {
   describe('Eth bridge claims', () => {
 
     it('Submit claim for test token 1 from BridgeTest account', async done => {
-      const depositTxHash = "0x5ffbbb44ad992fb94bc798167b776d2f32717f84f3fe3e91a2643242ccd84cdf";
+      const depositTxHash = "0x6111348115b0234a22a4aec091fe85d18d5f5e1121da5b987a3961a2a2dfeaba";
       testTokenId1 = await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
@@ -85,8 +85,8 @@ describe('Eth bridge test', () => {
       done();
     });
 
-    it.skip('Submitting same claim again show fail', async done => {
-      const depositTxHash = "0x5ffbbb44ad992fb94bc798167b776d2f32717f84f3fe3e91a2643242ccd84cdf";
+    it('Submitting same claim again show fail', async done => {
+      const depositTxHash = "0x6111348115b0234a22a4aec091fe85d18d5f5e1121da5b987a3961a2a2dfeaba";
       testTokenId1 = await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
@@ -101,7 +101,7 @@ describe('Eth bridge test', () => {
     });
 
   it('Submit claim for test token 2 from Alice', async done => {
-    const depositTxHash = "0xc66645148d7491ff600c1b9d383d83b09e31d72752f8283c18c5ded5c87a132a";
+    const depositTxHash = "0xe2758b79065d02fbeaed51f115d850259ebdfef343c01c74825a44ee0e5f8a8b";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "5644",
@@ -124,7 +124,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Bob', async done => {
-    const depositTxHash = "0x25d2fbe8e266586692b00db672bb2023e1d6d78beb0f580adae5b81be1fa6256";
+    const depositTxHash = "0xe8a0b627b0795b61faed125d18e84198a2c258c3be65b2437903208698be1257";
     const claim = {
       tokenAddress: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       amount: "11644",
