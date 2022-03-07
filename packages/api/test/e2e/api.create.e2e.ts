@@ -140,7 +140,7 @@ describe('e2e api create', () => {
   it('Should connect to all available networks on cennznet via network name', async done => {
     const networkNames = ['nikau' ] as const;
     const connectionPromises = networkNames.map(async networkName => {
-      api = await Api.create({network: networkName, timeout: 10000});
+      api = await Api.create({network: networkName, timeout: 40000});
       return api.rpc.chain.getBlockHash();
     });
     const evmAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
@@ -261,12 +261,13 @@ describe('e2e api create', () => {
   });
 
 
-  it('subscription test', async () => {
+  it('subscription test', async done => {
     api = await Api.create();
     const unsubscribe = await api.rpc.chain.subscribeNewHeads((header) => {
       console.log(`Chain is at block: #${header.number}`);
       expect(header.number).toBeDefined();
       unsubscribe();
+      done();
     });
   });
 });
