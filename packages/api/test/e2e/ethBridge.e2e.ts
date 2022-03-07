@@ -85,7 +85,7 @@ describe('Eth bridge test', () => {
       done();
     });
 
-    it('Submitting same claim again show fail', async done => {
+    it.skip('Submitting same claim again show fail', async done => {
       const depositTxHash = "0x5ffbbb44ad992fb94bc798167b776d2f32717f84f3fe3e91a2643242ccd84cdf";
       testTokenId1 = await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
@@ -318,7 +318,8 @@ describe('Eth bridge test', () => {
       done();
     })
 
-    it(   'For rata chain get series metadata URI at collection id 29', async done => {
+    // rata is upgraded so doesn't connect with older api version
+    it.skip(   'For rata chain get series metadata URI at collection id 29', async done => {
       const provider = 'https://rata.centrality.me/public/ws';
 
       const apiRata: Api = await Api.create({provider});
