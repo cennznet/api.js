@@ -101,14 +101,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       CantPay: AugmentedError<ApiType>;
       /**
-       * Signature decode fails.
-       **/
-      DecodeFailure: AugmentedError<ApiType>;
-      /**
-       * Nonce invalid
-       **/
-      InvalidNonce: AugmentedError<ApiType>;
-      /**
        * Signature & account mismatched.
        **/
       InvalidSignature: AugmentedError<ApiType>;
@@ -345,68 +337,6 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       [key: string]: AugmentedError<ApiType>;
     };
-    multisig: {
-      /**
-       * Call is already approved by this signatory.
-       **/
-      AlreadyApproved: AugmentedError<ApiType>;
-      /**
-       * The data to be stored is already stored.
-       **/
-      AlreadyStored: AugmentedError<ApiType>;
-      /**
-       * The maximum weight information provided was too low.
-       **/
-      MaxWeightTooLow: AugmentedError<ApiType>;
-      /**
-       * Threshold must be 2 or greater.
-       **/
-      MinimumThreshold: AugmentedError<ApiType>;
-      /**
-       * Call doesn't need any (more) approvals.
-       **/
-      NoApprovalsNeeded: AugmentedError<ApiType>;
-      /**
-       * Multisig operation not found when attempting to cancel.
-       **/
-      NotFound: AugmentedError<ApiType>;
-      /**
-       * No timepoint was given, yet the multisig operation is already underway.
-       **/
-      NoTimepoint: AugmentedError<ApiType>;
-      /**
-       * Only the account that originally created the multisig is able to cancel it.
-       **/
-      NotOwner: AugmentedError<ApiType>;
-      /**
-       * The sender was contained in the other signatories; it shouldn't be.
-       **/
-      SenderInSignatories: AugmentedError<ApiType>;
-      /**
-       * The signatories were provided out of order; they should be ordered.
-       **/
-      SignatoriesOutOfOrder: AugmentedError<ApiType>;
-      /**
-       * There are too few signatories in the list.
-       **/
-      TooFewSignatories: AugmentedError<ApiType>;
-      /**
-       * There are too many signatories in the list.
-       **/
-      TooManySignatories: AugmentedError<ApiType>;
-      /**
-       * A timepoint was given, yet no multisig operation is underway.
-       **/
-      UnexpectedTimepoint: AugmentedError<ApiType>;
-      /**
-       * A different timepoint was given to the multisig operation that is underway.
-       **/
-      WrongTimepoint: AugmentedError<ApiType>;
-      /**
-       * Generic error
-       **/
-      [key: string]: AugmentedError<ApiType>;
-    };
     nft: {
       /**
        * Auction bid was lower than reserve or current highest bid
@@ -425,6 +355,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       InternalPayment: AugmentedError<ApiType>;
       /**
+       * The metadata path is invalid (non-utf8 or empty)
+       **/
+      InvalidMetadataPath: AugmentedError<ApiType>;
+      /**
        * The account_id hasn't been registered as a marketplace
        **/
       MarketplaceNotRegistered: AugmentedError<ApiType>;
@@ -437,6 +371,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       MixedBundleSale: AugmentedError<ApiType>;
       /**
+       * The Series name has been set
+       **/
+      NameAlreadySet: AugmentedError<ApiType>;
+      /**
        * No more Ids are available, they've been exhausted
        **/
       NoAvailableIds: AugmentedError<ApiType>;
@@ -448,6 +386,10 @@ declare module '@polkadot/api-base/types/errors' {
        * origin does not have permission for the operation (the token may not exist)
        **/
       NoPermission: AugmentedError<ApiType>;
+      /**
+       * The series does not exist
+       **/
+      NoSeries: AugmentedError<ApiType>;
       /**
        * The token is not listed for auction sale
        **/
@@ -558,6 +500,10 @@ declare module '@polkadot/api-base/types/errors' {
        * Incorrect previous history depth input provided.
        **/
       IncorrectHistoryDepth: AugmentedError<ApiType>;
+      /**
+       * Incorrect number of slashing spans provided.
+       **/
+      IncorrectSlashingSpans: AugmentedError<ApiType>;
       /**
        * Can not bond with value less than minimum balance.
        **/

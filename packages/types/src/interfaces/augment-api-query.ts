@@ -3,10 +3,10 @@
 
 import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Data } from '@polkadot/types';
-import type { Bytes, Null, Option, U256, U8aFixed, Vec, WrapperKeepOpaque, WrapperOpaque, bool, u128, u32, u64, u8 } from '@polkadot/types-codec';
+import type { BTreeMap, Bytes, Null, Option, U256, U8aFixed, Vec, WrapperOpaque, bool, u128, u32, u64, u8 } from '@polkadot/types-codec';
 import type { AnyNumber, ITuple } from '@polkadot/types-codec/types';
-import type { AccountId32, Call, H160, H256, Perbill, Percent, Permill } from '@polkadot/types/interfaces/runtime';
-import type { CennznetPrimitivesEthCryptoAppCryptoPublic, CennznetRuntimeSessionKeys, CrmlEthBridgeEventClaimResult, CrmlGenericAssetAssetInfo, CrmlGenericAssetBalanceLock, CrmlGenericAssetPermissionVersions, CrmlGovernanceProposal, CrmlGovernanceProposalStatusInfo, CrmlGovernanceProposalVoteInfo, CrmlGovernanceReferendumVoteCount, CrmlNftListing, CrmlNftMarketplace, CrmlNftMetadataScheme, CrmlNftNftAttributeValue, CrmlNftRoyaltiesSchedule, CrmlNftTokenLockReason, CrmlStakingActiveEraInfo, CrmlStakingElectionResult, CrmlStakingElectionStatus, CrmlStakingExposure, CrmlStakingForcing, CrmlStakingNominations, CrmlStakingRewardsTypesEraRewardPoints, CrmlStakingSlashingSlashingSpans, CrmlStakingSlashingSpanRecord, CrmlStakingStakingLedger, CrmlStakingUnappliedSlash, CrmlStakingValidatorPrefs, CrmlTransactionPaymentReleases, EthereumBlock, EthereumReceiptReceiptV3, EthereumTransactionTransactionV2, FpRpcTransactionStatus, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, PalletAuthorshipUncleEntryItem, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletImOnlineBoundedOpaqueNetworkState, PalletImOnlineSr25519AppSr25519Public, PalletMultisigMultisig, PalletSchedulerReleases, PalletSchedulerScheduledV2, PalletTreasuryProposal, SpConsensusBabeAppPublic, SpConsensusBabeBabeEpochConfiguration, SpConsensusBabeDigestsNextConfigDescriptor, SpCoreCryptoKeyTypeId, SpRuntimeDigest, SpStakingOffenceOffenceDetails } from '@polkadot/types/lookup';
+import type { AccountId32, H160, H256, Perbill, Percent, Permill } from '@polkadot/types/interfaces/runtime';
+import type { CennznetPrimitivesEthCryptoAppCryptoPublic, CennznetRuntimeSessionKeys, CrmlEthBridgeEventClaimResult, CrmlGenericAssetAssetInfo, CrmlGenericAssetBalanceLock, CrmlGenericAssetPermissionVersions, CrmlGovernanceProposal, CrmlGovernanceProposalStatusInfo, CrmlGovernanceProposalVoteInfo, CrmlNftListing, CrmlNftMarketplace, CrmlNftMetadataScheme, CrmlNftNftAttributeValue, CrmlNftRoyaltiesSchedule, CrmlNftTokenLockReason, CrmlStakingActiveEraInfo, CrmlStakingElectionResult, CrmlStakingElectionStatus, CrmlStakingExposure, CrmlStakingForcing, CrmlStakingNominations, CrmlStakingRewardsTypesEraRewardPoints, CrmlStakingSlashingSlashingSpans, CrmlStakingSlashingSpanRecord, CrmlStakingStakingLedger, CrmlStakingUnappliedSlash, CrmlStakingValidatorPrefs, CrmlTransactionPaymentReleases, EthereumBlock, EthereumReceiptReceiptV3, EthereumTransactionTransactionV2, FpRpcTransactionStatus, FrameSupportWeightsPerDispatchClassU64, FrameSystemAccountInfo, FrameSystemEventRecord, FrameSystemLastRuntimeUpgradeInfo, FrameSystemPhase, PalletAuthorshipUncleEntryItem, PalletGrandpaStoredPendingChange, PalletGrandpaStoredState, PalletIdentityRegistrarInfo, PalletIdentityRegistration, PalletImOnlineBoundedOpaqueNetworkState, PalletImOnlineSr25519AppSr25519Public, PalletSchedulerReleases, PalletSchedulerScheduledV2, PalletTreasuryProposal, SpConsensusBabeAppPublic, SpConsensusBabeBabeEpochConfiguration, SpConsensusBabeDigestsNextConfigDescriptor, SpCoreCryptoKeyTypeId, SpRuntimeDigest, SpStakingOffenceOffenceDetails } from '@polkadot/types/lookup';
 import type { Observable } from '@polkadot/types/types';
 
 declare module '@polkadot/api-base/types/storage' {
@@ -189,6 +189,10 @@ declare module '@polkadot/api-base/types/storage' {
        * Map ERC20 address to GA asset Id
        **/
       erc20ToAssetId: AugmentedQuery<ApiType, (arg: H160 | string | Uint8Array) => Observable<Option<u32>>, [H160]> & QueryableStorageEntry<ApiType, [H160]>;
+      /**
+       * Hash of withdrawal information
+       **/
+      withdrawalDigests: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<H256>, [u64]> & QueryableStorageEntry<ApiType, [u64]>;
       /**
        * Whether withdrawals are active
        **/
@@ -414,11 +418,11 @@ declare module '@polkadot/api-base/types/storage' {
       /**
        * Running tally of referendum votes
        **/
-      referendumVetoSum: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<u32>, [u64]> & QueryableStorageEntry<ApiType, [u64]>;
+      referendumVetoSum: AugmentedQuery<ApiType, (arg: u64 | AnyNumber | Uint8Array) => Observable<u128>, [u64]> & QueryableStorageEntry<ApiType, [u64]>;
       /**
-       * Map from proposal Id to referendum votes
+       * Map from proposal Id to VotingPower
        **/
-      referendumVotes: AugmentedQuery<ApiType, (arg1: u64 | AnyNumber | Uint8Array, arg2: AccountId32 | string | Uint8Array) => Observable<CrmlGovernanceReferendumVoteCount>, [u64, AccountId32]> & QueryableStorageEntry<ApiType, [u64, AccountId32]>;
+      referendumVotes: AugmentedQuery<ApiType, (arg1: u64 | AnyNumber | Uint8Array, arg2: AccountId32 | string | Uint8Array) => Observable<u128>, [u64, AccountId32]> & QueryableStorageEntry<ApiType, [u64, AccountId32]>;
       /**
        * Generic query
        **/
@@ -524,17 +528,6 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       [key: string]: QueryableStorageEntry<ApiType>;
     };
-    multisig: {
-      calls: AugmentedQuery<ApiType, (arg: U8aFixed | string | Uint8Array) => Observable<Option<ITuple<[WrapperKeepOpaque<Call>, AccountId32, u128]>>>, [U8aFixed]> & QueryableStorageEntry<ApiType, [U8aFixed]>;
-      /**
-       * The set of open multisig operations.
-       **/
-      multisigs: AugmentedQuery<ApiType, (arg1: AccountId32 | string | Uint8Array, arg2: U8aFixed | string | Uint8Array) => Observable<Option<PalletMultisigMultisig>>, [AccountId32, U8aFixed]> & QueryableStorageEntry<ApiType, [AccountId32, U8aFixed]>;
-      /**
-       * Generic query
-       **/
-      [key: string]: QueryableStorageEntry<ApiType>;
-    };
     nft: {
       /**
        * Map from collection to its human friendly name
@@ -602,6 +595,10 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       seriesMetadataScheme: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<CrmlNftMetadataScheme>>, [u32, u32]> & QueryableStorageEntry<ApiType, [u32, u32]>;
       /**
+       * Map from series to its human friendly name
+       **/
+      seriesName: AugmentedQuery<ApiType, (arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<Bytes>, [ITuple<[u32, u32]>]> & QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+      /**
        * Map from (collection, series) to configured royalties schedule
        **/
       seriesRoyalties: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<CrmlNftRoyaltiesSchedule>>, [u32, u32]> & QueryableStorageEntry<ApiType, [u32, u32]>;
@@ -609,6 +606,10 @@ declare module '@polkadot/api-base/types/storage' {
        * Version of this module's storage schema
        **/
       storageVersion: AugmentedQuery<ApiType, () => Observable<u32>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Count of tokens owned by an address, supports ERC721 `balanceOf`
+       **/
+      tokenBalance: AugmentedQuery<ApiType, (arg: AccountId32 | string | Uint8Array) => Observable<BTreeMap<ITuple<[u32, u32]>, u32>>, [AccountId32]> & QueryableStorageEntry<ApiType, [AccountId32]>;
       /**
        * Map from a token to lock status if any
        **/
@@ -784,6 +785,11 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       currentEra: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
+       * Deferred reports that have been rejected by the offence handler and need to be submitted
+       * at a later time.
+       **/
+      deferredOffences: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[Vec<SpStakingOffenceOffenceDetails>, Vec<Perbill>, u32]>>>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
        * The earliest era for which we have a pending, unapplied slash.
        **/
       earliestUnappliedSlash: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []> & QueryableStorageEntry<ApiType, []>;
@@ -884,6 +890,18 @@ declare module '@polkadot/api-base/types/storage' {
        * All slashing events on nominators, mapped by era to the highest slash value of the era.
        **/
       nominatorSlashInEra: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: AccountId32 | string | Uint8Array) => Observable<Option<u128>>, [u32, AccountId32]> & QueryableStorageEntry<ApiType, [u32, AccountId32]>;
+      /**
+       * Indices of validators that have offended in the active era and whether they are currently
+       * disabled.
+       * 
+       * This value should be a superset of disabled validators since not all offences lead to the
+       * validator being disabled (if there was no slash). This is needed to track the percentage of
+       * validators that have offended in the current era, ensuring a new era is forced if
+       * `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find
+       * whether a given validator has previously offended using binary search. It gets cleared when
+       * the era ends.
+       **/
+      offendingValidators: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[u32, bool]>>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * The next validator set. At the end of an era, if this is available (potentially from the
        * result of an offchain worker), it is immediately used. Otherwise, the on-chain election
@@ -1054,6 +1072,15 @@ declare module '@polkadot/api-base/types/storage' {
        * Current time for the current block.
        **/
       now: AugmentedQuery<ApiType, () => Observable<u64>, []> & QueryableStorageEntry<ApiType, []>;
+      /**
+       * Generic query
+       **/
+      [key: string]: QueryableStorageEntry<ApiType>;
+    };
+    tokenApprovals: {
+      erc20Approvals: AugmentedQuery<ApiType, (arg1: ITuple<[H160, u32]> | [H160 | string | Uint8Array, u32 | AnyNumber | Uint8Array], arg2: H160 | string | Uint8Array) => Observable<u128>, [ITuple<[H160, u32]>, H160]> & QueryableStorageEntry<ApiType, [ITuple<[H160, u32]>, H160]>;
+      erc721Approvals: AugmentedQuery<ApiType, (arg: ITuple<[u32, u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<H160>, [ITuple<[u32, u32, u32]>]> & QueryableStorageEntry<ApiType, [ITuple<[u32, u32, u32]>]>;
+      erc721ApprovalsForAll: AugmentedQuery<ApiType, (arg1: H160 | string | Uint8Array, arg2: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<Vec<H160>>, [H160, ITuple<[u32, u32]>]> & QueryableStorageEntry<ApiType, [H160, ITuple<[u32, u32]>]>;
       /**
        * Generic query
        **/

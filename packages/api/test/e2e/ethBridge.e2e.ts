@@ -317,7 +317,8 @@ describe('Eth bridge test', () => {
       done();
     })
 
-    it(   'For rata chain get series metadata URI at collection id 29', async done => {
+    // this requires migration
+    it.skip(   'For rata chain get series metadata URI at collection id 29', async done => {
       const provider = 'wss://rata.centrality.me/public/ws';
 
       const apiRata = await Api.create({provider});
@@ -326,7 +327,10 @@ describe('Eth bridge test', () => {
         29,
         0
       )).toHuman();
-      console.log('metadataPath::',metadataPath);
+      // const tokenId = apiRata.registry.createType('TokenId', [29,0,0]);
+      //
+      // const uri = await apiRata.rpc.nft.tokenUri(tokenId);
+      // console.log('metadataPath::',uri.toHuman());
       expect(metadataPath).toEqual("ipfs://QmWGYnnapNUT9voEx8gyZBXKsSgmWWQXdkCqRrucQ8qdmx");
       await apiRata.disconnect();
       done();
