@@ -5,7 +5,7 @@ import type { LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } fr
 import type { EthyEventId, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { BalanceInformation } from '@cennznet/types/interfaces/genericAsset';
 import type { ProposalVotes } from '@cennznet/types/interfaces/governance';
-import type { CollectionId, CollectionInfo, ListingResponseWrapper, SerialNumber, SeriesId, TokenInfo } from '@cennznet/types/interfaces/nft';
+import type { CollectionId, CollectionInfo, ListingResponseWrapper, SerialNumber, SeriesId, TokenId, TokenInfo } from '@cennznet/types/interfaces/nft';
 import type { AugmentedRpc } from '@polkadot/rpc-core/types';
 import type { Metadata, StorageKey } from '@polkadot/types';
 import type { Bytes, HashMap, Json, Null, Option, Text, U256, U64, Vec, bool, u128, u16, u32, u64 } from '@polkadot/types-codec';
@@ -448,6 +448,10 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
        * Get token info
        **/
       getTokenInfo: AugmentedRpc<(CollectionId: CollectionId | AnyNumber | Uint8Array, SeriesId: SeriesId | AnyNumber | Uint8Array, SerialNumber: SerialNumber | AnyNumber | Uint8Array) => Observable<TokenInfo>>;
+      /**
+       * Get token uri
+       **/
+      tokenUri: AugmentedRpc<(TokenId: TokenId) => Observable<Bytes>>;
     };
     offchain: {
       /**

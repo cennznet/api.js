@@ -41,7 +41,7 @@ export function getCENNZNetProvider(networkName: CENNZNetNetwork): ProviderInter
   const cennznetNetworkEndpoints = {
     azalea: 'wss://cennznet.unfrastructure.io/public/ws',
     nikau: 'wss://nikau.centrality.me/public/ws',
-    rata: 'wss://kong2.centrality.me/public/rata/ws',
+    rata: 'wss://rata.centrality.me/public/ws',
     local: 'ws://127.0.0.1:9944',
   };
   return getProvider(cennznetNetworkEndpoints[networkName]);

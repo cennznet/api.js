@@ -60,6 +60,16 @@ export default {
         ],
         type: 'TokenInfo<AccountId>',
       },
+      tokenUri: {
+        description: 'Get token uri',
+        params: [
+            {
+                name: 'TokenId',
+                type: 'TokenId'
+            }
+        ],
+        type: 'Vec<u8>',
+      },
     },
     types: {
         'TokenId': '(CollectionId, SeriesId, SerialNumber)',

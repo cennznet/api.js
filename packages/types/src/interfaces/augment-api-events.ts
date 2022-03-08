@@ -5,7 +5,7 @@ import type { ApiTypes } from '@polkadot/api-base/types';
 import type { Bytes, Null, Option, Result, U256, U8aFixed, Vec, bool, u128, u32, u64 } from '@polkadot/types-codec';
 import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId32, H160, H256, Perbill, Permill } from '@polkadot/types/interfaces/runtime';
-import type { CrmlGenericAssetAssetInfo, CrmlGenericAssetAssetOptions, CrmlGenericAssetPermissionsV1, CrmlNftAuctionClosureReason, CrmlStakingElectionCompute, CrmlStakingExposure, EthereumLog, EvmCoreErrorExitReason, FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, PalletMultisigTimepoint, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
+import type { CrmlGenericAssetAssetInfo, CrmlGenericAssetAssetOptions, CrmlGenericAssetPermissionsV1, CrmlNftAuctionClosureReason, CrmlStakingElectionCompute, CrmlStakingExposure, EthereumLog, EvmCoreErrorExitReason, FrameSupportWeightsDispatchInfo, PalletImOnlineSr25519AppSr25519Public, SpFinalityGrandpaAppPublic, SpRuntimeDispatchError } from '@polkadot/types/lookup';
 
 declare module '@polkadot/api-base/types/events' {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
@@ -291,28 +291,6 @@ declare module '@polkadot/api-base/types/events' {
        **/
       [key: string]: AugmentedEvent<ApiType>;
     };
-    multisig: {
-      /**
-       * A multisig operation has been approved by someone.
-       **/
-      MultisigApproval: AugmentedEvent<ApiType, [AccountId32, PalletMultisigTimepoint, AccountId32, U8aFixed]>;
-      /**
-       * A multisig operation has been cancelled.
-       **/
-      MultisigCancelled: AugmentedEvent<ApiType, [AccountId32, PalletMultisigTimepoint, AccountId32, U8aFixed]>;
-      /**
-       * A multisig operation has been executed.
-       **/
-      MultisigExecuted: AugmentedEvent<ApiType, [AccountId32, PalletMultisigTimepoint, AccountId32, U8aFixed, Result<Null, SpRuntimeDispatchError>]>;
-      /**
-       * A new multisig operation has begun.
-       **/
-      NewMultisig: AugmentedEvent<ApiType, [AccountId32, AccountId32, U8aFixed]>;
-      /**
-       * Generic event
-       **/
-      [key: string]: AugmentedEvent<ApiType>;
-    };
     nft: {
       /**
        * An auction has closed without selling (collection, listing, reason)
@@ -365,7 +343,7 @@ declare module '@polkadot/api-base/types/events' {
       /**
        * Token(s) were transferred (previous owner, token Ids, new owner)
        **/
-      Transfer: AugmentedEvent<ApiType, [AccountId32, Vec<ITuple<[u32, u32, u32]>>, AccountId32]>;
+      Transfer: AugmentedEvent<ApiType, [AccountId32, u32, u32, Vec<u32>, AccountId32]>;
       /**
        * Generic event
        **/
@@ -463,6 +441,11 @@ declare module '@polkadot/api-base/types/events' {
        * One validator (and its nominators) has been slashed by the given amount.
        **/
       Slash: AugmentedEvent<ApiType, [AccountId32, u128]>;
+      /**
+       * One validator (and its nominators) has been slashed by the given amount.
+       * \[validator, amount\]
+       **/
+      Slashed: AugmentedEvent<ApiType, [AccountId32, u128]>;
       /**
        * A new solution for the upcoming election has been stored. \[compute\]
        **/
