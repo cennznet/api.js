@@ -18,7 +18,7 @@ import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/opera
 import { ApiInterfaceRx } from '@cennznet/api/types';
 import { CollectionId, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import { DeriveCollectionInfo, DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { AccountId } from '@polkadot/types/interfaces';
 
 /**
@@ -81,17 +81,19 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
     return collectionIds === undefined
       ? api.query.nft.tokenOwner.entries().pipe(
           switchMap((entries) => {
-            const tokenIdsFetched = (entries as DeriveCollectionInfo)
+            const tokenIdsFetched = entries
               .filter((detail) => detail[1].toString() === owner)
-              .map((detail) => detail[0].toHuman());
+              .map((detail) => detail[0].args);
             return of(
               tokenIdsFetched.map((token) => {
-                // here token is of the format [ [ 'collectionId', 'seriesId' ], 'serialNumber' ] - api.query.nft.tokenOwner
-                return new EnhancedTokenId(api.registry, [token[0][0], token[0][1], token[1][0]]);
+                const collectionId = token[0][0].toNumber();
+                const seriesId = token[0][1].toNumber();
+                const serialNumber = token[1].toNumber();
+                return new EnhancedTokenId(api.registry, [collectionId, seriesId, serialNumber]);
               })
             );
           })
         )
-      : collectionTokens(collectionIds as CollectionId[], api, owner);
+      : collectionTokens(collectionIds, api, owner);
   };
 }
