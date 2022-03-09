@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [2.1.0-alpha.2](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.1.0-alpha.2) (09/03/2022)
+### Added:
+    - added type MetadataBaseURI for nft module
+    - added missing rpc definition for nft and generic asset module
+### Changed:
+    - updated reasons type from WithdrawReasons to Reason for BalanceLock
+    - Use polkadots latest beta version (7.7.1) for api and (8.3.3) for util
 ## [2.0.0-alpha.3](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.0.0-alpha.3) (11/08/2021)
 ### Added:
     - LookupSource type definition
