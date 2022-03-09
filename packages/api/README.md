@@ -5,7 +5,7 @@ The CENNZnet JavaScript API for browsers, RN, and Node.js.
 ## Install
 
 ```
-$> npm i --save @cennznet/api
+yarn add @cennznet/api
 ```
 
 ## Usage
