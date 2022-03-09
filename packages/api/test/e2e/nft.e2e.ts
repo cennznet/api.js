@@ -502,6 +502,19 @@ describe('NFTs', () => {
       })
   });
 
+
+  it('Find tokens listing on local with V2', async done => {
+    const allTokens = await api.derive.nft.openCollectionListingsV2('15');
+    expect(allTokens.length).toBe(2);
+    expect(allTokens[0].listingId).toBe('3');
+    expect(allTokens[0].tokens[0].owner).toBe(tokenOwner.address);
+    expect(allTokens[0].tokens[0].tokenId.toString()).toBe(new EnhancedTokenId(api.registry, [15,0,1]).toString());
+    expect(allTokens[1].listingId).toBe('2');
+    expect(allTokens[1].tokens[0].owner).toBe(tokenOwner.address);
+    expect(allTokens[1].tokens[0].tokenId.toString()).toBe(new EnhancedTokenId(api.registry, [15,0,0]).toString());
+    done();
+  });
+
   it( 'Return empty listing when it is not available ', async done => {
       const listing = await api.derive.nft.openCollectionListings('1442');
       expect(listing).toEqual([]);
