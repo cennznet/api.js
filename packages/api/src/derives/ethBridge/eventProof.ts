@@ -19,7 +19,21 @@ import type { ApiInterfaceRx } from '@polkadot/api/types';
 import { Observable, combineLatest } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { EthyEventId } from '@cennznet/types';
+import { computePublicKey } from '@ethersproject/signing-key';
+import { keccak256 } from '@ethersproject/keccak256';
 import { EthEventProof } from './types';
+
+// Ignore if validator public key is 0x000..
+const IGNORE_KEY = '0x000000000000000000000000000000000000000000000000000000000000000000';
+function extractValidators(notaryKeys) {
+  const newValidators = notaryKeys.map((notaryKey) => {
+    if (notaryKey.toString() === IGNORE_KEY) return '0x0000000000000000000000000000000000000000';
+    const decompressedPk = computePublicKey(notaryKey);
+    const h = keccak256(`0x${decompressedPk.slice(4)}`);
+    return `0x${h.slice(26)}`;
+  });
+  return newValidators;
+}
 
 /**
  * @description Retrieve event proof
@@ -29,6 +43,7 @@ export function eventProof(instanceId: string, api: ApiInterfaceRx) {
     combineLatest([
       api.rpc.ethy.getEventProof(eventId),
       api.derive.chain.bestNumberFinalized(), // use this so that the call keeps happening until eventProof value exist.
+      api.query.ethBridge.notaryKeys(),
     ]).pipe(
       filter(([eventProof, header]) => {
         console.debug(
@@ -37,12 +52,14 @@ export function eventProof(instanceId: string, api: ApiInterfaceRx) {
         return eventProof.toHuman() !== null;
       }),
       map(
-        ([versionedEventProof]): EthEventProof => {
+        ([versionedEventProof, , notaryKeys]): EthEventProof => {
           const eventProof = versionedEventProof.unwrap().asEventProof;
+          const currentValidators = extractValidators(notaryKeys);
           const { r, s, v } = extractEthereumSignature(eventProof.signatures);
           return {
             eventId: eventProof.eventId.toString(),
             validatorSetId: eventProof.validatorSetId.toString(),
+            validators: currentValidators,
             blockHash: eventProof.blockHash.toString(),
             tag: hexToString(eventProof.tag.toString()),
             r,
