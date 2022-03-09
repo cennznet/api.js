@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ListingId, StorageKey, u32, NFTAttributeValue, Vec } from '@cennznet/types';
+import { ListingId, NFTAttributeValue, Vec } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
-import { Codec, ITuple } from '@polkadot/types/types';
 
 export interface DeriveTokenInfo {
   tokenId: EnhancedTokenId;
@@ -24,8 +23,17 @@ export interface DeriveTokenInfo {
   listingId?: ListingId;
 }
 
+export interface tokens {
+  tokenId: EnhancedTokenId;
+  owner: string | undefined;
+}
+
+export interface DeriveListingInfo {
+  tokens: tokens[];
+  listingId: ListingId;
+}
+
 export interface CollectionInfo {
   id: number;
   name: string;
 }
-export type DeriveCollectionInfo = [StorageKey<[ITuple<[u32, u32]>, u32]>, Codec][];
