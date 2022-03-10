@@ -23,6 +23,16 @@ export interface DeriveTokenInfo {
   listingId?: ListingId;
 }
 
+export interface tokens {
+  tokenId: EnhancedTokenId;
+  owner: string | undefined;
+}
+
+export interface DeriveListingInfo {
+  tokens: tokens[];
+  listingId: ListingId;
+}
+
 export interface CollectionInfo {
   id: number;
   name: string;

@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import { Api } from "@cennznet/api";
-import {DeriveTokenInfo} from "@cennznet/api/derives/nft/types";
 import { Keyring } from '@polkadot/keyring';
 import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import {hexToU8a, stringToHex, stringToU8a} from '@polkadot/util'
+import { stringToHex, stringToU8a} from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Listing, NFTAttributeValue, TokenId} from '@cennznet/types';
@@ -480,6 +479,19 @@ describe('NFTs', () => {
             })
         }
       })
+  });
+
+
+  it('Find tokens listing on local with V2', async done => {
+    const allTokens = await api.derive.nft.openCollectionListingsV2('15');
+    expect(allTokens.length).toBe(2);
+    expect(allTokens[0].listingId).toBe('3');
+    expect(allTokens[0].tokens[0].owner).toBe(tokenOwner.address);
+    expect(allTokens[0].tokens[0].tokenId.toString()).toBe(new EnhancedTokenId(api.registry, [15,0,1]).toString());
+    expect(allTokens[1].listingId).toBe('2');
+    expect(allTokens[1].tokens[0].owner).toBe(tokenOwner.address);
+    expect(allTokens[1].tokens[0].tokenId.toString()).toBe(new EnhancedTokenId(api.registry, [15,0,0]).toString());
+    done();
   });
 
   it( 'Return empty listing when it is not available ', async done => {

@@ -40,8 +40,8 @@ export function getProvider(providerString: string): ProviderInterface {
 export function getCENNZNetProvider(networkName: CENNZNetNetwork): ProviderInterface {
   const cennznetNetworkEndpoints = {
     azalea: 'wss://cennznet.unfrastructure.io/public/ws',
-    nikau: 'wss://nikau.centrality.me/public/ws',
-    rata: 'wss://kong2.centrality.me/public/rata/ws',
+    nikau: 'https://nikau.centrality.me/public/ws',
+    rata: 'https://rata.centrality.me/public/ws',
     local: 'ws://127.0.0.1:9944',
   };
   return getProvider(cennznetNetworkEndpoints[networkName]);
