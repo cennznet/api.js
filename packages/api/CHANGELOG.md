@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
-## [2.1.0-alpha.2](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.1.0-alpha.2) (09/03/2022)
+## [2.1.0-rc.1](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.1.0-rc.1) (21/03/2022)
 ### Fixed:
     - Open listing derived query
 ### Changed:
