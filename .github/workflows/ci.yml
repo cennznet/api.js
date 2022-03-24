@@ -102,7 +102,7 @@ jobs:
     - name: start latest test node and list all docker container
       run: |
         docker network create my-bridge-net
-        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:2.1.0-rc4 --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
+        docker run --pull=always --network=my-bridge-net --name testnet_node_alice -p 9944:9944 -d cennznet/cennznet:2.1.0 --dev --tmp --unsafe-ws-external --unsafe-rpc-external --eth-http=http://ethNode:8545 --no-mdns
         docker network connect my-bridge-net ethNode
         docker exec testnet_node_alice curl ethNode:8545
     - name: test
