@@ -16,7 +16,7 @@ import { combineLatest, Observable, from, of } from 'rxjs';
 import { switchMap, filter, map, mergeMap, catchError, reduce } from 'rxjs/operators';
 
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { CollectionId, MetadataBaseURI, Option, SeriesId, TokenId } from '@cennznet/types';
+import { CollectionId, Bytes, Option, SeriesId, TokenId } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { AccountId } from '@polkadot/types/interfaces';
@@ -110,16 +110,16 @@ export function tokensOf(instanceId: string, api: ApiInterfaceRx) {
 export function seriesMetadataUri(instanceId: string, api: ApiInterfaceRx) {
   return (
     collectionId: CollectionId | number,
-    seriesId: SeriesId
-  ): Observable<Option<CrmlNftMetadataScheme | MetadataBaseURI>> => {
+    seriesId: SeriesId | number
+  ): Observable<Option<CrmlNftMetadataScheme | Bytes>> => {
     return api.query.nft.seriesMetadataScheme(collectionId, seriesId).pipe(
       switchMap(
         (schema): Observable<Option<any>> => {
           if (schema.isSome) return (of(schema) as unknown) as Observable<Option<CrmlNftMetadataScheme>>;
           return api.query.nft.seriesMetadataURI(collectionId, seriesId).pipe(
             map(
-              (uri): Option<MetadataBaseURI> => {
-                return uri as Option<MetadataBaseURI>;
+              (uri): Option<Bytes> => {
+                return uri as Option<Bytes>;
               }
             )
           );
