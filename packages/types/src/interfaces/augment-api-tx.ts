@@ -585,7 +585,7 @@ declare module '@polkadot/api-base/types/submittable' {
        * - One event.
        * # </weight>
        **/
-      setIdentity: AugmentedSubmittable<(info: PalletIdentityIdentityInfo | { additional?: any; display?: any; legal?: any; web?: any; riot?: any; email?: any; pgpFingerprint?: any; image?: any; twitter?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PalletIdentityIdentityInfo]>;
+      setIdentity: AugmentedSubmittable<(info: PalletIdentityIdentityInfo | { additional?: any; legal?: any; web?: any; discord?: any; email?: any; pgpFingerprint?: any; image?: any; twitter?: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [PalletIdentityIdentityInfo]>;
       /**
        * Set the sub-accounts of the sender.
        * 
@@ -693,6 +693,11 @@ declare module '@polkadot/api-base/types/submittable' {
        **/
       createCollection: AugmentedSubmittable<(name: Bytes | string | Uint8Array, royaltiesSchedule: Option<CrmlNftRoyaltiesSchedule> | null | object | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [Bytes, Option<CrmlNftRoyaltiesSchedule>]>;
       /**
+       * Set the owner of a collection
+       * Caller must be the current collection owner
+       **/
+      migrateToMetadataScheme: AugmentedSubmittable<(collectionId: u32 | AnyNumber | Uint8Array, seriesId: u32 | AnyNumber | Uint8Array, scheme: CrmlNftMetadataScheme | { Https: any } | { Http: any } | { IpfsDir: any } | { IpfsShared: any } | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, CrmlNftMetadataScheme]>;
+      /**
        * Mint tokens for an existing series
        * 
        * `quantity` - how many tokens to mint
@@ -764,6 +769,14 @@ declare module '@polkadot/api-base/types/submittable' {
        * Caller must be the token owner
        **/
       transferBatch: AugmentedSubmittable<(collectionId: u32 | AnyNumber | Uint8Array, seriesId: u32 | AnyNumber | Uint8Array, serialNumbers: Vec<u32> | (u32 | AnyNumber | Uint8Array)[], newOwner: AccountId32 | string | Uint8Array) => SubmittableExtrinsic<ApiType>, [u32, u32, Vec<u32>, AccountId32]>;
+      /**
+       * Update fixed price for a single token sale
+       * 
+       * `listing_id` id of the fixed price listing
+       * `new_price` new fixed price
+       * Caller must be the token owner
+       **/
+      updateFixedPrice: AugmentedSubmittable<(listingId: u128 | AnyNumber | Uint8Array, newPrice: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>, [u128, u128]>;
       /**
        * Generic tx
        **/

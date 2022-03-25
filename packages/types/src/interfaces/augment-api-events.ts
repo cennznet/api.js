@@ -337,6 +337,10 @@ declare module '@polkadot/api-base/types/events' {
        **/
       FixedPriceSaleListed: AugmentedEvent<ApiType, [u32, u128, Option<u32>]>;
       /**
+       * A fixed price sale has had its price updated (collection, listing)
+       **/
+      FixedPriceSalePriceUpdated: AugmentedEvent<ApiType, [u32, u128]>;
+      /**
        * An account has been registered as a marketplace (account, entitlement, marketplace_id)
        **/
       RegisteredMarketplace: AugmentedEvent<ApiType, [AccountId32, Permill, u32]>;
