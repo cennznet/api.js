@@ -273,7 +273,6 @@ describe('Staking Operations', () => {
     for (const [key] of Object.entries(recentlyOnline)) {
       const validator = recentlyOnline[key];
       expect(validator.blockCount.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(validator.isOnline).toBe(true);
     }
     await apiAzalea.disconnect();
     done();
