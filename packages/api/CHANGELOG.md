@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+## [2.1.0-rc.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.1...prerelease/2.1.0-rc.2) (28/03/2022)
+### Added:
+    - Derive query to get metadata uri for a series (api.derive.nft.seriesMetadataUri)
+    - Derive query to get validators heartbeats in the current session (api.derive.staking.receivedHeartbeats)
 ## [2.1.0-rc.1](https://github.com/cennznet/api.js/compare/prerelease/2.0.0-alpha.2...prerelease/2.1.0-rc.1) (21/03/2022)
 ### Fixed:
     - Open listing derived query
