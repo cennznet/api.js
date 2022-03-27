@@ -114,7 +114,7 @@ export function seriesMetadataUri(instanceId: string, api: ApiInterfaceRx) {
   ): Observable<Option<CrmlNftMetadataScheme | Bytes>> => {
     return api.query.nft.seriesMetadataScheme(collectionId, seriesId).pipe(
       switchMap(
-        (schema): Observable<Option<any>> => {
+        (schema): Observable<Option<CrmlNftMetadataScheme | Bytes>> => {
           if (schema.isSome) return (of(schema) as unknown) as Observable<Option<CrmlNftMetadataScheme>>;
           return api.query.nft.seriesMetadataURI(collectionId, seriesId).pipe(
             map(
