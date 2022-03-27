@@ -5,3 +5,4 @@ export * from './validators';
 export * from './waitingInfo';
 export * from './electedInfo';
 export * from './query';
+export * from './receivedHeartBeat';
