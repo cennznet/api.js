@@ -549,7 +549,7 @@ describe('NFTs', () => {
 
   });
 
-  it('Find series metadata uri from nikua', async done => {
+  it('Find series metadata uri from nikau', async done => {
     api = await Api.create({network: "nikau"});
     const uri = await api.derive.nft.seriesMetadataUri(192, 0);
     expect(uri.toHuman()).toEqual("ipfs://QmdHBkLr9L3UarwPZVGjqKFZs6XQ36Z4jJULt4zh3KwkY1");
