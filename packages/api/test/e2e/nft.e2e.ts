@@ -155,7 +155,8 @@ describe('NFTs', () => {
     let tokenId;
     const quantity = 1;
     const metadataPath = {"Https": "example.com/nft/metadata" }
-    await api.tx.nft.mintSeries(collectionId, quantity, tokenOwner.address, metadataPath, null).signAndSend(collectionOwner, async ({ status, events }) => {
+    await api.tx.nft.mintSeries(collectionId, quantity, tokenOwner.
+        address, metadataPath, null).signAndSend(collectionOwner, async ({ status, events }) => {
       if (status.isInBlock) {
         events.forEach(({ event: {data, method }}) => {
           if (method == 'CreateToken') {
@@ -548,4 +549,10 @@ describe('NFTs', () => {
 
   });
 
+  it('Find series metadata uri from nikau', async done => {
+    api = await Api.create({network: "nikau"});
+    const uri = await api.derive.nft.seriesMetadataUri(192, 0);
+    expect(uri.toHuman()).toEqual("ipfs://QmdHBkLr9L3UarwPZVGjqKFZs6XQ36Z4jJULt4zh3KwkY1");
+    done();
+  });
 });

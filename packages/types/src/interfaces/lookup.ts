@@ -444,6 +444,7 @@ export default {
       FixedPriceSaleListed: '(u32,u128,Option<u32>)',
       FixedPriceSaleComplete: '(u32,u128,AccountId32)',
       FixedPriceSaleClosed: '(u32,u128)',
+      FixedPriceSalePriceUpdated: '(u32,u128)',
       AuctionOpen: '(u32,u128,Option<u32>)',
       AuctionSold: '(u32,u128,u32,u128,AccountId32)',
       AuctionClosed: '(u32,u128,CrmlNftAuctionClosureReason)',
@@ -1362,10 +1363,9 @@ export default {
    **/
   PalletIdentityIdentityInfo: {
     additional: 'Vec<(Data,Data)>',
-    display: 'Data',
     legal: 'Data',
     web: 'Data',
-    riot: 'Data',
+    discord: 'Data',
     email: 'Data',
     pgpFingerprint: 'Option<[u8;20]>',
     image: 'Data',
@@ -1376,10 +1376,9 @@ export default {
    **/
   PalletIdentityBitFlags: {
     _bitLength: 64,
-    Display: 1,
     Legal: 2,
     Web: 4,
-    Riot: 8,
+    Discord: 8,
     Email: 16,
     PgpFingerprint: 32,
     Image: 64,
@@ -1389,7 +1388,7 @@ export default {
    * Lookup260: pallet_identity::types::IdentityField
    **/
   PalletIdentityIdentityField: {
-    _enum: ['__Unused0', 'Display', 'Legal', '__Unused3', 'Web', '__Unused5', '__Unused6', '__Unused7', 'Riot', '__Unused9', '__Unused10', '__Unused11', '__Unused12', '__Unused13', '__Unused14', '__Unused15', 'Email', '__Unused17', '__Unused18', '__Unused19', '__Unused20', '__Unused21', '__Unused22', '__Unused23', '__Unused24', '__Unused25', '__Unused26', '__Unused27', '__Unused28', '__Unused29', '__Unused30', '__Unused31', 'PgpFingerprint', '__Unused33', '__Unused34', '__Unused35', '__Unused36', '__Unused37', '__Unused38', '__Unused39', '__Unused40', '__Unused41', '__Unused42', '__Unused43', '__Unused44', '__Unused45', '__Unused46', '__Unused47', '__Unused48', '__Unused49', '__Unused50', '__Unused51', '__Unused52', '__Unused53', '__Unused54', '__Unused55', '__Unused56', '__Unused57', '__Unused58', '__Unused59', '__Unused60', '__Unused61', '__Unused62', '__Unused63', 'Image', '__Unused65', '__Unused66', '__Unused67', '__Unused68', '__Unused69', '__Unused70', '__Unused71', '__Unused72', '__Unused73', '__Unused74', '__Unused75', '__Unused76', '__Unused77', '__Unused78', '__Unused79', '__Unused80', '__Unused81', '__Unused82', '__Unused83', '__Unused84', '__Unused85', '__Unused86', '__Unused87', '__Unused88', '__Unused89', '__Unused90', '__Unused91', '__Unused92', '__Unused93', '__Unused94', '__Unused95', '__Unused96', '__Unused97', '__Unused98', '__Unused99', '__Unused100', '__Unused101', '__Unused102', '__Unused103', '__Unused104', '__Unused105', '__Unused106', '__Unused107', '__Unused108', '__Unused109', '__Unused110', '__Unused111', '__Unused112', '__Unused113', '__Unused114', '__Unused115', '__Unused116', '__Unused117', '__Unused118', '__Unused119', '__Unused120', '__Unused121', '__Unused122', '__Unused123', '__Unused124', '__Unused125', '__Unused126', '__Unused127', 'Twitter']
+    _enum: ['__Unused0', '__Unused1', 'Legal', '__Unused3', 'Web', '__Unused5', '__Unused6', '__Unused7', 'Discord', '__Unused9', '__Unused10', '__Unused11', '__Unused12', '__Unused13', '__Unused14', '__Unused15', 'Email', '__Unused17', '__Unused18', '__Unused19', '__Unused20', '__Unused21', '__Unused22', '__Unused23', '__Unused24', '__Unused25', '__Unused26', '__Unused27', '__Unused28', '__Unused29', '__Unused30', '__Unused31', 'PgpFingerprint', '__Unused33', '__Unused34', '__Unused35', '__Unused36', '__Unused37', '__Unused38', '__Unused39', '__Unused40', '__Unused41', '__Unused42', '__Unused43', '__Unused44', '__Unused45', '__Unused46', '__Unused47', '__Unused48', '__Unused49', '__Unused50', '__Unused51', '__Unused52', '__Unused53', '__Unused54', '__Unused55', '__Unused56', '__Unused57', '__Unused58', '__Unused59', '__Unused60', '__Unused61', '__Unused62', '__Unused63', 'Image', '__Unused65', '__Unused66', '__Unused67', '__Unused68', '__Unused69', '__Unused70', '__Unused71', '__Unused72', '__Unused73', '__Unused74', '__Unused75', '__Unused76', '__Unused77', '__Unused78', '__Unused79', '__Unused80', '__Unused81', '__Unused82', '__Unused83', '__Unused84', '__Unused85', '__Unused86', '__Unused87', '__Unused88', '__Unused89', '__Unused90', '__Unused91', '__Unused92', '__Unused93', '__Unused94', '__Unused95', '__Unused96', '__Unused97', '__Unused98', '__Unused99', '__Unused100', '__Unused101', '__Unused102', '__Unused103', '__Unused104', '__Unused105', '__Unused106', '__Unused107', '__Unused108', '__Unused109', '__Unused110', '__Unused111', '__Unused112', '__Unused113', '__Unused114', '__Unused115', '__Unused116', '__Unused117', '__Unused118', '__Unused119', '__Unused120', '__Unused121', '__Unused122', '__Unused123', '__Unused124', '__Unused125', '__Unused126', '__Unused127', 'Twitter']
   },
   /**
    * Lookup261: pallet_identity::types::Judgement<Balance>
@@ -1465,6 +1464,11 @@ export default {
    **/
   CrmlNftCall: {
     _enum: {
+      migrate_to_metadata_scheme: {
+        collectionId: 'u32',
+        seriesId: 'u32',
+        scheme: 'CrmlNftMetadataScheme',
+      },
       set_owner: {
         collectionId: 'u32',
         newOwner: 'AccountId32',
@@ -1551,18 +1555,16 @@ export default {
         amount: 'u128',
       },
       cancel_sale: {
-        listingId: 'u128'
+        listingId: 'u128',
+      },
+      update_fixed_price: {
+        listingId: 'u128',
+        newPrice: 'u128'
       }
     }
   },
   /**
-   * Lookup269: crml_nft::types::RoyaltiesSchedule<sp_core::crypto::AccountId32>
-   **/
-  CrmlNftRoyaltiesSchedule: {
-    entitlements: 'Vec<(AccountId32,Permill)>'
-  },
-  /**
-   * Lookup272: crml_nft::types::MetadataScheme
+   * Lookup268: crml_nft::types::MetadataScheme
    **/
   CrmlNftMetadataScheme: {
     _enum: {
@@ -1571,6 +1573,12 @@ export default {
       IpfsDir: 'Bytes',
       IpfsShared: 'Bytes'
     }
+  },
+  /**
+   * Lookup270: crml_nft::types::RoyaltiesSchedule<sp_core::crypto::AccountId32>
+   **/
+  CrmlNftRoyaltiesSchedule: {
+    entitlements: 'Vec<(AccountId32,Permill)>'
   },
   /**
    * Lookup275: crml_governance::Call<T>
@@ -2144,7 +2152,7 @@ export default {
    * Lookup381: pallet_identity::pallet::Error<T>
    **/
   PalletIdentityError: {
-    _enum: ['TooManySubAccounts', 'NotFound', 'NotNamed', 'EmptyIndex', 'FeeChanged', 'NoIdentity', 'StickyJudgement', 'JudgementGiven', 'InvalidJudgement', 'InvalidIndex', 'InvalidTarget', 'TooManyFields', 'TooManyRegistrars', 'AlreadyClaimed', 'NotSub', 'NotOwned']
+    _enum: ['TooManySubAccounts', 'NotFound', 'NotNamed', 'EmptyIndex', 'FeeChanged', 'NoIdentity', 'StickyJudgement', 'JudgementGiven', 'InvalidJudgement', 'InvalidIndex', 'InvalidTarget', 'TooManyFields', 'TooManyRegistrars', 'AlreadyClaimed', 'NotSub', 'NotOwned', 'SubNotEnabled']
   },
   /**
    * Lookup383: crml_transaction_payment::Releases

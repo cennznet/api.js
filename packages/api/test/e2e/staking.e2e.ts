@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Api} from "@cennznet/api";
 import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs, Option } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -263,6 +264,17 @@ describe('Staking Operations', () => {
     const aliceStash = keyring.addFromUri('//Alice//stash');
     const accruedPayout = await api.rpc.staking.accruedPayout(aliceStash.address);
     expect(accruedPayout.toNumber()).toBe(0);
+    done();
+  });
+
+  test('check received heat beat on azalea', async done => {
+    const apiAzalea = await Api.create({ network: 'azalea' });
+    const recentlyOnline = await apiAzalea.derive.stakingCennznet.receivedHeartbeats();
+    for (const [key] of Object.entries(recentlyOnline)) {
+      const validator = recentlyOnline[key];
+      expect(validator.blockCount.toNumber()).toBeGreaterThanOrEqual(0);
+    }
+    await apiAzalea.disconnect();
     done();
   });
 

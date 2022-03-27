@@ -307,6 +307,10 @@ declare module '@polkadot/api-base/types/errors' {
        **/
       StickyJudgement: AugmentedError<ApiType>;
       /**
+       * Sub-accounts not enabled
+       **/
+      SubNotEnabled: AugmentedError<ApiType>;
+      /**
        * Too many additional fields.
        **/
       TooManyFields: AugmentedError<ApiType>;

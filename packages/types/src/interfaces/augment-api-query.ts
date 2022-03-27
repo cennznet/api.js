@@ -595,6 +595,10 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       seriesMetadataScheme: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<CrmlNftMetadataScheme>>, [u32, u32]> & QueryableStorageEntry<ApiType, [u32, u32]>;
       /**
+       * DEPRECATED: Migrate to seriesMetadataScheme. Read-only for NFTs created in v46
+       **/
+      seriesMetadataURI: AugmentedQuery<ApiType, (arg1: u32 | AnyNumber | Uint8Array, arg2: u32 | AnyNumber | Uint8Array) => Observable<Option<Bytes>>, [u32, u32]> & QueryableStorageEntry<ApiType, [u32, u32]>;
+      /**
        * Map from series to its human friendly name
        **/
       seriesName: AugmentedQuery<ApiType, (arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]) => Observable<Bytes>, [ITuple<[u32, u32]>]> & QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;

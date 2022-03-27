@@ -480,6 +480,8 @@ declare module '@polkadot/types/lookup' {
     readonly asFixedPriceSaleComplete: ITuple<[u32, u128, AccountId32]>;
     readonly isFixedPriceSaleClosed: boolean;
     readonly asFixedPriceSaleClosed: ITuple<[u32, u128]>;
+    readonly isFixedPriceSalePriceUpdated: boolean;
+    readonly asFixedPriceSalePriceUpdated: ITuple<[u32, u128]>;
     readonly isAuctionOpen: boolean;
     readonly asAuctionOpen: ITuple<[u32, u128, Option<u32>]>;
     readonly isAuctionSold: boolean;
@@ -490,7 +492,7 @@ declare module '@polkadot/types/lookup' {
     readonly asBid: ITuple<[u32, u128, u128]>;
     readonly isRegisteredMarketplace: boolean;
     readonly asRegisteredMarketplace: ITuple<[AccountId32, Permill, u32]>;
-    readonly type: 'CreateCollection' | 'CreateSeries' | 'CreateTokens' | 'Transfer' | 'Burn' | 'FixedPriceSaleListed' | 'FixedPriceSaleComplete' | 'FixedPriceSaleClosed' | 'AuctionOpen' | 'AuctionSold' | 'AuctionClosed' | 'Bid' | 'RegisteredMarketplace';
+    readonly type: 'CreateCollection' | 'CreateSeries' | 'CreateTokens' | 'Transfer' | 'Burn' | 'FixedPriceSaleListed' | 'FixedPriceSaleComplete' | 'FixedPriceSaleClosed' | 'FixedPriceSalePriceUpdated' | 'AuctionOpen' | 'AuctionSold' | 'AuctionClosed' | 'Bid' | 'RegisteredMarketplace';
   }
 
   /** @name CrmlNftAuctionClosureReason (62) */
@@ -1389,10 +1391,9 @@ declare module '@polkadot/types/lookup' {
   /** @name PalletIdentityIdentityInfo (223) */
   export interface PalletIdentityIdentityInfo extends Struct {
     readonly additional: Vec<ITuple<[Data, Data]>>;
-    readonly display: Data;
     readonly legal: Data;
     readonly web: Data;
-    readonly riot: Data;
+    readonly discord: Data;
     readonly email: Data;
     readonly pgpFingerprint: Option<U8aFixed>;
     readonly image: Data;
@@ -1401,10 +1402,9 @@ declare module '@polkadot/types/lookup' {
 
   /** @name PalletIdentityBitFlags (259) */
   export interface PalletIdentityBitFlags extends Set {
-    readonly isDisplay: boolean;
     readonly isLegal: boolean;
     readonly isWeb: boolean;
-    readonly isRiot: boolean;
+    readonly isDiscord: boolean;
     readonly isEmail: boolean;
     readonly isPgpFingerprint: boolean;
     readonly isImage: boolean;
@@ -1413,15 +1413,14 @@ declare module '@polkadot/types/lookup' {
 
   /** @name PalletIdentityIdentityField (260) */
   export interface PalletIdentityIdentityField extends Enum {
-    readonly isDisplay: boolean;
     readonly isLegal: boolean;
     readonly isWeb: boolean;
-    readonly isRiot: boolean;
+    readonly isDiscord: boolean;
     readonly isEmail: boolean;
     readonly isPgpFingerprint: boolean;
     readonly isImage: boolean;
     readonly isTwitter: boolean;
-    readonly type: 'Display' | 'Legal' | 'Web' | 'Riot' | 'Email' | 'PgpFingerprint' | 'Image' | 'Twitter';
+    readonly type: 'Legal' | 'Web' | 'Discord' | 'Email' | 'PgpFingerprint' | 'Image' | 'Twitter';
   }
 
   /** @name PalletIdentityJudgement (261) */
@@ -1496,6 +1495,12 @@ declare module '@polkadot/types/lookup' {
 
   /** @name CrmlNftCall (267) */
   export interface CrmlNftCall extends Enum {
+    readonly isMigrateToMetadataScheme: boolean;
+    readonly asMigrateToMetadataScheme: {
+      readonly collectionId: u32;
+      readonly seriesId: u32;
+      readonly scheme: CrmlNftMetadataScheme;
+    } & Struct;
     readonly isSetOwner: boolean;
     readonly asSetOwner: {
       readonly collectionId: u32;
@@ -1601,15 +1606,15 @@ declare module '@polkadot/types/lookup' {
     readonly asCancelSale: {
       readonly listingId: u128;
     } & Struct;
-    readonly type: 'SetOwner' | 'SetSeriesName' | 'RegisterMarketplace' | 'CreateCollection' | 'MintSeries' | 'MintAdditional' | 'Transfer' | 'TransferBatch' | 'Burn' | 'BurnBatch' | 'Sell' | 'SellBundle' | 'Buy' | 'Auction' | 'AuctionBundle' | 'Bid' | 'CancelSale';
+    readonly isUpdateFixedPrice: boolean;
+    readonly asUpdateFixedPrice: {
+      readonly listingId: u128;
+      readonly newPrice: u128;
+    } & Struct;
+    readonly type: 'MigrateToMetadataScheme' | 'SetOwner' | 'SetSeriesName' | 'RegisterMarketplace' | 'CreateCollection' | 'MintSeries' | 'MintAdditional' | 'Transfer' | 'TransferBatch' | 'Burn' | 'BurnBatch' | 'Sell' | 'SellBundle' | 'Buy' | 'Auction' | 'AuctionBundle' | 'Bid' | 'CancelSale' | 'UpdateFixedPrice';
   }
 
-  /** @name CrmlNftRoyaltiesSchedule (269) */
-  export interface CrmlNftRoyaltiesSchedule extends Struct {
-    readonly entitlements: Vec<ITuple<[AccountId32, Permill]>>;
-  }
-
-  /** @name CrmlNftMetadataScheme (272) */
+  /** @name CrmlNftMetadataScheme (268) */
   export interface CrmlNftMetadataScheme extends Enum {
     readonly isHttps: boolean;
     readonly asHttps: Bytes;
@@ -1620,6 +1625,11 @@ declare module '@polkadot/types/lookup' {
     readonly isIpfsShared: boolean;
     readonly asIpfsShared: Bytes;
     readonly type: 'Https' | 'Http' | 'IpfsDir' | 'IpfsShared';
+  }
+
+  /** @name CrmlNftRoyaltiesSchedule (270) */
+  export interface CrmlNftRoyaltiesSchedule extends Struct {
+    readonly entitlements: Vec<ITuple<[AccountId32, Permill]>>;
   }
 
   /** @name CrmlGovernanceCall (275) */
@@ -2276,7 +2286,8 @@ declare module '@polkadot/types/lookup' {
     readonly isAlreadyClaimed: boolean;
     readonly isNotSub: boolean;
     readonly isNotOwned: boolean;
-    readonly type: 'TooManySubAccounts' | 'NotFound' | 'NotNamed' | 'EmptyIndex' | 'FeeChanged' | 'NoIdentity' | 'StickyJudgement' | 'JudgementGiven' | 'InvalidJudgement' | 'InvalidIndex' | 'InvalidTarget' | 'TooManyFields' | 'TooManyRegistrars' | 'AlreadyClaimed' | 'NotSub' | 'NotOwned';
+    readonly isSubNotEnabled: boolean;
+    readonly type: 'TooManySubAccounts' | 'NotFound' | 'NotNamed' | 'EmptyIndex' | 'FeeChanged' | 'NoIdentity' | 'StickyJudgement' | 'JudgementGiven' | 'InvalidJudgement' | 'InvalidIndex' | 'InvalidTarget' | 'TooManyFields' | 'TooManyRegistrars' | 'AlreadyClaimed' | 'NotSub' | 'NotOwned' | 'SubNotEnabled';
   }
 
   /** @name CrmlTransactionPaymentReleases (383) */
