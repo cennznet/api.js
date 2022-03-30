@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "2.1.0-rc.2",
+    "version": "2.1.0-rc.3",
     "description": "Additional type definitions for the CENNZnet runtime",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
