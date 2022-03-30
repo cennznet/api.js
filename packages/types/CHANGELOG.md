@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
+## [2.1.0-rc.3](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.2...prerelease/2.1.0-rc.3) (31/03/2022)
+### Added:
+    - Added session key type for runtime version less than 49
 ## [2.1.0-rc.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.1...prerelease/2.1.0-rc.2) (28/03/2022)
 ### Added:
     - Updated augment typescript definition as per new metadata(version 53)
