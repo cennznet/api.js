@@ -86,7 +86,8 @@ export const typesBundle: OverrideBundleType = {
           minmax: [41, 45],
           types: {
             ...sharedTypes41Onwards,
-            BalanceLock: 'BalanceLock45'
+            BalanceLock: 'BalanceLock45',
+            Keys: '(AccountId, AccountId, AccountId, AccountId, BeefyKey)'
           },
         },
         {
