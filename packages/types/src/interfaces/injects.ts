@@ -83,7 +83,7 @@ export const typesBundle: OverrideBundleType = {
           },
         },
         {
-          minmax: [41, 47],
+          minmax: [41, 48],
           types: {
             ...sharedTypes41Onwards,
             BalanceLock: 'BalanceLock45',
@@ -91,7 +91,7 @@ export const typesBundle: OverrideBundleType = {
           },
         },
         {
-          minmax: [48, undefined],
+          minmax: [49, undefined],
           types: {
             ...sharedTypes41Onwards
           },
