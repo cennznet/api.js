@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:24](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L24)
+[packages/api/src/derives/governance/types.ts:24](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/governance/types.ts#L24)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:27](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L27)
+[packages/api/src/derives/governance/types.ts:27](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/governance/types.ts#L27)
 
 ___
 
@@ -41,14 +41,14 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:26](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L26)
+[packages/api/src/derives/governance/types.ts:26](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/governance/types.ts#L26)
 
 ___
 
 ### sponsor
 
-• **sponsor**: `Account`
+• **sponsor**: `Address`
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:25](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L25)
+[packages/api/src/derives/governance/types.ts:25](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/governance/types.ts#L25)

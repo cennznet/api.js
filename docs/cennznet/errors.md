@@ -6,11 +6,17 @@ This page lists the errors that can be encountered in the different modules.
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[attestation](#attestation)**
-
 - **[authorship](#authorship)**
 
+- **[babe](#babe)**
+
 - **[cennzx](#cennzx)**
+
+- **[ethereum](#ethereum)**
+
+- **[ethWallet](#ethwallet)**
+
+- **[eVM](#evm)**
 
 - **[genericAsset](#genericasset)**
 
@@ -19,8 +25,6 @@ This page lists the errors that can be encountered in the different modules.
 - **[identity](#identity)**
 
 - **[imOnline](#imonline)**
-
-- **[multisig](#multisig)**
 
 - **[nft](#nft)**
 
@@ -36,13 +40,8 @@ This page lists the errors that can be encountered in the different modules.
 
 - **[treasury](#treasury)**
 
+- **[utility](#utility)**
 
-___
-
-
-## attestation
- 
-### TopicNotRegistered
 
 ___
 
@@ -50,25 +49,49 @@ ___
 ## authorship
  
 ### GenesisUncle
-- **summary**:   The uncle is genesis. 
+- **interface**: `api.errors.authorship.GenesisUncle.is`
+- **summary**:   he uncle is genesis. 
  
 ### InvalidUncleParent
-- **summary**:   The uncle parent not in the chain. 
+- **interface**: `api.errors.authorship.InvalidUncleParent.is`
+- **summary**:   he uncle parent not in the chain. 
  
 ### OldUncle
-- **summary**:   The uncle isn't recent enough to be included. 
+- **interface**: `api.errors.authorship.OldUncle.is`
+- **summary**:   he uncle isn't recent enough to be included. 
  
 ### TooHighUncle
-- **summary**:   The uncle is too high in chain. 
+- **interface**: `api.errors.authorship.TooHighUncle.is`
+- **summary**:   he uncle is too high in chain. 
  
 ### TooManyUncles
-- **summary**:   Too many uncles. 
+- **interface**: `api.errors.authorship.TooManyUncles.is`
+- **summary**:   oo many uncles. 
  
 ### UncleAlreadyIncluded
-- **summary**:   The uncle is already included. 
+- **interface**: `api.errors.authorship.UncleAlreadyIncluded.is`
+- **summary**:   he uncle is already included. 
  
 ### UnclesAlreadySet
-- **summary**:   Uncles already set in the block. 
+- **interface**: `api.errors.authorship.UnclesAlreadySet.is`
+- **summary**:   ncles already set in the block. 
+
+___
+
+
+## babe
+ 
+### DuplicateOffenceReport
+- **interface**: `api.errors.babe.DuplicateOffenceReport.is`
+- **summary**:    given equivocation report is valid but already previously reported. 
+ 
+### InvalidEquivocationProof
+- **interface**: `api.errors.babe.InvalidEquivocationProof.is`
+- **summary**:   n equivocation proof provided as part of an equivocation report is invalid. 
+ 
+### InvalidKeyOwnershipProof
+- **interface**: `api.errors.babe.InvalidKeyOwnershipProof.is`
+- **summary**:    key ownership proof provided as part of an equivocation report is invalid. 
 
 ___
 
@@ -76,40 +99,113 @@ ___
 ## cennzx
  
 ### AssetCannotSwapForItself
+- **interface**: `api.errors.cennzx.AssetCannotSwapForItself.is`
  
 ### CannotAddLiquidityWithZero
+- **interface**: `api.errors.cennzx.CannotAddLiquidityWithZero.is`
  
 ### CannotTradeZero
+- **interface**: `api.errors.cennzx.CannotTradeZero.is`
  
 ### DivideByZero
+- **interface**: `api.errors.cennzx.DivideByZero.is`
  
 ### EmptyExchangePool
+- **interface**: `api.errors.cennzx.EmptyExchangePool.is`
  
 ### InsufficientBalance
+- **interface**: `api.errors.cennzx.InsufficientBalance.is`
  
 ### InsufficientCoreAssetBalance
+- **interface**: `api.errors.cennzx.InsufficientCoreAssetBalance.is`
  
 ### InsufficientExchangePoolReserve
+- **interface**: `api.errors.cennzx.InsufficientExchangePoolReserve.is`
  
 ### InsufficientLiquidity
+- **interface**: `api.errors.cennzx.InsufficientLiquidity.is`
  
 ### InsufficientTradeAssetBalance
+- **interface**: `api.errors.cennzx.InsufficientTradeAssetBalance.is`
  
 ### InvalidAssetId
+- **interface**: `api.errors.cennzx.InvalidAssetId.is`
  
 ### MaximumSellRequirementNotMet
+- **interface**: `api.errors.cennzx.MaximumSellRequirementNotMet.is`
  
 ### MaximumTradeAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MaximumTradeAssetRequirementNotMet.is`
  
 ### MinimumBuyRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumBuyRequirementNotMet.is`
  
 ### MinimumCoreAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumCoreAssetRequirementNotMet.is`
  
 ### MinimumLiquidityRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumLiquidityRequirementNotMet.is`
  
 ### MinimumTradeAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumTradeAssetRequirementNotMet.is`
  
 ### Overflow
+- **interface**: `api.errors.cennzx.Overflow.is`
+
+___
+
+
+## ethereum
+ 
+### InvalidSignature
+- **interface**: `api.errors.ethereum.InvalidSignature.is`
+- **summary**:   ignature is invalid. 
+ 
+### PreLogExists
+- **interface**: `api.errors.ethereum.PreLogExists.is`
+- **summary**:   re-log is present, therefore transact is not allowed. 
+
+___
+
+
+## ethWallet
+ 
+### CantPay
+- **interface**: `api.errors.ethWallet.CantPay.is`
+- **summary**:   an't pay fees 
+ 
+### InvalidSignature
+- **interface**: `api.errors.ethWallet.InvalidSignature.is`
+- **summary**:   ignature & account mismatched. 
+
+___
+
+
+## eVM
+ 
+### BalanceLow
+- **interface**: `api.errors.evm.BalanceLow.is`
+- **summary**:   ot enough balance to perform action 
+ 
+### FeeOverflow
+- **interface**: `api.errors.evm.FeeOverflow.is`
+- **summary**:   alculating total fee overflowed 
+ 
+### GasPriceTooLow
+- **interface**: `api.errors.evm.GasPriceTooLow.is`
+- **summary**:   as price is too low. 
+ 
+### InvalidNonce
+- **interface**: `api.errors.evm.InvalidNonce.is`
+- **summary**:   once is invalid 
+ 
+### PaymentOverflow
+- **interface**: `api.errors.evm.PaymentOverflow.is`
+- **summary**:   alculating total payment overflowed 
+ 
+### WithdrawFailed
+- **interface**: `api.errors.evm.WithdrawFailed.is`
+- **summary**:   ithdraw fee failed 
 
 ___
 
@@ -117,58 +213,76 @@ ___
 ## genericAsset
  
 ### AccountIdNotExist
-- **summary**:   There is no such account id in the storage. 
+- **interface**: `api.errors.genericAsset.AccountIdNotExist.is`
+- **summary**:   here is no such account id in the storage. 
  
 ### AssetIdExhausted
-- **summary**:   No new assets id available. 
+- **interface**: `api.errors.genericAsset.AssetIdExhausted.is`
+- **summary**:   o new assets id available. 
  
 ### AssetIdExists
-- **summary**:   Asset id is already taken. 
+- **interface**: `api.errors.genericAsset.AssetIdExists.is`
+- **summary**:   sset id is already taken. 
  
 ### AssetIdNotExist
-- **summary**:   Failure due to asset id not existing on chain 
+- **interface**: `api.errors.genericAsset.AssetIdNotExist.is`
+- **summary**:   ailure due to asset id not existing on chain 
  
 ### DecimalTooLarge
-- **summary**:   The integer for decimal places is too large for conversion into u128. 
+- **interface**: `api.errors.genericAsset.DecimalTooLarge.is`
+- **summary**:   he integer for decimal places is too large for conversion into u128. 
  
 ### FreeBurningUnderflow
-- **summary**:   Free balance got underflowed after burning. 
+- **interface**: `api.errors.genericAsset.FreeBurningUnderflow.is`
+- **summary**:   ree balance got underflowed after burning. 
  
 ### FreeMintingOverflow
-- **summary**:   Free balance got overflowed after minting. 
+- **interface**: `api.errors.genericAsset.FreeMintingOverflow.is`
+- **summary**:   ree balance got overflowed after minting. 
  
 ### InitialIssuanceTooLarge
-- **summary**:   The integer for initial issuance is too large for conversion into u128. 
+- **interface**: `api.errors.genericAsset.InitialIssuanceTooLarge.is`
+- **summary**:   he integer for initial issuance is too large for conversion into u128. 
  
 ### InsufficientBalance
-- **summary**:   The balance is too low to send amount. 
+- **interface**: `api.errors.genericAsset.InsufficientBalance.is`
+- **summary**:   he balance is too low to send amount. 
  
 ### LiquidityRestrictions
-- **summary**:   The account liquidity restrictions prevent withdrawal. 
+- **interface**: `api.errors.genericAsset.LiquidityRestrictions.is`
+- **summary**:   he account liquidity restrictions prevent withdrawal. 
  
 ### NoBurnPermission
-- **summary**:   The origin does not have permission to burn an asset. 
+- **interface**: `api.errors.genericAsset.NoBurnPermission.is`
+- **summary**:   he origin does not have permission to burn an asset. 
  
 ### NoMintPermission
-- **summary**:   The origin does not have permission to mint an asset. 
+- **interface**: `api.errors.genericAsset.NoMintPermission.is`
+- **summary**:   he origin does not have permission to mint an asset. 
  
 ### NoUpdatePermission
-- **summary**:   The origin does not have enough permission to update permissions. 
+- **interface**: `api.errors.genericAsset.NoUpdatePermission.is`
+- **summary**:   he origin does not have enough permission to update permissions. 
  
 ### TotalBurningUnderflow
-- **summary**:   Total issuance got underflowed after burning. 
+- **interface**: `api.errors.genericAsset.TotalBurningUnderflow.is`
+- **summary**:   otal issuance got underflowed after burning. 
  
 ### TotalMintingOverflow
-- **summary**:   Total issuance got overflowed after minting. 
+- **interface**: `api.errors.genericAsset.TotalMintingOverflow.is`
+- **summary**:   otal issuance got overflowed after minting. 
  
 ### TransferOverflow
-- **summary**:   The transfer will cause the account to overflow 
+- **interface**: `api.errors.genericAsset.TransferOverflow.is`
+- **summary**:   he transfer will cause the account to overflow 
  
 ### ZeroAmount
-- **summary**:   Cannot transfer zero amount. 
+- **interface**: `api.errors.genericAsset.ZeroAmount.is`
+- **summary**:   annot transfer zero amount. 
  
 ### ZeroExistentialDeposit
-- **summary**:   Existential deposit for assets should always be greater than zero. 
+- **interface**: `api.errors.genericAsset.ZeroExistentialDeposit.is`
+- **summary**:   xistential deposit for assets should always be greater than zero. 
 
 ___
 
@@ -176,25 +290,32 @@ ___
 ## grandpa
  
 ### ChangePending
-- **summary**:   Attempt to signal GRANDPA change with one already pending. 
+- **interface**: `api.errors.grandpa.ChangePending.is`
+- **summary**:   ttempt to signal GRANDPA change with one already pending. 
  
 ### DuplicateOffenceReport
-- **summary**:   A given equivocation report is valid but already previously reported. 
+- **interface**: `api.errors.grandpa.DuplicateOffenceReport.is`
+- **summary**:    given equivocation report is valid but already previously reported. 
  
 ### InvalidEquivocationProof
-- **summary**:   An equivocation proof provided as part of an equivocation report is invalid. 
+- **interface**: `api.errors.grandpa.InvalidEquivocationProof.is`
+- **summary**:   n equivocation proof provided as part of an equivocation report is invalid. 
  
 ### InvalidKeyOwnershipProof
-- **summary**:   A key ownership proof provided as part of an equivocation report is invalid. 
+- **interface**: `api.errors.grandpa.InvalidKeyOwnershipProof.is`
+- **summary**:    key ownership proof provided as part of an equivocation report is invalid. 
  
 ### PauseFailed
-- **summary**:   Attempt to signal GRANDPA pause when the authority set isn't live (either paused or already pending pause). 
+- **interface**: `api.errors.grandpa.PauseFailed.is`
+- **summary**:   ttempt to signal GRANDPA pause when the authority set isn't live either paused or already pending pause). 
  
 ### ResumeFailed
-- **summary**:   Attempt to signal GRANDPA resume when the authority set isn't paused (either live or already pending resume). 
+- **interface**: `api.errors.grandpa.ResumeFailed.is`
+- **summary**:   ttempt to signal GRANDPA resume when the authority set isn't paused either live or already pending resume). 
  
 ### TooSoon
-- **summary**:   Cannot signal forced change so soon after last. 
+- **interface**: `api.errors.grandpa.TooSoon.is`
+- **summary**:   annot signal forced change so soon after last. 
 
 ___
 
@@ -202,52 +323,68 @@ ___
 ## identity
  
 ### AlreadyClaimed
-- **summary**:   Account ID is already named. 
+- **interface**: `api.errors.identity.AlreadyClaimed.is`
+- **summary**:   ccount ID is already named. 
  
 ### EmptyIndex
-- **summary**:   Empty index. 
+- **interface**: `api.errors.identity.EmptyIndex.is`
+- **summary**:   mpty index. 
  
 ### FeeChanged
-- **summary**:   Fee is changed. 
+- **interface**: `api.errors.identity.FeeChanged.is`
+- **summary**:   ee is changed. 
  
 ### InvalidIndex
-- **summary**:   The index is invalid. 
+- **interface**: `api.errors.identity.InvalidIndex.is`
+- **summary**:   he index is invalid. 
  
 ### InvalidJudgement
-- **summary**:   Invalid judgement. 
+- **interface**: `api.errors.identity.InvalidJudgement.is`
+- **summary**:   nvalid judgement. 
  
 ### InvalidTarget
-- **summary**:   The target is invalid. 
+- **interface**: `api.errors.identity.InvalidTarget.is`
+- **summary**:   he target is invalid. 
  
 ### JudgementGiven
-- **summary**:   Judgement given. 
+- **interface**: `api.errors.identity.JudgementGiven.is`
+- **summary**:   udgement given. 
  
 ### NoIdentity
-- **summary**:   No identity found. 
+- **interface**: `api.errors.identity.NoIdentity.is`
+- **summary**:   o identity found. 
  
 ### NotFound
-- **summary**:   Account isn't found. 
+- **interface**: `api.errors.identity.NotFound.is`
+- **summary**:   ccount isn't found. 
  
 ### NotNamed
-- **summary**:   Account isn't named. 
+- **interface**: `api.errors.identity.NotNamed.is`
+- **summary**:   ccount isn't named. 
  
 ### NotOwned
-- **summary**:   Sub-account isn't owned by sender. 
+- **interface**: `api.errors.identity.NotOwned.is`
+- **summary**:   ub-account isn't owned by sender. 
  
 ### NotSub
-- **summary**:   Sender is not a sub-account. 
+- **interface**: `api.errors.identity.NotSub.is`
+- **summary**:   ender is not a sub-account. 
  
 ### StickyJudgement
-- **summary**:   Sticky judgement. 
+- **interface**: `api.errors.identity.StickyJudgement.is`
+- **summary**:   ticky judgement. 
  
 ### TooManyFields
-- **summary**:   Too many additional fields. 
+- **interface**: `api.errors.identity.TooManyFields.is`
+- **summary**:   oo many additional fields. 
  
 ### TooManyRegistrars
-- **summary**:   Maximum amount of registrars reached. Cannot add any more. 
+- **interface**: `api.errors.identity.TooManyRegistrars.is`
+- **summary**:   aximum amount of registrars reached. Cannot add any more. 
  
 ### TooManySubAccounts
-- **summary**:   Too many subs-accounts. 
+- **interface**: `api.errors.identity.TooManySubAccounts.is`
+- **summary**:   oo many subs-accounts. 
 
 ___
 
@@ -255,113 +392,97 @@ ___
 ## imOnline
  
 ### DuplicatedHeartbeat
-- **summary**:   Duplicated heartbeat. 
+- **interface**: `api.errors.imOnline.DuplicatedHeartbeat.is`
+- **summary**:   uplicated heartbeat. 
  
 ### InvalidKey
-- **summary**:   Non existent public key. 
-
-___
-
-
-## multisig
- 
-### AlreadyApproved
-- **summary**:   Call is already approved by this signatory. 
- 
-### AlreadyStored
-- **summary**:   The data to be stored is already stored. 
- 
-### MaxWeightTooLow
-- **summary**:   The maximum weight information provided was too low. 
- 
-### MinimumThreshold
-- **summary**:   Threshold must be 2 or greater. 
- 
-### NoApprovalsNeeded
-- **summary**:   Call doesn't need any (more) approvals. 
- 
-### NotFound
-- **summary**:   Multisig operation not found when attempting to cancel. 
- 
-### NoTimepoint
-- **summary**:   No timepoint was given, yet the multisig operation is already underway. 
- 
-### NotOwner
-- **summary**:   Only the account that originally created the multisig is able to cancel it. 
- 
-### SenderInSignatories
-- **summary**:   The sender was contained in the other signatories; it shouldn't be. 
- 
-### SignatoriesOutOfOrder
-- **summary**:   The signatories were provided out of order; they should be ordered. 
- 
-### TooFewSignatories
-- **summary**:   There are too few signatories in the list. 
- 
-### TooManySignatories
-- **summary**:   There are too many signatories in the list. 
- 
-### UnexpectedTimepoint
-- **summary**:   A timepoint was given, yet no multisig operation is underway. 
- 
-### WrongTimepoint
-- **summary**:   A different timepoint was given to the multisig operation that is underway. 
+- **interface**: `api.errors.imOnline.InvalidKey.is`
+- **summary**:   on existent public key. 
 
 ___
 
 
 ## nft
  
-### AddToUniqueIssue
-- **summary**:   Cannot mint additional tokens in a unique issue series 
- 
 ### BidTooLow
-- **summary**:   Auction bid was lower than reserve or current highest bid 
+- **interface**: `api.errors.nft.BidTooLow.is`
+- **summary**:   uction bid was lower than reserve or current highest bid 
  
 ### CollectionIdExists
-- **summary**:   A collection with the same ID already exists 
+- **interface**: `api.errors.nft.CollectionIdExists.is`
+- **summary**:    collection with the same ID already exists 
  
 ### CollectionNameInvalid
-- **summary**:   Given collection name is invalid (invalid utf-8, too long, empty) 
+- **interface**: `api.errors.nft.CollectionNameInvalid.is`
+- **summary**:   iven collection name is invalid (invalid utf-8, too long, empty) 
  
 ### InternalPayment
-- **summary**:   Internal error during payment 
+- **interface**: `api.errors.nft.InternalPayment.is`
+- **summary**:   nternal error during payment 
+ 
+### InvalidMetadataPath
+- **interface**: `api.errors.nft.InvalidMetadataPath.is`
+- **summary**:   he metadata path is invalid (non-utf8 or empty) 
+ 
+### MarketplaceNotRegistered
+- **interface**: `api.errors.nft.MarketplaceNotRegistered.is`
+- **summary**:   he account_id hasn't been registered as a marketplace 
  
 ### MaxAttributeLength
-- **summary**:   Given attirbute value is larger than the configured max. 
+- **interface**: `api.errors.nft.MaxAttributeLength.is`
+- **summary**:   iven attribute value is larger than the configured max. 
  
 ### MixedBundleSale
-- **summary**:   Selling tokens from different collections is not allowed 
+- **interface**: `api.errors.nft.MixedBundleSale.is`
+- **summary**:   elling tokens from different collections is not allowed 
+ 
+### NameAlreadySet
+- **interface**: `api.errors.nft.NameAlreadySet.is`
+- **summary**:   he Series name has been set 
  
 ### NoAvailableIds
-- **summary**:   No more Ids are available, they've been exhausted 
+- **interface**: `api.errors.nft.NoAvailableIds.is`
+- **summary**:   o more Ids are available, they've been exhausted 
  
 ### NoCollection
-- **summary**:   The NFT collection does not exist 
+- **interface**: `api.errors.nft.NoCollection.is`
+- **summary**:   he NFT collection does not exist 
  
 ### NoPermission
-- **summary**:   origin does not have permission for the operation (the token may not exist) 
+- **interface**: `api.errors.nft.NoPermission.is`
+- **summary**:   rigin does not have permission for the operation (the token may not exist) 
+ 
+### NoSeries
+- **interface**: `api.errors.nft.NoSeries.is`
+- **summary**:   he series does not exist 
  
 ### NotForAuction
-- **summary**:   The token is not listed for auction sale 
+- **interface**: `api.errors.nft.NotForAuction.is`
+- **summary**:   he token is not listed for auction sale 
  
 ### NotForFixedPriceSale
-- **summary**:   The token is not listed for fixed price sale 
+- **interface**: `api.errors.nft.NotForFixedPriceSale.is`
+- **summary**:   he token is not listed for fixed price sale 
  
 ### NoToken
-- **summary**:   The token does not exist 
+- **interface**: `api.errors.nft.NoToken.is`
+- **summary**:   he token does not exist 
  
 ### RoyaltiesInvalid
-- **summary**:   Total royalties would exceed 100% of sale or an empty vec is supplied 
+- **interface**: `api.errors.nft.RoyaltiesInvalid.is`
+- **summary**:   otal royalties would exceed 100% of sale or an empty vec is supplied 
  
 ### RoyaltiesProtection
-- **summary**:   Tokens with different individual royalties cannot be sold together 
+- **interface**: `api.errors.nft.RoyaltiesProtection.is`
+- **summary**:   okens with different individual royalties cannot be sold together 
  
 ### SchemaMaxAttributes
-- **summary**:   Too many attributes in the provided schema or data 
+- **interface**: `api.errors.nft.SchemaMaxAttributes.is`
+- **summary**:   oo many attributes in the provided schema or data 
  
 ### TokenListingProtection
-- **summary**:   Cannot operate on a listed NFT 
+- **interface**: `api.errors.nft.TokenListingProtection.is`
+- **summary**:   annot operate on a listed NFT 
 
 ___
 
@@ -369,16 +490,20 @@ ___
 ## scheduler
  
 ### FailedToSchedule
-- **summary**:   Failed to schedule a call 
+- **interface**: `api.errors.scheduler.FailedToSchedule.is`
+- **summary**:   ailed to schedule a call 
  
 ### NotFound
-- **summary**:   Cannot find the scheduled call. 
+- **interface**: `api.errors.scheduler.NotFound.is`
+- **summary**:   annot find the scheduled call. 
  
 ### RescheduleNoChange
-- **summary**:   Reschedule failed because it does not change scheduled time. 
+- **interface**: `api.errors.scheduler.RescheduleNoChange.is`
+- **summary**:   eschedule failed because it does not change scheduled time. 
  
 ### TargetBlockNumberInPast
-- **summary**:   Given target block number is in the past. 
+- **interface**: `api.errors.scheduler.TargetBlockNumberInPast.is`
+- **summary**:   iven target block number is in the past. 
 
 ___
 
@@ -386,19 +511,24 @@ ___
 ## session
  
 ### DuplicatedKey
-- **summary**:   Registered duplicate key. 
+- **interface**: `api.errors.session.DuplicatedKey.is`
+- **summary**:   egistered duplicate key. 
  
 ### InvalidProof
-- **summary**:   Invalid ownership proof. 
+- **interface**: `api.errors.session.InvalidProof.is`
+- **summary**:   nvalid ownership proof. 
  
 ### NoAccount
-- **summary**:   Key setting account is not live, so it's impossible to associate keys. 
+- **interface**: `api.errors.session.NoAccount.is`
+- **summary**:   ey setting account is not live, so it's impossible to associate keys. 
  
 ### NoAssociatedValidatorId
-- **summary**:   No associated validator ID for account. 
+- **interface**: `api.errors.session.NoAssociatedValidatorId.is`
+- **summary**:   o associated validator ID for account. 
  
 ### NoKeys
-- **summary**:   No keys are associated with this account. 
+- **interface**: `api.errors.session.NoKeys.is`
+- **summary**:   o keys are associated with this account. 
 
 ___
 
@@ -406,88 +536,120 @@ ___
 ## staking
  
 ### AlreadyBonded
-- **summary**:   Stash is already bonded. 
+- **interface**: `api.errors.staking.AlreadyBonded.is`
+- **summary**:   tash is already bonded. 
  
 ### AlreadyPaired
-- **summary**:   Controller is already paired. 
+- **interface**: `api.errors.staking.AlreadyPaired.is`
+- **summary**:   ontroller is already paired. 
  
 ### CallNotAllowed
-- **summary**:   The call is not allowed at the given time due to restrictions of election period. 
+- **interface**: `api.errors.staking.CallNotAllowed.is`
+- **summary**:   he call is not allowed at the given time due to restrictions of election period. 
  
 ### DuplicateNominee
-- **summary**:   Cannot nominate the same account multiple times 
+- **interface**: `api.errors.staking.DuplicateNominee.is`
+- **summary**:   annot nominate the same account multiple times 
  
 ### EmptyTargets
-- **summary**:   Targets cannot be empty. 
+- **interface**: `api.errors.staking.EmptyTargets.is`
+- **summary**:   argets cannot be empty. 
  
 ### FundedTarget
-- **summary**:   Attempting to target a stash that still has funds. 
+- **interface**: `api.errors.staking.FundedTarget.is`
+- **summary**:   ttempting to target a stash that still has funds. 
  
 ### IncorrectHistoryDepth
-- **summary**:   Incorrect previous history depth input provided. 
+- **interface**: `api.errors.staking.IncorrectHistoryDepth.is`
+- **summary**:   ncorrect previous history depth input provided. 
+ 
+### IncorrectSlashingSpans
+- **interface**: `api.errors.staking.IncorrectSlashingSpans.is`
+- **summary**:   ncorrect number of slashing spans provided. 
  
 ### InsufficientBond
-- **summary**:   Can not bond with value less than minimum balance. 
+- **interface**: `api.errors.staking.InsufficientBond.is`
+- **summary**:   an not bond with value less than minimum balance. 
  
 ### InsufficientFreeBalance
-- **summary**:   User does not have enough free balance to bond this amount 
+- **interface**: `api.errors.staking.InsufficientFreeBalance.is`
+- **summary**:   ser does not have enough free balance to bond this amount 
  
 ### InvalidSlashIndex
-- **summary**:   Slash record index out of bounds. 
+- **interface**: `api.errors.staking.InvalidSlashIndex.is`
+- **summary**:   lash record index out of bounds. 
  
 ### NoMoreChunks
-- **summary**:   Can not schedule more unlock chunks. 
+- **interface**: `api.errors.staking.NoMoreChunks.is`
+- **summary**:   an not schedule more unlock chunks. 
  
 ### NotController
-- **summary**:   Not a controller account. 
+- **interface**: `api.errors.staking.NotController.is`
+- **summary**:   ot a controller account. 
  
 ### NotSortedAndUnique
-- **summary**:   Items are not sorted and unique. 
+- **interface**: `api.errors.staking.NotSortedAndUnique.is`
+- **summary**:   tems are not sorted and unique. 
  
 ### NotStash
-- **summary**:   Not a stash account. 
+- **interface**: `api.errors.staking.NotStash.is`
+- **summary**:   ot a stash account. 
  
 ### NoUnlockChunk
-- **summary**:   Can not rebond without unlocking chunks. 
+- **interface**: `api.errors.staking.NoUnlockChunk.is`
+- **summary**:   an not rebond without unlocking chunks. 
  
 ### OffchainElectionBogusCompact
-- **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
+- **interface**: `api.errors.staking.OffchainElectionBogusCompact.is`
+- **summary**:   rror while building the assignment type from the compact. This can happen if an index s invalid, or if the weights _overflow_. 
  
 ### OffchainElectionBogusEdge
-- **summary**:   The submitted result has unknown edges that are not among the presented winners. 
+- **interface**: `api.errors.staking.OffchainElectionBogusEdge.is`
+- **summary**:   he submitted result has unknown edges that are not among the presented winners. 
  
 ### OffchainElectionBogusElectionSize
-- **summary**:   The election size is invalid. 
+- **interface**: `api.errors.staking.OffchainElectionBogusElectionSize.is`
+- **summary**:   he election size is invalid. 
  
 ### OffchainElectionBogusNomination
-- **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
+- **interface**: `api.errors.staking.OffchainElectionBogusNomination.is`
+- **summary**:   ne of the submitted nominators has an edge to which they have not voted on chain. 
  
 ### OffchainElectionBogusNominator
-- **summary**:   One of the submitted nominators is not an active nominator on chain. 
+- **interface**: `api.errors.staking.OffchainElectionBogusNominator.is`
+- **summary**:   ne of the submitted nominators is not an active nominator on chain. 
  
 ### OffchainElectionBogusScore
-- **summary**:   The claimed score does not match with the one computed from the data. 
+- **interface**: `api.errors.staking.OffchainElectionBogusScore.is`
+- **summary**:   he claimed score does not match with the one computed from the data. 
  
 ### OffchainElectionBogusSelfVote
-- **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
+- **interface**: `api.errors.staking.OffchainElectionBogusSelfVote.is`
+- **summary**:    self vote must only be originated from a validator to ONLY themselves. 
  
 ### OffchainElectionBogusWinner
-- **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
+- **interface**: `api.errors.staking.OffchainElectionBogusWinner.is`
+- **summary**:   ne of the submitted winners is not an active candidate on chain (index is out of range n snapshot). 
  
 ### OffchainElectionBogusWinnerCount
-- **summary**:   Incorrect number of winners were presented. 
+- **interface**: `api.errors.staking.OffchainElectionBogusWinnerCount.is`
+- **summary**:   ncorrect number of winners were presented. 
  
 ### OffchainElectionEarlySubmission
-- **summary**:   The submitted result is received out of the open window. 
+- **interface**: `api.errors.staking.OffchainElectionEarlySubmission.is`
+- **summary**:   he submitted result is received out of the open window. 
  
 ### OffchainElectionSlashedNomination
-- **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
+- **interface**: `api.errors.staking.OffchainElectionSlashedNomination.is`
+- **summary**:   ne of the submitted nominators has an edge which is submitted before the last non-zero lash of the target. 
  
 ### OffchainElectionWeakSubmission
-- **summary**:   The submitted result is not as good as the one stored on chain. 
+- **interface**: `api.errors.staking.OffchainElectionWeakSubmission.is`
+- **summary**:   he submitted result is not as good as the one stored on chain. 
  
 ### SnapshotUnavailable
-- **summary**:   The snapshot data of the current window is missing. 
+- **interface**: `api.errors.staking.SnapshotUnavailable.is`
+- **summary**:   he snapshot data of the current window is missing. 
 
 ___
 
@@ -495,29 +657,39 @@ ___
 ## sudo
  
 ### RequireSudo
-- **summary**:   Sender must be the Sudo account 
+- **interface**: `api.errors.sudo.RequireSudo.is`
+- **summary**:   ender must be the Sudo account 
 
 ___
 
 
 ## system
  
+### CallFiltered
+- **interface**: `api.errors.system.CallFiltered.is`
+- **summary**:   he origin filter prevent the call to be dispatched. 
+ 
 ### FailedToExtractRuntimeVersion
-- **summary**:   Failed to extract the runtime version from the new runtime. 
+- **interface**: `api.errors.system.FailedToExtractRuntimeVersion.is`
+- **summary**:   ailed to extract the runtime version from the new runtime. 
 
-  Either calling `Core_version` or decoding `RuntimeVersion` failed. 
+  ither calling `Core_version` or decoding `RuntimeVersion` failed. 
  
 ### InvalidSpecName
-- **summary**:   The name of specification does not match between the current runtime and the new runtime. 
+- **interface**: `api.errors.system.InvalidSpecName.is`
+- **summary**:   he name of specification does not match between the current runtime nd the new runtime. 
  
 ### NonDefaultComposite
-- **summary**:   Suicide called when the account has non-default composite data. 
+- **interface**: `api.errors.system.NonDefaultComposite.is`
+- **summary**:   uicide called when the account has non-default composite data. 
  
 ### NonZeroRefCount
-- **summary**:   There is a non-zero reference count preventing the account from being purged. 
+- **interface**: `api.errors.system.NonZeroRefCount.is`
+- **summary**:   here is a non-zero reference count preventing the account from being purged. 
  
 ### SpecVersionNeedsToIncrease
-- **summary**:   The specification version is not allowed to decrease between the current runtime and the new runtime. 
+- **interface**: `api.errors.system.SpecVersionNeedsToIncrease.is`
+- **summary**:   he specification version is not allowed to decrease between the current runtime nd the new runtime. 
 
 ___
 
@@ -525,7 +697,22 @@ ___
 ## treasury
  
 ### InsufficientProposersBalance
-- **summary**:   Proposer's balance is too low. 
+- **interface**: `api.errors.treasury.InsufficientProposersBalance.is`
+- **summary**:   roposer's balance is too low. 
  
 ### InvalidIndex
-- **summary**:   No proposal or bounty at that index. 
+- **interface**: `api.errors.treasury.InvalidIndex.is`
+- **summary**:   o proposal or bounty at that index. 
+ 
+### TooManyApprovals
+- **interface**: `api.errors.treasury.TooManyApprovals.is`
+- **summary**:   oo many approvals in the queue. 
+
+___
+
+
+## utility
+ 
+### TooManyCalls
+- **interface**: `api.errors.utility.TooManyCalls.is`
+- **summary**:   oo many calls batched. 

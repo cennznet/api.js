@@ -19,102 +19,124 @@ The following sections contain the module details.
  
 # Storage
  
-### coreAssetId(): `AssetId`
+### coreAssetId(): `u32`
 - **interface**: `api.query.cennzx.coreAssetId`
-- **summary**:   Asset Id of the core liquidity asset 
+- **summary**:    Asset Id of the core liquidity asset 
  
-### defaultFeeRate(): `FeeRate`
+### defaultFeeRate(): `u128`
 - **interface**: `api.query.cennzx.defaultFeeRate`
-- **summary**:   Default trading fee rate 
+- **summary**:    Default trading fee rate 
  
-### liquidityBalance(`ExchangeKey, AccountId`): `Balance`
+### liquidityBalance(`(u32,u32), AccountId32`): `u128`
 - **interface**: `api.query.cennzx.liquidityBalance`
-- **summary**:   Liquidity holdings of a user in an exchange pool. Key: `(core_asset_id, trade_asset_id), account_id` 
+- **summary**:    Liquidity holdings of a user in an exchange pool.  Key: `(core_asset_id, trade_asset_id), account_id` 
  
-### totalLiquidity(`ExchangeKey`): `Balance`
+### totalLiquidity(`(u32,u32)`): `u128`
 - **interface**: `api.query.cennzx.totalLiquidity`
-- **summary**:   Total liquidity holdings of all investors in an exchange. ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
+- **summary**:    Total liquidity holdings of all investors in an exchange.  ie/ total_liquidity(exchange) == sum(liquidity_balance(exchange, user)) at all times 
  
 # Extrinsic
  
-### addLiquidity(asset_id: `Compact<AssetId>`, min_liquidity: `Compact<Balance>`, max_asset_amount: `Compact<Balance>`, core_amount: `Compact<Balance>`)
+### addLiquidity(asset_id: `Compact<u32>`, min_liquidity: `Compact<u128>`, max_asset_amount: `Compact<u128>`, core_amount: `Compact<u128>`)
 - **interface**: `api.tx.cennzx.addLiquidity`
 - **summary**:   Deposit core asset and trade asset at current ratio to mint liquidity Returns amount of liquidity minted. 
 
   `origin` `asset_id` - The trade asset ID `min_liquidity` - The minimum liquidity to add `asset_amount` - Amount of trade asset to add `core_amount` - Amount of core asset to add 
  
-### buyAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, buy_amount: `Compact<Balance>`, maximum_sell: `Compact<Balance>`)
+### buyAsset(recipient: `Option<AccountId32>`, asset_to_sell: `Compact<u32>`, asset_to_buy: `Compact<u32>`, buy_amount: `Compact<u128>`, maximum_sell: `Compact<u128>`)
 - **interface**: `api.tx.cennzx.buyAsset`
 - **summary**:   Buy `asset_to_buy` with `asset_to_sell`. Caller specifies an exact `buy_amount` and a `maximum_sell` amount to pay. 
 
   `recipient` - Account to receive assets, defaults to `origin` if None `asset_to_sell` - asset ID to sell `asset_to_buy` - asset ID to buy `buy_amount` - The amount of `asset_to_buy` to receive `maximum_sell` - Maximum `asset_to_sell` caller should pay 
  
-### removeLiquidity(asset_id: `Compact<AssetId>`, liquidity_to_withdraw: `Compact<Balance>`, min_asset_withdraw: `Compact<Balance>`, min_core_withdraw: `Compact<Balance>`)
+### removeLiquidity(asset_id: `Compact<u32>`, liquidity_to_withdraw: `Compact<u128>`, min_asset_withdraw: `Compact<u128>`, min_core_withdraw: `Compact<u128>`)
 - **interface**: `api.tx.cennzx.removeLiquidity`
 - **summary**:   Burn exchange assets to withdraw core asset and trade asset at current ratio 
 
   `asset_id` - The trade asset ID `liquidity_to_withdraw` - Amount of user's liquidity to withdraw `min_asset_withdraw` - The minimum trade asset withdrawn `min_core_withdraw` -  The minimum core asset withdrawn 
  
-### sellAsset(recipient: `Option<AccountId>`, asset_to_sell: `Compact<AssetId>`, asset_to_buy: `Compact<AssetId>`, sell_amount: `Compact<Balance>`, minimum_buy: `Compact<Balance>`)
+### sellAsset(recipient: `Option<AccountId32>`, asset_to_sell: `Compact<u32>`, asset_to_buy: `Compact<u32>`, sell_amount: `Compact<u128>`, minimum_buy: `Compact<u128>`)
 - **interface**: `api.tx.cennzx.sellAsset`
 - **summary**:   Sell `asset_to_sell` for `asset_to_buy`. Caller specifies an exact `sell_amount` and a `minimum_buy` amount to receive. 
 
   `recipient` - Account to receive assets, defaults to `origin` if None `asset_to_sell` - asset ID to sell `asset_to_buy` - asset ID to buy `sell_amount` - The amount of `asset_to_sell` the caller should pay `minimum_buy` - The minimum `asset_to_buy` to receive 
  
-### setFeeRate(new_fee_rate: `FeeRate`)
+### setFeeRate(new_fee_rate: `u128`)
 - **interface**: `api.tx.cennzx.setFeeRate`
 - **summary**:   Set the spot exchange wide fee rate (root only) 
  
 # Error
  
 ### AssetCannotSwapForItself
+- **interface**: `api.errors.cennzx.AssetCannotSwapForItself.is`
  
 ### CannotAddLiquidityWithZero
+- **interface**: `api.errors.cennzx.CannotAddLiquidityWithZero.is`
  
 ### CannotTradeZero
+- **interface**: `api.errors.cennzx.CannotTradeZero.is`
  
 ### DivideByZero
+- **interface**: `api.errors.cennzx.DivideByZero.is`
  
 ### EmptyExchangePool
+- **interface**: `api.errors.cennzx.EmptyExchangePool.is`
  
 ### InsufficientBalance
+- **interface**: `api.errors.cennzx.InsufficientBalance.is`
  
 ### InsufficientCoreAssetBalance
+- **interface**: `api.errors.cennzx.InsufficientCoreAssetBalance.is`
  
 ### InsufficientExchangePoolReserve
+- **interface**: `api.errors.cennzx.InsufficientExchangePoolReserve.is`
  
 ### InsufficientLiquidity
+- **interface**: `api.errors.cennzx.InsufficientLiquidity.is`
  
 ### InsufficientTradeAssetBalance
+- **interface**: `api.errors.cennzx.InsufficientTradeAssetBalance.is`
  
 ### InvalidAssetId
+- **interface**: `api.errors.cennzx.InvalidAssetId.is`
  
 ### MaximumSellRequirementNotMet
+- **interface**: `api.errors.cennzx.MaximumSellRequirementNotMet.is`
  
 ### MaximumTradeAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MaximumTradeAssetRequirementNotMet.is`
  
 ### MinimumBuyRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumBuyRequirementNotMet.is`
  
 ### MinimumCoreAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumCoreAssetRequirementNotMet.is`
  
 ### MinimumLiquidityRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumLiquidityRequirementNotMet.is`
  
 ### MinimumTradeAssetRequirementNotMet
+- **interface**: `api.errors.cennzx.MinimumTradeAssetRequirementNotMet.is`
  
 ### Overflow
+- **interface**: `api.errors.cennzx.Overflow.is`
  
 # Events
  
-### AddLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
+### AddLiquidity(`AccountId32`, `u128`, `u32`, `u128`)
+- **interface**: `api.events.cennzx.AddLiquidity.is`
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
  
-### AssetBought(`AssetId`, `AssetId`, `AccountId`, `Balance`, `Balance`)
+### AssetBought(`u32`, `u32`, `AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.cennzx.AssetBought.is`
 - **summary**:   AssetSold, AssetBought, Buyer, SoldAmount, BoughtAmount 
  
-### AssetSold(`AssetId`, `AssetId`, `AccountId`, `Balance`, `Balance`)
+### AssetSold(`u32`, `u32`, `AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.cennzx.AssetSold.is`
 - **summary**:   AssetSold, AssetBought, Buyer, SoldAmount, BoughtAmount 
  
-### RemoveLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
+### RemoveLiquidity(`AccountId32`, `u128`, `u32`, `u128`)
+- **interface**: `api.events.cennzx.RemoveLiquidity.is`
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
  
 # RPC
@@ -165,7 +187,7 @@ Given an asset Id and liquidity amount, the function returns the core and asset 
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/assetWithdrawn.ts:29](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/assetWithdrawn.ts#L29)
+[packages/api/src/derives/cennzx/assetWithdrawn.ts:29](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/assetWithdrawn.ts#L29)
 
 ___
 
@@ -188,7 +210,7 @@ Given an asset Id and liquidity amount, the function returns the core and asset 
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/assetWithdrawn.ts:54](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/assetWithdrawn.ts#L54)
+[packages/api/src/derives/cennzx/assetWithdrawn.ts:54](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/assetWithdrawn.ts#L54)
 
 # Module: cennzx/exchangeAddress
 
@@ -212,7 +234,7 @@ Returns the exchange address for a given assetId
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/exchangeAddress.ts:27](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/exchangeAddress.ts#L27)
+[packages/api/src/derives/cennzx/exchangeAddress.ts:27](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/exchangeAddress.ts#L27)
 
 # Module: cennzx/liquidityBalance
 
@@ -237,7 +259,7 @@ Gets the liquidity balance for an asset Id
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/liquidityBalance.ts:29](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/liquidityBalance.ts#L29)
+[packages/api/src/derives/cennzx/liquidityBalance.ts:29](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/liquidityBalance.ts#L29)
 
 ___
 
@@ -260,7 +282,7 @@ Gets the liquidity balance for an asset Id at a given blockhash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/liquidityBalance.ts:49](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/liquidityBalance.ts#L49)
+[packages/api/src/derives/cennzx/liquidityBalance.ts:49](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/liquidityBalance.ts#L49)
 
 # Module: cennzx/poolBalance
 
@@ -284,7 +306,7 @@ Returns the amount of asset in the exchange
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:26](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/poolBalance.ts#L26)
+[packages/api/src/derives/cennzx/poolBalance.ts:26](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/poolBalance.ts#L26)
 
 ___
 
@@ -306,7 +328,7 @@ Returns the amount of asset in the exchange at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:56](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/poolBalance.ts#L56)
+[packages/api/src/derives/cennzx/poolBalance.ts:56](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/poolBalance.ts#L56)
 
 ___
 
@@ -327,7 +349,7 @@ Returns the amount of core asset in the exchange for the asset
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:42](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/poolBalance.ts#L42)
+[packages/api/src/derives/cennzx/poolBalance.ts:42](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/poolBalance.ts#L42)
 
 ___
 
@@ -349,7 +371,7 @@ Returns the amount of core asset in the exchange for the asset at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/poolBalance.ts:73](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/poolBalance.ts#L73)
+[packages/api/src/derives/cennzx/poolBalance.ts:73](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/poolBalance.ts#L73)
 
 # Module: cennzx/shared
 
@@ -365,7 +387,7 @@ Returns the amount of core asset in the exchange for the asset at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:20](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/shared.ts#L20)
+[packages/api/src/derives/cennzx/shared.ts:20](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/shared.ts#L20)
 
 ___
 
@@ -384,7 +406,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:24](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/shared.ts#L24)
+[packages/api/src/derives/cennzx/shared.ts:24](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/shared.ts#L24)
 
 ___
 
@@ -397,7 +419,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:28](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/shared.ts#L28)
+[packages/api/src/derives/cennzx/shared.ts:28](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/shared.ts#L28)
 
 ___
 
@@ -416,7 +438,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/shared.ts:32](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/shared.ts#L32)
+[packages/api/src/derives/cennzx/shared.ts:32](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/shared.ts#L32)
 
 # Module: cennzx/totalLiquidity
 
@@ -440,7 +462,7 @@ Returns the total liqudity in the exchange for the asset
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/totalLiquidity.ts:27](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/totalLiquidity.ts#L27)
+[packages/api/src/derives/cennzx/totalLiquidity.ts:27](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/totalLiquidity.ts#L27)
 
 ___
 
@@ -462,4 +484,4 @@ Returns the total liqudity in the exchange for the asset at a blockHash
 
 #### Defined in
 
-[packages/api/src/derives/cennzx/totalLiquidity.ts:43](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/cennzx/totalLiquidity.ts#L43)
+[packages/api/src/derives/cennzx/totalLiquidity.ts:43](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/cennzx/totalLiquidity.ts#L43)
