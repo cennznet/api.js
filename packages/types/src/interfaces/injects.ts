@@ -70,7 +70,8 @@ export const typesBundle: OverrideBundleType = {
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
             AssetInfo: 'AssetInfoV40',
-            BalanceLock: 'BalanceLock45'
+            BalanceLock: 'BalanceLock45',
+            Reasons: 'WithdrawReasons',
           },
         },
         {
@@ -79,6 +80,7 @@ export const typesBundle: OverrideBundleType = {
             ...shareType37Onwards,
             AssetInfo: 'AssetInfoV40',
             Proposal: 'GovernanceProposal',
+            Reasons: 'WithdrawReasons',
             BalanceLock: 'BalanceLock45'
           },
         },
@@ -87,6 +89,7 @@ export const typesBundle: OverrideBundleType = {
           types: {
             ...sharedTypes41Onwards,
             BalanceLock: 'BalanceLock45',
+            Reasons: 'WithdrawReasons',
             Keys: '(AccountId, AccountId, AccountId, AccountId, BeefyKey)'
           },
         },

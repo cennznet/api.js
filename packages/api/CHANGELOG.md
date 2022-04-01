@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [UNRELEASED]
+Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x  version
 ## [2.1.0-rc.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.1...prerelease/2.1.0-rc.2) (28/03/2022)
 ### Added:
     - Derive query to get metadata uri for a series (api.derive.nft.seriesMetadataUri)

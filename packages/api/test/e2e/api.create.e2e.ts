@@ -35,6 +35,15 @@ describe('e2e api create', () => {
     bob = keyring.addFromUri('//Bob');
   });
 
+  it('Find lock balance for azalea validator', async () => {
+    const api = await Api.create({network: 'azalea'});
+    const cennzAssetId = 1;
+    const validator = "5FCdFHNPR62USs3xeA8Pnj2D87n4RLG1xRB2jS4tbcs7t19j";
+    const lockBalance = await api.query.genericAsset.locks(cennzAssetId, validator);
+    expect((lockBalance.toJSON())[0].amount).toBeGreaterThanOrEqual(0);
+    await api.disconnect();
+  });
+
   it('Should get rejected if it is not resolved in a specific period of time', async () => {
     const provider = config.wsProvider[`${process.env.TEST_TYPE}`];
     await expect(Api.create({provider, timeout: 1})).rejects.toThrow(
