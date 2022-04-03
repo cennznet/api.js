@@ -90,6 +90,7 @@ export const typesBundle: OverrideBundleType = {
             ...sharedTypes41Onwards,
             BalanceLock: 'BalanceLock45',
             Reasons: 'WithdrawReasons',
+            ValidatorPrefs: 'ValidatorPrefsWithCommission',
             Keys: '(AccountId, AccountId, AccountId, AccountId, BeefyKey)'
           },
         },

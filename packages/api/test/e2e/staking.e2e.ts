@@ -36,17 +36,6 @@ afterAll(async () => {
 
 describe('Staking derived queries', () => {
 
-  test('test azalea nominators', async done =>{
-    api = await Api.create({network: 'azalea'});
-    const accountId = '5HnB5MbbAcbVvGQqvoHVDa5r9L1tyCChSGjKQ1awNojRGxb8';
-    const nominators = await api.query.staking.nominators(accountId);
-    const nominatorList = nominators.unwrap().toJSON();
-    console.log('nominatorList::',nominatorList);
-    expect(nominatorList.targets.length).toBeGreaterThanOrEqual(0);
-    expect(nominatorList.submittedIn).toBeGreaterThan(0);
-    done();
-  });
-
   test('test elected validators info for local chain', async done =>{
     const electedValidatorInfo = await api.derive.stakingCennznet.electedInfo();
     const {info, nextElected, validators} = electedValidatorInfo;
@@ -389,6 +378,19 @@ describe('Staking Governance (Sudo Required)', () => {
       await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
         (controller.unwrapOr(null) === null) ? done() : null);
     });
+  });
+
+  test('test azalea nominators', async done =>{
+    const apiAzalea: Api = await Api.create({network: 'azalea'});
+    const accountId = '5HnB5MbbAcbVvGQqvoHVDa5r9L1tyCChSGjKQ1awNojRGxb8';
+    const nominators = await apiAzalea.query.staking.nominators(accountId);
+    const nominatorList = nominators.unwrap();
+    expect(nominatorList.targets.length).toBeGreaterThanOrEqual(0);
+    expect(nominatorList.submittedIn.toNumber()).toBeGreaterThan(0);
+    const validatorDetails = await apiAzalea.query.staking.validators(accountId);
+    expect(validatorDetails.commission).toBeDefined();
+    await apiAzalea.disconnect();
+    done();
   });
 
 });
