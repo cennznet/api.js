@@ -2,3 +2,4 @@
 /* eslint-disable */
 
 export * from './types';
+export type { Nominations } from './types';
