@@ -36,6 +36,17 @@ afterAll(async () => {
 
 describe('Staking derived queries', () => {
 
+  test('test azalea nominators', async done =>{
+    api = await Api.create({network: 'azalea'});
+    const accountId = '5HnB5MbbAcbVvGQqvoHVDa5r9L1tyCChSGjKQ1awNojRGxb8';
+    const nominators = await api.query.staking.nominators(accountId);
+    const nominatorList = nominators.unwrap().toJSON();
+    console.log('nominatorList::',nominatorList);
+    expect(nominatorList.targets.length).toBeGreaterThanOrEqual(0);
+    expect(nominatorList.submittedIn).toBeGreaterThan(0);
+    done();
+  });
+
   test('test elected validators info for local chain', async done =>{
     const electedValidatorInfo = await api.derive.stakingCennznet.electedInfo();
     const {info, nextElected, validators} = electedValidatorInfo;

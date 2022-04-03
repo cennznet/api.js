@@ -266,11 +266,15 @@ declare module '@polkadot/api-base/types/storage' {
        **/
       notarySetProofId: AugmentedQuery<ApiType, () => Observable<u64>, []> & QueryableStorageEntry<ApiType, []>;
       /**
+       * Map of pending tx hashes to claim Id
+       **/
+      pendingTxHashes: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<u64>, [H256]> & QueryableStorageEntry<ApiType, [H256]>;
+      /**
        * Processed tx hashes bucketed by unix timestamp (`BUCKET_FACTOR_S`)
        **/
       processedTxBuckets: AugmentedQuery<ApiType, (arg1: u64 | AnyNumber | Uint8Array, arg2: H256 | string | Uint8Array) => Observable<Null>, [u64, H256]> & QueryableStorageEntry<ApiType, [u64, H256]>;
       /**
-       * Map from processed tx hash to status
+       * Set of processed tx hashes
        * Periodically cleared after `EventDeadlineSeconds` expires
        **/
       processedTxHashes: AugmentedQuery<ApiType, (arg: H256 | string | Uint8Array) => Observable<Null>, [H256]> & QueryableStorageEntry<ApiType, [H256]>;

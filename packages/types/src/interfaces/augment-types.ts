@@ -8,7 +8,7 @@ import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cenn
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, BalanceInformation, BalanceLock45, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
 import type { AuctionClosureReason, AuctionListing, CollectionId, CollectionInfo, CollectionNameType, FixedPriceListing, Listing, ListingId, ListingResponse, ListingResponseWrapper, MetadataBaseURI, MetadataScheme, NFTAttributeValue, Reason, RoyaltiesSchedule, SerialNumber, SeriesId, TokenCount, TokenId, TokenInfo, TokenLockReason } from '@cennznet/types/interfaces/nft';
-import type { RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
+import type { Nominations, RewardBalance, RewardBalanceOf, RewardDestination, VecDeque } from '@cennznet/types/interfaces/staking';
 import type { AcceptPayload, DeviceId, DeviceIdResponse, Group, Invite, Member, MemberRoles, Message, Meta, PendingInvite, PreKeyBundle, PreKeyBundlesResponse, SyloMessageId, VaultKey, VaultValue, WithdrawnPreKeyBundle } from '@cennznet/types/interfaces/sylo';
 import type { DispatchClassTo36, DispatchInfoTo36, PhaseTo36, WeightTo36, doughnut } from '@cennznet/types/interfaces/system';
 import type { ChargeTransactionPayment, FeeExchange, FeeExchangeV1 } from '@cennznet/types/interfaces/transactionPayment';
@@ -605,6 +605,7 @@ declare module '@polkadot/types/types/registry' {
     NextConfigDescriptor: NextConfigDescriptor;
     NextConfigDescriptorV1: NextConfigDescriptorV1;
     NFTAttributeValue: NFTAttributeValue;
+    Nominations: Nominations;
     NotarizationPayload: NotarizationPayload;
     Null: Null;
     OffenceDetails: OffenceDetails;
