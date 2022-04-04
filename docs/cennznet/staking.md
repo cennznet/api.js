@@ -21,207 +21,221 @@ The following sections contain the module details.
  
 # Constant
  
-### bondingDuration: `EraIndex`
+### bondingDuration: `6`
 - **interface**: `api.consts.staking.bondingDuration`
-- **summary**:   Number of eras that staked funds must remain bonded for. 
+- **summary**:    Number of eras that staked funds must remain bonded for. 
  
-### electionLookahead: `BlockNumber`
+### electionLookahead: `6`
 - **interface**: `api.consts.staking.electionLookahead`
-- **summary**:   The number of blocks before the end of the era from which election submissions are allowed. 
+- **summary**:    The number of blocks before the end of the era from which election submissions are allowed. 
 
-  Setting this to zero will disable the offchain compute and only on-chain seq-phragmen will be used. 
+   Setting this to zero will disable the offchain compute and only on-chain seq-phragmen will  be used. 
 
-  This is bounded by being within the last session. Hence, setting it to a value more than the length of a session will be pointless. 
+   This is bounded by being within the last session. Hence, setting it to a value more than the  length of a session will be pointless. 
  
-### maxIterations: `u32`
+### maxIterations: `6`
 - **interface**: `api.consts.staking.maxIterations`
-- **summary**:   Maximum number of balancing iterations to run in the offchain submission. 
+- **summary**:    Maximum number of balancing iterations to run in the offchain submission. 
 
-  If set to 0, balance_solution will not be executed at all. 
+   If set to 0, balance_solution will not be executed at all. 
  
-### maxNominatorRewardedPerValidator: `u32`
+### maxNominatorRewardedPerValidator: `6`
 - **interface**: `api.consts.staking.maxNominatorRewardedPerValidator`
-- **summary**:   The maximum number of nominators rewarded for each validator. 
+- **summary**:    The maximum number of nominators rewarded for each validator. 
 
-  For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim their reward. This used to limit the i/o cost for the nominator payout. 
+   For each validator only the `$MaxNominatorRewardedPerValidator` biggest stakers can claim  their reward. This used to limit the i/o cost for the nominator payout. 
  
-### minSolutionScoreBump: `Perbill`
+### minSolutionScoreBump: `36`
 - **interface**: `api.consts.staking.minSolutionScoreBump`
-- **summary**:   The threshold of improvement that should be provided for a new solution to be accepted. 
+- **summary**:    The threshold of improvement that should be provided for a new solution to be accepted. 
  
-### sessionsPerEra: `SessionIndex`
+### sessionsPerEra: `6`
 - **interface**: `api.consts.staking.sessionsPerEra`
-- **summary**:   Number of sessions per era. 
+- **summary**:    Number of sessions per era. 
  
-### slashDeferDuration: `EraIndex`
+### slashDeferDuration: `6`
 - **interface**: `api.consts.staking.slashDeferDuration`
-- **summary**:   Number of eras that slashes are deferred by, after computation. 
+- **summary**:    Number of eras that slashes are deferred by, after computation. 
 
-  This should be less than the bonding duration. Set to 0 if slashes should be applied immediately, without opportunity for intervention. 
+   This should be less than the bonding duration.  Set to 0 if slashes should be applied immediately, without opportunity for  intervention. 
  
 # Storage
  
-### activeEra(): `Option<ActiveEraInfo>`
+### activeEra(): `Option<CrmlStakingActiveEraInfo>`
 - **interface**: `api.query.staking.activeEra`
-- **summary**:   The active era information, it holds index and start. 
+- **summary**:    The active era information, it holds index and start. 
 
-  The active era is the era currently rewarded. Validator set of this era must be equal to `SessionInterface::validators`. 
+   The active era is the era currently rewarded.  Validator set of this era must be equal to `SessionInterface::validators`. 
  
-### bonded(`AccountId`): `Option<AccountId>`
+### bonded(`AccountId32`): `Option<AccountId32>`
 - **interface**: `api.query.staking.bonded`
-- **summary**:   Map from all locked "stash" accounts to the controller account. 
+- **summary**:    Map from all locked "stash" accounts to the controller account. 
  
-### bondedEras(): `Vec<(EraIndex,SessionIndex)>`
+### bondedEras(): `Vec<(u32,u32)>`
 - **interface**: `api.query.staking.bondedEras`
-- **summary**:   A mapping from still-bonded eras to the first session index of that era. 
+- **summary**:    A mapping from still-bonded eras to the first session index of that era. 
 
-  Must contains information for eras for the range: `[active_era - bounding_duration; active_era]` 
+   Must contains information for eras for the range:  `[active_era - bounding_duration; active_era]` 
  
-### currentEra(): `Option<EraIndex>`
+### currentEra(): `Option<u32>`
 - **interface**: `api.query.staking.currentEra`
-- **summary**:   The current era index. 
+- **summary**:    The current era index. 
  
-### earliestUnappliedSlash(): `Option<EraIndex>`
+### deferredOffences(): `Vec<(Vec<SpStakingOffenceOffenceDetails>,Vec<Perbill>,u32)>`
+- **interface**: `api.query.staking.deferredOffences`
+- **summary**:    Deferred reports that have been rejected by the offence handler and need to be submitted  at a later time. 
+ 
+### earliestUnappliedSlash(): `Option<u32>`
 - **interface**: `api.query.staking.earliestUnappliedSlash`
-- **summary**:   The earliest era for which we have a pending, unapplied slash. 
+- **summary**:    The earliest era for which we have a pending, unapplied slash. 
  
-### eraElectionStatus(): `ElectionStatus`
+### eraElectionStatus(): `CrmlStakingElectionStatus`
 - **interface**: `api.query.staking.eraElectionStatus`
-- **summary**:   Flag to control the execution of the offchain election. When `Open(_)`, we accept solutions to be submitted. 
+- **summary**:    Flag to control the execution of the offchain election. When `Open(_)`, we accept  solutions to be submitted. 
  
-### erasStakers(`EraIndex, AccountId`): `Exposure`
+### erasStakers(`u32, AccountId32`): `CrmlStakingExposure`
 - **interface**: `api.query.staking.erasStakers`
-- **summary**:   Exposure of validator at era. 
+- **summary**:    Exposure of validator at era. 
 
-  This is keyed first by the era index to allow bulk deletion and then the stash account. 
+   This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-  Is it removed after `HISTORY_DEPTH` eras. If stakers hasn't been set or has been removed then empty exposure is returned. 
+   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
  
-### erasStakersClipped(`EraIndex, AccountId`): `Exposure`
+### erasStakersClipped(`u32, AccountId32`): `CrmlStakingExposure`
 - **interface**: `api.query.staking.erasStakersClipped`
-- **summary**:   Clipped Exposure of validator at era. 
+- **summary**:    Clipped Exposure of validator at era. 
 
-  This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the `T::MaxNominatorRewardedPerValidator` biggest stakers. (Note: the field `total` and `own` of the exposure remains unchanged). This is used to limit the i/o cost for the nominator payout. 
+   This is similar to [`ErasStakers`] but number of nominators exposed is reduced to the  `T::MaxNominatorRewardedPerValidator` biggest stakers.  (Note: the field `total` and `own` of the exposure remains unchanged).  This is used to limit the i/o cost for the nominator payout. 
 
-  This is keyed fist by the era index to allow bulk deletion and then the stash account. 
+   This is keyed fist by the era index to allow bulk deletion and then the stash account. 
 
-  Is it removed after `HISTORY_DEPTH` eras. If stakers hasn't been set or has been removed then empty exposure is returned. 
+   Is it removed after `HISTORY_DEPTH` eras.  If stakers hasn't been set or has been removed then empty exposure is returned. 
  
-### erasStartSessionIndex(`EraIndex`): `Option<SessionIndex>`
+### erasStartSessionIndex(`u32`): `Option<u32>`
 - **interface**: `api.query.staking.erasStartSessionIndex`
-- **summary**:   The session index at which the era start for the last `HISTORY_DEPTH` eras. 
+- **summary**:    The session index at which the era start for the last `HISTORY_DEPTH` eras. 
  
-### erasTotalStake(`EraIndex`): `BalanceOf`
+### erasTotalStake(`u32`): `u128`
 - **interface**: `api.query.staking.erasTotalStake`
-- **summary**:   The total amount staked for the last `HISTORY_DEPTH` eras. If total hasn't been set or has been removed then 0 stake is returned. 
+- **summary**:    The total amount staked for the last `HISTORY_DEPTH` eras.  If total hasn't been set or has been removed then 0 stake is returned. 
  
-### erasValidatorPrefs(`EraIndex, AccountId`): `ValidatorPrefs`
+### erasValidatorPrefs(`u32, AccountId32`): `CrmlStakingValidatorPrefs`
 - **interface**: `api.query.staking.erasValidatorPrefs`
-- **summary**:   Similar to `ErasStakers`, this holds the preferences of validators. 
+- **summary**:    Similar to `ErasStakers`, this holds the preferences of validators. 
 
-  This is keyed first by the era index to allow bulk deletion and then the stash account. 
+   This is keyed first by the era index to allow bulk deletion and then the stash account. 
 
-  Is it removed after `HISTORY_DEPTH` eras. 
+   Is it removed after `HISTORY_DEPTH` eras. 
  
-### forceEra(): `Forcing`
+### forceEra(): `CrmlStakingForcing`
 - **interface**: `api.query.staking.forceEra`
-- **summary**:   True if the next session change will be a new era regardless of index. 
+- **summary**:    True if the next session change will be a new era regardless of index. 
  
 ### historyDepth(): `u32`
 - **interface**: `api.query.staking.historyDepth`
-- **summary**:   Number of eras to keep in history. 
+- **summary**:    Number of eras to keep in history. 
 
-  Information is kept for eras in `[current_era - history_depth; current_era]`. 
+   Information is kept for eras in `[current_era - history_depth; current_era]`. 
 
-  Must be more than the number of eras delayed by session otherwise. I.e. active era must always be in history. I.e. `active_era > current_era - history_depth` must be guaranteed. 
+   Must be more than the number of eras delayed by session otherwise. I.e. active era must  always be in history. I.e. `active_era > current_era - history_depth` must be  guaranteed. 
  
-### invulnerables(): `Vec<AccountId>`
+### invulnerables(): `Vec<AccountId32>`
 - **interface**: `api.query.staking.invulnerables`
-- **summary**:   Any validators that may never be slashed or forcibly kicked. It's a Vec since they're easy to initialize and the performance hit is minimal (we expect no more than four invulnerables) and restricted to testnets. 
+- **summary**:    Any validators that may never be slashed or forcibly kicked. It's a Vec since they're  easy to initialize and the performance hit is minimal (we expect no more than four  invulnerables) and restricted to testnets. 
+ 
+### isActiveSessionFinal(): `bool`
+- **interface**: `api.query.staking.isActiveSessionFinal`
+- **summary**:    NOTE:!! this is poorly named.  True if the _active_ session (session_index) is final (last in the era). Note that this does not take era  forcing into accoun 
  
 ### isCurrentSessionFinal(): `bool`
 - **interface**: `api.query.staking.isCurrentSessionFinal`
-- **summary**:   True if the current **planned** session is final. Note that this does not take era forcing into account. 
+- **summary**:    NOTE:!! this is poorly named.  True if the **planned** session (session_index + 1) is final (last in the era). Note that this does not take era  forcing into account 
  
-### ledger(`AccountId`): `Option<StakingLedger>`
+### ledger(`AccountId32`): `Option<CrmlStakingStakingLedger>`
 - **interface**: `api.query.staking.ledger`
-- **summary**:   Map from all (unlocked) "controller" accounts to the info regarding the staking. 
+- **summary**:    Map from all (unlocked) "controller" accounts to the info regarding the staking. 
  
-### minimumBond(): `BalanceOf`
+### minimumBond(): `u128`
 - **interface**: `api.query.staking.minimumBond`
-- **summary**:   Minimum amount to bond. 
+- **summary**:    Minimum amount to bond. 
  
 ### minimumValidatorCount(): `u32`
 - **interface**: `api.query.staking.minimumValidatorCount`
-- **summary**:   Minimum number of staking participants before emergency conditions are imposed. 
+- **summary**:    Minimum number of staking participants before emergency conditions are imposed. 
  
-### nominators(`AccountId`): `Option<Nominations>`
+### nominators(`AccountId32`): `Option<CrmlStakingNominations>`
 - **interface**: `api.query.staking.nominators`
-- **summary**:   The map from nominator stash key to the set of stash keys of all validators to nominate. 
+- **summary**:    The map from nominator stash key to the set of stash keys of all validators to nominate. 
  
-### nominatorSlashInEra(`EraIndex, AccountId`): `Option<BalanceOf>`
+### nominatorSlashInEra(`u32, AccountId32`): `Option<u128>`
 - **interface**: `api.query.staking.nominatorSlashInEra`
-- **summary**:   All slashing events on nominators, mapped by era to the highest slash value of the era. 
+- **summary**:    All slashing events on nominators, mapped by era to the highest slash value of the era. 
  
-### queuedElected(): `Option<ElectionResult>`
+### offendingValidators(): `Vec<(u32,bool)>`
+- **interface**: `api.query.staking.offendingValidators`
+- **summary**:    Indices of validators that have offended in the active era and whether they are currently  disabled. 
+
+   This value should be a superset of disabled validators since not all offences lead to the  validator being disabled (if there was no slash). This is needed to track the percentage of  validators that have offended in the current era, ensuring a new era is forced if  `OffendingValidatorsThreshold` is reached. The vec is always kept sorted so that we can find  whether a given validator has previously offended using binary search. It gets cleared when  the era ends. 
+ 
+### queuedElected(): `Option<CrmlStakingElectionResult>`
 - **interface**: `api.query.staking.queuedElected`
-- **summary**:   The next validator set. At the end of an era, if this is available (potentially from the result of an offchain worker), it is immediately used. Otherwise, the on-chain election is executed. 
+- **summary**:    The next validator set. At the end of an era, if this is available (potentially from the  result of an offchain worker), it is immediately used. Otherwise, the on-chain election  is executed. 
  
-### queuedScore(): `Option<ElectionScore>`
+### queuedScore(): `Option<[u128;3]>`
 - **interface**: `api.query.staking.queuedScore`
-- **summary**:   The score of the current [`QueuedElected`]. 
+- **summary**:    The score of the current [`QueuedElected`]. 
  
-### slashingSpans(`AccountId`): `Option<SlashingSpans>`
+### slashingSpans(`AccountId32`): `Option<CrmlStakingSlashingSlashingSpans>`
 - **interface**: `api.query.staking.slashingSpans`
-- **summary**:   Slashing spans for stash accounts. 
+- **summary**:    Slashing spans for stash accounts. 
  
 ### slashRewardFraction(): `Perbill`
 - **interface**: `api.query.staking.slashRewardFraction`
-- **summary**:   The percentage of the slash that is distributed to reporters. 
+- **summary**:    The percentage of the slash that is distributed to reporters. 
 
-  The rest of the slashed value is handled by the `Slash`. 
+   The rest of the slashed value is handled by the `Slash`. 
  
-### snapshotNominators(): `Option<Vec<AccountId>>`
+### snapshotNominators(): `Option<Vec<AccountId32>>`
 - **interface**: `api.query.staking.snapshotNominators`
-- **summary**:   Snapshot of nominators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
+- **summary**:    Snapshot of nominators at the beginning of the current election window. This should only  have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
  
-### snapshotValidators(): `Option<Vec<AccountId>>`
+### snapshotValidators(): `Option<Vec<AccountId32>>`
 - **interface**: `api.query.staking.snapshotValidators`
-- **summary**:   Snapshot of validators at the beginning of the current election window. This should only have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
+- **summary**:    Snapshot of validators at the beginning of the current election window. This should only  have a value when [`EraElectionStatus`] == `ElectionStatus::Open(_)`. 
  
-### spanSlash(`(AccountId,SpanIndex)`): `SpanRecord`
+### spanSlash(`(AccountId32,u32)`): `CrmlStakingSlashingSpanRecord`
 - **interface**: `api.query.staking.spanSlash`
-- **summary**:   Records information about the maximum slash of a stash within a slashing span, as well as how much reward has been paid out. 
+- **summary**:    Records information about the maximum slash of a stash within a slashing span,  as well as how much reward has been paid out. 
  
 ### storageVersion(): `u32`
 - **interface**: `api.query.staking.storageVersion`
-- **summary**:   True if network has been upgraded to this version. Storage version of the pallet. 
+- **summary**:    True if network has been upgraded to this version.  Storage version of the pallet. 
 
-  This is set to v2 for new networks. 
+   This is set to v2 for new networks. 
  
-### unappliedSlashes(`EraIndex`): `Vec<UnappliedSlash>`
+### unappliedSlashes(`u32`): `Vec<CrmlStakingUnappliedSlash>`
 - **interface**: `api.query.staking.unappliedSlashes`
-- **summary**:   All unapplied slashes that are queued for later. 
+- **summary**:    All unapplied slashes that are queued for later. 
  
 ### validatorCount(): `u32`
 - **interface**: `api.query.staking.validatorCount`
-- **summary**:   The ideal number of staking participants. 
+- **summary**:    The ideal number of staking participants. 
  
-### validators(`AccountId`): `ValidatorPrefs`
+### validators(`AccountId32`): `CrmlStakingValidatorPrefs`
 - **interface**: `api.query.staking.validators`
-- **summary**:   The map from (wannabe) validator stash key to the preferences of that validator. 
+- **summary**:    The map from (wannabe) validator stash key to the preferences of that validator. 
  
-### validatorSlashInEra(`EraIndex, AccountId`): `Option<(Perbill,BalanceOf)>`
+### validatorSlashInEra(`u32, AccountId32`): `Option<(Perbill,u128)>`
 - **interface**: `api.query.staking.validatorSlashInEra`
-- **summary**:   All slashing events on validators, mapped by era to the highest slash proportion and slash value of the era. 
+- **summary**:    All slashing events on validators, mapped by era to the highest slash proportion  and slash value of the era. 
  
 ### wasEndEraForced(): `bool`
 - **interface**: `api.query.staking.wasEndEraForced`
-- **summary**:   Same as `will_era_be_forced()` but persists to `end_era` 
+- **summary**:    Same as `will_era_be_forced()` but persists to `end_era` 
  
 # Extrinsic
  
-### bond(controller: `AccountId`, value: `Compact<BalanceOf>`, payee: `RewardDestination`)
+### bond(controller: `AccountId32`, value: `Compact<u128>`, payee: `CrmlStakingRewardDestination`)
 - **interface**: `api.tx.staking.bond`
 - **summary**:   Take the origin account as a stash and lock up `value` of its balance. `controller` will be the account that controls it. 
 
@@ -233,7 +247,7 @@ The following sections contain the module details.
 
    
  
-### bondExtra(max_additional: `Compact<BalanceOf>`)
+### bondExtra(max_additional: `Compact<u128>`)
 - **interface**: `api.tx.staking.bondExtra`
 - **summary**:   Add some extra amount that have appeared in the stash `free_balance` into the balance up for staking. 
 
@@ -245,7 +259,7 @@ The following sections contain the module details.
 
    
  
-### cancelDeferredSlash(era: `EraIndex`, slash_indices: `Vec<u32>`)
+### cancelDeferredSlash(era: `u32`, slash_indices: `Vec<u32>`)
 - **interface**: `api.tx.staking.cancelDeferredSlash`
 - **summary**:   Cancel enactment of a deferred slash. 
 
@@ -283,7 +297,7 @@ The following sections contain the module details.
 
    
  
-### forceUnstake(stash: `AccountId`)
+### forceUnstake(stash: `AccountId32`)
 - **interface**: `api.tx.staking.forceUnstake`
 - **summary**:   Force a current staker to become completely unstaked, immediately. 
 
@@ -299,7 +313,7 @@ The following sections contain the module details.
 
    
  
-### nominate(targets: `Vec<AccountId>`)
+### nominate(targets: `Vec<AccountId32>`)
 - **interface**: `api.tx.staking.nominate`
 - **summary**:   Declare the desire to nominate `targets` for the origin controller. 
 
@@ -309,7 +323,7 @@ The following sections contain the module details.
 
    
  
-### reapStash(stash: `AccountId`)
+### reapStash(stash: `AccountId32`)
 - **interface**: `api.tx.staking.reapStash`
 - **summary**:   Remove all data structure concerning a staker/stash once its balance is zero. This is essentially equivalent to `withdraw_unbonded` except it can be called by anyone and the target `stash` must have no funds left. 
 
@@ -319,7 +333,7 @@ The following sections contain the module details.
 
    
  
-### rebond(value: `Compact<BalanceOf>`)
+### rebond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.rebond`
 - **summary**:   Rebond a portion of the stash scheduled to be unlocked. 
 
@@ -327,7 +341,7 @@ The following sections contain the module details.
 
    
  
-### setController(controller: `AccountId`)
+### setController(controller: `AccountId32`)
 - **interface**: `api.tx.staking.setController`
 - **summary**:   (Re-)set the controller of a stash. 
 
@@ -337,7 +351,7 @@ The following sections contain the module details.
 
    
  
-### setHistoryDepth(new_history_depth: `Compact<EraIndex>`, _era_items_deleted: `Compact<u32>`)
+### setHistoryDepth(new_history_depth: `Compact<u32>`, _era_items_deleted: `Compact<u32>`)
 - **interface**: `api.tx.staking.setHistoryDepth`
 - **summary**:   Set `HistoryDepth` value. This function will delete any history information when `HistoryDepth` is reduced. 
 
@@ -351,15 +365,15 @@ The following sections contain the module details.
 
    
  
-### setInvulnerables(validators: `Vec<AccountId>`)
+### setInvulnerables(validators: `Vec<AccountId32>`)
 - **interface**: `api.tx.staking.setInvulnerables`
 - **summary**:   Set the validators who cannot be slashed (if any). 
  
-### setMinimumBond(value: `BalanceOf`)
+### setMinimumBond(value: `u128`)
 - **interface**: `api.tx.staking.setMinimumBond`
 - **summary**:   Set the minimum bond amount. 
  
-### setPayee(payee: `RewardDestination`)
+### setPayee(payee: `CrmlStakingRewardDestination`)
 - **interface**: `api.tx.staking.setPayee`
 - **summary**:   (Re-)set the payment target for a controller. 
 
@@ -377,7 +391,7 @@ The following sections contain the module details.
 
    
  
-### submitElectionSolution(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
+### submitElectionSolution(winners: `Vec<u16>`, compact: `CrmlStakingCompactAssignments`, score: `[u128;3]`, era: `u32`, size: `CrmlStakingElectionSize`)
 - **interface**: `api.tx.staking.submitElectionSolution`
 - **summary**:   Submit an election result to the chain. If the solution: 
 
@@ -407,7 +421,7 @@ The following sections contain the module details.
 
    
  
-### submitElectionSolutionUnsigned(winners: `Vec<ValidatorIndex>`, compact: `CompactAssignments`, score: `ElectionScore`, era: `EraIndex`, size: `ElectionSize`)
+### submitElectionSolutionUnsigned(winners: `Vec<u16>`, compact: `CrmlStakingCompactAssignments`, score: `[u128;3]`, era: `u32`, size: `CrmlStakingElectionSize`)
 - **interface**: `api.tx.staking.submitElectionSolutionUnsigned`
 - **summary**:   Unsigned version of `submit_election_solution`. 
 
@@ -415,7 +429,7 @@ The following sections contain the module details.
 
    
  
-### unbond(value: `Compact<BalanceOf>`)
+### unbond(value: `Compact<u128>`)
 - **interface**: `api.tx.staking.unbond`
 - **summary**:   Schedule a portion of the stash to be unlocked ready for transfer out after the bond period ends. If this leaves an amount actively bonded less than T::Currency::minimum_balance(), then it is increased to the full amount. 
 
@@ -431,7 +445,7 @@ The following sections contain the module details.
 
    
  
-### validate(prefs: `ValidatorPrefs`)
+### validate(prefs: `CrmlStakingValidatorPrefs`)
 - **interface**: `api.tx.staking.validate`
 - **summary**:   Declare the desire to validate for the origin controller. 
 
@@ -458,121 +472,167 @@ The following sections contain the module details.
 # Error
  
 ### AlreadyBonded
+- **interface**: `api.errors.staking.AlreadyBonded`
 - **summary**:   Stash is already bonded. 
  
 ### AlreadyPaired
+- **interface**: `api.errors.staking.AlreadyPaired`
 - **summary**:   Controller is already paired. 
  
 ### CallNotAllowed
+- **interface**: `api.errors.staking.CallNotAllowed`
 - **summary**:   The call is not allowed at the given time due to restrictions of election period. 
  
 ### DuplicateNominee
+- **interface**: `api.errors.staking.DuplicateNominee`
 - **summary**:   Cannot nominate the same account multiple times 
  
 ### EmptyTargets
+- **interface**: `api.errors.staking.EmptyTargets`
 - **summary**:   Targets cannot be empty. 
  
 ### FundedTarget
+- **interface**: `api.errors.staking.FundedTarget`
 - **summary**:   Attempting to target a stash that still has funds. 
  
 ### IncorrectHistoryDepth
+- **interface**: `api.errors.staking.IncorrectHistoryDepth`
 - **summary**:   Incorrect previous history depth input provided. 
  
+### IncorrectSlashingSpans
+- **interface**: `api.errors.staking.IncorrectSlashingSpans`
+- **summary**:   Incorrect number of slashing spans provided. 
+ 
 ### InsufficientBond
+- **interface**: `api.errors.staking.InsufficientBond`
 - **summary**:   Can not bond with value less than minimum balance. 
  
 ### InsufficientFreeBalance
+- **interface**: `api.errors.staking.InsufficientFreeBalance`
 - **summary**:   User does not have enough free balance to bond this amount 
  
 ### InvalidSlashIndex
+- **interface**: `api.errors.staking.InvalidSlashIndex`
 - **summary**:   Slash record index out of bounds. 
  
 ### NoMoreChunks
+- **interface**: `api.errors.staking.NoMoreChunks`
 - **summary**:   Can not schedule more unlock chunks. 
  
 ### NotController
+- **interface**: `api.errors.staking.NotController`
 - **summary**:   Not a controller account. 
  
 ### NotSortedAndUnique
+- **interface**: `api.errors.staking.NotSortedAndUnique`
 - **summary**:   Items are not sorted and unique. 
  
 ### NotStash
+- **interface**: `api.errors.staking.NotStash`
 - **summary**:   Not a stash account. 
  
 ### NoUnlockChunk
+- **interface**: `api.errors.staking.NoUnlockChunk`
 - **summary**:   Can not rebond without unlocking chunks. 
  
 ### OffchainElectionBogusCompact
+- **interface**: `api.errors.staking.OffchainElectionBogusCompact`
 - **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
  
 ### OffchainElectionBogusEdge
+- **interface**: `api.errors.staking.OffchainElectionBogusEdge`
 - **summary**:   The submitted result has unknown edges that are not among the presented winners. 
  
 ### OffchainElectionBogusElectionSize
+- **interface**: `api.errors.staking.OffchainElectionBogusElectionSize`
 - **summary**:   The election size is invalid. 
  
 ### OffchainElectionBogusNomination
+- **interface**: `api.errors.staking.OffchainElectionBogusNomination`
 - **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
  
 ### OffchainElectionBogusNominator
+- **interface**: `api.errors.staking.OffchainElectionBogusNominator`
 - **summary**:   One of the submitted nominators is not an active nominator on chain. 
  
 ### OffchainElectionBogusScore
+- **interface**: `api.errors.staking.OffchainElectionBogusScore`
 - **summary**:   The claimed score does not match with the one computed from the data. 
  
 ### OffchainElectionBogusSelfVote
+- **interface**: `api.errors.staking.OffchainElectionBogusSelfVote`
 - **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
  
 ### OffchainElectionBogusWinner
+- **interface**: `api.errors.staking.OffchainElectionBogusWinner`
 - **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
  
 ### OffchainElectionBogusWinnerCount
+- **interface**: `api.errors.staking.OffchainElectionBogusWinnerCount`
 - **summary**:   Incorrect number of winners were presented. 
  
 ### OffchainElectionEarlySubmission
+- **interface**: `api.errors.staking.OffchainElectionEarlySubmission`
 - **summary**:   The submitted result is received out of the open window. 
  
 ### OffchainElectionSlashedNomination
+- **interface**: `api.errors.staking.OffchainElectionSlashedNomination`
 - **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
  
 ### OffchainElectionWeakSubmission
+- **interface**: `api.errors.staking.OffchainElectionWeakSubmission`
 - **summary**:   The submitted result is not as good as the one stored on chain. 
  
 ### SnapshotUnavailable
+- **interface**: `api.errors.staking.SnapshotUnavailable`
 - **summary**:   The snapshot data of the current window is missing. 
  
 # Events
  
-### Bonded(`AccountId`, `Balance`)
+### Bonded(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Bonded`
 - **summary**:   An account has bonded this amount. \[stash, amount\] 
 
   NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably, it will not be emitted for staking rewards when they are added to stake. 
  
-### InvulnerableNotSlashed(`AccountId`, `Perbill`)
+### InvulnerableNotSlashed(`AccountId32`, `Perbill`)
+- **interface**: `api.events.staking.InvulnerableNotSlashed`
 - **summary**:   The validator is invulnerable, so it has NOT been slashed. 
  
-### OldSlashingReportDiscarded(`SessionIndex`)
+### OldSlashingReportDiscarded(`u32`)
+- **interface**: `api.events.staking.OldSlashingReportDiscarded`
 - **summary**:   An old slashing report from a prior era was discarded because it could not be processed. 
  
-### SetInvulnerables(`Vec<AccountId>`)
+### SetInvulnerables(`Vec<AccountId32>`)
+- **interface**: `api.events.staking.SetInvulnerables`
 - **summary**:   A new set of validators are marked to be invulnerable 
  
-### SetMinimumBond(`Balance`)
+### SetMinimumBond(`u128`)
+- **interface**: `api.events.staking.SetMinimumBond`
 - **summary**:   Minimum bond amount is changed. 
  
-### Slash(`AccountId`, `Balance`)
+### Slash(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Slash`
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. 
  
-### SolutionStored(`ElectionCompute`)
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Slashed`
+- **summary**:   One validator (and its nominators) has been slashed by the given amount. \[validator, amount\] 
+ 
+### SolutionStored(`CrmlStakingElectionCompute`)
+- **interface**: `api.events.staking.SolutionStored`
 - **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
  
-### StakingElection(`ElectionCompute`)
+### StakingElection(`CrmlStakingElectionCompute`)
+- **interface**: `api.events.staking.StakingElection`
 - **summary**:   A new set of stakers was elected with the given \[compute\]. 
  
-### Unbonded(`AccountId`, `Balance`)
+### Unbonded(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Unbonded`
 - **summary**:   An account has unbonded this amount. \[stash, amount\] 
  
-### Withdrawn(`AccountId`, `Balance`)
+### Withdrawn(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Withdrawn`
 - **summary**:   An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance` from the unlocking queue. \[stash, amount\] 
  
 # RPC
@@ -599,7 +659,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/electedInfo.ts:17](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/electedInfo.ts#L17)
+[packages/api/src/derives/staking/electedInfo.ts:18](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/electedInfo.ts#L18)
 
 # Module: staking/overview
 
@@ -617,7 +677,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/overview.ts:16](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/overview.ts#L16)
+[packages/api/src/derives/staking/overview.ts:17](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/overview.ts#L17)
 
 # Module: staking/query
 
@@ -642,7 +702,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:127](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/query.ts#L127)
+[packages/api/src/derives/staking/query.ts:128](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/query.ts#L128)
 
 ___
 
@@ -662,7 +722,25 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:138](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/query.ts#L138)
+[packages/api/src/derives/staking/query.ts:139](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/query.ts#L139)
+
+# Module: staking/receivedHeartBeat
+
+
+## Functions
+
+### receivedHeartbeats
+
+▸ **receivedHeartbeats**() => `Observable`<`DeriveHeartbeats`\>
+
+**`description`** Return a boolean array indicating whether the passed accounts had received heartbeats in the current session
+
+
+`Observable`<`DeriveHeartbeats`\>
+
+#### Defined in
+
+[packages/api/src/derives/staking/receivedHeartBeat.ts:41](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/receivedHeartBeat.ts#L41)
 
 # Module: staking/stakingAccount
 
@@ -687,7 +765,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/stakingAccount.ts#L47)
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/stakingAccount.ts#L47)
 
 # Module: staking/stashes
 
@@ -705,7 +783,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/stashes.ts#L15)
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/stashes.ts#L15)
 
 # Module: staking/types
 
@@ -732,7 +810,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:14](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/validators.ts#L14)
+[packages/api/src/derives/staking/validators.ts:15](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/validators.ts#L15)
 
 ___
 
@@ -747,7 +825,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:32](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/validators.ts#L32)
+[packages/api/src/derives/staking/validators.ts:33](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/validators.ts#L33)
 
 # Module: staking/waitingInfo
 
@@ -763,4 +841,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/waitingInfo.ts:13](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/staking/waitingInfo.ts#L13)
+[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/waitingInfo.ts#L14)

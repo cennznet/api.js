@@ -6,9 +6,19 @@ Events are emitted for certain operations on the runtime. The following sections
 
 (NOTE: These were generated from a static/snapshot view of a recent Substrate master node. Some items may not be available in older nodes, or in any customized implementations.)
 
-- **[attestation](#attestation)**
+- **[baseFee](#basefee)**
 
 - **[cennzx](#cennzx)**
+
+- **[erc20Peg](#erc20peg)**
+
+- **[ethBridge](#ethbridge)**
+
+- **[ethereum](#ethereum)**
+
+- **[ethWallet](#ethwallet)**
+
+- **[evm](#evm)**
 
 - **[genericAsset](#genericasset)**
 
@@ -19,8 +29,6 @@ Events are emitted for certain operations on the runtime. The following sections
 - **[identity](#identity)**
 
 - **[imOnline](#imonline)**
-
-- **[multisig](#multisig)**
 
 - **[nft](#nft)**
 
@@ -46,55 +54,169 @@ Events are emitted for certain operations on the runtime. The following sections
 ___
 
 
-## attestation
+## baseFee
  
-### ClaimCreated(`AccountId`, `AccountId`, `AttestationTopic`, `AttestationValue`)
+### BaseFeeOverflow()
+- **interface**: `api.events.baseFee.BaseFeeOverflow`
  
-### ClaimRemoved(`AccountId`, `AccountId`, `AttestationTopic`)
+### IsActive(`bool`)
+- **interface**: `api.events.baseFee.IsActive`
  
-### ClaimUpdated(`AccountId`, `AccountId`, `AttestationTopic`, `AttestationValue`)
+### NewBaseFeePerGas(`U256`)
+- **interface**: `api.events.baseFee.NewBaseFeePerGas`
+ 
+### NewElasticity(`Permill`)
+- **interface**: `api.events.baseFee.NewElasticity`
 
 ___
 
 
 ## cennzx
  
-### AddLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
+### AddLiquidity(`AccountId32`, `u128`, `u32`, `u128`)
+- **interface**: `api.events.cennzx.AddLiquidity`
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
  
-### AssetBought(`AssetId`, `AssetId`, `AccountId`, `Balance`, `Balance`)
+### AssetBought(`u32`, `u32`, `AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.cennzx.AssetBought`
 - **summary**:   AssetSold, AssetBought, Buyer, SoldAmount, BoughtAmount 
  
-### AssetSold(`AssetId`, `AssetId`, `AccountId`, `Balance`, `Balance`)
+### AssetSold(`u32`, `u32`, `AccountId32`, `u128`, `u128`)
+- **interface**: `api.events.cennzx.AssetSold`
 - **summary**:   AssetSold, AssetBought, Buyer, SoldAmount, BoughtAmount 
  
-### RemoveLiquidity(`AccountId`, `Balance`, `AssetId`, `Balance`)
+### RemoveLiquidity(`AccountId32`, `u128`, `u32`, `u128`)
+- **interface**: `api.events.cennzx.RemoveLiquidity`
 - **summary**:   Provider, core asset amount, trade asset id, trade asset amount 
+
+___
+
+
+## erc20Peg
+ 
+### CENNZDepositsActive()
+- **interface**: `api.events.erc20Peg.CENNZDepositsActive`
+- **summary**:   ERC20 CENNZ deposits activated 
+ 
+### Erc20Claim(`u64`, `AccountId32`)
+- **interface**: `api.events.erc20Peg.Erc20Claim`
+- **summary**:   An erc20 deposit claim has started. (deposit Id, sender) 
+ 
+### Erc20Deposit(`u64`, `u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.erc20Peg.Erc20Deposit`
+- **summary**:   A bridged erc20 deposit succeeded.(deposit Id, asset, amount, beneficiary) 
+ 
+### Erc20DepositFail(`u64`)
+- **interface**: `api.events.erc20Peg.Erc20DepositFail`
+- **summary**:   A bridged erc20 deposit failed.(deposit Id) 
+ 
+### Erc20Withdraw(`u64`, `u32`, `u128`, `H160`)
+- **interface**: `api.events.erc20Peg.Erc20Withdraw`
+- **summary**:   Tokens were burnt for withdrawal on Ethereum as ERC20s (withdrawal Id, asset, amount, beneficiary) 
+ 
+### SetContractAddress(`H160`)
+- **interface**: `api.events.erc20Peg.SetContractAddress`
+- **summary**:   The peg contract address has been set 
+
+___
+
+
+## ethBridge
+ 
+### AuthoritySetChange(`u64`, `u64`)
+- **interface**: `api.events.ethBridge.AuthoritySetChange`
+- **summary**:   A notary (validator) set change is in motion (event_id, new_validator_set_id) A proof for the change will be generated with the given `event_id` 
+ 
+### Invalid(`u64`)
+- **interface**: `api.events.ethBridge.Invalid`
+- **summary**:   Verifying an event failed 
+ 
+### Verified(`u64`)
+- **interface**: `api.events.ethBridge.Verified`
+- **summary**:   Verifying an event succeeded 
+
+___
+
+
+## ethereum
+ 
+### Executed(`H160`, `H160`, `H256`, `EvmCoreErrorExitReason`)
+- **interface**: `api.events.ethereum.Executed`
+- **summary**:   An ethereum transaction was successfully executed. [from, to/contract_address, transaction_hash, exit_reason] 
+
+___
+
+
+## ethWallet
+ 
+### Execute(`H160`, `AccountId32`, `Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.ethWallet.Execute`
+- **summary**:   A call just executed. (Ethereum Address, CENNZnet Address, Result) 
+
+___
+
+
+## evm
+ 
+### BalanceDeposit(`AccountId32`, `H160`, `U256`)
+- **interface**: `api.events.evm.BalanceDeposit`
+- **summary**:   A deposit has been made at a given address. \[sender, address, value\] 
+ 
+### BalanceWithdraw(`AccountId32`, `H160`, `U256`)
+- **interface**: `api.events.evm.BalanceWithdraw`
+- **summary**:   A withdrawal has been made from a given address. \[sender, address, value\] 
+ 
+### Created(`H160`)
+- **interface**: `api.events.evm.Created`
+- **summary**:   A contract has been created at given \[address\]. 
+ 
+### CreatedFailed(`H160`)
+- **interface**: `api.events.evm.CreatedFailed`
+- **summary**:   A \[contract\] was attempted to be created, but the execution failed. 
+ 
+### Executed(`H160`)
+- **interface**: `api.events.evm.Executed`
+- **summary**:   A \[contract\] has been executed successfully with states applied. 
+ 
+### ExecutedFailed(`H160`)
+- **interface**: `api.events.evm.ExecutedFailed`
+- **summary**:   A \[contract\] has been executed with errors. States are reverted with only gas fees applied. 
+ 
+### Log(`EthereumLog`)
+- **interface**: `api.events.evm.Log`
+- **summary**:   Ethereum events from contracts. 
 
 ___
 
 
 ## genericAsset
  
-### AssetInfoUpdated(`AssetId`, `AssetInfo`)
+### AssetInfoUpdated(`u32`, `CrmlGenericAssetAssetInfo`)
+- **interface**: `api.events.genericAsset.AssetInfoUpdated`
 - **summary**:   Asset info updated (asset_id, asset_info). 
  
-### Burned(`AssetId`, `AccountId`, `Balance`)
+### Burned(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.genericAsset.Burned`
 - **summary**:   Asset burned (asset_id, account, amount). 
  
-### Created(`AssetId`, `AccountId`, `AssetOptions`)
+### Created(`u32`, `AccountId32`, `CrmlGenericAssetAssetOptions`)
+- **interface**: `api.events.genericAsset.Created`
 - **summary**:   Asset created (asset_id, creator, asset_options). 
  
-### DustReclaimed(`AssetId`, `AccountId`, `Balance`)
+### DustReclaimed(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.genericAsset.DustReclaimed`
 - **summary**:   Asset balance storage has been reclaimed due to falling below the existential deposit 
  
-### Minted(`AssetId`, `AccountId`, `Balance`)
+### Minted(`u32`, `AccountId32`, `u128`)
+- **interface**: `api.events.genericAsset.Minted`
 - **summary**:   New asset minted (asset_id, account, amount). 
  
-### PermissionUpdated(`AssetId`, `PermissionLatest`)
+### PermissionUpdated(`u32`, `CrmlGenericAssetPermissionsV1`)
+- **interface**: `api.events.genericAsset.PermissionUpdated`
 - **summary**:   Asset permission updated (asset_id, new_permissions). 
  
-### Transferred(`AssetId`, `AccountId`, `AccountId`, `Balance`)
+### Transferred(`u32`, `AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.genericAsset.Transferred`
 - **summary**:   Asset transfer succeeded (asset_id, from, to, amount). 
 
 ___
@@ -102,10 +224,28 @@ ___
 
 ## governance
  
-### EnactProposal(`ProposalId`, `bool`)
+### EnactReferendum(`u64`, `bool`)
+- **interface**: `api.events.governance.EnactReferendum`
 - **summary**:   A proposal was enacted, success 
  
-### SubmitProposal(`ProposalId`)
+### ProposalVeto(`u64`)
+- **interface**: `api.events.governance.ProposalVeto`
+- **summary**:   A proposal was vetoed by the council 
+ 
+### ReferendumApproved(`u64`)
+- **interface**: `api.events.governance.ReferendumApproved`
+- **summary**:   A referendum has been approved and is awaiting enactment 
+ 
+### ReferendumCreated(`u64`)
+- **interface**: `api.events.governance.ReferendumCreated`
+- **summary**:   A proposal was approved by council and a referendum has been created 
+ 
+### ReferendumVeto(`u64`)
+- **interface**: `api.events.governance.ReferendumVeto`
+- **summary**:   A referendum was vetoed by vote 
+ 
+### SubmitProposal(`u64`)
+- **interface**: `api.events.governance.SubmitProposal`
 - **summary**:   A proposal was submitted 
 
 ___
@@ -113,13 +253,16 @@ ___
 
 ## grandpa
  
-### NewAuthorities(`AuthorityList`)
-- **summary**:   New authority set has been applied. \[authority_set\] 
+### NewAuthorities(`Vec<(SpFinalityGrandpaAppPublic,u64)>`)
+- **interface**: `api.events.grandpa.NewAuthorities`
+- **summary**:   New authority set has been applied. 
  
 ### Paused()
+- **interface**: `api.events.grandpa.Paused`
 - **summary**:   Current authority set has been paused. 
  
 ### Resumed()
+- **interface**: `api.events.grandpa.Resumed`
 - **summary**:   Current authority set has been resumed. 
 
 ___
@@ -127,35 +270,45 @@ ___
 
 ## identity
  
-### IdentityCleared(`AccountId`, `Balance`)
-- **summary**:   A name was cleared, and the given balance returned. \[who, deposit\] 
+### IdentityCleared(`AccountId32`, `u128`)
+- **interface**: `api.events.identity.IdentityCleared`
+- **summary**:   A name was cleared, and the given balance returned. 
  
-### IdentityKilled(`AccountId`, `Balance`)
-- **summary**:   A name was removed and the given balance slashed. \[who, deposit\] 
+### IdentityKilled(`AccountId32`, `u128`)
+- **interface**: `api.events.identity.IdentityKilled`
+- **summary**:   A name was removed and the given balance slashed. 
  
-### IdentitySet(`AccountId`)
-- **summary**:   A name was set or reset (which will remove all judgements). \[who\] 
+### IdentitySet(`AccountId32`)
+- **interface**: `api.events.identity.IdentitySet`
+- **summary**:   A name was set or reset (which will remove all judgements). 
  
-### JudgementGiven(`AccountId`, `RegistrarIndex`)
-- **summary**:   A judgement was given by a registrar. \[target, registrar_index\] 
+### JudgementGiven(`AccountId32`, `u32`)
+- **interface**: `api.events.identity.JudgementGiven`
+- **summary**:   A judgement was given by a registrar. 
  
-### JudgementRequested(`AccountId`, `RegistrarIndex`)
-- **summary**:   A judgement was asked from a registrar. \[who, registrar_index\] 
+### JudgementRequested(`AccountId32`, `u32`)
+- **interface**: `api.events.identity.JudgementRequested`
+- **summary**:   A judgement was asked from a registrar. 
  
-### JudgementUnrequested(`AccountId`, `RegistrarIndex`)
-- **summary**:   A judgement request was retracted. \[who, registrar_index\] 
+### JudgementUnrequested(`AccountId32`, `u32`)
+- **interface**: `api.events.identity.JudgementUnrequested`
+- **summary**:   A judgement request was retracted. 
  
-### RegistrarAdded(`RegistrarIndex`)
-- **summary**:   A registrar was added. \[registrar_index\] 
+### RegistrarAdded(`u32`)
+- **interface**: `api.events.identity.RegistrarAdded`
+- **summary**:   A registrar was added. 
  
-### SubIdentityAdded(`AccountId`, `AccountId`, `Balance`)
-- **summary**:   A sub-identity was added to an identity and the deposit paid. \[sub, main, deposit\] 
+### SubIdentityAdded(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.identity.SubIdentityAdded`
+- **summary**:   A sub-identity was added to an identity and the deposit paid. 
  
-### SubIdentityRemoved(`AccountId`, `AccountId`, `Balance`)
-- **summary**:   A sub-identity was removed from an identity and the deposit freed. \[sub, main, deposit\] 
+### SubIdentityRemoved(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.identity.SubIdentityRemoved`
+- **summary**:   A sub-identity was removed from an identity and the deposit freed. 
  
-### SubIdentityRevoked(`AccountId`, `AccountId`, `Balance`)
-- **summary**:   A sub-identity was cleared, and the given deposit repatriated from the main identity account to the sub-identity account. \[sub, main, deposit\] 
+### SubIdentityRevoked(`AccountId32`, `AccountId32`, `u128`)
+- **interface**: `api.events.identity.SubIdentityRevoked`
+- **summary**:   A sub-identity was cleared, and the given deposit repatriated from the main identity account to the sub-identity account. 
 
 ___
 
@@ -163,73 +316,76 @@ ___
 ## imOnline
  
 ### AllGood()
+- **interface**: `api.events.imOnline.AllGood`
 - **summary**:   At the end of the session, no offence was committed. 
  
-### HeartbeatReceived(`AuthorityId`)
-- **summary**:   A new heartbeat was received from `AuthorityId` \[authority_id\] 
+### HeartbeatReceived(`PalletImOnlineSr25519AppSr25519Public`)
+- **interface**: `api.events.imOnline.HeartbeatReceived`
+- **summary**:   A new heartbeat was received from `AuthorityId`. 
  
-### SomeOffline(`Vec<IdentificationTuple>`)
-- **summary**:   At the end of the session, at least one validator was found to be \[offline\]. 
-
-___
-
-
-## multisig
- 
-### MultisigApproval(`AccountId`, `Timepoint`, `AccountId`, `CallHash`)
-- **summary**:   A multisig operation has been approved by someone. \[approving, timepoint, multisig, call_hash\] 
- 
-### MultisigCancelled(`AccountId`, `Timepoint`, `AccountId`, `CallHash`)
-- **summary**:   A multisig operation has been cancelled. \[cancelling, timepoint, multisig, call_hash\] 
- 
-### MultisigExecuted(`AccountId`, `Timepoint`, `AccountId`, `CallHash`, `DispatchResult`)
-- **summary**:   A multisig operation has been executed. \[approving, timepoint, multisig, call_hash\] 
- 
-### NewMultisig(`AccountId`, `AccountId`, `CallHash`)
-- **summary**:   A new multisig operation has begun. \[approving, multisig, call_hash\] 
+### SomeOffline(`Vec<(AccountId32,CrmlStakingExposure)>`)
+- **interface**: `api.events.imOnline.SomeOffline`
+- **summary**:   At the end of the session, at least one validator was found to be offline. 
 
 ___
 
 
 ## nft
  
-### AuctionClosed(`CollectionId`, `ListingId`, `Reason`)
+### AuctionClosed(`u32`, `u128`, `CrmlNftAuctionClosureReason`)
+- **interface**: `api.events.nft.AuctionClosed`
 - **summary**:   An auction has closed without selling (collection, listing, reason) 
  
-### AuctionOpen(`CollectionId`, `ListingId`)
-- **summary**:   An auction has opened (collection, listing) 
+### AuctionOpen(`u32`, `u128`, `Option<u32>`)
+- **interface**: `api.events.nft.AuctionOpen`
+- **summary**:   An auction has opened (collection, listing, marketplace_id) 
  
-### AuctionSold(`CollectionId`, `ListingId`, `AssetId`, `Balance`, `AccountId`)
+### AuctionSold(`u32`, `u128`, `u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.nft.AuctionSold`
 - **summary**:   An auction has sold (collection, listing, payment asset, bid, new owner) 
  
-### Bid(`CollectionId`, `ListingId`, `Balance`)
+### Bid(`u32`, `u128`, `u128`)
+- **interface**: `api.events.nft.Bid`
 - **summary**:   A new highest bid was placed (collection, listing, amount) 
  
-### Burn(`CollectionId`, `SeriesId`, `Vec<SerialNumber>`)
+### Burn(`u32`, `u32`, `Vec<u32>`)
+- **interface**: `api.events.nft.Burn`
 - **summary**:   Tokens were burned (collection, series id, serial numbers) 
  
-### CreateAdditional(`CollectionId`, `SeriesId`, `TokenCount`, `AccountId`)
-- **summary**:   Additional tokens were added to a series (collection, series id, quantity, owner) 
- 
-### CreateCollection(`CollectionId`, `CollectionNameType`, `AccountId`)
+### CreateCollection(`u32`, `Bytes`, `AccountId32`)
+- **interface**: `api.events.nft.CreateCollection`
 - **summary**:   A new token collection was created (collection, name, owner) 
  
-### CreateSeries(`CollectionId`, `SeriesId`, `TokenCount`, `AccountId`)
+### CreateSeries(`u32`, `u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nft.CreateSeries`
 - **summary**:   A new series of tokens was created (collection, series id, quantity, owner) 
  
-### CreateToken(`CollectionId`, `TokenId`, `AccountId`)
-- **summary**:   A unique token was created (collection, series id, serial number, owner) 
+### CreateTokens(`u32`, `u32`, `u32`, `AccountId32`)
+- **interface**: `api.events.nft.CreateTokens`
+- **summary**:   Token(s) were created (collection, series id, quantity, owner) 
  
-### FixedPriceSaleClosed(`CollectionId`, `ListingId`)
+### FixedPriceSaleClosed(`u32`, `u128`)
+- **interface**: `api.events.nft.FixedPriceSaleClosed`
 - **summary**:   A fixed price sale has closed without selling (collection, listing) 
  
-### FixedPriceSaleComplete(`CollectionId`, `ListingId`, `AccountId`)
+### FixedPriceSaleComplete(`u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.nft.FixedPriceSaleComplete`
 - **summary**:   A fixed price sale has completed (collection, listing, buyer)) 
  
-### FixedPriceSaleListed(`CollectionId`, `ListingId`)
-- **summary**:   A fixed price sale has been listed (collection, listing) 
+### FixedPriceSaleListed(`u32`, `u128`, `Option<u32>`)
+- **interface**: `api.events.nft.FixedPriceSaleListed`
+- **summary**:   A fixed price sale has been listed (collection, listing, marketplace_id) 
  
-### Transfer(`AccountId`, `Vec<TokenId>`, `AccountId`)
+### FixedPriceSalePriceUpdated(`u32`, `u128`)
+- **interface**: `api.events.nft.FixedPriceSalePriceUpdated`
+- **summary**:   A fixed price sale has had its price updated (collection, listing) 
+ 
+### RegisteredMarketplace(`AccountId32`, `Permill`, `u32`)
+- **interface**: `api.events.nft.RegisteredMarketplace`
+- **summary**:   An account has been registered as a marketplace (account, entitlement, marketplace_id) 
+ 
+### Transfer(`AccountId32`, `u32`, `u32`, `Vec<u32>`, `AccountId32`)
+- **interface**: `api.events.nft.Transfer`
 - **summary**:   Token(s) were transferred (previous owner, token Ids, new owner) 
 
 ___
@@ -237,24 +393,29 @@ ___
 
 ## offences
  
-### Offence(`Kind`, `OpaqueTimeSlot`, `bool`)
-- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. last element indicates of the offence was applied (true) or queued (false) \[kind, timeslot, applied\]. 
+### Offence(`[u8;16]`, `Bytes`)
+- **interface**: `api.events.offences.Offence`
+- **summary**:   There is an offence reported of the given `kind` happened at the `session_index` and (kind-specific) time slot. This event is not deposited for duplicate slashes. \[kind, timeslot\]. 
 
 ___
 
 
 ## rewards
  
-### EraPayout(`Balance`, `Balance`)
+### EraPayout(`u128`, `u128`)
+- **interface**: `api.events.rewards.EraPayout`
 - **summary**:   Era reward payout the total (amount to treasury, amount to stakers) 
  
-### EraPayoutDeferred(`Balance`)
+### EraPayoutDeferred(`u128`)
+- **interface**: `api.events.rewards.EraPayoutDeferred`
 - **summary**:   Era ended abruptly e.g. due to early re-election, this amount will be deferred to the next full era 
  
-### EraStakerPayout(`AccountId`, `Balance`)
+### EraStakerPayout(`AccountId32`, `u128`)
+- **interface**: `api.events.rewards.EraStakerPayout`
 - **summary**:   Staker payout (nominator/validator account, amount) 
  
-### NewFiscalEra(`Balance`)
+### NewFiscalEra(`u128`)
+- **interface**: `api.events.rewards.NewFiscalEra`
 - **summary**:   A fiscal era has begun with the parameter (target_inflation_per_staking_era) 
 
 ___
@@ -262,58 +423,76 @@ ___
 
 ## scheduler
  
-### Canceled(`BlockNumber`, `u32`)
-- **summary**:   Canceled some task. \[when, index\] 
+### Canceled(`u32`, `u32`)
+- **interface**: `api.events.scheduler.Canceled`
+- **summary**:   Canceled some task. 
  
-### Dispatched(`TaskAddress`, `Option<Bytes>`, `DispatchResult`)
-- **summary**:   Dispatched some task. \[task, id, result\] 
+### Dispatched(`(u32,u32)`, `Option<Bytes>`, `Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.scheduler.Dispatched`
+- **summary**:   Dispatched some task. 
  
-### Scheduled(`BlockNumber`, `u32`)
-- **summary**:   Scheduled some task. \[when, index\] 
+### Scheduled(`u32`, `u32`)
+- **interface**: `api.events.scheduler.Scheduled`
+- **summary**:   Scheduled some task. 
 
 ___
 
 
 ## session
  
-### NewSession(`SessionIndex`)
-- **summary**:   New session has happened. Note that the argument is the \[session_index\], not the block number as the type might suggest. 
+### NewSession(`u32`)
+- **interface**: `api.events.session.NewSession`
+- **summary**:   New session has happened. Note that the argument is the session index, not the block number as the type might suggest. 
 
 ___
 
 
 ## staking
  
-### Bonded(`AccountId`, `Balance`)
+### Bonded(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Bonded`
 - **summary**:   An account has bonded this amount. \[stash, amount\] 
 
   NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably, it will not be emitted for staking rewards when they are added to stake. 
  
-### InvulnerableNotSlashed(`AccountId`, `Perbill`)
+### InvulnerableNotSlashed(`AccountId32`, `Perbill`)
+- **interface**: `api.events.staking.InvulnerableNotSlashed`
 - **summary**:   The validator is invulnerable, so it has NOT been slashed. 
  
-### OldSlashingReportDiscarded(`SessionIndex`)
+### OldSlashingReportDiscarded(`u32`)
+- **interface**: `api.events.staking.OldSlashingReportDiscarded`
 - **summary**:   An old slashing report from a prior era was discarded because it could not be processed. 
  
-### SetInvulnerables(`Vec<AccountId>`)
+### SetInvulnerables(`Vec<AccountId32>`)
+- **interface**: `api.events.staking.SetInvulnerables`
 - **summary**:   A new set of validators are marked to be invulnerable 
  
-### SetMinimumBond(`Balance`)
+### SetMinimumBond(`u128`)
+- **interface**: `api.events.staking.SetMinimumBond`
 - **summary**:   Minimum bond amount is changed. 
  
-### Slash(`AccountId`, `Balance`)
+### Slash(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Slash`
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. 
  
-### SolutionStored(`ElectionCompute`)
+### Slashed(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Slashed`
+- **summary**:   One validator (and its nominators) has been slashed by the given amount. \[validator, amount\] 
+ 
+### SolutionStored(`CrmlStakingElectionCompute`)
+- **interface**: `api.events.staking.SolutionStored`
 - **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
  
-### StakingElection(`ElectionCompute`)
+### StakingElection(`CrmlStakingElectionCompute`)
+- **interface**: `api.events.staking.StakingElection`
 - **summary**:   A new set of stakers was elected with the given \[compute\]. 
  
-### Unbonded(`AccountId`, `Balance`)
+### Unbonded(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Unbonded`
 - **summary**:   An account has unbonded this amount. \[stash, amount\] 
  
-### Withdrawn(`AccountId`, `Balance`)
+### Withdrawn(`AccountId32`, `u128`)
+- **interface**: `api.events.staking.Withdrawn`
 - **summary**:   An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance` from the unlocking queue. \[stash, amount\] 
 
 ___
@@ -321,13 +500,16 @@ ___
 
 ## sudo
  
-### KeyChanged(`AccountId`)
+### KeyChanged(`AccountId32`)
+- **interface**: `api.events.sudo.KeyChanged`
 - **summary**:   The \[sudoer\] just switched identity; the old key is supplied. 
  
-### Sudid(`DispatchResult`)
+### Sudid(`Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.sudo.Sudid`
 - **summary**:   A sudo just took place. \[result\] 
  
-### SudoAsDone(`DispatchResult`)
+### SudoAsDone(`Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.sudo.SudoAsDone`
 - **summary**:   A sudo just took place. \[result\] 
 
 ___
@@ -336,48 +518,61 @@ ___
 ## system
  
 ### CodeUpdated()
+- **interface**: `api.events.system.CodeUpdated`
 - **summary**:   `:code` was updated. 
  
-### ExtrinsicFailed(`DispatchError`, `DispatchInfo`)
-- **summary**:   An extrinsic failed. \[error, info\] 
+### ExtrinsicFailed(`SpRuntimeDispatchError`, `FrameSupportWeightsDispatchInfo`)
+- **interface**: `api.events.system.ExtrinsicFailed`
+- **summary**:   An extrinsic failed. 
  
-### ExtrinsicSuccess(`DispatchInfo`)
-- **summary**:   An extrinsic completed successfully. \[info\] 
+### ExtrinsicSuccess(`FrameSupportWeightsDispatchInfo`)
+- **interface**: `api.events.system.ExtrinsicSuccess`
+- **summary**:   An extrinsic completed successfully. 
  
-### KilledAccount(`AccountId`)
-- **summary**:   An \[account\] was reaped. 
+### KilledAccount(`AccountId32`)
+- **interface**: `api.events.system.KilledAccount`
+- **summary**:   An account was reaped. 
  
-### NewAccount(`AccountId`)
-- **summary**:   A new \[account\] was created. 
+### NewAccount(`AccountId32`)
+- **interface**: `api.events.system.NewAccount`
+- **summary**:   A new account was created. 
  
-### Remarked(`AccountId`, `Hash`)
-- **summary**:   On on-chain remark happened. \[origin, remark_hash\] 
+### Remarked(`AccountId32`, `H256`)
+- **interface**: `api.events.system.Remarked`
+- **summary**:   On on-chain remark happened. 
 
 ___
 
 
 ## treasury
  
-### Awarded(`ProposalIndex`, `Balance`, `AccountId`)
-- **summary**:   Some funds have been allocated. \[proposal_index, award, beneficiary\] 
+### Awarded(`u32`, `u128`, `AccountId32`)
+- **interface**: `api.events.treasury.Awarded`
+- **summary**:   Some funds have been allocated. 
  
-### Burnt(`Balance`)
-- **summary**:   Some of our funds have been burnt. \[burn\] 
+### Burnt(`u128`)
+- **interface**: `api.events.treasury.Burnt`
+- **summary**:   Some of our funds have been burnt. 
  
-### Deposit(`Balance`)
-- **summary**:   Some funds have been deposited. \[deposit\] 
+### Deposit(`u128`)
+- **interface**: `api.events.treasury.Deposit`
+- **summary**:   Some funds have been deposited. 
  
-### Proposed(`ProposalIndex`)
-- **summary**:   New proposal. \[proposal_index\] 
+### Proposed(`u32`)
+- **interface**: `api.events.treasury.Proposed`
+- **summary**:   New proposal. 
  
-### Rejected(`ProposalIndex`, `Balance`)
-- **summary**:   A proposal was rejected; funds were slashed. \[proposal_index, slashed\] 
+### Rejected(`u32`, `u128`)
+- **interface**: `api.events.treasury.Rejected`
+- **summary**:   A proposal was rejected; funds were slashed. 
  
-### Rollover(`Balance`)
-- **summary**:   Spending has finished; this is the amount that rolls over until next spend. \[budget_remaining\] 
+### Rollover(`u128`)
+- **interface**: `api.events.treasury.Rollover`
+- **summary**:   Spending has finished; this is the amount that rolls over until next spend. 
  
-### Spending(`Balance`)
-- **summary**:   We have ended a spend period and will now allocate funds. \[budget_remaining\] 
+### Spending(`u128`)
+- **interface**: `api.events.treasury.Spending`
+- **summary**:   We have ended a spend period and will now allocate funds. 
 
 ___
 
@@ -385,7 +580,17 @@ ___
 ## utility
  
 ### BatchCompleted()
+- **interface**: `api.events.utility.BatchCompleted`
 - **summary**:   Batch of dispatches completed fully with no error. 
  
-### BatchInterrupted(`u32`, `DispatchError`)
-- **summary**:   Batch of dispatches did not complete fully. Index of first failing dispatch given, as well as the error. \[index, error\] 
+### BatchInterrupted(`u32`, `SpRuntimeDispatchError`)
+- **interface**: `api.events.utility.BatchInterrupted`
+- **summary**:   Batch of dispatches did not complete fully. Index of first failing dispatch given, as well as the error. 
+ 
+### DispatchedAs(`Result<Null, SpRuntimeDispatchError>`)
+- **interface**: `api.events.utility.DispatchedAs`
+- **summary**:   A call was dispatched. 
+ 
+### ItemCompleted()
+- **interface**: `api.events.utility.ItemCompleted`
+- **summary**:   A single item within a Batch of dispatches has completed with no error. 

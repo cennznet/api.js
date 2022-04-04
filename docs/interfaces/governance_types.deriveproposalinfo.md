@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:18](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L18)
+[packages/api/src/derives/governance/types.ts:18](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/governance/types.ts#L18)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:19](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L19)
+[packages/api/src/derives/governance/types.ts:19](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/governance/types.ts#L19)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/governance/types.ts:20](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/governance/types.ts#L20)
+[packages/api/src/derives/governance/types.ts:20](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/governance/types.ts#L20)

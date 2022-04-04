@@ -22,6 +22,10 @@ The following sections contain RPC methods that are Remote Calls available by de
 
 - **[eth](#eth)**
 
+- **[ethWallet](#ethwallet)**
+
+- **[ethy](#ethy)**
+
 - **[genericAsset](#genericasset)**
 
 - **[governance](#governance)**
@@ -105,6 +109,11 @@ ___
 
 ## beefy
  
+### getFinalizedHead(): `H256`
+- **interface**: `api.rpc.beefy.getFinalizedHead`
+- **jsonrpc**: `beefy_getFinalizedHead`
+- **summary**: Returns hash of the latest BEEFY finalized block as seen by this client.
+ 
 ### subscribeJustifications(): `BeefySignedCommitment`
 - **interface**: `api.rpc.beefy.subscribeJustifications`
 - **jsonrpc**: `beefy_subscribeJustifications`
@@ -185,10 +194,20 @@ ___
 - **jsonrpc**: `childstate_getKeys`
 - **summary**: Returns the keys with prefix from a child storage, leave empty to get all the keys
  
+### getKeysPaged(childKey: `PrefixedStorageKey`, prefix: `StorageKey`, count: `u32`, startKey?: `StorageKey`, at?: `Hash`): `Vec<StorageKey>`
+- **interface**: `api.rpc.childstate.getKeysPaged`
+- **jsonrpc**: `childstate_getKeysPaged`
+- **summary**: Returns the keys with prefix from a child storage with pagination support
+ 
 ### getStorage(childKey: `PrefixedStorageKey`, key: `StorageKey`, at?: `Hash`): `Option<StorageData>`
 - **interface**: `api.rpc.childstate.getStorage`
 - **jsonrpc**: `childstate_getStorage`
 - **summary**: Returns a child storage entry at a specific block state
+ 
+### getStorageEntries(childKey: `PrefixedStorageKey`, keys: `Vec<StorageKey>`, at?: `Hash`): `Vec<Option<StorageData>>`
+- **interface**: `api.rpc.childstate.getStorageEntries`
+- **jsonrpc**: `childstate_getStorageEntries`
+- **summary**: Returns child storage entries for multiple keys at a specific block state
  
 ### getStorageHash(childKey: `PrefixedStorageKey`, key: `StorageKey`, at?: `Hash`): `Option<Hash>`
 - **interface**: `api.rpc.childstate.getStorageHash`
@@ -224,6 +243,11 @@ ___
 - **interface**: `api.rpc.contracts.rentProjection`
 - **jsonrpc**: `contracts_rentProjection`
 - **summary**: Returns the projected time a given contract will be able to sustain paying its rent
+ 
+### uploadCode(uploadRequest: `CodeUploadRequest`, at?: `BlockHash`): `CodeUploadResult`
+- **interface**: `api.rpc.contracts.uploadCode`
+- **jsonrpc**: `contracts_upload_code`
+- **summary**: Upload new code without instantiating a contract from it
 
 ___
 
@@ -253,7 +277,7 @@ ___
 ### blockNumber(): `U256`
 - **interface**: `api.rpc.eth.blockNumber`
 - **jsonrpc**: `eth_blockNumber`
-- **summary**: Returns balance of the given account.
+- **summary**: Returns the blockNumber
  
 ### call(request: `EthCallRequest`, number?: `BlockNumber`): `Bytes`
 - **interface**: `api.rpc.eth.call`
@@ -478,7 +502,37 @@ ___
 ___
 
 
+## ethWallet
+ 
+### addressNonce(EthAddress: `EthAddress`): `u32`
+- **interface**: `api.rpc.ethWallet.addressNonce`
+- **jsonrpc**: `ethWallet_addressNonce`
+- **summary**: Get all governance proposal votes
+
+___
+
+
+## ethy
+ 
+### getEventProof(EventId: `EthyEventId`): `Option<VersionedEventProof>`
+- **interface**: `api.rpc.ethy.getEventProof`
+- **jsonrpc**: `ethy_getEventProof`
+- **summary**: Get event proof for event Id
+ 
+### subscribeEventProofs(): `Option<VersionedEventProof>`
+- **interface**: `api.rpc.ethy.subscribeEventProofs`
+- **jsonrpc**: `ethy_subscribeEventProofs`
+- **summary**: Subscribe event proof
+
+___
+
+
 ## genericAsset
+ 
+### getBalance(AccountId: `AccountId`, AssetId: `AssetId`): `BalanceInformation`
+- **interface**: `api.rpc.genericAsset.getBalance`
+- **jsonrpc**: `genericAsset_getBalance`
+- **summary**: Get balance for users generic assets
  
 ### registeredAssets(): `Vec<(AssetId, AssetInfo)>`
 - **interface**: `api.rpc.genericAsset.registeredAssets`
@@ -524,6 +578,26 @@ ___
 - **interface**: `api.rpc.nft.collectedTokens`
 - **jsonrpc**: `nft_collectedTokens`
 - **summary**: Get the tokens owned by an address in a certain collection
+ 
+### getCollectionInfo(CollectionId: `CollectionId`): `Option<CollectionInfo>`
+- **interface**: `api.rpc.nft.getCollectionInfo`
+- **jsonrpc**: `nft_getCollectionInfo`
+- **summary**: Get collection info from a given collection
+ 
+### getCollectionListings(CollectionId: `CollectionId`, cursor: `u128`, limit: `u16`): `Option<ListingResponseWrapper<AccountId>>`
+- **interface**: `api.rpc.nft.getCollectionListings`
+- **jsonrpc**: `nft_getCollectionListings`
+- **summary**: Get collection listing from a given collection
+ 
+### getTokenInfo(CollectionId: `CollectionId`, SeriesId: `SeriesId`, SerialNumber: `SerialNumber`): `TokenInfo<AccountId>`
+- **interface**: `api.rpc.nft.getTokenInfo`
+- **jsonrpc**: `nft_getTokenInfo`
+- **summary**: Get token info
+ 
+### tokenUri(TokenId: `TokenId`): `Vec<u8>`
+- **interface**: `api.rpc.nft.tokenUri`
+- **jsonrpc**: `nft_tokenUri`
+- **summary**: Get token uri
 
 ___
 
@@ -675,7 +749,7 @@ ___
 - **jsonrpc**: `state_subscribeStorage`
 - **summary**: Subscribes to storage changes for the provided keys
  
-### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`): `TraceBlockResponse`
+### traceBlock(block: `Hash`, targets: `Option<Text>`, storageKeys: `Option<Text>`, methods: `Option<Text>`): `TraceBlockResponse`
 - **interface**: `api.rpc.state.traceBlock`
 - **jsonrpc**: `state_traceBlock`
 - **summary**: Provides a way to trace the re-execution of a single block
