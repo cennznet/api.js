@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:19](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L19)
+[packages/api/src/derives/ethBridge/types.ts:19](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L19)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:16](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L16)
+[packages/api/src/derives/ethBridge/types.ts:16](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L16)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:21](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L21)
+[packages/api/src/derives/ethBridge/types.ts:21](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L21)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:22](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L22)
+[packages/api/src/derives/ethBridge/types.ts:22](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L22)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:20](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L20)
+[packages/api/src/derives/ethBridge/types.ts:20](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L20)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:23](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L23)
+[packages/api/src/derives/ethBridge/types.ts:23](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L23)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:17](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L17)
+[packages/api/src/derives/ethBridge/types.ts:17](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L17)
 
 ___
 
@@ -95,4 +95,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/types.ts:18](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/types.ts#L18)
+[packages/api/src/derives/ethBridge/types.ts:18](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/types.ts#L18)

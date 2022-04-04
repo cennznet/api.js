@@ -120,27 +120,27 @@ The following sections contain the module details.
 # Events
  
 ### EnactReferendum(`u64`, `bool`)
-- **interface**: `api.events.governance.EnactReferendum.is`
+- **interface**: `api.events.governance.EnactReferendum`
 - **summary**:   A proposal was enacted, success 
  
 ### ProposalVeto(`u64`)
-- **interface**: `api.events.governance.ProposalVeto.is`
+- **interface**: `api.events.governance.ProposalVeto`
 - **summary**:   A proposal was vetoed by the council 
  
 ### ReferendumApproved(`u64`)
-- **interface**: `api.events.governance.ReferendumApproved.is`
+- **interface**: `api.events.governance.ReferendumApproved`
 - **summary**:   A referendum has been approved and is awaiting enactment 
  
 ### ReferendumCreated(`u64`)
-- **interface**: `api.events.governance.ReferendumCreated.is`
+- **interface**: `api.events.governance.ReferendumCreated`
 - **summary**:   A proposal was approved by council and a referendum has been created 
  
 ### ReferendumVeto(`u64`)
-- **interface**: `api.events.governance.ReferendumVeto.is`
+- **interface**: `api.events.governance.ReferendumVeto`
 - **summary**:   A referendum was vetoed by vote 
  
 ### SubmitProposal(`u64`)
-- **interface**: `api.events.governance.SubmitProposal.is`
+- **interface**: `api.events.governance.SubmitProposal`
 - **summary**:   A proposal was submitted 
  
 # RPC
@@ -169,7 +169,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/governance/overview.ts#L16)
+[packages/api/src/derives/governance/overview.ts:16](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/governance/overview.ts#L16)
 
 # Module: governance/types
 

@@ -29,7 +29,7 @@
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:9](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L9)
+[packages/api/src/derives/staking/types.ts:9](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L9)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:10](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L10)
+[packages/api/src/derives/staking/types.ts:10](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L10)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:11](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L11)
+[packages/api/src/derives/staking/types.ts:11](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L11)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:12](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L12)
+[packages/api/src/derives/staking/types.ts:12](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L12)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:13](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L13)
+[packages/api/src/derives/staking/types.ts:13](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L13)
 
 ___
 
@@ -79,4 +79,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/types.ts:14](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/types.ts#L14)
+[packages/api/src/derives/staking/types.ts:14](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/types.ts#L14)

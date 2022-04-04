@@ -472,167 +472,167 @@ The following sections contain the module details.
 # Error
  
 ### AlreadyBonded
-- **interface**: `api.errors.staking.AlreadyBonded.is`
+- **interface**: `api.errors.staking.AlreadyBonded`
 - **summary**:   Stash is already bonded. 
  
 ### AlreadyPaired
-- **interface**: `api.errors.staking.AlreadyPaired.is`
+- **interface**: `api.errors.staking.AlreadyPaired`
 - **summary**:   Controller is already paired. 
  
 ### CallNotAllowed
-- **interface**: `api.errors.staking.CallNotAllowed.is`
+- **interface**: `api.errors.staking.CallNotAllowed`
 - **summary**:   The call is not allowed at the given time due to restrictions of election period. 
  
 ### DuplicateNominee
-- **interface**: `api.errors.staking.DuplicateNominee.is`
+- **interface**: `api.errors.staking.DuplicateNominee`
 - **summary**:   Cannot nominate the same account multiple times 
  
 ### EmptyTargets
-- **interface**: `api.errors.staking.EmptyTargets.is`
+- **interface**: `api.errors.staking.EmptyTargets`
 - **summary**:   Targets cannot be empty. 
  
 ### FundedTarget
-- **interface**: `api.errors.staking.FundedTarget.is`
+- **interface**: `api.errors.staking.FundedTarget`
 - **summary**:   Attempting to target a stash that still has funds. 
  
 ### IncorrectHistoryDepth
-- **interface**: `api.errors.staking.IncorrectHistoryDepth.is`
+- **interface**: `api.errors.staking.IncorrectHistoryDepth`
 - **summary**:   Incorrect previous history depth input provided. 
  
 ### IncorrectSlashingSpans
-- **interface**: `api.errors.staking.IncorrectSlashingSpans.is`
+- **interface**: `api.errors.staking.IncorrectSlashingSpans`
 - **summary**:   Incorrect number of slashing spans provided. 
  
 ### InsufficientBond
-- **interface**: `api.errors.staking.InsufficientBond.is`
+- **interface**: `api.errors.staking.InsufficientBond`
 - **summary**:   Can not bond with value less than minimum balance. 
  
 ### InsufficientFreeBalance
-- **interface**: `api.errors.staking.InsufficientFreeBalance.is`
+- **interface**: `api.errors.staking.InsufficientFreeBalance`
 - **summary**:   User does not have enough free balance to bond this amount 
  
 ### InvalidSlashIndex
-- **interface**: `api.errors.staking.InvalidSlashIndex.is`
+- **interface**: `api.errors.staking.InvalidSlashIndex`
 - **summary**:   Slash record index out of bounds. 
  
 ### NoMoreChunks
-- **interface**: `api.errors.staking.NoMoreChunks.is`
+- **interface**: `api.errors.staking.NoMoreChunks`
 - **summary**:   Can not schedule more unlock chunks. 
  
 ### NotController
-- **interface**: `api.errors.staking.NotController.is`
+- **interface**: `api.errors.staking.NotController`
 - **summary**:   Not a controller account. 
  
 ### NotSortedAndUnique
-- **interface**: `api.errors.staking.NotSortedAndUnique.is`
+- **interface**: `api.errors.staking.NotSortedAndUnique`
 - **summary**:   Items are not sorted and unique. 
  
 ### NotStash
-- **interface**: `api.errors.staking.NotStash.is`
+- **interface**: `api.errors.staking.NotStash`
 - **summary**:   Not a stash account. 
  
 ### NoUnlockChunk
-- **interface**: `api.errors.staking.NoUnlockChunk.is`
+- **interface**: `api.errors.staking.NoUnlockChunk`
 - **summary**:   Can not rebond without unlocking chunks. 
  
 ### OffchainElectionBogusCompact
-- **interface**: `api.errors.staking.OffchainElectionBogusCompact.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusCompact`
 - **summary**:   Error while building the assignment type from the compact. This can happen if an index is invalid, or if the weights _overflow_. 
  
 ### OffchainElectionBogusEdge
-- **interface**: `api.errors.staking.OffchainElectionBogusEdge.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusEdge`
 - **summary**:   The submitted result has unknown edges that are not among the presented winners. 
  
 ### OffchainElectionBogusElectionSize
-- **interface**: `api.errors.staking.OffchainElectionBogusElectionSize.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusElectionSize`
 - **summary**:   The election size is invalid. 
  
 ### OffchainElectionBogusNomination
-- **interface**: `api.errors.staking.OffchainElectionBogusNomination.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusNomination`
 - **summary**:   One of the submitted nominators has an edge to which they have not voted on chain. 
  
 ### OffchainElectionBogusNominator
-- **interface**: `api.errors.staking.OffchainElectionBogusNominator.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusNominator`
 - **summary**:   One of the submitted nominators is not an active nominator on chain. 
  
 ### OffchainElectionBogusScore
-- **interface**: `api.errors.staking.OffchainElectionBogusScore.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusScore`
 - **summary**:   The claimed score does not match with the one computed from the data. 
  
 ### OffchainElectionBogusSelfVote
-- **interface**: `api.errors.staking.OffchainElectionBogusSelfVote.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusSelfVote`
 - **summary**:   A self vote must only be originated from a validator to ONLY themselves. 
  
 ### OffchainElectionBogusWinner
-- **interface**: `api.errors.staking.OffchainElectionBogusWinner.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusWinner`
 - **summary**:   One of the submitted winners is not an active candidate on chain (index is out of range in snapshot). 
  
 ### OffchainElectionBogusWinnerCount
-- **interface**: `api.errors.staking.OffchainElectionBogusWinnerCount.is`
+- **interface**: `api.errors.staking.OffchainElectionBogusWinnerCount`
 - **summary**:   Incorrect number of winners were presented. 
  
 ### OffchainElectionEarlySubmission
-- **interface**: `api.errors.staking.OffchainElectionEarlySubmission.is`
+- **interface**: `api.errors.staking.OffchainElectionEarlySubmission`
 - **summary**:   The submitted result is received out of the open window. 
  
 ### OffchainElectionSlashedNomination
-- **interface**: `api.errors.staking.OffchainElectionSlashedNomination.is`
+- **interface**: `api.errors.staking.OffchainElectionSlashedNomination`
 - **summary**:   One of the submitted nominators has an edge which is submitted before the last non-zero slash of the target. 
  
 ### OffchainElectionWeakSubmission
-- **interface**: `api.errors.staking.OffchainElectionWeakSubmission.is`
+- **interface**: `api.errors.staking.OffchainElectionWeakSubmission`
 - **summary**:   The submitted result is not as good as the one stored on chain. 
  
 ### SnapshotUnavailable
-- **interface**: `api.errors.staking.SnapshotUnavailable.is`
+- **interface**: `api.errors.staking.SnapshotUnavailable`
 - **summary**:   The snapshot data of the current window is missing. 
  
 # Events
  
 ### Bonded(`AccountId32`, `u128`)
-- **interface**: `api.events.staking.Bonded.is`
+- **interface**: `api.events.staking.Bonded`
 - **summary**:   An account has bonded this amount. \[stash, amount\] 
 
   NOTE: This event is only emitted when funds are bonded via a dispatchable. Notably, it will not be emitted for staking rewards when they are added to stake. 
  
 ### InvulnerableNotSlashed(`AccountId32`, `Perbill`)
-- **interface**: `api.events.staking.InvulnerableNotSlashed.is`
+- **interface**: `api.events.staking.InvulnerableNotSlashed`
 - **summary**:   The validator is invulnerable, so it has NOT been slashed. 
  
 ### OldSlashingReportDiscarded(`u32`)
-- **interface**: `api.events.staking.OldSlashingReportDiscarded.is`
+- **interface**: `api.events.staking.OldSlashingReportDiscarded`
 - **summary**:   An old slashing report from a prior era was discarded because it could not be processed. 
  
 ### SetInvulnerables(`Vec<AccountId32>`)
-- **interface**: `api.events.staking.SetInvulnerables.is`
+- **interface**: `api.events.staking.SetInvulnerables`
 - **summary**:   A new set of validators are marked to be invulnerable 
  
 ### SetMinimumBond(`u128`)
-- **interface**: `api.events.staking.SetMinimumBond.is`
+- **interface**: `api.events.staking.SetMinimumBond`
 - **summary**:   Minimum bond amount is changed. 
  
 ### Slash(`AccountId32`, `u128`)
-- **interface**: `api.events.staking.Slash.is`
+- **interface**: `api.events.staking.Slash`
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. 
  
 ### Slashed(`AccountId32`, `u128`)
-- **interface**: `api.events.staking.Slashed.is`
+- **interface**: `api.events.staking.Slashed`
 - **summary**:   One validator (and its nominators) has been slashed by the given amount. \[validator, amount\] 
  
 ### SolutionStored(`CrmlStakingElectionCompute`)
-- **interface**: `api.events.staking.SolutionStored.is`
+- **interface**: `api.events.staking.SolutionStored`
 - **summary**:   A new solution for the upcoming election has been stored. \[compute\] 
  
 ### StakingElection(`CrmlStakingElectionCompute`)
-- **interface**: `api.events.staking.StakingElection.is`
+- **interface**: `api.events.staking.StakingElection`
 - **summary**:   A new set of stakers was elected with the given \[compute\]. 
  
 ### Unbonded(`AccountId32`, `u128`)
-- **interface**: `api.events.staking.Unbonded.is`
+- **interface**: `api.events.staking.Unbonded`
 - **summary**:   An account has unbonded this amount. \[stash, amount\] 
  
 ### Withdrawn(`AccountId32`, `u128`)
-- **interface**: `api.events.staking.Withdrawn.is`
+- **interface**: `api.events.staking.Withdrawn`
 - **summary**:   An account has called `withdraw_unbonded` and removed unbonding chunks worth `Balance` from the unlocking queue. \[stash, amount\] 
  
 # RPC
@@ -659,7 +659,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/electedInfo.ts:18](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/electedInfo.ts#L18)
+[packages/api/src/derives/staking/electedInfo.ts:18](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/electedInfo.ts#L18)
 
 # Module: staking/overview
 
@@ -677,7 +677,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/overview.ts:17](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/overview.ts#L17)
+[packages/api/src/derives/staking/overview.ts:17](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/overview.ts#L17)
 
 # Module: staking/query
 
@@ -702,7 +702,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:128](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/query.ts#L128)
+[packages/api/src/derives/staking/query.ts:128](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/query.ts#L128)
 
 ___
 
@@ -722,7 +722,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/query.ts:139](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/query.ts#L139)
+[packages/api/src/derives/staking/query.ts:139](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/query.ts#L139)
 
 # Module: staking/receivedHeartBeat
 
@@ -740,7 +740,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/receivedHeartBeat.ts:41](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/receivedHeartBeat.ts#L41)
+[packages/api/src/derives/staking/receivedHeartBeat.ts:41](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/receivedHeartBeat.ts#L41)
 
 # Module: staking/stakingAccount
 
@@ -765,7 +765,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/stakingAccount.ts#L47)
+[packages/api/src/derives/staking/stakingAccount.ts:47](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/stakingAccount.ts#L47)
 
 # Module: staking/stashes
 
@@ -783,7 +783,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/stashes.ts#L15)
+[packages/api/src/derives/staking/stashes.ts:15](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/stashes.ts#L15)
 
 # Module: staking/types
 
@@ -810,7 +810,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:15](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/validators.ts#L15)
+[packages/api/src/derives/staking/validators.ts:15](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/validators.ts#L15)
 
 ___
 
@@ -825,7 +825,7 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/validators.ts:33](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/validators.ts#L33)
+[packages/api/src/derives/staking/validators.ts:33](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/validators.ts#L33)
 
 # Module: staking/waitingInfo
 
@@ -841,4 +841,4 @@ ___
 
 #### Defined in
 
-[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/staking/waitingInfo.ts#L14)
+[packages/api/src/derives/staking/waitingInfo.ts:14](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/staking/waitingInfo.ts#L14)

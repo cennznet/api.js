@@ -329,7 +329,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
           errors: moduleMetadata.errors.isSome ? lookup.getSiType(moduleMetadata.errors.unwrap().type).def.asVariant.variants
                 .sort(sortByName)
                 .map((error) => ({
-                    interface: '`' + `api.errors.${stringCamelCase(moduleMetadata.name)}.${error.name.toString()}.is` + '`',
+                    interface: '`' + `api.errors.${stringCamelCase(moduleMetadata.name)}.${error.name.toString()}` + '`',
                     name: error.name.toString(),
                     ...(error.docs.length && { summary: error.docs })
                 })) : [],
@@ -343,7 +343,7 @@ function addModule(metadata: MetadataLatest, name, displayName): string {
                   ).join(', ');
 
                   return {
-                      interface: '`' + `api.events.${stringCamelCase(moduleMetadata.name)}.${methodName}.is` + '`',
+                      interface: '`' + `api.events.${stringCamelCase(moduleMetadata.name)}.${methodName}` + '`',
                       name: `${methodName}(${args})`,
                       ...(docs.length && { summary: docs })
                   };
@@ -546,7 +546,7 @@ function addEvents ({ lookup, pallets }: MetadataLatest): string {
                         ).join(', ');
 
                         return {
-                            interface: '`' + `api.events.${stringCamelCase(meta.name)}.${methodName}.is` + '`',
+                            interface: '`' + `api.events.${stringCamelCase(meta.name)}.${methodName}` + '`',
                             name: `${methodName}(${args})`,
                             ...(docs.length && { summary: docs })
                         };
@@ -568,7 +568,7 @@ function addErrors ({ lookup, pallets }: MetadataLatest): string {
                 items: lookup.getSiType(moduleMetadata.errors.unwrap().type).def.asVariant.variants
                     .sort(sortByName)
                     .map((error) => ({
-                        interface: '`' + `api.errors.${stringCamelCase(moduleMetadata.name)}.${error.name.toString()}.is` + '`',
+                        interface: '`' + `api.errors.${stringCamelCase(moduleMetadata.name)}.${error.name.toString()}` + '`',
                         name: error.name.toString(),
                         ...(error.docs.length && { summary: error.docs })
                     })),

@@ -238,141 +238,141 @@ The following sections contain the module details.
 # Error
  
 ### BidTooLow
-- **interface**: `api.errors.nft.BidTooLow.is`
+- **interface**: `api.errors.nft.BidTooLow`
 - **summary**:   Auction bid was lower than reserve or current highest bid 
  
 ### CollectionIdExists
-- **interface**: `api.errors.nft.CollectionIdExists.is`
+- **interface**: `api.errors.nft.CollectionIdExists`
 - **summary**:   A collection with the same ID already exists 
  
 ### CollectionNameInvalid
-- **interface**: `api.errors.nft.CollectionNameInvalid.is`
+- **interface**: `api.errors.nft.CollectionNameInvalid`
 - **summary**:   Given collection name is invalid (invalid utf-8, too long, empty) 
  
 ### InternalPayment
-- **interface**: `api.errors.nft.InternalPayment.is`
+- **interface**: `api.errors.nft.InternalPayment`
 - **summary**:   Internal error during payment 
  
 ### InvalidMetadataPath
-- **interface**: `api.errors.nft.InvalidMetadataPath.is`
+- **interface**: `api.errors.nft.InvalidMetadataPath`
 - **summary**:   The metadata path is invalid (non-utf8 or empty) 
  
 ### MarketplaceNotRegistered
-- **interface**: `api.errors.nft.MarketplaceNotRegistered.is`
+- **interface**: `api.errors.nft.MarketplaceNotRegistered`
 - **summary**:   The account_id hasn't been registered as a marketplace 
  
 ### MaxAttributeLength
-- **interface**: `api.errors.nft.MaxAttributeLength.is`
+- **interface**: `api.errors.nft.MaxAttributeLength`
 - **summary**:   Given attribute value is larger than the configured max. 
  
 ### MixedBundleSale
-- **interface**: `api.errors.nft.MixedBundleSale.is`
+- **interface**: `api.errors.nft.MixedBundleSale`
 - **summary**:   Selling tokens from different collections is not allowed 
  
 ### NameAlreadySet
-- **interface**: `api.errors.nft.NameAlreadySet.is`
+- **interface**: `api.errors.nft.NameAlreadySet`
 - **summary**:   The Series name has been set 
  
 ### NoAvailableIds
-- **interface**: `api.errors.nft.NoAvailableIds.is`
+- **interface**: `api.errors.nft.NoAvailableIds`
 - **summary**:   No more Ids are available, they've been exhausted 
  
 ### NoCollection
-- **interface**: `api.errors.nft.NoCollection.is`
+- **interface**: `api.errors.nft.NoCollection`
 - **summary**:   The NFT collection does not exist 
  
 ### NoPermission
-- **interface**: `api.errors.nft.NoPermission.is`
+- **interface**: `api.errors.nft.NoPermission`
 - **summary**:   origin does not have permission for the operation (the token may not exist) 
  
 ### NoSeries
-- **interface**: `api.errors.nft.NoSeries.is`
+- **interface**: `api.errors.nft.NoSeries`
 - **summary**:   The series does not exist 
  
 ### NotForAuction
-- **interface**: `api.errors.nft.NotForAuction.is`
+- **interface**: `api.errors.nft.NotForAuction`
 - **summary**:   The token is not listed for auction sale 
  
 ### NotForFixedPriceSale
-- **interface**: `api.errors.nft.NotForFixedPriceSale.is`
+- **interface**: `api.errors.nft.NotForFixedPriceSale`
 - **summary**:   The token is not listed for fixed price sale 
  
 ### NoToken
-- **interface**: `api.errors.nft.NoToken.is`
+- **interface**: `api.errors.nft.NoToken`
 - **summary**:   The token does not exist 
  
 ### RoyaltiesInvalid
-- **interface**: `api.errors.nft.RoyaltiesInvalid.is`
+- **interface**: `api.errors.nft.RoyaltiesInvalid`
 - **summary**:   Total royalties would exceed 100% of sale or an empty vec is supplied 
  
 ### RoyaltiesProtection
-- **interface**: `api.errors.nft.RoyaltiesProtection.is`
+- **interface**: `api.errors.nft.RoyaltiesProtection`
 - **summary**:   Tokens with different individual royalties cannot be sold together 
  
 ### SchemaMaxAttributes
-- **interface**: `api.errors.nft.SchemaMaxAttributes.is`
+- **interface**: `api.errors.nft.SchemaMaxAttributes`
 - **summary**:   Too many attributes in the provided schema or data 
  
 ### TokenListingProtection
-- **interface**: `api.errors.nft.TokenListingProtection.is`
+- **interface**: `api.errors.nft.TokenListingProtection`
 - **summary**:   Cannot operate on a listed NFT 
  
 # Events
  
 ### AuctionClosed(`u32`, `u128`, `CrmlNftAuctionClosureReason`)
-- **interface**: `api.events.nft.AuctionClosed.is`
+- **interface**: `api.events.nft.AuctionClosed`
 - **summary**:   An auction has closed without selling (collection, listing, reason) 
  
 ### AuctionOpen(`u32`, `u128`, `Option<u32>`)
-- **interface**: `api.events.nft.AuctionOpen.is`
+- **interface**: `api.events.nft.AuctionOpen`
 - **summary**:   An auction has opened (collection, listing, marketplace_id) 
  
 ### AuctionSold(`u32`, `u128`, `u32`, `u128`, `AccountId32`)
-- **interface**: `api.events.nft.AuctionSold.is`
+- **interface**: `api.events.nft.AuctionSold`
 - **summary**:   An auction has sold (collection, listing, payment asset, bid, new owner) 
  
 ### Bid(`u32`, `u128`, `u128`)
-- **interface**: `api.events.nft.Bid.is`
+- **interface**: `api.events.nft.Bid`
 - **summary**:   A new highest bid was placed (collection, listing, amount) 
  
 ### Burn(`u32`, `u32`, `Vec<u32>`)
-- **interface**: `api.events.nft.Burn.is`
+- **interface**: `api.events.nft.Burn`
 - **summary**:   Tokens were burned (collection, series id, serial numbers) 
  
 ### CreateCollection(`u32`, `Bytes`, `AccountId32`)
-- **interface**: `api.events.nft.CreateCollection.is`
+- **interface**: `api.events.nft.CreateCollection`
 - **summary**:   A new token collection was created (collection, name, owner) 
  
 ### CreateSeries(`u32`, `u32`, `u32`, `AccountId32`)
-- **interface**: `api.events.nft.CreateSeries.is`
+- **interface**: `api.events.nft.CreateSeries`
 - **summary**:   A new series of tokens was created (collection, series id, quantity, owner) 
  
 ### CreateTokens(`u32`, `u32`, `u32`, `AccountId32`)
-- **interface**: `api.events.nft.CreateTokens.is`
+- **interface**: `api.events.nft.CreateTokens`
 - **summary**:   Token(s) were created (collection, series id, quantity, owner) 
  
 ### FixedPriceSaleClosed(`u32`, `u128`)
-- **interface**: `api.events.nft.FixedPriceSaleClosed.is`
+- **interface**: `api.events.nft.FixedPriceSaleClosed`
 - **summary**:   A fixed price sale has closed without selling (collection, listing) 
  
 ### FixedPriceSaleComplete(`u32`, `u128`, `AccountId32`)
-- **interface**: `api.events.nft.FixedPriceSaleComplete.is`
+- **interface**: `api.events.nft.FixedPriceSaleComplete`
 - **summary**:   A fixed price sale has completed (collection, listing, buyer)) 
  
 ### FixedPriceSaleListed(`u32`, `u128`, `Option<u32>`)
-- **interface**: `api.events.nft.FixedPriceSaleListed.is`
+- **interface**: `api.events.nft.FixedPriceSaleListed`
 - **summary**:   A fixed price sale has been listed (collection, listing, marketplace_id) 
  
 ### FixedPriceSalePriceUpdated(`u32`, `u128`)
-- **interface**: `api.events.nft.FixedPriceSalePriceUpdated.is`
+- **interface**: `api.events.nft.FixedPriceSalePriceUpdated`
 - **summary**:   A fixed price sale has had its price updated (collection, listing) 
  
 ### RegisteredMarketplace(`AccountId32`, `Permill`, `u32`)
-- **interface**: `api.events.nft.RegisteredMarketplace.is`
+- **interface**: `api.events.nft.RegisteredMarketplace`
 - **summary**:   An account has been registered as a marketplace (account, entitlement, marketplace_id) 
  
 ### Transfer(`AccountId32`, `u32`, `u32`, `Vec<u32>`, `AccountId32`)
-- **interface**: `api.events.nft.Transfer.is`
+- **interface**: `api.events.nft.Transfer`
 - **summary**:   Token(s) were transferred (previous owner, token Ids, new owner) 
  
 # RPC
@@ -423,7 +423,7 @@ Get map of collection id to collection name
 
 #### Defined in
 
-[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/collectionInfo.ts#L13)
+[packages/api/src/derives/nft/collectionInfo.ts:13](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/collectionInfo.ts#L13)
 
 # Module: nft/openCollectionListings
 
@@ -449,7 +449,7 @@ Gets all tokens in a collection that have an open listing
 
 #### Defined in
 
-[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/openCollectionListings.ts#L30)
+[packages/api/src/derives/nft/openCollectionListings.ts:30](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/openCollectionListings.ts#L30)
 
 ___
 
@@ -472,7 +472,7 @@ Gets all tokens in a collection that have an open listing
 
 #### Defined in
 
-[packages/api/src/derives/nft/openCollectionListings.ts:100](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/openCollectionListings.ts#L100)
+[packages/api/src/derives/nft/openCollectionListings.ts:100](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/openCollectionListings.ts#L100)
 
 # Module: nft/tokenInfo
 
@@ -499,7 +499,7 @@ Get metadata uri for a series, older runtime 45 (uses api.query.nft.seriesMetada
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:110](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/tokenInfo.ts#L110)
+[packages/api/src/derives/nft/tokenInfo.ts:110](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/tokenInfo.ts#L110)
 
 ___
 
@@ -522,7 +522,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:32](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/tokenInfo.ts#L32)
+[packages/api/src/derives/nft/tokenInfo.ts:32](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/tokenInfo.ts#L32)
 
 ___
 
@@ -546,7 +546,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfo.ts:80](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/tokenInfo.ts#L80)
+[packages/api/src/derives/nft/tokenInfo.ts:80](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/tokenInfo.ts#L80)
 
 # Module: nft/tokenInfoForCollection
 
@@ -570,7 +570,7 @@ Get info on the current token
 
 #### Defined in
 
-[packages/api/src/derives/nft/tokenInfoForCollection.ts:27](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/nft/tokenInfoForCollection.ts#L27)
+[packages/api/src/derives/nft/tokenInfoForCollection.ts:27](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/nft/tokenInfoForCollection.ts#L27)
 
 # Module: nft/types
 

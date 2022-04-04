@@ -109,15 +109,15 @@ The following sections contain the module details.
 # Events
  
 ### AuthoritySetChange(`u64`, `u64`)
-- **interface**: `api.events.ethBridge.AuthoritySetChange.is`
+- **interface**: `api.events.ethBridge.AuthoritySetChange`
 - **summary**:   A notary (validator) set change is in motion (event_id, new_validator_set_id) A proof for the change will be generated with the given `event_id` 
  
 ### Invalid(`u64`)
-- **interface**: `api.events.ethBridge.Invalid.is`
+- **interface**: `api.events.ethBridge.Invalid`
 - **summary**:   Verifying an event failed 
  
 ### Verified(`u64`)
-- **interface**: `api.events.ethBridge.Verified.is`
+- **interface**: `api.events.ethBridge.Verified`
 - **summary**:   Verifying an event succeeded 
  
 # RPC
@@ -147,7 +147,7 @@ The following sections contain the module details.
 
 #### Defined in
 
-[packages/api/src/derives/ethBridge/eventProof.ts:41](https://github.com/cennznet/api.js/blob/d167385/packages/api/src/derives/ethBridge/eventProof.ts#L41)
+[packages/api/src/derives/ethBridge/eventProof.ts:41](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/ethBridge/eventProof.ts#L41)
 
 # Module: ethBridge/types
 
