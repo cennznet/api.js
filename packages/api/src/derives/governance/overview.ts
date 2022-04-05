@@ -25,12 +25,14 @@ export function proposals(instanceId: string, api: ApiInterfaceRx) {
           return combineLatest([
             api.query.governance.proposalCalls.multi(queryArgsList.map((arg) => [arg.proposalId])),
             api.query.governance.proposals.multi(queryArgsList.map((arg) => [arg.proposalId])),
-            (api.rpc as any).governance.getProposalVotes(),
+            api.rpc.governance.getProposalVotes(),
           ]).pipe(
             map(
-              ([proposalCalls, proposals, votes]:
-                | [[], Vec<Option<Proposal>>, Vec<ProposalVotes>]
-                | [any]): DeriveProposalInfo[] => {
+              ([proposalCalls, proposals, votes]: [
+                [],
+                Vec<Option<Proposal>>,
+                Vec<ProposalVotes>
+              ]): DeriveProposalInfo[] => {
                 const proposalDetails = proposalCalls.map((call, idx) => {
                   if (proposals[idx].isSome) {
                     const proposalDetail = proposals[idx].unwrap().toJSON();
