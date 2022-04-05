@@ -285,7 +285,7 @@ describe('Eth bridge test', () => {
     it( 'Get event id from rpc call', async done => {
       api = await Api.create({network: 'rata'});
       const versionedEventProof = (await api.rpc.ethy.getEventProof('1')).toJSON();
-      expect(versionedEventProof.EventProof.eventId.toString()).toEqual('1');
+      expect(versionedEventProof.eventProof.eventId.toString()).toEqual('1');
 
       const eventProof = await api.derive.ethBridge.eventProof('2');
       console.log('Proof::',eventProof);
