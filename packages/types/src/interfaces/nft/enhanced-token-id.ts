@@ -1,6 +1,7 @@
 import { Struct } from '@polkadot/types';
 import { Codec, Registry } from '@polkadot/types/types';
 import { u8aToHex } from '@polkadot/util';
+import { HexString } from '@polkadot/util/types';
 import { CollectionId, SerialNumber, SeriesId } from './types';
 
 interface TokenIdValue {
@@ -46,7 +47,7 @@ export class EnhancedTokenId extends Struct implements Codec {
     /**
     * @description Return the hex representation of the Id
     */
-    toHex(): string {
+    toHex(): HexString {
         const tokenId = new Uint8Array([
             ...this.collectionId.toBn().toArray('le', 4),
             ...this.seriesId.toBn().toArray('le', 4),
@@ -65,7 +66,7 @@ export class EnhancedTokenId extends Struct implements Codec {
     /**
     * @description Returns the base runtime type name for this instance
     */
-    toRawType() {
+    toRawType(): string {
         return 'EnhancedTokenId';
     }
 }

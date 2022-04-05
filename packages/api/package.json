@@ -1,6 +1,6 @@
 {
   "name": "@cennznet/api",
-  "version":"2.0.0-alpha.4",
+  "version":"2.1.0-rc.4",
   "description": "CENNZnet's javascript api",
   "keywords": [
     "CENNZnet"
@@ -11,7 +11,7 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "main": "src/index.ts",
+  "main": "index.js",
   "types": "index.d.ts",
   "type": "module",
   "repository": {
@@ -23,16 +23,18 @@
     "doc": "npx compodoc --tsconfig ../../tsconfig.json --hideGenerator --theme readthedocs --includes compodoc --output ../../docs/api"
   },
   "dependencies": {
-    "@cennznet/types": "^2.0.0-alpha.4",
-    "@polkadot/api": "^4.9.3-11",
-    "@polkadot/metadata": "^4.9.3-11",
-    "@polkadot/rpc-core": "^4.9.3-11",
-    "@polkadot/rpc-provider": "^4.9.3-11",
-    "@polkadot/types": "^4.9.3-11",
+    "@cennznet/types": "^2.1.0-rc.4",
+    "@polkadot/api": "^7.7.1",
+    "@polkadot/rpc-core": "^7.7.1",
+    "@polkadot/rpc-provider": "^7.7.1",
+    "@polkadot/types": "^7.7.1",
     "@polkadot/extension-dapp": "^0.36.1",
+    "@polkadot/x-rxjs": "^6.11.2-6",
+    "@ethersproject/signing-key": "^5.5.0",
+    "@ethersproject/keccak256": "^5.5.0",
     "eventemitter3": "^4.0.0"
   },
   "resolutions": {
-    "rxjs": "7.0.0"
+    "rxjs": "7.2.0"
   }
 }

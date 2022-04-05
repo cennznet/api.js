@@ -1,7 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types';
+import type { Bytes, Compact, Enum, Set, Struct, u64, u8 } from '@polkadot/types-codec';
+import type { Reasons } from '@polkadot/types/interfaces/balances';
 import type { AccountId, Balance, LockIdentifier } from '@polkadot/types/interfaces/runtime';
 
 /** @name AssetInfoV40 */
@@ -23,8 +24,22 @@ export interface AssetOptions extends Struct {
   readonly permissions: PermissionLatest;
 }
 
+/** @name BalanceInformation */
+export interface BalanceInformation extends Struct {
+  readonly reserved: Balance;
+  readonly staked: Balance;
+  readonly available: Balance;
+}
+
 /** @name BalanceLock */
 export interface BalanceLock extends Struct {
+  readonly id: LockIdentifier;
+  readonly amount: Balance;
+  readonly reasons: Reasons;
+}
+
+/** @name BalanceLock45 */
+export interface BalanceLock45 extends Struct {
   readonly id: LockIdentifier;
   readonly amount: Balance;
   readonly reasons: WithdrawReasons;
@@ -35,6 +50,7 @@ export interface Owner extends Enum {
   readonly isNone: boolean;
   readonly isAddress: boolean;
   readonly asAddress: AccountId;
+  readonly type: 'None' | 'Address';
 }
 
 /** @name PermissionLatest */
@@ -51,6 +67,7 @@ export interface PermissionsV1 extends Struct {
 export interface PermissionVersions extends Enum {
   readonly isV1: boolean;
   readonly asV1: PermissionsV1;
+  readonly type: 'V1';
 }
 
 /** @name WithdrawReasons */

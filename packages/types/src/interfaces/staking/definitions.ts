@@ -16,6 +16,10 @@ export default {
   types: {
     RewardBalance: 'Balance',
     RewardBalanceOf: 'Balance',
+    Nominations: {
+      targets: 'Vec<AccountId32>',
+      submittedIn: 'u32'
+    },
     RewardDestination: {
       _enum: {
         Stash: 'Null',

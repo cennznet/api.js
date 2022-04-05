@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Api} from "@cennznet/api";
 import { AccountId, Forcing, RewardDestination, StakingLedger, ValidatorPrefs, Option } from '@cennznet/types';
 import { Keyring } from '@polkadot/keyring';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
@@ -36,7 +37,7 @@ afterAll(async () => {
 describe('Staking derived queries', () => {
 
   test('test elected validators info for local chain', async done =>{
-    const electedValidatorInfo = await api.derive.staking.electedInfo();
+    const electedValidatorInfo = await api.derive.stakingCennznet.electedInfo();
     const {info, nextElected, validators} = electedValidatorInfo;
     expect(info).toBeDefined();
     expect(info[0].accountId.toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
@@ -53,7 +54,7 @@ describe('Staking derived queries', () => {
   })
 
   test('test waiting validators info query', async done =>{
-    const waitingValidatorsToBeElected = await api.derive.staking.waitingInfo();
+    const waitingValidatorsToBeElected = await api.derive.stakingCennznet.waitingInfo();
     const {info, waiting} = waitingValidatorsToBeElected;
     expect(info.length).toEqual(0);
     expect(waiting.length).toEqual(0);
@@ -61,20 +62,20 @@ describe('Staking derived queries', () => {
   })
 
   test('validators info', async done => {
-    const validatorDetails = await api.derive.staking.validators();
+    const validatorDetails = await api.derive.stakingCennznet.validators();
     expect(validatorDetails.nextElected[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     expect(validatorDetails.validators[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
   test('get all validators', async done => {
-    const validatorList = await api.derive.staking.stashes();
+    const validatorList = await api.derive.stakingCennznet.stashes();
     expect(validatorList[0].toString()).toEqual('5GNJqTPyNqANBkUVMN1LPPrxXnFouWXoe2wNSmmEoLctxiZY');
     done();
   })
 
   test('test staking overview query', async done => {
-    const validatorOverview = await api.derive.staking.overview();
+    const validatorOverview = await api.derive.stakingCennznet.overview();
     expect(validatorOverview.activeEra.toString()).toEqual('0');
     expect(validatorOverview.activeEraStart.unwrap().toNumber()).toBeGreaterThanOrEqual(0);
     expect(validatorOverview.currentEra.toString()).toEqual('0');
@@ -262,7 +263,18 @@ describe('Staking Operations', () => {
   test('Calculate accruedPayout via RPC', async done => {
     const aliceStash = keyring.addFromUri('//Alice//stash');
     const accruedPayout = await api.rpc.staking.accruedPayout(aliceStash.address);
-    expect(accruedPayout.toNumber()).toBeGreaterThan(0);
+    expect(accruedPayout.toNumber()).toBe(0);
+    done();
+  });
+
+  test('check received heat beat on azalea', async done => {
+    const apiAzalea = await Api.create({ network: 'azalea' });
+    const recentlyOnline = await apiAzalea.derive.stakingCennznet.receivedHeartbeats();
+    for (const [key] of Object.entries(recentlyOnline)) {
+      const validator = recentlyOnline[key];
+      expect(validator.blockCount.toNumber()).toBeGreaterThanOrEqual(0);
+    }
+    await apiAzalea.disconnect();
     done();
   });
 
@@ -366,6 +378,19 @@ describe('Staking Governance (Sudo Required)', () => {
       await api.query.staking.bonded(bobStash.address, (controller: Option<AccountId>) =>
         (controller.unwrapOr(null) === null) ? done() : null);
     });
+  });
+
+  test('test azalea nominators', async done =>{
+    const apiAzalea: Api = await Api.create({network: 'azalea'});
+    const accountId = '5HnB5MbbAcbVvGQqvoHVDa5r9L1tyCChSGjKQ1awNojRGxb8';
+    const nominators = await apiAzalea.query.staking.nominators(accountId);
+    const nominatorList = nominators.unwrap();
+    expect(nominatorList.targets.length).toBeGreaterThanOrEqual(0);
+    expect(nominatorList.submittedIn.toNumber()).toBeGreaterThan(0);
+    const validatorDetails = await apiAzalea.query.staking.validators(accountId);
+    expect(validatorDetails.commission).toBeDefined();
+    await apiAzalea.disconnect();
+    done();
   });
 
 });

@@ -4,54 +4,6 @@
 
 The following sections contain the module details. 
 
-- **[Storage](#Storage)**
-
-- **[Extrinsic](#Extrinsic)**
-
-- **[Errors](#Error)**
-
-- **[Events](#Events)**
-
-- **[Derive queries](#derive-queries)**
-
- 
-# Storage
- 
-### issuers(`AccountId`): `Vec<AccountId>`
-- **interface**: `api.query.attestation.issuers`
-- **summary**:   A map from holders to all their attesting issuers 
- 
-### topics(`(AccountId,AccountId)`): `Vec<AttestationTopic>`
-- **interface**: `api.query.attestation.topics`
-- **summary**:   A map from (holder, issuer) to attested topics 
- 
-### values(`(AccountId,AccountId,AttestationTopic)`): `AttestationValue`
-- **interface**: `api.query.attestation.values`
-- **summary**:   A map from (holder, issuer, topic) to attested values 
- 
-# Extrinsic
- 
-### removeClaim(holder: `AccountId`, topic: `AttestationTopic`)
-- **interface**: `api.tx.attestation.removeClaim`
-- **summary**:   Remove a claim, only the original issuer can remove a claim If the `issuer` has not yet issued a claim of `topic`, this function will return error. 
- 
-### setClaim(holder: `AccountId`, topic: `AttestationTopic`, value: `AttestationValue`)
-- **interface**: `api.tx.attestation.setClaim`
-- **summary**:   Create or update an existing claim The `issuer` of the claim comes from the extrinsic `origin` The `topic` and `value` are both U256 which can hold any 32-byte encoded data. 
- 
-# Error
- 
-### TopicNotRegistered
- 
-# Events
- 
-### ClaimCreated(`AccountId`, `AccountId`, `AttestationTopic`, `AttestationValue`)
- 
-### ClaimRemoved(`AccountId`, `AccountId`, `AttestationTopic`)
- 
-### ClaimUpdated(`AccountId`, `AccountId`, `AttestationTopic`, `AttestationValue`)
- 
-# RPC
  
 # Derive queries
 
@@ -82,7 +34,7 @@ Retrieve a single claim made about a holder by the given issuer on a given topic
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/attestation/getClaim.ts#L33)
+[packages/api/src/derives/attestation/getClaim.ts:33](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/attestation/getClaim.ts#L33)
 
 # Module: attestation/getClaims
 
@@ -108,7 +60,7 @@ Get all claims made about a holder by the given issuers on the given topics.
 
 #### Defined in
 
-[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/attestation/getClaims.ts#L29)
+[packages/api/src/derives/attestation/getClaims.ts:29](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/attestation/getClaims.ts#L29)
 
 # Module: attestation/types
 
@@ -138,4 +90,4 @@ An alias for `AttestationValue`
 
 #### Defined in
 
-[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/bb4a996/packages/api/src/derives/attestation/types.ts#L22)
+[packages/api/src/derives/attestation/types.ts:22](https://github.com/cennznet/api.js/blob/8a3918c/packages/api/src/derives/attestation/types.ts#L22)

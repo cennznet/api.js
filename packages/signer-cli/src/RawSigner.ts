@@ -8,6 +8,7 @@ import type { SignerPayloadRaw } from '@polkadot/types/types';
 
 import { assert, isHex } from '@polkadot/util';
 import { blake2AsHex } from '@polkadot/util-crypto';
+import { HexString } from '@polkadot/util/types';
 
 export default class RawSigner implements Signer {
   async signRaw ({ data }: SignerPayloadRaw): Promise<SignerResult> {
@@ -21,9 +22,10 @@ export default class RawSigner implements Signer {
         ? blake2AsHex(data)
         : data;
 
-      rl.question(`Payload: ${hashed}\nSignature> `, (signature) => {
+      rl.question(`Payload: ${hashed}\nSignature> `, (signature: HexString) => {
         assert(isHex(signature), 'Supplied signature is not hex');
 
+        // @ts-ignore
         resolve({ id: 1, signature: signature.trim() });
         rl.close();
       });

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { AccountId, Address } from '@polkadot/types/interfaces';
-import { AnyNumber, CodecArg } from '@polkadot/types/types';
+import {AnyNumber} from '@polkadot/types/types';
 import BN from 'bn.js';
 export type {
   Hash,
@@ -35,4 +35,3 @@ export type {
 export * from '@polkadot/types/types';
 export type AnyAddress = BN | Address | AccountId | Array<number> | Uint8Array | number | string;
 export type AnyAssetId = AnyNumber;
-export declare type AnyFunction = (...args: CodecArg[]) => any;

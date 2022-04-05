@@ -5,7 +5,7 @@ import { Address, Call } from '@polkadot/types/interfaces/runtime';
 import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
 import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
-import { Constructor } from '@polkadot/util/types';
+import {Constructor, HexString} from '@polkadot/util/types';
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
   private signaturePayloadOptions: SignatureOptions | ExtrinsicPayloadValue;
@@ -24,7 +24,7 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     };
   }
 
-  addSignature(signer: Address | Uint8Array | string, signature: Uint8Array | string, payload: ExtrinsicPayloadValue | Uint8Array | string): GenericExtrinsic {
+  addSignature(signer: Address | Uint8Array | string, signature: Uint8Array | HexString, payload: ExtrinsicPayloadValue | Uint8Array | string): GenericExtrinsic {
     const mergeDefinedObjects = (A, B) => {
       const res = {};
       Object.keys({...A,...B}).map(key => {

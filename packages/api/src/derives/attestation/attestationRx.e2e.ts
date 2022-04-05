@@ -48,9 +48,9 @@ afterAll(async () => {
   await api.disconnect();
 });
 
-describe('AttestationRx APIs', () => {
+describe.skip('AttestationRx APIs', () => {
   describe('Set Claims', () => {
-    it('should create a claim', done => {
+    it('should create a claim', (done) => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
       claim
@@ -80,8 +80,8 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Get Claim', () => {
-    it('should get a claim with a specific issuer and holder', done => {
-      api.derive.attestation.getClaim(holder.address, issuer.address, topic).subscribe(claim => {
+    it('should get a claim with a specific issuer and holder', (done) => {
+      api.derive.attestation.getClaim(holder.address, issuer.address, topic).subscribe((claim) => {
         if (
           claim.value.toHex() === attestationValue.toHex() &&
           claim.value.toU8a().toString() === attestationValue.toU8a().toString()
@@ -93,7 +93,7 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Create Multiple Claims', () => {
-    it('should create a claim with issuer 1 and topic 1', done => {
+    it('should create a claim with issuer 1 and topic 1', (done) => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
       claim
@@ -120,7 +120,7 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 1 and topic 2', done => {
+    it('should create a claim with issuer 1 and topic 2', (done) => {
       const claim = api.tx.attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
 
       claim
@@ -147,7 +147,7 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 1', done => {
+    it('should create a claim with issuer 2 and topic 1', (done) => {
       const claim = api.tx.attestation.setClaim(holder.address, topic, attestationValue.toHex());
 
       claim
@@ -174,7 +174,7 @@ describe('AttestationRx APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 2', done => {
+    it('should create a claim with issuer 2 and topic 2', (done) => {
       const claim = api.tx.attestation.setClaim(holder.address, topic2, attestationValue2.toHex());
 
       claim
@@ -203,10 +203,10 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Get Mutiple Claims Claim', () => {
-    it('should get a claim with a specific issuer and holder', done => {
+    it('should get a claim with a specific issuer and holder', (done) => {
       api.derive.attestation
         .getClaims(holder.address, [issuer.address, issuer2.address], [topic, topic2])
-        .subscribe(claims => {
+        .subscribe((claims) => {
           let claimsForTopic = false;
           let claimsForTopic2 = false;
           for (const { value } of claims) {
@@ -231,7 +231,7 @@ describe('AttestationRx APIs', () => {
   });
 
   describe('Remove Claims', () => {
-    it('should remove a claim', done => {
+    it('should remove a claim', (done) => {
       const claim = api.tx.attestation.removeClaim(holder.address, topic);
 
       // Expect holders to match

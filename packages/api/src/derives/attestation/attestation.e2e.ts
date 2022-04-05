@@ -43,9 +43,10 @@ afterAll(async () => {
   await api.disconnect();
 });
 
-describe('Attestation APIs', () => {
+// Attestation module is removed in the new node version, once added back we can unskip and fix the test
+describe.skip('Attestation APIs', () => {
   describe('Set Claims', () => {
-    it('should create a claim', async done => {
+    it('should create a claim', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
         .signAndSend(issuer, async ({ events, status }) => {
@@ -67,7 +68,7 @@ describe('Attestation APIs', () => {
         });
     });
 
-    it('should create a claim with a u8a', async done => {
+    it('should create a claim with a u8a', async (done) => {
       const otherTopic = api.registry.createType('AttestationTopic', '0x72616e646f6d546f706963'); // hex for randomTopic
       await api.tx.attestation
         .setClaim(holder.address, otherTopic, attestationValue.toU8a())
@@ -92,7 +93,7 @@ describe('Attestation APIs', () => {
   });
 
   describe('Get Claim', () => {
-    it('should get a claim with a specific issuer and holder', async done => {
+    it('should get a claim with a specific issuer and holder', async (done) => {
       const claim = await api.derive.attestation.getClaim(holder.address, issuer.address, topic);
       expect(claim.value.toHex()).toEqual(attestationValue.toHex());
       expect(claim.value.toU8a()).toEqual(attestationValue.toU8a());
@@ -101,7 +102,7 @@ describe('Attestation APIs', () => {
   });
 
   describe('Create Multiple Claims', () => {
-    it('should create a claim with issuer 1 and topic 1', async done => {
+    it('should create a claim with issuer 1 and topic 1', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
         .signAndSend(issuer, async ({ events, status }) => {
@@ -123,7 +124,7 @@ describe('Attestation APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 1 and topic 2', async done => {
+    it('should create a claim with issuer 1 and topic 2', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic2, attestationValue2.toHex())
         .signAndSend(issuer, async ({ events, status }) => {
@@ -145,7 +146,7 @@ describe('Attestation APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 1', async done => {
+    it('should create a claim with issuer 2 and topic 1', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
         .signAndSend(issuer2, async ({ events, status }) => {
@@ -167,7 +168,7 @@ describe('Attestation APIs', () => {
         });
     });
 
-    it('should create a claim with issuer 2 and topic 2', async done => {
+    it('should create a claim with issuer 2 and topic 2', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic2, attestationValue2.toHex())
         .signAndSend(issuer2, async ({ events, status }) => {
@@ -191,7 +192,7 @@ describe('Attestation APIs', () => {
   });
 
   describe('Get Mutiple Claims Claim', () => {
-    it('should get a claim with a specific issuer and holder', async done => {
+    it('should get a claim with a specific issuer and holder', async (done) => {
       const claims = await api.derive.attestation.getClaims(
         holder.address,
         [issuer.address, issuer2.address],
@@ -215,7 +216,7 @@ describe('Attestation APIs', () => {
   });
 
   describe('Remove Claims', () => {
-    it('should create a claim', async done => {
+    it('should create a claim', async (done) => {
       await api.tx.attestation
         .setClaim(holder.address, topic, attestationValue.toHex())
         .signAndSend(issuer, async ({ events, status }) => {
@@ -237,7 +238,7 @@ describe('Attestation APIs', () => {
         });
     });
 
-    it('should remove a claim', async done => {
+    it('should remove a claim', async (done) => {
       // Expect holders to match
       await api.tx.attestation.removeClaim(holder.address, topic).signAndSend(issuer, async ({ events, status }) => {
         if (status.isInBlock && events !== undefined) {

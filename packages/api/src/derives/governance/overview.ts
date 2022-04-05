@@ -1,11 +1,11 @@
 // Copyright 2017-2020 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Observable } from '@polkadot/x-rxjs';
+import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 
-import { combineLatest } from '@polkadot/x-rxjs';
-import { map, switchMap } from '@polkadot/x-rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { hexToString } from '@polkadot/util';
 import { Option, ProposalId, GovernanceProposal as Proposal, Vec, ProposalVotes } from '@cennznet/types';
 import { DeriveProposalInfo } from '@cennznet/api/derives/governance/types';
@@ -28,11 +28,9 @@ export function proposals(instanceId: string, api: ApiInterfaceRx) {
             (api.rpc as any).governance.getProposalVotes(),
           ]).pipe(
             map(
-              ([proposalCalls, proposals, votes]: [
-                [],
-                Vec<Option<Proposal>>,
-                Vec<ProposalVotes>
-              ]): DeriveProposalInfo[] => {
+              ([proposalCalls, proposals, votes]:
+                | [[], Vec<Option<Proposal>>, Vec<ProposalVotes>]
+                | [any]): DeriveProposalInfo[] => {
                 const proposalDetails = proposalCalls.map((call, idx) => {
                   if (proposals[idx].isSome) {
                     const proposalDetail = proposals[idx].unwrap().toJSON();

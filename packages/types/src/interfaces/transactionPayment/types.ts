@@ -1,7 +1,7 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Compact, Enum, Option, Struct } from '@polkadot/types';
+import type { Compact, Enum, Option, Struct } from '@polkadot/types-codec';
 import type { AssetId, Balance } from '@polkadot/types/interfaces/runtime';
 
 /** @name ChargeTransactionPayment */
@@ -14,6 +14,7 @@ export interface ChargeTransactionPayment extends Struct {
 export interface FeeExchange extends Enum {
   readonly isFeeExchangeV1: boolean;
   readonly asFeeExchangeV1: FeeExchangeV1;
+  readonly type: 'FeeExchangeV1';
 }
 
 /** @name FeeExchangeV1 */

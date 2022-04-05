@@ -14,19 +14,20 @@
 
 import {getMetadata, essential} from "../../src/util/getMetadata";
 import {TypeRegistry} from "@polkadot/types/create";
-import {MetadataVersioned} from "@polkadot/metadata/MetadataVersioned";
+import {MetadataVersioned} from "@polkadot/types/metadata/MetadataVersioned";
 
 describe('getMetadata()',  () => {
   it('get slim metadata for endpoint', async (done)=> {
     const slimMetadata = await getMetadata('ws://localhost:9944');
     const metadataKey = Object.entries(slimMetadata)[0][0].split('-');
     const metadataValue = Object.entries(slimMetadata)[0][1];
-    expect(metadataKey[1]).toEqual("41");
+    expect(metadataKey[1]).toEqual("53");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
-    const modules = mVersionedSlim.asLatest.modules.toArray();
-    expect(modules.length).toEqual(essential.length);
-    const modulesName = modules.map(value => value.name.toString().toLowerCase());
+    const modules = mVersionedSlim.asLatest.pallets.toArray();
+    const storageData = modules.filter(m => m.storage.isSome);
+    expect(storageData.length).toEqual(essential.length);
+    const modulesName = storageData.map(value => value.name.toString().toLowerCase());
     expect(modulesName.sort()).toEqual(essential.sort());
     done();
   });
@@ -36,12 +37,13 @@ describe('getMetadata()',  () => {
     const slimMetadata = await getMetadata('ws://localhost:9944', keepMetaFor);
     const metadataKey = Object.entries(slimMetadata)[0][0].split('-');
     const metadataValue = Object.entries(slimMetadata)[0][1];
-    expect(metadataKey[1]).toEqual("41");
+    expect(metadataKey[1]).toEqual("53");
     const registry = new TypeRegistry();
     const mVersionedSlim = new MetadataVersioned(registry, metadataValue);
-    const modules = mVersionedSlim.asLatest.modules.toArray();
-    expect(modules.length).toEqual(keepMetaFor.length + essential.length);
-    const modulesNameRecieved = modules.map(value => value.name.toString().toLowerCase());
+    const modules = mVersionedSlim.asLatest.pallets.toArray();
+    const storageData = modules.filter(m => m.storage.isSome);
+    expect(storageData.length).toEqual(keepMetaFor.length + essential.length);
+    const modulesNameRecieved = storageData.map(value => value.name.toString().toLowerCase());
     const modulesNameExpected = keepMetaFor.concat(essential).map(value => value.toLowerCase());
     expect(modulesNameRecieved.sort()).toEqual(modulesNameExpected.sort());
     done();

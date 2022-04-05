@@ -31,6 +31,9 @@ export default {
       "sponsor": "AccountId",
       "justificationUri": "Vec<u8>",
       "enactmentDelay": 'BlockNumber'
+    },
+    ReferendumVoteCount: {
+      vote: "u8"
     }
   },
 };

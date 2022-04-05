@@ -1,6 +1,7 @@
 // Copyright 2017-2020 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { ApiRx } from '@cennznet/api';
 import type { Observable } from 'rxjs';
 import type { ApiInterfaceRx } from '@polkadot/api/types';
 import type { AccountId } from '@polkadot/types/interfaces';
@@ -37,7 +38,7 @@ export function validators(instanceId: string, api: ApiInterfaceRx): () => Obser
       // in all actual real-world deployed chains, it does create some confusion for limited template chains
       combineLatest([
         api.query.session ? api.query.session.validators() : of([]),
-        api.query.staking ? api.derive.staking.nextElected() : of([]),
+        api.query.staking ? ((api as unknown) as ApiRx).derive.stakingCennznet.nextElected() : of([]),
       ]).pipe(
         map(
           ([validators, nextElected]): DeriveStakingValidators => ({

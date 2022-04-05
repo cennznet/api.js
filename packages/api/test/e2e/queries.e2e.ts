@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfoV41 as AssetInfo, AssetOptions, Hash, Vec, BalanceLock, WithdrawReasons } from "@cennznet/types";
+import { AssetInfoV41 as AssetInfo, AssetOptions, Hash, Vec, BalanceLock } from "@cennznet/types";
 import { Keyring } from '@polkadot/keyring';
-import { u8aToString } from '@polkadot/util';
+import {Reasons} from "@polkadot/types/interfaces";
+import {stringToHex, u8aToString} from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 import initApiPromise from '../../../../jest/initApiPromise';
@@ -118,7 +119,7 @@ describe('e2e queries', () => {
     it('Gets staking account details', async done => {
       const stashId = aliceStash.address;
       const activeEra = await api.query.staking.activeEra();
-      const stakingAccount = await api.derive.staking.accountInfo(stashId, activeEra.unwrap().index);
+      const stakingAccount = await api.derive.stakingCennznet.accountInfo(stashId, activeEra.unwrap().index);
       expect(stakingAccount.accountId.toString()).toBe(stashId);
       expect(stakingAccount.controllerId.toString()).toBe(alice.address);
       expect(stakingAccount.nominators).toHaveLength(0); // Initially no nominators
@@ -127,10 +128,17 @@ describe('e2e queries', () => {
       expect(stakingAccount.stakingLedger.stash.toString()).toBe(stashId);
       expect(stakingAccount.validatorPrefs[0]).toBe('commission');
       expect(stakingAccount.validatorPrefs[1].toNumber()).toBe(0);
+      // with the latest polkadot version, session keyInfo returns object with session details
       const stakingSessionDetails = await api.derive.session.keyInfo(stashId);
-      const session = '5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu';
-      expect(stakingSessionDetails.nextSessionKeys[0].toString()).toBe(session);
-      expect(stakingSessionDetails.sessionKeys[0].toString()).toBe(session);
+      const sessionInfo = {
+        grandpa: '0x88dc3417d5058ec4b4503e0c12ea1a0a89be200fe98922423d4334014fa6b0ee',
+        babe: '0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d',
+        imOnline: '0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d',
+        authorityDiscovery: '0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d',
+        ethBridge: '0x0204dad6fc9c291c68498de501c6d6d17bfe28aee69cfbf71b2cc849caafcb0159'
+      };
+      expect(stakingSessionDetails.nextSessionKeys.toJSON()).toStrictEqual(sessionInfo);
+      expect(stakingSessionDetails.sessionKeys.toJSON()).toStrictEqual(sessionInfo);
       done();
     });
   });
@@ -141,12 +149,14 @@ describe('e2e queries', () => {
       const stakingAssetId = await api.query.genericAsset.stakingAssetId();
       const balanceLocks: Vec<BalanceLock> = await api.query.genericAsset.locks(stakingAssetId, stashId);
       expect(balanceLocks.isEmpty).toBeFalsy();
-      let reasons: WithdrawReasons = balanceLocks[0].reasons;
-      expect(reasons.isTransactionPayment).toBeTruthy();
-      expect(reasons.isTransfer).toBeTruthy();
-      expect(reasons.isTip).toBeTruthy();
-      expect(reasons.isReserve).toBeTruthy();
-      expect(reasons.isFee).toBeTruthy();
+      const lockDetails = {
+        "id": stringToHex("staking "),
+        "amount": 1000000,
+        "reasons": "All"
+      };
+      expect(balanceLocks[0].toJSON()).toStrictEqual(lockDetails);
+      let reasons: Reasons = balanceLocks[0].reasons;
+      expect(reasons.isAll).toBeTruthy();
       done();
     });
   });

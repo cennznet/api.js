@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Observable, combineLatest } from 'rxjs';
+import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap, reduce, mergeAll, first } from 'rxjs/operators';
 import { ApiInterfaceRx } from '@cennznet/api/types';
-import { DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
+import { DeriveListingInfo, DeriveTokenInfo } from '@cennznet/api/derives/nft/types';
 import { Listing, TokenId } from '@cennznet/types';
-import { Option } from '@polkadot/types/codec/Option';
-import { UInt } from '@polkadot/types';
+import { Option, Vec } from '@polkadot/types';
 
 /**
  * Gets all tokens in a collection that have an open listing
@@ -32,10 +32,13 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
     return api.query.nft.openCollectionListings.keys(collectionId).pipe(
       switchMap(
         (storageKeys): Observable<DeriveTokenInfo[]> => {
+          if (storageKeys.length === 0) {
+            return of([]);
+          }
           const listingIDs = storageKeys.map((storageKey) => {
-            return storageKey.args.map((k) => k.toHuman())[1];
+            return storageKey.args.map((k) => k.toString())[1];
           });
-          return api.query.nft.listings.multi(listingIDs.map((listingID) => listingID)).pipe(
+          return api.query.nft.listings.multi(listingIDs).pipe(
             switchMap(
               (listingsCodec: Option<Listing>[]): Observable<DeriveTokenInfo[]> => {
                 const tokenIds = listingsCodec.map((listingCodec) => {
@@ -56,7 +59,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                   first(),
                   map((tokenInfos: DeriveTokenInfo[]): DeriveTokenInfo[] => {
                     const tokenInfoWithListingId = tokenInfos.map((tokenInfo) => {
-                      const listingIdStr = listingTokenIds.find(([_listing, tokenId]) => {
+                      const listingIdStr = listingTokenIds.find(([, tokenId]) => {
                         return (
                           tokenId.toString() ===
                           [
@@ -66,7 +69,7 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                           ].toString()
                         );
                       })[0];
-                      const listingId = new UInt(api.registry, parseInt(listingIdStr as string));
+                      const listingId = api.registry.createType('ListingId', listingIdStr);
                       tokenInfo.listingId = listingId;
                       return tokenInfo;
                     });
@@ -77,6 +80,75 @@ export function openCollectionListings(instanceId: string, api: ApiInterfaceRx) 
                     return allTokens;
                   }, []),
                   mergeAll()
+                );
+              }
+            )
+          );
+        }
+      )
+    );
+  };
+}
+
+/**
+ * Gets all tokens in a collection that have an open listing
+ *
+ * @param collectionId  The collection Id value
+ *
+ * @returns List of tokens that have open listings in given collection in the format {listingId, tokens: vec<DeriveTokenInfo>}
+ */
+export function openCollectionListingsV2(instanceId: string, api: ApiInterfaceRx) {
+  return (collectionId: string): Observable<DeriveListingInfo[]> => {
+    return api.query.nft.openCollectionListings.keys(collectionId).pipe(
+      switchMap(
+        (storageKeys): Observable<DeriveListingInfo[]> => {
+          if (storageKeys.length === 0) {
+            return of([]);
+          }
+          const listingIDs = storageKeys.map((storageKey) => storageKey.args[1]);
+          return api.query.nft.listings.multi(listingIDs).pipe(
+            switchMap(
+              (listingsCodec: Option<Listing>[]): Observable<DeriveListingInfo[]> => {
+                const tokenIds = listingsCodec.map((listingCodec) => {
+                  const listing: Listing = listingCodec.unwrapOrDefault();
+                  const tokenID: Vec<TokenId> = listing.isAuction
+                    ? ((listing.asAuction.toJSON().tokens as unknown) as Vec<TokenId>)
+                    : ((listing.asFixedPrice.toJSON().tokens as unknown) as Vec<TokenId>);
+                  return tokenID;
+                });
+                const queryArgs = listingIDs
+                  .map((listingId, idx) => {
+                    const tokens = tokenIds[idx];
+                    return tokens
+                      .map((tokenId) => {
+                        return { listingId: listingId.toString(), tokenId };
+                      })
+                      .reduce((acc, curr) => acc.concat(curr), []);
+                  })
+                  .reduce((acc, curr) => acc.concat(curr), []);
+                const listingDetails = [];
+                // multi will make the query faster
+                return combineLatest([
+                  api.query.nft.tokenOwner.multi(
+                    queryArgs.map(({ tokenId }) => [[tokenId[0], tokenId[1]], tokenId[2]])
+                  ),
+                ]).pipe(
+                  map(([allOwners]): DeriveListingInfo[] => {
+                    queryArgs.map(({ listingId, tokenId }, idx) => {
+                      const token = {
+                        owner: allOwners[idx].toString(),
+                        tokenId: new EnhancedTokenId(api.registry, tokenId),
+                      };
+                      const index = listingDetails.findIndex((l) => l.listingId === listingId);
+                      if (index !== -1) {
+                        // if there are more than one tokens in listing
+                        listingDetails[index] = { listingId, tokens: listingDetails[index].push(token) };
+                      } else {
+                        listingDetails.push({ listingId, tokens: [token] });
+                      }
+                    });
+                    return listingDetails;
+                  })
                 );
               }
             )

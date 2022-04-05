@@ -5,7 +5,7 @@ The CENNZnet JavaScript API for browsers, RN, and Node.js.
 ## Install
 
 ```
-$> npm i --save @cennznet/api
+yarn add @cennznet/api
 ```
 
 ## Usage
@@ -53,3 +53,4 @@ After connecting to a CENNZnet node, api will dynamically create queries and tra
 ---
 
 See the [wiki](https:///wiki.cennz.net) for more or try the [api examples](../../docs/examples)
+Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x versions, connects to node  cennznet/cennznet:2.1.0

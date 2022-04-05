@@ -12,15 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { ListingId, NFTAttributeValue } from '@cennznet/types';
+import { ListingId, NFTAttributeValue, Vec } from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 export interface DeriveTokenInfo {
   tokenId: EnhancedTokenId;
-  attributes: NFTAttributeValue[];
+  attributes: Vec<NFTAttributeValue>;
   /* Token owner address. It is undefined if the token is burnt */
   owner: string | undefined;
   listingId?: ListingId;
+}
+
+export interface tokens {
+  tokenId: EnhancedTokenId;
+  owner: string | undefined;
+}
+
+export interface DeriveListingInfo {
+  tokens: tokens[];
+  listingId: ListingId;
 }
 
 export interface CollectionInfo {

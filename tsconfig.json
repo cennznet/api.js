@@ -19,7 +19,8 @@
       "@cennznet/types/*": ["packages/types/src/*"],
       "@cennznet/types": ["packages/types/src/index"],
       "@polkadot/api/augment": ["packages/types/src/interfaces/augment-api.ts"],
-      "@polkadot/types/augment": ["packages/types/src/interfaces/augment-types.ts"]
+      "@polkadot/types/augment": ["packages/types/src/interfaces/augment-types.ts"],
+      "@polkadot/types/lookup": ["packages/types/src/interfaces/types-lookup.ts"]
     },
     "skipLibCheck": true
   },

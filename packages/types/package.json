@@ -1,6 +1,6 @@
 {
     "name": "@cennznet/types",
-    "version": "2.0.0-alpha.4",
+    "version": "2.1.0-rc.4",
     "description": "Additional type definitions for the CENNZnet runtime",
     "author": "Centrality Developers <support@centrality.ai>",
     "keywords": [
@@ -21,16 +21,16 @@
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1",
         "build": "yarn generate:defs && yarn generate:meta",
-        "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @cennznet/types/interfaces --input ./src/interfaces",
+        "generate:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @cennznet/types/interfaces --endpoint ./cennznet.json   --input ./src/interfaces",
         "generate:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @cennznet/types/interfaces --endpoint ./cennznet.json --output ./src/interfaces"
     },
     "dependencies": {
-        "@polkadot/keyring": "^6.6.1",
-        "@polkadot/types": "^4.9.3-11",
-        "@polkadot/util": "^6.6.1",
-        "@polkadot/util-crypto": "^6.6.1"
+        "@polkadot/keyring": "^8.3.3",
+        "@polkadot/types": "^7.7.1",
+        "@polkadot/util": "^8.3.3",
+        "@polkadot/util-crypto": "^8.3.3"
     },
     "devDependencies": {
-        "@polkadot/typegen": "^4.9.3-11"
+        "@polkadot/typegen": "^7.7.1"
     }
 }

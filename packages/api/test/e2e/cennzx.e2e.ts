@@ -11,8 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+import { Api } from '@cennznet/api';
+import {SignerOptions} from "@polkadot/api/types";
 import { Keyring } from '@polkadot/keyring';
+import {BN} from "@polkadot/util";
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import {Balance, LiquidityPriceResponse, LiquidityValueResponse} from '@cennznet/types';
@@ -21,7 +23,7 @@ const CENTRAPAY = '16001';
 const PLUG = '16003';
 
 describe('CENNZX RPC calls testing', () => {
-  let api;
+  let api: Api;
   let alice, bob;
   beforeAll(async () => {
     await cryptoWaitReady();
@@ -101,7 +103,7 @@ describe('CENNZX RPC calls testing', () => {
 
       describe('feeExchange derive queries with positive flow', () => {
         it('Query estimated fee in CENTRAPAY(default fee currency)', async done => {
-          const assetBalanceBefore: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
+          const assetBalanceBefore = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
           const extrinsic = api.tx.genericAsset
             .transfer(CENNZ, bob.address, 10000);
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId:CENTRAPAY});
@@ -111,8 +113,8 @@ describe('CENNZX RPC calls testing', () => {
               events.forEach(({phase, event: {data, method, section}}) => {
                 console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
               });
-              const assetBalanceAfter: Balance = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
-              expect(assetBalanceBefore.sub(assetBalanceAfter).toString()).toEqual(feeFromQuery.toString());
+              const assetBalanceAfter = await api.query.genericAsset.freeBalance(CENTRAPAY, alice.address);
+              expect((assetBalanceBefore as Balance).toBn().sub((assetBalanceAfter as Balance).toBn()).toString()).toEqual(feeFromQuery.toString());
               done();
             }
           });
@@ -123,21 +125,20 @@ describe('CENNZX RPC calls testing', () => {
           const assetId = api.registry.createType('AssetId', CENNZ);
           const feeExchange = api.registry.createType('FeeExchange', {assetId, maxPayment}, 0);
           const transactionPayment = api.registry.createType('ChargeTransactionPayment', {tip: 0, feeExchange});
+          const royaltiesSchedule = null;
           const extrinsic = api.tx.nft.createCollection(
             'collectionName',
-            {"Https": "example.com/nft/metadata" },
-            null
+            royaltiesSchedule
           );
 
           const feeFromQuery = await api.derive.fees.estimateFee({extrinsic, userFeeAssetId: CENNZ, maxPayment});
-          await extrinsic.signAndSend(alice,  {transactionPayment}, async ({events, status}) => {
+          await extrinsic.signAndSend(alice,  {transactionPayment} as Partial<SignerOptions>, async ({events, status}) => {
             if (status.isFinalized) {
               events.forEach(({phase, event: {data, method, section}}) => {
                 if (method === 'AssetBought') {
                   const price = data[3];
                   console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
-
-                  expect(feeFromQuery).toEqual(price);
+                  expect(feeFromQuery.toString()).toEqual(price.toString());
                   done();
                 }
               });

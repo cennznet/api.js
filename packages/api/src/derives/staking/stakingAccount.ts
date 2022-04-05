@@ -55,15 +55,19 @@ export function queryStakingAccountInfo(
 
       return retrieveStakingAccountDetails(api, stashId, activeEra).pipe(
         switchMap(
-          ([controllerIdOpt, nominatorsOpt, rewardDestination, stakers, [validatorPrefs]]): Observable<
-            DerivedStakingInfo
-          > => {
+          ([
+            controllerIdOpt,
+            nominatorsOpt,
+            rewardDestination,
+            stakers,
+            [validatorPrefs],
+          ]): Observable<DerivedStakingInfo> => {
             const controllerId = controllerIdOpt.unwrapOr(null);
 
             return controllerId
               ? api.query.staking.ledger(controllerId).pipe(
                   map(
-                    (stakingLedgerOpt): DerivedStakingInfo => ({
+                    (stakingLedgerOpt: Option<StakingLedger>): DerivedStakingInfo => ({
                       accountId: stashId,
                       controllerId,
                       nominators: nominatorsOpt.unwrapOr({ targets: [] }).targets,

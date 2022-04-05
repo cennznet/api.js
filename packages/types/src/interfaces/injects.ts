@@ -14,7 +14,7 @@
 
 // CENNZnet types for injection into a polkadot API session
 
-import { OverrideBundleType } from '@polkadot/types/types/registry';
+import {OverrideBundleType} from "@polkadot/types/types";
 import {
   CENNZnetExtrinsicSignatureV1,
   CENNZnetExtrinsicSignatureV0,
@@ -49,6 +49,13 @@ const shareType37Onwards = {
   LookupSource: 'Address',
 };
 
+const sharedTypes41Onwards = {
+  ...shareType37Onwards,
+  AssetInfo: 'AssetInfoV41',
+  // Proposal also exist in polkadots democracy module
+  Proposal: 'GovernanceProposal'
+};
+
 export const typesBundle: OverrideBundleType = {
   spec: {
     cennznet: {
@@ -62,7 +69,9 @@ export const typesBundle: OverrideBundleType = {
             StakingLedger: 'StakingLedgerTo223',
             ExtrinsicSignatureV4: CENNZnetExtrinsicSignatureV0,
             ExtrinsicPayloadV4: CENNZnetExtrinsicPayloadV0,
-            AssetInfo: 'AssetInfoV40'
+            AssetInfo: 'AssetInfoV40',
+            BalanceLock: 'BalanceLock45',
+            Reasons: 'WithdrawReasons',
           },
         },
         {
@@ -70,16 +79,25 @@ export const typesBundle: OverrideBundleType = {
           types: {
             ...shareType37Onwards,
             AssetInfo: 'AssetInfoV40',
-            Proposal: 'GovernanceProposal'
+            Proposal: 'GovernanceProposal',
+            Reasons: 'WithdrawReasons',
+            BalanceLock: 'BalanceLock45'
           },
         },
         {
-          minmax: [41, undefined],
+          minmax: [41, 48],
           types: {
-            ...shareType37Onwards,
-            AssetInfo: 'AssetInfoV41',
-            // Proposal also exist in polkadots democracy module
-            Proposal: 'GovernanceProposal'
+            ...sharedTypes41Onwards,
+            BalanceLock: 'BalanceLock45',
+            Reasons: 'WithdrawReasons',
+            ValidatorPrefs: 'ValidatorPrefsWithCommission',
+            Keys: '(AccountId, AccountId, AccountId, AccountId, BeefyKey)'
+          },
+        },
+        {
+          minmax: [49, undefined],
+          types: {
+            ...sharedTypes41Onwards
           },
         },
       ],

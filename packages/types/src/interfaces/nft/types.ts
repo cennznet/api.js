@@ -1,8 +1,8 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types';
-import type { ITuple } from '@polkadot/types/types';
+import type { Bytes, Enum, Option, Struct, Text, U8aFixed, Vec, i32, u128, u16, u32, u64, u8 } from '@polkadot/types-codec';
+import type { ITuple } from '@polkadot/types-codec/types';
 import type { AccountId, AssetId, Balance, BlockNumber, Permill } from '@polkadot/types/interfaces/runtime';
 
 /** @name AuctionClosureReason */
@@ -10,6 +10,7 @@ export interface AuctionClosureReason extends Enum {
   readonly isExpiredNoBids: boolean;
   readonly isSettlementFailed: boolean;
   readonly isVendorCancelled: boolean;
+  readonly type: 'ExpiredNoBids' | 'SettlementFailed' | 'VendorCancelled';
 }
 
 /** @name AuctionListing */
@@ -24,6 +25,13 @@ export interface AuctionListing extends Struct {
 
 /** @name CollectionId */
 export interface CollectionId extends u32 {}
+
+/** @name CollectionInfo */
+export interface CollectionInfo extends Struct {
+  readonly name: Bytes;
+  readonly owner: AccountId;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
 
 /** @name CollectionNameType */
 export interface CollectionNameType extends Bytes {}
@@ -45,16 +53,45 @@ export interface Listing extends Enum {
   readonly asFixedPrice: FixedPriceListing;
   readonly isAuction: boolean;
   readonly asAuction: AuctionListing;
+  readonly type: 'FixedPrice' | 'Auction';
 }
 
 /** @name ListingId */
 export interface ListingId extends u128 {}
+
+/** @name ListingResponse */
+export interface ListingResponse extends Struct {
+  readonly id: ListingId;
+  readonly listingType: Bytes;
+  readonly paymentAsset: AssetId;
+  readonly price: Balance;
+  readonly endBlock: BlockNumber;
+  readonly buyer: Option<AccountId>;
+  readonly seller: AccountId;
+  readonly tokenIds: Vec<TokenId>;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
+
+/** @name ListingResponseWrapper */
+export interface ListingResponseWrapper extends Struct {
+  readonly listings: Vec<ListingResponse>;
+  readonly newCursor: Option<u128>;
+}
 
 /** @name MetadataBaseURI */
 export interface MetadataBaseURI extends Enum {
   readonly isIpfs: boolean;
   readonly isHttps: boolean;
   readonly asHttps: Bytes;
+  readonly type: 'Ipfs' | 'Https';
+}
+
+/** @name MetadataScheme */
+export interface MetadataScheme extends Enum {
+  readonly isIpfs: boolean;
+  readonly isHttps: boolean;
+  readonly asHttps: Bytes;
+  readonly type: 'Ipfs' | 'Https';
 }
 
 /** @name NFTAttributeValue */
@@ -83,6 +120,7 @@ export interface NFTAttributeValue extends Enum {
   readonly asTimestamp: u64;
   readonly isUrl: boolean;
   readonly asUrl: Text;
+  readonly type: 'I32' | 'U8' | 'U16' | 'U32' | 'U64' | 'U128' | 'Bytes32' | 'Bytes' | 'Text' | 'Hash' | 'Timestamp' | 'Url';
 }
 
 /** @name Reason */
@@ -104,5 +142,19 @@ export interface TokenCount extends u32 {}
 
 /** @name TokenId */
 export interface TokenId extends ITuple<[CollectionId, SeriesId, SerialNumber]> {}
+
+/** @name TokenInfo */
+export interface TokenInfo extends Struct {
+  readonly attributes: Vec<NFTAttributeValue>;
+  readonly owner: AccountId;
+  readonly royalties: Vec<ITuple<[AccountId, Permill]>>;
+}
+
+/** @name TokenLockReason */
+export interface TokenLockReason extends Enum {
+  readonly isListingId: boolean;
+  readonly asListingId: ListingId;
+  readonly type: 'ListingId';
+}
 
 export type PHANTOM_NFT = 'nft';

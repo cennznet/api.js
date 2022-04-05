@@ -14,6 +14,62 @@ export default {
             ],
             type: 'Vec<EnhancedTokenId>',
           },
+        getCollectionInfo: {
+          description: 'Get collection info from a given collection',
+          params: [
+            {
+              name: 'CollectionId',
+              type: 'CollectionId'
+            }
+          ],
+          type: 'Option<CollectionInfo>',
+        },
+        getCollectionListings: {
+          description: 'Get collection listing from a given collection',
+          params: [
+            {
+              name: 'CollectionId',
+              type: 'CollectionId'
+            },
+            {
+              name: 'cursor',
+              type: 'u128'
+            },
+            {
+              name: 'limit',
+              type: 'u16'
+            }
+          ],
+          type: 'Option<ListingResponseWrapper<AccountId>>',
+        },
+      getTokenInfo: {
+        description: 'Get token info',
+        params: [
+          {
+            name: 'CollectionId',
+            type: 'CollectionId'
+          },
+          {
+            name: 'SeriesId',
+            type: 'SeriesId'
+          },
+          {
+            name: 'SerialNumber',
+            type: 'SerialNumber'
+          }
+        ],
+        type: 'TokenInfo<AccountId>',
+      },
+      tokenUri: {
+        description: 'Get token uri',
+        params: [
+            {
+                name: 'TokenId',
+                type: 'TokenId'
+            }
+        ],
+        type: 'Vec<u8>',
+      },
     },
     types: {
         'TokenId': '(CollectionId, SeriesId, SerialNumber)',
@@ -50,11 +106,17 @@ export default {
             }
         },
         'ListingId': 'u128',
-        'MetadataBaseURI': {
+        'MetadataScheme': {
             "_enum": {
                 "Ipfs": null,
                 "Https": "Vec<u8>",
             }
+        },
+        'MetadataBaseURI': {
+          "_enum": {
+            "Ipfs": null,
+            "Https": "Vec<u8>",
+          }
         },
         'NFTAttributeValue': {
             '_enum': {
@@ -79,5 +141,35 @@ export default {
         'SeriesId': 'u32',
         'SerialNumber': 'u32',
         'TokenCount': 'u32',
+        'TokenLockReason': {
+          '_enum': {
+            'ListingId': 'ListingId'
+          }
+        },
+        'CollectionInfo': {
+          'name': 'Vec<u8>',
+          'owner': 'AccountId',
+          'royalties': 'Vec<(AccountId, Permill)>'
+        },
+        'ListingResponse': {
+          'id': 'ListingId',
+          'listingType': 'Vec<u8>',
+          'paymentAsset': 'AssetId',
+          'price': 'Balance',
+          'endBlock': 'BlockNumber',
+          'buyer': 'Option<AccountId>',
+          'seller': 'AccountId',
+          'tokenIds': 'Vec<TokenId>',
+          'royalties': 'Vec<(AccountId, Permill)>'
+        },
+        'ListingResponseWrapper': {
+          'listings': 'Vec<ListingResponse<AccountId>>',
+          'newCursor': 'Option<u128>'
+        },
+      'TokenInfo':{
+        'attributes': 'Vec<NFTAttributeValue>',
+        'owner': 'AccountId',
+        'royalties': 'Vec<(AccountId, Permill)>'
+      }
     }
 }
