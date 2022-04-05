@@ -5,6 +5,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x  version
+## [2.1.0](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.2...prerelease/2.1.0) (06/04/2022)
+### Changed:
+    - Bump minimist from 1.2.5 to 1.2.6
+    - Bump node-fetch from 2.6.1 to 2.6.7
+    - Bump trim-off-newlines from 1.0.1 to 1.0.3
+    - Bump simple-get from 4.0.0 to 4.0.1
+    - Bump tmpl from 1.0.4 to 1.0.5
+    - Bump tar from 4.4.13 to 4.4.19
+    - Bump nanoid from 3.1.22 to 3.3.2
+    - Bump elliptic from 6.5.3 to 6.5.4
+    - Bump path-parse from 1.0.6 to 1.0.7
+    - Bump shelljs from 0.8.4 to 0.8.5
+    - Fix rpc type definition
 ## [2.1.0-rc.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.1...prerelease/2.1.0-rc.2) (28/03/2022)
 ### Added:
     - Derive query to get metadata uri for a series (api.derive.nft.seriesMetadataUri)
