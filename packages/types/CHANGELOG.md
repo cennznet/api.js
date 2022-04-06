@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [Unreleased]
-## [2.1.0-rc.3](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.3...prerelease/2.1.0-rc.4) (04/04/2022)
+## [2.1.0-rc.4](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.3...prerelease/2.1.0-rc.4) (04/04/2022)
 ### Added:
     - Added Nominations and ValidatorPrefs types for runtime version less than 49
 ## [2.1.0-rc.3](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.2...prerelease/2.1.0-rc.3) (31/03/2022)
