@@ -14,11 +14,12 @@
 
 import { Hash } from '@cennznet/types';
 import { ApiPromise } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
+import { ApiOptions as ApiOptionsBase, DecoratedRpc, SubmittableExtrinsics } from '@polkadot/api/types';
 
 import * as definitions from '@cennznet/types/interfaces/definitions';
 import Types, { typesBundle } from '@cennznet/types/interfaces/injects';
 import { getMetadata } from '@cennznet/api/util/getMetadata';
+import type { RpcInterface } from '@polkadot/rpc-core/types/jsonrpc';
 import { decorateExtrinsics } from '@polkadot/types';
 import { CallFunction } from '@polkadot/types/types';
 import { assertReturn, u8aToHex, u8aToU8a } from '@polkadot/util';
@@ -67,6 +68,10 @@ export class Api extends ApiPromise {
 
   get derive(): Derives<'promise'> {
     return super.derive as Derives<'promise'>;
+  }
+
+  get rpc(): DecoratedRpc<'promise', RpcInterface> {
+    return super.rpc as DecoratedRpc<'promise', RpcInterface>;
   }
 
   constructor(_options: ApiOptions = {}) {

@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import { ApiRx as ApiRxBase } from '@polkadot/api';
-import { ApiOptions as ApiOptionsBase, SubmittableExtrinsics } from '@polkadot/api/types';
+import { ApiOptions as ApiOptionsBase, DecoratedRpc, SubmittableExtrinsics } from '@polkadot/api/types';
+import type { RpcInterface } from '@polkadot/rpc-core/types/jsonrpc';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
@@ -59,6 +60,10 @@ export class ApiRx extends ApiRxBase {
 
   get derive(): Derives<'rxjs'> {
     return super.derive as Derives<'rxjs'>;
+  }
+
+  get rpc(): DecoratedRpc<'rxjs', RpcInterface> {
+    return super.rpc as DecoratedRpc<'rxjs', RpcInterface>;
   }
 
   constructor(_options: ApiOptions = {}) {
