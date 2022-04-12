@@ -50,6 +50,25 @@ After connecting to a CENNZnet node, api will dynamically create queries and tra
 - `api.derive.<section>.<method>` provides access to built-in complex state queries which are combination of several basic state queries.
 - `api.tx.<section>.<method>` provides the ability to create a transaction, like chain state, this list is populated from a runtime query
 
+## TypeScript Config
+
+Add the following configuration to make TS aware of our custom types
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@polkadot/types": [
+        "./node_modules/@cennznet/types/interfaces/augment-api.d.ts"
+      ],
+      "@polkadot/types/augment": [
+        "./node_modules/@cennznet/types/interfaces/augment-types.d.ts"
+      ]
+    }
+  }
+}
+```
+
 ---
 
 See the [wiki](https:///wiki.cennz.net) for more or try the [api examples](../../docs/examples).
