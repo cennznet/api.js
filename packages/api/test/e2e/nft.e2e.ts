@@ -14,11 +14,11 @@
 
 import { Api } from "@cennznet/api";
 import { Keyring } from '@polkadot/keyring';
-import { blake2AsHex, cryptoWaitReady } from '@polkadot/util-crypto';
-import { stringToHex, stringToU8a } from '@polkadot/util'
+import { cryptoWaitReady } from '@polkadot/util-crypto';
+import {stringToHex, u8aToString} from '@polkadot/util'
 
 import initApiPromise from '../../../../jest/initApiPromise';
-import { Listing, TokenId } from '@cennznet/types';
+import {CollectionInfo, Listing, TokenId} from '@cennznet/types';
 import { EnhancedTokenId } from '@cennznet/types/interfaces/nft/enhanced-token-id';
 
 let api: Api;
@@ -550,9 +550,34 @@ describe('NFTs', () => {
   });
 
   it('Find series metadata uri from nikau', async done => {
-    api = await Api.create({network: "nikau"});
+    const api = await Api.create({network: "nikau"});
     const uri = await api.derive.nft.seriesMetadataUri(192, 0);
     expect(uri.toHuman()).toEqual("ipfs://QmdHBkLr9L3UarwPZVGjqKFZs6XQ36Z4jJULt4zh3KwkY1");
+    await api.disconnect();
+    done();
+  });
+
+  it('test derive nft queries', async done => {
+    const api = await Api.create({network: "nikau"});
+    const tokenInfo = await api.rpc.nft.getTokenInfo(206,0,1);
+    expect(tokenInfo.owner).toEqual("5H14vxnz18N4raNRGZDNnRtF1vXC5uUru4LxTxz2ZUSxuxfF");
+    expect(tokenInfo.royalties[0]).toEqual(["5H14vxnz18N4raNRGZDNnRtF1vXC5uUru4LxTxz2ZUSxuxfF","0.070000"]);
+    const listingInfo = await api.rpc.nft.getCollectionListings(206,0,10);
+    expect((listingInfo as any).listings.length).toBeGreaterThanOrEqual(0);
+    const firstListing = (listingInfo as any).listings[0];
+    // Listing can expire
+    // expect(firstListing).toEqual({"buyer":null,"end_block":2813952,"id":"2023","listing_type":"fixedPrice","payment_asset":17002,"price":"333000000000000000000","royalties":[["5H14vxnz18N4raNRGZDNnRtF1vXC5uUru4LxTxz2ZUSxuxfF","0.070000"]],"seller":"5E5gfwi3m5YhWfpwycwYv3RKhKMvQssE1G7gnfp4khEVF7K2","token_ids":[[206,0,8]]});
+    const collectionInfo: CollectionInfo = await api.rpc.nft.getCollectionInfo(206) as unknown as CollectionInfo;
+    expect(collectionInfo.name).toEqual('GLORIOUS GORDON WALTERS MAHO');
+    expect(collectionInfo.owner).toEqual('5H14vxnz18N4raNRGZDNnRtF1vXC5uUru4LxTxz2ZUSxuxfF');
+    expect(collectionInfo.royalties).toEqual([]);
+
+    const collectedTokens = await api.rpc.nft.collectedTokens(206, "5E5gfwi3m5YhWfpwycwYv3RKhKMvQssE1G7gnfp4khEVF7K2") as unknown as CollectionInfo;
+    expect(collectedTokens[0]).toEqual([206,0,8]);
+
+    const tokenUri = await api.rpc.nft.tokenUri(api.registry.createType('TokenId',[206,0,1]));
+    expect(u8aToString(tokenUri)).toEqual('ipfs://QmaPjtvkpLbwWvGAFjp9GgvXCFFJPVN9VGWD36zoRpd8Sq.json');
+    api.disconnect();
     done();
   });
 });
