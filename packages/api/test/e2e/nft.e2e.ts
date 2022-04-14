@@ -312,23 +312,7 @@ describe('NFTs', () => {
     const collectionIds = api.registry.createType('Vec<CollectionId>',[1]);
     const tokens = await api.derive.nft.tokensOf(tokenOwner.address, collectionIds);
     const tokensInCollection = tokens[0];
-    expect(tokensInCollection.toJSON()).toEqual([
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 0
-      },
-      {
-        collectionId: 1,
-        serialNumber: 0,
-        seriesId: 1
-      },
-      {
-        collectionId: 1,
-        serialNumber: 2,
-        seriesId: 1
-      }
-    ]);
+    expect(tokensInCollection.toJSON()).toEqual({"0": [1, 0, 0], "1": [1, 1, 0], "2": [1, 1, 2]});
     done();
   });
 
@@ -366,23 +350,9 @@ describe('NFTs', () => {
 
   it('finds collected tokens', async () => {
     let ownedTokens = (await api.rpc.nft.collectedTokens(collectionId, tokenOwner.address));
-    expect(ownedTokens.toJSON()).toEqual([
-      {
-        collectionId,
-        seriesId: 0,
-        serialNumber: 0,
-      },
-      {
-        collectionId: collectionId,
-        seriesId: 1,
-        serialNumber: 0,
-      },
-      {
-        collectionId: collectionId,
-        seriesId: 1,
-        serialNumber: 2,
-      },
-    ]);
+    expect(ownedTokens[0]).toEqual([1, 0, 0]);
+    expect(ownedTokens[1]).toEqual([1, 1, 0]);
+    expect(ownedTokens[2]).toEqual([1, 1, 2]);
   });
 
   it('can list a bundle for fixed price sale', async done => {
