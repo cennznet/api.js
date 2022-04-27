@@ -95,7 +95,7 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
   /**
    * @description sign the extrinsic via metamask
    */
-  async signViaMetaMask(ethAddress: any, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
+  async signViaMetaMask(ethAddress: string, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
     const cennznetAddress = this.cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
     const payload = this.registry.createType('ethWalletCall', { call: this, nonce }).toHex();
