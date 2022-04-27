@@ -41,9 +41,9 @@ jobs:
       matrix:
         test-suite:
           # grouped test runs
+          - ethBridge
           - "v36-compat"
           - "create|call|queries"
-          - ethBridge
           - attestation.*
           - cennzx.*
           - nft.*
