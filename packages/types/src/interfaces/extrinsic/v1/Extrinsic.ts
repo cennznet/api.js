@@ -1,3 +1,4 @@
+import {cvmToAddress} from "@cennznet/types/utils";
 import { GenericExtrinsic, UInt } from '@polkadot/types';
 import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
 import { AnyU8a, ExtrinsicPayloadValue, IKeyringPair, Registry } from '@polkadot/types/types';
@@ -6,9 +7,7 @@ import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
 import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
 import {Constructor, HexString} from '@polkadot/util/types';
-import {hexToU8a, stringToU8a, u8aConcat} from '@polkadot/util';
-import { encodeAddress } from '@polkadot/util-crypto';
-import { ApiTypes, SubmittableResultResult } from "@cennznet/api/types";
+import { ApiTypes, SubmittableResultResult } from "@polkadot/api/types";
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
   private signaturePayloadOptions: SignatureOptions | ExtrinsicPayloadValue;
@@ -83,20 +82,11 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     return this;
   }
 
-  private cvmToAddress(cvmAddress) {
-    let message = stringToU8a('cvm:');
-    message = u8aConcat(message, new Array(7).fill(0), hexToU8a(cvmAddress));
-    const checkSum = message.reduce((a, b) => a ^ b, 0);
-    message = u8aConcat(message, new Array(1).fill(checkSum));
-
-    return encodeAddress(message, 42);
-  }
-
   /**
    * @description sign the extrinsic via metamask
    */
-  async signViaMetaMask(ethAddress: string, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
-    const cennznetAddress = this.cvmToAddress(ethAddress);
+  async signViaEthWallet(ethAddress: string, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
+    const cennznetAddress = cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
     const payload = this.registry.createType('ethWalletCall', { call: this, nonce }).toHex();
     const ethereum = typeof (global as any).ethereum !== "undefined" ? (global as any).ethereum : (window as any).ethereum;

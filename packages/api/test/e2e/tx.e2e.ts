@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {AssetInfoV40 as AssetInfo, AssetOptions, Balance, LiquidityPriceResponse} from "@cennznet/types";
+import {cvmToAddress} from "@cennznet/types/utils";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -90,10 +91,11 @@ describe('e2e transactions', () => {
 
   });
 
-  describe('Metamask txs', () => {
-    it('Uses metamask to sign', async done => {
+  describe('Eth signining txs', () => {
+    it('Uses eth wallet to sign', async done => {
+      const ethAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
       // Find the equivalent CENNZnet address for Ethereum address and send some CPAY to spend on txs
-      const cennznetAddress = '5EK7n4pa3FcCGoxvpZVzagULjPRWH2P6zNG9UwEed83eZa5K'; // CENNZnet address for Ethereum address 0x806B4697a5FCEBb66c16A613FB71955358c99A7C
+      const cennznetAddress = cvmToAddress(ethAddress);
       const amount = 100000;
       const nonce = await api.rpc.system.accountNextIndex(alice.address);
       const fundTransferred = new Promise<void>(async (resolve, reject) => {
@@ -111,7 +113,7 @@ describe('e2e transactions', () => {
       });
       fundTransferred.then(async () => {
         // Start with a connected wallet
-        const accounts = ['0x806B4697a5FCEBb66c16A613FB71955358c99A7C'];
+        const accounts = [ethAddress];
         mock({
           blockchain: 'ethereum',
           accounts: {return: accounts},
@@ -123,10 +125,9 @@ describe('e2e transactions', () => {
 
 
         const transferAmt = 20000;
-        const ethAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
         await api.tx.genericAsset
             .transfer(stakingAssetId, alice.address, transferAmt)
-            .signViaMetaMask(
+            .signViaEthWallet(
                 ethAddress,
                 api
             );

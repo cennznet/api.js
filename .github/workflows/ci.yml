@@ -41,9 +41,9 @@ jobs:
       matrix:
         test-suite:
           # grouped test runs
-          - ethBridge
           - "v36-compat"
           - "create|call|queries"
+          - tx
           - attestation.*
           - cennzx.*
           - nft.*
@@ -52,7 +52,7 @@ jobs:
           - send
           - getMetadata
           - governance
-          - tx
+          - ethBridge
     steps:
     - name: start local Eth node setup
       uses: actions/checkout@v2
