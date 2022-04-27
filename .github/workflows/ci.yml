@@ -43,7 +43,7 @@ jobs:
           # grouped test runs
           - "v36-compat"
           - "create|call|queries"
-          - tx
+          - ethBridge
           - attestation.*
           - cennzx.*
           - nft.*
@@ -52,7 +52,7 @@ jobs:
           - send
           - getMetadata
           - governance
-          - ethBridge
+          - tx
     steps:
     - name: start local Eth node setup
       uses: actions/checkout@v2
