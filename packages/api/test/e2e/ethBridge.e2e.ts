@@ -70,7 +70,7 @@ describe('Eth bridge test', () => {
 
   it('Submit a wrong claim ', async done => {
       const depositTxHash = "0x028a721fcfd6ffa48e1095294bc26570f61a1866a57b7e6162ddaebe22871608";
-      testTokenId1 = await api.query.genericAsset.nextAssetId();
+      testTokenId1 = 17000;//await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
       const claim = {
@@ -129,7 +129,7 @@ describe('Eth bridge test', () => {
       beneficiary: "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48"
     };
     let nonce = await api.rpc.system.accountNextIndex(alice.address);
-    testTokenId2 = await api.query.genericAsset.nextAssetId();
+    testTokenId2 = 17001;//await api.query.genericAsset.nextAssetId();
     console.log('testTokenId2::',testTokenId2.toString());
     await api.tx.erc20Peg.depositClaim(depositTxHash, claim).signAndSend(alice, {nonce}, async ({status, events}) => {
       if (status.isInBlock) {
