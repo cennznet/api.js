@@ -6,6 +6,9 @@ import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
 import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
 import {Constructor, HexString} from '@polkadot/util/types';
+import {hexToU8a, stringToU8a, u8aConcat} from '@polkadot/util';
+import { encodeAddress } from '@polkadot/util-crypto';
+import { ApiTypes, SubmittableResultResult } from "@cennznet/api/types";
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
   private signaturePayloadOptions: SignatureOptions | ExtrinsicPayloadValue;
@@ -78,5 +81,29 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
           return this;
       })
     return this;
+  }
+
+  private cvmToAddress(cvmAddress) {
+    let message = stringToU8a('cvm:');
+    message = u8aConcat(message, new Array(7).fill(0), hexToU8a(cvmAddress));
+    const checkSum = message.reduce((a, b) => a ^ b, 0);
+    message = u8aConcat(message, new Array(1).fill(checkSum));
+
+    return encodeAddress(message, 42);
+  }
+
+  /**
+   * @description sign the extrinsic via metamask
+   */
+  async signViaMetaMask(ethAddress: any, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
+    const cennznetAddress = this.cvmToAddress(ethAddress);
+    const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
+    const payload = this.registry.createType('ethWalletCall', { call: this, nonce }).toHex();
+    const ethereum = typeof (global as any).ethereum !== "undefined" ? (global as any).ethereum : (window as any).ethereum;
+    // Request signature from metamask
+    const signature = await ethereum.request({ method: 'personal_sign', params: [payload, ethAddress] });
+    // Broadcast the tx to CENNZnet
+    const txHash = await api.tx.ethWallet.call(this, ethAddress, signature).send();
+    return txHash;
   }
 }

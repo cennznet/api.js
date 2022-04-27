@@ -20,7 +20,7 @@ import type { PrefixedStorageKey } from '@polkadot/types/interfaces/childstate';
 import type { AuthorityId } from '@polkadot/types/interfaces/consensus';
 import type { CodeUploadRequest, CodeUploadResult, ContractCallRequest, ContractExecResult, ContractInstantiateResult, InstantiateRequest } from '@polkadot/types/interfaces/contracts';
 import type { CreatedBlock } from '@polkadot/types/interfaces/engine';
-import type { EthAccount, EthAddress, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
+import type { EthAccount, EthCallRequest, EthFilter, EthFilterChanges, EthLog, EthReceipt, EthRichBlock, EthSubKind, EthSubParams, EthSyncStatus, EthTransaction, EthTransactionRequest, EthWork } from '@polkadot/types/interfaces/eth';
 import type { Extrinsic } from '@polkadot/types/interfaces/extrinsics';
 import type { EncodedFinalityProofs, JustificationNotification, ReportedRoundStates } from '@polkadot/types/interfaces/grandpa';
 import type { MmrLeafProof } from '@polkadot/types/interfaces/mmr';
@@ -355,12 +355,6 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
        * Uninstalls filter.
        **/
       uninstallFilter: AugmentedRpc<(index: U256 | AnyNumber | Uint8Array) => Observable<bool>>;
-    };
-    ethWallet: {
-      /**
-       * Get all governance proposal votes
-       **/
-      addressNonce: AugmentedRpc<(EthAddress: EthAddress | string | Uint8Array) => Observable<u32>>;
     };
     ethy: {
       /**
