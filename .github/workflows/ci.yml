@@ -34,20 +34,15 @@ jobs:
       run: yarn build
     - name: unit tests
       run: yarn test --coverage
-  bridge_e2e:
-    needs: ci
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        test-suite:
-          - ethBridge
   e2e:
     needs: ci
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 10
       matrix:
         test-suite:
           # grouped test runs
+          - ethBridge
           - "v36-compat"
           - "create|call|queries"
           - attestation.*
