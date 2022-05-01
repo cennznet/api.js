@@ -4,8 +4,8 @@
 import type { Struct } from '@polkadot/types-codec';
 import type { Call, Index } from '@polkadot/types/interfaces/runtime';
 
-/** @name ethWalletCall */
-export interface ethWalletCall extends Struct {
+/** @name EthWalletCall */
+export interface EthWalletCall extends Struct {
   readonly call: Call;
   readonly nonce: Index;
 }

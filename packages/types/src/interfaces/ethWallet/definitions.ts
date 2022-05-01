@@ -1,6 +1,6 @@
 export default {
   types: {
-    "ethWalletCall": {
+    "EthWalletCall": {
       call: 'Call',
       nonce: 'Index',
     }

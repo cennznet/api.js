@@ -85,12 +85,11 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
   /**
    * @description sign the extrinsic via metamask
    */
-  async signViaEthWallet(ethAddress: string, api: Api): Promise<SubmittableResultResult<ApiTypes>> {
+  async signViaEthWallet(ethAddress: string, api: Api, ethereum: any): Promise<SubmittableResultResult<ApiTypes>> {
     const cennznetAddress = cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
-    const payload = this.registry.createType('ethWalletCall', { call: this, nonce }).toHex();
-    const ethereum = typeof (global as any).ethereum !== "undefined" ? (global as any).ethereum : (window as any).ethereum;
-    // Request signature from metamask
+    const payload = this.registry.createType('EthWalletCall', { call: this, nonce }).toHex();
+    // Request signature from ethereum wallet
     const signature = await ethereum.request({ method: 'personal_sign', params: [payload, ethAddress] });
     // Broadcast the tx to CENNZnet
     const txHash = await api.tx.ethWallet.call(this, ethAddress, signature).send();

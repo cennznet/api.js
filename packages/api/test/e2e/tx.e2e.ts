@@ -92,6 +92,15 @@ describe('e2e transactions', () => {
   });
 
   describe('Eth signining txs', () => {
+
+    it('Convert eth address to cennznet address', async done => {
+      const ethAddress = '0x5D5586341ca72146791C33c26c0c10eD971c9B53';
+      const cennznetAddress = cvmToAddress(ethAddress);
+      console.log('cennznetAddress:',cennznetAddress);
+      expect(cennznetAddress).toEqual('5EK7n4pa3FcCGoxvoqUFJM8CD6fngE31G4rAjqLYW2bXtstn');
+      done();
+    });
+
     it('Uses eth wallet to sign', async done => {
       const ethAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
       // Find the equivalent CENNZnet address for Ethereum address and send some CPAY to spend on txs
@@ -129,7 +138,8 @@ describe('e2e transactions', () => {
             .transfer(stakingAssetId, alice.address, transferAmt)
             .signViaEthWallet(
                 ethAddress,
-                api
+                api,
+                (global as any).ethereum
             );
 
         await api.query.genericAsset.freeBalance(stakingAssetId, cennznetAddress, (cennzBal) => {
