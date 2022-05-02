@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AssetInfoV40 as AssetInfo, AssetOptions, LiquidityPriceResponse } from "@cennznet/types";
+import {AssetInfoV40 as AssetInfo, AssetOptions, Balance, LiquidityPriceResponse} from "@cennznet/types";
+import {cvmToAddress} from "@cennznet/types/utils";
 import { SubmittableResult } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
@@ -20,6 +21,7 @@ import { stringToHex } from '@polkadot/util';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import initApiPromise from '../../../../jest/initApiPromise';
 import { SingleAccountSigner } from "./util/SingleAccountSigner";
+import { mock } from '@depay/web3-mock'
 
 const keyring = new Keyring({ type: 'sr25519' });
 
@@ -36,6 +38,8 @@ describe('e2e transactions', () => {
 
     spendingAssetId = await api.query.genericAsset.spendingAssetId();
     stakingAssetId = await api.query.genericAsset.stakingAssetId();
+
+    mock('ethereum');
   });
 
   afterAll(async () => {
@@ -85,6 +89,66 @@ describe('e2e transactions', () => {
         });
     });
 
+  });
+
+  describe('Eth signining txs', () => {
+
+    it('Convert eth address to cennznet address', async done => {
+      const ethAddress = '0x5D5586341ca72146791C33c26c0c10eD971c9B53';
+      const cennznetAddress = cvmToAddress(ethAddress);
+      console.log('cennznetAddress:',cennznetAddress);
+      expect(cennznetAddress).toEqual('5EK7n4pa3FcCGoxvoqUFJM8CD6fngE31G4rAjqLYW2bXtstn');
+      done();
+    });
+
+    it('Uses eth wallet to sign', async done => {
+      const ethAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
+      // Find the equivalent CENNZnet address for Ethereum address and send some CPAY to spend on txs
+      const cennznetAddress = cvmToAddress(ethAddress);
+      const amount = 100000;
+      const nonce = await api.rpc.system.accountNextIndex(alice.address);
+      const fundTransferred = new Promise<void>(async (resolve, reject) => {
+        await api.tx.genericAsset
+            .transfer(stakingAssetId, cennznetAddress, amount)
+            .signAndSend(
+                alice,
+                { nonce });
+        await api.tx.genericAsset
+            .transfer(spendingAssetId, cennznetAddress, amount)
+            .signAndSend(
+                alice,
+                { nonce: nonce+1 }, ({ status }) => status.isInBlock ? resolve() : null
+            );
+      });
+      fundTransferred.then(async () => {
+        // Start with a connected wallet
+        const accounts = [ethAddress];
+        mock({
+          blockchain: 'ethereum',
+          accounts: {return: accounts},
+          signature: {
+            params: [accounts[0], 'sign'],
+            return: "0x474613e40d21220a531d0abd0e56e8a01d60f6db019b859116726c5b6a5a1bbd070c9cac70fca3a43caeb4cb9ee036ce72fe2cf9b40fb1dbc1374e1a85dcfe281c"
+          }
+        });
+
+
+        const transferAmt = 20000;
+        await api.tx.genericAsset
+            .transfer(stakingAssetId, alice.address, transferAmt)
+            .signViaEthWallet(
+                ethAddress,
+                api,
+                (global as any).ethereum
+            );
+
+        await api.query.genericAsset.freeBalance(stakingAssetId, cennznetAddress, (cennzBal) => {
+          console.log('cennzBal::', cennzBal.toString());
+          console.log('cennzBal.toNumber() == transferAmt:', cennzBal.toString() === (amount - transferAmt).toString());
+          cennzBal.toString() === (amount - transferAmt).toString() ? done() : null
+        });
+      });
+    });
   });
 
   describe('Extrinsic payment options', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@cennznet/api",
-  "version":"2.1.0",
+  "version": "2.1.0",
   "description": "CENNZnet's javascript api",
   "keywords": [
     "CENNZnet"
@@ -24,15 +24,18 @@
   },
   "dependencies": {
     "@cennznet/types": "^2.1.0",
+    "@depay/web3-blockchains": "^4.3.0",
+    "@depay/web3-mock": "^11.7.0",
+    "@ethersproject/keccak256": "^5.5.0",
+    "@ethersproject/signing-key": "^5.5.0",
     "@polkadot/api": "^7.7.1",
+    "@polkadot/extension-dapp": "^0.36.1",
     "@polkadot/rpc-core": "^7.7.1",
     "@polkadot/rpc-provider": "^7.7.1",
     "@polkadot/types": "^7.7.1",
-    "@polkadot/extension-dapp": "^0.36.1",
     "@polkadot/x-rxjs": "^6.11.2-6",
-    "@ethersproject/signing-key": "^5.5.0",
-    "@ethersproject/keccak256": "^5.5.0",
-    "eventemitter3": "^4.0.0"
+    "eventemitter3": "^4.0.0",
+    "ethers": "^5.6.4"
   },
   "resolutions": {
     "rxjs": "7.2.0"

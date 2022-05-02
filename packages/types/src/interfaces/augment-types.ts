@@ -4,6 +4,7 @@
 import type { AttestationTopic, AttestationValue } from '@cennznet/types/interfaces/attestation';
 import type { ExchangeKey, FeeRate, LiquidityPriceResponse, LiquidityValueResponse, PriceResponse } from '@cennznet/types/interfaces/cennzx';
 import type { Details, Erc20DepositEvent, EthHash, EventClaimId, EventClaimResult, EventProofId, EventTypeId, NotarizationPayload } from '@cennznet/types/interfaces/ethBridge';
+import type { EthWalletCall } from '@cennznet/types/interfaces/ethWallet';
 import type { EthyEventId, EthyId, EventProof, VersionedEventProof } from '@cennznet/types/interfaces/ethy';
 import type { AssetInfoV40, AssetInfoV41, AssetOptions, BalanceInformation, BalanceLock45, Owner, PermissionLatest, PermissionVersions, PermissionsV1 } from '@cennznet/types/interfaces/genericAsset';
 import type { GovernanceProposal, ProposalId, ProposalStatusInfo, ProposalVoteInfo, ProposalVotes, ReferendumVoteCount } from '@cennznet/types/interfaces/governance';
@@ -355,6 +356,7 @@ declare module '@polkadot/types/types/registry' {
     EthTransactionRequest: EthTransactionRequest;
     EthTransactionSignature: EthTransactionSignature;
     EthTransactionStatus: EthTransactionStatus;
+    EthWalletCall: EthWalletCall;
     EthWork: EthWork;
     EthyEventId: EthyEventId;
     EthyId: EthyId;
