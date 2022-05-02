@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x  version
+## [2.1.1-alpha.1](https://github.com/cennznet/api.js/compare/prerelease/2.1.0...prerelease/2.1.1-alpha.1) (03/05/2022)
+### Added:
+    - Sign via eth wallet
 ## [2.1.0](https://github.com/cennznet/api.js/compare/prerelease/2.1.0-rc.2...prerelease/2.1.0) (06/04/2022)
 ### Changed:
     - Bump minimist from 1.2.5 to 1.2.6
