@@ -98,7 +98,7 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     // Request signature from ethereum wallet
     const signature = await ethereum.request({ method: 'personal_sign', params: [payload, ethAddress] });
     // Broadcast the tx to CENNZnet
-    const txHash = await api.tx.ethWallet.call(this, ethAddress, signature).send(optionalStatusCb);
+    await api.tx.ethWallet.call(this, ethAddress, signature).send(optionalStatusCb);
     return this;
   }
 }
