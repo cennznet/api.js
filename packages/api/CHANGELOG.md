@@ -5,6 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x  version
+## [2.1.1-alpha.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.1-alpha.1...prerelease/2.1.1-alpha.2) (05/05/2022)
+### Changed:
+    - Changed signViaEthWallet to support callback with events and tx status
 ## [2.1.1-alpha.1](https://github.com/cennznet/api.js/compare/prerelease/2.1.0...prerelease/2.1.1-alpha.1) (03/05/2022)
 ### Added:
     - Sign via eth wallet
