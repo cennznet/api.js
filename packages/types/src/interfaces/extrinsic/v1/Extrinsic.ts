@@ -1,13 +1,19 @@
 import {cvmToAddress} from "@cennznet/types/utils";
 import { GenericExtrinsic, UInt } from '@polkadot/types';
 import { SignatureOptions } from '@cennznet/types/interfaces/extrinsic/types';
-import { AnyU8a, ExtrinsicPayloadValue, IKeyringPair, Registry } from '@polkadot/types/types';
+import {
+  AnyU8a,
+  Callback,
+  ExtrinsicPayloadValue,
+  IKeyringPair,
+  ISubmittableResult,
+  Registry
+} from '@polkadot/types/types';
 import { Address, Call } from '@polkadot/types/interfaces/runtime';
 import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
 import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
 import {Constructor, HexString} from '@polkadot/util/types';
-import { ApiTypes, SubmittableResultResult } from "@polkadot/api/types";
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
   private signaturePayloadOptions: SignatureOptions | ExtrinsicPayloadValue;
@@ -83,16 +89,16 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
   }
 
   /**
-   * @description sign the extrinsic via metamask
+   * @description sign the extrinsic via any ethereum wallet
    */
-  async signViaEthWallet(ethAddress: string, api: Api, ethereum: any): Promise<SubmittableResultResult<ApiTypes>> {
+  async signViaEthWallet(ethAddress: string, api: Api, ethereum: any, optionalStatusCb?: Callback<ISubmittableResult>): Promise<this> {
     const cennznetAddress = cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
     const payload = this.registry.createType('EthWalletCall', { call: this, nonce }).toHex();
     // Request signature from ethereum wallet
     const signature = await ethereum.request({ method: 'personal_sign', params: [payload, ethAddress] });
     // Broadcast the tx to CENNZnet
-    const txHash = await api.tx.ethWallet.call(this, ethAddress, signature).send();
-    return txHash;
+    await api.tx.ethWallet.call(this, ethAddress, signature).send(optionalStatusCb);
+    return this;
   }
 }
