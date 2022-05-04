@@ -139,14 +139,14 @@ describe('e2e transactions', () => {
             .signViaEthWallet(
                 ethAddress,
                 api,
-                (global as any).ethereum
+                (global as any).ethereum,  async ({ events, status }: SubmittableResult) => {
+                  if (status.isInBlock) {
+                    expect(events[0].event.method).toEqual('Transferred');
+                    expect(events[0].event.section).toEqual('genericAsset');
+                    done();
+                  }
+                }
             );
-
-        await api.query.genericAsset.freeBalance(stakingAssetId, cennznetAddress, (cennzBal) => {
-          console.log('cennzBal::', cennzBal.toString());
-          console.log('cennzBal.toNumber() == transferAmt:', cennzBal.toString() === (amount - transferAmt).toString());
-          cennzBal.toString() === (amount - transferAmt).toString() ? done() : null
-        });
       });
     });
   });
