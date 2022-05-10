@@ -102,7 +102,7 @@ describe('e2e transactions', () => {
     });
 
     it('Uses eth wallet to sign', async done => {
-      const ethAddress = '0x806B4697a5FCEBb66c16A613FB71955358c99A7C';
+      const ethAddress = '0x5d5586341ca72146791c33c26c0c10ed971c9b53';
       // Find the equivalent CENNZnet address for Ethereum address and send some CPAY to spend on txs
       const cennznetAddress = cvmToAddress(ethAddress);
       const amount = 100000;
@@ -128,7 +128,7 @@ describe('e2e transactions', () => {
           accounts: {return: accounts},
           signature: {
             params: [accounts[0], 'sign'],
-            return: "0x474613e40d21220a531d0abd0e56e8a01d60f6db019b859116726c5b6a5a1bbd070c9cac70fca3a43caeb4cb9ee036ce72fe2cf9b40fb1dbc1374e1a85dcfe281c"
+            return: "0x6b7d2232f30306feb731d612ec9016893e1ee99f1164c9b74460b7838f6ce27b47e3c662bfcdbb6f37ff575276eb29352809727efeab7197ae74af96871a6eb11c"
           }
         });
 

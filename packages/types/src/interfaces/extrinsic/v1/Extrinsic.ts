@@ -13,6 +13,7 @@ import { Address, Call } from '@polkadot/types/interfaces/runtime';
 import { ExtrinsicValueV4 } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { Api } from '@cennznet/api';
 import { EstimateFeeParams, PaymentOptions } from '@cennznet/api/derives/types';
+import {base64Encode} from "@polkadot/util-crypto";
 import {Constructor, HexString} from '@polkadot/util/types';
 
 export default class CENNZnetExtrinsic extends GenericExtrinsic{
@@ -95,8 +96,9 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     const cennznetAddress = cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
     const payload = this.registry.createType('EthWalletCall', { call: this, nonce }).toHex();
+    const encodedPayload = `data:application-octet;base64,${base64Encode(payload)}`;
     // Request signature from ethereum wallet
-    const signature = await ethereum.request({ method: 'personal_sign', params: [payload, ethAddress] });
+    const signature = await ethereum.request({ method: 'personal_sign', params: [encodedPayload, ethAddress] });
     // Broadcast the tx to CENNZnet
     await api.tx.ethWallet.call(this, ethAddress, signature).send(optionalStatusCb);
     return this;
