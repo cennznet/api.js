@@ -10,7 +10,7 @@ describe('Eth bridge test', () => {
   let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
 
   beforeAll(async done => {
-    jest.setTimeout(50000); // sometimes takes more time
+    jest.setTimeout(40000); // sometimes takes more time
     await cryptoWaitReady();
     const keyring = new Keyring({type: 'sr25519'});
     alice = keyring.addFromUri('//Alice');
@@ -139,7 +139,7 @@ describe('Eth bridge test', () => {
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
             expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
-            expect(claimer.toString()).toEqual(alice.address);
+            expect(claimer.toString()).toEqual(bob.address);
             done();
           }
         }
