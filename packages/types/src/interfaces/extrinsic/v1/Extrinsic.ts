@@ -96,7 +96,7 @@ export default class CENNZnetExtrinsic extends GenericExtrinsic{
     const cennznetAddress = cvmToAddress(ethAddress);
     const nonce = await api.rpc.system.accountNextIndex(cennznetAddress);
     const payload = this.registry.createType('EthWalletCall', { call: this, nonce }).toHex();
-    const encodedPayload = `data:application-octet;base64,${base64Encode(payload)}`;
+    const encodedPayload = `data:application/octet-stream;base64,${base64Encode(payload)}`;
     // Request signature from ethereum wallet
     const signature = await ethereum.request({ method: 'personal_sign', params: [encodedPayload, ethAddress] });
     // Broadcast the tx to CENNZnet
