@@ -128,7 +128,7 @@ describe('e2e transactions', () => {
           accounts: {return: accounts},
           signature: {
             params: [accounts[0], 'sign'],
-            return: "0xdcb9810a872f4c0df4fb02c7c031d54bf0c669d74142cee91348d1c9d5b169b436d2ae3cfbcd688b3dd4f5f2956e142882761340622101d479d44c7d308b852f1c"
+            return: "0xc8ee1390bc05479bb4e13eb36b46714af19821eb590142e3f8fb7d972f6f31fb070717be960e41e4ec33baf85776c43e5be588916e7c41ee20ad99c6695fa7fa1b"
           }
         });
 
