@@ -10,6 +10,7 @@ describe('Eth bridge test', () => {
   let api, alice, aliceStash, bob, testTokenId1, testTokenId2;
 
   beforeAll(async done => {
+    jest.setTimeout(50000); // sometimes takes more time
     await cryptoWaitReady();
     const keyring = new Keyring({type: 'sr25519'});
     alice = keyring.addFromUri('//Alice');
