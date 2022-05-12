@@ -54,19 +54,21 @@ describe('Eth bridge test', () => {
         amount: depositAmount,
         beneficiary: beneficiaryAcc
       };
-      console.log('New token generated will be::',testTokenId1.toString());
-      const depositClaimEvent: ClaimDeposited = await awaitDepositClaim(api, depositTxHash, claim, alice) as ClaimDeposited;
-
       const beneficiaryAddress = encodeAddress(beneficiaryAcc, 42); // convert public key to address
-
-      const {claimId, assetId, amount, beneficiary} = depositClaimEvent;
-      expect(claimId).toBeGreaterThanOrEqual(0);
-      expect(assetId).toEqual(testTokenId1.toString());
-      expect(amount).toEqual(depositAmount);
-      expect(beneficiary).toEqual(beneficiaryAddress);
-      const assetBalance = await api.query.genericAsset.freeBalance(testTokenId1.toNumber(), beneficiaryAddress);
-      expect(assetBalance.toString()).toBe(depositAmount);
-      done();
+      console.log('New token generated will be::',testTokenId1.toString());
+      await api.tx.erc20Peg.depositClaim(depositTxHash, claim).signAndSend(alice,  async ({status, events}) => {
+        if (status.isInBlock) {
+          for (const {event: {method, section, data}} of events) {
+            console.log('\t', `: ${section}.${method}`, data.toString());
+            if (section === 'erc20Peg' && method == 'Erc20Claim') {
+              const [claimId, claimer] = data;
+              expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
+              expect(claimer.toString()).toEqual(alice.address);
+              done();
+            }
+          }
+        }
+      });
   });
 
   it('Submit a wrong claim ', async done => {
