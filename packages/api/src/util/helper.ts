@@ -51,8 +51,6 @@ export async function awaitDepositClaim(
             event: { method, section, data },
           } of events) {
             const [, beneficiary] = data;
-            console.log('Section:', section);
-            console.log('Method:', method);
             if (
               section === 'erc20Peg' &&
               method === 'Erc20Claim' &&
@@ -61,7 +59,10 @@ export async function awaitDepositClaim(
             ) {
               eventClaimId = data[0];
               break;
-            } else if (section === 'system' && method === 'ExtrinsicFailed') {
+            } else if (
+              section === 'system' &&
+              (method === 'ExtrinsicFailed' || method === 'DelayedErc20DepositFailed')
+            ) {
               reject('Claim already notarized');
             }
           }
