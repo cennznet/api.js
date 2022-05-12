@@ -50,12 +50,14 @@ export async function awaitDepositClaim(
           for (const {
             event: { method, section, data },
           } of events) {
-            const [, claimer] = data;
+            const [, beneficiary] = data;
+            console.log('Section:', section);
+            console.log('Method:', method);
             if (
               section === 'erc20Peg' &&
               method === 'Erc20Claim' &&
-              claimer &&
-              claimer.toString() === beneficiaryAddress
+              beneficiary &&
+              beneficiary.toString() === beneficiaryAddress
             ) {
               eventClaimId = data[0];
               break;
@@ -64,6 +66,7 @@ export async function awaitDepositClaim(
             }
           }
         }
+        console.log('event claim id:', eventClaimId);
         if (eventClaimId) {
           api.query.system
             .events((events) => {
