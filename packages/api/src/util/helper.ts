@@ -60,8 +60,9 @@ export async function awaitDepositClaim(
               eventClaimId = data[0];
               break;
             } else if (
-              section === 'system' &&
-              (method === 'ExtrinsicFailed' || method === 'DelayedErc20DepositFailed')
+              (section === 'system' && method === 'ExtrinsicFailed') ||
+              section === 'erc20Peg' ||
+              method === 'DelayedErc20DepositFailed'
             ) {
               reject('Claim already notarized');
             }
