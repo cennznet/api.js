@@ -4,6 +4,7 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import { EthereumSignature } from '@polkadot/types/interfaces';
 import { H256 } from '@polkadot/types/interfaces/runtime';
 import { Api } from '@cennznet/api';
+import { encodeAddress } from '@polkadot/util-crypto';
 
 // Splits the given Ethereum signatures into r,s,v format
 export function extractEthereumSignature(signatures: EthereumSignature[]): { r: string[]; s: string[]; v: number[] } {
@@ -39,6 +40,7 @@ export async function awaitDepositClaim(
   claim: { tokenAddress: string; amount: string; beneficiary: string },
   signer: KeyringPair
 ): Promise<ClaimDeposited> {
+  const beneficiaryAddress = encodeAddress(claim.beneficiary, 42); // convert public key to address
   return new Promise((resolve, reject) => {
     api.tx.erc20Peg
       .depositClaim(depositTxHash, claim)
@@ -49,7 +51,12 @@ export async function awaitDepositClaim(
             event: { method, section, data },
           } of events) {
             const [, claimer] = data;
-            if (section === 'erc20Peg' && method === 'Erc20Claim' && claimer && claimer.toString() === signer.address) {
+            if (
+              section === 'erc20Peg' &&
+              method === 'Erc20Claim' &&
+              claimer &&
+              claimer.toString() === beneficiaryAddress
+            ) {
               eventClaimId = data[0];
               break;
             } else if (section === 'system' && method === 'ExtrinsicFailed') {
