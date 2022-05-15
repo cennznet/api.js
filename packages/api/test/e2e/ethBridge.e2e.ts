@@ -138,7 +138,7 @@ describe('Eth bridge test', () => {
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
             expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
-            expect(claimer.toString()).toEqual(alice.address);
+            expect(claimer.toString()).toEqual(bob.address);
             done();
           }
         }
