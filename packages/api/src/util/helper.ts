@@ -68,7 +68,6 @@ export async function awaitDepositClaim(
             }
           }
         }
-        console.log('event claim id:', eventClaimId);
         if (eventClaimId) {
           api.query.system
             .events((events) => {
