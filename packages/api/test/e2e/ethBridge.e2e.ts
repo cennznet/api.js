@@ -44,7 +44,7 @@ describe('Eth bridge test', () => {
   describe('Eth bridge claims', () => {
 
     it('Submit claim for test token 1 from BridgeTest account', async done => {
-      const depositTxHash = "0x6111348115b0234a22a4aec091fe85d18d5f5e1121da5b987a3961a2a2dfeaba";
+      const depositTxHash = "0xcac398ef5a9ae1e3217954212b1059e9bbe788897ba714950ab4d63a2434137f";
       testTokenId1 = await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
@@ -84,7 +84,7 @@ describe('Eth bridge test', () => {
     });
 
     it('Submitting same claim again show fail', async done => {
-      const depositTxHash = "0x6111348115b0234a22a4aec091fe85d18d5f5e1121da5b987a3961a2a2dfeaba";
+      const depositTxHash = "0xcac398ef5a9ae1e3217954212b1059e9bbe788897ba714950ab4d63a2434137f";
       testTokenId1 = await api.query.genericAsset.nextAssetId();
       const depositAmount = "1423";
       const beneficiaryAcc = "0xacd6118e217e552ba801f7aa8a934ea6a300a5b394e7c3f42cd9d6dd9a457c10";
@@ -99,7 +99,7 @@ describe('Eth bridge test', () => {
     });
 
   it('Submit claim for test token 2 from Alice', async done => {
-    const depositTxHash = "0xe2758b79065d02fbeaed51f115d850259ebdfef343c01c74825a44ee0e5f8a8b";
+    const depositTxHash = "0x3ff83f651dfd1b9c5958fbd908b02faa5867ce9ee36e669c5e1ee35a524f5ef4";
     const claim = {
       tokenAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       amount: "5644",
@@ -122,7 +122,7 @@ describe('Eth bridge test', () => {
   });
 
   it('Submit claim for test token 2 from Bob', async done => {
-    const depositTxHash = "0xe8a0b627b0795b61faed125d18e84198a2c258c3be65b2437903208698be1257";
+    const depositTxHash = "0x205193beee5dff848085faaa5b1ef72a9816e1e5020d1c3b616107639313bc9d";
     const claim = {
       tokenAddress: "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
       amount: "11644",
@@ -138,7 +138,7 @@ describe('Eth bridge test', () => {
           if (section === 'erc20Peg' && method == 'Erc20Claim') {
             const [claimId, claimer] = data;
             expect((claimId as EventClaimId).toNumber()).toBeGreaterThanOrEqual(0);
-            expect(claimer.toString()).toEqual(alice.address);
+            expect(claimer.toString()).toEqual(bob.address);
             done();
           }
         }
