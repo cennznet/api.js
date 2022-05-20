@@ -1,6 +1,6 @@
 {
   "name": "@cennznet/signer-cli",
-  "version": "2.1.1-alpha.3",
+  "version": "2.1.1-alpha.4",
   "description": "A commandline signer for offline signature generation",
   "main": "index.cjs",
   "sideEffects": false,
@@ -20,7 +20,7 @@
     "@babel/core": "^7.14.8",
     "@babel/register": "^7.14.5",
     "@babel/runtime": "^7.14.8",
-    "@cennznet/api": "2.1.1-alpha.3",
+    "@cennznet/api": "2.1.1-alpha.4",
     "@polkadot/keyring": "8.3.3",
     "@polkadot/types": "^7.7.1",
     "@polkadot/util": "^8.3.3",
