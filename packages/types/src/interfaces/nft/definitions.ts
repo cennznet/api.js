@@ -12,7 +12,7 @@ export default {
                 type: 'Address',
               }
             ],
-            type: 'Vec<EnhancedTokenId>',
+            type: 'Json',
           },
         getCollectionInfo: {
           description: 'Get collection info from a given collection',
@@ -22,7 +22,7 @@ export default {
               type: 'CollectionId'
             }
           ],
-          type: 'Option<CollectionInfo>',
+          type: 'Json',
         },
         getCollectionListings: {
           description: 'Get collection listing from a given collection',
@@ -40,27 +40,27 @@ export default {
               type: 'u16'
             }
           ],
-          type: 'Option<ListingResponseWrapper<AccountId>>',
+          type: 'Json',
         },
-      getTokenInfo: {
-        description: 'Get token info',
-        params: [
-          {
-            name: 'CollectionId',
-            type: 'CollectionId'
-          },
-          {
-            name: 'SeriesId',
-            type: 'SeriesId'
-          },
-          {
-            name: 'SerialNumber',
-            type: 'SerialNumber'
-          }
-        ],
-        type: 'TokenInfo<AccountId>',
-      },
-      tokenUri: {
+        getTokenInfo: {
+            description: 'Get token info',
+            params: [
+            {
+                name: 'CollectionId',
+                type: 'CollectionId'
+            },
+            {
+                name: 'SeriesId',
+                type: 'SeriesId'
+            },
+            {
+                name: 'SerialNumber',
+                type: 'SerialNumber'
+            }
+            ],
+            type: 'Json',
+        },
+        tokenUri: {
         description: 'Get token uri',
         params: [
             {
