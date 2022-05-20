@@ -5,7 +5,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [UNRELEASED]
 Please check [upgrade guide](https://hackmd.io/VbsHZhKkTiWwaTBYp1Unbw) for 2.1.x  version
-## [2.1.1-alpha.3](https://github.com/cennznet/api.js/compare/prerelease/2.1.1-alpha.2...prerelease/2.1.1-alpha.1) (18/05/2022)
+## [2.1.1-alpha.4](https://github.com/cennznet/api.js/compare/prerelease/2.1.1-alpha.3...prerelease/2.1.1-alpha.4) (20/05/2022)
+### Changed:
+    - Updated the return type to JSON for nft rpc calls
+## [2.1.1-alpha.3](https://github.com/cennznet/api.js/compare/prerelease/2.1.1-alpha.2...prerelease/2.1.1-alpha.3) (18/05/2022)
 ### Changed:
     - base64Encode payload before signing via EthWallet
 ## [2.1.1-alpha.2](https://github.com/cennznet/api.js/compare/prerelease/2.1.1-alpha.1...prerelease/2.1.1-alpha.2) (05/05/2022)
